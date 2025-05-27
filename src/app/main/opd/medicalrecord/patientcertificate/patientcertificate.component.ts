@@ -1,12 +1,12 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { AppointmentlistService } from '../../appointment-list/appointmentlist.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppointmentlistService } from '../../appointment-list/appointmentlist.service';
 
 @Component({
   selector: 'app-patientcertificate',

@@ -2,13 +2,13 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { map, Observable, startWith } from 'rxjs';
-import Swal from 'sweetalert2';
-import { CompanysettlementService } from '../companysettlement.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 import { OPSearhlistService } from '../../op-search-list/op-searhlist.service';
 import { RegInsert } from '../../registration/registration.component';
-import { ToastrService } from 'ngx-toastr';
+import { CompanysettlementService } from '../companysettlement.service';
 
 @Component({
   selector: 'app-new-settlement',

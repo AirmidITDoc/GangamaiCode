@@ -1,15 +1,13 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { OPSearhlistService } from '../op-searhlist.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
-import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
-import { DatePipe } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
+import { OPSearhlistService } from '../op-searhlist.service';
 
 @Component({
   selector: 'app-op-payment-new',

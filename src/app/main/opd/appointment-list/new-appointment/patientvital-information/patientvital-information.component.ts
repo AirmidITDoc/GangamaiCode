@@ -1,11 +1,11 @@
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AppointmentlistService } from '../../appointmentlist.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { VisitMaster1 } from '../../appointment-list.component';
-import { fuseAnimations } from '@fuse/animations';
+import { AppointmentlistService } from '../../appointmentlist.service';
 
 @Component({
   selector: 'app-patientvital-information',

@@ -1,21 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { Color, gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { OPListService } from './oplist.service';
-import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
-import Swal from 'sweetalert2';
-import { UpdateBill } from '../op-search-list/op-advance-payment/op-advance-payment.component';
-import { NewSettlementComponent } from '../companysettlement/new-settlement/new-settlement.component';
+import { MatDialog } from "@angular/material/dialog";
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { fuseAnimations } from '@fuse/animations';
+import { Color, gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
+import { OPListService } from './oplist.service';
 
 
 @Component({

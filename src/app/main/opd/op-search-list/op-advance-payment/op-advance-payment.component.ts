@@ -1,13 +1,12 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReplaySubject, Subject } from 'rxjs';
-import { OPSearhlistService } from '../op-searhlist.service';
 import { takeUntil } from 'rxjs/operators';
-import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
 import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
+import { OPSearhlistService } from '../op-searhlist.service';
 
 @Component({
   selector: 'app-op-advance-payment',

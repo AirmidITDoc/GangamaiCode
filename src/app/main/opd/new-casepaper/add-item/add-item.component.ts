@@ -1,20 +1,14 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource } from '@angular/material/table';
-import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
-import { CasepaperService } from '../casepaper.service';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { AnyARecord } from 'dns';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { ToastrService } from 'ngx-toastr';
+import { forkJoin, Observable } from 'rxjs';
+import { CasepaperService } from '../casepaper.service';
 import { MedicineItemList } from '../new-casepaper.component';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-add-item',

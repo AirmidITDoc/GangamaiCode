@@ -1,14 +1,13 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { CasepaperService } from '../casepaper.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MedicineItemList } from '../new-casepaper.component'; 
-import { element } from 'protractor';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { CasepaperService } from '../casepaper.service';
+import { MedicineItemList } from '../new-casepaper.component';
 
 @Component({
   selector: 'app-pre-presciption-list',

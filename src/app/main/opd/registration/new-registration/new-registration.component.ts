@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { RegInsert } from '../registration.component';
-import { RegistrationService } from '../registration.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { RegInsert } from '../registration.component';
+import { RegistrationService } from '../registration.service';
 
 @Component({
     selector: 'app-new-registration',

@@ -1,18 +1,12 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { CasepaperService } from '../casepaper.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { UntypedFormBuilder, FormGroup, FormGroupName } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
-import { MatTableDataSource } from '@angular/material/table';
-import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { error } from 'console';
-import { element } from 'protractor';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { ToastrService } from 'ngx-toastr';
+import { CasepaperService } from '../casepaper.service';
 
 // interface Prescription {
 //   date: string;

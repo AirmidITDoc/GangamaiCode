@@ -1,27 +1,22 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { ToastrService } from 'ngx-toastr';
-import { RegInsert } from '../../registration/registration.component';
-import { AppointmentlistService } from '../appointmentlist.service';
-import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
-import { debug } from 'console';
-import { OpPaymentNewComponent } from '../../op-search-list/op-payment-new/op-payment-new.component';
-import { debugPort } from 'process';
-import { VisitMaster1 } from '../appointment-list.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
-import { AppointmentBillService } from './appointment-bill.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
+import { SearchInforObj } from '../../op-search-list/opd-search-list/opd-search-list.component';
+import { RegInsert } from '../../registration/registration.component';
+import { VisitMaster1 } from '../appointment-list.component';
+import { AppointmentBillService } from './appointment-bill.service';
 
 @Component({
   selector: 'app-appointment-billing',

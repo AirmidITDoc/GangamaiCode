@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NewOPListComponent } from './new-oplist/new-oplist.component';
-import { CompanysettlementComponent } from './companysettlement/companysettlement.component';
 import { SharedModule } from "../shared/shared.module";
-import { RefundbillComponent } from './refundbill/refundbill.component';
-import { PhysiotherapistScheduleComponent } from './physiotherapist-schedule/physiotherapist-schedule.component';
 
 
 const appRoutes: Routes = [

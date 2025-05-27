@@ -1,19 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CompanysettlementService } from './companysettlement.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { fuseAnimations } from '@fuse/animations';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { RegInsert } from '../registration/registration.component';
-import { NewSettlementComponent } from './new-settlement/new-settlement.component';
-import Swal from 'sweetalert2';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
-import { OpPaymentNewComponent } from '../op-search-list/op-payment-new/op-payment-new.component';
+import { RegInsert } from '../registration/registration.component';
+import { CompanysettlementService } from './companysettlement.service';
 
 @Component({
     selector: 'app-companysettlement',

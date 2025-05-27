@@ -1,28 +1,19 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ToastrService } from 'ngx-toastr';
-import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { MatStepper } from '@angular/material/stepper';
-import Swal from 'sweetalert2';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSelect } from '@angular/material/select';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { RegInsert } from '../../registration/registration.component';
 import { fuseAnimations } from '@fuse/animations';
-import { ImageViewComponent } from '../image-view/image-view.component';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { PatientvitalInformationComponent } from './patientvital-information/patientvital-information.component';
-import { values } from 'lodash';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from '../../registration/registration.component';
+import { AppointmentlistService } from '../appointmentlist.service';
+import { ImageViewComponent } from '../image-view/image-view.component';
 
 @Component({
     selector: 'app-new-appointment',

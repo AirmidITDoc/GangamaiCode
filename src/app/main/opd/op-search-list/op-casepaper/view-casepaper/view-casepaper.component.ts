@@ -1,12 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { CasepaperVisitDetails } from '../op-casepaper.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { Subscription } from 'rxjs';
 import { OPSearhlistService } from '../../op-searhlist.service';
+import { CasepaperVisitDetails } from '../op-casepaper.component';
 
 @Component({
   selector: 'app-view-casepaper',

@@ -1,15 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppointmentlistService } from '../appointmentlist.service';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { VisitMaster1 } from '../appointment-list.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { VisitMaster1 } from '../appointment-list.component';
+import { AppointmentlistService } from '../appointmentlist.service';
 
 @Component({
   selector: 'app-edit-consultant-doctor',

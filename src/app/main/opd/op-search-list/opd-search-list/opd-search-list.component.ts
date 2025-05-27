@@ -1,25 +1,18 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { OPSearhlistService } from '../op-searhlist.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { fuseAnimations } from '@fuse/animations';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { UntypedFormBuilder, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { OPCasepaperComponent } from '../op-casepaper/op-casepaper.component';
-import Swal from 'sweetalert2';
-import { IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
-import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
-import { OpPaymentComponent } from '../op-payment/op-payment.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { OpPaymentVimalComponent } from '../op-payment-vimal/op-payment-vimal.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
+import { OpPaymentComponent } from '../op-payment/op-payment.component';
+import { OPSearhlistService } from '../op-searhlist.service';
 
 
 

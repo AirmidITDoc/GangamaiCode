@@ -1,19 +1,14 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { OPSearhlistService } from '../op-searhlist.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IpPaymentInsert } from '../op-advance-payment/op-advance-payment.component';
-import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { ToasterService } from 'app/main/shared/services/toaster.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
-import { timeStamp } from 'console';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { OPSearhlistService } from '../op-searhlist.service';
 
 @Component({
   selector: 'app-op-payment',

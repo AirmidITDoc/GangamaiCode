@@ -1,26 +1,19 @@
-import { Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
-import { PreviousDeptListComponent } from './previous-dept-list/previous-dept-list.component';
-import { map, Observable, ReplaySubject, startWith, Subject, Subscription } from 'rxjs';
-import { RegInsert } from '../../registration/registration.component';
-import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { MatStepper } from '@angular/material/stepper';
-import Swal from 'sweetalert2';
-import { MatSelect } from '@angular/material/select';
+import { Component, Inject, ViewChild } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfigService } from 'app/core/services/config.service';
-import { ToastrService } from 'ngx-toastr';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { AppointmentlistService } from '../appointmentlist.service';
-import { SSL_OP_NO_TLSv1_1 } from 'constants';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { Router } from '@angular/router';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { PatientvitalInformationComponent } from '../new-appointment/patientvital-information/patientvital-information.component';
-import { VisitMaster1 } from '../appointment-list.component';
-import { debug } from 'console';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from '../../registration/registration.component';
+import { VisitMaster1 } from '../appointment-list.component';
+import { AppointmentlistService } from '../appointmentlist.service';
+import { PatientvitalInformationComponent } from '../new-appointment/patientvital-information/patientvital-information.component';
+import { PreviousDeptListComponent } from './previous-dept-list/previous-dept-list.component';
 
 @Component({
   selector: 'app-update-reg-patient-info',

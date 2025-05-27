@@ -1,14 +1,11 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import { AppointmentlistService } from '../appointmentlist.service';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { AppointmentlistService } from '../appointmentlist.service';
 
 @Component({
   selector: 'app-edit-refrance-doctor',

@@ -1,12 +1,12 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MenuMaster } from 'app/main/administration/role-permission/role-permission.component';
 import { OPSearhlistService } from '../op-search-list/op-searhlist.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { NgFor, NgIf } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 export interface PeriodicElement {
   Id: string;
   UpId: number;
