@@ -29,12 +29,12 @@ export class RadiologyTestMasterService {
             categoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             serviceId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             templateName: [""],
-            mRadiologyTemplateDetails: [
-                {
-                    ptemplateId: 0,
-                    testId: 0,
-                    templateId: 0
-                }
+            mRadiologyTemplateDetails: [""
+                // {
+                //     ptemplateId: 0,
+                //     testId: 0,
+                //     templateId: 0
+                // }
             ],
             isActive: [true, [Validators.required]]
         });

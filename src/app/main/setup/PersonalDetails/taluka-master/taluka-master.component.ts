@@ -16,11 +16,11 @@ import { NewTalukaComponent } from "./new-taluka/new-taluka.component";
     animations: fuseAnimations,
 })
 export class TalukaMasterComponent implements OnInit {
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     msg: any;
-       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-       gridConfig: gridModel = {
-           apiUrl: "TalukaMaster/List",
-           columnsList: [
+    talukaName: any = "";
+
+        allcolumns =  [
                { heading: "Code", key: "talukaId", sort: true, align: 'left', emptySign: 'NA' },
                { heading: "Taluka Name", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
                { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,22 +41,64 @@ export class TalukaMasterComponent implements OnInit {
                            }
                        }]
                } //Action 1-view, 2-Edit,3-delete
-           ],
-           sortField: "talukaId",
-           sortOrder: 0,
-           filters: [
+           ]
+          
+           allfilters =[
                { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
            ]
-       }
-   
+       
+    gridConfig: gridModel = {
+        apiUrl: "TalukaMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "talukaId",
+        sortOrder: 0,
+        filters: this.allfilters
+    }
        constructor(
            public _TalukaMasterService: TalukaMasterService,
            public toastr: ToastrService, public _matDialog: MatDialog
        ) { }
    
        ngOnInit(): void { }
-   
+   //filters addedby avdhoot vedpathak date-27/05/2025
+       Clearfilter(event) {
+        console.log(event)
+        if (event == 'TalukaNameSearch')
+            this._TalukaMasterService.myformSearch.get('TalukaNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.talukaName = this._TalukaMasterService.myformSearch.get('TalukaNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TalukaMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "TalukaMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "talukaId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "talukaName", fieldValue: this.talukaName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
        onSave(row: any = null) {
            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
            buttonElement.blur(); // Remove focus from the button

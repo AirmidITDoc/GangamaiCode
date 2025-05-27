@@ -16,12 +16,11 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class ReligionMasterComponent implements OnInit {
-    msg: any;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+ msg: any;
+ religionName: any = "";
 
-    gridConfig: gridModel = {
-        apiUrl: "ReligionMaster/List",
-        columnsList: [
+    allcolumns = [
             { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,18 +40,60 @@ export class ReligionMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "religionId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters =  [
             { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "ReligionMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "religionId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ReligionNameSearch')
+            this._religionService.myformSearch.get('AreaNaReligionNameSearchmeSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.religionName = this._religionService.myformSearch.get('ReligionNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._religionService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "ReligionMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "religionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "religionName", fieldValue: this.religionName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

@@ -16,11 +16,10 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class WardMasterComponent implements OnInit {
-
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "WardMaster/List",
-        columnsList: [
+    roomName: any = "";
+
+        allcolumns =  [
             { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
@@ -43,20 +42,63 @@ export class WardMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "roomId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allfilters = [
             { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "WardMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "roomId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
+
 
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'RoomNameSearch')
+            this._wardService.myformSearch.get('RoomNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.roomName = this._wardService.myformSearch.get('RoomNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._wardService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "WardMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "roomId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "roomName", fieldValue: this.roomName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

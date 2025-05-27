@@ -19,11 +19,11 @@ import { NewCompanyTypeComponent } from "./new-company-type/new-company-type.com
 })
 export class CompanyTypeMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  typeName: any = "";
 
 
-    gridConfig: gridModel = {
-        apiUrl: "CompanyTypeMaster/List",
-        columnsList: [
+    
+         allcolumns = [
             { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -43,14 +43,20 @@ export class CompanyTypeMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "companyTypeId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+         allfilters = [
             { fieldName: "typeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "CompanyTypeMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "companyTypeId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
+
     constructor(
         public _CompanyMasterService: CompanyTypeMasterService,
         public _matDialog: MatDialog,
@@ -60,7 +66,44 @@ export class CompanyTypeMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TypeNameSearch')
+            this._CompanyMasterService.myformSearch.get('TypeNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.typeName = this._CompanyMasterService.myformSearch.get('TypeNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CompanyTypeMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "companyTypeId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "typeName", fieldValue: this.typeName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

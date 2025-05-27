@@ -14,7 +14,6 @@ import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
 import { Subscription } from 'rxjs';
 import { IndentList, Printsal } from '../sales/sales.component';
-import * as converter from 'number-to-words';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -898,10 +897,6 @@ export class SalesReturnComponent implements OnInit {
     );
   }
 
-  convertToWord(e) {
-    return converter.toWords(e);
-  }
-  
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');

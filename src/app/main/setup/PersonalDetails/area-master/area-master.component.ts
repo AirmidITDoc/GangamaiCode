@@ -60,7 +60,7 @@ export class AreaMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-    
+    //filters addedby avdhoot vedpathak date-27/05/2025
     Clearfilter(event) {
         console.log(event)
         if (event == 'AreaNameSearch')

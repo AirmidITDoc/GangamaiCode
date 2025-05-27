@@ -17,10 +17,9 @@ import { NewTariffComponent } from "./new-tariff/new-tariff.component";
 })
 export class TariffMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "TarrifMaster/List",
-        columnsList: [
+tariffName: any = "";
+   
+        allcolumns = [
             { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -40,21 +39,64 @@ export class TariffMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "tariffId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+         allfilters = [
             { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "TarrifMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "tariffId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(
         public _TariffMasterService: TariffMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TariffNameSearch')
+            this._TariffMasterService.myformSearch.get('TariffNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.tariffName = this._TariffMasterService.myformSearch.get('TariffNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TariffMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "TarrifMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "tariffId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "tariffName", fieldValue: this.tariffName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

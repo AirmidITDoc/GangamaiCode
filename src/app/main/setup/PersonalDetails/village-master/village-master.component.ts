@@ -16,11 +16,11 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class VillageMasterComponent implements OnInit {
-     msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
-        columnsList: [
+     msg: any;
+     villageName: any = "";
+
+        allcolumns = [
             { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +41,19 @@ export class VillageMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "VillageName",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+         allfilters = [
             { fieldName: "villageName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+
+     gridConfig: gridModel = {
+        apiUrl: "VillageMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "VillageName",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -56,7 +62,44 @@ export class VillageMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'VillageNameSearch')
+            this._VillageMasterService.myformSearch.get('VillageNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.villageName = this._VillageMasterService.myformSearch.get('VillageNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._VillageMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "VillageMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "VillageName",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "villageName", fieldValue: this.villageName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

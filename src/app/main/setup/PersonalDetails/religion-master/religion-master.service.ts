@@ -17,7 +17,7 @@ export class ReligionMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ReligionNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
     CreateReligionForm(): FormGroup {

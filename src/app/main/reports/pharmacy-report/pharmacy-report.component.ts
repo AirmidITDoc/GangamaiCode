@@ -11,7 +11,6 @@ import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-
 import { SalesService } from 'app/main/pharmacy/sales/sales.service';
 import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
 import { Observable, Subscription } from 'rxjs';
-import * as converter from 'number-to-words';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { map, startWith } from 'rxjs/operators';
@@ -1025,10 +1024,6 @@ var data={
   onClose() { }
 
 
-  convertToWord(e) {
-
-    return converter.toWords(e);
-  }
 
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");

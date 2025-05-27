@@ -37,7 +37,7 @@ export class LocationMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             LocationNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

@@ -332,14 +332,14 @@ export class TestFormMasterComponent implements OnInit {
                 return;
             }
 
-            if(!this.vTestId){
+            // if(!this.vTestId){
             let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "TestId": 0,
+                "TestId": 0 || this.vTestId,
                 "TemplateId": row.templateId,
             }));
             console.log(mPathTemplateDetails)
             let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestId": 0,
+                "TestId": 0 || this.vTestId,
                 "SubTestId": row.subTestID || 0,
                 "ParameterId": row.parameterID || row.parameterId || 0
             }));
@@ -354,67 +354,72 @@ export class TestFormMasterComponent implements OnInit {
                 "suggestionNote": this.testForm.get("SuggestionNote").value || "",
                 "footNote": this.testForm.get("FootNote").value || "",
                 "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
-                "addedBy": this._loggedService.currentUserValue.userId,
+                "UpdatedBy": this._loggedService.currentUserValue.userId,
                 "serviceId": this.testForm.get("ServiceId").value || 0,
                 "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
-                "TestId": 0,
+                "TestId": 0 || this.vTestId,
             }
 
-            let testMaster = {
-                "pathTest": pathTest,
-                "pathTemplateDetail": mPathTemplateDetails,
-                "pathTestDetail": mPathTestDetailMasters
-              }
+             if(!this._TestmasterService.insertTestFrom.invalid){
+                 this._TestmasterService.insertTestFrom.get("pathTest").setValue(pathTest)
+                this._TestmasterService.insertTestFrom.get("pathTemplateDetail").setValue(mPathTemplateDetails)
+                this._TestmasterService.insertTestFrom.get("pathTestDetail").setValue(mPathTestDetailMasters)
+            // let testMaster = {
+            //     "pathTest": pathTest,
+            //     "pathTemplateDetail": mPathTemplateDetails,
+            //     "pathTestDetail": mPathTestDetailMasters
+            //   }
 
-            console.log("json of Test:", testMaster)
-            this._TestmasterService.TestMasterSave(testMaster).subscribe((response) => {
+            console.log("json of Test:", this._TestmasterService.insertTestFrom.value)
+            this._TestmasterService.TestMasterSave(this._TestmasterService.insertTestFrom.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClose(true);
             }, (error) => {
                 this.toastr.error(error.message);
             });
-        } else {
-            let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
-                "TestId": this.vTestId, //row.testId || this.vTestId,
-                "TemplateId": row.templateId,
-            }));
-            let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
-                "TestId": this.vTestId, //row.testId || this.vTestId || 0,
-                "SubTestId": row.subTestID || 0,
-                "ParameterId": row.parameterID || row.parameterId || 0
-            }));
+             }
+        // } else {
+        //     let mPathTemplateDetails = this.Templatetdatasource.data.map((row: any) => ({
+        //         "TestId": this.vTestId, //row.testId || this.vTestId,
+        //         "TemplateId": row.templateId,
+        //     }));
+        //     let mPathTestDetailMasters = this.DSTestList.data.map((row: any) => ({
+        //         "TestId": this.vTestId, //row.testId || this.vTestId || 0,
+        //         "SubTestId": row.subTestID || 0,
+        //         "ParameterId": row.parameterID || row.parameterId || 0
+        //     }));
 
-            let pathTest = {
-                "testId": this.vTestId,
-                "testName": this.testForm.get("TestName").value || "",
-                "printTestName": this.testForm.get("PrintTestName").value || "",
-                "categoryId": this.testForm.get("CategoryId").value || 12,
-                "isSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
-                "techniqueName": this.testForm.get("TechniqueName").value || "",
-                "machineName": this.testForm.get("MachineName").value || "",
-                "suggestionNote": this.testForm.get("SuggestionNote").value || "",
-                "footNote": this.testForm.get("FootNote").value || "",
-                "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
-                "updatedBy": this._loggedService.currentUserValue.userId,
-                "serviceId": this.testForm.get("ServiceId").value || 0,
-                "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
-            }
+        //     let pathTest = {
+        //         "testId": this.vTestId,
+        //         "testName": this.testForm.get("TestName").value || "",
+        //         "printTestName": this.testForm.get("PrintTestName").value || "",
+        //         "categoryId": this.testForm.get("CategoryId").value || 12,
+        //         "isSubTest": this.Subtest !== undefined ? this.Subtest : false,//this.testForm.get('IsSubTest').value,
+        //         "techniqueName": this.testForm.get("TechniqueName").value || "",
+        //         "machineName": this.testForm.get("MachineName").value || "",
+        //         "suggestionNote": this.testForm.get("SuggestionNote").value || "",
+        //         "footNote": this.testForm.get("FootNote").value || "",
+        //         "isActive": Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
+        //         "updatedBy": this._loggedService.currentUserValue.userId,
+        //         "serviceId": this.testForm.get("ServiceId").value || 0,
+        //         "isTemplateTest": this._TestmasterService.is_templatetest ? 1 : 0,//this.testForm.get('IsTemplateTest').value,
+        //     }
 
-            let testMaster1 = {
-                "pathTest": pathTest,
-                "pathTemplateDetail": mPathTemplateDetails,
-                "pathTestDetail": mPathTestDetailMasters
-              }
+        //     let testMaster1 = {
+        //         "pathTest": pathTest,
+        //         "pathTemplateDetail": mPathTemplateDetails,
+        //         "pathTestDetail": mPathTestDetailMasters
+        //       }
 
-            console.log("Updatejson of Test:", testMaster1)
+        //     console.log("Updatejson of Test:", testMaster1)
 
-            this._TestmasterService.TestMasterUpdate(testMaster1).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClose(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        }
+        //     this._TestmasterService.TestMasterUpdate(testMaster1).subscribe((response) => {
+        //         this.toastr.success(response.message);
+        //         this.onClose(true);
+        //     }, (error) => {
+        //         this.toastr.error(error.message);
+        //     });
+        // }
           } else {
             this.invalidFields1 = [];
             
