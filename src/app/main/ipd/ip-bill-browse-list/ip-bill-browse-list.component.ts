@@ -1,44 +1,21 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { AdvanceDataStored } from '../advance';
-import { IPBrowseBillService } from './ip-browse-bill.service';
 import { DatePipe } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { SmsEmailTemplateComponent } from 'app/main/shared/componets/sms-email-template/sms-email-template.component';
-import * as converter from 'number-to-words';
-import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { IPSettlementComponent } from '../ip-settlement/ip-settlement.component';
-import { Advheaderdetail, UpdateBill } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import { RefundMaster } from '../Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.component';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { IPBrowseBillService } from './ip-browse-bill.service';
 
 
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialogRef } from "@angular/material/dialog";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { NewSettlementComponent } from 'app/main/opd/companysettlement/new-settlement/new-settlement.component';
-import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
     selector: 'app-ip-bill-browse-list',

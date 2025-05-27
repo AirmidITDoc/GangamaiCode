@@ -1,22 +1,20 @@
-import { Component, ElementRef, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AdvanceDetailObj } from '../ip-search-list.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { Component, ElementRef, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { M } from '@angular/cdk/keycodes';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { AdvanceDetailObj } from '../ip-search-list.component';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-discharge-summary-template',

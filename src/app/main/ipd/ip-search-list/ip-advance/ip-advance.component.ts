@@ -1,37 +1,21 @@
-import { Component, Inject, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { ChargesList } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from '../../advance';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { IPAdvancePaymentComponent } from '../ip-advance-payment/ip-advance-payment.component';
-import { fuseAnimations } from '@fuse/animations';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { AdvanceDetail, AdvanceDetailObj } from '../ip-search-list.component';
-import { Router } from '@angular/router';
-import * as converter from 'number-to-words';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { debug } from 'console';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
-import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { map, startWith } from 'rxjs/operators';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { element } from 'protractor';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { IPSearchListService } from '../ip-search-list.service';
 
 
 @Component({

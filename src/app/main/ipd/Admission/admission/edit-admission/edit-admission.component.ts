@@ -1,18 +1,18 @@
 ///
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AdmissionService } from '../admission.service';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DatePipe, Time } from '@angular/common';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { ToastrService } from 'ngx-toastr';
-import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
+import { AdmissionService } from '../admission.service';
 
 
 @Component({

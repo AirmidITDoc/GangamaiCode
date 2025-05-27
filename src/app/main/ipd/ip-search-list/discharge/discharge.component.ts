@@ -1,26 +1,18 @@
-import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { AdvanceDetailObj, Discharge, IPSearchListComponent } from '../ip-search-list.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { AbstractControl, FormControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import { MatSort } from '@angular/material/sort';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IPSearchListService } from '../ip-search-list.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from '../../advance';
 import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
-import { T, V } from '@angular/cdk/keycodes';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ConfigService } from 'app/core/services/config.service';
-import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
-import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
+import { AdvanceDataStored } from '../../advance';
+import { AdvanceDetailObj } from '../ip-search-list.component';
+import { IPSearchListService } from '../ip-search-list.service';
+import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
 
 @Component({
   selector: 'app-discharge',

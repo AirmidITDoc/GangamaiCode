@@ -1,11 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { StockManagementService } from './stock-management.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { StockManagementService } from './stock-management.service';
 
 @Component({
   selector: 'app-stock-management',

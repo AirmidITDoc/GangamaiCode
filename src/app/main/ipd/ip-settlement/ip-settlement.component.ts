@@ -1,37 +1,20 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { MatTableDataSource } from '@angular/material/table';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from '../advance';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
-import { IPAdvancePaymentComponent, IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
 // import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
-import { IPSettlementViewComponent } from './ipsettlement-view/ipsettlement-view.component';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { IPSettlementService } from './ip-settlement.service';
-import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment-withadvance.component';
-import { AdmissionPersonlModel, RegInsert } from '../Admission/admission/admission.component';
-import * as converter from 'number-to-words';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component';
-import { IpPaymentwithAdvanceComponent } from '../ip-search-list/ip-paymentwith-advance/ip-paymentwith-advance.component';
-import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
-import { CompanysettlementService } from 'app/main/opd/companysettlement/companysettlement.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from '../Admission/admission/admission.component';
+import { IPSettlementService } from './ip-settlement.service';
 
 
 @Component({

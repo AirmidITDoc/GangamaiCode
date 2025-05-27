@@ -1,25 +1,20 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ToastrService } from 'ngx-toastr';
-import { AdvanceDataStored } from '../advance';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CompanyListService } from './company-list.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { CompanyBillComponent } from '../ip-search-list/company-bill/company-bill.component';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
-import { FormGroup } from '@angular/forms';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { AdvanceDataStored } from '../advance';
+import { CompanyBillComponent } from '../ip-search-list/company-bill/company-bill.component';
+import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
+import { CompanyListService } from './company-list.service';
 
 
 @Component({

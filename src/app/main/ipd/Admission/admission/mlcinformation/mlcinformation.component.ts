@@ -1,21 +1,16 @@
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
-import { AdmissionService } from '../admission.service';
+import { DatePipe } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
-import { AdmissionPersonlModel } from '../admission.component';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from '../admission.component';
+import { AdmissionService } from '../admission.service';
 
 
 @Component({

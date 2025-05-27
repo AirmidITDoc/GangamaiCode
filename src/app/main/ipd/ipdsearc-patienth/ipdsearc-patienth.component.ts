@@ -1,19 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
-import { DatePipe } from '@angular/common';
-import { AdvanceDataStored } from '../advance';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { EditAdmissionComponent } from '../Admission/admission/edit-admission/edit-admission.component';
 import { fuseAnimations } from '@fuse/animations';
-import { AdmissionService } from '../Admission/admission/admission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdmissionService } from '../Admission/admission/admission.service';
+import { AdvanceDataStored } from '../advance';
+import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 
-import Swal from 'sweetalert2';
-import { AdmissionPersonlModel, RegInsert } from '../Admission/admission/admission.component';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 
 @Component({
   selector: 'app-ipdsearc-patienth',

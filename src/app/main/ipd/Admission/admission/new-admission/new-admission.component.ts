@@ -1,24 +1,20 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AdmissionPersonlModel, Bed, RegInsert } from '../admission.component';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { AdmissionService } from '../admission.service';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { IPDSearcPatienthComponent } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import Swal from 'sweetalert2';
-import { MatSelect } from '@angular/material/select';
-import { ToastrService } from 'ngx-toastr';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { AdmissionPersonlModel, RegInsert } from '../admission.component';
+import { AdmissionService } from '../admission.service';
 
 @Component({
   selector: 'app-new-admission',

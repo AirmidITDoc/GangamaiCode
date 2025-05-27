@@ -1,12 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { IPSearchListService } from '../../ip-search-list.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { MatTableDataSource } from '@angular/material/table';
 import { ConfigService } from 'app/core/services/config.service';
-import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { IPSearchListService } from '../../ip-search-list.service';
 import { DischargeInitiateProcessComponent } from './discharge-initiate-process/discharge-initiate-process.component';
 
 @Component({

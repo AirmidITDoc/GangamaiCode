@@ -1,22 +1,16 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import Swal from 'sweetalert2';
-import { IPSearchListService } from '../ip-search-list.service';
-import { AdvanceDataStored } from '../../advance';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDetailObj, Bed, Discharge, IPSearchListComponent } from '../ip-search-list.component';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
-import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
+import { AdvanceDataStored } from '../../advance';
+import { IPSearchListComponent } from '../ip-search-list.component';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-bed-transfer',

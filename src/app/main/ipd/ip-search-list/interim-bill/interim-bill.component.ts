@@ -1,24 +1,20 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { IPSearchListService } from '../ip-search-list.service';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
-import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations'; 
-import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
-import { ToastrService } from 'ngx-toastr';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { IPpaymentWithadvanceComponent } from '../../ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
-import { map, startWith } from 'rxjs/operators';
 import { ConfigService } from 'app/core/services/config.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { ChargesList } from '../ip-search-list.component';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-interim-bill',

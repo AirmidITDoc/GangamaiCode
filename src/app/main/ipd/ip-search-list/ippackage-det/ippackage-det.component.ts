@@ -1,13 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource } from '@angular/material/table';
-import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({

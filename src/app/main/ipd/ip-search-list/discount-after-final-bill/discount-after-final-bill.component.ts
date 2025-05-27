@@ -1,12 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-discount-after-final-bill',

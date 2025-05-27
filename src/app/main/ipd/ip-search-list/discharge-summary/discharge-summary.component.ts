@@ -1,26 +1,21 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { IPSearchListService } from '../ip-search-list.service';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { AdvanceDataStored } from '../../advance';
-import { AdvanceDetailObj } from '../ip-search-list.component';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource } from '@angular/material/table';
-import { element } from 'protractor';
-import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { AdvanceDetailObj } from '../ip-search-list.component';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-discharge-summary',

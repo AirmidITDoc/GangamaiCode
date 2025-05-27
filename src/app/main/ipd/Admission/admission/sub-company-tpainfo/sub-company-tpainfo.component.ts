@@ -1,17 +1,11 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdmissionService } from '../admission.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { AdmissionPersonlModel } from '../admission.component';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from '../admission.component';
+import { AdmissionService } from '../admission.service';
 
 
 

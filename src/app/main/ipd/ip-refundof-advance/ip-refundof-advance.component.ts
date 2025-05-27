@@ -1,28 +1,19 @@
-import { Component, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs'; 
-import { DatePipe } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
-import Swal from 'sweetalert2'; 
 import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OPAdvancePaymentComponent } from 'app/main/opd/op-search-list/op-advance-payment/op-advance-payment.component'; 
-import { ToastrService } from 'ngx-toastr';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { RegInsert } from '../Admission/admission/admission.component';
-import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
-import { AdvanceDataStored } from '../advance';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import { element } from 'protractor';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { map, startWith } from 'rxjs/operators';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
+import { AdvanceDataStored } from '../advance';
+import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',

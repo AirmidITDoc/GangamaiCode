@@ -1,19 +1,13 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IPBrowseBillService } from '../../ip-bill-browse-list/ip-browse-bill.service';
-import { IPSettlementService } from '../ip-settlement.service';
-import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
-import { ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
-import { ConsentModule } from 'app/main/nursingstation/consent/consent.module';
-import { Console } from 'console';
-import { element } from 'protractor';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
+import Swal from 'sweetalert2';
+import { IPSettlementService } from '../ip-settlement.service';
 // import { InvalidDataValidator } from 'app/shared/validators/invalide-validators';
 
 

@@ -1,22 +1,16 @@
-import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AdvanceDataStored } from '../../advance';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { FeedbackService } from './feedback.service';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
-import { MatSliderChange } from '@angular/material/slider';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
-import { UntypedFormBuilder, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PatientList } from 'app/main/pathology/result-entry/result-entry.component';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
+import { AdvanceDataStored } from '../../advance';
+import { FeedbackService } from './feedback.service';
 
 @Component({
   selector: 'app-opip-feedback',

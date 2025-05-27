@@ -1,17 +1,14 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AdmissionService } from '../Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from '../advance';
-import { AdvanceDetailObj } from '../ip-search-list/ip-search-list.component';
-import Swal from 'sweetalert2';
-import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
+import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
+import { AdmissionService } from '../Admission/admission/admission.service';
+import { AdvanceDataStored } from '../advance';
 
 @Component({
   selector: 'app-company-information',

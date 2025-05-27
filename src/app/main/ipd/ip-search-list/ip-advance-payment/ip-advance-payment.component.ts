@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ReplaySubject, Subject } from 'rxjs';
-import { IPSearchListService } from '../ip-search-list.service';
-import { takeUntil } from 'rxjs/operators';
-import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { InvalidDataValidator } from 'app/main/shared/validators/invalide-validators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
   selector: 'app-ip-advance-payment',
