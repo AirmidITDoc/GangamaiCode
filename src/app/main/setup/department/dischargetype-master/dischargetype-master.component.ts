@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { DischargetypeMasterService } from "./dischargetype-master.service";
-import { ToastrService } from "ngx-toastr";
 import { fuseAnimations } from "@fuse/animations";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { DischargetypeMasterService } from "./dischargetype-master.service";
+import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
 
 @Component({
     selector: "app-dischargetype-master",

@@ -1,16 +1,16 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, ViewChild, ContentChildren, QueryList, OnInit, ElementRef, AfterViewInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { gridModel, gridRequest, gridResponseType, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridModel, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
 import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { PagePermissionService } from '../../services/page-permission.service';
 import { permissionType } from '../../model/permission.model';
+import { PagePermissionService } from '../../services/page-permission.service';
 
 @Component({
     selector: 'airmid-table',

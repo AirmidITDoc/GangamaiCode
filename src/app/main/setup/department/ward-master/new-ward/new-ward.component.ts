@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { WardMasterService } from '../ward-master.service';
-import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { WardMasterService } from '../ward-master.service';
 
 @Component({
     selector: 'app-new-ward',

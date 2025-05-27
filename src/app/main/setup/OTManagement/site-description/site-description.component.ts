@@ -5,8 +5,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { SiteDescriptionService } from './site-description.service';
 import { NewSiteDescriptionMasterComponent } from './new-site-description-master/new-site-description-master.component';
+import { SiteDescriptionService } from './site-description.service';
 
 @Component({
   selector: 'app-site-description',

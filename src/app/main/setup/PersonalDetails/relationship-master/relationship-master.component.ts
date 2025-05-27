@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { RelationshipMasterService } from "./relationship-master.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
-import { NewRelationshipComponent } from "./new-relationship/new-relationship.component";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewRelationshipComponent } from "./new-relationship/new-relationship.component";
+import { RelationshipMasterService } from "./relationship-master.service";
 
 
 @Component({

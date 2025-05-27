@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { CashCounterMasterService } from "./cash-counter-master.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
-import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.component";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { CashCounterMasterService } from "./cash-counter-master.service";
+import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.component";
 
 
 

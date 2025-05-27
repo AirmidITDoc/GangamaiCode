@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { BedMasterService } from "./bed-master.service";
-import { ToastrService } from "ngx-toastr";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
-import { NewBedComponent } from "./new-bed/new-bed.component";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { BedMasterService } from "./bed-master.service";
+import { NewBedComponent } from "./new-bed/new-bed.component";
 
 
 @Component({

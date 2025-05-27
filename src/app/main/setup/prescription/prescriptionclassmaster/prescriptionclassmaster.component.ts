@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
-import { ToastrService } from "ngx-toastr";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { NewPrescriptionClassComponent } from "./new-prescription-class/new-prescription-class.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewPrescriptionClassComponent } from "./new-prescription-class/new-prescription-class.component";
+import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
 
 
 @Component({

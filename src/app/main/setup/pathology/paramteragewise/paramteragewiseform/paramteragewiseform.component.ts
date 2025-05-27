@@ -1,17 +1,14 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { fuseAnimations } from "@fuse/animations";
-import { ReplaySubject, Subject } from "rxjs";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ParamteragewiseService } from "../paramteragewise.service";
-import { takeUntil } from "rxjs/operators";
 import { MatTableDataSource } from "@angular/material/table";
-import Swal from "sweetalert2";
-import { ToastrService } from "ngx-toastr";
-import { ParamteragewiseComponent } from "../paramteragewise.component";
+import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
+import { ParamteragewiseComponent } from "../paramteragewise.component";
+import { ParamteragewiseService } from "../paramteragewise.service";
 
 @Component({
     selector: "app-paramteragewiseform",

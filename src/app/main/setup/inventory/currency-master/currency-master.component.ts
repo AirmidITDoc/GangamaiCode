@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { CurrencymasterService } from "./currencymaster.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { CurrencymasterService } from "./currencymaster.service";
 import { NewCurrencyComponent } from "./new-currency/new-currency.component";
 
 @Component({

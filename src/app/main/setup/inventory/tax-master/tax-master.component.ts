@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { TaxMasterService } from "./tax-master.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
 import { NewTaxComponent } from "./new-tax/new-tax.component";
+import { TaxMasterService } from "./tax-master.service";
 
 @Component({
     selector: "app-tax-master",

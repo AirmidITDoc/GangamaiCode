@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { OttablemasterService } from '../ottablemaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { OttablemasterService } from '../ottablemaster.service';
 
 @Component({
   selector: 'app-new-ottablemaster',

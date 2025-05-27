@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { TalukaMasterService } from '../taluka-master.service';
 import { FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { TalukaMasterService } from '../taluka-master.service';
 
 @Component({
     selector: 'app-new-taluka',

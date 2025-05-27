@@ -1,28 +1,28 @@
-import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
-import { RouterModule, Routes } from "@angular/router";
-import { BillingClassMasterComponent } from "./billing-class-master.component";
-import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
-import { FuseSharedModule } from "@fuse/shared.module";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatSelectModule } from "@angular/material/select";
-import { MatSortModule } from "@angular/material/sort";
-import {  MatPaginatorModule } from "@angular/material/paginator";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatTableModule } from "@angular/material/table";
+import { NgModule } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatRippleModule } from "@angular/material/core";
-import { MatMenuModule } from "@angular/material/menu";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { RouterModule, Routes } from "@angular/router";
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { FuseSharedModule } from "@fuse/shared.module";
+import { SharedModule } from "app/main/shared/shared.module";
+import { BillingClassMasterComponent } from "./billing-class-master.component";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { NewClassComponent } from './new-class/new-class.component';
-import { SharedModule } from "app/main/shared/shared.module";
-import { MatDialogModule } from "@angular/material/dialog";
 
 const routes: Routes = [
     {

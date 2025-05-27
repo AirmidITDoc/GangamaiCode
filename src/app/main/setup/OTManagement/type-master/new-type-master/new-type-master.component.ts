@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { TypeMasterService } from '../type-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NewSurgeryMasterComponent } from '../../surgery-master/new-surgery-master/new-surgery-master.component';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { NewSurgeryMasterComponent } from '../../surgery-master/new-surgery-master/new-surgery-master.component';
+import { TypeMasterService } from '../type-master.service';
 
 @Component({
   selector: 'app-new-type-master',

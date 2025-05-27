@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { WardMasterService } from "./ward-master.service";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
 import { NewWardComponent } from "./new-ward/new-ward.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { MatDialog } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { WardMasterService } from "./ward-master.service";
 
 @Component({
     selector: "app-ward-master",

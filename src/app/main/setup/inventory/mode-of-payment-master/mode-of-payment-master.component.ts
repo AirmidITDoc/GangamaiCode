@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
-import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
 import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment.component";
-import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: "app-mode-of-payment-master",

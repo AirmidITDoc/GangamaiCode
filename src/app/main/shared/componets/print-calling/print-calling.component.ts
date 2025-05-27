@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';

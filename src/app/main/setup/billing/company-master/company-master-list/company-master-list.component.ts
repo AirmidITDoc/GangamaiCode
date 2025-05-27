@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { CompanyMasterService } from "../company-master.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { CompanyMaster } from "../company-master.component";
+import { CompanyMasterService } from "../company-master.service";
 
 @Component({
     selector: "app-company-master-list",

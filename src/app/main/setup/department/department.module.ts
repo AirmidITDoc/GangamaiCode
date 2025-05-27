@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 
-import { ParameterDescriptiveMasterComponent } from './parameter-descriptive-master/parameter-descriptive-master.component';
 
 const appRoutes: Routes = [
     {

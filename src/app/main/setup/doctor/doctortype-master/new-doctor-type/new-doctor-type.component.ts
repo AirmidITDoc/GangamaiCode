@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DoctortypeMasterService } from '../doctortype-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { DoctortypeMasterService } from '../doctortype-master.service';
 
 @Component({
   selector: 'app-new-doctor-type',

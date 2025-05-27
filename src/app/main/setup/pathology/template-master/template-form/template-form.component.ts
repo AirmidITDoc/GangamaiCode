@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { TemplateServieService } from '../template-servie.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ToastrService } from 'ngx-toastr';
+import { TemplateServieService } from '../template-servie.service';
 
 @Component({
     selector: 'app-template-form',

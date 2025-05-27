@@ -1,15 +1,15 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { HospitalService } from '../hospital.service';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 import { HospitalMaster } from '../hospital-master.component';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HospitalService } from '../hospital.service';
 
 @Component({
   selector: 'app-new-hospital',

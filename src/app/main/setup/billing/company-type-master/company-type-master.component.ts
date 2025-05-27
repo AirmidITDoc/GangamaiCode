@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { CompanyTypeMasterService } from "./company-type-master.service";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { CompanyTypeMasterService } from "./company-type-master.service";
 import { NewCompanyTypeComponent } from "./new-company-type/new-company-type.component";
 
 

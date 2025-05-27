@@ -1,26 +1,26 @@
-import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
-import { ItemGenericMasterComponent } from "./item-generic-master.component";
-import { RouterModule, Routes } from "@angular/router";
-import { ItemGenericMasterService } from "./item-generic-master.service";
-import { FuseSidebarModule } from "@fuse/components";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { FuseSharedModule } from "@fuse/shared.module";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatSortModule } from "@angular/material/sort";
-import { MatSelectModule } from "@angular/material/select";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatTableModule } from "@angular/material/table";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatInputModule } from "@angular/material/input";
-import { MatIconModule } from "@angular/material/icon";
-import { MatFormFieldModule } from "@angular/material/form-field";
+import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { NewGenericComponent } from './new-generic/new-generic.component';
-import { SharedModule } from "app/main/shared/shared.module";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { RouterModule, Routes } from "@angular/router";
+import { FuseSidebarModule } from "@fuse/components";
+import { FuseSharedModule } from "@fuse/shared.module";
+import { SharedModule } from "app/main/shared/shared.module";
+import { ItemGenericMasterComponent } from "./item-generic-master.component";
+import { ItemGenericMasterService } from "./item-generic-master.service";
+import { NewGenericComponent } from './new-generic/new-generic.component';
 
 const routes: Routes = [
     {

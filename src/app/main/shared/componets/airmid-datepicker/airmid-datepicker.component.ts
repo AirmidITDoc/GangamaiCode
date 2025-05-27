@@ -1,17 +1,13 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import {
-    ControlValueAccessor,
     FormControl,
     FormGroup,
-    NG_VALUE_ACCESSOR,
-    NgControl,
-    Validators
+    NgControl
 } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material/form-field";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'airmid-datepicker',

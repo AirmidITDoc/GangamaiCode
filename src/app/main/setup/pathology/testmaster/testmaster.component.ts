@@ -1,18 +1,18 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
-import { TestmasterService } from "./testmaster.service";
 import { MatDialog } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
+import { fuseAnimations } from "@fuse/animations";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { ToastrService } from "ngx-toastr";
+import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
+import { TestmasterService } from "./testmaster.service";
 
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { FormGroup } from "@angular/forms";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import Swal from "sweetalert2";
-import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-testmaster",

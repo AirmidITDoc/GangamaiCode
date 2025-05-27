@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { StateMasterService } from "./state-master.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { NewStateMasterComponent } from "./new-state-master/new-state-master.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewStateMasterComponent } from "./new-state-master/new-state-master.component";
+import { StateMasterService } from "./state-master.service";
 
 @Component({
     selector: "app-state-master",

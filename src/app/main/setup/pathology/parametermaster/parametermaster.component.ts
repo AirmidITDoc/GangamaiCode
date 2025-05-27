@@ -1,18 +1,18 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ParametermasterService } from "./parametermaster.service";
 import { fuseAnimations } from "@fuse/animations";
-import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
-import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { AddformulaComponent } from "./addformula/addformula.component";
+import { ParameterFormMasterComponent } from "./parameter-form-master/parameter-form-master.component";
+import { ParametermasterService } from "./parametermaster.service";
 
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import Swal from "sweetalert2";
 import { FormGroup } from "@angular/forms";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
 
 
 @Component({

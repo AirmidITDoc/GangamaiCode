@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { NewTermofpaymentComponent } from "./new-termofpayment/new-termofpayment.component";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewTermofpaymentComponent } from "./new-termofpayment/new-termofpayment.component";
+import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
 
 @Component({
     selector: "app-terms-of-payment-master",

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { DepartmentMasterService } from "./department-master.service";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { NewDepartmentComponent } from "./new-department/new-department.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { DepartmentMasterService } from "./department-master.service";
+import { NewDepartmentComponent } from "./new-department/new-department.component";
 
 @Component({
     selector: "app-department-master",

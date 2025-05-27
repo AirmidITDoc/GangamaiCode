@@ -1,10 +1,10 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { ConsentMasterService } from '../consent-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NewSiteDescriptionMasterComponent } from '../../site-description/new-site-description-master/new-site-description-master.component';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { NewSiteDescriptionMasterComponent } from '../../site-description/new-site-description-master/new-site-description-master.component';
+import { ConsentMasterService } from '../consent-master.service';
 
 @Component({
   selector: 'app-new-consent-master',

@@ -5,8 +5,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { SurgeryMasterService } from './surgery-master.service';
 import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
+import { SurgeryMasterService } from './surgery-master.service';
 
 @Component({
   selector: 'app-surgery-master',

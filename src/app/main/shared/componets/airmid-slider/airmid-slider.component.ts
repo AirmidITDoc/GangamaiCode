@@ -1,14 +1,10 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self, forwardRef } from "@angular/core";
+import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from "@angular/core";
 import {
-    ControlValueAccessor,
     FormControl,
     FormGroup,
-    NG_VALUE_ACCESSOR,
-    NgControl,
-    Validators
+    NgControl
 } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material/form-field";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 @Component({

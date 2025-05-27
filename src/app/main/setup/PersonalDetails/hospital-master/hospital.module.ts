@@ -1,32 +1,30 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterModule, Routes } from "@angular/router";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatTableModule } from "@angular/material/table";
-import {  MatPaginatorModule } from "@angular/material/paginator";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
 import { MatStepperModule } from "@angular/material/stepper";
-import { MatRadioModule } from "@angular/material/radio";
-import { FuseSharedModule } from "@fuse/shared.module";
-import { ReactiveFormsModule } from "@angular/forms";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { SharedModule } from "app/main/shared/shared.module";
-import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
-import { MatCardModule } from "@angular/material/card";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
+import { FuseSharedModule } from "@fuse/shared.module";
+import { AngularEditorModule } from "@kolkov/angular-editor";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { HospitalMasterComponent } from "./hospital-master.component";
 import { HospitalService } from "./hospital.service";
 import { NewHospitalComponent } from './new-hospital/new-hospital.component';
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { AngularEditorModule } from "@kolkov/angular-editor";
 
 const routes: Routes = [
     {

@@ -1,24 +1,16 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { MatAccordion } from "@angular/material/expansion";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
+import { FormGroup } from "@angular/forms";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { NotificationService } from "app/core/notification.service";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
+import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
+import { gridModel } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
 import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
-import Swal from "sweetalert2";
-import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { DatePipe } from "@angular/common";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { MatDialogRef } from "@angular/material/dialog";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FormGroup } from "@angular/forms";
 
 @Component({
     selector: "app-doctor-master",

@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TemplateServieService } from './template-servie.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { TemplateFormComponent } from './template-form/template-form.component';
 import { ToastrService } from 'ngx-toastr';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { TemplateFormComponent } from './template-form/template-form.component';
+import { TemplateServieService } from './template-servie.service';
 
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 

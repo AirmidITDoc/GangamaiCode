@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.component';
 import { MatDialog } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { CreditreasonService } from './creditreason.service';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '@fuse/animations';
+import { CreditreasonService } from './creditreason.service';
+import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.component';
 
 
 @Component({

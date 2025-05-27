@@ -1,26 +1,26 @@
-import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
-import { ConcessionReasonMasterComponent } from "./concession-reason-master.component";
-import { ConcessionReasonMasterService } from "./concession-reason-master.service";
 import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatTableModule } from "@angular/material/table";
-import { MatMenuModule } from "@angular/material/menu";
-import { MatInputModule } from "@angular/material/input";
-import { MatIconModule } from "@angular/material/icon";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import { MatButtonModule } from "@angular/material/button";
-import { NewConcessionreasonComponent } from './new-concessionreason/new-concessionreason.component';
 import { SharedModule } from "app/main/shared/shared.module";
-import { MatDialogModule } from "@angular/material/dialog";
+import { ConcessionReasonMasterComponent } from "./concession-reason-master.component";
+import { ConcessionReasonMasterService } from "./concession-reason-master.service";
+import { NewConcessionreasonComponent } from './new-concessionreason/new-concessionreason.component';
 
 const routes: Routes = [
     {

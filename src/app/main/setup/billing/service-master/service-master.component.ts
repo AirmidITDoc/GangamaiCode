@@ -1,14 +1,14 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { ServiceMasterService } from "./service-master.service";
-import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
-import { ToastrService } from "ngx-toastr";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { TariffComponent } from "./tariff/tariff.component";
+import { ToastrService } from "ngx-toastr";
 import { EditpackageComponent } from "./editpackage/editpackage.component";
+import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
+import { ServiceMasterService } from "./service-master.service";
+import { TariffComponent } from "./tariff/tariff.component";
 
 
 @Component({

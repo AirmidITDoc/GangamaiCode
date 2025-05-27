@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { PatienttypeMasterService } from "./patienttype-master.service";
-import { ToastrService } from "ngx-toastr";
-import { MatDialog} from "@angular/material/dialog";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { NewPatientTypeComponent } from "./new-patient-type/new-patient-type.component";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewPatientTypeComponent } from "./new-patient-type/new-patient-type.component";
+import { PatienttypeMasterService } from "./patienttype-master.service";
 
 @Component({
     selector: "app-patienttype-master",

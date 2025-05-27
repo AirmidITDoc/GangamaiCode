@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DischargetypeMasterService } from '../dischargetype-master.service';
-import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { DischargetypeMasterService } from '../dischargetype-master.service';
 
 @Component({
   selector: 'app-new-dischargetype',

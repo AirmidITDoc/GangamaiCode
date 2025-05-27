@@ -1,17 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { DoctortypeMasterService } from "./doctortype-master.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import Swal from "sweetalert2";
-import { ToastrService } from "ngx-toastr";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { DoctortypeMasterService } from "./doctortype-master.service";
+import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.component";
 
 @Component({
     selector: "app-doctortype-master",

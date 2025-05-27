@@ -1,8 +1,5 @@
-import { NgModule } from "@angular/core";
-import { CertificatemasterComponent } from "./certificatemaster.component";
-import { RouterModule, Routes } from "@angular/router";
-import { NewCertificateComponent } from './new-certificate/new-certificate.component';
 import { CommonModule, DatePipe } from "@angular/common";
+import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonModule } from "@angular/material/button";
@@ -27,12 +24,15 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { AngularEditorModule } from "@kolkov/angular-editor";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { CertificatemasterComponent } from "./certificatemaster.component";
 import { CertificateserviceService } from "./certificateservice.service";
+import { NewCertificateComponent } from './new-certificate/new-certificate.component';
 
 const routes: Routes = [
     {

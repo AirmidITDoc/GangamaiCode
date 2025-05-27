@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import {  MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -33,9 +33,9 @@ import { RadiologyTemplateFormComponent } from './radiology-template-form/radiol
 import { RadiologyTemplateMasterComponent } from './radiology-template-master.component';
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
 
-import { SharedModule } from 'app/main/shared/shared.module';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [

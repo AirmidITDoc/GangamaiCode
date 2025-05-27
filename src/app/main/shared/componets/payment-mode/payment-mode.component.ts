@@ -2,10 +2,10 @@ import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { Observable, Subscription, interval } from 'rxjs';
-import { OnlinePaymentService } from '../../services/online-payment.service';
-import { ToastrService } from 'ngx-toastr';
 import { environment } from 'environments/environment.prod';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription, interval } from 'rxjs';
+import { OnlinePaymentService } from '../../services/online-payment.service';
 
 @Component({
   selector: 'app-payment-mode',

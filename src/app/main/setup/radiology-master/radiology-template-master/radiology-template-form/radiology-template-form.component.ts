@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
-import { ToastrService } from 'ngx-toastr';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 
 @Component({
   selector: 'app-radiology-template-form',

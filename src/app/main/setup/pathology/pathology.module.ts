@@ -1,13 +1,5 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { CategorymasterComponent } from "./categorymaster/categorymaster.component";
-import { UnitmasterComponent } from "./unitmaster/unitmaster.component";
-import { ParametermasterComponent } from "./parametermaster/parametermaster.component";
-import { TestmasterComponent } from "./testmaster/testmaster.component";
-import { ParamteragewiseComponent } from "./paramteragewise/paramteragewise.component";
 import { RouterModule, Routes } from "@angular/router";
-import { TemplateMasterComponent } from './template-master/template-master.component';
-import { TemplateFormComponent } from './template-master/template-form/template-form.component';
 
 const appRoutes: Routes = [
     {

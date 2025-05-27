@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { ReligionMasterService } from "./religion-master.service";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { NewReligionMasterComponent } from "./new-religion-master/new-religion-master.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { NewReligionMasterComponent } from "./new-religion-master/new-religion-master.component";
+import { ReligionMasterService } from "./religion-master.service";
 
 @Component({
     selector: "app-religion-master",

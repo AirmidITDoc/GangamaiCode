@@ -1,14 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { CompanyMasterService } from "./company-master.service";
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { Action } from "rxjs/internal/scheduler/Action";
-import { CompanywiseComponent } from "./companywise/companywise.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
+import { CompanyMasterService } from "./company-master.service";
 import { ComptoservComponent } from "./comptoserv/comptoserv.component";
 
 @Component({

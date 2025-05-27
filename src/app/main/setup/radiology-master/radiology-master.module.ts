@@ -1,6 +1,4 @@
 import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { CategoryMasterComponent } from "./category-master/category-master.component";
 import { RouterModule, Routes } from "@angular/router";
 
 const appRoutes: Routes = [

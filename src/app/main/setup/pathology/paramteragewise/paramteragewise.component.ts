@@ -6,14 +6,14 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { ParamteragewiseService } from "./paramteragewise.service";
-import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
-import Swal from "sweetalert2";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
+import { ParamteragewiseService } from "./paramteragewise.service";
+import { ParamteragewiseformComponent } from "./paramteragewiseform/paramteragewiseform.component";
  
 @Component({
     selector: "app-paramteragewise",

@@ -1,13 +1,12 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { fuseAnimations } from "@fuse/animations";
-import { DoctorMaster } from "../doctor-master.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { DoctorMasterService } from "../doctor-master.service";
-import { ToastrService } from "ngx-toastr";
-import { SignatureViewComponent } from "../signature-view/signature-view.component";
+import { fuseAnimations } from "@fuse/animations";
 import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { AirmidTextboxComponent } from "app/main/shared/componets/airmid-textbox/airmid-textbox.component";
+import { ToastrService } from "ngx-toastr";
+import { DoctorMaster } from "../doctor-master.component";
+import { DoctorMasterService } from "../doctor-master.service";
+import { SignatureViewComponent } from "../signature-view/signature-view.component";
 
 @Component({
     selector: "app-new-doctor",

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { MaritalstatusMasterService } from "./maritalstatus-master.service";
-import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { NewMaritalstatusComponent } from "./new-maritalstatus/new-maritalstatus.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { MaritalstatusMasterService } from "./maritalstatus-master.service";
+import { NewMaritalstatusComponent } from "./new-maritalstatus/new-maritalstatus.component";
 
 @Component({
     selector: "app-maritalstatus-master",

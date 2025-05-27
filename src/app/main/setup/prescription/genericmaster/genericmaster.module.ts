@@ -1,26 +1,26 @@
-import { NgModule } from "@angular/core";
 import { DatePipe } from "@angular/common";
-import { GenericmasterComponent } from "./genericmaster.component";
-import { RouterModule, Routes } from "@angular/router";
-import { GenericmasterService } from "./genericmaster.service";
+import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { MatMenuModule } from "@angular/material/menu";
 import { MatInputModule } from "@angular/material/input";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule } from "@angular/material/select";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatSortModule } from "@angular/material/sort";
-import { MatSelectModule } from "@angular/material/select";
-import { FuseSharedModule } from "@fuse/shared.module";
-import { MatRadioModule } from "@angular/material/radio";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { RouterModule, Routes } from "@angular/router";
 import { FuseSidebarModule } from "@fuse/components";
-import { NewGnericMasterComponent } from './new-gneric-master/new-gneric-master.component';
+import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
-import { MatDialogModule } from "@angular/material/dialog";
+import { GenericmasterComponent } from "./genericmaster.component";
+import { GenericmasterService } from "./genericmaster.service";
+import { NewGnericMasterComponent } from './new-gneric-master/new-gneric-master.component';
 
 const routes: Routes = [
     {

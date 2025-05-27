@@ -1,13 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { ParametermasterService } from '../parametermaster.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { PathparameterMaster } from '../parametermaster.component';
-import Swal from 'sweetalert2';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { ParametermasterService } from '../parametermaster.service';
 interface Result {
   value: string;
   viewValue: string;

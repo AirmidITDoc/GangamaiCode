@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { CertificateserviceService } from './certificateservice.service';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from 'ngx-toastr';
+import { CertificateserviceService } from './certificateservice.service';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
-import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-certificatemaster',
