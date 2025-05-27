@@ -1,28 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { Subscription } from 'rxjs';
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from 'ngx-toastr';
+import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
-import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
-import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { ToastrService } from 'ngx-toastr';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialogRef } from "@angular/material/dialog";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { template } from 'lodash';
 
 @Component({
     selector: 'app-radiology-order-list',

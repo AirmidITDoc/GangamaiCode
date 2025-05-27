@@ -1,27 +1,23 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SampleDetailObj } from '../result-entry.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { ResultEntryService } from '../result-entry.service';
 import { DatePipe } from '@angular/common';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { ConfigService } from 'app/core/services/config.service';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { debug } from 'console';
-import { MatDrawer } from '@angular/material/sidenav';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
-import {MatMenuTrigger } from '@angular/material/menu';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ConfigService } from 'app/core/services/config.service';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { SampleDetailObj } from '../result-entry.component';
+import { ResultEntryService } from '../result-entry.service';
 
 @Component({
     selector: 'app-result-entry-one',

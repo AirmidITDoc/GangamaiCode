@@ -1,29 +1,29 @@
-import { Component, ElementRef, HostListener, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { BrowsSalesBillService } from './brows-sales-bill.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import * as converter from 'number-to-words';
-import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import * as converter from 'number-to-words';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx';
 import { Printsal } from '../sales/sales.component';
 import { SalesService } from '../sales/sales.service';
-import { Subscription } from 'rxjs';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import * as XLSX from 'xlsx';
+import { BrowsSalesBillService } from './brows-sales-bill.service';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable'); 
-import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridColumnTypes } from 'app/core/models/tableActions';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-brows-sales-bill',

@@ -1,21 +1,20 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { SalesReturnBillSettlementService } from './sales-return-bill-settlement.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { FormGroup, Validators } from '@angular/forms';
-import { IpPaymentInsert, IPpaymentWithadvanceComponent } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
-import { ToastrService } from 'ngx-toastr';
-import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
+import { IpPaymentInsert } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
+import { SalesReturnBillSettlementService } from './sales-return-bill-settlement.service';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',

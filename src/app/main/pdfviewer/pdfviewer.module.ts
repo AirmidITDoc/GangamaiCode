@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
-import {  MatToolbarModule } from '@angular/material/toolbar';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 const routes: Routes = [];
 @NgModule({

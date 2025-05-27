@@ -1,18 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { OpeningBalanceService } from '../opening-balance.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { element } from 'protractor';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { GRNItemResponseType } from '../../good-receiptnote/new-grn/types';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import Swal from 'sweetalert2';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { GRNItemResponseType } from '../../good-receiptnote/new-grn/types';
+import { OpeningBalanceService } from '../opening-balance.service';
 
 @Component({
   selector: 'app-new-opening-balance',

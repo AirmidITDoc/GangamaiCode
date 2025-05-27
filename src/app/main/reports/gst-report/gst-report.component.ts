@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { ReportDetail } from '../common-report/common-report.component';
-import { OPReportsService } from '../op-reports/opreports.service';
-import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { GstReportService } from './gst-report.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { ReportDetail } from '../common-report/common-report.component';
+import { GstReportService } from './gst-report.service';
 
 @Component({
   selector: 'app-gst-report',

@@ -1,17 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
 // import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component'; 
 // import { PharmacyClearenceService } from './pharmacy-clearence.service';
-import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
 import { CustomerBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/customer-bill-raise.component';
-import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
 import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
+import { CustomerInformationComponent } from 'app/main/Customer/customer-information/customer-information.component';
+import { NewCustomerComponent } from 'app/main/Customer/customer-information/new-customer/new-customer.component';
 import { IssueTrackerService } from './issue-tracker.service';
 
 @Component({

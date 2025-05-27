@@ -1,16 +1,16 @@
+import { FlatTreeControl } from "@angular/cdk/tree";
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { fuseAnimations } from "@fuse/animations";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { ToastrService } from "ngx-toastr";
-import { ReportService } from "./service/report-generation.service";
-import { FlatTreeControl } from "@angular/cdk/tree";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
-import { Observable } from "rxjs";
-import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { fuseAnimations } from "@fuse/animations";
 import { OperatorComparer } from "app/core/models/gridRequest";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs";
+import { ReportService } from "./service/report-generation.service";
 
 
 interface FoodNode {

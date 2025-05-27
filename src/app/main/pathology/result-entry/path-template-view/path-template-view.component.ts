@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { Templateprintdetail } from '../result-entry.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Subscription } from 'rxjs';
+import { Templateprintdetail } from '../result-entry.component';
 import { ResultEntryService } from '../result-entry.service';
 
 @Component({

@@ -1,17 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ReplaySubject, Subject } from 'rxjs';
-import { NewReservationComponent } from './new-reservation/new-reservation.component';
-import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { ReplaySubject, Subject } from 'rxjs';
+import { OTManagementServiceService } from '../ot-management-service.service';
+import { NewReservationComponent } from './new-reservation/new-reservation.component';
 
 @Component({
   selector: 'app-ot-reservation',

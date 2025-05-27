@@ -1,15 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr'; 
-import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, Validators } from '@angular/forms'; 
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ImageCroppedEvent } from "ngx-image-cropper";
-import { IssueTrackerService } from '../issue-tracker.service';
+import { ToastrService } from 'ngx-toastr';
 import { IssueTrackerList } from '../issue-tracker.component';
+import { IssueTrackerService } from '../issue-tracker.service';
 
 @Component({
   selector: 'app-new-issue-tracker',

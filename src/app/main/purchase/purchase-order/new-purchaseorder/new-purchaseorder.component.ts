@@ -1,24 +1,23 @@
-import { Component, ElementRef, HostListener, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
-import { SupplierMaster } from 'app/main/setup/inventory/supplier-master/supplier-master.component';
-import { IndentList } from 'app/main/pharmacy/sales/sales.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { PurchaseOrderService } from '../purchase-order.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
-import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
-import { MatSelect } from '@angular/material/select';
-import Swal from 'sweetalert2';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IndentList } from 'app/main/pharmacy/sales/sales.component';
+import { SupplierMaster } from 'app/main/setup/inventory/supplier-master/supplier-master.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 import { GRNFormModel } from '../../good-receiptnote/new-grn/types';
+import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
+import { PurchaseOrderService } from '../purchase-order.service';
+import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
   selector: 'app-new-purchaseorder',

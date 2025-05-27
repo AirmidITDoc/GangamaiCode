@@ -1,14 +1,14 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core'; 
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { PharmacyClearenceService } from './pharmacy-clearence.service';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { PharmacyClearenceService } from './pharmacy-clearence.service';
 
 @Component({
   selector: 'app-pharmacy-clearence',

@@ -1,19 +1,17 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { SampleDetailObj, Templateprintdetail } from '../result-entry.component';
-import { Observable, Subscription } from 'rxjs';
-import { ResultEntryService } from '../result-entry.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { map, startWith } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
+import { ResultEntryService } from '../result-entry.service';
 
 @Component({
   selector: 'app-result-entrytwo',

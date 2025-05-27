@@ -1,11 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
-import { PurchaseOrderService } from '../purchase-order.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { PurchaseOrderService } from '../purchase-order.service';
 
 @Component({
   selector: 'app-email',

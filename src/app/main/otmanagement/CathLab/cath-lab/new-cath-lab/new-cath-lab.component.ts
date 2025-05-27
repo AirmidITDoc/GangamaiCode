@@ -1,19 +1,19 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { CathLabBookingDetail } from '../cath-lab.component';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
 import { OTManagementServiceService } from 'app/main/otmanagement/ot-management-service.service';
-import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
 import { CathLabService } from '../../cath-lab.service';
-import { MatSelect } from '@angular/material/select';
+import { CathLabBookingDetail } from '../cath-lab.component';
 
 @Component({
   selector: 'app-new-cath-lab',

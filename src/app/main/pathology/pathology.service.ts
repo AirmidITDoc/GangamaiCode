@@ -1,8 +1,6 @@
-import { HttpClient, HttpBackend, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { throwError, Observable } from "rxjs";
-import { catchError } from 'rxjs/operators';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'

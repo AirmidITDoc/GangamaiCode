@@ -3,11 +3,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesReturnBillService } from '../brows-sales-return-bill.service';
-import { fuseAnimations } from '@fuse/animations';
-import { element } from 'protractor';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-accept-material-list-popup',

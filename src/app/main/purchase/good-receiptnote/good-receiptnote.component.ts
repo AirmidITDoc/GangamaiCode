@@ -1,22 +1,22 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core'; 
-import { fuseAnimations } from '@fuse/animations';
-import { GoodReceiptnoteService } from './good-receiptnote.service'; 
-import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2'; 
-import { ToastrService } from 'ngx-toastr'; 
-import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 import { SelectionModel } from '@angular/cdk/collections';
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import * as XLSX from 'xlsx'; 
-import { NewGrnComponent } from './new-grn/new-grn.component';
-import { GSTType } from './new-grn/types';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx';
+import { GoodReceiptnoteService } from './good-receiptnote.service';
+import { NewGrnComponent } from './new-grn/new-grn.component';
+import { GSTType } from './new-grn/types';
 
 @Component({
     selector: 'app-good-receiptnote',

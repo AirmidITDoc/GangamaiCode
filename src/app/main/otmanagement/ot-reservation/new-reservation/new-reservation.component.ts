@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { OTReservationDetail } from '../ot-reservation.component';
-import { ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../../ot-management-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { OTNoteComponent } from '../../ot-note/ot-note.component';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { OTManagementServiceService } from '../../ot-management-service.service';
+import { OTNoteComponent } from '../../ot-note/ot-note.component';
+import { OTReservationDetail } from '../ot-reservation.component';
 
 @Component({
   selector: 'app-new-reservation',

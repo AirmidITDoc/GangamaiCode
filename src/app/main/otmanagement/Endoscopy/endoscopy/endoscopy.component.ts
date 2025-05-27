@@ -1,16 +1,16 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { OTManagementServiceService } from '../../ot-management-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { NewEndoscopyComponent } from './new-endoscopy/new-endoscopy.component';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OTManagementServiceService } from '../../ot-management-service.service';
+import { NewEndoscopyComponent } from './new-endoscopy/new-endoscopy.component';
 
 @Component({
   selector: 'app-endoscopy',

@@ -1,18 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../../ot-management-service.service';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { OTManagementServiceService } from '../../ot-management-service.service';
 import { Requestlist } from '../ot-request.component';
-import { fuseAnimations } from '@fuse/animations';
-import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-new-request',

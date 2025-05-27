@@ -1,22 +1,19 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { WorkOrderService } from '../work-order.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatSelect } from '@angular/material/select';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { GRNItemResponseType, GSTType, ToastType } from '../../good-receiptnote/new-grn/types';
-import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
 import { FinalFormModel } from '../../purchase-order/new-purchaseorder/types';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
+import { WorkOrderService } from '../work-order.service';
 
 @Component({
   selector: 'app-update-workorder',

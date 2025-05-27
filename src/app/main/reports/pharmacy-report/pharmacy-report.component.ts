@@ -1,19 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PharmacyreportService } from './pharmacyreport.service';
-import { fuseAnimations } from '@fuse/animations';
-import { Router } from '@angular/router';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
-import { SalesService } from 'app/main/pharmacy/sales/sales.service';
-import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
-import { Observable, Subscription } from 'rxjs';
-import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { IndentList, Printsal } from 'app/main/pharmacy/sales/sales.component';
+import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
+import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { PharmacyreportService } from './pharmacyreport.service';
 
 
 @Component({

@@ -1,17 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ReplaySubject, Subject } from 'rxjs';
 import { OTManagementServiceService } from '../../ot-management-service.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import { NewCathLabComponent } from './new-cath-lab/new-cath-lab.component';
-import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-cath-lab',

@@ -1,15 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
-import Swal from 'sweetalert2';
-import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
-import { ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { OTManagementServiceService } from '../ot-management-service.service';
+import { OTReservationDetail } from '../ot-reservation/ot-reservation.component';
 
 @Component({
   selector: 'app-ot-note',

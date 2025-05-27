@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { OPReportsService } from '../op-reports/opreports.service';
-import { MatDialog } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { OPReportsService } from '../op-reports/opreports.service';
 
 @Component({
   selector: 'app-common-report',

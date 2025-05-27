@@ -1,21 +1,18 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { RadiologyPrint } from '../radiology-order-list.component';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
-import { NotificationService } from 'app/core/notification.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subject, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { RadiologyPrint } from '../radiology-order-list.component';
+import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
 // import { Editor } from 'ngx-editor';
 
 @Component({

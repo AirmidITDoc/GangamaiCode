@@ -1,27 +1,15 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { SampleCollectionService } from './sample-collection.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { SampleList, SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
-import Swal from 'sweetalert2';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { SampleCollectionService } from './sample-collection.service';
+import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { MatDialog } from "@angular/material/dialog";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
-import { template } from 'lodash';
 
 
 @Component({

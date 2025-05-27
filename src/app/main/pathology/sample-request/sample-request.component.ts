@@ -1,20 +1,19 @@
+import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { PathologyService } from '../pathology.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { HttpClient } from '@angular/common/http';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { PathologyService } from '../pathology.service';
 
 @Component({
   selector: 'app-sample-request',
