@@ -133,60 +133,60 @@ export class UpdateradiologymasterComponent implements OnInit {
     //     this.testForm.get('templateName').reset();
     // }
 
-//     OnAdd(event) {
-//     debugger;
+    //     OnAdd(event) {
+    //     debugger;
 
-//     if (!this.templateName || !this.templateId) {
-//         this.toastr.warning('Select Template Name.', 'Warning!', {
-//             toastClass: 'tostr-tost custom-toast-warning',
-//         });
-//         return;
-//     }
+    //     if (!this.templateName || !this.templateId) {
+    //         this.toastr.warning('Select Template Name.', 'Warning!', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
 
-//     this.ChargeList = [...this.dsTemparoryList.data];
+    //     this.ChargeList = [...this.dsTemparoryList.data];
 
-//     this.ChargeList.push({
-//         templateName: this.templateName,
-//         templateId: this.templateId,
-//     });
+    //     this.ChargeList.push({
+    //         templateName: this.templateName,
+    //         templateId: this.templateId,
+    //     });
 
-//     this.DSTestList.data = this.ChargeList;
+    //     this.DSTestList.data = this.ChargeList;
 
-//     this.testForm.get('templateName').reset();
-// }
+    //     this.testForm.get('templateName').reset();
+    // }
 
-OnAdd(event) {
-    debugger;
+    OnAdd(event) {
+        debugger;
 
-    if (!this.templateName || !this.templateId) {
-        this.toastr.warning('Select Template Name.', 'Warning!', {
-            toastClass: 'tostr-tost custom-toast-warning',
+        if (!this.templateName || !this.templateId) {
+            this.toastr.warning('Select Template Name.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        // Copy existing list from DSTestList (not dsTemparoryList)
+        this.ChargeList = [...this.DSTestList.data];
+
+        // Optionally prevent duplicates
+        const exists = this.ChargeList.some(item => item.templateId === this.templateId);
+        if (exists) {
+            this.toastr.warning('Template already added.', 'Warning!');
+            return;
+        }
+
+        // Add new item
+        this.ChargeList.push({
+            templateName: this.templateName,
+            templateId: this.templateId,
         });
-        return;
+
+        // Update both lists
+        this.DSTestList.data = this.ChargeList;
+        this.dsTemparoryList.data = this.ChargeList;
+
+        this.testForm.get('templateName').reset();
     }
-
-    // Copy existing list from DSTestList (not dsTemparoryList)
-    this.ChargeList = [...this.DSTestList.data];
-
-    // Optionally prevent duplicates
-    const exists = this.ChargeList.some(item => item.templateId === this.templateId);
-    if (exists) {
-        this.toastr.warning('Template already added.', 'Warning!');
-        return;
-    }
-
-    // Add new item
-    this.ChargeList.push({
-        templateName: this.templateName,
-        templateId: this.templateId,
-    });
-
-    // Update both lists
-    this.DSTestList.data = this.ChargeList;
-    this.dsTemparoryList.data = this.ChargeList;
-
-    this.testForm.get('templateName').reset();
-}
 
     gettemplateMasterServicewise(row) {
         debugger
@@ -208,7 +208,7 @@ OnAdd(event) {
         console.log(param)
         this._radiologytestService.gettemplateMasterComboList(param).subscribe(data => {
             this.DSTestList.data = data.data as TestList[];
-            this.dsTemparoryList.data = data.data as TestList[]; 
+            this.dsTemparoryList.data = data.data as TestList[];
             console.log(this.DSTestList.data)
             this.ChargeList = data as TestList[];
             console.log(this.ChargeList)
@@ -257,57 +257,25 @@ OnAdd(event) {
                 return;
             }
 
-            if (!this.testForm.get("testId").value) {
-                let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
-                    "ptemplateId": 0,
-                    "testId": 0,
-                    "templateId": row.templateId || 0
-                }));
+            let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
+                "ptemplateId": 0,
+                "testId": 0,
+                "templateId": row.templateId || 0
+            }));
 
-                console.log("Insert data1:", mRadiologyTemplateDetails);
+            console.log("Insert data1:", mRadiologyTemplateDetails);
 
-                var mdata = {
-                    "testId": 0,
-                    "testName": this.testForm.get("testName").value,
-                    "printTestName": this.testForm.get("printTestName").value,
-                    "categoryId": this.testForm.get("categoryId").value || 0,
-                    "serviceId": this.testForm.get("serviceId").value || 0,
-                    "mRadiologyTemplateDetails": mRadiologyTemplateDetails
-                }
+            this.testForm.get("testId").setValue(this.testId)
+            this.testForm.get("mRadiologyTemplateDetails").setValue(mRadiologyTemplateDetails)
 
-                console.log("json of Test:", mdata)
-                this._radiologytestService.testMasterSave(mdata).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            } else {
-                let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
-                    "ptemplateId": 0,
-                    "testId": 0,
-                    "templateId": row.templateId || 0
-                }));
+            console.log(this.testForm.value)
 
-                console.log("Insert data1:", mRadiologyTemplateDetails);
+            this._radiologytestService.testMasterSave(this.testForm.value).subscribe(response => {
+                this.toastr.success(response.message);
+                this.onClear(true);
 
-                var mdata1 = {
-                    "testId": this.testId,
-                    "testName": this.testForm.get("testName").value,
-                    "printTestName": this.testForm.get("printTestName").value,
-                    "categoryId": this.testForm.get("categoryId").value || 0,
-                    "serviceId": this.testForm.get("serviceId").value || 0,
-                    "mRadiologyTemplateDetails": mRadiologyTemplateDetails
-                }
+            });
 
-                console.log("json of Test:", mdata1)
-                this._radiologytestService.testMasterSave(mdata1).subscribe((response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                }, (error) => {
-                    this.toastr.error(error.message);
-                });
-            }
         } else {
             let invalidFields = [];
 

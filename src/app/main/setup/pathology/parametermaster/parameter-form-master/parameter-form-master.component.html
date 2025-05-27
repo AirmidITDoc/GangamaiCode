@@ -42,12 +42,12 @@
                             </div>
 
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Method Name" formControlName="MethodName" [value]="data?.MethodName" [formGroup]="parameterForm" [validations]="getValidationMessages().MethodName" [maxLength]="50">
+                                <airmid-textbox label="Method Name" formControlName="methodName" [value]="data?.MethodName" [formGroup]="parameterForm" [validations]="getValidationMessages().methodName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Formula" formControlName="Formula" [value]="data?.Formula" [formGroup]="parameterForm" [validations]="getValidationMessages().Formula" [maxLength]="50">
+                                <airmid-textbox label="Formula" formControlName="formula" [value]="data?.Formula" [formGroup]="parameterForm" [validations]="getValidationMessages().formula" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
@@ -65,7 +65,7 @@
                                 <section class="example-section">
                                     <mat-checkbox class="example-margin" formControlName="IsDeleted" name="IsDeleted">IsActive</mat-checkbox>
                                     <mat-checkbox class="example-margin" formControlName="isPrintDisSummary" name="isPrintDisSummary">IsPrintDisSummary</mat-checkbox>
-                                    <mat-checkbox class="example-margin" formControlName="IsBold" name="IsBold">IsBold</mat-checkbox>
+                                    <mat-checkbox class="example-margin" formControlName="isBoldFlag" name="IsBold">IsBold</mat-checkbox>
                                 </section>
                             </div>
                         </div>

@@ -550,7 +550,6 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-
                                                             <ng-container matColumnDef="Days">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxHide fxShow.gt-sm>Days</mat-header-cell>
@@ -622,7 +621,7 @@
                                                     <airmid-dropdown label="Service" formControlName="mAssignService"
                                                         [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
                                                         ValueField="serviceId" TextField="serviceName"
-                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=S"
+                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=2&ServiceName=%"
                                                         [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>

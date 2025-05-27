@@ -63,12 +63,14 @@ export class ParametermasterService {
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isNumeric: ["1"],
             isPrintDisSummary: true,
-            IsBold: [true],
-            IsDeleted: ["true"],
-            MethodName: ["",
+            methodName: ["",
                 // [Validators.pattern("^[A-Za-z ]*$")],
             ],
-            Formula:[""],
+            formula:[""],
+            isBoldFlag: [true],
+            IsDeleted: ["true"],
+            mParameterDescriptiveMasters:"",
+            mPathParaRangeWithAgeMasters:""
         });
     }
 
@@ -162,19 +164,17 @@ export class ParametermasterService {
     }
 
     public insertParameterMaster(Param: any) {
-        // if (Param.parameterId) {
-        //     return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
-        // } else 
-        
-        return this._httpClient.PostData("ParameterMaster/InsertEDMX", Param);
-    }
-
-    public update1ParameterMaster(Param: any) {
-        
         if (Param.parameterId) {
             return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
-        }        
+        } else return this._httpClient.PostData("ParameterMaster/InsertEDMX", Param);
     }
+
+    // public update1ParameterMaster(Param: any) {
+        
+    //     if (Param.parameterId) {
+    //         return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
+    //     }        
+    // }
 
     public updateParameterMaster(param) {
         return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);

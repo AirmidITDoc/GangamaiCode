@@ -86,7 +86,8 @@ export class RegistrationService {
             ]],
 
             panCardNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            // MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            MaritalStatusId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //changed by raksha
             ReligionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

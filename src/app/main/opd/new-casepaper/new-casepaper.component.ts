@@ -531,8 +531,10 @@ getCheifComplaintList() {
   vDayys: any;
   vInst: any;
   vPrescriptionId: any;
+  visitIdRefresh: any; 
   getPrescription(obj) {
     // debugger
+    this.visitIdRefresh = obj.visitId;
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -793,8 +795,7 @@ getCheifComplaintList() {
   }
 
   OnSaveEditGeneric(contact) {
-
-    this.vPrescriptionId = contact.precriptionId;
+    this.vPrescriptionId = contact.precriptionId || contact.PrecriptionId;
     console.log(contact)
     if (this.vPrescriptionId) {
       var m_dataUpdate = {
@@ -808,7 +809,9 @@ getCheifComplaintList() {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+    this.editingIndex1 = null;
+          // this.onClose()
+      this.listrefresh(contact);
         } else {
           this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -817,7 +820,56 @@ getCheifComplaintList() {
       });
     }
   }
+FetchList:any=[];
+  listrefresh(contact){ 
+    debugger
+  var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+    {
+          "fieldName": "VisitId",
+          "fieldValue": String(this.visitIdRefresh),
+          "opType": "Equals"
+        }
+    ],
+    "Columns":[],
+    "exportType": "JSON"
+    }
+    console.log("VisitId:", m_data2)
+  this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
+    debugger
+    this.FetchList = Visit.data as MedicineItemList[];
+    this.Chargelist = this.dsItemList.data.filter(item=> item.OPD_IPD_IP != contact.OPD_IPD_IP) 
+    this.FetchList.forEach(element =>{
+      this.Chargelist.push(
+        { 
+          DrugId: element.drugId,
+          DrugName:  element.drugName,
+          DoseId: element.doseId,
+          GenericName:element.genericName,
+          GenericId: element.genericId,
+          DoseName:  element.doseName,
+          Days:  element.days,
+          QtyPerDay: element.qtyPerDay ,
+          totalQty: (element.qtyPerDay  *  element.days) || 0,
+          DoseId1: element.DoseId1,
+          DoseName1: element.DoseName1, 
+          Day1:  element.Day1,
+          DoseId2:  element.DoseId2,
+          DoseName2: element.DoseName2 ,
+          Day2: element.Day2,
+          Instruction:  element.instruction,
+          PrecriptionId:element.precriptionId || 0
+        });
+    }) 
+    this.dsItemList.data = this.Chargelist
+    console.log(this.dsItemList.data)
+  }); 
 
+}
   GenericdisableEditing(data) {
 
     if (this.GenericoriginalValue !== null) {
@@ -858,7 +910,7 @@ getCheifComplaintList() {
   OnSaveEditDose(element: any) {
     console.log("Saving Dose:", element);
     this.editingIndex = null;
-    this.vPrescriptionId = element.precriptionId;
+    this.vPrescriptionId = element.precriptionId || element.PrecriptionId;
 
     if (this.vPrescriptionId) {
       var m_dataUpdate = {
@@ -872,7 +924,8 @@ getCheifComplaintList() {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-          this.onClose()
+          // this.onClose()
+      this.listrefresh(element);
         } else {
           this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',

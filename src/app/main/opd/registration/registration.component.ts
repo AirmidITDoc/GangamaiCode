@@ -61,6 +61,11 @@ export class RegistrationComponent implements OnInit {
                         this.onEdit(data);
                         this.grid.bindGridData();
                     }
+                },
+                {
+                    action: gridActions.print, callback: (data: any) => { //changed by raksha
+                        // this.onEdit(data);
+                    }
                 }
             ]
         }

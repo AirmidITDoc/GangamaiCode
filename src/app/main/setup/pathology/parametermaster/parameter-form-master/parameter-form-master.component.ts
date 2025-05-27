@@ -144,7 +144,7 @@ export class ParameterFormMasterComponent implements OnInit {
     }
 
     OnSave() {
-        const isBoldChecked = this._ParameterService.myform.get("IsBold").value;
+        const isBoldChecked = this._ParameterService.myform.get("isBoldFlag").value;
         const BoldValue = isBoldChecked ? "B" : "";
 
         if(!this.parameterForm.invalid){
@@ -188,79 +188,28 @@ export class ParameterFormMasterComponent implements OnInit {
                 }));
             }
     
-            if (!this.parameterForm.get("parameterId").value) {
+            this.parameterForm.get("isNumeric").setValue(is_numeric)
+            this.parameterForm.get("isPrintDisSummary").setValue(true)
+            this.parameterForm.get("isBoldFlag").setValue(BoldValue)
+            this.parameterForm.get("mParameterDescriptiveMasters").setValue(data2)
+            this.parameterForm.get("mPathParaRangeWithAgeMasters").setValue(mPathParaRangeMasters)
     
-                var m_data = {
-                    "parameterId": 0,
-                    "parameterShortName": this.parameterForm.get('parameterShortName').value,
-                    "parameterName": this.parameterForm.get('parameterName').value,
-                    "printParameterName": this.parameterForm.get('printParameterName').value,
-                    "unitId": this.parameterForm.get('unitId').value || 1,
-                    "isNumeric": is_numeric, //0,
-                    "isPrintDisSummary": true,
-                    "methodName": this.parameterForm.get('MethodName').value,
-                    "formula": this.parameterForm.get('Formula').value,
-                    "isBoldFlag":BoldValue,
-                    "mParameterDescriptiveMasters": data2,
-                    "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
+            console.log(this.parameterForm.value)
+            this._ParameterService.insertParameterMaster(this.parameterForm.value).subscribe(data => {
+                if (data) {
+                    this.parameterForm.reset({
+                        isNumeric: ["1"],
+                        isPrintDisSummary: true,
+                        IsBold: ['0'],
+                        IsDeleted: [true],
+                    });
+                    this.selectedItems = [];
+                    this.dsParameterAgeList.data = [];
+                    this.onClose();
+                    this.toastr.success(data.message);
                 }
-                console.log(m_data);
-    
-                this._ParameterService.insertParameterMaster(m_data).subscribe((data) => {
-    
-                    if (data) {
-                        this.parameterForm.reset({
-                            isNumeric: ["1"],
-                            isPrintDisSummary: true,
-                            IsBold: ['0'],
-                            IsDeleted: [true],
-                        });
-                        this.selectedItems = [];
-                        this.dsParameterAgeList.data = [];
-                        this.onClose();
-                        this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-                        this.grid.bindGridData();
-                    }
-                });
-            } else {
-                var m_data1 = {
-                    "parameterId": this.vParameterId || this.parameterForm.get("parameterId").value,
-                    "parameterShortName": this.parameterForm.get('parameterShortName').value,
-                    "parameterName": this.parameterForm.get('parameterName').value,
-                    "printParameterName": this.parameterForm.get('printParameterName').value,
-                    "unitId": this.parameterForm.get('unitId').value,
-                    "isNumeric": is_numeric, //0,
-                    "isPrintDisSummary": true,
-                    "methodName": this.parameterForm.get('MethodName').value,
-                    "formula": this.parameterForm.get('Formula').value,
-                    "isBoldFlag":BoldValue,
-                    "mParameterDescriptiveMasters": data2,
-                    "mPathParaRangeWithAgeMasters": mPathParaRangeMasters, //numeric_info
-                }
-                console.log(m_data1);
-    
-                this._ParameterService.update1ParameterMaster(m_data1).subscribe((data) => {
-    
-                    if (data) {
-                        this.parameterForm.reset({
-                            isNumeric: ["1"],
-                            isPrintDisSummary: true,
-                            IsBold: ['0'],
-                            IsDeleted: [true],
-                        });
-                        this.selectedItems = [];
-                        this.dsParameterAgeList.data = [];
-                        this.onClose();
-    
-                        this.toastr.success('Record Updated Successfully.', 'Updated !', {
-                            toastClass: 'tostr-tost custom-toast-success',
-                        });
-                        this.grid.bindGridData();
-                    }
-                });
-            }
+
+            });
         }else{
             let invalidFields = [];
 
@@ -390,10 +339,10 @@ export class ParameterFormMasterComponent implements OnInit {
                 // { name: "maxlength", Message: "Print Parameter Name should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            MethodName: [
+            methodName: [
                 // { name: "required", Message: "Method Name is required" },
             ],
-            Formula: [
+            formula: [
                 // { name: "required", Message: "Formula is required" },
             ],
             unitId: [

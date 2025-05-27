@@ -15,6 +15,7 @@ export class TestmasterService {
     myformSearch: FormGroup;
     myform: FormGroup;
     AddParameterFrom: FormGroup;
+    insertTestFrom: FormGroup;
     // mytemplateform: FormGroup;
     // testdetailsForm: FormGroup;
 
@@ -26,6 +27,7 @@ export class TestmasterService {
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createPathtestForm();
+        this.insertTestFrom = this.createPathtestInsertForm();
         // this.AddParameterFrom = this.createAddparaFrom();
         // this.mytemplateform = this.createTemplateForm();
         // this.templatedetailsForm = this.templatedetailsForm();
@@ -51,6 +53,14 @@ export class TestmasterService {
             ParameterNameSearch:[""],
             isActive:[true,[Validators.required]],
             Status:[1],
+        });
+    }
+
+     createPathtestInsertForm(): FormGroup {
+        return this._formBuilder.group({
+            pathTest:"",
+            pathTemplateDetail:"",
+            pathTestDetail:"",
         });
     }
     /**
@@ -177,15 +187,16 @@ export class TestmasterService {
     }
 
     public TestMasterSave(Param: any) {
-         return this._httpClient.PostData("PathTestMaster/Insert", Param);
+        debugger
+        if (Param.pathTest.TestId) {
+         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.TestId, Param);
+        }else return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
-    public TestMasterUpdate(Param: any) {
-        debugger
-        if (Param.pathTest.testId) {
-         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
-        }
-    }
+    // public TestMasterUpdate(Param: any) {
+    //     debugger
+        
+    // }
 
     public deactivateTheStatus(Id:number) {
         return this._httpClient.DeleteData(`PathTestMaster/PathTestDelete?Id=${Id}`);
