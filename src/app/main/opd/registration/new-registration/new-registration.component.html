@@ -67,7 +67,9 @@
 
                               
                                 <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                    <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                    <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"
+                                    (dateChange)="chkChange()"
+                                    ></app-airmid-dateofbirth>
                                 </div>
 
 

@@ -76,14 +76,17 @@ export class DischargeComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+     if (this.advanceDataStored.storage) {
+      this.selectedAdvanceObj = this.advanceDataStored.storage;
+      console.log(this.selectedAdvanceObj);
+    
+    }
     this.DischargeForm = this.DischargesaveForm();
     this.DischargeForm.markAllAsTouched();
     console.log(this.data.docNameId)
    
     setInterval(() => {
-
-    
-      this.now = new Date();
+  this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       if (!this.isTimeChanged) {
         this.DischargeForm.get('dischargeTime').setValue(this.now);
@@ -91,12 +94,7 @@ export class DischargeComponent implements OnInit {
           this.DischargeForm.get('dischargeTime').setValue(this.now);
 }
     }, 1);
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj);
-
-    }
+   
 
   }
 
@@ -115,7 +113,6 @@ export class DischargeComponent implements OnInit {
         });
       }, 500);
     
-      // this.DischargeForm.get("dischargedDocId").setValue(this.data.docNameId)
     }
  
     console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
@@ -140,11 +137,11 @@ this.dischargeTypeId=event.value
     return this._formBuilder.group({
 
       dischargeId: this.DischargeId,
-      // admissionId: this.data.admissionId,
-      dischargeDate: [(new Date()).toISOString()],
-      dischargeTime: [(new Date()).toISOString()],
-      dischargeTypeId: ['', [Validators.required, notEmptyOrZeroValidator()]],
-      dischargedDocId: ['', [Validators.required, notEmptyOrZeroValidator()]],
+      admissionId:  this.vAdmissionId,
+      dischargeDate: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      dischargeTime: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      dischargeTypeId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      dischargedDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       dischargedRmoid: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       modeOfDischargeId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
@@ -152,7 +149,7 @@ this.dischargeTypeId=event.value
     });
   }
 
-  onDischarge() {
+  onDischarge1() {
     console.log(this.DischargeForm.value)
 
     // if (this.ChkConfigInitiate == false) {
@@ -167,20 +164,20 @@ this.dischargeTypeId=event.value
 
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
-      dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
         dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-      dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
+        dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
         dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
         dischargModeldata['dischargeId'] = this.DischargeId
-      dischargModeldata['modeOfDischargeId'] = 1
-      dischargModeldata['admissionId'] = this.vAdmissionId
+        dischargModeldata['modeOfDischargeId'] = 1
+        dischargModeldata['admissionId'] = this.vAdmissionId
 
       if (this.data.isDischarged == 0) {
         var m_data = {
-          "discharge": dischargModeldata,// this.DischargeForm.value,
-          "admission": {
+            "discharge": dischargModeldata,// this.DischargeForm.value,
+            "admission": {
             "admissionId": this.vAdmissionId,
             "isDischarged": 1,
             "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
@@ -236,9 +233,90 @@ this.dischargeTypeId=event.value
 
     }
   }
+
+
+  onDischarge() {
+    console.log(this.DischargeForm.value)
+
+    if (!this.DischargeForm.invalid) {
+      let dischargModeldata = {};
+        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+        dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+        dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
+        dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
+        dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
+        dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
+        dischargModeldata['dischargeId'] = this.DischargeId
+        dischargModeldata['modeOfDischargeId'] = 1
+        dischargModeldata['admissionId'] = this.vAdmissionId
+
+        this.DischargeForm.get("dischargeDate").setValue((this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')))
+        this.DischargeForm.get("admissionId").setValue(this.vAdmissionId)
+
+
+      if (this.data.isDischarged == 0) {
+        var m_data = {
+            "discharge": this.DischargeForm.value,
+            "admission": {
+            "admissionId":this.DischargeForm.get("admissionId").value,
+            "isDischarged": 1,
+            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "dischargeTime": this.dateTimeObj.time
+          },
+          "bed": {
+            "bedId": this.vBedId,
+          }
+        }
+        console.log(m_data)
+
+        this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+          this.viewgetDischargeSlipPdf(response)
+          this._matDialog.closeAll();
+        });
+      } else if (this.data.isDischarged == 1) {
+        dischargModeldata['dischargeId'] = 1
+        dischargModeldata['modifiedBy'] =  this.accountService.currentUserValue.userId
+        // modifiedBy:new FormControl(0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
+
+        console.log(this.DischargeForm.value)
+        var m_data1 = {
+          "discharge": dischargModeldata,// this.DischargeForm.value,
+          "admission": {
+            "admissionId": this.vAdmissionId,
+            "isDischarged": 1,
+            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "dischargeTime": this.dateTimeObj.time
+          }
+        }
+        console.log(m_data1)
+
+        this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
+          this.viewgetDischargeSlipPdf(response)
+          this._matDialog.closeAll();
+        });
+      }
+      this.DischargeForm.reset();
+    } else {
+      let invalidFields = [];
+
+      if (this.DischargeForm.invalid) {
+        for (const controlName in this.DischargeForm.controls) {
+          if (this.DischargeForm.controls[controlName].invalid) {
+            invalidFields.push(`Discharge Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
+  }
   viewgetDischargeSlipPdf(data) {
-console.log(data)
-    this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
+this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
   }
   getValidationMessages() {
     return {
@@ -303,11 +381,3 @@ console.log(data)
   }
 }
 
-
-
-function notEmptyOrZeroValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return value > 0 ? null : { greaterThanZero: { value: value } };
-      };
-}

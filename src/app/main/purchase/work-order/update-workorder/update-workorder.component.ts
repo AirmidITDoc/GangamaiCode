@@ -16,6 +16,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { GRNItemResponseType, GSTType, ToastType } from '../../good-receiptnote/new-grn/types';
 import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
 import { FinalFormModel } from '../../purchase-order/new-purchaseorder/types';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-update-workorder',
@@ -85,6 +86,7 @@ export class UpdateWorkorderComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+     private commonService: PrintserviceService,
     private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -615,11 +617,9 @@ if(!this.WorkOrderStoreForm.invalid){
       console.log(submitData);
       this._WorkOrderService.InsertWorkorderSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
-        if (response) {
           this.viewgetWorkorderReportPdf(response)
           this._matDialog.closeAll();
-        }
-      });
+              });
     } else {
 
       let submitData = {
@@ -661,8 +661,8 @@ if(!this.WorkOrderStoreForm.invalid){
       }
   }
 
-  viewgetWorkorderReportPdf(WOId) {
-
+  viewgetWorkorderReportPdf(element) {
+  this.commonService.Onprint("WOId", element.woId, "WorkOrder");
   }
 
   ItemFromReset() {

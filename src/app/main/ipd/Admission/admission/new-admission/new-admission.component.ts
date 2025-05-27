@@ -127,7 +127,6 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
-
   createSearchForm() {
     return this.formBuilder.group({
       regRadio: ['registration'],
@@ -285,7 +284,6 @@ export class NewAdmissionComponent implements OnInit {
       this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
       this.patienttype = 1;
     }
-
 
   }
 

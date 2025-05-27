@@ -14,15 +14,10 @@ export class OpeningBalanceService {
 StoreForm:FormGroup;
 UseFormGroup:FormGroup;
 NewUseForm:FormGroup;
-
-   
-  constructor(
+constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller, private accountService: AuthenticationService,
     public _formbuilder:UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService,
-  ) 
-  {
-   
-}
+  ) {}
 CreateStorForm() {
   return this._formbuilder.group({
     StoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
@@ -50,6 +45,10 @@ createsearchFormGroup(){
     })
   }
 
+    public getReportView(Param) {
+        return this._httpClient1.PostData("Report/ViewReport", Param);
+      }
+      
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }

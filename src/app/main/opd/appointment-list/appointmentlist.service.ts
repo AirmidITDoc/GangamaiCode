@@ -46,28 +46,27 @@ export class AppointmentlistService {
             IsDeletedSearch: ["2"],
         });
     }
-
-    createPesonalForm() {
+ createPesonalForm() {
         return this._formBuilder.group({
-                RegId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+                RegId: [0],
                 RegNo: "0",
-                PrefixId: [0, [Validators.required], this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+                PrefixId: ['', [Validators.required]],
                 FirstName: ['', [
                     Validators.required,
-                     Validators.maxLength(50),
+                 Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z/() ]*$")          
                 ]],
                 MiddleName: ['', [
-                     Validators.maxLength(50),
+                   Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z/() ]*$")
                 ]],
                 LastName: ['', [
                     Validators.required,
-                     Validators.maxLength(50),
+                    Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z/() ]*$")
                 ]],
-                GenderId: new FormControl(0, [Validators.required]),
-                Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                GenderId: new FormControl('', [Validators.required]),
+                Address: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
                 Age: ['0'],
                 AgeYear: ['0', [
@@ -93,18 +92,18 @@ export class AppointmentlistService {
                 Validators.pattern("^[0-9]*$")
                 ]],
     
-                panCardNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-                ReligionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-                AreaId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-                CityId: [0, [Validators.required], this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+                panCardNo: '',
+                MaritalStatusId:0,
+                ReligionId: 0,
+                AreaId: 0,
+                CityId: ['', [Validators.required]],
                 City: [''],
-                StateId:  [0, [Validators.required],this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-                CountryId:  [0, [Validators.required], this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+                StateId:  ['', [Validators.required]],
+                CountryId:  [0, [Validators.required]],
                 IsCharity: false,
                 IsSeniorCitizen: false,
-                AddedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-                updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+                AddedBy:this.accountService.currentUserValue.userId,
+                updatedBy: this.accountService.currentUserValue.userId,
                 RegDate: [(new Date()).toISOString()],
                 RegTime: [(new Date()).toISOString()],
                 Photo: [''],
@@ -113,6 +112,7 @@ export class AppointmentlistService {
         });
 
     }
+
     createVisitdetailForm() {
         return this._formBuilder.group({
 

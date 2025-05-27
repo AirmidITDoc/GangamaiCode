@@ -25,12 +25,12 @@ export class NewRegistrationComponent implements OnInit {
     screenFromString = 'registration';
     registerObj = new RegInsert({});
     now = Date.now();
-
+    minDate = new Date();
     submitted = false;
     isRegSearchDisabled: boolean = true;
     Submitflag: boolean = false;
     newRegSelected: any = 'registration';
-    minDate: Date;
+    
     msg: any = [];
     AgeYear: any;
     AgeMonth: any;
@@ -151,7 +151,11 @@ export class NewRegistrationComponent implements OnInit {
             this.toastr.warning("Please Select Birthdate...");
         }
     }
-
+chkChange(){
+    if (this.registerObj.dateOfBirth > this.minDate) {
+           Swal.fire("Enter Proper Birth Date ")
+        }
+}
 
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);

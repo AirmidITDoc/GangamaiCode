@@ -20,6 +20,7 @@ import { element } from 'protractor';
 import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admission.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -146,6 +147,7 @@ export class DischargeSummaryComponent implements OnInit {
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private commonService: PrintserviceService,
+   private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe) { }
 
 
@@ -178,9 +180,6 @@ export class DischargeSummaryComponent implements OnInit {
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
-
-            // this.registerObj1.admissionTime = this.datePipe.transform(this.registerObj1.admissionTime, 'hh:mm:ss a')
-            // this.registerObj1.dischargeTime = this.datePipe.transform(this.registerObj1.dischargeTime, 'hh:mm:ss a')
           }
         
         });
@@ -204,7 +203,7 @@ export class DischargeSummaryComponent implements OnInit {
       // templateDesc:'',
       dischargeSummaryId: 0,
       admissionId: this.vAdmissionId,
-      dischargeId: 0,
+      dischargeId: this.vDischargeId,
       history: "",
       diagnosis: "",
       investigation: "",
@@ -224,8 +223,8 @@ export class DischargeSummaryComponent implements OnInit {
       doctorAssistantName: "",
       claimNumber: "0",
       preOthNumber: "0",
-      addedBy: this.accountService.currentUserValue.userId,
-      updatedBy: this.accountService.currentUserValue.userId,
+      addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       surgeryProcDone: "",
       icd10code: "",
       clinicalConditionOnAdmisssion: "",
@@ -236,7 +235,8 @@ export class DischargeSummaryComponent implements OnInit {
       warningSymptoms: "",
       pathology: "",
       radiology: "",
-      isNormalOrDeath: ["1"]
+      isNormalOrDeath: ["1"],
+      prescriptionDischarge:''
     });
   }
 
@@ -455,7 +455,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("treatmentAdvisedAfterDischarge").value || '',
           dischargModeldata['followupdate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
           dischargModeldata['remark'] = ''
-        dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
+          dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
           dischargModeldata['opDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
           dischargModeldata['opTime'] = this.dateTimeObj.time,
           dischargModeldata['dischargeDoctor1'] = this.DischargesumForm.get("dischargeDoctor1").value,
@@ -467,7 +467,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['preOthNumber'] = this.DischargesumForm.get("preOthNumber").value || "0",
           dischargModeldata['surgeryProcDone'] = this.DischargesumForm.get("surgeryProcDone").value || '',
           dischargModeldata['icd10code'] = ''
-        dischargModeldata['clinicalConditionOnAdmisssion'] = this.DischargesumForm.get("clinicalConditionOnAdmisssion").value || '',
+          dischargModeldata['clinicalConditionOnAdmisssion'] = this.DischargesumForm.get("clinicalConditionOnAdmisssion").value || '',
           dischargModeldata['otherConDrOpinions'] = this.DischargesumForm.get("otherConDrOpinions").value || '',
           dischargModeldata['conditionAtTheTimeOfDischarge'] = this.DischargesumForm.get("conditionAtTheTimeOfDischarge").value || '',
           dischargModeldata['painManagementTechnique'] = this.DischargesumForm.get("painManagementTechnique").value || '',

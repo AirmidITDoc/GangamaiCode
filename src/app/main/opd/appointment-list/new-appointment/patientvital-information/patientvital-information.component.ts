@@ -1,15 +1,18 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentlistService } from '../../appointmentlist.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { VisitMaster1 } from '../../appointment-list.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-patientvital-information',
   templateUrl: './patientvital-information.component.html',
-  styleUrls: ['./patientvital-information.component.scss']
+  styleUrls: ['./patientvital-information.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class PatientvitalInformationComponent {
 
@@ -76,51 +79,57 @@ export class PatientvitalInformationComponent {
         });
       }, 1000);
     }
-
-    
-  }
+}
   
   createMyForm(){
     return this._formBuilder.group({
       visitId:this.data.visitId,
-      height:['', [Validators.minLength(0),
-                      Validators.maxLength(3),
-                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                      ]],
-      pweight:['', [Validators.minLength(0),
-                Validators.maxLength(3),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-      bmi:['', [Validators.minLength(0),
-                Validators.maxLength(3),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-      bsl: ['', [Validators.minLength(0),
-                      Validators.maxLength(3),
-                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                      ]],
-      spO2: ['', [Validators.minLength(0),
-                      Validators.maxLength(3),
-                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                      ]],
-      temp:['', [Validators.minLength(0),
-                Validators.maxLength(3),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-      pulse:['', [Validators.minLength(0),
-                      Validators.maxLength(3),
-                      Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                      ]],
-      bp:['', [Validators.minLength(0),
-                Validators.maxLength(3),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
+      height: [0, [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      pweight:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      bmi:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      bsl: ['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      spO2:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      temp:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      pulse:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+      bp:['', [Validators.required,
+            Validators.minLength(0),
+            Validators.maxLength(3),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]]
     });
   }
 
   
   getBMIcalculation() {
-    
+    debugger
     if (this.vHeight > 0 && this.vWeight > 0) {
       let Height = (this.vHeight / 100)
       this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));
@@ -204,14 +213,14 @@ export class PatientvitalInformationComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
     }
-  }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -221,7 +230,7 @@ export class PatientvitalInformationComponent {
       return false;
     }
   }
-  ///[^a-zA-Z0-9]/
+ 
   keyPressOk(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {

@@ -381,7 +381,7 @@ export class IssuTodeptComponent {
     }
     
     if (!this.IssueFinalForm.invalid) {
-
+debugger
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
@@ -555,19 +555,7 @@ export class IssuTodeptComponent {
       });
 
       let submitData = {
-        "issueId": 0,
-        "issueDate": "Unknown Type: DateTime",
-        "issueTime": "string",
-        "fromStoreId": 0,
-        "toStoreId": 0,
-        "totalAmount": 0,
-        "totalVatAmount": 0,
-        "netAmount": 0,
-        "remark": "string",
-        "addedby": 0,
-        "isVerified": true,
-        "isClosed": true,
-        "indentId": 0,
+       updateIndent:insertheaderObj,
         tIssueToDepartmentDetails: isertItemdetailsObj
       };
 
@@ -659,8 +647,9 @@ export class IssuTodeptComponent {
       console.log('The dialog was closed - Insert Action', result);
       this.dsNewIssueList1.data = result;
       console.log(result)
+      if(result)
       this.vIndentId = result[0].indentId;
-
+console.log(this.vIndentId)
       // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
       // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
       // console.log(this.vIndentId)

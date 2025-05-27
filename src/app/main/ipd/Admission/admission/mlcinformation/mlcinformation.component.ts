@@ -15,6 +15,7 @@ import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.com
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class MLCInformationComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
+     private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public toastr: ToastrService,
@@ -93,7 +95,7 @@ export class MLCInformationComponent implements OnInit {
     return this.formBuilder.group({
 
       mlcid: 0,
-      admissionId: 0,
+      admissionId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       mlcno: ['', [
         Validators.required]],
       reportingDate: [(new Date()).toISOString()],

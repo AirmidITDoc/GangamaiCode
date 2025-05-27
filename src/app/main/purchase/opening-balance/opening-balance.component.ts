@@ -15,6 +15,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-opening-balance',
@@ -33,7 +34,7 @@ export class OpeningBalanceComponent {
   status = "0";
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-     @ViewChild('grid1') grid1: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
 
 
   @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
@@ -51,7 +52,7 @@ export class OpeningBalanceComponent {
   allcolumns = [
 
     { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100,type:6},
+    { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
@@ -77,7 +78,7 @@ export class OpeningBalanceComponent {
   GetDetails1(data: any): void {
     debugger
     console.log("detailList:", data)
-    let ID =  data.openingHId;
+    let ID = data.openingHId;
 
     this.gridConfig1 = {
       apiUrl: "OpeningBalance/OpeningBalnceItemDetailList",
@@ -115,8 +116,44 @@ export class OpeningBalanceComponent {
 
 
   viewgetReportPdf(element) {
-    this.commonService.Onprint("IndentId", element.indentId, "IndentWiseReport");
+    var Param = {
+      "searchFields": [
+        {
+          "fieldName": "Storeid",
+          "fieldValue": "2",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "From_Dt",
+          "fieldValue": "2025-05-27",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "To_Dt",
+          "fieldValue": "2025-05-27",
+          "opType": "Equals"
+        }
+      ],
+      "mode": "OpeningBalance"
+    }
+    this._OpeningBalanceService.getReportView(Param).subscribe(res => {
+
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OpeningBalance" + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+
   }
+
 
   onSave(row: any = null) {
     let that = this;
@@ -128,10 +165,10 @@ export class OpeningBalanceComponent {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-          that.grid.bindGridData();
-                 this.isShowDetailTable = false;
-           
-        });
+      that.grid.bindGridData();
+      this.isShowDetailTable = false;
+
+    });
   }
 
 

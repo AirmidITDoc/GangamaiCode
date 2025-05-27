@@ -12,6 +12,7 @@ import { GRNItemResponseType } from '../../good-receiptnote/new-grn/types';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import Swal from 'sweetalert2';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-opening-balance',
@@ -23,6 +24,12 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class NewOpeningBalanceComponent implements OnInit {
   StoreForm: FormGroup;
   OPeningtemForm: FormGroup;
+
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
+
   displayedColumns = [
     'ItemName',
     'BatchNo',
@@ -86,7 +93,8 @@ export class NewOpeningBalanceComponent implements OnInit {
       openingHId: 0,
       // openingTransaction: '',
       openingTranItemStock: '',
-      openingBal: ''
+      openingBal: '',
+      openingTransaction:''
     })
   }
 
@@ -357,7 +365,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     let insert_Update_OpeningTran_ItemStock_1 = {};
     insert_Update_OpeningTran_ItemStock_1['openingHId'] = 0;
 
-
+// this.StoreForm.get("openingTransaction").setValue(openingBalanceParamInsertdetail)
     console.log(this.StoreForm.value)
   let submitData = {
       "openingBal": this.StoreForm.value,
@@ -372,9 +380,43 @@ export class NewOpeningBalanceComponent implements OnInit {
       
     });
   }
+ viewgetReportPdf(element) {
+    var Param = {
+      "searchFields": [
+        {
+          "fieldName": "Storeid",
+          "fieldValue": String(this.StoreId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "From_Dt",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "To_Dt",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "OpeningBalance"
+    }
+    this._OpeningBalanceService.getReportView(Param).subscribe(res => {
 
-  viewgetReportPdf(openingHId) {
-    this.commonService.Onprint("OpeningHId", openingHId, "OpeningBalance");
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OpeningBalance" + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+
   }
 
 
