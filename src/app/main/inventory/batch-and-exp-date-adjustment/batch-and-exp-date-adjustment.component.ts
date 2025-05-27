@@ -1,16 +1,15 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { BatchAndExpDateAdjustmentService } from './batch-and-exp-date-adjustment.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { BatchAndExpDateAdjustmentService } from './batch-and-exp-date-adjustment.service';
 
 
 @Component({

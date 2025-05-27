@@ -1,13 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { EmergencyListService } from './emergency-list.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import { EmergencyListService } from './emergency-list.service';
 import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
 
 @Component({

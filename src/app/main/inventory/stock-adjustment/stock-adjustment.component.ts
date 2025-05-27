@@ -1,28 +1,16 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { StockAdjustmentService } from './stock-adjustment.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { request } from 'http';
 import { ToastrService } from 'ngx-toastr';
-import { element } from 'protractor';
-import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
+import { StockAdjustmentService } from './stock-adjustment.service';
 
 @Component({
     selector: 'app-stock-adjustment',

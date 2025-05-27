@@ -1,30 +1,17 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { IssueToDepartmentService } from './issue-to-department.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference, indexOf, round, values } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
-import { ToastrService } from 'ngx-toastr';
-import { element } from 'protractor';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, takeUntil } from "rxjs/operators";
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
+import { IssueToDepartmentService } from './issue-to-department.service';
 
 @Component({
     selector: 'app-issue-to-department',

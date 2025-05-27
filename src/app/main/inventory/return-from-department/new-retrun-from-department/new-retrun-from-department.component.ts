@@ -1,18 +1,16 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { ReturnFromDepartmentService } from '../return-from-department.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { E } from '@angular/cdk/keycodes';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { ReturnFromDepartmentService } from '../return-from-department.service';
 
 @Component({
   selector: 'app-new-retrun-from-department',

@@ -1,14 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { DashboardService } from "../dashboard.service";
-import { UntypedFormBuilder, FormGroup } from "@angular/forms";
-import { fuseAnimations } from "@fuse/animations";
-import {  MatTableDataSource } from "@angular/material/table";
 import { DatePipe } from "@angular/common";
-import Chart from "chart.js";
-import { element } from "protractor";
-import { filter, map } from "rxjs/operators";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { UntypedFormBuilder } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { SalesSummaryComponent } from "./sales-summary/sales-summary.component";
+import { MatTableDataSource } from "@angular/material/table";
+import { fuseAnimations } from "@fuse/animations";
+import { DashboardService } from "../dashboard.service";
 
 @Component({
     selector: "app-pharmacy-dashboard",

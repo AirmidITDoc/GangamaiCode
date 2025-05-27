@@ -1,14 +1,13 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CurrentStockService } from '../current-stock.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { CurrentStockService } from '../current-stock.service';
 
 @Component({
   selector: 'app-sales-summery',

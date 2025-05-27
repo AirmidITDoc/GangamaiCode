@@ -1,24 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { MaterialConsumptionService } from './material-consumption.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { MaterialConsumptionService } from './material-consumption.service';
+import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
 
 @Component({
     selector: 'app-material-consumption',

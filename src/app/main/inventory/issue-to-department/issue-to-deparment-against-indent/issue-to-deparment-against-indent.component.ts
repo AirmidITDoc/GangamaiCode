@@ -1,22 +1,17 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { IssueToDepartmentService } from '../issue-to-department.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { FormGroup } from '@angular/forms';
-import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
-import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
-import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { IssuTodeptComponent } from '../issu-todept/issu-todept.component';
+import { IssueToDepartmentService } from '../issue-to-department.service';
 
 @Component({
   selector: 'app-issue-to-deparment-against-indent',

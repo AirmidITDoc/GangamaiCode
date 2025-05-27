@@ -1,21 +1,17 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { IndentService } from '../indent.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { map, startWith } from 'rxjs/operators';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
-import Swal from 'sweetalert2';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { IndentService } from '../indent.service';
 
 @Component({
   selector: 'app-new-indent',

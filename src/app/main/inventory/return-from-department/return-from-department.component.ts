@@ -1,25 +1,22 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { ReturnFromDepartmentService } from './return-from-department.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
+import { ReturnFromDepartmentService } from './return-from-department.service';
 
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { FormGroup } from '@angular/forms';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
 

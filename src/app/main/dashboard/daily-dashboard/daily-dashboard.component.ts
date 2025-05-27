@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { Observable, Subject } from 'rxjs';
-import { fuseAnimations } from '@fuse/animations';
-import Chart, { Color } from 'chart.js/auto';
-import { Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import Chart, { Color } from 'chart.js/auto';
+import { Observable, Subject } from 'rxjs';
+import { DashboardService } from '../dashboard.service';
 
 @Component({
   selector: 'app-daily-dashboard',

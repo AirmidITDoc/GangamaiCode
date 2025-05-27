@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DashboardService } from '../dashboard.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { DashboardService } from '../dashboard.service';
 
 @Component({
     selector: 'app-bed-occupancy',

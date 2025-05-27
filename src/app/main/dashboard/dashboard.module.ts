@@ -1,30 +1,30 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { FuseSharedModule } from '@fuse/shared.module';
+import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FuseWidgetModule } from '@fuse/components';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatRadioModule } from '@angular/material/radio';
-import {  MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
-import { MatCardModule } from '@angular/material/card';
-import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
-import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component'; 
-import { MatInputModule } from '@angular/material/input'; 
+import { FuseSharedModule } from '@fuse/shared.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SharedModule } from 'app/main/shared/shared.module';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
+import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
+import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
+import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
+import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
 
 @NgModule({
     declarations: [

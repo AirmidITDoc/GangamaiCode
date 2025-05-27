@@ -1,21 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { MaterialConsumptionService } from '../material-consumption.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { debug } from 'console';
-import { element } from 'protractor';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import Swal from 'sweetalert2';
-import { FormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { MaterialConsumptionService } from '../material-consumption.service';
 
 @Component({
   selector: 'app-new-material-consumption',

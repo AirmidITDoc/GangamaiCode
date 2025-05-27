@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as shape from 'd3-shape';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { fuseAnimations } from '@fuse/animations';
 
-import { ProjectDashboardService } from 'app/main/dashboards/project/project.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ProjectDashboardService } from 'app/main/dashboards/project/project.service';
 
 @Component({
     selector: 'project-dashboard',

@@ -1,29 +1,22 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { CurrentStockService } from './current-stock.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe, formatDate } from '@angular/common';
-import { difference, template } from 'lodash';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { Observable, Subscription } from 'rxjs';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { map, startWith } from 'rxjs/operators';
-import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
-import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
-import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
-import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { ToastrService } from 'ngx-toastr';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription } from 'rxjs';
+import { CurrentStockService } from './current-stock.service';
+import { IssueSummeryComponent } from './issue-summery/issue-summery.component';
+import { ItemMovementSummeryComponent } from './item-movement-summery/item-movement-summery.component';
+import { SalesReturnSummeryComponent } from './sales-return-summery/sales-return-summery.component';
+import { SalesSummeryComponent } from './sales-summery/sales-summery.component';
 
 @Component({
     selector: 'app-current-stock',

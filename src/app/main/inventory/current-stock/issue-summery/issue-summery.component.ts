@@ -1,12 +1,12 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { CurrentStockService } from '../current-stock.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { CurrentStockService } from '../current-stock.service';
 
 @Component({
   selector: 'app-issue-summery',

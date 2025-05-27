@@ -1,21 +1,21 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { IssueToDepartmentService } from '../issue-to-department.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatSort } from '@angular/material/sort';
-import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
-import { IssueToDeparmentAgainstIndentComponent } from '../issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
-import { fuseAnimations } from '@fuse/animations';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { IssueToDeparmentAgainstIndentComponent } from '../issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
+import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
+import { IssueToDepartmentService } from '../issue-to-department.service';
 
 @Component({
   selector: 'app-issu-todept',

@@ -1,15 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { EmergencyListService } from '../emergency-list.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { RegInsert } from 'app/main/opd/registration/registration.component';
-import Swal from 'sweetalert2';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { EmergencyListService } from '../emergency-list.service';
 
 @Component({
   selector: 'app-new-emergency',

@@ -1,10 +1,10 @@
-import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { StockAdjustmentService } from '../stock-adjustment.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
+import { StockAdjustmentService } from '../stock-adjustment.service';
 
 @Component({
   selector: 'app-mrpadjustment',
