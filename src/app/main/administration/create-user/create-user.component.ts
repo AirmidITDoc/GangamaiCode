@@ -1,15 +1,14 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateUserService } from './create-user.service';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
-import { NUserComponent } from './nuser/nuser.component';
 import Swal from 'sweetalert2';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { CreateUserService } from './create-user.service';
+import { NUserComponent } from './nuser/nuser.component';
 
 @Component({
   selector: 'app-create-user',

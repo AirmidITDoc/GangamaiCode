@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({

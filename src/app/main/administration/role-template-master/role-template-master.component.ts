@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { RoleTemplateService } from "./role-template.service";
+import { FormGroup, UntypedFormBuilder } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
+import { ToastrService } from "ngx-toastr";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
-import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
+import { RoleTemplateService } from "./role-template.service";
 
 @Component({
   selector: 'app-role-template-master',

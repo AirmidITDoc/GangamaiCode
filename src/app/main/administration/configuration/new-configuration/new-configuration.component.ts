@@ -1,15 +1,14 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigSettingParams } from 'app/core/models/config';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { AdministrationService } from '../../administration.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ConfigurationService } from '../configuration.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfigSettingParams } from 'app/core/models/config';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { AdministrationService } from '../../administration.service';
+import { ConfigurationService } from '../configuration.service';
 
 @Component({
   selector: 'app-new-configuration',

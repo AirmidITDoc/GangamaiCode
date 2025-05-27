@@ -1,24 +1,19 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { AdministrationService } from '../administration.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { DoctorShareService } from './doctor-share.service';
 import { fuseAnimations } from '@fuse/animations';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
-import { MatDrawer } from '@angular/material/sidenav';
-import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
+import { DoctorShareService } from './doctor-share.service';
+import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 
 @Component({
   selector: 'app-doctor-share',

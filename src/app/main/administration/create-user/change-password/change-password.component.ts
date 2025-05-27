@@ -1,14 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 // import { UserList } from '../create-user.component';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { UntypedFormBuilder, FormGroup, FormBuilder } from '@angular/forms';
-import { AdministrationService } from '../../administration.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import Swal from 'sweetalert2';
 import { CreateUserService } from '../create-user.service';
-import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-change-password',

@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { TemplatedescriptionService } from '../templatedescription.service';
-import { ToastrService } from 'ngx-toastr';
-import { RadiologyTemplateFormComponent } from 'app/main/setup/radiology-master/radiology-template-master/radiology-template-form/radiology-template-form.component';
 import { fuseAnimations } from '@fuse/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ToastrService } from 'ngx-toastr';
+import { TemplatedescriptionService } from '../templatedescription.service';
 
 @Component({
   selector: 'app-new-template',

@@ -1,13 +1,13 @@
+import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { RoleTemplateService } from '../role-template-master/role-template.service';
-import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { fuseAnimations } from "@fuse/animations";
-import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { fuseAnimations } from "@fuse/animations";
+import { ToastrService } from 'ngx-toastr';
+import { RoleTemplateService } from '../role-template-master/role-template.service';
 
 export class FileNode {
     children?: FileNode[];

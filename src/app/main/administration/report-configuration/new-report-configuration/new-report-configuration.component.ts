@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { ReportConfigurationService } from '../report-configuration.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ReportConfigurationComponent } from '../report-configuration.component';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { ReportConfigurationComponent } from '../report-configuration.component';
+import { ReportConfigurationService } from '../report-configuration.service';
 
 @Component({
     selector: 'app-new-report-configuration',

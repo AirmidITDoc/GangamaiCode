@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SchdulerComponent } from '../scheduler.component';
 import Swal from 'sweetalert2';
+import { SchdulerComponent } from '../scheduler.component';
 import { SchdulerService } from '../scheduler.service';
 
 @Component({

@@ -1,15 +1,14 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PaymentmodechangesforpharmacyService } from '../paymentmodechangesfor-pharmacy.service';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { PaymentPharmayList } from '../paymentmodechangesfor-pharmacy.component';
-import { fuseAnimations } from '@fuse/animations';
-import { DatePipe } from '@angular/common';
+import { PaymentmodechangesforpharmacyService } from '../paymentmodechangesfor-pharmacy.service';
 
 @Component({
   selector: 'app-edit-paymentmode',

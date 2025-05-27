@@ -1,14 +1,13 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 // import { UserList } from '../create-user/create-user.component';
-import { Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Inject, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { CreateUserService } from '../create-user/create-user.service';
 import { AdministrationService } from '../administration.service';
-import { FormBuilder, UntypedFormBuilder } from '@angular/forms';
+import { CreateUserService } from '../create-user/create-user.service';
 
 @Component({
   selector: 'app-myprofile',

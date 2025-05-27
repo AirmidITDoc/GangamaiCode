@@ -1,21 +1,19 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { PaymentmodechangesService } from './paymentmodechanges.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { EditPaymentmodeComponent } from '../paymentmodechangesfor-pharmacy/edit-paymentmode/edit-paymentmode.component';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { DateUpdateComponent } from './date-update/date-update.component';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { ToastrService } from 'ngx-toastr';
-import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatRadioChange } from '@angular/material/radio';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from 'ngx-toastr';
+import { DateUpdateComponent } from './date-update/date-update.component';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { PaymentmodechangesService } from './paymentmodechanges.service';
 
 @Component({
   selector: 'app-paymentmodechanges',

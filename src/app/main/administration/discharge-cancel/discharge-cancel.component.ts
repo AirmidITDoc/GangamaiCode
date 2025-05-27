@@ -3,14 +3,12 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
-import { DischargeCancelService } from './discharge-cancel.service';
-import { element } from 'protractor';
 import Swal from 'sweetalert2';
+import { DischargeCancelService } from './discharge-cancel.service';
 
 @Component({
   selector: 'app-discharge-cancel',

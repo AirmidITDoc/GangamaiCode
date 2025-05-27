@@ -1,7 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { PharmacypayipadvmodeComponent } from './pharmacypayipadvmode.component';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,10 +27,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseSidebarModule, FuseConfirmDialogModule } from '@fuse/components';
+import { RouterModule, Routes } from '@angular/router';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PharmacypayipadvmodeComponent } from './pharmacypayipadvmode.component';
 import { PharmacypayipadvmodeService } from './pharmacypayipadvmode.service';
 
 

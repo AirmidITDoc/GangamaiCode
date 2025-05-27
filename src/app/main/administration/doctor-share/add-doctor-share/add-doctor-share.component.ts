@@ -1,18 +1,16 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
-import { DoctorShareService } from '../doctor-share.service';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { map, startWith } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
-import { BillListForDocShrList } from '../doctor-share.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AnyNaptrRecord } from 'dns';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { BillListForDocShrList } from '../doctor-share.component';
+import { DoctorShareService } from '../doctor-share.service';
 
 @Component({
   selector: 'app-add-doctor-share',

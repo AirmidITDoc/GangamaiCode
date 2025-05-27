@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { DoctorShareService } from '../doctor-share.service';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
+import { DoctorShareService } from '../doctor-share.service';
 
 @Component({
   selector: 'app-process-doctor-share',

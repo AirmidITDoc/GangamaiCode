@@ -1,10 +1,10 @@
 import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { CreateUserService } from '../create-user.service';
-import { ToastrService } from 'ngx-toastr';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { CreateUserService } from '../create-user.service';
 
 @Component({
     selector: 'app-nuser',

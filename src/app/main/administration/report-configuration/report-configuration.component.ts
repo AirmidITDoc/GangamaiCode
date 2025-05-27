@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { ReportConfigurationService } from './report-configuration.service';
-import { MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '@fuse/animations';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
+import { ReportConfigurationService } from './report-configuration.service';
 
 @Component({
     selector: 'app-report-configuration',
