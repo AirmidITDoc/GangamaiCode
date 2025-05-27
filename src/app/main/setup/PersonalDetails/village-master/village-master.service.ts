@@ -35,7 +35,7 @@ export class VillageMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             VillageNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

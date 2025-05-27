@@ -17,10 +17,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class SubGroupMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "SubGroupMaster/List",
-        columnsList: [
+  subGroupName: any = "";
+    
+        allcolumns =  [
             { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +40,18 @@ export class SubGroupMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "subGroupId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allfilters = [
             { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "SubGroupMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "subGroupId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,
@@ -55,6 +59,44 @@ export class SubGroupMasterComponent implements OnInit {
 
     ngOnInit(): void {
 
+    }
+    //filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'SubGroupNameSearch')
+            this._subgroupService.myformSearch.get('SubGroupNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.subGroupName = this._subgroupService.myformSearch.get('SubGroupNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._subgroupService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "SubGroupMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "subGroupId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "subGroupName", fieldValue: this.subGroupName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
     }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

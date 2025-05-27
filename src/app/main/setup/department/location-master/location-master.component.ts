@@ -18,10 +18,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 
 export class LocationMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    locationName: any = "";
     
-    gridConfig: gridModel = {
-        apiUrl: "LocationMaster/List",
-        columnsList: [
+        allcolumns =[
             { heading: "Code", key: "locationId", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Location Name", key: "locationName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center"},
@@ -40,20 +39,63 @@ export class LocationMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "locationId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allfilters =[
             { fieldName: "locationName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+gridConfig: gridModel = {
+        apiUrl: "LocationMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "locationId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _locationService: LocationMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
         
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'LocationNameSearch')
+            this._locationService.myformSearch.get('LocationNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.locationName = this._locationService.myformSearch.get('LocationNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._locationService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "LocationMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "locationId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "locationName", fieldValue: this.locationName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

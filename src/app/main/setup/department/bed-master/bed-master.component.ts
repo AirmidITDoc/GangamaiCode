@@ -18,9 +18,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class BedMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "BedMaster/List",
-        columnsList: [
+    bedName: any = "";
+
+        allcolumns = [
             { heading: "Code", key: "bedId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RoomId", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +41,18 @@ export class BedMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "bedId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "bedName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "BedMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "bedId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -55,7 +60,45 @@ export class BedMasterComponent implements OnInit {
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void { }0
+    //filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'BedNameSearch')
+            this._BedMasterService.myformSearch.get('BedNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.bedName = this._BedMasterService.myformSearch.get('BedNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._BedMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "BedMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "bedId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "bedName", fieldValue: this.bedName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

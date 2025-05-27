@@ -35,7 +35,7 @@ export class BillingClassMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ClassNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

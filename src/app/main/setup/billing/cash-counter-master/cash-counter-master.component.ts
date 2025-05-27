@@ -19,10 +19,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class CashCounterMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "CashCounter/List",
-        columnsList: [
+cashCounterName: any = "";
+     allcolumns = [
             { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
@@ -43,13 +41,18 @@ export class CashCounterMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "cashCounterId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+       allfilters = [
             { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "CashCounter/List",
+        columnsList: this.allcolumns,
+        sortField: "cashCounterId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -58,7 +61,44 @@ export class CashCounterMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CashCounterNameSearch')
+            this._CashCounterMasterService.myformSearch.get('CashCounterNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.cashCounterName = this._CashCounterMasterService.myformSearch.get('CashCounterNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CashCounterMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CashCounter/List",
+            columnsList: this.allcolumns,
+            sortField: "cashCounterId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "cashCounterName", fieldValue: this.cashCounterName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

@@ -33,7 +33,7 @@ export class TalukaMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TalukaNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

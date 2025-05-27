@@ -36,7 +36,7 @@ export class DepartmentMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DepartmentNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
     initializeFormGroup() {
