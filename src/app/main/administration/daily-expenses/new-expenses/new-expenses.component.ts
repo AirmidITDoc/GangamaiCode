@@ -123,8 +123,9 @@ export class NewExpensesComponent implements OnInit {
           return;
         }
     }
- 
+  
     let InserExpensesObj={
+      "expId": 0,
       "expDate": this.dateTimeObj.date,
       "expTime": this.dateTimeObj.time,
       "expType": this._DailyExpensesService.NewExpensesForm.get('ExpType').value || '0',
@@ -252,7 +253,7 @@ onlineflag:boolean=false
                     width: '100%',
                     data: {
                       base64: res["base64"] as string,
-                      title: "Daily Expenses Report"
+                      title: "Daily Expenses Vouchar Report"
                     }
                   });
                 dialogRef.afterClosed().subscribe(result => {  

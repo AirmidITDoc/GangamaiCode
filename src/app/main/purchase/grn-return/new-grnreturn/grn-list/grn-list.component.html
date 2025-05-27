@@ -76,17 +76,12 @@
                             </div>
                         </form>
 
-                        <div fxFlex.gt-sm="100%" fxFlex>
+                       
                             <div fxlayout="row">
                                 <div style="width: 100%;">
-    
-                                    <!-- <div matColumnDef="loading"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                                        class="backgroundBlur">
-                                        <div class="spinner-border text-danger"></div>
-                                    </div> -->
+     
                                     <mat-table #table  matSort [dataSource]="dsGRNList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 300px;">
+                                        [@animateStagger]="{value:'50'}" style="overflow:auto;height: 350px;">
     
                                         <ng-container matColumnDef="Action" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
@@ -170,7 +165,7 @@
                                     </mat-paginator>
                                 </div>
                             </div>
-                        </div>
+                         
 
                         <div fxLayoutAlign="end" style="padding-left: 20px;"> 
                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp; 

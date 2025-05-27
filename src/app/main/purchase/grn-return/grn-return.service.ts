@@ -66,10 +66,16 @@ export class GrnReturnService {
       end: [(new Date()).toISOString()],
     });
   }
-  public getGRNReturnList(Param){
+  public getGRNReturnList(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNReturnList_by_Name",Param);
   }
-  public getGRNReturnItemDetList(Param){
+  public getGRNReturnItemDetList(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList",Param);
   }
   public getGRNList(Param,loader = true){
@@ -78,7 +84,10 @@ export class GrnReturnService {
     }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNList_by_Name_For_GRNReturn",Param);
   }
-  public getSupplierSearchList(param){
+  public getSupplierSearchList(param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list",param);
   }
 
@@ -86,7 +95,10 @@ export class GrnReturnService {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
  
-  public getGrnItemList(Param){
+  public getGrnItemList(Param,loader = true){
+    if(loader){
+      this._loaderService.show();
+    }
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ItemList_by_Supplier_Name_For_GRNReturn",Param);
   }
 

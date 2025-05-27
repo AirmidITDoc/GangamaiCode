@@ -29,7 +29,8 @@ export class NewGRNReturnComponent implements OnInit {
     "BatchNo",
     "BatchExpDate",
     "ConversionFactor",
-    "BalanceQty",
+    "BalanceQty", 
+    'FreeQty',
     "ReceivedQty",
     "ReturnQty",
     "MRP",
@@ -164,7 +165,8 @@ export class NewGRNReturnComponent implements OnInit {
             BatchNo: element.BatchNo || 0,
             BatchExpDate: element.BatchExpDate,
             ConversionFactor: element.ConversionFactor,
-            BalanceQty: element.BalanceQty,
+            BalanceQty: element.TotalQty ,///BalanceQty,
+            FreeQty: element.FreeQty ,
             ReturnQty: 0,
             MRP: element.MRP || 0,
             ReceiveQty: element.ReceiveQty || 0,
@@ -239,8 +241,18 @@ export class NewGRNReturnComponent implements OnInit {
       contact.NetAmount = 0;
     }
     else {
-      contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor));
-      contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate)).toFixed(2);
+      let ReturnQty = 0
+      if(contact.FreeQty > 0 &&  contact.ReturnQty == contact.BalanceQty){
+        let totalfreeqty = 0
+        totalfreeqty = (parseInt(contact.FreeQty) * parseInt(contact.ConversionFactor));
+        ReturnQty = (parseInt(contact.ReturnQty) - totalfreeqty)
+        contact.TotalQty = (ReturnQty + totalfreeqty);
+      }else{
+        ReturnQty = contact.ReturnQty
+        contact.TotalQty = contact.ReturnQty;
+      }
+      //contact.TotalQty = (ReturnQty * parseInt(contact.ConversionFactor));
+      contact.TotalAmount = (ReturnQty * parseFloat(contact.LandedRate)).toFixed(2);
       contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
       contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
       let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
@@ -450,7 +462,7 @@ OnReset() {
   GrnlistObj:any;
   getGRNList() {  
     this.dsGrnItemList.data = [];
-    this.chargeslist.data = [];
+    this.chargeslist = []; 
     const dialogRef = this._matDialog.open(GrnListComponent,
       {
         maxWidth: "100%",

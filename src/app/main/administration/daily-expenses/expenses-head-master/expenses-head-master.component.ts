@@ -98,7 +98,7 @@ onSearch(){
       });
       return;
     } 
-    if(!this.registerObj.ExpHedId){
+    if(!this.ExpheadId){
   let saveMExpensesHeadMasterParam={ 
       "headName": this.ExpHeadForm.get('HeadName').value || '',
       "isDeleted":this.ExpHeadForm.get('IsActive').value || '', 
@@ -163,9 +163,11 @@ onSearch(){
     this.dialogRef.close()
   }
   registerObj:any;
+  ExpheadId:any=0;
   onEdit(row){
       console.log(row)
       this.registerObj = row
+      this.ExpheadId = row.ExpHedId || 0;
       var vdata={
         HeadName:row.HeadName,
         IsActive:row.IsDeleted

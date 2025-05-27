@@ -62,7 +62,7 @@ export class PhysioScheduleComponent implements OnInit {
       this.PatientName = this.selectedAdvanceObj?.PatientName;
       this.RegId = this.selectedAdvanceObj.RegId ;
       console.log(this.selectedAdvanceObj)
-      this.getschedulerdetlist(this.selectedAdvanceObj);
+      //this.getschedulerdetlist(this.selectedAdvanceObj);
     } 
   }
 
@@ -99,7 +99,7 @@ export class PhysioScheduleComponent implements OnInit {
 
   generateSchedule1(): void {
     const formValue = this._PhysiotherapistScheduleService.SchedulerForm.value
-    if (this.selectedAdvanceObj.RegNo == '' || this.selectedAdvanceObj.RegNo == 0 || this.selectedAdvanceObj.RegNo == null) {
+    if (this.RegId == '' || this.RegId == 0 || this.RegId == null) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -179,10 +179,10 @@ export class PhysioScheduleComponent implements OnInit {
       }
     )
   }
-   getschedulerdetlist(Obj){
+   getschedulerdetlist(PhysioId){
     debugger
     var vdata={
-      "PhysioId":Obj.PhysioId
+      "PhysioId":PhysioId
     }
     this._PhysiotherapistScheduleService.getschedulerdetlist(vdata).subscribe(data=>{
       this.dSchedulerDetList.data = data as scheduleList[]

@@ -80,8 +80,12 @@ export class GrnListComponent implements OnInit {
   }  
   getGRNList(){
     this.sIsLoading = 'loading-data';
+    let SupplierId = 0
+    if(this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value)
+     SupplierId = this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId
+
     var Param = {
-      "SupplierId": this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value.SupplierId || 0,
+      "SupplierId": SupplierId || 0,
       "From_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "StoreId":this._loggedService.currentUserValue.user.storeId || 0,
@@ -110,7 +114,8 @@ export class GrnListComponent implements OnInit {
     this._GRNReturnHeaderList.GRNListFrom.reset();
   }
   onClose(){
-    this._matDialog.closeAll();
+   // this._matDialog.closeAll();
+   this._dialogRef.close();
   }
   OnReset(){
    // this._GRNReturnHeaderList.GRNListFrom.reset();
@@ -124,10 +129,12 @@ export class GrnListComponent implements OnInit {
       });
       return;
     }
-    
+        this._GRNReturnHeaderList.GRNListFrom.reset();
+         this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+    this._GRNReturnHeaderList.GRNListFrom.get("end").setValue((new Date()).toISOString())
     this._dialogRef.close(this.SelectedArray);
-    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
-    this._GRNReturnHeaderList.GRNListFrom.get("start").setValue((new Date()).toISOString())
+   
+
   }
 }
 export class GRNList{
