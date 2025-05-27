@@ -1,21 +1,14 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PrescriptionReturnService } from './prescription-return.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import Swal from 'sweetalert2';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
+import { PrescriptionReturnService } from './prescription-return.service';
 @Component({
     selector: 'app-prescription-return',
     templateUrl: './prescription-return.component.html',

@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
-import { InPatientReturnService } from './in-patient-return.service';
 import Swal from 'sweetalert2';
+import { InPatientReturnService } from './in-patient-return.service';
 
 @Component({
   selector: 'app-in-patient-return',

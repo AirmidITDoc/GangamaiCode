@@ -1,29 +1,26 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ClinicalCareChartService } from './clinical-care-chart.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { DoctornoteComponent } from '../doctornote/doctornote.component';
-import { NursingnoteComponent } from '../nursingnote/nursingnote.component';
-import { patientinfo } from '../Patientwisematerialconsumption/new-patientwise-materialconsumption/new-patientwise-materialconsumption.component';
+import { MatSliderChange } from '@angular/material/slider';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
+import { DischargeSummaryComponent } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { error } from 'console';
-import { MatSliderChange } from '@angular/material/slider';
-import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
-import { MedicationErrorComponent } from './medication-error/medication-error.component';
-import { DischargeSummaryComponent } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
-import { PrescriptionComponent } from '../prescription/prescription.component';
-import { BedTransferComponent } from 'app/main/ipd/ip-search-list/bed-transfer/bed-transfer.component';
+import { DoctornoteComponent } from '../doctornote/doctornote.component';
+import { NursingnoteComponent } from '../nursingnote/nursingnote.component';
 import { NewPrescriptionComponent } from '../prescription/new-prescription/new-prescription.component';
 import { NewRequestforlabComponent } from '../requestforlabtest/new-requestforlab/new-requestforlab.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { ClinicalCareChartService } from './clinical-care-chart.service';
+import { MedicationErrorComponent } from './medication-error/medication-error.component';
+import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
 
 @Component({
   selector: 'app-clinical-care-chart',

@@ -1,25 +1,20 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
-import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
-import { DoctornoteService } from "./doctornote.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { AdvanceDataStored } from "app/main/ipd/advance";
-import { FormGroup, FormControl, UntypedFormBuilder, Validators } from "@angular/forms";
-import { DatePipe } from "@angular/common";
-import { ToastrService } from "ngx-toastr";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import Swal from "sweetalert2";
 import { fuseAnimations } from "@fuse/animations";
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { SSL_OP_NO_TLSv1_1 } from 'constants';
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { AdmissionPersonlModel } from "app/main/ipd/Admission/admission/admission.component";
+import { AdvanceDataStored } from "app/main/ipd/advance";
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ToastrService } from "ngx-toastr";
+import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
 
 

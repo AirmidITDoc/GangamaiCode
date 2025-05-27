@@ -1,8 +1,8 @@
 import { Component, HostListener, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { PrescriptionReturnService } from '../prescription-return.service';
 import { fuseAnimations } from '@fuse/animations';
+import { PrescriptionReturnService } from '../prescription-return.service';
 
 @Component({
   selector: 'app-batchpopup',

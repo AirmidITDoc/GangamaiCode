@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj, Bed, Discharge } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { NurBedTransferService } from './nur-bed-transfer.service';
-import { takeUntil } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-nursing-bedtransfer',

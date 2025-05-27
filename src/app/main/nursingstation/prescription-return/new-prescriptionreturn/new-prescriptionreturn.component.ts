@@ -1,19 +1,18 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PrescriptionReturnService } from '../prescription-return.service';
 import { DatePipe } from '@angular/common';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { UntypedFormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
-import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
+import { PrescriptionReturnService } from '../prescription-return.service';
 
 
 @Component({

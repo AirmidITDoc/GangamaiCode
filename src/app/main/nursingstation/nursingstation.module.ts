@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { MaterialConsumptionPatientwiseComponent } from './Patientwisematerialconsumption/material-consumption-patientwise.component';
-import { PatientRefVisitComponent } from './patient-ref-visit/patient-ref-visit.component';
-import { NursingBedtransferComponent } from './nursing-bedtransfer/nursing-bedtransfer.component';
 
 
   

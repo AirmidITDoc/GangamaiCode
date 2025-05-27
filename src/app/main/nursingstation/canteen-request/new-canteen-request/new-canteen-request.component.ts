@@ -1,19 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { CanteenRequestService } from '../canteen-request.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
-import { element } from 'protractor';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { CanteenList } from '../canteen-request.component';
+import { CanteenRequestService } from '../canteen-request.service';
 
 @Component({
   selector: 'app-new-canteen-request',

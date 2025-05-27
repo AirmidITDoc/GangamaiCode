@@ -1,25 +1,23 @@
-import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { NursingnoteService } from './nursingnote.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { UntypedFormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ReplaySubject, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { NewTemplateComponent } from './new-template/new-template.component';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
+import { NewTemplateComponent } from './new-template/new-template.component';
+import { NursingnoteService } from './nursingnote.service';
 
 @Component({
   selector: 'app-nursingnote',

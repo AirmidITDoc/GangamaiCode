@@ -1,21 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { PrescriptionService } from '../prescription.service';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { RegistrationService } from 'app/main/opd/registration/registration.service';
-import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
 import { AdmissionPersonlModel, RegInsert } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
-import { debug } from 'console';
+import { RegistrationService } from 'app/main/opd/registration/registration.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { PrescriptionService } from '../prescription.service';
 
 @Component({
   selector: 'app-new-prescription',

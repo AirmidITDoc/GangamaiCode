@@ -1,23 +1,14 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { RequestforlabtestService } from './requestforlabtest.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
 import { DatePipe } from '@angular/common';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
-import { Subscription } from 'rxjs';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import Swal from 'sweetalert2';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
+import { RequestforlabtestService } from './requestforlabtest.service';
 
 @Component({
     selector: 'app-requestforlabtest',

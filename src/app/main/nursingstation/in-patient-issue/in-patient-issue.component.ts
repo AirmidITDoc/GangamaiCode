@@ -1,21 +1,20 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
-import { ToastrService } from 'ngx-toastr';
-import { InPatientIssueService } from './in-patient-issue.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription } from 'rxjs';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
+import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PrescriptionComponent } from '../prescription/prescription.component';
-import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
-import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { InPatientIssueService } from './in-patient-issue.service';
 
 @Component({
   selector: 'app-in-patient-issue',

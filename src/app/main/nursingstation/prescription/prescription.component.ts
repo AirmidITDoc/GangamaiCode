@@ -1,31 +1,16 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
-import { PrescriptionService } from './prescription.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
-import { Subscription } from 'rxjs';
-import { Validators } from '@angular/forms';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { SampleRequestComponent } from 'app/main/pathology/sample-request/sample-request.component';
-import { SampleCollectionComponent } from 'app/main/pathology/sample-collection/sample-collection.component';
-import { ResultEntryComponent } from 'app/main/pathology/result-entry/result-entry.component';
-import { RadiologyOrderListComponent } from 'app/main/radiology/radiology-order-list/radiology-order-list.component';
-import Swal from 'sweetalert2';
-import { CertificateComponent } from 'app/main/Mrd/certificate/certificate.component';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { ToastrService } from 'ngx-toastr';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
+import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
+import { PrescriptionService } from './prescription.service';
 
 
 @Component({
