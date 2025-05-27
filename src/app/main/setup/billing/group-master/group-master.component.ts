@@ -18,10 +18,10 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class GroupMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+groupName: any = "";
 
-    gridConfig: gridModel = {
-        apiUrl: "GroupMaster/List",
-        columnsList: [
+   
+        allcolumns =[
             { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsConsolidatedDR", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,21 +41,65 @@ export class GroupMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "groupId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allfilters =  [
             { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "GroupMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "groupId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(public _GroupMasterService: GroupMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
 
     }
+     //filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'GroupNameSearch')
+            this._GroupMasterService.myformSearch.get('GroupNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.groupName = this._GroupMasterService.myformSearch.get('GroupNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._GroupMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "GroupMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "groupId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "groupName", fieldValue: this.groupName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

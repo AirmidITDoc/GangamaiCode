@@ -35,7 +35,7 @@ export class StateMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             StateNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

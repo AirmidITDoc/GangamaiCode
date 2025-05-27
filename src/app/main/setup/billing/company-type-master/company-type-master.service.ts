@@ -35,7 +35,7 @@ export class CompanyTypeMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TypeNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

@@ -33,7 +33,7 @@ export class GroupMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             GroupNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

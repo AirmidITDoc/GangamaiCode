@@ -24,7 +24,8 @@
                     <input matInput placeholder="Search Area Name" autocomplete="off"
                        [formGroup]="_AreaMasterService.myformSearch" formControlName="AreaNameSearch"
                     (input)="onChangeFirst()"/>
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('AreaNameSearch')">
+                    <button matSuffix mat-icon-button aria-label="Clear" 
+                    (click)="Clearfilter('AreaNameSearch')">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

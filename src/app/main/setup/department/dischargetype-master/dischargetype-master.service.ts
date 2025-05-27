@@ -36,7 +36,7 @@ export class DischargetypeMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DischargeTypeNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

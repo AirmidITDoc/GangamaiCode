@@ -39,7 +39,7 @@ export class BedMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             BedNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

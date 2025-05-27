@@ -26,12 +26,12 @@
                     (input)="onChangeFirst()"/>
                   
                     <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
+                        (click)="Clearfilter('RelationshipNameSearch')">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center"
+                <mat-radio-group value=""  fxLayoutAlign="center center"
                 formControlName="IsDeletedSearch" (change)="onChangeFirst()">
                     <mat-radio-button value="">All</mat-radio-button>
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>

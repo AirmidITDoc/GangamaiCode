@@ -51,7 +51,7 @@ export class CashCounterMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CashCounterNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

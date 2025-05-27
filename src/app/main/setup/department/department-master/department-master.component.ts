@@ -16,12 +16,11 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class DepartmentMasterComponent implements OnInit {
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     msg: any;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    departmentName: any = "";
 
-    gridConfig: gridModel = {
-        apiUrl: "DepartmentMaster/List",
-        columnsList: [
+        allcolumns =[
             { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +40,18 @@ export class DepartmentMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "departmentId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "departmentName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "DepartmentMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "departmentId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -56,7 +60,44 @@ export class DepartmentMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-27/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'DepartmentNameSearch')
+            this._departmentService.myformSearch.get('DepartmentNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.departmentName = this._departmentService.myformSearch.get('DepartmentNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._departmentService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "DepartmentMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "departmentId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "departmentName", fieldValue: this.departmentName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
