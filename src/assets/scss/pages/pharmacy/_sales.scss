@@ -14,7 +14,7 @@ $table-row-width: 1300px;
     .sale-detail-box{
         display: flex;
         justify-content: space-between;
-        align-items: start;
+        align-items: flex-start;
         flex-flow: column;
         gap: 8px;
         padding: 8px 0;
