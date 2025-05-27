@@ -1,4 +1,3 @@
-import { FuseUtils } from '@fuse/utils';
 
 export class MenuMaster {
       Id:number;

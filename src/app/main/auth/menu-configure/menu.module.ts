@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -8,24 +8,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatSelectModule } from '@angular/material/select';
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MenuSubMenuComponent } from './menu-sub-menu/menu-sub-menu.component';
-import { MenuMasterComponent } from './menu-master/menu-master.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule, Routes } from '@angular/router';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { NotificationService } from 'app/core/notification.service';
 import { MenuConfigureComponent } from './menu-configure.component';
 import { MenuConfigureService } from './menu-configure.service';
-import { MatCardModule } from '@angular/material/card';
-import { MenuSubSubmenuComponent } from './menu-sub-submenu/menu-sub-submenu.component';
 import { MenuMainComponent } from './menu-main/menu-main.component';
-import { NotificationService } from 'app/core/notification.service';
+import { MenuMasterComponent } from './menu-master/menu-master.component';
+import { MenuSubMenuComponent } from './menu-sub-menu/menu-sub-menu.component';
+import { MenuSubSubmenuComponent } from './menu-sub-submenu/menu-sub-submenu.component';
 
 const appRoutes: Routes = [
     {

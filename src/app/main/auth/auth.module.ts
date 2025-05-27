@@ -1,7 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { MenuMasterComponent } from './menu-master/menu-master.component';
-import { SharedModule } from "../shared/shared.module";
 
 const routes = [
     {

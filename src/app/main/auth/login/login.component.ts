@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
-import { FuseConfigService } from "@fuse/services/config.service";
-import { fuseAnimations } from "@fuse/animations";
-import { Router, ActivatedRoute } from "@angular/router";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import Swal from "sweetalert2";
-import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
-import { setInterval, setTimeout } from "timers";
+import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { AppointmentBillingComponent } from "app/main/opd/appointment-list/appointment-billing/appointment-billing.component";
+import { ActivatedRoute, Router } from "@angular/router";
+import { fuseAnimations } from "@fuse/animations";
+import { FuseConfigService } from "@fuse/services/config.service";
+import { AuthenticationService } from "app/core/services/authentication.service";
 import { EncryptionService } from "app/core/services/encryption.service";
+import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
 // import { EncryptionService } from "app/core/services/encryption.service";
 
 @Component({

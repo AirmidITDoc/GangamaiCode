@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CanteenmanagementService } from '../canteenmanagement.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { parseInt } from 'lodash';
+import Swal from 'sweetalert2';
+import { CanteenmanagementService } from '../canteenmanagement.service';
 
 @Component({
   selector: 'app-canteen-sales',

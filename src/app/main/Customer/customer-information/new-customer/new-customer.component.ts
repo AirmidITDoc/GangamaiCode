@@ -1,12 +1,11 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { CustomerInformationService } from '../customer-information.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { ElementRef} from "@angular/core";
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { CustomerInformationService } from '../customer-information.service';
 
 
 @Component({

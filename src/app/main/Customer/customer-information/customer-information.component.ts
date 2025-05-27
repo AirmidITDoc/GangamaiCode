@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NewCustomerComponent } from './new-customer/new-customer.component';
-import { MatDialog } from '@angular/material/dialog';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { CustomerInformationService } from './customer-information.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { CustomerInformationService } from './customer-information.service';
+import { NewCustomerComponent } from './new-customer/new-customer.component';
 
 @Component({
   selector: 'app-customer-information',

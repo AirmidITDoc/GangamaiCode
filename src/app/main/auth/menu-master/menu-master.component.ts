@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridColumnTypes, gridActions } from 'app/core/models/tableActions';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { MenuMasterService } from './menu-master.service';
 import { NewMenuComponent } from './new-menu/new-menu.component';
-import { fuseAnimations } from '@fuse/animations';
-import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-menu-master',
