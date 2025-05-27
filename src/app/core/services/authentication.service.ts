@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { FuseNavigation } from "@fuse/types";
 
-import { User } from "../models/user";
-import { Router } from "@angular/router";
 import { LocationStrategy } from '@angular/common';
+import { Router } from "@angular/router";
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { User } from "../models/user";
 import { ApiCaller } from "./apiCaller";
 
 @Injectable({ providedIn: "root" })

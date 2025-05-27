@@ -1,21 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { SalesReturnService } from './sales-return.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { DatePipe } from '@angular/common';
-import { difference } from 'lodash';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import Swal from 'sweetalert2';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SalesReturnDetList, SalesReturnList } from '../brows-sales-bill/brows-sales-bill.component';
-import { Subscription } from 'rxjs';
-import { IndentList, Printsal } from '../sales/sales.component';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { Printsal } from '../sales/sales.component';
+import { SalesReturnService } from './sales-return.service';
 
 
 @Component({

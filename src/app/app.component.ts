@@ -1,35 +1,31 @@
 
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, fromEvent } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 
-import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { navigation } from 'app/navigation/navigation';
+import { HttpClient } from "@angular/common/http";
+import { MatDialog } from '@angular/material/dialog';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
-import { HttpClient } from "@angular/common/http";
-import { FuseNavigation } from "@fuse/types";
+import { navigation } from 'app/navigation/navigation';
 import { AuthenticationService } from './core/services/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
 import { ConfigService } from './core/services/config.service';
 import { SpinnerService } from './core/services/spinner.service';
 // import { NgxSpinnerService } from 'ngx-spinner';
-import { Idle } from 'idlejs/dist';
 import { Router } from '@angular/router';
-import { BandwidthService } from './core/services/bandwidth.service';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
-import { LoaderModule } from './core/components/loader/loader.module';
+import { Idle } from 'idlejs/dist';
 import { ApiCaller } from './core/services/apiCaller';
+import { BandwidthService } from './core/services/bandwidth.service';
 import { SignalRService } from './core/services/signalr.service';
 
 @Component({

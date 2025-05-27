@@ -1,11 +1,10 @@
-import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
-import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
-import { Router } from "@angular/router";
 import { AppConfigService } from "./api-config.service";
 
 @Injectable({ providedIn: "root" })

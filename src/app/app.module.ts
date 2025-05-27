@@ -1,53 +1,46 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { formatDate } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { formatDate } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { InMemoryWebApiModule } from "angular-in-memory-web-api";
 import { TranslateModule } from '@ngx-translate/core';
 //import 'hammerjs';
 
+import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
 
 import { fuseConfig } from 'app/fuse-config';
 
-import { FakeDbService } from "app/fake-db/fake-db.service";
 import { AppComponent } from 'app/app.component';
 
 import { JwtInterceptor } from "./core/jwt.interceptor";
 // import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { SpinnerInterceptor } from "./core/spinner.interceptor";
-import { CertificateComponent } from './main/Mrd/certificate/certificate.component';
-import { M } from '@angular/cdk/keycodes';
-import { TestingComponent } from './main/testing/testing.component';
-import { AppConfigModule } from './app-config.module';
-import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
-import { ToastrModule } from 'ngx-toastr';
-import { PdfviewerComponent } from './main/pdfviewer/pdfviewer.component';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { SharedModule } from './main/shared/shared.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BandwidthService } from './core/services/bandwidth.service';
-import { LoaderModule } from "./core/components/loader/loader.module";
-import { LayoutModule } from './layout/layout.module';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { Error404Component } from './main/shared/APIerrorpages/error-404/error-404.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { ToastrModule } from 'ngx-toastr';
+import { AppConfigModule } from './app-config.module';
+import { LoaderModule } from "./core/components/loader/loader.module";
+import { AppConfigService } from './core/services/api-config.service';
+import { BandwidthService } from './core/services/bandwidth.service';
+import { LayoutModule } from './layout/layout.module';
+import { PdfviewerComponent } from './main/pdfviewer/pdfviewer.component';
 import { Error401Component } from './main/shared/APIerrorpages/error-401/error-401.component';
 import { Error403Component } from './main/shared/APIerrorpages/error-403/error-403.component';
-import { AppConfigService } from './core/services/api-config.service';
+import { Error404Component } from './main/shared/APIerrorpages/error-404/error-404.component';
+import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
+import { SharedModule } from './main/shared/shared.module';
 const appRoutes: Routes = [
     {
         path: "auth",
