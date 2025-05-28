@@ -127,8 +127,7 @@ export class NewRegistrationComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.RegId = 0;
-
+    this.RegId = 0; 
     this.personalFormGroup = this.createPesonalForm();
     this.searchFormGroup = this.createSearchForm();
 
@@ -220,7 +219,9 @@ export class NewRegistrationComponent implements OnInit {
       RegId: '',
       RegNo: '',
       PrefixId: '',
-      PrefixID: '',
+      PrefixID: ['', [
+        Validators.required 
+      ]],
       FirstName: ['', [
         Validators.required 
       ]],
@@ -546,6 +547,22 @@ debugger
   }
   onSubmit() {
     debugger
+
+       let invalidFields = []; 
+      if (this.personalFormGroup.invalid) {
+        for (const controlName in this.personalFormGroup.controls) {
+          if (this.personalFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
 
     if ((this.personalFormGroup.get('PrefixID').value == '' || this.personalFormGroup.get('PrefixID').value == null || this.personalFormGroup.get('PrefixID').value == undefined)) {
       this.toastr.warning('Please select Prefix Name ', 'Warning !', {

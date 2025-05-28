@@ -286,8 +286,9 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
+                <!-- [disabled]="personalFormGroup.invalid" -->
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()" >Save</button>
             </div>
         </div>
     </div>
