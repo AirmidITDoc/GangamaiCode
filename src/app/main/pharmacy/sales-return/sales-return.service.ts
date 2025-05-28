@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,9 @@ export class SalesReturnService {
 
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    private _httpClient1:ApiCaller,
+    
   ) { 
     this.userFormGroup = this.IndentID();
     this.IndentSearchGroup= this.IndentSearchFrom();
@@ -73,21 +76,16 @@ export class SalesReturnService {
   }
  
   public getSalesBillList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseSalesBill",Param);
+    return this._httpClient1.PostData("Sales/salesbrowselist",Param);
   }
 
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
   }
 
-  public getSalesDetCashList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Cash",Param);
-  }
-
-  public getSalesDetCreditList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_SalesBill_Return_Credit",Param);
-  }
-
+  public getSalesDetCash_CreditList(Param){
+   return this._httpClient1.PostData("Common",Param)
+  } 
   public InsertSalesReturn(employee){
     return this._httpClient.post("Pharmacy/InsertSalesReturn", employee)
   }

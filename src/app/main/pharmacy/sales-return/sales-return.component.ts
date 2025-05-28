@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Printsal } from '../sales/sales.component';
 import { SalesReturnService } from './sales-return.service';
+import { OperatorComparer } from 'app/core/models/gridRequest';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class SalesReturnComponent implements OnInit {
   newDateTimeObj: any = {};
   @ViewChild('billSalesReturn') billSalesReturn:ElementRef;
   vStoreName: any;
-
+  autocompletestore: string = "Store";
   GrossAmt: any;
   DiscAmt: any;
   VatAmount: any;
@@ -75,8 +76,7 @@ export class SalesReturnComponent implements OnInit {
   MobileNo: any;
   PaymentType: any;
 
-  displayedColumns = [
-    // 'SalesId',
+  displayedColumns = [ 
     'Date',
     'SalesNo',
     'RegNo',
@@ -85,44 +85,16 @@ export class SalesReturnComponent implements OnInit {
     'PaidType',
   ];
 
-  dspSalesDetColumns = [
-    // 'SalesId',
-    // 'SalesNo',
-    // 'SalesDetId',
-    // 'OP_IP_ID',
-    // 'ItemId',
+  dspSalesDetColumns = [ 
     'ItemName',
-    'BatchNo',
-    // 'BatchExpDate',
-    // 'UnitMRP',
-    'Qty',
-    // 'ReturnQty',
-    'TotalAmount',
-    // 'VatPer',
-    // 'VatAmount',
-    'DiscPer',
-    // 'DiscAmount',
-    // 'GrossAmount',
-    // 'LandedPrice',
-    // 'TotalLandedAmount',
-    // 'IsBatchRequired',
-    // 'PurRateWf',
-    // 'PurTotAmt',
-    // 'IsPrescription',
-    // 'CGSTPer',
-    // 'SGSTPer',
-    // 'IGSTPer',
-    // 'IsPurRate',
-    // 'StkID'
+    'BatchNo', 
+    'Qty', 
+    'TotalAmount', 
+    'DiscPer', 
   ]
 
   dspSalesDetselectedColumns = [
-    "buttons",
-    // 'SalesId',
-    // 'SalesNo',
-    // 'SalesDetId',
-    // 'OP_IP_ID',
-    // 'ItemId',
+    "buttons", 
     'ItemName',
     'BatchNo',
     'BatchExpDate',
@@ -130,24 +102,18 @@ export class SalesReturnComponent implements OnInit {
     'Qty',
     'ReturnQty',
     'TotalAmount',
-    'VatPer',
-    // 'VatAmount',
+    'VatPer', 
     'DiscPer',
     'DiscAmount',
     'GrossAmount',
     'LandedPrice',
-    'TotalLandedAmount',
-    // 'IsBatchRequired',
-    // 'PurRateWf',
-    // 'PurTotAmt',
+    'TotalLandedAmount', 
     'CGSTPer',
     'CGSTAmount',
     'SGSTPer',
     'SGSTAmount',
     'IGSTPer',
-    'IGSTAmount',
-    // 'IsPurRate',
-    // 'StkID'
+    'IGSTAmount', 
   ]
   SearchForm: FormGroup;
   FinalReturnform: FormGroup;
@@ -166,25 +132,24 @@ export class SalesReturnComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public toastr : ToastrService,
-  ) {
-    this.SearchForm = this.SearchFilter();
-    this.FinalReturnform = this.Returnform();
-  }
+  ) {     this.SearchForm = this.SearchFilter();
+    this.FinalReturnform = this.Returnform();}
 
   ngOnInit(): void {
-    this.getSalesList();
-    this.getPharStoreList()
-  }
+    this.SearchForm.markAllAsTouched();
+     this.FinalReturnform.markAllAsTouched();
 
-  SearchFilter(): FormGroup {
-    return this._formBuilder.group({
+    this.getSalesList(); 
+  } 
+    SearchFilter(): FormGroup {
+    return this._formBuilder.group({ 
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       RegNo: '',
       F_Name: '',
       L_Name: '',
       SalesNo: '',
-      StoreId: '',
+     StoreId: [this._loggedService.currentUserValue.user.storeId],
     })
   }
 
@@ -195,41 +160,59 @@ export class SalesReturnComponent implements OnInit {
       TotDiscAmount:0
     });
   }
-
-  getPharStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._SalesReturnService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this.SearchForm.get('StoreId').setValue(this.StoreList[0]);
-      this.vStoreName =  this.SearchForm.get('StoreId').value.StoreName;
-    });
-  }
-
+  //   // sales bill lsit
+  FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  ToDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  StoreId1 =this._loggedService.currentUserValue.user.storeId || 0;
+  isShowDetailTable: boolean = false;
+  OpIpType: any = "0";
+  salesNo: any = "0";
+  regNo: any = "0"; 
+  firstName: any = "%";
+  LastName: any = "%";
+getbillllist(){  
+    this.firstName = this.SearchForm.get('F_Name').value + '%' || '%',
+    this.LastName = this.SearchForm.get('L_Name').value + '%' || '%',
+    this.StoreId1 =this.SearchForm.get('StoreId').value || 0,
+    this.FromDate = this.datePipe.transform(this.SearchForm.get('startdate').value, "yyyy-MM-dd") || '1900-01-01',
+    this.ToDate = this.datePipe.transform(this.SearchForm.get('enddate').value, "yyyy-MM-dd") || '1900-01-01',
+    this.regNo = this.SearchForm.get('RegNo').value || 0,
+    this.salesNo =this.SearchForm.get('SalesNo').value || 0  
+    this.getSalesList();
+}
   getSalesList() {
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
     this.TempItemselectedlist.data = [];
     this.Itemselectedlist.data = [];
-    this.Itemselectedlist = [];
-
-     // 
-    var vdata = {
-      F_Name: this.SearchForm.get('F_Name').value + '%' || '%',
-      L_Name: this.SearchForm.get('L_Name').value + '%' || '%',
-      From_Dt: this.datePipe.transform(this.SearchForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      To_Dt: this.datePipe.transform(this.SearchForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      Reg_No: this.SearchForm.get('RegNo').value || 0,
-      SalesNo: this.SearchForm.get('SalesNo').value || 0,
-      StoreId: this.SearchForm.get('StoreId').value.storeid || 0,
+    this.Itemselectedlist = []; 
+    debugger
+    var vdata = { 
+    "first": 0,
+    "rows": 10,
+    "sortField": "SalesId",
+    "sortOrder": 0,
+    "filters": [
+      { "fieldName": "F_Name", "fieldValue":  this.firstName, "opType": "Equals" },
+      { "fieldName": "L_Name", "fieldValue": this.LastName, "opType": "Equals" },
+      { "fieldName": "From_Dt", "fieldValue": this.FromDate, "opType": "Equals" },
+      { "fieldName": "To_Dt", "fieldValue": this.ToDate, "opType": "Equals" },
+      { "fieldName": "Reg_No", "fieldValue":String(this.regNo), "opType": "Equals" },
+      { "fieldName": "SalesNo", "fieldValue": String(this.salesNo), "opType": "Equals" },
+      { "fieldName": "OP_IP_Type", "fieldValue": "2", "opType": "Equals" },
+      { "fieldName": "StoreId", "fieldValue": this.StoreId1, "opType": "Equals" },
+      { "fieldName": "IPNo", "fieldValue": "0", "opType": "Equals" }
+    ],
+    "exportType": "JSON",
+    "columns": [
+      { "data": "string",  "name": "string" }
+    ] 
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
-      this._SalesReturnService.getSalesBillList(vdata).subscribe(
-        (data) => {
-          this.dssaleList.data = data as SaleBillList[];
-          // console.log(this.dssaleList.data);
+      this._SalesReturnService.getSalesBillList(vdata).subscribe((response) => {
+          this.dssaleList.data = response.data as SaleBillList[];
+          console.log(this.dssaleList.data);
           this.dssaleList.sort = this.sort;
           this.dssaleList.paginator = this.paginator;
           this.isLoadingStr = this.dssaleList.data.length == 0 ? 'no-data' : '';
@@ -240,37 +223,37 @@ export class SalesReturnComponent implements OnInit {
       );
     }, 1000);
   }
-
-  onSelect(Parama) {
+ onSelect(Parama) {  
     console.log(Parama);
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
     this.Itemselectedlist.data =[];
     this.Itemselectedlist =[];
     this.PatientName=Parama.PatientName;
-
-    if (Parama.PaidType == "Paid") {
-      this.getSalesDetCashList(Parama)
-      this.PaymentType='Paid'
+    this.PaymentType=Parama.paidType
+ 
+    let storeID = this.SearchForm.get('StoreId').value.storeid 
+    const Filters = [
+      { "fieldName": "RegNo", "fieldValue": String(Parama.rageNo), "opType": "Equals" },
+      { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
+      { "fieldName": "ItemName", "fieldValue": "%", "opType": "Equals" },
+      { "fieldName": "BatchNo", "fieldValue": "0", "opType": "Equals" }
+    ] 
+    if (Parama.paidType == 'Paid') {
+      var vdata = {
+        "searchFields": Filters,
+        "mode": "IPSalesReturnCash"
+      }
     }
     else {
-      this.getSalesDetCreditList(Parama)
-      this.PaymentType='Credit'
-    }
-  }
-
-  getSalesDetCashList(Params) {
-    this.SalesID = Params.SalesId;
-    var vdata = {
-      SalesId: Params.SalesId,
-      SalesNo: Params.SalesNo,
-      StoreId: this.SearchForm.get('StoreId').value.storeid || 0,
-      CashCounterId: Params.CashCounterID
-    }
-    setTimeout(() => {
+      var vdata = {
+        "searchFields": Filters,
+        "mode": "IPSalesReturnCredit"
+      }
+    } 
+      setTimeout(() => {
       this.isLoadingStr = 'loading';
-      this._SalesReturnService.getSalesDetCashList(vdata).subscribe(
-        (data) => {
+      this._SalesReturnService.getSalesDetCash_CreditList(vdata).subscribe((data) => {
           this.dssaleDetailList.data = data as SalesDetailList[];
           console.log(this.dssaleDetailList.data)
           this.isLoadingStr = this.dssaleDetailList.data.length == 0 ? 'no-data' : '';
@@ -280,27 +263,8 @@ export class SalesReturnComponent implements OnInit {
         }
       );
     }, 1000);
-  }
+  } 
 
-  getSalesDetCreditList(Params) {
-    this.SalesID = Params.SalesId;
-    var vdata = {
-      SalesId: Params.SalesId,
-      SalesNo: Params.SalesNo,
-      StoreId: this.SearchForm.get('StoreId').value.storeid || 0,
-      CashCounterId: Params.CashCounterID
-    }
-    setTimeout(() => {
-      this._SalesReturnService.getSalesDetCreditList(vdata).subscribe(data => {
-        this.dssaleDetailList.data = data as SalesDetailList[];
-        console.log(this.dssaleDetailList.data)
-        this.isLoadingStr = this.dssaleDetailList.data.length == 0 ? 'no-data' : '';
-      },
-        (error) => {
-          this.isLoading = 'list-loaded';
-        })
-    }, 1000);
-  }
 
   getCellCalculation(contact, ReturnQty) {
     
@@ -537,14 +501,10 @@ export class SalesReturnComponent implements OnInit {
     this.selectedssaleDetailList.data = this.Itemselectedlist;
     this.OP_IP_Id = contact.OP_IP_ID;
     this.SalesDetId = contact.SalesDetId;
-  }
-  onclickrow(contact) {
-    Swal.fire("Row selected :" + contact)
-  }
-  isLoading123 = false;
+  }  
   onSave() {
     if (this.FinalTotalAmount != 0 && this.FinalTotalAmount != null && this.FinalTotalAmount != 'NaN' && this.selectedssaleDetailList.data.length > 0) {
-     this.isLoading123 = true;
+ 
       if (this.PaymentType == 'Paid') {
         this.onCashOnlinePaySave()
       }
@@ -554,21 +514,8 @@ export class SalesReturnComponent implements OnInit {
     }
     else {
       Swal.fire("Chk Return Amount and Item List !")
-    }
-    
-    setTimeout(() => {
-      this.isLoading123 = false;
-    }, 2000);
-  }
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }  
+    } 
+  } 
   onCreditpaySave() {
 
     let nowDate = new Date();
@@ -686,8 +633,7 @@ export class SalesReturnComponent implements OnInit {
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = [];
 
-  }
-
+  } 
   onCashOnlinePaySave() {
     let nowDate = new Date();
     let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -956,6 +902,42 @@ export class SalesReturnComponent implements OnInit {
 
   onClose() {
     this.Itemselectedlist = [];
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }  
+
+    getValidationMessages() {
+    return {
+      RegNo: [
+        // { name: "required", Message: "SupplierId is required" }
+      ],
+      IPDNo: [
+        // { name: "required", Message: "SupplierId is required" }
+      ],
+      F_Name: [
+        // { name: "required", Message: "Item Name is required" }
+      ],
+      M_Name: [
+        // { name: "required", Message: "Batch No is required" }
+      ],
+      L_Name: [
+        // { name: "required", Message: "Invoice No is required" }
+      ],
+      SalesNo: [
+        // { name: "required", Message: "Invoice No is required" }
+      ],
+      StoreId: [
+        // { name: "required", Message: "Invoice No is required" }
+      ]
+
+    };
   }
 }
 
