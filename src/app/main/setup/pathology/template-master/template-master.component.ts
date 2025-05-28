@@ -19,11 +19,10 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 })
 export class TemplateMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+ templateName: any = "";
 
-
-    gridConfig: gridModel = {
-        apiUrl: "PathologyTemplate/List",
-        columnsList: [
+  
+       allcolumns =  [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Template Name", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Template Desc", key: "templateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
@@ -45,13 +44,18 @@ export class TemplateMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "templateId",
-        sortOrder: 0,
-        filters: [
+        ]
+      
+         allfilters =  [
             { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "PathologyTemplate/List",
+        columnsList: this.allcolumns,
+        sortField: "templateId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(
         public _TemplateServieService: TemplateServieService,
@@ -61,6 +65,44 @@ export class TemplateMasterComponent implements OnInit {
 
     ngOnInit(): void {
 
+    }
+    //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TemplateNameSearch')
+            this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "PathologyTemplate/List",
+            columnsList: this.allcolumns,
+            sortField: "templateId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
     }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

@@ -20,10 +20,9 @@ import { PrescriptionclassmasterService } from "./prescriptionclassmaster.servic
 export class PrescriptionclassmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-    gridConfig: gridModel = {
-        apiUrl: "Priscriptionclass/List",
-        columnsList: [
+    className: any = "";
+   
+      allcolumns = [
             { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TemplateDescName", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
@@ -60,18 +59,62 @@ export class PrescriptionclassmasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "classId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        
+    allfilters =  [
             { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "Priscriptionclass/List",
+        columnsList: this.allcolumns,
+        sortField: "classId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(
         public _PrescriptionclassService: PrescriptionclassmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,
     ) {}
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TemplateNameSearch')
+            this._PrescriptionclassService.myformSearch.get('TemplateNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.className = this._PrescriptionclassService.myformSearch.get('TemplateNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._PrescriptionclassService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "Priscriptionclass/List",
+            columnsList: this.allcolumns,
+            sortField: "classId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "className", fieldValue: this.className, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

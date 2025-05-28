@@ -19,12 +19,10 @@ export class InstructionmasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    constructor(public _InstructionService: InstructionmasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService) { }
-
-    gridConfig: gridModel = {
-        apiUrl: "InstructionMastere/List",
-        columnsList: [
+   
+ instructionDescription: any = "";
+   
+        allcolumns = [
             { heading: "Code", key: "instructionId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Instruction Name", key: "instructionDescription", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -43,13 +41,62 @@ export class InstructionmasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "instructionId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "instructionDescription", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "InstructionMastere/List",
+        columnsList: this.allcolumns,
+        sortField: "instructionId",
+        sortOrder: 0,
+        filters: this.allfilters
+    }
+
+constructor(public _InstructionService: InstructionmasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService) { }
+
+         ngOnInit(): void {
+    }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'InstructionNameSearch')
+            this._InstructionService.myformSearch.get('InstructionNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.instructionDescription = this._InstructionService.myformSearch.get('InstructionNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._InstructionService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "InstructionMastere/List",
+            columnsList: this.allcolumns,
+            sortField: "instructionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "instructionDescription", fieldValue: this.instructionDescription, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
     }
 
     onSave(row: any = null) {
@@ -73,8 +120,7 @@ export class InstructionmasterComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-    }
+  
 
     onClear() {
         this._InstructionService.myForm.reset({ IsDeleted: "false" });

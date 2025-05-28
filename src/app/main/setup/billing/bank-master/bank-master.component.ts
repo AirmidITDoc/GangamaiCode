@@ -18,10 +18,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 })
 export class BankMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "BankMaster/List",
-        columnsList: [
+bankName: any = "";
+   
+         allcolumns = [
             { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BankName", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,20 +40,62 @@ export class BankMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "bankId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+         allfilters = [
             { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+  gridConfig: gridModel = {
+        apiUrl: "BankMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "bankId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(public _bankService: BankMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'BankNameSearch')
+            this._bankService.myformSearch.get('BankNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.bankName = this._bankService.myformSearch.get('BankNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._bankService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "BankMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "bankId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "bankName", fieldValue: this.bankName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSearchClear() {
         this._bankService.myformSearch.reset({
             BankNameSearch: "",

@@ -20,7 +20,7 @@
             <ng-container filters>
                 <form  [formGroup]="_religionService.myformSearch" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Religion Name</mat-label>
+                    <mat-label>mode Name</mat-label>
                     <input matInput placeholder="Search Religion Name" autocomplete="off"
                         [formGroup]="_religionService.myformSearch" formControlName="ReligionNameSearch"
                     (input)="onChangeFirst()" />

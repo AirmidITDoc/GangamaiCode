@@ -18,9 +18,8 @@ import { NewManufactureComponent } from "./new-manufacture/new-manufacture.compo
 export class ManufactureMasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "ManufactureMaster/List",
-        columnsList: [
+    manufName: any = "";
+        allcolumns = [
             { heading: "Code", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ManuFatcureName", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ManufactureShortName", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,20 +40,62 @@ export class ManufactureMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ManufName",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+      allfilters = [
             { fieldName: "manufName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "ManufactureMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "ManufName",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _ManufactureMasterService: ManufactureMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
         
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ManufNameSearch')
+            this._ManufactureMasterService.myformSearch.get('ManufNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.manufName = this._ManufactureMasterService.myformSearch.get('ManufNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._ManufactureMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "ManufactureMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "ManufName",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "manufName", fieldValue: this.manufName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

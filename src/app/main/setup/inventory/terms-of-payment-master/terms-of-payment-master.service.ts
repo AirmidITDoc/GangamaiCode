@@ -34,7 +34,7 @@ export class TermsOfPaymentMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TermsOfPaymentSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

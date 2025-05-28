@@ -20,9 +20,8 @@ import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
 export class SubtpaCompanyMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    gridConfig: gridModel = {
-        apiUrl: "SubTpaCompany/List",
-        columnsList: [
+     companyName: any = "";
+         allcolumns = [
             { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -49,13 +48,18 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "subCompanyId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "SubTpaCompany/List",
+        columnsList: this.allcolumns,
+        sortField: "subCompanyId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -64,6 +68,44 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
+    //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CompanyNameSearch')
+            this._subtpacompanyService.myformSearch.get('CompanyNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.companyName = this._subtpacompanyService.myformSearch.get('CompanyNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._subtpacompanyService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "SubTpaCompany/List",
+            columnsList: this.allcolumns,
+            sortField: "subCompanyId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

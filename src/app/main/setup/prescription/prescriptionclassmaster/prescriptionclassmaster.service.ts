@@ -42,7 +42,7 @@ export class PrescriptionclassmasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TemplateNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

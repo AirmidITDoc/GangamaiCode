@@ -18,9 +18,8 @@ import { TaxMasterService } from "./tax-master.service";
 export class TaxMasterComponent implements OnInit {
    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "TaxMaster/List",
-        columnsList: [
+    taxNature: any = "";
+         allcolumns = [
             { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TaxNatureName", key: "taxNature", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -40,15 +39,20 @@ export class TaxMasterComponent implements OnInit {
                     }
                 }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "id",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "TaxMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "id",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(
         public _TaxMasterService: TaxMasterService,
         public toastr: ToastrService,
@@ -56,7 +60,44 @@ export class TaxMasterComponent implements OnInit {
     ) { }
     
     ngOnInit(): void { }
+//filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TaxNatureSearch')
+            this._TaxMasterService.myformSearch.get('TaxNatureSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.taxNature = this._TaxMasterService.myformSearch.get('TaxNatureSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TaxMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "TaxMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "id",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "taxNature", fieldValue: this.taxNature, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

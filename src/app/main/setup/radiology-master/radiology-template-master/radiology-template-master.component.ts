@@ -21,10 +21,9 @@ import { ToastrService } from 'ngx-toastr';
 export class RadiologyTemplateMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+ templateName: any = "";
 
-    gridConfig: gridModel = {
-        apiUrl: "RadiologyTemplate/List",
-        columnsList: [
+       allcolumns =  [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TemplateName", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TemplateDesc", key: "templateDesc", width: 200, sort: true, align: 'left', emptySign: 'NA' },
@@ -46,13 +45,18 @@ export class RadiologyTemplateMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "TemplateName",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+       allfilters = [
             { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "RadiologyTemplate/List",
+        columnsList: this.allcolumns,
+        sortField: "TemplateName",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(
         public _TemplateServieService: RadiologyTemplateMasterService,
@@ -62,7 +66,44 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-    
+     //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TemplateNameSearch')
+            this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "RadiologyTemplate/List",
+            columnsList: this.allcolumns,
+            sortField: "TemplateName",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         
         let that = this;

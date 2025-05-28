@@ -18,10 +18,9 @@ import { NewItemClassComponent } from "./new-item-class/new-item-class.component
 export class ItemClassMasterComponent implements OnInit {
     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-    gridConfig: gridModel = {
-        apiUrl: "ItemClassMaster/List",
-        columnsList: [
+    itemClassName: any = "";
+   
+         allcolumns = [
             { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ItemClassName", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,19 +40,62 @@ export class ItemClassMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "itemClassId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "itemClassName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "ItemClassMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "itemClassId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _ItemClassMasterService: ItemClassMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
         
     ngOnInit(): void { }
+     //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ItemClassNameSearch')
+            this._ItemClassMasterService.myformSearch.get('ItemClassNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.itemClassName = this._ItemClassMasterService.myformSearch.get('ItemClassNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._ItemClassMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "ItemClassMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "itemClassId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "itemClassName", fieldValue: this.itemClassName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

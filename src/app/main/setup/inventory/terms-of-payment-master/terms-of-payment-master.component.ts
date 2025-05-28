@@ -18,9 +18,8 @@ import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
 export class TermsOfPaymentMasterComponent implements OnInit {
     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "TermsOfPayment/List",
-        columnsList: [
+    termsOfPayment: any = "";
+        allcolumns =  [
             { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Terms Of Payment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -40,13 +39,18 @@ export class TermsOfPaymentMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "id",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allfilters = [
             { fieldName: "termsOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "TermsOfPayment/List",
+        columnsList: this.allcolumns,
+        sortField: "id",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
@@ -54,7 +58,44 @@ export class TermsOfPaymentMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'TermsOfPaymentSearch')
+            this._TermsOfPaymentMasterService.myformSearch.get('TermsOfPaymentSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.termsOfPayment = this._TermsOfPaymentMasterService.myformSearch.get('TermsOfPaymentSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._TermsOfPaymentMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "TermsOfPayment/List",
+            columnsList: this.allcolumns,
+            sortField: "id",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "termsOfPayment", fieldValue: this.termsOfPayment, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

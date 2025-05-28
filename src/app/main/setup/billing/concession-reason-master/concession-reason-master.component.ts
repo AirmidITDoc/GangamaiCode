@@ -20,9 +20,8 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    gridConfig: gridModel = {
-        apiUrl: "ConcessionReasonMaster/List",
-        columnsList: [
+     concessionReason: any = "";
+        allcolumns = [
             { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -42,13 +41,18 @@ export class ConcessionReasonMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "concessionId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+        allfilters = [
             { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "ConcessionReasonMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "concessionId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -57,6 +61,44 @@ export class ConcessionReasonMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+     //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ConcessionReasonNameSearch')
+            this._ConcessionReasonMasterService.myformSearch.get('ConcessionReasonNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.concessionReason = this._ConcessionReasonMasterService.myformSearch.get('ConcessionReasonNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._ConcessionReasonMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "ConcessionReasonMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "concessionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "concessionReason", fieldValue: this.concessionReason, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

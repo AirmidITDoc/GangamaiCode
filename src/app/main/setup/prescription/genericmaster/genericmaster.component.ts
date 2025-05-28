@@ -18,10 +18,9 @@ import { NewGnericMasterComponent } from "./new-gneric-master/new-gneric-master.
 })
 export class GenericmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "GenericMaster/List",
-        columnsList: [
+ genericName: any = "";
+    
+        allcolumns = [
             { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,19 +40,62 @@ export class GenericmasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "genericId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+       allfilters = [
             { fieldName: "genericName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "GenericMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "genericId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(public _GenericService: GenericmasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'GenericNameSearch')
+            this._GenericService.myformSearch.get('GenericNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.genericName = this._GenericService.myformSearch.get('GenericNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._GenericService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "GenericMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "genericId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "genericName", fieldValue: this.genericName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
 
     changeStatus(status: any) {
         switch (status.id) {

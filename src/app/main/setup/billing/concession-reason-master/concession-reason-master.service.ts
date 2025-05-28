@@ -33,7 +33,7 @@ export class ConcessionReasonMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ConcessionReasonNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

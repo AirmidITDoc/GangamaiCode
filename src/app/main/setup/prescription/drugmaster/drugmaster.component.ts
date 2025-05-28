@@ -21,9 +21,8 @@ export class DrugmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     
-    gridConfig: gridModel = {
-        apiUrl: "DrugMaster/List",
-        columnsList: [
+    drugName: any = "";
+       allcolumns =  [
             { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA'  },
@@ -46,19 +45,61 @@ export class DrugmasterComponent implements OnInit {
                     }
                 ]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "drugId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+       allfilters = [
             { fieldName: "drugName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "DrugMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "drugId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(public _drugService: DrugmasterService,public _matDialog: MatDialog,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {}
+//filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'DrugNameSearch')
+            this._drugService.myformSearch.get('DrugNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.drugName = this._drugService.myformSearch.get('DrugNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._drugService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "DrugMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "drugId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "drugName", fieldValue: this.drugName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any=null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

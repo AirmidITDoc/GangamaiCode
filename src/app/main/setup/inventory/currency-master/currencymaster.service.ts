@@ -34,7 +34,7 @@ export class CurrencymasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CurrencyNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
     

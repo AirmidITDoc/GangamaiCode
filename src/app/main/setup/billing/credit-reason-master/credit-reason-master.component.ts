@@ -19,10 +19,9 @@ import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.
 export class CreditReasonMasterComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "CreditReasonMaster/List",
-        columnsList: [
+creditReason: any = "";
+   
+         allcolumns = [
             { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -42,13 +41,19 @@ export class CreditReasonMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "creditId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+       allfilters = [
             { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "CreditReasonMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "creditId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -57,7 +62,44 @@ export class CreditReasonMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+ //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CreditReasonSearch')
+            this._CreditreasonService.myformSearch.get('CreditReasonSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.creditReason = this._CreditreasonService.myformSearch.get('CreditReasonSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CreditreasonService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CreditReasonMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "creditId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "creditReason", fieldValue: this.creditReason, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

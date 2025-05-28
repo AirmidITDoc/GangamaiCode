@@ -17,11 +17,10 @@ import { UnitmasterService } from "./unitmaster.service";
 })
 export class UnitmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+ unitName: any = "";
 
-
-    gridConfig: gridModel = {
-        apiUrl: "PathUnitMaster/List",
-        columnsList: [
+   
+       allcolumns = [
             { heading: "Code", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -40,13 +39,18 @@ export class UnitmasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "unitId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+         allfilters = [
             { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "PathUnitMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "unitId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
     constructor(
@@ -59,7 +63,44 @@ export class UnitmasterComponent implements OnInit {
 
     }
 
+//filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'UnitNameSearch')
+            this._unitmasterService.myformSearch.get('UnitNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.unitName = this._unitmasterService.myformSearch.get('UnitNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._unitmasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "PathUnitMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "unitId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "unitName", fieldValue: this.unitName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

@@ -18,9 +18,8 @@ import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment
 export class ModeOfPaymentMasterComponent implements OnInit {
    
         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-        gridConfig: gridModel = {
-            apiUrl: "ModeOfPayment/List",
-            columnsList: [
+       modeOfPayment: any = "";
+             allcolumns = [
                 { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ModeOfPaymentName", key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -39,19 +38,62 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                             }
                         }]
                 } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "id",
-            sortOrder: 0,
-            filters: [
+            ]
+            
+          allfilters = [
                 { fieldName: "modeOfPayment", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ]
-        }
+         gridConfig: gridModel = {
+        apiUrl: "ModeOfPayment/List",
+        columnsList: this.allcolumns,
+        sortField: "id",
+        sortOrder: 0,
+        filters: this.allfilters
+    }
         
         constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService,public _matDialog: MatDialog,
             public toastr : ToastrService,) {}
      
         ngOnInit(): void { }
+         //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'ModeOfPaymentSearch')
+            this._ModeOfPaymentMasterService.myformSearch.get('ModeOfPaymentSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.modeOfPayment = this._ModeOfPaymentMasterService.myformSearch.get('ModeOfPaymentSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._ModeOfPaymentMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "ModeOfPayment/List",
+            columnsList: this.allcolumns,
+            sortField: "id",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "modeOfPayment", fieldValue: this.modeOfPayment, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
         onSave(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button

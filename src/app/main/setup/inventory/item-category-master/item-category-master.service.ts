@@ -39,7 +39,7 @@ export class ItemCategoryMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemCategoryNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

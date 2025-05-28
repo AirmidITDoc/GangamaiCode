@@ -38,7 +38,7 @@ export class ModeOfPaymentMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ModeOfPaymentSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
     initializeFormGroup() {

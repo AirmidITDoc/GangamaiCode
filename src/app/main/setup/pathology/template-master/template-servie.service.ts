@@ -23,7 +23,7 @@ export class TemplateServieService {
          [ Validators.required,
          Validators.pattern('^[a-zA-Z0-9 ]*$')],
       ],
-        IsDeletedSearch: ["2"],
+        IsDeletedSearch: [""],
     });
 }
 

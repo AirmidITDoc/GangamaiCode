@@ -18,9 +18,8 @@ import { UomMasterService } from "./uom-master.service";
 export class UomMasterComponent implements OnInit {
     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "UnitOfMeasurement/List",
-        columnsList: [
+    unitofMeasurementName: any = "";
+        allcolumns = [
             { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UnitOfMeasurementName", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
@@ -40,19 +39,62 @@ export class UomMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "unitofMeasurementId",
-        sortOrder: 0,
-        filters: [
+        ]
+        
+         allfilters =[
             { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+gridConfig: gridModel = {
+        apiUrl: "UnitOfMeasurement/List",
+        columnsList: this.allcolumns,
+        sortField: "unitofMeasurementId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-
     constructor(public _UomMasterService: UomMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
+    //filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'UnitofMeasurementSearch')
+            this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.unitofMeasurementName = this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._UomMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "UnitOfMeasurement/List",
+            columnsList: this.allcolumns,
+            sortField: "unitofMeasurementId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "unitofMeasurementName", fieldValue: this.unitofMeasurementName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

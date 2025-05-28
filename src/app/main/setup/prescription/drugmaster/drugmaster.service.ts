@@ -42,7 +42,7 @@ export class DrugmasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DrugNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

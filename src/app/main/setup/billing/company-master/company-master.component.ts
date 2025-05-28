@@ -25,10 +25,9 @@ export class CompanyMasterComponent implements OnInit {
     }
     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
-    gridConfig: gridModel = {
-        apiUrl: "CompanyMaster/List",
-        columnsList: [
+ companyName: any = "";
+   
+    allcolumns = [
             { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 120 },
@@ -59,13 +58,18 @@ export class CompanyMasterComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "companyId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+         allfilters = [
             { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "CompanyMaster/List",
+        columnsList: this.allcolumns,
+        sortField: "companyId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
     constructor(
         public _CompanyMasterService: CompanyMasterService,
@@ -76,7 +80,44 @@ export class CompanyMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
+//filters addedby avdhoot vedpathak date-28/05/2025
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CompanyNameSearch')
+            this._CompanyMasterService.myformSearch.get('CompanyNameSearch').setValue("")
 
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.companyName = this._CompanyMasterService.myformSearch.get('CompanyNameSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
+        this.gridConfig = {
+            apiUrl: "CompanyMaster/List",
+            columnsList: this.allcolumns,
+            sortField: "companyId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+            ]
+        }
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
+        console.log("GridConfig:", this.gridConfig);
+
+    if (this.grid) {
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    } else {
+        console.error("Grid is undefined!");
+    }
+    }
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

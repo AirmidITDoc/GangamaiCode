@@ -69,7 +69,7 @@ export class SubtpaCompanyMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 

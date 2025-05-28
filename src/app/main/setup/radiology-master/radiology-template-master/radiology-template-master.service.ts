@@ -35,7 +35,7 @@ export class RadiologyTemplateMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TemplateNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
 
