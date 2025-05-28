@@ -269,8 +269,21 @@
   .dynamic-table-wrapper {
     height: 100%;
     overflow: auto;
+    form{
+      height: 100%;
+    }
     .airmid-table-container {
       height: 100%;
+      .table-header{
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      &.table-column{
+        display: flex;
+        flex-flow: column;
+      }
       .content-card {
         height: 100%;
         display: flex;
@@ -278,6 +291,39 @@
         .table-wrapper {
           flex: 1;
           overflow: auto;
+        }
+      }
+    }
+    .tab-container{
+      &.tab-grid{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        height: 100%;
+        overflow: hidden;
+        .tab-body{
+          flex: 1;
+          overflow: auto;
+          .tab-box{
+            height: 100%;
+            display: flex;
+            flex-flow: column !important;
+            gap: 8px;
+          }
+        }
+        .tab-footer{
+          .tab-footer-action{
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            &.between{
+              justify-content: space-between;
+            }
+            .tab-footer-buttons{
+              display: flex;
+              gap: 8px;
+            }
+          }
         }
       }
     }
