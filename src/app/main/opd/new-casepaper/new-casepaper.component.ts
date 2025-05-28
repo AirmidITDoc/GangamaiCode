@@ -25,6 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AddItemComponent } from './add-item/add-item.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 interface Patient {
   PHeight: string;
@@ -81,6 +82,7 @@ export class NewCasepaperComponent implements OnInit {
   currentDate = new Date();
   caseFormGroup: FormGroup;
   searchFormGroup: FormGroup;
+  casePaperInsertForm: FormGroup;
   MedicineItemForm: FormGroup;
   ItemForm: FormGroup;
   CompanyName: any;
@@ -164,6 +166,29 @@ export class NewCasepaperComponent implements OnInit {
   selectable = true;
   removable = true;
 
+  PatientListfilteredOptions: any;
+  ConsultantDocId: any;
+
+  RefDocNameId: any;
+  PrefollowUpDate: string;
+
+  RtrvDescriptionList: any = [];
+  HistoryList: any = [];
+  addCheiflist: any[] = [];
+  addDiagnolist: any = [];
+  addExaminlist: any = [];
+  nValue: any[] = [];
+
+  doseId = 0
+  doseName = ""
+  durgId = 0
+  durgName = ""
+  templateId = 0
+  templateName = ""
+  itemObjects: any;
+  itemGeneric: any;
+  vdoseName: any;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -199,6 +224,7 @@ export class NewCasepaperComponent implements OnInit {
     public dialogRef: MatDialogRef<NewCasepaperComponent>,
     public _WhatsAppEmailService: WhatsAppEmailService,
     private configService: ConfigService,
+     private _FormvalidationserviceService: FormvalidationserviceService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { console.log('Dialog Data:', data); }
@@ -207,6 +233,7 @@ export class NewCasepaperComponent implements OnInit {
     // 
     this.searchFormGroup = this.createSearchForm();
     this.caseFormGroup = this.createForm();
+    this.casePaperInsertForm = this.createCasePaperForm();
     this.MedicineItemform();
     this.specificDate = new Date();
     this.dateStyle = 'Day'
@@ -242,19 +269,19 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     setTimeout(() => {
-        this._CasepaperService.getVisitById(this.VisitId).subscribe(data => {
-          // this.patientDetail1 = data;
-          console.log(data)
-          this.vHeight=data.height
-          this.vWeight=data.pweight
-          this.vBSL=data.bmi
-          this.vBMI=data.bmi 
-          this.vBP=data. bp
-          this.vTemp=data.temp
-          this.vSpO2=data.spO2
-          this.vPulse=data.pulse
-        });
-      }, 500);
+      this._CasepaperService.getVisitById(this.VisitId).subscribe(data => {
+        // this.patientDetail1 = data;
+        console.log(data)
+        this.vHeight = data.height
+        this.vWeight = data.pweight
+        this.vBSL = data.bmi
+        this.vBMI = data.bmi
+        this.vBP = data.bp
+        this.vTemp = data.temp
+        this.vSpO2 = data.spO2
+        this.vPulse = data.pulse
+      });
+    }, 500);
   }
 
   // removedignosis(item) {
@@ -267,18 +294,18 @@ export class NewCasepaperComponent implements OnInit {
     let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id === item.id);
 
     if (removedIndex !== -1) {
-        this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
+      this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
 
-        this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
+      this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
 
-        this.addDiagnolist = this.caseFormGroup.value.mAssignDiagnosis.map(x => ({
-            id: x.id,
-            descriptionName: x.descriptionName
-        }));
+      this.addDiagnolist = this.caseFormGroup.value.mAssignDiagnosis.map(x => ({
+        id: x.id,
+        descriptionName: x.descriptionName
+      }));
 
-        console.log("Updated addDiagnolist after removal:", this.addDiagnolist);
+      console.log("Updated addDiagnolist after removal:", this.addDiagnolist);
     }
-}
+  }
 
   // removeChiefComplaint(item) {
   //   let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId == item.complaintId);
@@ -287,22 +314,22 @@ export class NewCasepaperComponent implements OnInit {
   // }
 
   removeChiefComplaint(item) {
-    
+
     let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId === item.complaintId);
 
     if (removedIndex !== -1) {
-        this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
+      this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
 
-        this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
+      this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
 
-        this.addCheiflist = this.caseFormGroup.value.mAssignChiefComplaint.map(x => ({
-            complaintId: x.complaintId,
-            complaintDescr: x.complaintDescr
-        }));
+      this.addCheiflist = this.caseFormGroup.value.mAssignChiefComplaint.map(x => ({
+        complaintId: x.complaintId,
+        complaintDescr: x.complaintDescr
+      }));
 
-        console.log("Updated addCheiflist after removal:", this.addCheiflist);
+      console.log("Updated addCheiflist after removal:", this.addCheiflist);
     }
-}
+  }
 
   // removeExamination(item) {
   //   let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId == item.examinationId);
@@ -311,22 +338,22 @@ export class NewCasepaperComponent implements OnInit {
   // }
 
   removeExamination(item) {
-    
+
     let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId === item.examinationId);
 
     if (removedIndex !== -1) {
-        this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
+      this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
 
-        this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
+      this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
 
-        this.addExaminlist = this.caseFormGroup.value.mAssignExamination.map(x => ({
-            examinationId: x.examinationId,
-            examinationDescr: x.examinationDescr
-        }));
+      this.addExaminlist = this.caseFormGroup.value.mAssignExamination.map(x => ({
+        examinationId: x.examinationId,
+        examinationDescr: x.examinationDescr
+      }));
 
-        console.log("Updated addExaminlist after removal:", this.addExaminlist);
+      console.log("Updated addExaminlist after removal:", this.addExaminlist);
     }
-}
+  }
 
   // removeService(item) {
   //   let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
@@ -338,23 +365,23 @@ export class NewCasepaperComponent implements OnInit {
     let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
 
     if (removedIndex !== -1) {
-        this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
+      this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
 
-        this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
+      this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
 
-        this.selectedItems = this.caseFormGroup.value.mAssignService.map(x => ({ serviceId: x.serviceId }));
+      this.selectedItems = this.caseFormGroup.value.mAssignService.map(x => ({ serviceId: x.serviceId }));
 
-        console.log("Updated selectedItems after removal:", this.selectedItems);
+      console.log("Updated selectedItems after removal:", this.selectedItems);
     }
-}
-filteredCheifComplaint:Observable<string[]>
+  }
+  filteredCheifComplaint: Observable<string[]>
 
-getCheifComplaintList() { 
-  this._CasepaperService.getDemo().subscribe((response) => {
-    this.filteredCheifComplaint = response;
-    console.log(this.patientDetail)
-  });
-}
+  getCheifComplaintList() {
+    this._CasepaperService.getDemo().subscribe((response) => {
+      this.filteredCheifComplaint = response;
+      console.log(this.patientDetail)
+    });
+  }
 
   vDays: any = 10;
   followUpDate: string;
@@ -408,61 +435,63 @@ getCheifComplaintList() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
       LangaugeRadio: ["true"],
-      Height: ['', [
+      Height: ['', [ 
         Validators.required,
-      ]],
-      Weight: ['', [
+        Validators.maxLength(20),
+        this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      Weight: ['', [ 
         Validators.required,
-      ]],
-      BMI: '',
-      BSL: '',
-      SpO2: ['', [
-        // Validators.required,
-      ]],
-      Pulse: ['', [
-        // Validators.required,
-      ]],
-      BP: ['', [
-        // Validators.required,
-      ]],
-      Temp: ['', [
-        // Validators.required,
-      ]],
-      ChiefComplaint: '',
-      serviceId: '',
-      Diagnosis: '',
-      Examination: '',
-      ExaminationControl: '',
-      DiagnosisControl: '',
-      CheifComplaintControl: '',
+        Validators.maxLength(20),
+        this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      BMI: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
+      BSL: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
+      SpO2: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
+      Pulse: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
+      BP: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
+      Temp: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
+      ChiefComplaint: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      serviceId: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      Diagnosis: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      Examination: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      ExaminationControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      DiagnosisControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      CheifComplaintControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
 
-      mAssignChiefComplaint: [""],
-      mAssignDiagnosis: [""],
-      mAssignExamination: [""],
+      mAssignChiefComplaint: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignDiagnosis: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignExamination: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
 
-      mAssignService: [""],
+      mAssignService: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
     });
   }
 
   MedicineItemform() {
     this.MedicineItemForm = this._formBuilder.group({
-      ItemId: ['', [Validators.required]],
-      DoseId: ['', [Validators.required]],
-      DoseId1: '',
-      Day: ['', [Validators.required,Validators.pattern("^^[1-9]+[0-9]*$")]],
+      ItemId: [0, [Validators.required]],
+      DoseId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DoseId1: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      Day: ['', [Validators.required, Validators.pattern("^^[1-9]+[0-9]*$")]],
       ItemGenericNameId: '',
-      Instruction: '',
+      Instruction: ['',[Validators.maxLength(200)]],
       DoctorID: '',
       Departmentid: '',
       FollowupDays: '',
       start: [''],
-      Remark: '',
-      Days: '',
+      Remark: ['',[Validators.maxLength(200)]],
+      Days: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: '',
       FollowupMonths: '',
       FollowupYears: '',
       dateStylebtn: ['Day'],
       TemplateId: ['']
+    });
+  }
+
+   createCasePaperForm() {
+    return this._formBuilder.group({
+      tPrescription:"",
+      topRequestList:"",
+      mopCasepaperDignosisMaster:"",
     });
   }
 
@@ -476,8 +505,6 @@ getCheifComplaintList() {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  PatientListfilteredOptions: any;
-  ConsultantDocId: any;
 
   getSelectedObj(obj) {
     this.onClear();
@@ -511,9 +538,6 @@ getCheifComplaintList() {
     this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
-  RefDocNameId: any;
-  PrefollowUpDate: string;
-
   // tried
   vDrugName: any;
   vDoseName: any;
@@ -521,7 +545,7 @@ getCheifComplaintList() {
   vDayys: any;
   vInst: any;
   vPrescriptionId: any;
-  visitIdRefresh: any; 
+  visitIdRefresh: any;
   getPrescription(obj) {
     // debugger
     this.visitIdRefresh = obj.visitId;
@@ -531,14 +555,14 @@ getCheifComplaintList() {
       "sortField": "VisitId",
       "sortOrder": 0,
       "filters": [
-    {
+        {
           "fieldName": "VisitId",
           "fieldValue": String(obj.visitId),
           "opType": "Equals"
         }
-    ],
-    "Columns":[],
-    "exportType": "JSON"
+      ],
+      "Columns": [],
+      "exportType": "JSON"
     }
     console.log("VisitId:", m_data2)
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
@@ -552,30 +576,42 @@ getCheifComplaintList() {
 
       if (this.dsItemList.data.length > 0) {
         for (let item of this.dsItemList.data) {
-          this.vHeight = item.pHeight;
-          this.vWeight = item.pWeight;
-          this.vBMI = item.bmi;
-          this.vSpO2 = item.spO2;
-          this.vTemp = item.temp;
-          this.vPulse = item.pulse;
-          this.vBSL = item.bsl;
-          this.vBP = item.bp;
+          
+          // this.vHeight = item.pHeight;
+          // this.vWeight = item.pWeight;
+          // this.vBMI = item.bmi;
+          // this.vSpO2 = item.spO2;
+          // this.vTemp = item.temp;
+          // this.vPulse = item.pulse;
+          // this.vBSL = item.bsl;
+          // this.vBP = item.bp;
+
+            this.caseFormGroup.patchValue({
+              Height: item.pHeight,
+              Weight: item.pWeight,
+              BMI: item.bmi,
+              BSL: item.bsl,
+              SpO2: item.spO2,
+              Pulse: item.pulse,
+              BP: item.bp,
+              Temp: item.temp
+            });
 
           this.vChiefComplaint = item.chiefComplaint;
-        this.vDiagnosis = item.diagnosis;
-        this.vExamination = item.examination;
-        this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
-        this.specificDate = new Date(this.PrefollowUpDate)
-        this.MedicineItemForm.get('Remark').setValue(item.advice)
-        this.RefDocName = item.doctorname
-        this.vDrugName = item.drugName
-        this.vDoseName = item.doseName
-        this.vItemGN = item.genericName
-        this.vDayys = item.days
-        this.vInst = item.instruction
-        this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
+          this.vDiagnosis = item.diagnosis;
+          this.vExamination = item.examination;
+          this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
+          this.specificDate = new Date(this.PrefollowUpDate)
+          this.MedicineItemForm.get('Remark').setValue(item.advice)
+          this.RefDocName = item.doctorname
+          this.vDrugName = item.drugName
+          this.vDoseName = item.doseName
+          this.vItemGN = item.genericName
+          this.vDayys = item.days
+          this.vInst = item.instruction
+          this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
         }
-        
+
       }
 
       // if (this.dsItemList.data.length > 0) {
@@ -606,14 +642,6 @@ getCheifComplaintList() {
 
   }
 
-  RtrvDescriptionList: any = [];
-
-  HistoryList: any = [];
-  addCheiflist: any[] = [];
-  addDiagnolist: any = [];
-  addExaminlist: any = [];
-  nValue: any[] = [];
-
   getRtrvCheifComplaintList(obj) {
     // debugger
     this.addCheiflist = [];
@@ -629,7 +657,7 @@ getCheifComplaintList() {
       "filters": [
         { "fieldName": "VisitId", "fieldValue": String(obj.visitId), "opType": "Equals" }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     };
 
@@ -648,7 +676,7 @@ getCheifComplaintList() {
           ChiefComplaint.forEach(element => {
             this.addCheiflist.push(
               {
-                complaintId:element.id,
+                complaintId: element.id,
                 complaintDescr: element.descriptionName,
               }
             )
@@ -671,7 +699,7 @@ getCheifComplaintList() {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
               {
-                id:element.id,
+                id: element.id,
                 descriptionName: element.descriptionName
               }
             )
@@ -691,7 +719,7 @@ getCheifComplaintList() {
           Examination.forEach(element => {
             this.addExaminlist.push(
               {
-                examinationId:element.id,
+                examinationId: element.id,
                 examinationDescr: element.descriptionName
               }
             )
@@ -714,30 +742,34 @@ getCheifComplaintList() {
 
   }
 
-  getBMIcalculation() {
-    if (this.vHeight > 0 && this.vWeight > 0) {
-      let Height = (this.vHeight / 100)
-      this.vBMI = Math.round((this.vWeight) / ((Height) * (Height)));
-    }
-    else if (this.vHeight <= 0) {
-      this.vBMI = 0;
-      //Swal.fire('Please enter Height')
-    }
-    else if (this.vWeight <= 0) {
-      this.vBMI = 0;
-      //Swal.fire('Please enter Weight')
-    }
-  }
+  // getBMIcalculation() {
+  //   if (this.vHeight > 0 && this.vWeight > 0) {
+  //     let Height = (this.vHeight / 100)
+  //     this.vBMI = Math.round((this.vWeight) / ((Height) * (Height)));
+  //   }
+  //   else if (this.vHeight <= 0) {
+  //     this.vBMI = 0;
+  //     //Swal.fire('Please enter Height')
+  //   }
+  //   else if (this.vWeight <= 0) {
+  //     this.vBMI = 0;
+  //     //Swal.fire('Please enter Weight')
+  //   }
+  // }
 
-  doseId = 0
-  doseName = ""
-  durgId = 0
-  durgName = ""
-  templateId = 0
-  templateName = ""
-  itemObjects: any;
-  itemGeneric: any;
-  vdoseName:any;
+  getBMIcalculation() {
+    debugger
+  const height = this.caseFormGroup.get('Height')?.value;
+  const weight = this.caseFormGroup.get('Weight')?.value;
+
+  if (height > 0 && weight > 0) {
+    const heightInMeters = height / 100;
+    const bmi = weight / (heightInMeters * heightInMeters);
+    this.caseFormGroup.get('BMI')?.setValue(Math.round(bmi));
+  } else {
+    this.caseFormGroup.get('BMI')?.setValue(0);
+  }
+}
 
   selectChangeItemName(row) {
     // debugger
@@ -745,7 +777,7 @@ getCheifComplaintList() {
     this.durgId = row.itemId
     this.durgName = row.itemName
     // this.vdoseName=row.doseName
-    this.vDay=row.doseDay
+    this.vDay = row.doseDay
 
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
@@ -799,9 +831,9 @@ getCheifComplaintList() {
           this.toastr.success('Record Updated Successfully.', 'Updated !', {
             toastClass: 'tostr-tost custom-toast-success',
           });
-    this.editingIndex1 = null;
+          this.editingIndex1 = null;
           // this.onClose()
-      this.listrefresh(contact);
+          this.listrefresh(contact);
         } else {
           this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -810,56 +842,58 @@ getCheifComplaintList() {
       });
     }
   }
-FetchList:any=[];
-  listrefresh(contact){ 
+
+  FetchList: any = [];
+  listrefresh(contact) {
     debugger
-  var m_data2 = {
+    var m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "VisitId",
       "sortOrder": 0,
       "filters": [
-    {
+        {
           "fieldName": "VisitId",
           "fieldValue": String(this.visitIdRefresh),
           "opType": "Equals"
         }
-    ],
-    "Columns":[],
-    "exportType": "JSON"
+      ],
+      "Columns": [],
+      "exportType": "JSON"
     }
     console.log("VisitId:", m_data2)
-  this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
-    debugger
-    this.FetchList = Visit.data as MedicineItemList[];
-    this.Chargelist = this.dsItemList.data.filter(item=> item.OPD_IPD_IP != contact.OPD_IPD_IP) 
-    this.FetchList.forEach(element =>{
-      this.Chargelist.push(
-        { 
-          DrugId: element.drugId,
-          DrugName:  element.drugName,
-          DoseId: element.doseId,
-          GenericName:element.genericName,
-          GenericId: element.genericId,
-          DoseName:  element.doseName,
-          Days:  element.days,
-          QtyPerDay: element.qtyPerDay ,
-          totalQty: (element.qtyPerDay  *  element.days) || 0,
-          DoseId1: element.DoseId1,
-          DoseName1: element.DoseName1, 
-          Day1:  element.Day1,
-          DoseId2:  element.DoseId2,
-          DoseName2: element.DoseName2 ,
-          Day2: element.Day2,
-          Instruction:  element.instruction,
-          PrecriptionId:element.precriptionId || 0
-        });
-    }) 
-    this.dsItemList.data = this.Chargelist
-    console.log(this.dsItemList.data)
-  }); 
+    this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
+      debugger
+      this.FetchList = Visit.data as MedicineItemList[];
+      this.Chargelist = this.dsItemList.data.filter(item => item.OPD_IPD_IP != contact.OPD_IPD_IP)
+      this.FetchList.forEach(element => {
+        this.Chargelist.push(
+          {
+            DrugId: element.drugId,
+            DrugName: element.drugName,
+            DoseId: element.doseId,
+            GenericName: element.genericName,
+            GenericId: element.genericId,
+            DoseName: element.doseName,
+            Days: element.days,
+            QtyPerDay: element.qtyPerDay,
+            totalQty: (element.qtyPerDay * element.days) || 0,
+            DoseId1: element.DoseId1,
+            DoseName1: element.DoseName1,
+            Day1: element.Day1,
+            DoseId2: element.DoseId2,
+            DoseName2: element.DoseName2,
+            Day2: element.Day2,
+            Instruction: element.instruction,
+            PrecriptionId: element.precriptionId || 0
+          });
+      })
+      this.dsItemList.data = this.Chargelist
+      console.log(this.dsItemList.data)
+    });
 
-}
+  }
+
   GenericdisableEditing(data) {
 
     if (this.GenericoriginalValue !== null) {
@@ -869,9 +903,9 @@ FetchList:any=[];
   }
 
   DoseObjects: any;
-  DoseQtyPerDay:any;
+  DoseQtyPerDay: any;
   selectChangeDoseName(row) {
-    
+
     console.log("Dose:", row)
     this.doseId = row.value
     this.doseName = row.text
@@ -915,7 +949,7 @@ FetchList:any=[];
             toastClass: 'tostr-tost custom-toast-success',
           });
           // this.onClose()
-      this.listrefresh(element);
+          this.listrefresh(element);
         } else {
           this.toastr.error('Record not Updated !, Please check API error..', 'Error !', {
             toastClass: 'tostr-tost custom-toast-error',
@@ -962,7 +996,7 @@ FetchList:any=[];
           "opType": "Equals"
         }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     }
     this._CasepaperService.getRtrvTestService(m_data2).subscribe(response => {
@@ -991,9 +1025,9 @@ FetchList:any=[];
   selectChangeCheifComplaint(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addCheiflist = selectedData.map(item => ({ 
+    this.addCheiflist = selectedData.map(item => ({
       complaintId: item.complaintId,
-      complaintDescr:item.complaintDescr
+      complaintDescr: item.complaintDescr
     }));
     console.log("Updated selectedItems:", this.addCheiflist);
   }
@@ -1026,9 +1060,9 @@ FetchList:any=[];
   selectChangeDiagnosis(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addDiagnolist = selectedData.map(item => ({ 
+    this.addDiagnolist = selectedData.map(item => ({
       id: item.id,
-      descriptionName:item.descriptionName
+      descriptionName: item.descriptionName
     }));
     console.log("Updated selectedItems:", this.addDiagnolist);
   }
@@ -1036,10 +1070,10 @@ FetchList:any=[];
   selectChangeExamination(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
-    this.addExaminlist = selectedData.map(item => ({ 
+    this.addExaminlist = selectedData.map(item => ({
       examinationId: item.examinationId,
-      examinationDescr:item.examinationDescr
-     }));
+      examinationDescr: item.examinationDescr
+    }));
     console.log("Updated selectedItems:", this.addExaminlist);
   }
 
@@ -1187,7 +1221,7 @@ FetchList:any=[];
     });
   }
 
-  
+
   selectChangeTemplateName(row) {
     console.log("Template:", row)
     this.templateId = row.value
@@ -1224,7 +1258,7 @@ FetchList:any=[];
             "opType": "Equals"
           }
         ],
-        "Columns":[],
+        "Columns": [],
         "exportType": "JSON"
       }
       console.log(vdata)
@@ -1315,24 +1349,24 @@ FetchList:any=[];
       insertOPDPrescription['opdIpdIp'] = this.vOPIPId;
       insertOPDPrescription['opdIpdType'] = 0;
       insertOPDPrescription['date'] = formattedDate,
-      insertOPDPrescription['pTime'] = this.dateTimeObj.time;
+        insertOPDPrescription['pTime'] = this.dateTimeObj.time;
       insertOPDPrescription['classId'] = this.vClassId || 12;
       insertOPDPrescription['genericId'] = element.GenericId || element.genericId || element.genericid
-      insertOPDPrescription['drugId'] = element.DrugId || element.drugId ;
-      insertOPDPrescription['doseId'] = element.DoseId || element.doseId;
-      insertOPDPrescription['days'] = element.Days || element.days;
+      insertOPDPrescription['drugId'] = element.DrugId || element.drugId;
+      insertOPDPrescription['doseId'] = Number(element.DoseId) || Number(element.doseId);
+      insertOPDPrescription['days'] = Number(element.Days) || Number(element.days);
       insertOPDPrescription['instruction'] = element.Instruction || element.instructionDescription || '';
       insertOPDPrescription['remark'] = this.MedicineItemForm.get('Remark').value || '';
       insertOPDPrescription['doseOption2'] = 0,
-      insertOPDPrescription['daysOption2'] = 0 ,
-      insertOPDPrescription['doseOption3'] = 0,
-      insertOPDPrescription['daysOption3'] = 0 ,
-      insertOPDPrescription['instructionId'] = 0;
+        insertOPDPrescription['daysOption2'] = 0,
+        insertOPDPrescription['doseOption3'] = 0,
+        insertOPDPrescription['daysOption3'] = 0,
+        insertOPDPrescription['instructionId'] = 0;
       insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || element.qtyPerDay || 0;
-      insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) ||0;
+      insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0;
       insertOPDPrescription['isClosed'] = true;
       insertOPDPrescription['isEnglishOrIsMarathi'] = JSON.parse(this.caseFormGroup.get('LangaugeRadio').value), //this.caseFormGroup.get('LangaugeRadio').value;
-      insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
+        insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
       insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
       insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';
       insertOPDPrescription['height'] = this.caseFormGroup.get('Height').value || '';
@@ -1344,7 +1378,7 @@ FetchList:any=[];
       insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
       insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
       insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-      insertOPDPrescription['patientReferDocId'] = ReferDocNameID || 0;
+      insertOPDPrescription['patientReferDocId'] = Number(ReferDocNameID) || 0;
       // insertOPDPrescription['patientReferDocId'] = ReferDocNameID || element.doctorname || 0;
       insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
       insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
@@ -1384,15 +1418,12 @@ FetchList:any=[];
       });
     }
 
-    let casePaperSaveObj = {
-      // "tPrescription": insertOPDPrescription,
-      "tPrescription": insertOPDPrescriptionarray,
-      "topRequestList": opRequestList,
-      "mopCasepaperDignosisMaster": OpDescriptinList
-    }
-    console.log(casePaperSaveObj);
+    this.casePaperInsertForm.get("tPrescription").setValue(insertOPDPrescriptionarray)
+      this.casePaperInsertForm.get("topRequestList").setValue(opRequestList)
+      this.casePaperInsertForm.get("mopCasepaperDignosisMaster").setValue(OpDescriptinList)
+    console.log(this.casePaperInsertForm.value);
 
-    this._CasepaperService.onSaveCasepaper(casePaperSaveObj).subscribe(response => {
+    this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
       if (response) {
         Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -1414,7 +1445,7 @@ FetchList:any=[];
   }
 
   OnViewReportPdf(element) {
- 
+
     console.log('Third action clicked for:', element);
     this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
   }
@@ -1687,8 +1718,8 @@ FetchList:any=[];
           "opType": "Equals"
         }
       ],
-        "Columns":[],
-        "exportType": "JSON"
+      "Columns": [],
+      "exportType": "JSON"
     }
     console.log(D_data);
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
@@ -2236,7 +2267,7 @@ export class MedicineItemList {
   doseOption3: any;
   doseNameOption3: any;
   daysOption3: any;
-  genericid:any;
+  genericid: any;
   /**
   * Constructor
   *
@@ -2318,7 +2349,7 @@ export class MedicineItemList {
       this.doseOption3 = MedicineItemList.doseOption3
       this.doseNameOption3 = MedicineItemList.doseNameOption3
       this.daysOption3 = MedicineItemList.daysOption3
-      this.genericid=MedicineItemList.genericid
+      this.genericid = MedicineItemList.genericid
     }
   }
 }

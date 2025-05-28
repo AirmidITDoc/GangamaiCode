@@ -45,20 +45,23 @@ export class RegistrationService {
             PrefixId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-             Validators.maxLength(50),
+                Validators.minLength(1), //changed by raksha
+             Validators.maxLength(100),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
-           Validators.maxLength(50),
+                Validators.minLength(1), //changed by raksha
+           Validators.maxLength(100),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.required,
-               Validators.maxLength(50),
+                Validators.minLength(1), //changed by raksha
+               Validators.maxLength(100),
             Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
-            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(200)]],
             DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
             AgeYear: ['0', [

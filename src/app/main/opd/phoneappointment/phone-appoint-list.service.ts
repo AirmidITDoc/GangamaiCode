@@ -40,20 +40,23 @@ export class PhoneAppointListService {
             // seqNo: '',
            firstName: ['', [
                 Validators.required,
+                Validators.minLength(1), //changed by raksha
                    Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             
             ]],
             middleName: ['', [
+                Validators.minLength(1), //changed by raksha
               Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             lastName: ['', [
                 Validators.required,
+                Validators.minLength(1), //changed by raksha
                  Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            address:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
             mobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
@@ -65,7 +68,7 @@ export class PhoneAppointListService {
             doctorId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            regNo: ["0"],
+            regNo: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]], //changed by raksha
 
         });
     }

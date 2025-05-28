@@ -127,7 +127,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     console.log(this.phoneappForm.value);
     this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
     this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
-
+    this.phoneappForm.get('departmentId').setValue(Number(this.depId)); //changed by raksha
     if (!this.phoneappForm.invalid) {
       console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
@@ -168,7 +168,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   onClose() { this.dialogRef.close(); }
 
+  depId=0 //changed by raksha
   selectChangedepartment(obj: any) {
+    this.depId=obj.value
     this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();

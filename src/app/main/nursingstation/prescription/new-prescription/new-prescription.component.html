@@ -194,10 +194,10 @@
                                 </airmid-autocomplete>
 
                                 <airmid-textbox label="Qty" formControlName="Qty" fxFlex="10%" [formGroup]="ItemForm"
-                                    [(ngModel)]="vQty" [validations]="getValidationMessages().Qty" #qtyTextboxRef>
+                                    [(ngModel)]="vQty" [validations]="getValidationMessages().Qty" #qtyTextboxRef (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
-                                <airmid-textbox label="Instruction" formControlName="Instruction" fxFlex="35%"
+                                <airmid-textbox label="Instruction" formControlName="Instruction" fxFlex="35%" [maxLength]="200"
                                     [formGroup]="ItemForm" [(ngModel)]="vInstruction">
                                 </airmid-textbox>
 

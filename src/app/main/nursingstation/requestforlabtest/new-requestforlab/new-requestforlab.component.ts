@@ -13,6 +13,7 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { RequestforlabtestService } from '../requestforlabtest.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -102,6 +103,7 @@ export class NewRequestforlabComponent implements OnInit {
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private _loggedService: AuthenticationService) {
     this.date = new Date();
     if (this.advanceDataStored.storage) {
@@ -184,14 +186,14 @@ export class NewRequestforlabComponent implements OnInit {
       RegId: '',
       AdmissionID: 0,
       Requestdate: '',
-      IsOnFileTest: '',
+      isOnFileTest: false,
       NameSearch: ''
     })
   }
 
   labRequestForm(): FormGroup {
     return this._FormBuilder.group({
-      requestId:0,
+      requestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       reqDate:[(new Date()).toISOString().split('T')[0]],
       reqTime:[(new Date()).toISOString()],
       opIpId:0,
@@ -360,7 +362,7 @@ export class NewRequestforlabComponent implements OnInit {
         let ipPathOrRadiRequestLabRequestInsert = {};
         ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
         ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
-        ipPathOrRadiRequestLabRequestInsert['serviceId'] = element.ServiceId || 1;
+        ipPathOrRadiRequestLabRequestInsert['serviceId'] = Number(element.ServiceId) || 1;
         ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
         ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
         ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
@@ -369,12 +371,12 @@ export class NewRequestforlabComponent implements OnInit {
         ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
         // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
         ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = false,
-        ipPathOrRadiRequestLabRequestInsert['IsOnFileTest'] = this.myFormGroup.get('IsOnFileTest').value || false;
+        ipPathOrRadiRequestLabRequestInsert['isOnFileTest'] = this.myFormGroup.get('isOnFileTest').value || false;
         ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
       });
 
       this.labReqForm.get("opIpId").setValue(this.vAdmissionID)
-      this.labReqForm.get("isOnFileTest").setValue(this.myFormGroup.get('IsOnFileTest').value)
+      this.labReqForm.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
       this.labReqForm.get("tDlabRequests").setValue(ipPathOrRadiRequestLabRequestInsertArray)
       console.log(this.labReqForm.value)
 

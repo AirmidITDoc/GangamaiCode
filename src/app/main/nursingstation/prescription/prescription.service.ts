@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class PrescriptionService {
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
     private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
   ) { 
     this.mysearchform= this.SearchFilterFrom();
     this.myForm = this.createMyForm();
@@ -34,11 +36,11 @@ export class PrescriptionService {
 
    createMyForm() {
       return this._formBuilder.group({
-        RegId: 0,
-        PatientName: '',
-        WardName: [0, [Validators.required,notEmptyOrZeroValidator()]],
-        StoreId: [0, [Validators.required,notEmptyOrZeroValidator()]],
-        RegID: [0, Validators.required],
+        RegId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        PatientName: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        WardName: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+        StoreId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        RegID: [0, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator]],
         Op_ip_id: ['1'],
         AdmissionID: 0
       })
@@ -47,8 +49,8 @@ export class PrescriptionService {
     // insert by form 
     createPrescForm() {
       return this._formBuilder.group({
-        medicalRecoredId: 0,
-        admissionId: 0,
+        medicalRecoredId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        admissionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         roundVisitDate: [(new Date()).toISOString().split('T')[0]],
         roundVisitTime: [(new Date()).toISOString()],
         inHouseFlag: true,
@@ -63,7 +65,7 @@ export class PrescriptionService {
         DoseId: 0,
         Day: [''],
         Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
-        Instruction: ['']
+        Instruction: ['',[Validators.maxLength(200)]]
       })
     }
 
@@ -162,11 +164,4 @@ public getRegistraionById(Id) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
 
-}
-
-function notEmptyOrZeroValidator(): any {
-  return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      return value > 0 ? null : { greaterThanZero: { value: value } };
-    };
 }
