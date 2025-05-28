@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { PrescriptionReturnService } from '../prescription-return.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -87,6 +88,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<NewPrescriptionreturnComponent>,
     public datePipe: DatePipe,) { }
 
@@ -133,12 +135,12 @@ export class NewPrescriptionreturnComponent implements OnInit {
   // prescription return insert form
   presReturnForm(): FormGroup {
     return this._formBuilder.group({
-      presReId: 0,
-      presNo: "string",
+      presReId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      presNo: ['0',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       presDate: [(new Date()).toISOString().split('T')[0]],
       presTime: [(new Date()).toISOString()],
-      toStoreId: 0,
-      opIpId: 0,
+      toStoreId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpType: 0,
       addedby: this._loggedService.currentUserValue.userId,
       isActive: 1,
@@ -166,6 +168,16 @@ export class NewPrescriptionreturnComponent implements OnInit {
     return null;
   }
 
+  keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
   selectChangeItem(obj: any) {
 
     if (!obj || typeof obj !== 'object') {

@@ -398,13 +398,13 @@ export class NewPrescriptionComponent implements OnInit {
         insertIP_Prescription['drugId'] = element.ItemID;
         insertIP_Prescription['doseId'] = 0;
         insertIP_Prescription['days'] = 0;
-        insertIP_Prescription['qtyPerDay'] = element.Qty || 0;
-        insertIP_Prescription['totalQty'] = element.Qty || 0;
+        insertIP_Prescription['qtyPerDay'] = Number(element.Qty) || 0;
+        insertIP_Prescription['totalQty'] = Number(element.Qty) || 0;
         insertIP_Prescription['remark'] = element.Remark || '';
         insertIP_Prescription['isClosed'] = false;
         insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
-        insertIP_Prescription['storeId'] = this.vstoreId || 0;
-        insertIP_Prescription['wardID'] = this.myForm.get('WardName').value || 0;
+        insertIP_Prescription['storeId'] = Number(this.vstoreId) || 0;
+        insertIP_Prescription['wardID'] = Number(this.myForm.get('WardName').value) || 0;
         insertIP_Prescriptionarray.push(insertIP_Prescription);
       });
       

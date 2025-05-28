@@ -226,7 +226,7 @@
                                 </airmid-textbox>
 
                                 <airmid-textbox label="Qty" formControlName="Qty" fxFlex="25%" [formGroup]="ItemSubform"
-                                    [(ngModel)]="Qty" [validations]="getValidationMessages().Qty">
+                                    [(ngModel)]="Qty" [validations]="getValidationMessages().Qty" (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- [disabled]="!add" -->
