@@ -210,6 +210,7 @@ export class IPBillingComponent implements OnInit {
   vAdvanceId: any = 0;
   TotalAdvanceAmt: any = 0;
   BillBalAmount: any = 0;
+   AdvanceBalAmt: any = 0;
   ApiURL: any;
 
   autocompleteModeCashcounter: string = "CashCounter";
@@ -379,7 +380,7 @@ export class IPBillingComponent implements OnInit {
       ChargeClass: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Date: [new Date(), [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ServiceName: ['', [Validators.required]],
-      price: [0, [Validators.required, Validators.min(1)]],
+      price: [0, [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required]],
       TotalAmt: [0, [Validators.required, Validators.min(1)]],
       DoctorID: [''],
@@ -794,20 +795,26 @@ export class IPBillingComponent implements OnInit {
             this.vAdvanceId = this.SelectedAdvancelist[0].advanceId
           this.SelectedAdvancelist.forEach(element => {
             this.TotalAdvanceAmt += element.advanceAmount
+            this.checkAdvBalAmt += element.balanceAmount 
           })
           this.getbillbalamt();
         });
       }, 500);
     }
   }
-
+checkAdvBalAmt:any=0;
   getbillbalamt() {
-    if (this.TotalAdvanceAmt > 0) {
+    debugger
+    this.AdvanceBalAmt = this.checkAdvBalAmt
+    if (this.AdvanceBalAmt > 0) {
       let netAmt = this.Ipbillform.get('FinalAmount').value || 0
-      if (netAmt > this.TotalAdvanceAmt) {
-        this.BillBalAmount = netAmt - this.TotalAdvanceAmt
+      if (netAmt > this.AdvanceBalAmt) {
+        this.AdvanceBalAmt = this.checkAdvBalAmt
+        this.BillBalAmount = netAmt - this.checkAdvBalAmt
       } else {
-        this.BillBalAmount = netAmt
+        let balamt = this.AdvanceBalAmt - netAmt
+        this.AdvanceBalAmt= balamt
+        this.BillBalAmount = 0;
       }
     }
   }
@@ -935,7 +942,7 @@ export class IPBillingComponent implements OnInit {
       AdminAmt: adminAmt || 0,
       FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop
-
+  this.BillBalAmount();
   }
   // Total Bill Disc Per cal 
   CalFinalDiscper() {
@@ -983,6 +990,8 @@ export class IPBillingComponent implements OnInit {
       totalconcessionAmt: discountAmt,
       FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop 
+
+    this.BillBalAmount();
   }
   //Total Bill DiscAMt cal
   vTotalAmount: any;
@@ -1030,6 +1039,7 @@ export class IPBillingComponent implements OnInit {
       totalconcessionAmt: discAmt,
       FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop 
+      this.BillBalAmount();
   }
 
   getValidationMessages() {

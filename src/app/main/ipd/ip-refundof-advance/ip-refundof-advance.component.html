@@ -145,6 +145,7 @@
                             <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
                                 <div class="airmid-table-container">
                                     <mat-table matSort   [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}" class="airmid-table"> 
+                                       
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">Date
                                             </mat-header-cell>
@@ -173,7 +174,11 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Balance Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.balanceAmount | currency:'INR'}}</span>
+                                                <span *ngIf="!element.isCancelled">
+                                                    {{element.balanceAmount | currency:'INR'}}
+                                                </span>
+                                                <span *ngIf="element.isCancelled">
+                                                    {{0 | currency:'INR'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     
@@ -181,11 +186,14 @@
                                             <mat-header-cell *matHeaderCellDef>Refund Amt
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element">
-                                                <mat-form-field  appearance="fill">
+                                                <mat-form-field  appearance="fill" *ngIf="!element.isCancelled">
                                                     <input matInput placeholder="RefundAmt" type="text" 
                                                         [(ngModel)]="element.refundAmt" (keypress)="keyPressCharater($event)"
                                                         (ngModelChange)="getCellCalculation(element,element.refundAmt)">
                                                 </mat-form-field>
+                                                <ng-container *ngIf="element.isCancelled" >
+                                                    <span>--</span>
+                                                </ng-container>
                                             </mat-cell>
                                         </ng-container>
 
@@ -215,7 +223,9 @@
                                         <mat-header-row class="accent min-width-900" *matHeaderRowDef="displayedColumns; sticky: true">
                                         </mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns;" class="element min-width-900"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getPreviousRefList(row)"></mat-row>
+                                            [@animate]="{value:'*',params:{y:'100%'}}"   
+                                              [ngClass]="{'red-row': row.isCancelled == true}"
+                                            ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{'hide':dsrefundlist!=null}"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -223,54 +233,7 @@
                                         </mat-footer-row>
                                     </mat-table>
                                     </div>  
-                            </div>
-                    
-                            <!-- <div fxFlex.gt-md="29%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
-                                    <mat-table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}"  tableClasses="h-500">
-                    
-                                        <ng-container matColumnDef="RefundDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.RefundDate | date:"shortDate"}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="RefundAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>RefundAmount
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.RefundAmount}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-                    
-                    
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-                    
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                             
-                                                <mat-spinner *ngIf="isLoadingStr=='loading'" [diameter]='30'>
-                                                </mat-spinner>
-                                                <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-                                            </mat-footer-cell>
-                                        </ng-container>
-                    
-                                        <mat-header-row class="accent min-width-300" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element min-width-300"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide':dataSource1!=null}"></mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>  
-                            </div> -->
+                            </div> 
                         </div> 
                     </div>
                 </div>
