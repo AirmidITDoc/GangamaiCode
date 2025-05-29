@@ -110,7 +110,7 @@ public getServiceList(param,loader = true){
     if (loader) {
       this._loaderService.show();
   } 
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_ForPrescription",Param)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BalanceQty",Param)
   }
   public getPatientVisitedListSearch(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
