@@ -20,7 +20,7 @@
             <ng-container filters>
                <form [formGroup]="_CurrencymasterService.myformSearch" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Area Name</mat-label>
+                    <mat-label>Currency Name</mat-label>
                     <input matInput placeholder="Search Area Name" autocomplete="off"
                        [formGroup]="_CurrencymasterService.myformSearch" formControlName="CurrencyNameSearch"
                     (input)="onChangeFirst()"/>

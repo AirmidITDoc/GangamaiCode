@@ -20,7 +20,7 @@
             <ng-container filters>
                 <form [formGroup]="_InstructionService.myformSearch" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Area Name</mat-label>
+                    <mat-label>Instruction Name</mat-label>
                     <input matInput placeholder="Search Area Name" autocomplete="off"
                        [formGroup]="_InstructionService.myformSearch" formControlName="InstructionNameSearch"
                     (input)="onChangeFirst()"/>
