@@ -23,23 +23,23 @@
         <div class="center p-24 pb-56" fusePerfectScrollbar>
             <div class="content-card">
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
+                    <div fxFlex.gt-sm="100%" fxFlex> 
+                        <div fxlayout="row" fxLayoutGap="8px">
+                            <div fxFlex.gt-sm="65%" fxFlex> 
 
-                        <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
-                            <form [formGroup]="_doctortypeService.myformSearch">
+                             <div fxlayout="row" style="background-color: white; padding: 5px 10px 5px 10px; ">
+                              <form [formGroup]="_doctortypeService.myformSearch">
                                 <div class="dialog-content-wrapper">
                                     <mat-form-field class="mr-sm-12" fxFlex>
                                         <input matInput placeholder="Search --> DoctorType" autocomplete="off"
-                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch"/>
+                                            name="DoctorTypeSearch" formControlName="DoctorTypeSearch"
+                                            (keyup)="onSearch()"/>
 
                                         <button mat-button matSuffix mat-icon-button aria-label="Clear"
                                             (click)="onSearchClear()">
                                             <mat-icon>close</mat-icon>
                                         </button>
-                                    </mat-form-field>
-
-                                  
-                                    
+                                    </mat-form-field> 
 
                                     <mat-radio-group name="IsDeletedSearch" formControlName="IsDeletedSearch" value="2"
                                         fxLayoutAlign="center center">
@@ -50,20 +50,13 @@
 
                                     <button mat-raised-button  fxLayoutAlign="center center" 
                                      (click)="onSearch()">  <mat-icon>search</mat-icon>
-                                    </button>
-                                    
-
+                                    </button> 
                                 </div>
-                            </form>
-                        </div>
-
-
-                        <div fxlayout="row">
-                            <div fxFlex.gt-sm="65%" fxFlex>
-
+                              </form>
+                                 </div>
 
                                 <mat-table class="table1" matSort [dataSource]="DSDoctorTypeMasterList"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 500px !important;">
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;height: 700px !important;">
 
 
                                     <ng-container matColumnDef="Id">
@@ -91,16 +84,23 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                       <ng-container matColumnDef="AddedByName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header> AddedByName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm> {{element.AddedByName}}
+                                        </mat-cell>
+                                    </ng-container>
 
-                                    <ng-container matColumnDef="action" stickyEnd>
+
+                                    <ng-container matColumnDef="action"  >
                                         <mat-header-cell *matHeaderCellDef class="table-actions"> Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element">
-                                            <button mat-icon-button (click)="onEdit(element)" *ngIf="element.IsActive"><mat-icon
+                                            <button mat-icon-button (click)="onEdit(element)"><mat-icon
                                                     title="Edit Menu">edit</mat-icon></button>
-                                                    <button mat-icon-button  *ngIf="!element.IsActive"><mat-icon
-                                                        title="Edit Menu">highlight_off</mat-icon></button>
-                                            <button mat-icon-button (click)="onDeactive(element.Id)"
+                                                    <!-- <button mat-icon-button  *ngIf="!element.IsActive"><mat-icon
+                                                        title="Edit Menu">highlight_off</mat-icon></button> -->
+                                            <button mat-icon-button (click)="onDeactive(element)"
                                                 color="warn"><mat-icon>delete_outline</mat-icon></button>
                                         </mat-cell>
                                     </ng-container>
@@ -138,8 +138,8 @@
                                         [ngClass]="{'hide':!(DSDoctorTypeMasterList!=null && DSDoctorTypeMasterList.data.length==0)}"></mat-footer-row>
 
                                 </mat-table>
-                                <mat-paginator [pageSizeOptions]="[30, 50, 75, 100]" [pageSize]="30"
-                                    [length]="resultsLength" showFirstLastButtons (page)="getDoctortypeMasterList()">
+                                <mat-paginator #paginator [pageSizeOptions]="[15,25, 35, 50]" [pageSize]="15"
+                                  showFirstLastButtons (page)="getDoctortypeMasterList()">
                                 </mat-paginator>
                             </div>
 
@@ -163,8 +163,10 @@
         
                                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
                                                 <mat-radio-group name="isActive" formControlName="isActive" >
-                                                    <mat-radio-button  class="mr-sm-12" [checked]=true
+                                                    <mat-radio-button  class="mr-sm-12" [checked]=true value="true"
                                                         fxFlex>IsActive</mat-radio-button>
+                                                         <mat-radio-button  class="mr-sm-12" value="false"
+                                                        fxFlex>IsDeactive</mat-radio-button>
                                                 </mat-radio-group>
                                             </div>
                                         </form>

@@ -6,6 +6,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import Swal from "sweetalert2";
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-doctortype-master",
@@ -21,13 +22,14 @@ export class DoctortypeMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    displayedColumns: string[] = ["Id", "DoctorType","IsActive", "action"];
+    displayedColumns: string[] = ["Id", "DoctorType","AddedByName","IsActive", "action"];
 
     DSDoctorTypeMasterList = new MatTableDataSource<DoctortypeMaster>();
     DSDoctorTypeMasterList1 = new MatTableDataSource<DoctortypeMaster>();
     tempList = new MatTableDataSource<DoctortypeMaster>();
 
     constructor(public _doctortypeService: DoctortypeMasterService,
+        public _loggedService:AuthenticationService,
         public toastr : ToastrService,) {}
 
     ngOnInit(): void {
@@ -51,7 +53,9 @@ export class DoctortypeMasterComponent implements OnInit {
         this._doctortypeService.getDoctortypeMasterList(vdata).subscribe((Menu) => {
              this.DSDoctorTypeMasterList.data = Menu as DoctortypeMaster[];
              this.DSDoctorTypeMasterList1.data = Menu as DoctortypeMaster[];
-             this.resultsLength= this.DSDoctorTypeMasterList.data.length;
+            // this.resultsLength= this.DSDoctorTypeMasterList.data.length;
+              this.DSDoctorTypeMasterList.sort = this.sort;
+               this.DSDoctorTypeMasterList.paginator = this.paginator;
             });
        
     }
@@ -59,30 +63,23 @@ export class DoctortypeMasterComponent implements OnInit {
 
    
     onClear() {
-        this._doctortypeService.myform.reset({ IsDeleted: "false" });
+        this._doctortypeService.myform.reset({ isActive: "true" });
         this._doctortypeService.initializeFormGroup();
     }
-
+ 
     onSubmit() {
         if (this._doctortypeService.myform.valid) {
             if (!this._doctortypeService.myform.get("Id").value) {
                 var m_data = {
-                    doctortTypeMasterInsert: {
-                        doctorType: this._doctortypeService.myform
-                            .get("DoctorType")
-                            .value.trim(),
-                        IsActive: Boolean(
-                            JSON.parse(
-                                this._doctortypeService.myform.get("isActive")
-                                    .value
-                            )
+                    "doctortTypeMasterInsert": {
+                       "doctorType": this._doctortypeService.myform.get("DoctorType").value.trim(),
+                       "isActive": Boolean(JSON.parse(this._doctortypeService.myform.get("isActive").value )
                         ),
+                          "addedBy": this._loggedService.currentUserValue.user.id
                     },
                 };
 
-                this._doctortypeService
-                    .doctortTypeMasterInsert(m_data)
-                    .subscribe((data) => {
+                this._doctortypeService.doctortTypeMasterInsert(m_data).subscribe((data) => {
                         this.msg = data;
                         if (data) {
                             this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -103,19 +100,21 @@ export class DoctortypeMasterComponent implements OnInit {
                      });
             } else {
                 var m_dataUpdate = {
-                    doctorTypeMasterUpdate: {
-                        id: this._doctortypeService.myform.get("Id").value,
-                        doctorType:
+                    "doctorTypeMasterUpdate": {
+                        "id": this._doctortypeService.myform.get("Id").value,
+                        "doctorType":
                             this._doctortypeService.myform.get("DoctorType")
                                 .value,
-                                IsActive: Boolean(
+                                "IsActive": Boolean(
                             JSON.parse(
                                 this._doctortypeService.myform.get("isActive")
                                     .value
                             )
                         ),
+                        "updatedBy":this._loggedService.currentUserValue.user.id
                     },
-                };
+                };   
+ 
                 this._doctortypeService
                     .doctorTypeMasterUpdate(m_dataUpdate)
                     .subscribe((data) => {
@@ -144,9 +143,7 @@ export class DoctortypeMasterComponent implements OnInit {
         }
     }
 
-    onDeactive(Id) {
-
-       
+    onDeactive(row) { 
         Swal.fire({
             title: 'Confirm Status',
             text: 'Are you sure you want to Change Status?',
@@ -158,11 +155,11 @@ export class DoctortypeMasterComponent implements OnInit {
         }).then((result) => {
             if (result.isConfirmed) {
                 let Query
-                if (!this.DSDoctorTypeMasterList.data.find(item => item.Id === Id).IsActive) {
-                    Query = "Update DoctorTypeMaster set IsActive=0 where Id=" + Id;
+                if (row.IsActive) {
+                    Query = "Update DoctorTypeMaster set IsActive=0 where Id=" + row.Id;
                 }
                 else {
-                     Query = "Update DoctorTypeMaster set IsActive=1 where Id=" + Id;
+                     Query = "Update DoctorTypeMaster set IsActive=1 where Id=" + row.Id;
                 }
                 console.log(Query);
                 this._doctortypeService.deactivateTheStatus(Query)
@@ -224,7 +221,7 @@ export class DoctortypeMasterComponent implements OnInit {
         var m_data = {
             Id: row.Id,
             DoctorType: row.DoctorType.trim(),
-            IsActive: JSON.stringify(row.IsActive),
+            IsActive: row.IsActive,
         };
         this._doctortypeService.populateForm(m_data);
     }

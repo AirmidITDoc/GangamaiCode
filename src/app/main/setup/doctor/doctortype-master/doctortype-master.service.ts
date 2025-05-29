@@ -21,7 +21,7 @@ export class DoctortypeMasterService {
         return this._formBuilder.group({
             Id: [""],
             DoctorType: [""],
-            isActive: ['1'],
+            isActive: ['true'],
         });
     }
     createSearchForm(): FormGroup {
