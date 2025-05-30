@@ -21,7 +21,7 @@
             <ng-container filters>
                 <form [formGroup]="_bankService.myformSearch" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Area Name</mat-label>
+                    <mat-label>Bank Name</mat-label>
                     <input matInput placeholder="Search Area Name" autocomplete="off"
                        [formGroup]="_bankService.myformSearch" formControlName="BankNameSearch"
                     (input)="onChangeFirst()"/>

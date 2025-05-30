@@ -219,6 +219,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   //Refund Amount calculation
   getCellCalculation(element, RefundAmt) {  
     console.log(element) 
+    debugger
       if(RefundAmt > 0 && RefundAmt <= element.netBallAmt){
         element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
       }
@@ -236,13 +237,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
       this.AdvanceId = element.advanceId
       this.UsedAmount += element.usedAmount
-      this.BalanceAdvance += element.balanceAmount 
+     // this.BalanceAdvance += element.balanceAmount 
 
       this.getRefundSum();
   } 
-  getRefundSum() {   
+  getRefundSum() {
     let totalRefAmt = this.chargeList.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
-    let totalBalAmt = this.chargeList.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    const newBalAmt =  this.chargeList.filter(i=> i.isCancelled == false)
+    let totalBalAmt = newBalAmt.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
  
     this.RefundOfAdvanceFormGroup.patchValue({
       NewRefundAmount: totalRefAmt,
@@ -298,7 +300,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     let advanceHeaderupdate = {};
     advanceHeaderupdate['advanceId'] = this.AdvanceId;
     advanceHeaderupdate['advanceUsedAmount'] = this.UsedAmount;
-    advanceHeaderupdate['balanceAmount'] = this.BalanceAdvance;
+    advanceHeaderupdate['balanceAmount'] =  this.RefundOfAdvanceFormGroup.get('BalanceAdvance').value || 0; 
    
     let advDetailRefundObj = [];
     this.dsrefundlist.data.forEach((element) =>{
@@ -403,22 +405,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       }
     });
   } 
-  getPreviousRefList(row) { 
-    // console.log(row); 
-    // this.BalanceAdvance = 0;
-    // this.RefundAmount = 0;
-    // this.UsedAmount = row.UsedAmount;
-    // this.advId = row.AdvanceId;
-    // this.advDetailId = row.AdvanceDetailID;
-    // this.BalanceAmount = row.BalanceAmount; 
-    // //this.NewRefundAmount = 0;
-    // console.log(row);
-    // let Query = "select RefundDate,RefundAmount from refund where AdvanceId=" + row.AdvanceId
-    
-    // this._IpSearchListService.getPreRefundofAdvance(Query).subscribe(Visit => {
-    //   this.dataSource1.data =  Visit as IPRefundofAdvance[]; 
-    // });  
-  }
+ 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {

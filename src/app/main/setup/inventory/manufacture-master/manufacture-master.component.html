@@ -20,7 +20,7 @@
             <ng-container filters>
                <form [formGroup]="_ManufactureMasterService.myformSearch" fxLayout="column">
                     <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Area Name</mat-label>
+                    <mat-label>Manufacture Name</mat-label>
                     <input matInput placeholder="Search Area Name" autocomplete="off"
                        [formGroup]="_ManufactureMasterService.myformSearch" formControlName="ManufNameSearch"
                     (input)="onChangeFirst()"/>
