@@ -30,7 +30,13 @@ export class ReportService {
             DoctorId: [""],
             ServiceId: [""],
             DepartmentId: [""],
-            CashCounterId: [""]
+            CashCounterId: [""],
+
+            // added by raksha
+            GroupId:[""],
+            ClassId:[""],
+            WardId:[""]
+            // 
         });
     }
 

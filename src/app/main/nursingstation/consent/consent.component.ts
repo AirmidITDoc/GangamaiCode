@@ -13,6 +13,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { ConsentService } from './consent.service';
 import { NewConsentComponent } from './new-consent/new-consent.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-consent',
@@ -59,9 +60,12 @@ export class ConsentComponent implements OnInit {
   CompanyName: any;
   TarrifName: any;
   DoctorName: any;
+  myFormSearch: FormGroup
+  patientName = "%";
+  regNo = "0";
+  opiptype: any = "2"
 
   dsConsentList = new MatTableDataSource
-
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -70,38 +74,43 @@ export class ConsentComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  allcolumns = [
+    { heading: "-", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UHID", key: "uhid", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date&Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Consent Desc", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "MobileNo", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.OnEdit(data);
+          }
+        }, {
+          action: gridActions.print, callback: (data: any) => {
+          }
+        }]
+    }
+  ]
+
+  allfilters = [
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "PatientName", fieldValue: this.patientName, opType: OperatorComparer.Equals },
+    { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+    { fieldName: "OPIPType", fieldValue: this.opiptype, opType: OperatorComparer.Equals },
+  ]
+
   gridConfig: gridModel = {
-    apiUrl: "PathCategoryMaster/List",
-    columnsList: [
-      { heading: "-", key: "type", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "UHID", key: "uhid", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Date&Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Consent Desc", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "MobileNo", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-      {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.OnEdit(data);
-            }
-          }, {
-            action: gridActions.print, callback: (data: any) => {
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "RegId",
+    apiUrl: "NursingConsent/ConsentpatientInfoList",
+    columnsList: this.allcolumns,
+    sortField: "ConsentId",
     sortOrder: 0,
-    filters: [
-      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "patientName", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "uhid", fieldValue: "", opType: OperatorComparer.Contains },
-    ]
+    filters: this.allfilters
   }
 
   constructor(
@@ -113,6 +122,48 @@ export class ConsentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.myFormSearch = this._ConsentService.createSearchForm()
+  }
+
+  onChangeFirst() {
+    debugger
+    this.fromDate = this.datePipe.transform(this.myFormSearch.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFormSearch.get('end').value, "yyyy-MM-dd")
+    this.patientName = this.myFormSearch.get('PatientName').value + "%"
+    this.regNo = this.myFormSearch.get('RegNo').value || ""
+    this.opiptype = this.myFormSearch.get('IsIPOrOP').value
+
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+    debugger
+    this.gridConfig = {
+      apiUrl: "NursingConsent/ConsentpatientInfoList",
+      columnsList: this.allcolumns,
+      sortField: "ConsentId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "PatientName", fieldValue: this.patientName, opType: OperatorComparer.Equals },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.opiptype, opType: OperatorComparer.Equals },
+      ]
+    }
+    console.log(this.gridConfig)
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'PatientName')
+      this.myFormSearch.get('PatientName').setValue("")
+    if (event == 'RegNo')
+      this.myFormSearch.get('RegNo').setValue("")
+
+    this.onChangeFirst();
   }
 
   NewConsent() {

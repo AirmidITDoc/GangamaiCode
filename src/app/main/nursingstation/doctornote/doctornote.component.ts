@@ -330,7 +330,7 @@ export class DoctornoteComponent implements OnInit {
       data.admId = this.OP_IP_Id;
       data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
-        data.docHandId=this.vdocHandId
+        data.docHandId=this.vdocHandId || 0
         this._NursingStationService.HandOverInsert(data).subscribe(response => {
           this.toastr.success(response.message);
           this.getHandOverNotelist()

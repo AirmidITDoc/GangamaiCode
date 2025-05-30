@@ -13,6 +13,7 @@ export class MaterialConsumptionService {
   userFormGroup: FormGroup;
   SearchGroup :FormGroup;
   FinalMaterialForm : FormGroup;
+  insertMaterialForm : FormGroup;
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller,
@@ -21,6 +22,7 @@ export class MaterialConsumptionService {
     this.userFormGroup = this.createUserForm();
     this.SearchGroup= this.createSearchFrom();
     this.FinalMaterialForm = this.createfinalform();
+    this.insertMaterialForm=this.createMaterialInsertform();
   }
 
   createSearchFrom() {
@@ -45,7 +47,7 @@ export class MaterialConsumptionService {
   createItemForm() {
     return this._formBuilder.group({
      
-      BatchNO: [''],
+      BatchNO: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
       ItemName:[''],
       BalQty:[''],
       UsedQty:[''],
@@ -60,14 +62,30 @@ export class MaterialConsumptionService {
 
   createfinalform() {
     return this._formBuilder.group({
-      Remark: [''],
+      Remark: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
       MRPTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       PurTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       LandedTotalAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
-      
     });
   }
  
+  createMaterialInsertform() {
+    return this._formBuilder.group({
+      materialConsumptionId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      consumptionNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      consumptionDate:[(new Date()).toISOString()],
+      consumptionTime:[(new Date()).toISOString()],
+      fromStoreId:this.accountService.currentUserValue.user.storeId,
+      landedTotalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      purTotalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrpTotalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      remark:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      addedBy:this.accountService.currentUserValue.userId,
+      updatedBy:this.accountService.currentUserValue.userId,
+      admId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      tMaterialConsumptionDetails:''
+    });
+  }
  
   public MaterialconsSave(Param){
     return this._httpClient1.PostData("MaterialConsumption/InsertEDMX",Param);

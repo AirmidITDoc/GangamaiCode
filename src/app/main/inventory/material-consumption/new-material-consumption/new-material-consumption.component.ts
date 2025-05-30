@@ -235,7 +235,7 @@ console.log(result)
           MRPTotalAmt: this.vUsedQty * this.vUnitMRP || 0,
           LandedTotalAmt: this.vUsedQty * this.vLandedRate || 0,
           PurTotalAmt: this.vUsedQty * this.vPurchaseRate || 0,
-          Remark: this.vRemark || " ",
+          Remark: this.vRemark || this.ItemFormGroup.get("Remark").value,
           StockId: this.vStockId || 0,
           StoreId: this.userFormGroup.get("FromStoreId").value
 
@@ -336,7 +336,7 @@ this.ItemFormGroup.get("Remark").reset('')
       insertMaterialConstDetailObj['itemId'] = element.ItemId;
       insertMaterialConstDetailObj['batchNo'] = element.BatchNo;
       insertMaterialConstDetailObj['batchExpDate'] = element.BatchExpDate;
-      insertMaterialConstDetailObj['qty'] = element.UsedQty;
+      insertMaterialConstDetailObj['qty'] = Number(element.UsedQty);
       insertMaterialConstDetailObj['perUnitLandedRate'] = element.LandedRate || 0
       insertMaterialConstDetailObj['parUnitPurchaseRate'] = element.PurchaseRate || 0;
       insertMaterialConstDetailObj['perUnitMRPRate'] = element.UnitMRP || 0;
@@ -360,24 +360,33 @@ this.ItemFormGroup.get("Remark").reset('')
       updateCurrentStock.push(updateCurrentStockObj);
     })
 
-    let submitdata = {
-      "materialConsumptionId": 0,
-      "consumptionNo": "string",
-      "consumptionDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      "consumptionTime":  this.datePipe.transform(new Date(), 'shortTime'),
-      "fromStoreId":2,// this._loggedService.currentUserValue.user.storeId,
-      "landedTotalAmount":this.vLandedTotalAmount || 0,
-      "purTotalAmount": this.vPurTotalAmount || 0,
-      "mrpTotalAmount":this.vMRPTotalAmount,
-      "remark": this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value,
-      "addedBy": this._loggedService.currentUserValue.userId,
-      "updatedBy":this._loggedService.currentUserValue.userId,
-      "admId": this.vAdmissionId || 0,
-      'tMaterialConsumptionDetails': insertMaterialConsDetail
-      // 'updateCurrentStock':updateCurrentStock
-    }
-    console.log(submitdata)
-    this._MaterialConsumptionService.MaterialconsSave(submitdata).subscribe(response => {
+    // let submitdata = {
+    //   "materialConsumptionId": 0,
+    //   "consumptionNo": "string",
+    //   "consumptionDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+    //   "consumptionTime":  this.datePipe.transform(new Date(), 'shortTime'),
+    //   "fromStoreId":2,// this._loggedService.currentUserValue.user.storeId,
+    //   "landedTotalAmount":this.vLandedTotalAmount || 0,
+    //   "purTotalAmount": this.vPurTotalAmount || 0,
+    //   "mrpTotalAmount":this.vMRPTotalAmount,
+    //   "remark": this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value,
+    //   "addedBy": this._loggedService.currentUserValue.userId,
+    //   "updatedBy":this._loggedService.currentUserValue.userId,
+    //   "admId": this.vAdmissionId || 0,
+    //   'tMaterialConsumptionDetails': insertMaterialConsDetail
+    //   // 'updateCurrentStock':updateCurrentStock
+    // }
+    // changed by raksha
+    this._MaterialConsumptionService.insertMaterialForm.get("consumptionDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this._MaterialConsumptionService.insertMaterialForm.get("consumptionTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+    this._MaterialConsumptionService.insertMaterialForm.get("landedTotalAmount").setValue(this.vLandedTotalAmount || 0)
+    this._MaterialConsumptionService.insertMaterialForm.get("purTotalAmount").setValue(this.vPurTotalAmount || 0)
+    this._MaterialConsumptionService.insertMaterialForm.get("mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
+    this._MaterialConsumptionService.insertMaterialForm.get("tMaterialConsumptionDetails").setValue(insertMaterialConsDetail)
+    this._MaterialConsumptionService.insertMaterialForm.get("admId").setValue(this.vAdmissionId || 0)
+    this._MaterialConsumptionService.insertMaterialForm.get("remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
+    console.log(this._MaterialConsumptionService.insertMaterialForm.value)
+    this._MaterialConsumptionService.MaterialconsSave(this._MaterialConsumptionService.insertMaterialForm.value).subscribe(response => {
     this.toastr.success(response.message);
     this.viewgetMaterialconsumptionReportPdf(response)
   this._matDialog.closeAll();

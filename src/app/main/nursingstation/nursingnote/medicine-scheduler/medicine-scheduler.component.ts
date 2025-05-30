@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -8,6 +8,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { MedicineItemList } from '../nursingnote.component';
 import { NursingnoteService } from '../nursingnote.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-medicine-scheduler',
@@ -34,20 +35,6 @@ export class MedicineSchedulerComponent {
     'Action'
   ]
 
-  constructor(
-    public _NursingStationService: NursingnoteService,
-    private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService,
-    public _matDialog: MatDialog,
-    private _formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<MedicineSchedulerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {
-    this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
-    console.log(this.date)
-  }
-
   timeflag = 0
   isTimeChanged: boolean = false;
   phdatetime: any;
@@ -55,6 +42,21 @@ export class MedicineSchedulerComponent {
   isDatePckrDisabled: boolean = false;
   minDate: Date;
   doseDateTime:any;
+
+  constructor(
+    public _NursingStationService: NursingnoteService,
+    private _loggedService: AuthenticationService,
+    public datePipe: DatePipe,
+    public toastr: ToastrService,
+    public _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    public dialogRef: MatDialogRef<MedicineSchedulerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
+    console.log(this.date)
+  }
 
   onChangeDate(value) {
 
@@ -135,11 +137,11 @@ export class MedicineSchedulerComponent {
 
   createMedicineItemForm() {
     return this._formBuilder.group({
-      ItemId: '',
-      DoseId: '',
-      Route: '',
-      Frequency: '',
-      NurseName: '',
+      ItemId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      DoseId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      Route: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
+      Frequency: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
+      NurseName: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
       DoseDate: '',
       DoseTime: '',
       Qty: '',
@@ -152,6 +154,16 @@ export class MedicineSchedulerComponent {
       nursingMedicationChart:''
     })
   }
+
+  keyPressOnlyCharacters(event: KeyboardEvent): boolean {
+  const inp = String.fromCharCode(event.keyCode || event.which);
+  if (/^[a-zA-Z ]$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
 
   Chargelist: any = [];
   onAddMedicine() {
@@ -228,10 +240,6 @@ export class MedicineSchedulerComponent {
 
   onSubmit() {
     debugger
-    // const currentDate = new Date();
-    // const datePipe = new DatePipe('en-US');
-    // const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
-    // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     if (!this.dsItemList.data.length) {
       this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

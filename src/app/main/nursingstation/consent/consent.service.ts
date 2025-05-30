@@ -11,6 +11,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class ConsentService {
   myform:FormGroup;
   myInsertForm:FormGroup;
+  myformSearch:FormGroup;
 
   constructor(
     public _frombuilder : UntypedFormBuilder,
@@ -20,7 +21,8 @@ export class ConsentService {
     private _FormvalidationserviceService: FormvalidationserviceService
   ) 
   {this.myform = this.CreateMyform(),
-    this.myInsertForm = this.CreateMyInsertform() }
+    this.myInsertForm = this.CreateMyInsertform(),
+   this.myformSearch = this.createSearchForm(); }
 
   // CreateMyform() {
   //   return this._frombuilder.group({
@@ -58,17 +60,29 @@ export class ConsentService {
 
    CreateMyInsertform() {
     return this._frombuilder.group({
-      consentId: [0],
+      consentId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       consentDate: [(new Date()).toISOString()],
       consentTime: [(new Date()).toISOString()],
-      opipid:[],
+      opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       opiptype: [1],
-      consentDeptId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      consentTempId: ['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ConsentName: '',
-      ConsentText: [''],
+      consentDeptId: [0,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      consentTempId: [0,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      ConsentName: ['string',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(500)]],
+      ConsentText: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       createdBy: this._loggedService.currentUserValue.userId,
     })
+  }
+
+   createSearchForm(): FormGroup {
+    return this._frombuilder.group({
+      RegNo: [],
+      PatientName: ['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      IsIPOrOP:['2'],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+    });
   }
 
   public getAdmittedpatientlist(id){

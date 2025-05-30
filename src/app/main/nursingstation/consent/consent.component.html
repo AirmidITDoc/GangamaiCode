@@ -267,38 +267,39 @@
 
             </div>
         </div> -->
-      
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
 
-                <airmid-datepicker [formGroup]="_ConsentService.myform" [isRangePicker]="true"
-                    formStartControlName="start" formEndControlName="end"
-                    [(fromValue)]="gridConfig.filters[0].fieldValue" [(toValue)]="gridConfig.filters[1].fieldValue">
-                </airmid-datepicker>
+                <form [formGroup]="myFormSearch" fxLayout="column">
 
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Patient Name</mat-label>
-                    <input matInput placeholder="Search Patient Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[2].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <airmid-datepicker [formGroup]="myFormSearch" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue">
+                    </airmid-datepicker>
 
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>UHID No</mat-label>
-                    <input matInput placeholder="Search UHID No" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[3].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Patient Name</mat-label>
+                        <input matInput placeholder="Search Patient Name" autocomplete="off" [formGroup]="myFormSearch"
+                            formControlName="PatientName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('PatientName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-                <form [formGroup]="_ConsentService.myform">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>UHID No</mat-label>
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFormSearch"
+                            formControlName="RegNo" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
                     <div fxFlex fxLayout="row">
 
-                        <mat-radio-group name="IsIPOrOP" formControlName="IsIPOrOP" fxLayout="row" value="2"
-                            style="padding: 6px;" class="gap-4">
+                        <mat-radio-group name="IsIPOrOP" formControlName="IsIPOrOP" [formGroup]="myFormSearch" fxLayout="row" value="2"
+                            style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
                             <mat-label>Type:</mat-label>
                             <div fxLayout="row">
                                 <mat-radio-button value="2">All
@@ -313,7 +314,7 @@
                 </form>
 
                 <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="padding: 6px;">
-                    
+
                     <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                         <mat-icon class="pill orange s-16">circle</mat-icon>
                         <span class="orange-fg"> OP</span>
@@ -322,7 +323,7 @@
                         <mat-icon class="pill green s-16">circle</mat-icon>
                         <span class="green-fg">IP</span>
                     </div>
-    
+
                 </div>
 
             </ng-container>

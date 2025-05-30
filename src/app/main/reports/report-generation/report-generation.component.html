@@ -91,6 +91,23 @@
                                         <airmid-autocomplete label="Cash Counter" [formGroup]="_ReportService.userForm" formControlName="CashCounterId" placeholderText="Enter Cash Counter" ApiUrl="Report/CashCounterList/auto-complete?Keyword=" (selectionChange)="SelecteCashCounterObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
+
+                                    <!-- created by raksha -->
+                                    <ng-container *ngIf="flagGroupSelected">
+                                        <airmid-autocomplete label="Group Name" [formGroup]="_ReportService.userForm" formControlName="GroupId" placeholderText="Enter Group Name" ApiUrl="Report/GroupList/auto-complete?Keyword=" (selectionChange)="SelectedGroupObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagClassSelected">
+                                        <airmid-autocomplete label="Class Name" [formGroup]="_ReportService.userForm" formControlName="ClassId" placeholderText="Enter Class Name" ApiUrl="Report/ClassList/auto-complete?Keyword=" (selectionChange)="SelectedClassObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagWardSelected">
+                                        <airmid-autocomplete label="Ward Name" [formGroup]="_ReportService.userForm" formControlName="WardId" placeholderText="Enter Ward Name" ApiUrl="Report/WardList/auto-complete?Keyword=" (selectionChange)="SelectedWardObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+                                    <!--  -->
                                 </div>
 
                                 <!-- Print Button -->

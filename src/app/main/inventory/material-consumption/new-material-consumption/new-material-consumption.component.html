@@ -312,7 +312,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Remark</mat-label>
                                 <textarea rows="1" matInput placeholder="Remark" formControlName="Remark"
-                                    #Remark></textarea>
+                                    #Remark [maxLength]="100"></textarea>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="25%">

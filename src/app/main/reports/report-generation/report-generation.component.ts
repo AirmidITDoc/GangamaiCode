@@ -56,6 +56,11 @@ export class ReportGenerationComponent implements OnInit {
     ServiceId: any;
     DepartmentId: any;
     CashCounterId: any;
+    // added by raksha
+    GroupId:any;
+    ClassId:any;
+    WardId:any;
+    // 
     rid: number = 0;
     UId: any = 0;
     UserName: any;
@@ -85,6 +90,15 @@ export class ReportGenerationComponent implements OnInit {
     flagDepartmentSelected: boolean = false;    
     flagServiceSelected: boolean = false;
     flagCashcounterSelected: boolean = false;
+
+    //created by raksha
+    flagGroupSelected:boolean=false; 
+    flagClassSelected:boolean=false; 
+    flagWardSelected:boolean=false; 
+    flagAdmissionSelected:boolean=false; 
+    flagCompanySelected:boolean=false; 
+    flagDischargeTypeSelected:boolean=false; 
+    // 
 
     constructor(
         public _ReportService: ReportService,
@@ -169,8 +183,14 @@ export class ReportGenerationComponent implements OnInit {
             this.flagServiceSelected = true;
         if(controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
-        //   if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
-        //     this.flagCashcounterSelected = true;
+        // created by raksha
+        if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
+            this.flagGroupSelected = true;
+        if(controllerPermission.filter(x => x == "Class")?.length > 0)
+            this.flagClassSelected = true;
+        if(controllerPermission.filter(x => x == "Room")?.length > 0)
+            this.flagWardSelected = true;
+        // 
     }
     SelectedUserObj(obj) {
         this.UserId = obj.value;
@@ -187,22 +207,42 @@ export class ReportGenerationComponent implements OnInit {
     SelecteCashCounterObj(obj) {
         this.CashCounterId = obj.value;
     }
+    // created by raksha
+    SelectedGroupObj(obj) {
+        this.GroupId = obj.value;
+    }
+    SelectedClassObj(obj) {
+        this.ClassId = obj.value;
+    }
+    SelectedWardObj(obj) {
+        this.WardId = obj.value;
+    }
+    // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
         this._ReportService.userForm.get("DoctorId").setValue('');
         this._ReportService.userForm.get("DepartmentId").setValue('');
         this._ReportService.userForm.get("ServiceId").setValue('');
         this._ReportService.userForm.get("CashCounterId").setValue('');
+        this._ReportService.userForm.get("GroupId").setValue('');
+        this._ReportService.userForm.get("ClassId").setValue('');
+        this._ReportService.userForm.get("WardId").setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
         this.DepartmentId = 0;
         this.CashCounterId = 0;
+        this.GroupId = 0;
+        this.ClassId = 0;
+        this.WardId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
         this.flagDepartmentSelected = false;
         this.flagServiceSelected = false;
         this.flagCashcounterSelected = false;
+        this.flagGroupSelected = false;
+        this.flagClassSelected= false;
+        this.flagWardSelected=false;
     }
     GetPrint() {
         setTimeout(() => {
@@ -247,7 +287,25 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldName": "CashCounterId",
                     "fieldValue": this.CashCounterId.toString() || "0",
                     "opType": OperatorComparer.Equals          
-                });                                                            
+                });   
+            if (this.flagGroupSelected)
+                paramFilterList.push({
+                    "fieldName": "GroupId",
+                    "fieldValue": this.GroupId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                }); 
+            if (this.flagClassSelected)
+                paramFilterList.push({
+                    "fieldName": "ClassId",
+                    "fieldValue": this.ClassId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagWardSelected)
+                paramFilterList.push({
+                    "fieldName": "WardId",
+                    "fieldValue": this.WardId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });                                                           
             let param = {
                 "searchFields": paramFilterList,
                 "mode": this.reportDetail?.reportMode,

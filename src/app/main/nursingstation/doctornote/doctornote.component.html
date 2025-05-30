@@ -216,21 +216,21 @@
                                                     <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                         <textarea rows="4" matInput  name="patHandI" formControlName="patHandI" 
-                                                        [(ngModel)]="vStaffNursName"></textarea> 
+                                                        [(ngModel)]="vStaffNursName" [maxLength]="500"></textarea> 
                                                     </mat-form-field>
 
                                                     <!-- SYMPTOMS -->
                                                     <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                         <textarea rows="4" matInput  name="patHandB" formControlName="patHandB" 
-                                                        [(ngModel)]="vSYMPTOMS"></textarea> 
+                                                        [(ngModel)]="vSYMPTOMS" [maxLength]="500"></textarea> 
                                                     </mat-form-field>
 
                                                     <!-- Instruction -->
                                                     <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
                                                     <mat-form-field appearance="outline" fxFlex="30%">
                                                         <textarea rows="4" matInput  name="patHandR" formControlName="patHandR" 
-                                                        [(ngModel)]="vInstruction"></textarea> 
+                                                        [(ngModel)]="vInstruction" [maxLength]="500"></textarea> 
                                                     </mat-form-field>
                                                 </div>
 
@@ -239,15 +239,15 @@
                                                     <!-- Stable -->
                                                     <span style="font-size:40px;padding-top: 10px;">S</span>
                                                     <mat-form-field appearance="outline" fxFlex="29.5%">
-                                                        <textarea rows="4" matInput   name="patHandS" formControlName="patHandS" 
-                                                        [(ngModel)]="VStable"></textarea> 
+                                                        <textarea rows="4" matInput  name="patHandS" formControlName="patHandS" 
+                                                        [(ngModel)]="VStable" [maxLength]="500"></textarea> 
                                                     </mat-form-field>
 
                                                     <!-- Assessment -->
                                                     <span style="font-size:40px;padding-top: 10px;">A</span>
                                                     <mat-form-field appearance="outline" fxFlex="29%">
                                                         <textarea rows="4" matInput   name="patHandA" formControlName="patHandA" 
-                                                        [(ngModel)]="VAssessment"></textarea> 
+                                                        [(ngModel)]="VAssessment" [maxLength]="500"></textarea> 
                                                     </mat-form-field>
 
                                                     <div fxLayout="column" fxLayoutGap="6px"

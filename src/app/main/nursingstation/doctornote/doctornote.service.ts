@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class DoctornoteService {
     // public _httpClient: HttpClient,
     public _httpClient: ApiCaller,
         private _loggedService: AuthenticationService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public _formBuilder: UntypedFormBuilder) {
     this.myform = this.createtemplateForm();
     this.noteform = this.createDoctorNoteForm();
@@ -45,38 +47,38 @@ export class DoctornoteService {
 
    creathandOverForm(): FormGroup {
     return this._formBuilder.group({
-      docHandId: [0],
-      admId: [0],
+      docHandId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
       shiftInfo: ["morning"],
-      patHandI: [''],
-      patHandS: [''],
-      patHandB: [''],
-      patHandA: [''],
-      patHandR: [''],
+      patHandI: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandS: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandB: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandA: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandR: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isAddedBy: this._loggedService.currentUserValue.userId
     });
   }
 
    createDoctorNoteForm(): FormGroup {
     return this._formBuilder.group({
-      doctNoteId: [0],
-      admId: [0],
+      doctNoteId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
-      doctorsNotes: [''],
+      doctorsNotes: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(500)]],
       isAddedBy: this._loggedService.currentUserValue.userId
     });
   }
 
   templateForm(): FormGroup {
     return this._formBuilder.group({
-      docNoteTempId: 0,
-      docsTempName:[''],
-      templateDesc: [''],
-      addedBy:0,
-      updatedBy:0
+      docNoteTempId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      docsTempName:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
+      templateDesc: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      addedBy:this._loggedService.currentUserValue.userId,
+      updatedBy:this._loggedService.currentUserValue.userId
     });
   }
 

@@ -58,20 +58,20 @@
 
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Route</mat-label>
-                                <input type="text" OnlyNumber [(ngModel)]="vRoute" name="Route" required
+                                <input type="text" OnlyNumber [(ngModel)]="vRoute" name="Route" [maxLength]="50"
                                    formControlName="Route" matInput required>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Frequency</mat-label>
                                 <input type="text" name="Frequency" [(ngModel)]="vFrequency" formControlName="Frequency"
-                                    matInput>
+                                    matInput [maxLength]="50">
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Nurse Name</mat-label>
                                 <input type="text" name="NurseName" [(ngModel)]="vNurseName" formControlName="NurseName"
-                                    matInput>
+                                    matInput [maxLength]="50" (keypress)="keyPressOnlyCharacters($event)">
                             </mat-form-field>
 
                             <div class="input-add-button">

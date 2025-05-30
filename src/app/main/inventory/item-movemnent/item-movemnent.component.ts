@@ -26,26 +26,27 @@ export class ItemMovemnentComponent implements OnInit {
     autocompleteitem: string = "ItemType";
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    batchNo: any = "0"
+    batchNo: any = "%"
     TostoreId: any = "0"
     FromstoreId = this.accountService.currentUserValue.user.storeId;
     itemId = "0"; //"77617"
 
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+     @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
     allColumns = [
-        { heading: "No", key: "movementId", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Date", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "TransactionType", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "FromStoreName", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "TransactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "FromStoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Doc.No", key: "documentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "ItemName", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "BatchNo", key: "transactionDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "ReceiptQty", key: "receiptQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Bal Qty", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "ReturnQty", key: "transactionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 }
+        { heading: "Bal Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ReturnQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 150 }
     ]
 
     allFilters = [
@@ -54,7 +55,7 @@ export class ItemMovemnentComponent implements OnInit {
         { fieldName: "ItemId", fieldValue: String(this.itemId), opType: OperatorComparer.Equals },
         { fieldName: "FromStoreID", fieldValue: String(this.FromstoreId), opType: OperatorComparer.Equals },
         { fieldName: "ToStoreId", fieldValue: String(this.TostoreId), opType: OperatorComparer.Equals },
-        { fieldName: "BatchNo", fieldValue: this.batchNo, opType: OperatorComparer.StartsWith }
+        { fieldName: "BatchNo", fieldValue: this.batchNo, opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
@@ -76,7 +77,8 @@ export class ItemMovemnentComponent implements OnInit {
 
     ngOnInit(): void {
         this._ItemMovemnentService.ItemSearchGroup.get('ItemID')?.valueChanges.subscribe(value => {
-            this.itemId = value.itemName || "0";
+            console.log(value)
+            this.itemId = value.itemId || "0";
             this.getfilterdata();
         });
     }
@@ -84,7 +86,7 @@ export class ItemMovemnentComponent implements OnInit {
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this._ItemMovemnentService.ItemSearchGroup.get('end').value, "yyyy-MM-dd")
-        this.batchNo = this._ItemMovemnentService.ItemSearchGroup.get('BatchNo').value
+        this.batchNo = this._ItemMovemnentService.ItemSearchGroup.get('BatchNo').value || "%"
         this.getfilterdata();
     }
 
@@ -101,7 +103,7 @@ export class ItemMovemnentComponent implements OnInit {
                 { fieldName: "ItemId", fieldValue: String(this.itemId), opType: OperatorComparer.Equals },
                 { fieldName: "FromStoreID", fieldValue: String(this.FromstoreId), opType: OperatorComparer.Equals },
                 { fieldName: "ToStoreId", fieldValue: String(this.TostoreId), opType: OperatorComparer.Equals },
-                { fieldName: "BatchNo", fieldValue: this.batchNo, opType: OperatorComparer.StartsWith }
+                { fieldName: "BatchNo", fieldValue: this.batchNo, opType: OperatorComparer.Equals }
             ]
         }
         console.log(this.gridConfig)

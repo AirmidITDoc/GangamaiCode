@@ -202,10 +202,6 @@ export class NewConsentComponent {
 
   onSave() {
     debugger
-  const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     if (!this.ConsentinsertForm.get('consentDeptId')?.value) {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -229,14 +225,16 @@ export class NewConsentComponent {
     if (!this.ConsentinsertForm.invalid) {
       console.log(this.ConsentinsertForm.value);
       let data=this.ConsentinsertForm.value;
-      data.consentDate=formattedDate;
-      data.consentTime=formattedTime
+      data.consentDate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      data.consentTime=this.datePipe.transform(new Date(), 'shortTime');
       data.opipid=this.OP_IP_Id
       data.opiptype=this.OP_IPType
+      data.consentDeptId=Number(this.vdepartmentId)
+      data.consentTempId=Number(this.templateId)
       this._ConsentService.ConsentSave(data).subscribe((response) => {
         console.log(response)
         this.toastr.success(response.message);
-        // this.onClear(true);
+        this.onClose();
       }, (error) => {
         this.toastr.error(error.message);
       });

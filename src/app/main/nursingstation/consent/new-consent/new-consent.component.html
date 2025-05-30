@@ -185,7 +185,7 @@
 
                                         <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="row">
 
-                                         <form [formGroup]="ConsentinsertForm" class="gap-8">
+                                         <form [formGroup]="ConsentinsertForm" class="gap-8" style="height: 80px;">
                                                <airmid-dropdown label="Department Name" formControlName="consentDeptId"
                                                 [formGroup]="ConsentinsertForm" fxFlex="35%"
                                                 [validations]="getValidationMessages().consentDeptId"
@@ -216,16 +216,16 @@
 
                                         </div>
 
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-top: 50px; border: 1px solid red;">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" style="margin-top: 50px;">
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                <form [formGroup]="ConsentinsertForm">
-                                                 <airmid-editor label="Template Details" formControlName="ConsentText" [(value)]="vConsentText"
-                                                 [formGroup]="ConsentinsertForm"></airmid-editor>
-                                                <!-- <mat-label>Template Details</mat-label>
+                                                 <!-- <airmid-editor label="Template Details" formControlName="ConsentText" [(value)]="vConsentText"
+                                                 [formGroup]="ConsentinsertForm"></airmid-editor> -->
+                                                <mat-label>Template Details</mat-label>
                                                 <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                     style="height:400px;" [(ngModel)]="vConsentText" required
-                                                    formControlName="templateDesc">
-                                                </angular-editor> -->
+                                                    formControlName="ConsentText">
+                                                </angular-editor>
                                                </form>
                                             </div>
                                         </div>

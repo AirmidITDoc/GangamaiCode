@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class NursingnoteService {
     Templateform:FormGroup
 
     constructor(public _httpClient: ApiCaller,
-            private _loggedService: AuthenticationService,
+        private _loggedService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         public _formBuilder: UntypedFormBuilder) 
     {
         this.myform = this.createtemplateForm();
@@ -45,38 +47,38 @@ export class NursingnoteService {
 
   createnursingForm(): FormGroup {
     return this._formBuilder.group({
-      docNoteId: 0,
-      admId: 0,
+      docNoteId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
-      nursingNotes: [''],
+      nursingNotes: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(2000)]],
       isAddedBy: this._loggedService.currentUserValue.userId
     });
   }
 
    createHandOverForm(): FormGroup {
     return this._formBuilder.group({
-      patHandId: [0],
-      admId: [0],
+      patHandId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
       shiftInfo: ['Morning'],
-      patHandI: [''],
-      patHandS: [''],
-      patHandB: [''],
-      patHandA: [''],
-      patHandR: [''],
-      comments: ['']
+      patHandI: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandS: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandB: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandA: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      patHandR: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      comments:['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]]
     });
   }
 
   templateForm(): FormGroup {
     return this._formBuilder.group({
-      nursingId:0,
-      templateDesc: [''],
-      nursTempName:[''],
-      addedBy:0,
-      updatedBy:0
+      nursingId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      templateDesc: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      nursTempName:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
+      addedBy:this._loggedService.currentUserValue.userId,
+      updatedBy:this._loggedService.currentUserValue.userId
     });
   }
 
