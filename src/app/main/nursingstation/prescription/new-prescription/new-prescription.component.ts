@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -140,7 +140,7 @@ export class NewPrescriptionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-
+    private _fb: FormBuilder,
   ) {
     if (this.advanceDataStored.storage) {
 
@@ -154,6 +154,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.myForm = this._PrescriptionService.createMyForm();
     this.ItemForm = this._PrescriptionService.createItemForm();
     this.prescForm=this._PrescriptionService.createPrescForm();
+    // this.prescForm=this._PrescriptionService.createPrescForm(this._fb);
     this.ItemForm.markAllAsTouched();
     this.myForm.markAllAsTouched();
   }
@@ -376,11 +377,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   OnSavePrescription() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
+debugger
     if(!this.prescForm.invalid){
       if (!this.myForm.invalid && this.dsItemList.data.length > 0) {
       let insertIP_Prescriptionarray = [];
@@ -391,8 +388,8 @@ export class NewPrescriptionComponent implements OnInit {
         insertIP_Prescription['ipmedId'] = 0;
         insertIP_Prescription['opIpId'] = this.vAdmissionID;
         insertIP_Prescription['opdIpdType'] = 1;
-        insertIP_Prescription['pdate'] = formattedDate;
-        insertIP_Prescription['ptime'] = formattedTime;
+        insertIP_Prescription['pdate'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        insertIP_Prescription['ptime'] = this.datePipe.transform(new Date(), 'shortTime');
         insertIP_Prescription['classId'] = this.vClassId;
         insertIP_Prescription['genericId'] = 1;
         insertIP_Prescription['drugId'] = element.ItemID;
@@ -407,9 +404,30 @@ export class NewPrescriptionComponent implements OnInit {
         insertIP_Prescription['wardID'] = Number(this.myForm.get('WardName').value) || 0;
         insertIP_Prescriptionarray.push(insertIP_Prescription);
       });
-      
+
+      // tried to insert in formcontrol
+    //   const formArray = this.prescForm.get("tIpPrescriptions") as FormArray;
+
+    //   formArray.controls.forEach((group: FormGroup, index: number) => {
+    //   const element = this.dsItemList.data[index];
+    //   if (element) {
+    //     group.get("opIpId").setValue(this.vAdmissionID);
+    //     group.get("pdate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    //     group.get("ptime").setValue(this.datePipe.transform(new Date(), 'shortTime'));
+    //     group.get("classId").setValue(this.vClassId);
+    //     group.get("drugId")?.setValue(element.ItemID);
+    //     group.get("qtyPerDay")?.setValue(Number(element.Qty));
+    //     group.get("totalQty")?.setValue(Number(element.Qty));
+    //     group.get("remark")?.setValue(element.Remark);
+    //     group.get("storeId")?.setValue(Number(this.vstoreId));
+    //     group.get("wardID")?.setValue(Number(this.myForm.get('WardName').value));
+    //   }
+    // });
+    // 
+
       this.prescForm.get("admissionId").setValue(this.vAdmissionID)
       this.prescForm.get("tIpPrescriptions").setValue(insertIP_Prescriptionarray)
+
       console.log(this.prescForm.value)
 
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {

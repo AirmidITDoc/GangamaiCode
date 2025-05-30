@@ -69,7 +69,7 @@ export class ConsentService {
       consentTempId: [0,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
       ConsentName: ['string',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(500)]],
       ConsentText: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      createdBy: this._loggedService.currentUserValue.userId,
+      // createdBy: this._loggedService.currentUserValue.userId,
     })
   }
 
@@ -98,8 +98,8 @@ public getDoctorsByDepartment(deptId) {
 }
 
 public ConsentSave(Param: any) {
-        if (Param.bankId) {
-            return this._httpClient1.PutData("NursingConsent/UpdateConsent/" + Param.bankId, Param);
+        if (Param.consentId) {
+            return this._httpClient1.PutData("NursingConsent/UpdateConsent/" + Param.consentId, Param);
         } else return this._httpClient1.PostData("NursingConsent/InsertConsent", Param);
     }
 

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -16,7 +17,8 @@ export class PrescriptionService {
 
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: UntypedFormBuilder,  
+    private _loggedService: AuthenticationService,    
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { 
     this.mysearchform= this.SearchFilterFrom();
@@ -57,6 +59,39 @@ export class PrescriptionService {
         tIpPrescriptions: "",
       })
     }
+
+//     createPrescForm(_fb: FormBuilder): FormGroup {
+//   return _fb.group({
+//     medicalRecoredId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+//     admissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+//     roundVisitDate: [(new Date()).toISOString().split('T')[0]],
+//     roundVisitTime: [(new Date()).toISOString()],
+//     inHouseFlag: [true],
+//     tIpPrescriptions: _fb.array([
+//       _fb.group({     
+//         ippreId: [0],
+//         ipmedId: [0],
+//         opIpId: [0],
+//         opdIpdType: [1],
+//         pdate: [(new Date()).toISOString()],
+//         ptime: [(new Date()).toISOString()],
+//         classId:[],
+//         genericId:[1],
+//         drugId:[],
+//         doseId:[0],
+//         days:[0],
+//         qtyPerDay:[0],
+//         totalQty:[0],
+//         remark:[''],
+//         isClosed:[false],
+//         isAddBy:[this._loggedService.currentUserValue.userId],
+//         storeId:[0],
+//         wardID:[0]
+//       })
+//     ])
+//   });
+// }
+
 
     createItemForm() {
       return this._formBuilder.group({

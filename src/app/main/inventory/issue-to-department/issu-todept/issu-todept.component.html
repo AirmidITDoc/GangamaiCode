@@ -40,12 +40,12 @@
 
                                     <form [formGroup]="StoreFrom" class="gap-2">
                                         <airmid-dropdown label="Store Name" formControlName="FromStoreId" fxFlex="30%"
-                                            [formGroup]="StoreFrom" [mode]="autocompletestore"
+                                            [formGroup]="StoreFrom" [mode]="autocompletestore" [readonly]="true"
                                             (selectionChange)="selectChangeStore($event)">
                                         </airmid-dropdown>
                                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                                             [formGroup]="StoreFrom" fxFlex="30%" [mode]="autocompletestore"
-                                            (selectionChange)="selectChangeStore($event)">
+                                            (selectionChange)="selectChangeStore1($event)">
                                         </airmid-dropdown>
                                         <div style="padding-top: 10px;">
                                             <mat-checkbox fxFlex="25%" [(ngModel)]="vAgainstIndet" [checked]
@@ -121,9 +121,9 @@
                             <div fxFlex.gt-sm="100%" fxFlex>
 
                                 <div fxlayout="row">
-                                    <div fxFlex.gt-sm="74%">
+                                    <div fxFlex.gt-sm="74%" class="airmid-table-container">
 
-                                        <mat-table #table class="tab3" matSort [dataSource]="dsNewIssueList3"
+                                        <mat-table #table class="airmid-table" matSort [dataSource]="dsNewIssueList3"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                             <ng-container matColumnDef="ItemId">

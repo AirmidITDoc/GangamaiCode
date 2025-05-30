@@ -231,6 +231,15 @@ export class NewConsentComponent {
       data.opiptype=this.OP_IPType
       data.consentDeptId=Number(this.vdepartmentId)
       data.consentTempId=Number(this.templateId)
+
+      const isUpdate = data.consentId && data.consentId > 0;
+
+      if (isUpdate) {
+        data.modifiedBy = this._loggedService.currentUserValue.userId;
+      } else {
+        data.createdBy = this._loggedService.currentUserValue.userId;
+      }
+
       this._ConsentService.ConsentSave(data).subscribe((response) => {
         console.log(response)
         this.toastr.success(response.message);

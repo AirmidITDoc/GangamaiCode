@@ -205,6 +205,8 @@ export class NewCasepaperComponent implements OnInit {
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeDiagnosis: string = "CasepaperDignosis";
 
+  vstoreId = this._loggedService.currentUserValue.user.storeId;
+
   AllTypeDescription: any = []
   @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
   @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
@@ -776,8 +778,18 @@ export class NewCasepaperComponent implements OnInit {
     console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
-    // this.vdoseName=row.doseName
+    this.vdoseName=row.doseName
     this.vDay = row.doseDay
+    this.vInstruction=row.instruction
+
+     if (this.vdoseName) {
+    const doseRow = {
+      value: this.vdoseName,   // assuming doseName is used as ID
+      text: this.vdoseName     // or whatever label you're using
+    };
+
+    this.selectChangeDoseName(doseRow);
+  }
 
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
@@ -905,17 +917,18 @@ export class NewCasepaperComponent implements OnInit {
   DoseObjects: any;
   DoseQtyPerDay: any;
   selectChangeDoseName(row) {
-
+    debugger
     console.log("Dose:", row)
     this.doseId = row.value
-    this.doseName = row.text
+    // this.doseName = row.text
 
     if ((this.doseId ?? 0) > 0) {
       setTimeout(() => {
         this._CasepaperService.getDoseMasterById(this.doseId).subscribe((response) => {
           this.DoseObjects = response;
-          console.log("all data:", this.DoseObjects)
+          console.log("all Dose data:", this.DoseObjects)
           this.DoseQtyPerDay = this.DoseObjects.doseQtyPerDay
+          this.doseName = this.DoseObjects.doseName
         });
       }, 500);
     }
