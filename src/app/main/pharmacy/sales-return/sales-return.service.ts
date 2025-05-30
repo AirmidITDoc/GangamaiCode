@@ -94,13 +94,12 @@ export class SalesReturnService {
   }
   public getTemplate(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-  } 
-
-  public InsertCreditSalesReturn(employee){
-    return this._httpClient.post("Pharmacy/InsertSalesReturnCredit", employee)
+  }  
+    public InsertCreditSalesReturn(employee){
+    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCredit", employee)
   }
   
   public InsertCashSalesReturn (employee){
-    return this._httpClient.post("Pharmacy/InsertSalesReturnPaid", employee)
+    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCash", employee)
   }
 }
