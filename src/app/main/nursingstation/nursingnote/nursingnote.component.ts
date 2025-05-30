@@ -195,14 +195,15 @@ export class NursingnoteComponent implements OnInit {
   }
 
   getMedicationList() {
-    // debugger
+    debugger
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
       columnsList: this.allMedicationColumns,
       sortField: "AdmissionID",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmId", fieldValue: '1', opType: OperatorComparer.Equals } //String(this.OP_IP_Id)
+        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+        // { fieldName: "AdmId", fieldValue: '1', opType: OperatorComparer.Equals }
       ]
     }
     console.log(this.gridConfig1)
@@ -421,7 +422,7 @@ export class NursingnoteComponent implements OnInit {
   Chargelist: any = [];
 
   getSchedulerlist() {
-    // debugger
+    debugger
     var param = {
       "first": 0,
       "rows": 10,

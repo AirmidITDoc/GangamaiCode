@@ -56,7 +56,7 @@ export class IssuTodeptComponent {
   isLoading = true;
 
   Charglist: any = [];
-  vIndentId: any;
+  vIndentId: any=0;
   vIndtDetId: any;
   vFinalTotalAmount: any;
   vFinalNetAmount: any;
@@ -366,7 +366,7 @@ export class IssuTodeptComponent {
 
 
   OnSave() {
-
+console.log(this.vIndentId)
      if ((!this.dsNewIssueList3.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -381,6 +381,7 @@ export class IssuTodeptComponent {
     }
     
     if (!this.IssueFinalForm.invalid) {
+      console.log(this.vIndentId)
 debugger
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
@@ -478,8 +479,9 @@ debugger
     }
   }
   OnSaveAgaintIndent() {
-
+    debugger
     this.vsaveflag = true;
+      let isertItemdetailsObj = [];
    
     const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
@@ -488,18 +490,20 @@ debugger
       insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
         insertheaderObj['issueTime'] = this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
         insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
-      insertheaderObj['toStoreId'] = this.NewIssueGroup.get('ToStoreId').value.StoreId || 0;
-      insertheaderObj['totalAmount'] = this.IssueFinalForm.get('FinalTotalAmount').value || 0;
-      insertheaderObj['totalVatAmount'] = this.IssueFinalForm.get('GSTAmount').value || 0;
-      insertheaderObj['netAmount'] = this.IssueFinalForm.get('FinalNetAmount').value || 0;
+      insertheaderObj['toStoreId'] = Number(this.vstoreId1) || 0; //changed by raksha
+      // insertheaderObj['toStoreId'] = this.NewIssueGroup.get('ToStoreId').value || 0;
+      insertheaderObj['totalAmount'] = Number(this.IssueFinalForm.get('FinalTotalAmount').value) || 0;
+      insertheaderObj['totalVatAmount'] = Number(this.IssueFinalForm.get('GSTAmount').value) || 0;
+      insertheaderObj['netAmount'] = Number(this.IssueFinalForm.get('FinalNetAmount').value)|| 0;
       insertheaderObj['remark'] = this.IssueFinalForm.get('Remark').value || '';
       insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
       insertheaderObj['isVerified'] = false;
       insertheaderObj['isclosed'] = false;
       insertheaderObj['indentId'] = this.vIndentId;
       insertheaderObj['issueId'] = 0;
+      insertheaderObj['tIssueToDepartmentDetails'] = isertItemdetailsObj;
 
-      let isertItemdetailsObj = [];
+      // let isertItemdetailsObj = [];
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
 
@@ -510,13 +514,13 @@ debugger
         insertitemdetail['batchExpDate'] = element.BatchExpDate;
         insertitemdetail['issueQty'] = element.Qty;
         insertitemdetail['perUnitLandedRate'] = element.LandedRate;
-        insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+        insertitemdetail['LandedTotalAmount'] = Number(element.LandedRateandedTotal);
         insertitemdetail['unitMRP'] = element.UnitMRP;
-        insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+        insertitemdetail['mrpTotalAmount'] = Number(element.TotalMRP);
         insertitemdetail['unitPurRate'] = element.PurchaseRate;
-        insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+        insertitemdetail['purTotalAmount'] = Number(element.PurTotAmt);
         insertitemdetail['vatPercentage'] = element.VatPer || 0;
-        insertitemdetail['vatAmount'] = element.VatAmount || 0;
+        insertitemdetail['vatAmount'] = Number(element.VatAmount) || 0;
         insertitemdetail['stkId'] = element.StockId;
         isertItemdetailsObj.push(insertitemdetail);
       });
@@ -532,9 +536,10 @@ debugger
         updateissuetoDepartmentStock.push(updateitemdetail);
       });
 
+
       let update_IndentHeader_StatusObj = {};
       update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
-      update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk;
+      update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
 
 
       let updateIndentStatusIndentDetails = [];
@@ -555,8 +560,11 @@ debugger
       });
 
       let submitData = {
-       updateIndent:insertheaderObj,
-        tIssueToDepartmentDetails: isertItemdetailsObj
+        updateIndent:insertheaderObj,
+        // tIssueToDepartmentDetails: isertItemdetailsObj,
+        tCurStockModel: updateissuetoDepartmentStock,
+        indentHeader: update_IndentHeader_StatusObj,
+        tIndentDetails:updateIndentStatusIndentDetails
       };
 
       console.log(submitData);
@@ -602,11 +610,14 @@ debugger
   }
 
   vstoreId: any = '';
+  vstoreId1: any = '';
   selectChangeStore(obj: any) {
-    debugger
     console.log("Store:", obj);
     this.vstoreId = obj.value
-
+  }
+  selectChangeStore1(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId1 = obj.value
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -669,8 +680,10 @@ console.log(this.vIndentId)
 
 
   AddIndentItem(contact) {
+    // debugger
     console.log(contact)
-    this.Indentid = contact.indentId;
+    this.vIndentId = contact.indentId;
+    // this.Indentid = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
     this.IsClosed = contact.isClosed;
     this.IndQty = contact.qty;
@@ -689,7 +702,7 @@ console.log(this.vIndentId)
       });
     }
     //   else  {
-    debugger
+    // debugger
     if (!DuplicateItem) {
       this.Itemchargeslist1 = [];
       this.QtyBalchk = 0;
@@ -810,7 +823,8 @@ console.log(this.vIndentId)
           PurTotAmt: PurTotAmt,
           MarginAmt: v_marginamt,
           SalesDraftId: 1,
-          IndentId: this.Indentid,
+          IndentId: this.vIndentId,
+          // IndentId: this.Indentid,
           IndentDetailsId: this.indentdetid,
           IsClosed: this.IsClosed,
           IndQty: this.IndQty
