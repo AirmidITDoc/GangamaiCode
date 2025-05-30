@@ -10,7 +10,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
 import { parseInt } from 'lodash';
-import * as converter from 'number-to-words';
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SalePopupComponent } from './sale-popup/sale-popup.component';
@@ -1790,9 +1789,6 @@ export class SalesComponent implements OnInit {
 
     //   }
 
-    convertToWord(e) {
-        return converter.toWords(e);
-    }
 
 
     transform2(value: string) {

@@ -50,7 +50,19 @@
                         "buildOptimizer": false,
                         "sourceMap": true,
                         "optimization": false,
-                        "namedChunks": true
+                        "namedChunks": true,
+                        "allowedCommonJsDependencies": [
+                            "sweetalert2",
+                            "@angularclass/hmr",
+                            "jspdf-autotable",
+                            "file-saver",
+                            "@ckeditor/ckeditor5-build-classic",
+                            "crypto-js",
+                            "lodash",
+                            "prismjs/prism",
+                            "rgbcolor",
+                            "raf"
+                        ]
                     },
                     "configurations": {
                         "production": {
