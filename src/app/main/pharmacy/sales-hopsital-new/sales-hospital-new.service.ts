@@ -110,7 +110,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
     }
     public InsertCashSales(employee){
-      return this._httpClient.post("Pharmacy/SalesSaveWithPayment", employee)
+      return this._httpClient1.PostData("Sales/SalesSaveWithPayment", employee)
     }
   
     public InsertCreditSales  (employee){

@@ -22,7 +22,7 @@ import { IPSearchListService } from '../ip-search-list.service';
 export class BedTransferComponent implements OnInit {
   Bedtransfer: FormGroup;
   
-  screenFromString = 'admission-form';
+  screenFromString = 'Common-form';
   currentDate = new Date();
   dateTimeObj: any;
 
@@ -192,6 +192,8 @@ export class BedTransferComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+getbedStatement(){
 
+}
 }
 

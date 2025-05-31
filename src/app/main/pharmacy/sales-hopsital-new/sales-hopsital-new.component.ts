@@ -28,6 +28,7 @@ import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -237,7 +238,7 @@ export class SalesHospitalNewComponent implements OnInit {
   vPharExtOpt: any;
   vPharOPOpt: any;
   vPharIPOpt: any;
-  vSelectedOption: any = 'OP';
+  vSelectedOption: any = '0';
   vCondition: boolean = false;
   vConditionExt: boolean = false;
   vConditionIP: boolean = false;
@@ -274,7 +275,8 @@ export class SalesHospitalNewComponent implements OnInit {
     private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
     public toastr: ToastrService,
-    private onlinePaymentService: OnlinePaymentService
+    private onlinePaymentService: OnlinePaymentService,
+    private _FormvalidationserviceService : FormvalidationserviceService
   ) {
     this.PatientHeaderObj = this.data;
   }
@@ -284,10 +286,10 @@ export class SalesHospitalNewComponent implements OnInit {
     this.getConcessionReasonList();
     this.getStoredet();
     this.getDraftorderList();
-
+   this.getPaymentForm();
     if (this.vPharExtOpt == true) {
       this.paymethod = false;
-      this.vSelectedOption = 'External';
+      this.vSelectedOption = '2';
     } else {
       this.vPharOPOpt = true;
     }
@@ -295,7 +297,7 @@ export class SalesHospitalNewComponent implements OnInit {
     if (this.vPharIPOpt == true) {
       if (this.vPharOPOpt == false) {
         this.paymethod = true;
-        this.vSelectedOption = 'IP';
+        this.vSelectedOption = '1';
       }
     } else {
       this.vConditionIP = true;
@@ -303,7 +305,7 @@ export class SalesHospitalNewComponent implements OnInit {
     if (this.vPharOPOpt == true) {
       if (this.vPharExtOpt == false) {
         this.paymethod = true;
-        this.vSelectedOption = 'OP';
+        this.vSelectedOption = '2';
       }
     } else {
       this.vCondition = true;
@@ -320,29 +322,29 @@ export class SalesHospitalNewComponent implements OnInit {
   //New code
 
   onChangePatientType(event) {
-    if (event.value == 'OP') {
+    if (event.value == '0') {
       this.OP_IPType = 0;
       this.RegId = '';
       this.paymethod = true;
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
-    } else if (event.value == 'IP') {
+      this.ItemSubform.get('extMobileNo').clearValidators();
+      this.ItemSubform.get('externalPatientName').clearValidators();
+      this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+      this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+    } else if (event.value == '1') {
       this.OP_IPType = 1;
       this.RegId = '';
       this.paymethod = true;
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
+      this.ItemSubform.get('extMobileNo').clearValidators();
+      this.ItemSubform.get('externalPatientName').clearValidators();
+      this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+      this.ItemSubform.get('externalPatientName').updateValueAndValidity();
     } else {
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-      this.ItemSubform.get('MobileNo').enable();
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-      this.ItemSubform.get('PatientName').enable();
+      this.ItemSubform.get('extMobileNo').reset();
+      this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('extMobileNo').enable();
+      this.ItemSubform.get('externalPatientName').reset();
+      this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('externalPatientName').enable();
       this.ItemSubform.updateValueAndValidity();
       this.paymethod = false;
       this.OP_IPType = 2;
@@ -373,6 +375,13 @@ export class SalesHospitalNewComponent implements OnInit {
       this.WardName = obj.roomName;
       this.BedName = obj.bedName;
     }
+    this.ItemSubform.patchValue({
+      opIpId: obj.admissionID,
+      regId:obj.regID,
+      wardId:obj.wardId,
+      bedId:obj.bedId,
+      unitId:obj.hospitalID,
+    })
     this.getBillSummary();
   }
 
@@ -537,57 +546,57 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('FinalDiscPer').disable();
       this.chkdiscper = true;
       this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2);
-      this.ItemSubform.get('DiscAmt').disable();
+      this.ItemSubform.get('discAmount').disable();
     } else {
       this.chkdiscper = false;
       this.DiscAmt = 0;
-      this.ItemSubform.get('DiscAmt').enable();
+      this.ItemSubform.get('discAmount').enable();
     }
     this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
   }
 
   getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
-    let DiscAmt = this.ItemSubform.get('FinalDiscAmt').value || 0;
+    let DiscAmt = this.ItemSubform.get('discAmount').value || 0;
 
     if (Disc > 0 || Disc < 100) {
       this.ConShow = true;
       this.FinalDiscAmt = ((this.FinalTotalAmt * Disc) / 100).toFixed(2);
-      this.ItemSubform.get('FinalDiscAmt').setValue(this.FinalDiscAmt);
+      this.ItemSubform.get('discAmount').setValue(this.FinalDiscAmt);
       this.FinalNetAmount = (this.FinalTotalAmt - this.FinalDiscAmt).toFixed(2);
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-      this.ItemSubform.get('ConcessionId').enable();
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
       this.ItemSubform.updateValueAndValidity();
     } else {
       this.ConShow = false;
-      this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').clearValidators();
-      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
       // this.ConseId.nativeElement.focus();
     }
 
-    this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
+    this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
   }
 
   getFinalDiscAmount() {
     // console.log("total disc");
-    let totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value;
+    let totDiscAmt = this.ItemSubform.get('discAmount').value;
     // console.log(totDiscAmt);
     // console.log(this.FinalDiscAmt);
     if (totDiscAmt > 0) {
       this.FinalNetAmount = (this.FinalNetAmount - this.FinalDiscAmt).toFixed(2);
       this.ConShow = true;
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-      this.ItemSubform.get('ConcessionId').enable();
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
     } else {
       this.ConShow = false;
-      this.ItemSubform.get('FinalNetAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').clearValidators();
-      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
       //this.ConseId.nativeElement.focus();
     }
   }
@@ -743,18 +752,18 @@ export class SalesHospitalNewComponent implements OnInit {
     this.RegId = '';
     this.PatientName = '';
     this.DoctorName = '';
-    this.ItemSubform.get('PatientType').setValue('External');
+    this.ItemSubform.get('opIpType').setValue('2');
     this.ItemSubform.get('CashPay').setValue('CashPay');
 
     this.IsOnlineRefNo = false;
     this.ItemSubform.get('referanceNo').reset('');
-    this.ItemSubform.get('MobileNo').reset('');
-    this.ItemSubform.get('PatientName').reset('');
-    this.ItemSubform.get('DoctorName').reset('');
+    this.ItemSubform.get('extMobileNo').reset('');
+    this.ItemSubform.get('externalPatientName').reset('');
+    this.ItemSubform.get('doctorName').reset('');
     this.ConShow = false;
-    this.ItemSubform.get('ConcessionId').clearValidators();
-    this.ItemSubform.get('ConcessionId').updateValueAndValidity();
-    this.ItemSubform.get('ConcessionId').disable();
+    this.ItemSubform.get('concessionReasonId').clearValidators();
+    this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+    this.ItemSubform.get('concessionReasonId').disable();
 
     this.saleSelectedDatasource.data = [];
     this.getDraftorderList();
@@ -780,38 +789,171 @@ export class SalesHospitalNewComponent implements OnInit {
     });
   }
 
+  // getItemSubform() {
+  //   this.ItemSubform = this.formBuilder.group({
+  //     PatientName: '',
+  //     DoctorName: '',
+  //     extAddress: '',
+  //     MobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10)]],
+  //     PatientType: ['OP'],
+  //     TotalAmt: '',
+  //     GSTPer: '',
+  //     DiscAmt: '',
+  //     concessionAmt: [0],
+  //     ConcessionId: [0, [Validators.required]],
+  //     Remark: [''],
+  //     FinalAmount: '',
+  //     BalAmount: '',
+  //     FinalDiscPer: 0,
+  //     FinalDiscAmt: 0,
+  //     FinalTotalAmt: 0,
+  //     FinalNetAmount: 0,
+  //     FinalGSTAmt: 0,
+  //     BalanceAmt: 0,
+  //     CashPay: ['CashPay'],
+  //     referanceNo: '',
+  //     RegID: '',
+  //     RegID1: '',
+  //     PaidbyPatient: '',
+  //     PaidbacktoPatient: '',
+  //     roundoffAmt: '0',
+  //     StoreId: [this._loggedService.currentUserValue.user.storeId],
+  //   });
+  // }
+
+
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
-      PatientName: '',
-      DoctorName: '',
-      extAddress: '',
-      MobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10)]],
-      PatientType: ['OP'],
-      TotalAmt: '',
-      GSTPer: '',
-      DiscAmt: '',
-      concessionAmt: [0],
-      ConcessionId: [0, [Validators.required]],
-      Remark: [''],
-      FinalAmount: '',
-      BalAmount: '',
+      //PatientName: '',
+      //DoctorName: '',
+      // extAddress: '',
+      //  MobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10)]],
+      // PatientType: ['OP'],  
+      // ConcessionId: [0, [Validators.required]], 
       FinalDiscPer: 0,
-      FinalDiscAmt: 0,
-      FinalTotalAmt: 0,
-      FinalNetAmount: 0,
-      FinalGSTAmt: 0,
-      BalanceAmt: 0,
+      // FinalDiscAmt: 0,
+      //  FinalTotalAmt: 0,
+      // FinalNetAmount: 0, 
+      // BalanceAmt: 0,
       CashPay: ['CashPay'],
       referanceNo: '',
-      RegID: '',
-      RegID1: '',
       PaidbyPatient: '',
       PaidbacktoPatient: '',
       roundoffAmt: '0',
-      StoreId: [this._loggedService.currentUserValue.user.storeId],
+      salesId: 0,
+      date: [''],
+      time:  [''],
+      opIpId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      opIpType: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      totalAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator]],
+      discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator]],
+      netAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      paidAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator]],
+      balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator]],
+      concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator]],
+      concessionAuthorizationId: 0,
+      isSellted: [true],
+      isPrint: [true],
+      isFree: [true],
+      unitId: [1],
+      externalPatientName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      doctorName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      storeId: [this._loggedService.currentUserValue.user.storeId],
+      isPrescription: 0,
+      addedBy: [this._loggedService.currentUserValue.userId],
+      creditReason: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      creditReasonId: 0,
+      wardId: 0,
+      bedId: 0,
+      discperH: 0,
+      isPurBill: [false],
+      isBillCheck: [true],
+      salesHeadName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      salesTypeId: 0,
+      regId:[0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
+      this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      extMobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10),
+      this._FormvalidationserviceService.onlyNumberValidator,
+      ]],
+      extAddress: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      tSalesDetails:[
+        {
+        salesId: 0,
+        itemId: 0,
+        batchNo: "",
+        batchExpDate: "",
+        unitMrp: 0,
+        qty: 0,
+        totalAmount: 0,
+        vatPer: 0,
+        vatAmount: 0,
+        discPer: 0,
+        discAmount: 0,
+        grossAmount: 0,
+        landedPrice: 0,
+        totalLandedAmount: 0,
+        returnQty: 0,
+        purRateWf: 0,
+        purTotAmt: 0,
+        cgstper: 0,
+        cgstamt: 0,
+        sgstper: 0,
+        sgstamt: 0,
+        igstper: 0,
+        igstamt: 0,
+        isPurRate: true,
+        stkId: 0,
+        mrp: 0,
+        mrpTotal: 0
+        } 
+      ]
     });
   }
-
+paymentForm:FormGroup
+getPaymentForm(){
+  this.paymentForm = this.formBuilder.group({ 
+    paymentId: 0,
+    billNo: 0,
+    paymentDate: [this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')],
+    paymentTime: [this.datePipe.transform(this.dateTimeObj.time, 'hh:mm')],
+    cashPayAmount: [0,[this.ItemSubform.get('netAmount').value]],
+    chequePayAmount: 0,
+    chequeNo: "",
+    bankName: "",
+    chequeDate:  "1999-01-01",
+    cardPayAmount: 0,
+    cardNo: "",
+    cardBankName: "",
+    cardDate:  "1999-01-01",
+    advanceUsedAmount: 0,
+    advanceId: 0,
+    refundId: 0,
+    transactionType: 0,
+    remark: "",
+    addBy: 0,
+    isCancelled: false,
+    isCancelledBy: 0,
+    isCancelledDate: "1999-01-01",
+    opdipdType: 0,
+    neftpayAmount: 0,
+    neftno: "",
+    neftbankMaster: "",
+    neftdate: "1999-01-01",
+    payTmamount: 0,
+    payTmtranNo: "",
+    payTmdate: "1999-01-01"
+  })
+}
   getConcessionReasonList() {
     this._salesService.getConcessionCombo().subscribe((data) => {
       this.ConcessionReasonList = data;
@@ -1018,7 +1160,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.FinalTotalAmt = element.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
     this.FinalDiscAmt = element.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
     this.FinalGSTAmt = element.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-    this.roundoffAmt = Math.round(this.ItemSubform.get('FinalNetAmount').value);
+    this.roundoffAmt = Math.round(this.ItemSubform.get('netAmount').value);
 
     this.DiffNetRoundAmt = (parseFloat(this.roundoffAmt) - parseFloat(this.FinalNetAmount)).toFixed(2);
     return this.FinalNetAmount;
@@ -1038,16 +1180,16 @@ export class SalesHospitalNewComponent implements OnInit {
     if (parseFloat(this.DiscAmt) > 0 && parseFloat(this.DiscAmt) < parseFloat(this.TotalMRP)) {
       // this.DiscId=1;
       this.ConShow = true;
-      this.ItemSubform.get('ConcessionId').reset();
-      this.ItemSubform.get('ConcessionId').setValidators([Validators.required]);
-      this.ItemSubform.get('ConcessionId').enable();
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
       if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
         Swal.fire('Discount amount greater than Purchase amount, Please check !');
         this.ItemFormreset();
         this.itemid.nativeElement.focus();
         this.ConShow = false;
-        this.ItemSubform.get('ConcessionId').clearValidators();
-        this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+        this.ItemSubform.get('concessionReasonId').clearValidators();
+        this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
       } else {
         this.NetAmt = (this.TotalMRP - this._salesService.ItemSearchGroup.get('DiscAmt').value).toFixed(2);
         this.add = true;
@@ -1056,14 +1198,14 @@ export class SalesHospitalNewComponent implements OnInit {
     } else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
       Swal.fire('Check Discount Amount !');
       this.ConShow = false;
-      this.ItemSubform.get('ConcessionId').clearValidators();
-      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
     }
     if (parseFloat(this._salesService.ItemSearchGroup.get('DiscAmt').value) == 0) {
       this.add = true;
       this.ConShow = false;
-      this.ItemSubform.get('ConcessionId').clearValidators();
-      this.ItemSubform.get('ConcessionId').updateValueAndValidity();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
       // this.addbutton.focus();
     }
   }
@@ -1127,8 +1269,8 @@ export class SalesHospitalNewComponent implements OnInit {
     }
 
     event.srcElement.setAttribute('disabled', true);
-    let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
-    if (this.ItemSubform.get('PatientType').value == 'External') {
+    let patientTypeValue1 = this.ItemSubform.get('opIpType').value;
+    if (this.ItemSubform.get('opIpType').value == '2') {
       if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
         this.toastr.warning('Please select Customer Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -1144,8 +1286,8 @@ export class SalesHospitalNewComponent implements OnInit {
       event.srcElement.removeAttribute('disabled');
       return;
     }
-    let patientTypeValue = this.ItemSubform.get('PatientType').value;
-    if ((patientTypeValue == 'OP' || patientTypeValue == 'IP') && (this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
+    let patientTypeValue = this.ItemSubform.get('opIpType').value;
+    if ((patientTypeValue == '0' || patientTypeValue == '1') && (this.RegNo == '' || this.RegNo == null || this.RegNo == undefined)) {
       this.toastr.warning('Please select Patient Type.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -1153,7 +1295,8 @@ export class SalesHospitalNewComponent implements OnInit {
       return;
     }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
-      this.onCashOnlinePaySave();
+     // this.onCashOnlinePaySave();
+      this.onCashSave();
     } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
       this.onCreditpaySave();
     } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
@@ -1166,6 +1309,70 @@ export class SalesHospitalNewComponent implements OnInit {
     this.DoctorName = '';
     this.ItemSubform.get('FinalDiscPer').enable();
   }
+
+  onCashSave(){
+debugger
+       const fomrvalue = this.ItemSubform.value
+       console.log(fomrvalue)
+       let invalidFields = []; 
+      if (this.ItemSubform.invalid) {
+        for (const controlName in this.ItemSubform.controls) {
+          if (this.ItemSubform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      } 
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      } 
+    
+       this.ItemSubform.get('date').setValue(this.datePipe.transform(new Date() ,'yyyy-MM-dd'))
+        this.ItemSubform.get('time').setValue(this.datePipe.transform(new Date() ,'hh:mm') )
+    this.ItemSubform.get('tSalesDetails').setValue(this.saleSelectedDatasource.data)
+
+    let updateCurStkSalestarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let updateCurStkSales = {};
+      updateCurStkSales['itemId'] = element.ItemId;
+      updateCurStkSales['issueQty'] = element.Qty;
+      (updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId), (updateCurStkSales['stkID'] = element.StockId);
+      updateCurStkSalestarr.push(updateCurStkSales);
+    }); 
+
+    let salesDraftStatusUpdate = {};
+    salesDraftStatusUpdate['SalesId'] = this.DraftID || 0;
+    salesDraftStatusUpdate['isclosed'] = 1
+
+    let salesPrescriptionStatusUpdate = {}; 
+    salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
+    salesPrescriptionStatusUpdate['isclosed'] = true || 1 
+   console.log(fomrvalue)
+      let submitData = {
+      sales: this.ItemSubform.value,
+      tCurrentStock:updateCurStkSalestarr,
+      payment:this.paymentForm.value,
+      prescription:salesPrescriptionStatusUpdate,
+      salesDraft:salesDraftStatusUpdate 
+    }; 
+    console.log(submitData);
+    let vMobileNo = this.MobileNo; 
+    this._salesService.InsertCashSales(submitData).subscribe((response) => {
+        if (response) {  
+            // this.getPrint3(response);
+            // this.getWhatsappshareSales(response, vMobileNo);
+            this.Itemchargeslist = []; 
+            this.ItemFormreset(); 
+            this.ItemSubform.reset();
+            this.Formreset();
+            this.ItemSubform.get('concessionReasonId').reset(); 
+            this.saleSelectedDatasource.data = []; 
+        } 
+      });
+  }
   isLoading123 = false;
   onCashOnlinePaySave() {
     this.isLoading123 = true;
@@ -1174,27 +1381,27 @@ export class SalesHospitalNewComponent implements OnInit {
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     // console.log(this.newDateTimeObj);
 
-    let NetAmt = this.ItemSubform.get('FinalNetAmount').value;
+    let NetAmt = this.ItemSubform.get('netAmount').value;
     let ConcessionId = 0;
-    if (this.ItemSubform.get('ConcessionId').value) ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
     let SalesInsert = {};
     SalesInsert['Date'] = this.newDateTimeObj.date;
     SalesInsert['time'] = this.newDateTimeObj.time;
 
-    if (this.ItemSubform.get('PatientType').value == 'External') {
+    if (this.ItemSubform.get('opIpType').value == '2') {
       SalesInsert['oP_IP_Type'] = 2;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+    } else if (this.ItemSubform.get('opIpType').value == '0') {
       SalesInsert['oP_IP_Type'] = 0;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+    } else if (this.ItemSubform.get('opIpType').value == '1') {
       SalesInsert['oP_IP_Type'] = 1;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     }
-    SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
-    SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
-    SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    SalesInsert['totalAmount'] = this.ItemSubform.get('totalAmount').value || 0; //this.FinalTotalAmt
+    SalesInsert['vatAmount'] = this.ItemSubform.get('vatAmount').value || 0;
+    SalesInsert['discAmount'] = this.ItemSubform.get('discAmount').value || 0; //this.FinalDiscAmt;
     SalesInsert['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;
     SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value; // NetAmt;
     SalesInsert['balanceAmount'] = 0;
@@ -1339,7 +1546,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.isLoading123 = false;
             this.ItemSubform.reset();
             this.Formreset();
-            this.ItemSubform.get('ConcessionId').reset();
+            this.ItemSubform.get('concessionReasonId').reset();
             // this.PatientName = '';
             // this.MobileNo = '';
             this.saleSelectedDatasource.data = [];
@@ -1362,13 +1569,13 @@ export class SalesHospitalNewComponent implements OnInit {
     // }
   }
   onSavePayOption() {
-    this.vPatientType = this.ItemSubform.get('PatientType').value;
+    this.vPatientType = this.ItemSubform.get('opIpType').value;
     this.isLoading123 = true;
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['RegNo'] = this.RegNo;
     PatientHeaderObj['PatientName'] = this.PatientName;
-    if (this.vPatientType == 'IP') {
+    if (this.vPatientType == '1') {
       PatientHeaderObj['OPD_IPD_Id'] = this.IPDNo;
     } else {
       PatientHeaderObj['OPD_IPD_Id'] = this.OPDNo;
@@ -1402,9 +1609,9 @@ export class SalesHospitalNewComponent implements OnInit {
         let onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
 
         if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) {
-          let NetAmt = this.ItemSubform.get('FinalNetAmount').value;
+          let NetAmt = this.ItemSubform.get('netAmount').value;
           let ConcessionId = 0;
-          if (this.ItemSubform.get('ConcessionId').value) ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+          if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
           let nowDate = new Date();
           let nowDate1 = nowDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }).split(',');
@@ -1414,19 +1621,19 @@ export class SalesHospitalNewComponent implements OnInit {
           SalesInsert['Date'] = this.newDateTimeObj.date;
           SalesInsert['time'] = this.newDateTimeObj.time;
 
-          if (this.ItemSubform.get('PatientType').value == 'External') {
+          if (this.ItemSubform.get('opIpType').value == '2') {
             SalesInsert['oP_IP_Type'] = 2;
             SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-          } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+          } else if (this.ItemSubform.get('opIpType').value == '0') {
             SalesInsert['oP_IP_Type'] = 0;
             SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-          } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+          } else if (this.ItemSubform.get('opIpType').value == '1') {
             SalesInsert['oP_IP_Type'] = 1;
             SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
           }
-          SalesInsert['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
-          SalesInsert['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
-          SalesInsert['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+          SalesInsert['totalAmount'] = this.ItemSubform.get('totalAmount').value || 0; //this.FinalTotalAmt
+          SalesInsert['vatAmount'] = this.ItemSubform.get('vatAmount').value || 0;
+          SalesInsert['discAmount'] = this.ItemSubform.get('discAmount').value || 0; //this.FinalDiscAmt;
           SalesInsert['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;
           SalesInsert['paidAmount'] = this.ItemSubform.get('roundoffAmt').value || 0; // NetAmt;
           SalesInsert['balanceAmount'] = 0;
@@ -1556,7 +1763,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
           this.ItemFormreset();
           this.Formreset();
-          this.ItemSubform.get('ConcessionId').reset();
+          this.ItemSubform.get('concessionReasonId').reset();
           this.saleSelectedDatasource.data = [];
         } else {
           this.toastr.warning('Please check Payment Mode and Amount (Now it is Selected Zero).', 'Save !', {
@@ -1570,28 +1777,28 @@ export class SalesHospitalNewComponent implements OnInit {
   }
   onCreditpaySave() {
     this.isLoading123 = true;
-    // if (this._salesService.ItemSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
-    let NetAmt = this.ItemSubform.get('FinalNetAmount').value;
+    // if (this._salesService.ItemSearchGroup.get('opIpType').value == "2" && this.PatientName  != null && this.MobileNo != null) {
+    let NetAmt = this.ItemSubform.get('netAmount').value;
     let ConcessionId = 0;
-    if (this.ItemSubform.get('ConcessionId').value) ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
     let salesInsertCredit = {};
     salesInsertCredit['Date'] = this.dateTimeObj.date;
     salesInsertCredit['time'] = this.dateTimeObj.time;
-    if (this.ItemSubform.get('PatientType').value == 'External') {
+    if (this.ItemSubform.get('opIpType').value == '2') {
       salesInsertCredit['oP_IP_Type'] = 2;
       salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+    } else if (this.ItemSubform.get('opIpType').value == '0') {
       salesInsertCredit['oP_IP_Type'] = 0;
       salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+    } else if (this.ItemSubform.get('opIpType').value == '1') {
       salesInsertCredit['oP_IP_Type'] = 1;
       salesInsertCredit['oP_IP_ID'] = this.OP_IP_Id;
     }
 
-    salesInsertCredit['totalAmount'] = this.ItemSubform.get('FinalTotalAmt').value || 0; //this.FinalTotalAmt
-    salesInsertCredit['vatAmount'] = this.ItemSubform.get('FinalGSTAmt').value || 0;
-    salesInsertCredit['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
+    salesInsertCredit['totalAmount'] = this.ItemSubform.get('totalAmount').value || 0; //this.FinalTotalAmt
+    salesInsertCredit['vatAmount'] = this.ItemSubform.get('vatAmount').value || 0;
+    salesInsertCredit['discAmount'] = this.ItemSubform.get('discAmount').value || 0; //this.FinalDiscAmt;
     salesInsertCredit['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;
     salesInsertCredit['paidAmount'] = 0;
     salesInsertCredit['balanceAmount'] = NetAmt;
@@ -1707,7 +1914,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     this.ItemFormreset();
     this.Formreset();
-    this.ItemSubform.get('ConcessionId').reset();
+    this.ItemSubform.get('concessionReasonId').reset();
     this.getConcessionReasonList();
     //this.PatientName = '';
     // this.MobileNo = '';
@@ -2120,21 +2327,21 @@ export class SalesHospitalNewComponent implements OnInit {
   }
 
   onSaveDraftBill() {
-    let NetAmt = this.ItemSubform.get('FinalNetAmount').value;
+    let NetAmt = this.ItemSubform.get('netAmount').value;
     let ConcessionId = 0;
-    if (this.ItemSubform.get('ConcessionId').value) ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
+    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
     let SalesInsert = {};
     SalesInsert['Date'] = this.dateTimeObj.date;
     SalesInsert['time'] = this.dateTimeObj.time;
 
-    if (this.ItemSubform.get('PatientType').value == 'External') {
+    if (this.ItemSubform.get('opIpType').value == '2') {
       SalesInsert['oP_IP_Type'] = 2;
       SalesInsert['oP_IP_ID'] = 0;
-    } else if (this.ItemSubform.get('PatientType').value == 'OP') {
+    } else if (this.ItemSubform.get('opIpType').value == '0') {
       SalesInsert['oP_IP_Type'] = 0;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('PatientType').value == 'IP') {
+    } else if (this.ItemSubform.get('opIpType').value == '1') {
       SalesInsert['oP_IP_Type'] = 1;
       SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
     }
@@ -2219,7 +2426,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     this.ItemFormreset();
     this.Formreset();
-    this.ItemSubform.get('ConcessionId').reset();
+    this.ItemSubform.get('concessionReasonId').reset();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
@@ -2232,7 +2439,7 @@ export class SalesHospitalNewComponent implements OnInit {
     }
   }
   public onEntermobileno(event): void {
-    if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('MobileNo').value.length == 10) {
+    if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
       this.getTopSalesDetailsList(this.MobileNo);
       this.patientname.nativeElement.focus();
     }
@@ -2303,7 +2510,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.ItemFormreset();
     this.ItemSubform.reset();
     this.Formreset();
-    this.ItemSubform.get('ConcessionId').reset();
+    this.ItemSubform.get('concessionReasonId').reset();
     this.PatientName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
@@ -2527,7 +2734,7 @@ export class SalesHospitalNewComponent implements OnInit {
   }
 
   getPRESCRIPTION() {
-    if (this.ItemSubform.get('PatientType').value == 'IP') {
+    if (this.ItemSubform.get('opIpType').value == '1') {
       const dialogRef = this._matDialog.open(PrescriptionComponent, {
         maxWidth: '100%',
         height: '95%',
@@ -2544,7 +2751,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PatientName = result[0].PatientName;
         this.RegId = result[0].RegId;
         this.OP_IP_Id = result[0].AdmissionID;
-        this.ItemSubform.get('RegID').setValue(result[0].RegId);
+        this.ItemSubform.get('regId').setValue(result[0].RegId);
         this.IPDNo = result[0].IPDNo;
         this.RegNo = result[0].RegNo;
         this.DoctorName = result[0].DoctorName;
@@ -2554,7 +2761,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.IPDNo = result[0].IPDNo;
         if (this.IPMedID > 0) {
           this.paymethod = true;
-          this.vSelectedOption = 'IP';
+          this.vSelectedOption = '1';
         }
 
         this.dsItemNameList1.data = result;
@@ -2602,7 +2809,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
       });
     } else {
-      this.toastr.warning('Please Select PatientType IP.', 'Warning !', {
+      this.toastr.warning('Please Select opIpType IP.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }

@@ -186,25 +186,18 @@
                       <form [formGroup]="ItemSubform" class="pt-0">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between" class="gap-8">
                           <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex>
-                            <mat-radio-group
-                              aria-label="Select an option"
-                              formControlName="PatientType"
-                              [(ngModel)]="vSelectedOption"
-                              name="paymode"
-                              (change)="onChangePatientType($event)"
-                              (blur)="onChangePatientType($event)"
-                              fxLayout="row"
-                            >
-                              <mat-radio-button value="OP">OP</mat-radio-button>
-                              <mat-radio-button value="IP">IP</mat-radio-button>
-                              <mat-radio-button value="External">External</mat-radio-button>
+                            <mat-radio-group aria-label="Select an option" formControlName="opIpType" [(ngModel)]="vSelectedOption" name="paymode"
+                              (change)="onChangePatientType($event)" (blur)="onChangePatientType($event)" fxLayout="row">
+                              <mat-radio-button value="0">OP</mat-radio-button>
+                              <mat-radio-button value="1">IP</mat-radio-button>
+                              <mat-radio-button value="2">External</mat-radio-button>
                             </mat-radio-group>
 
-                            <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'">
+                            <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value != '1' && ItemSubform.get('opIpType').value != '2'">
                               <airmid-autocomplete
                                 label="OP-RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform"
-                                formControlName="RegID"
+                                formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
                                 ApiUrl="OutPatient/auto-complete?Keyword="
@@ -214,11 +207,11 @@
                               ></airmid-autocomplete>
                             </div>
 
-                            <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value != 'OP' && ItemSubform.get('PatientType').value != 'External'">
+                            <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
                               <airmid-autocomplete
                                 label="IP RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform"
-                                formControlName="RegID"
+                                formControlName="regId"
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
                                 ApiUrl="Admission/search-patient?Keyword="
@@ -228,11 +221,11 @@
                               ></airmid-autocomplete> 
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <airmid-textbox
                                 label="MobileNo"
                                 [(ngModel)]="MobileNo"
-                                formControlName="MobileNo"
+                                formControlName="extMobileNo"
                                 [formGroup]="ItemSubform"
                                 [validations]="getValidationMessages().mobileNo"
                                 [type]="'text'"
@@ -241,12 +234,12 @@
                             </div>
 
                             <!-- Patient Name autocomplete pending -->
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <airmid-autocomplete
                                 label="Patient Name"
                                 [(ngModel)]="PatientName"
                                 [formGroup]="ItemSubform"
-                                formControlName="PatientName"
+                                formControlName="externalPatientName"
                                 placeholderText="Patient Name"
                                 fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
@@ -257,12 +250,12 @@
                               ></airmid-autocomplete>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <airmid-autocomplete
                                 label="DoctorName"
                                 [formGroup]="ItemSubform"
                                 [(ngModel)]="DoctorName"
-                                formControlName="DoctorName"
+                                formControlName="doctorName"
                                 placeholderText="DoctorName"
                                 fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
@@ -272,7 +265,7 @@
                               ></airmid-autocomplete>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('PatientType').value == 'External'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <airmid-textbox
                                 label="Address"
                                 [(ngModel)]="vextAddress"
@@ -286,7 +279,7 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="ItemSubform.get('PatientType').value != 'External' && RegId != ''">
+                        <div *ngIf="ItemSubform.get('opIpType').value != '2' && RegId != ''">
                           <div class="content-card">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                               <div fxFlex.gt-sm="100%" fxFlex>
@@ -295,7 +288,8 @@
                                   <div class="patient-info-sales my-8">
                                     <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
                                     <div class="sales-patient-info-title">
-                                      <span style="font-weight: 700">Patient Information</span>
+                                      <span style="font-weight: 700"
+                                      class="patient-info-title border-bottom">Patient Information</span>
                                     </div>
                                     <div class="sales-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center" class="patient-info">
                                       <div class="patient-sub">
@@ -589,7 +583,8 @@
                                 <div class="draft-btn">
                                   <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
                                 </div>
-                                <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform" formControlName="FinalTotalAmt" [(ngModel)]="FinalTotalAmt" [readonly]="true"></airmid-textbox>
+                                <airmid-textbox fxFlex="8%" label="Total Amount" 
+                                [formGroup]="ItemSubform" formControlName="totalAmount" [(ngModel)]="FinalTotalAmt" [readonly]="true"></airmid-textbox>
   
                                 <airmid-textbox
                                   fxFlex="7%"
@@ -604,7 +599,7 @@
                                   fxFlex="8%"
                                   label="Discount Amount"
                                   [formGroup]="ItemSubform"
-                                  formControlName="FinalDiscAmt"
+                                  formControlName="discAmount"
                                   [(ngModel)]="FinalDiscAmt"
                                   (valueChange)="getFinalDiscAmount()"
                                   [readonly]="true"
@@ -613,7 +608,7 @@
                                 <!-- TODO: Pending -->
                                 <mat-form-field appearance="outline" style="width: 200px" *ngIf="false">
                                   <mat-label>Concession Reason Type</mat-label>
-                                  <mat-select formControlName="ConcessionId" #ConseId>
+                                  <mat-select formControlName="concessionReasonId" #ConseId>
                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
                                       {{ Doc.ConcessionReason }}
                                     </mat-option>
@@ -624,13 +619,14 @@
                                   fxFlex="8%"
                                   label="Net Amount"
                                   [formGroup]="ItemSubform"
-                                  formControlName="FinalNetAmount"
+                                  formControlName="netAmount"
                                   [(ngModel)]="FinalNetAmount"
                                   [readonly]="true"
                                   [required]="true"
                                 ></airmid-textbox>
   
-                                <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform" formControlName="BalanceAmt" [(ngModel)]="BalAmount"></airmid-textbox>
+                                <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform" 
+                                formControlName="balanceAmount" [(ngModel)]="BalAmount"></airmid-textbox>
   
                                 <airmid-textbox
                                   fxFlex="8%"

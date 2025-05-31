@@ -30,6 +30,9 @@
                         <mat-card>
                             <div class="patient-info-container">
                                 <div class="patient-sub">
+                                      <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h1">Patient Information</span>
+                                     </div>
                                     <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                         fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -89,7 +92,7 @@
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{data.RoomName}}
+                                                <span class="patient-col-value">{{data.roomName}}
                                                     | {{data.bedName}}</span>
                                             </div>
                                             <div class="patient-col">
@@ -120,7 +123,7 @@
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
-                                    <span class="h3 font-weight-600">Cross Consultation Information</span>
+                                    <span class="h3 font-weight-600">Bed Transfer Information</span>
                                 </div>
                                 <form [formGroup]="Bedtransfer" fxLayout="column">
                                     <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="AdmissionId">
@@ -167,6 +170,7 @@
                                     <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
                                         <div class="footer-navigation-container">
                                             <div class="modal-footer-buttons" fxLayoutGap="10px">
+                                                <button class="btn btn-primary" (click)="getbedStatement()">Bed Transfer Statement</button>
                                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                                 <button class="btn btn-primary" (click)="onBedtransfer()">Transfer</button>
                                             </div>
