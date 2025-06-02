@@ -38,10 +38,10 @@ export class PrescriptionComponent implements OnInit {
 
     allColumns1 = [
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date Time", key: "date", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Visite_Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Visite Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,

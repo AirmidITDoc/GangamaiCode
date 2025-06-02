@@ -165,6 +165,9 @@ export class IPBillingComponent implements OnInit {
 
 
   Ipbillform: FormGroup;
+  serviceInsertform: FormGroup;
+  billSaveform: FormGroup;
+  draftSaveform: FormGroup;
   BillDiscperFlag: boolean = false;
   sIsLoading: string = '';
   showTable: boolean;
@@ -250,6 +253,9 @@ export class IPBillingComponent implements OnInit {
   ngOnInit(): void {
     this.createserviceForm();
     this.createBillForm();
+    this.serviceInsertform=this.createserviceSaveForm();
+    this.billSaveform=this.createbillSaveForm();
+    this.draftSaveform=this.createDraftSaveForm();
     this.Serviceform.markAllAsTouched();
     this.Ipbillform.markAllAsTouched();
     if (this.data) {
@@ -389,6 +395,79 @@ export class IPBillingComponent implements OnInit {
       netAmount: [0, [Validators.required, Validators.min(1)]],
     });
   }
+
+  // changed by raksha
+  createserviceSaveForm() {
+    return this.formBuilder.group({
+        chargesId: 0,
+        chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
+        opdIpdType: 1,
+        opdIpdId: this.opD_IPD_Id,
+        serviceId: 0,
+        price: 0,
+        qty: 0,
+        totalAmt: 0,
+        concessiondiscPer: 0,
+        concessionAmount: 0,
+        netAmount: 0,
+        doctorId: 0,
+        docdiscPer: 0,
+        docAmt: 0,
+        hospitalAmt: 0,
+        isGenerated: false,
+        addedBy: this.accountService.currentUserValue.userId,
+        isCancelled: false,
+        isCancelledBy: 0,
+        isCancelledDate: "1900-01-01",
+        isPathology: 0,
+        isRadiology: 0,
+        isDoctorShareGenerated: 0,
+        isInterimBillFlag: 0,
+        isPackage: 0,
+        isSelfOrCompanyService: 0,
+        packageId: 0,
+        chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+        packageMainChargeId: 0,
+        classId: 0,
+        refundAmount: 0,
+        cPrice: 0,
+        cQty: 0,
+        cTotalAmount: 0,
+        isComServ: false,
+        isPrintCompSer: false,
+        serviceName: "",
+        chPrice: 0,
+        chQty: 0,
+        chTotalAmount: 0,
+        isBillableCharity: false,
+        salesId: 0,
+        billNo: 1,
+        isHospMrk: 0
+    });
+  }
+
+  createbillSaveForm() {
+    return this.formBuilder.group({
+      bill: "",
+      billDetail: "",
+      addCharge: "",
+      addmission: "",
+      payment: "",
+      bills: "",
+      advancesupdate: "",
+      advancesHeaderupdate: "",
+      addChargessupdate: ""
+    });
+  }
+
+   createDraftSaveForm() {
+    return this.formBuilder.group({
+      tDrbill:"",
+      tdrBillDet:""
+    });
+  }
+  // 
+
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({
       AdminPer: ['', [Validators.max(100)]],
@@ -487,53 +566,53 @@ export class IPBillingComponent implements OnInit {
       const discountAmount = (totalAmount * formValue.discPer) / 100;
       const netAmount = totalAmount - discountAmount;
 
-      var m_data =
-      {
-        "chargesId": 0,
-        "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
-        "opdIpdType": 1,
-        "opdIpdId": this.opD_IPD_Id,
-        "serviceId": formValue.ServiceName.serviceId,
-        "price": formValue.price || 0,
-        "qty": formValue.qty || 0,
-        "totalAmt": totalAmount || 0,
-        "concessiondiscPer": formValue.discPer || 0,
-        "concessionAmount": discountAmount || 0,
-        "netAmount": netAmount || 0,
-        "doctorId": doctorid,
-        "docdiscPer": 0,
-        "docAmt": 0,
-        "hospitalAmt": 0,
-        "isGenerated": false,
-        "addedBy": this.accountService.currentUserValue.userId,
-        "isCancelled": false,
-        "isCancelledBy": 0,
-        "isCancelledDate": "1900-01-01",
-        "isPathology": formValue.ServiceName.isPathology,
-        "isRadiology": formValue.ServiceName.isRadiology,
-        "isDoctorShareGenerated": 0,
-        "isInterimBillFlag": 0,
-        "isPackage": formValue.ServiceName.isPackage,
-        "isSelfOrCompanyService": 0,
-        "packageId": 0,
-        "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        "packageMainChargeId": 0,
-        "classId": formValue.ChargeClass,
-        "refundAmount": 0,
-        "cPrice": 0,
-        "cQty": 0,
-        "cTotalAmount": 0,
-        "isComServ": false,
-        "isPrintCompSer": false,
-        "serviceName": "",
-        "chPrice": 0,
-        "chQty": 0,
-        "chTotalAmount": 0,
-        "isBillableCharity": false,
-        "salesId": 0,
-        "billNo": 1,
-        "isHospMrk": 0
-      }
+      // var m_data =
+      // {
+      //   "chargesId": 0,
+      //   "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
+      //   "opdIpdType": 1,
+      //   "opdIpdId": this.opD_IPD_Id,
+      //   "serviceId": formValue.ServiceName.serviceId,
+      //   "price": formValue.price || 0,
+      //   "qty": formValue.qty || 0,
+      //   "totalAmt": totalAmount || 0,
+      //   "concessiondiscPer": formValue.discPer || 0,
+      //   "concessionAmount": discountAmount || 0,
+      //   "netAmount": netAmount || 0,
+      //   "doctorId": doctorid,
+      //   "docdiscPer": 0,
+      //   "docAmt": 0,
+      //   "hospitalAmt": 0,
+      //   "isGenerated": false,
+      //   "addedBy": this.accountService.currentUserValue.userId,
+      //   "isCancelled": false,
+      //   "isCancelledBy": 0,
+      //   "isCancelledDate": "1900-01-01",
+      //   "isPathology": formValue.ServiceName.isPathology,
+      //   "isRadiology": formValue.ServiceName.isRadiology,
+      //   "isDoctorShareGenerated": 0,
+      //   "isInterimBillFlag": 0,
+      //   "isPackage": formValue.ServiceName.isPackage,
+      //   "isSelfOrCompanyService": 0,
+      //   "packageId": 0,
+      //   "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      //   "packageMainChargeId": 0,
+      //   "classId": formValue.ChargeClass,
+      //   "refundAmount": 0,
+      //   "cPrice": 0,
+      //   "cQty": 0,
+      //   "cTotalAmount": 0,
+      //   "isComServ": false,
+      //   "isPrintCompSer": false,
+      //   "serviceName": "",
+      //   "chPrice": 0,
+      //   "chQty": 0,
+      //   "chTotalAmount": 0,
+      //   "isBillableCharity": false,
+      //   "salesId": 0,
+      //   "billNo": 1,
+      //   "isHospMrk": 0
+      // }
 
       // var m_data = {  
       //   "adddCharges": {
@@ -599,8 +678,23 @@ export class IPBillingComponent implements OnInit {
       //     }
       //   ]
       // }
-      console.log("Save JSON:", m_data);
-      this._IpSearchListService.InsertIPAddCharges(m_data).subscribe(response => {
+
+      this.serviceInsertform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
+      this.serviceInsertform.get("serviceId").setValue(formValue.ServiceName.serviceId || 0)
+      this.serviceInsertform.get("price").setValue(formValue.price || 0)
+      this.serviceInsertform.get("qty").setValue(formValue.qty || 0)
+      this.serviceInsertform.get("totalAmt").setValue(totalAmount || 0)
+      this.serviceInsertform.get("concessiondiscPer").setValue(formValue.discPer || 0)
+      this.serviceInsertform.get("concessionAmount").setValue(discountAmount || 0)
+      this.serviceInsertform.get("netAmount").setValue(netAmount || 0)
+      this.serviceInsertform.get("doctorId").setValue(doctorid || 0)
+      this.serviceInsertform.get("isPathology").setValue(formValue.ServiceName.isPathology || 0)
+      this.serviceInsertform.get("isRadiology").setValue(formValue.ServiceName.isRadiology || 0)
+      this.serviceInsertform.get("isPackage").setValue(formValue.ServiceName.isPackage || 0)
+      this.serviceInsertform.get("classId").setValue(Number(formValue.ChargeClass) || 0)
+
+      console.log("Save JSON:", this.serviceInsertform.value);
+      this._IpSearchListService.InsertIPAddCharges(this.serviceInsertform.value).subscribe(response => {
         this.toastr.success(response.message);
         this.getChargesList();
       }, (error) => {
@@ -1295,19 +1389,30 @@ checkAdvBalAmt:any=0;
           addChargessupdate['chargesID'] = 0;
 
           if (this.flagSubmit == true) {
-            let submitData = {
-              "bill": InsertBillUpdateBillNoObj,
-              "billDetail": Billdetsarr,
-              "addCharge": addChargeObj,
-              "addmission": addmissionObj,
-              "payment": result.submitDataPay.ipPaymentInsert,
-              "bills": UpdateBillBalAmtObj,
-              "advancesupdate": UpdateAdvanceDetailarr,
-              "advancesHeaderupdate": UpdateAdvanceHeaderObj,
-              "addChargessupdate": addChargessupdate
-            };
-            console.log(submitData)
-            this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
+            // let submitData = {
+            //   "bill": InsertBillUpdateBillNoObj,
+            //   "billDetail": Billdetsarr,
+            //   "addCharge": addChargeObj,
+            //   "addmission": addmissionObj,
+            //   "payment": result.submitDataPay.ipPaymentInsert,
+            //   "bills": UpdateBillBalAmtObj,
+            //   "advancesupdate": UpdateAdvanceDetailarr,
+            //   "advancesHeaderupdate": UpdateAdvanceHeaderObj,
+            //   "addChargessupdate": addChargessupdate
+            // };
+            // console.log(submitData)
+            this.billSaveform.get("bill").setValue(InsertBillUpdateBillNoObj)
+            this.billSaveform.get("billDetail").setValue(Billdetsarr)
+            this.billSaveform.get("addCharge").setValue(addChargeObj)
+            this.billSaveform.get("addmission").setValue(addmissionObj)
+            this.billSaveform.get("payment").setValue(result.submitDataPay.ipPaymentInsert)
+            this.billSaveform.get("bills").setValue(UpdateBillBalAmtObj)
+            this.billSaveform.get("advancesupdate").setValue(UpdateAdvanceDetailarr)
+            this.billSaveform.get("advancesHeaderupdate").setValue(UpdateAdvanceHeaderObj)
+            this.billSaveform.get("addChargessupdate").setValue(addChargessupdate)
+             console.log(this.billSaveform.value)
+
+            this._IpSearchListService.InsertIPBilling(this.billSaveform.value).subscribe(response => {
               this.toastr.success(response.message);
               this._matDialog.closeAll();
               this.viewgetBillReportPdf(response);
@@ -1444,12 +1549,14 @@ checkAdvBalAmt:any=0;
         DraftBilldetsarr.push(DraftBillDetailsInsertObj);
       });
 
-      let submitData = {
-        "tDrbill": InsertDraftBillOb,
-        "tdrBillDet": DraftBilldetsarr
-      };
-      console.log('============== Save IP Draft Bill Json ===========', submitData)
-      this._IpSearchListService.InsertIPDraftBilling(submitData).subscribe(response => {
+      // let submitData = {
+      //   "tDrbill": InsertDraftBillOb,
+      //   "tdrBillDet": DraftBilldetsarr
+      // };
+      this.draftSaveform.get('tDrbill').setValue(InsertDraftBillOb);
+      this.draftSaveform.get('tdrBillDet').setValue(DraftBilldetsarr );
+      console.log('============== Save IP Draft Bill Json ===========', this.draftSaveform.value)
+      this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
         this.toastr.success(response.message);
         if (this.Ipbillform.get("BillType").value == 1)
           this.viewgetDraftBillReportPdf(response.drbno);

@@ -51,7 +51,8 @@ export class OpeningBalanceComponent {
 
   allcolumns = [
 
-    { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 }, //changed by raksha
+    // { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },

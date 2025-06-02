@@ -43,7 +43,7 @@
                                 </airmid-datepicker>
 
                                 <airmid-dropdown label="Store Name" formControlName="ToStoreId"
-                                (selectionChange)="ListView($event)" [formGroup]="mysearchform"
+                                (selectionChange)="ListView($event)" [formGroup]="mysearchform" [readonly]="true"
                                 [mode]="autocompletestore">
                                  </airmid-dropdown>
                               

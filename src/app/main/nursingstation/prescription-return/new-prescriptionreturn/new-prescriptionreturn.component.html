@@ -44,7 +44,7 @@
 
                                     <airmid-autocomplete lbl="RgId" *ngIf="MyForm.get('PatientType').value == 'OP'"
                                         [formGroup]="MyForm" formControlName="RegID"
-                                        placeholderText="OP-RegNo/FirstName/LastName"
+                                        placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                         ValueField="regId">
@@ -52,7 +52,7 @@
 
                                     <airmid-autocomplete lbl="RgId" *ngIf="MyForm.get('PatientType').value == 'IP'"
                                         [formGroup]="MyForm" formControlName="RegID"
-                                        placeholderText="IP-RegNo/FirstName/LastName"
+                                        placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
@@ -212,7 +212,7 @@
                     <div class="modal-card-container">
                         <mat-card>
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
-                                <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform"
+                                <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '2') + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)"
