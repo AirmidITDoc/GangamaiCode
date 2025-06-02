@@ -36,7 +36,7 @@
                             <div class="input-container gap-8" fxFlex>
 
                                 <airmid-autocomplete lbl="RegId" [formGroup]="myForm" formControlName="RegID"
-                                    placeholderText="IP-RegNo/FirstName/LastName"
+                                    placeholderText="RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                     ApiUrl="Admission/search-patient?Keyword="
                                     (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                     TextField="formattedText">
@@ -185,7 +185,7 @@
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8" >
                         <!-- [disabled]="Regstatus" -->
 
-                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
+                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="35%"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)" TextField="formattedText"

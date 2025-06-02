@@ -32,7 +32,7 @@ export class NewPrescriptionComponent implements OnInit {
   searchFormGroup: FormGroup;
   prescForm: FormGroup;
   ItemForm: FormGroup;
-  screenFromString = 'admission-form';
+  screenFromString = 'Common-form';
   ItemId: any;
   vOpIpId: any;
   displayedVisitColumns: string[] = [
@@ -129,6 +129,7 @@ export class NewPrescriptionComponent implements OnInit {
   vitemname: any;
 
   @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+  @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewPrescriptionComponent>,
@@ -332,6 +333,16 @@ export class NewPrescriptionComponent implements OnInit {
         });
       }
     }
+
+    setTimeout(() => {
+      const nativeElement = this.itemAutocomplete?.nativeElement;
+      if (nativeElement) {
+        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+        if (inputEl) {
+          inputEl.focus();
+        }
+      }
+    }, 100);
   }
 
   deleteTableRow(event, element) {

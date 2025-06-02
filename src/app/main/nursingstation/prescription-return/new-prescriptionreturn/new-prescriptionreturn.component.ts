@@ -50,7 +50,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   BalanceQty: any;
   BatchNo: any = '';
   Qty: any;
-  screenFromString = 'payment-form';
+  screenFromString = 'Common-form';
   autocompleteitem: string = "ItemType";
   Chargelist: any = [];
   vPresReturnId: any = 0;
@@ -101,6 +101,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
   ];
 
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
+  @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
+
   ngOnInit(): void {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
@@ -390,6 +392,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
         });
       }
     }
+    setTimeout(() => {
+      const nativeElement = this.itemAutocomplete?.nativeElement;
+      if (nativeElement) {
+        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+        if (inputEl) {
+          inputEl.focus();
+        }
+      }
+    }, 100);
     this.add = false;
   }
 

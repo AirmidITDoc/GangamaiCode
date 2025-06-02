@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, Vi
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { CasepaperService } from './casepaper.service';
 // import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -378,12 +378,67 @@ export class NewCasepaperComponent implements OnInit {
   }
   filteredCheifComplaint: Observable<string[]>
 
-  getCheifComplaintList() {
-    this._CasepaperService.getDemo().subscribe((response) => {
-      this.filteredCheifComplaint = response;
-      console.log(this.patientDetail)
-    });
+  // demo check
+  addCheiflist1: any = [];
+  CheifCompListCombo:any=[];
+
+    addCheif1(event: any): void { 
+    if(this.onSelecteCheif != 1){
+      const input = event.input;
+      const value = event.value;
+      // Add cheif
+      if ((value || '').trim()) {
+        this.addCheiflist.push(value.trim());
+      }
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+    } 
+    this.onSelecteCheif = 0
   }
+
+   removeCheif1(cheif: string): void {
+    const index = this.addCheiflist.indexOf(cheif);
+    if (index >= 0) {
+      this.addCheiflist.splice(index, 1);  
+    }
+  }
+
+    onSelecteCheif:any=0;
+
+  selectedobjCheif(obj): void { 
+    this.onSelecteCheif = 1
+    const value = obj.complaintDescr;
+    if ((value || '').trim()) {
+      this.addCheiflist.push(value.trim());
+    } 
+  }
+
+  getCheifComplaintList() { 
+    this._CasepaperService.getDemo().subscribe(data => {
+      this.CheifCompListCombo = data;
+      //console.log(this.CheifCompListCombo)
+      this.filteredCheifComplaint = this.caseFormGroup.get('mAssignChiefComplaint').valueChanges.pipe(
+        startWith(''),
+        map(value => value ? this._filter(value) : this.CheifCompListCombo.slice()),
+      );  
+    }); 
+  }
+  private _filter(value: any): string[] {  
+    if (value) {
+      const filterValue = value && value.complaintDescr ? value.complaintDescr.toLowerCase() : value.toLowerCase();
+      return this.CheifCompListCombo.filter(option => option.complaintDescr.toLowerCase().includes(filterValue));
+    } 
+  }
+  
+  // demo end
+  // getCheifComplaintList() {
+  //   this._CasepaperService.getDemo().subscribe((response) => {
+  //     this.filteredCheifComplaint = response;
+  //     console.log(this.patientDetail)
+  //   });
+  // }
 
   vDays: any = 10;
   followUpDate: string;
@@ -1951,7 +2006,7 @@ export class NewCasepaperComponent implements OnInit {
       input.value = '';
     }
   }
-  selectedobjCheif(obj): void {
+  selectedobjCheif1(obj): void {
     const value = obj.ChiefComplaint;
     if ((value || '').trim()) {
       this.addCheiflist.push(value.trim());

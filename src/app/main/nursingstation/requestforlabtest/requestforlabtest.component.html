@@ -59,11 +59,20 @@
 
         <ng-template #isTestCompletedIcon let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isTestCompleted == 1" matTooltip="Lab Report Ready">
+                <!-- <mat-icon *ngIf="element.isTestCompleted == 1" matTooltip="Lab Report Ready">
                     remove_red_eye
                 </mat-icon>
 
                 <mat-icon *ngIf="element.isTestCompleted == 0" matTooltip="Result Entry Not Completed"
+                    class="active-icon red-500 s-16">
+                    hourglass_empty
+                </mat-icon> -->
+
+                <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready">
+                    remove_red_eye
+                </mat-icon>
+
+                <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
                     class="active-icon red-500 s-16">
                     hourglass_empty
                 </mat-icon>

@@ -42,6 +42,7 @@ export class DischargeSummaryComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   DischargesumForm: FormGroup;
+  DischargesumInsertForm: FormGroup;
   MedicineItemForm: FormGroup;
 
   msg: any;
@@ -148,6 +149,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.DischargesumForm = this.showDischargeSummaryForm();
+    this.DischargesumInsertForm=this.showDischargeSummaryInsertForm();
     this.MedicineItemForm = this.MedicineItemform();
 
     console.log(this.data)
@@ -232,6 +234,13 @@ export class DischargeSummaryComponent implements OnInit {
       radiology: "",
       isNormalOrDeath: ["1"],
       prescriptionDischarge:''
+    });
+  }
+
+  showDischargeSummaryInsertForm(): FormGroup {
+    return this._formBuilder.group({
+      dischargModel: "",
+      prescriptionDischarge: ""
     });
   }
 
@@ -453,8 +462,8 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
           dischargModeldata['opDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
           dischargModeldata['opTime'] = this.dateTimeObj.time,
-          dischargModeldata['dischargeDoctor1'] = this.DischargesumForm.get("dischargeDoctor1").value,
-          dischargModeldata['dischargeDoctor2'] = this.DischargesumForm.get("dischargeDoctor2").value,
+          dischargModeldata['dischargeDoctor1'] = Number(this.DischargesumForm.get("dischargeDoctor1").value),
+          dischargModeldata['dischargeDoctor2'] = Number(this.DischargesumForm.get("dischargeDoctor2").value),
           dischargModeldata['dischargeDoctor3'] = this.DischargesumForm.get("dischargeDoctor3").value,
           dischargModeldata['dischargeSummaryTime'] = "11:00:00AM",
           dischargModeldata['doctorAssistantName'] = this.DischargesumForm.get("doctorAssistantName").value || '',
@@ -469,7 +478,7 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['lifeStyle'] = this.DischargesumForm.get("lifeStyle").value || '',
           dischargModeldata['warningSymptoms'] = '',
           dischargModeldata['radiology'] = this.DischargesumForm.get("radiology").value || '',
-          dischargModeldata['isNormalOrDeath'] = this.vIsNormalDeath// this.DischargesumForm.get("isNormalOrDeath").value
+          dischargModeldata['isNormalOrDeath'] = Number(this.vIsNormalDeath)// this.DischargesumForm.get("isNormalOrDeath").value
 
         console.log(this.DischargesumForm.value)
 
@@ -483,8 +492,8 @@ export class DischargeSummaryComponent implements OnInit {
           Prescdiscgargemodel['classId'] = 0;
           Prescdiscgargemodel['genericId'] = 0;
           Prescdiscgargemodel['drugId'] = element.itemID || 0;
-          Prescdiscgargemodel['doseId'] = element.doseId || 0;
-          Prescdiscgargemodel['days'] = element.days || 0;
+          Prescdiscgargemodel['doseId'] = Number(element.doseId) || 0;
+          Prescdiscgargemodel['days'] = Number(element.days )|| 0;
           Prescdiscgargemodel['instructionId'] = 0;
           Prescdiscgargemodel['qtyPerDay'] = 0;
           Prescdiscgargemodel['totalQty'] = 0;
@@ -502,34 +511,38 @@ export class DischargeSummaryComponent implements OnInit {
           dischargModeldata['admissionId'] = this.vAdmissionId
           dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId
 
-          var data = {
-            "dischargModel": dischargModeldata,// this.DischargesumForm.value,
-            "prescriptionDischarge": insertIPPrescriptionDischarge
-          }
-          console.log(data);
+          // var data = {
+          //   "dischargModel": dischargModeldata,// this.DischargesumForm.value,
+          //   "prescriptionDischarge": insertIPPrescriptionDischarge
+          // }
+          // console.log(data);
+          this.DischargesumInsertForm.get('dischargModel')?.setValue(dischargModeldata);
+        this.DischargesumInsertForm.get('prescriptionDischarge')?.setValue(insertIPPrescriptionDischarge);
+        console.log(this.DischargesumInsertForm.value)
           setTimeout(() => {
-            this._IpSearchListService.insertIPDDischargSummary(data).subscribe(response => {
+            this._IpSearchListService.insertIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
               this.getPrint(response)
               this._matDialog.closeAll();
             });
-
           }, 500);
 
         }
         else {
           dischargModeldata['updatedBy'] = this.accountService.currentUserValue.userId
-          var data1 = {
-            "dischargModel": dischargModeldata,//  this.DischargesumForm.value,
-            "prescriptionDischarge": insertIPPrescriptionDischarge
-          }
-          console.log(data1);
+          // var data1 = {
+          //   "dischargModel": dischargModeldata,//  this.DischargesumForm.value,
+          //   "prescriptionDischarge": insertIPPrescriptionDischarge
+          // }
+          // console.log(data1);
+           this.DischargesumInsertForm.get('dischargModel')?.setValue(dischargModeldata);
+        this.DischargesumInsertForm.get('prescriptionDischarge')?.setValue(insertIPPrescriptionDischarge);
+        console.log(this.DischargesumInsertForm.value)
 
           setTimeout(() => {
-            this._IpSearchListService.updateIPDDischargSummary(data1).subscribe(response => {
+            this._IpSearchListService.updateIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
               this.getPrint(this.vAdmissionId)
               this._matDialog.closeAll();
             });
-
           }, 500);
 
         }
