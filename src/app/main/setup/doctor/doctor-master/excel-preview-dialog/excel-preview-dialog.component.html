@@ -1,0 +1,57 @@
+<div class="modal-page page-layout inner-scroll">
+  <div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+      <div class="modal-header-content">
+        <div class="modal-header-title">
+          <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">{{ data.sheetName }}</span>
+        </div>
+        <div class="modal-header-right">
+          <div class="comman-date-container">
+            <!-- <app-common-date [screenFrom]="'OP-billing'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+            <div class="close-icon">
+              <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+      <div class="modal-body-container">
+        <div class="airmid-table-container h-100-p">
+            <mat-card class="h-100-p">
+                <mat-table class="airmid-table" matSort [dataSource]="data.data" [@animateStagger]="{ value: '30' }">
+                  <ng-container *ngFor="let col of displayedColumns()" [matColumnDef]="col">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="min-width-100">{{ col }}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="min-width-100">
+                      <span>{{ element[col] }}</span>
+                    </mat-cell>
+                  </ng-container>
+      
+                  <ng-container matColumnDef="NoData">
+                    <mat-footer-cell *matFooterCellDef>
+                      <span>No Data Found</span>
+                    </mat-footer-cell>
+                  </ng-container>
+      
+                  <mat-header-row class="accent" *matHeaderRowDef="displayedColumns(); sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let contact; columns: displayedColumns()" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                  <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: data.data.length > 0 }"></mat-footer-row>
+                </mat-table>
+            </mat-card>
+        </div>
+      </div>
+    </div>
+    <!-- Modal footer -->
+    <div class="modal-footer">
+      <div class="modal-footer-buttons">
+        <button class="btn btn-danger-outline" (click)="onReset()">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="false">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

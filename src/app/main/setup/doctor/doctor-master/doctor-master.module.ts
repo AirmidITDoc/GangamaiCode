@@ -35,6 +35,7 @@ import { DoctorMasterComponent } from "./doctor-master.component";
 import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
+import { ExcelPreviewDialogComponent } from './excel-preview-dialog/excel-preview-dialog.component';
 
 const routes: Routes = [
     {
@@ -44,7 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent],
+    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent, ExcelPreviewDialogComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,

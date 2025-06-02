@@ -11,6 +11,10 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <input hidden #excelInputRef type="file" (change)="handleFileChange($event, excelInputRef)" />
+            <button mat-raised-button (click)="excelInputRef.click()">
+                Import excel
+            </button>
             <button mat-raised-button (click)="newDoctormaster()">New Doctor
             </button>
         </div>
