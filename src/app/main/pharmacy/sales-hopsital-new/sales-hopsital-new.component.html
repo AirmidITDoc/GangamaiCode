@@ -391,7 +391,7 @@
                     
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Disc Amt" [(ngModel)]="DiscAmt" formControlName="DiscAmt" type="number"
-                            [disabled]="chkdiscper" (valueChange)="CaldiscAmount()"
+                            (valueChange)="CaldiscAmount()"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
                     
@@ -593,6 +593,7 @@
                                   formControlName="FinalDiscPer"
                                   [(ngModel)]="FinalDiscPer"
                                   (valueChange)="getFinalDiscperAmt()"
+                                   [disabled]="chkdiscper"
                                 ></airmid-textbox>
   
                                 <airmid-textbox
@@ -606,7 +607,7 @@
                                   type="number"
                                 ></airmid-textbox>
                                 <!-- TODO: Pending -->
-                                <mat-form-field appearance="outline" style="width: 200px" *ngIf="false">
+                                <mat-form-field appearance="outline" style="width: 200px" *ngIf="ConShow">
                                   <mat-label>Concession Reason Type</mat-label>
                                   <mat-select formControlName="concessionReasonId" #ConseId>
                                     <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">

@@ -114,11 +114,11 @@ import { ApiCaller } from 'app/core/services/apiCaller';
     }
   
     public InsertCreditSales  (employee){
-      return this._httpClient.post("Pharmacy/SalesSaveWithCredit", employee)
+      return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
     }
   
     public InsertSalesDraftBill(employee){
-      return this._httpClient.post("Pharmacy/SalesSaveDraftBill", employee)
+      return this._httpClient.post("Sales/SalesDraftBillSave", employee)
     }
   
     public getTemplate(query) {

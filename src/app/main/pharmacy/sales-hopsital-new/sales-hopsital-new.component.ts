@@ -279,6 +279,7 @@ export class SalesHospitalNewComponent implements OnInit {
     private _FormvalidationserviceService : FormvalidationserviceService
   ) {
     this.PatientHeaderObj = this.data;
+     this.getPaymentForm();
   }
 
   ngOnInit(): void {
@@ -286,7 +287,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.getConcessionReasonList();
     this.getStoredet();
     this.getDraftorderList();
-   this.getPaymentForm();
+   
     if (this.vPharExtOpt == true) {
       this.paymethod = false;
       this.vSelectedOption = '2';
@@ -512,15 +513,16 @@ export class SalesHospitalNewComponent implements OnInit {
       this.UnitMRP = result.unitMRP;
     });
   }
+  //////////////////////////////////calculation part 
   calculateTotalAmt() {
     let qty = +this._salesService.ItemSearchGroup.get('Qty').value;
-    if (qty > this.BalanceQty) {
-      Swal.fire('Enter Qty less than Balance');
-      // this._salesService.ItemSearchGroup.patchValue({
-      //   Qty: 0,
-      //   TotalMrp: 0,
-      //   NetAmt: 0,
-      // });
+    if (qty > this.BalanceQty) { 
+      Swal.fire({
+        icon: "warning",
+        title: "Enter Qty less than Balance Qty",
+        showConfirmButton: false,
+        timer: 2000
+      });
       this.ItemFormreset();
     }
 
@@ -537,70 +539,19 @@ export class SalesHospitalNewComponent implements OnInit {
 
       this.getDiscPer();
     }
-  }
-
-  checkdisc1: boolean = false;
+  } 
   getDiscPer() {
     let DiscPer = this._salesService.ItemSearchGroup.get('DiscPer').value;
-    if (this.DiscPer > 0) {
-      this.ItemSubform.get('FinalDiscPer').disable();
+    if (this.DiscPer > 0) { 
       this.chkdiscper = true;
-      this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2);
-      this.ItemSubform.get('discAmount').disable();
+      this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2); 
     } else {
       this.chkdiscper = false;
-      this.DiscAmt = 0;
-      this.ItemSubform.get('discAmount').enable();
+      this.DiscAmt = 0; 
     }
     this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
   }
-
-  getFinalDiscperAmt() {
-    let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
-    let DiscAmt = this.ItemSubform.get('discAmount').value || 0;
-
-    if (Disc > 0 || Disc < 100) {
-      this.ConShow = true;
-      this.FinalDiscAmt = ((this.FinalTotalAmt * Disc) / 100).toFixed(2);
-      this.ItemSubform.get('discAmount').setValue(this.FinalDiscAmt);
-      this.FinalNetAmount = (this.FinalTotalAmt - this.FinalDiscAmt).toFixed(2);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
-      this.ItemSubform.get('concessionReasonId').enable();
-      this.ItemSubform.updateValueAndValidity();
-    } else {
-      this.ConShow = false;
-      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').clearValidators();
-      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      // this.ConseId.nativeElement.focus();
-    }
-
-    this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-  }
-
-  getFinalDiscAmount() {
-    // console.log("total disc");
-    let totDiscAmt = this.ItemSubform.get('discAmount').value;
-    // console.log(totDiscAmt);
-    // console.log(this.FinalDiscAmt);
-    if (totDiscAmt > 0) {
-      this.FinalNetAmount = (this.FinalNetAmount - this.FinalDiscAmt).toFixed(2);
-      this.ConShow = true;
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
-      this.ItemSubform.get('concessionReasonId').enable();
-    } else {
-      this.ConShow = false;
-      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').clearValidators();
-      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      //this.ConseId.nativeElement.focus();
-    }
-  }
-  public discperCal(): void {
+   public discperCal(): void {
     const formValue = this._salesService.ItemSearchGroup.value;
     const discPer = Number(formValue.DiscPer);
 
@@ -657,6 +608,54 @@ export class SalesHospitalNewComponent implements OnInit {
       this.calculateNetAmount();
     }
   }
+
+
+  getFinalDiscperAmt() {
+    let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
+    let DiscAmt = this.ItemSubform.get('discAmount').value || 0;
+
+    if (Disc > 0 || Disc < 100) {
+      this.ConShow = true;
+      this.FinalDiscAmt = ((this.FinalTotalAmt * Disc) / 100).toFixed(2);
+      this.ItemSubform.get('discAmount').setValue(this.FinalDiscAmt);
+      this.FinalNetAmount = (this.FinalTotalAmt - this.FinalDiscAmt).toFixed(2);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
+      this.ItemSubform.updateValueAndValidity();
+    } else {
+      this.ConShow = false;
+      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+      // this.ConseId.nativeElement.focus();
+    }
+
+    this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
+  }
+
+  getFinalDiscAmount() {
+    // console.log("total disc");
+    let totDiscAmt = this.ItemSubform.get('discAmount').value;
+    // console.log(totDiscAmt);
+    // console.log(this.FinalDiscAmt);
+    if (totDiscAmt > 0) {
+      this.FinalNetAmount = (this.FinalNetAmount - this.FinalDiscAmt).toFixed(2);
+      this.ConShow = true;
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
+    } else {
+      this.ConShow = false;
+      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+      //this.ConseId.nativeElement.focus();
+    }
+  }
+ 
   //Add Item list
   OnAddUpdate() {
     debugger;
@@ -699,7 +698,7 @@ export class SalesHospitalNewComponent implements OnInit {
           NetAmt: this.NetAmt,
           RoundNetAmt: Math.round(this.NetAmt),
           StockId: this.StockId,
-          VatPer: this.VatPer,
+          VatPer: this.GSTPer,
           VatAmount: this.GSTAmount,
           LandedRate: this.LandedRate,
           LandedRateandedTotal: this.LandedRateandedTotal,
@@ -835,6 +834,9 @@ export class SalesHospitalNewComponent implements OnInit {
       //  FinalTotalAmt: 0,
       // FinalNetAmount: 0, 
       // BalanceAmt: 0,
+      // Darft save 
+      dsalesId:0,
+      //sales save 
       CashPay: ['CashPay'],
       referanceNo: '',
       PaidbyPatient: '',
@@ -859,20 +861,20 @@ export class SalesHospitalNewComponent implements OnInit {
       this._FormvalidationserviceService.notBlankValidator]],
       balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
       this._FormvalidationserviceService.notBlankValidator]],
-      concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator,
-      this._FormvalidationserviceService.notBlankValidator]],
+      concessionReasonId: [0],
       concessionAuthorizationId: 0,
       isSellted: [true],
       isPrint: [true],
       isFree: [true],
       unitId: [1],
+       addedBy: [this._loggedService.currentUserValue.userId],
       externalPatientName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
       doctorName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      storeId: [this._loggedService.currentUserValue.user.storeId],
-      isPrescription: 0,
-      addedBy: [this._loggedService.currentUserValue.userId],
+      storeId: [this._loggedService.currentUserValue.user.storeId], 
       creditReason: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      creditReasonId: 0,
+      creditReasonId: 0, 
+      isClosed:[true],
+       isPrescription: 0,
       wardId: 0,
       bedId: 0,
       discperH: 0,
@@ -924,9 +926,9 @@ getPaymentForm(){
   this.paymentForm = this.formBuilder.group({ 
     paymentId: 0,
     billNo: 0,
-    paymentDate: [this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')],
-    paymentTime: [this.datePipe.transform(this.dateTimeObj.time, 'hh:mm')],
-    cashPayAmount: [0,[this.ItemSubform.get('netAmount').value]],
+    paymentDate: [''],
+    paymentTime: [''],
+    cashPayAmount: [0],
     chequePayAmount: 0,
     chequeNo: "",
     bankName: "",
@@ -1161,6 +1163,7 @@ getPaymentForm(){
     this.FinalDiscAmt = element.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
     this.FinalGSTAmt = element.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
     this.roundoffAmt = Math.round(this.ItemSubform.get('netAmount').value);
+    this.ItemSubform.get('vatAmount').setValue(this.FinalGSTAmt)
 
     this.DiffNetRoundAmt = (parseFloat(this.roundoffAmt) - parseFloat(this.FinalNetAmount)).toFixed(2);
     return this.FinalNetAmount;
@@ -1297,82 +1300,242 @@ getPaymentForm(){
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
      // this.onCashOnlinePaySave();
       this.onCashSave();
-    } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-      this.onCreditpaySave();
-    } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
-      this.onSavePayOption();
+    } 
+    else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+    //  this.onCreditpaySave();
+       this.onCashSave();
     }
+    //  else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
+    //   this.onSavePayOption();
+    // }
 
-    this.getDraftorderList();
+    //this.getDraftorderList();
     event.srcElement.removeAttribute('disabled');
     this.PatientName = '';
     this.DoctorName = '';
     this.ItemSubform.get('FinalDiscPer').enable();
   }
+fromEntries(entries: [string, any][]): { [key: string]: any } {
+  const result: { [key: string]: any } = {};
+  for (const [key, value] of entries) {
+    result[key] = value;
+  }
+  return result;
+}
+  onCashSave() {
+    debugger
+    const fomrvalue = this.ItemSubform.value
+    console.log(fomrvalue)
+    this.ItemSubform.get('date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.ItemSubform.get('time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
 
-  onCashSave(){
-debugger
-       const fomrvalue = this.ItemSubform.value
-       console.log(fomrvalue)
-       let invalidFields = []; 
-      if (this.ItemSubform.invalid) {
-        for (const controlName in this.ItemSubform.controls) {
-          if (this.ItemSubform.controls[controlName].invalid) {
-            invalidFields.push(`${controlName}`);
-          }
+    let invalidFields = [];
+    if (this.ItemSubform.invalid) {
+      for (const controlName in this.ItemSubform.controls) {
+        if (this.ItemSubform.controls[controlName].invalid) {
+          invalidFields.push(`${controlName}`);
         }
-      } 
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-          );
-        });
-        return
-      } 
-    
-       this.ItemSubform.get('date').setValue(this.datePipe.transform(new Date() ,'yyyy-MM-dd'))
-        this.ItemSubform.get('time').setValue(this.datePipe.transform(new Date() ,'hh:mm') )
-    this.ItemSubform.get('tSalesDetails').setValue(this.saleSelectedDatasource.data)
+      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        );
+      });
+      return
+    }
+    //Sales details
+    let itemdetails = []
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let salesDetailInsert = {
+        salesId: 0,
+        itemId: element.ItemId,
+        batchNo: element.BatchNo,
+        batchExpDate: this.datePipe.transform(element.BatchExpDate, 'yyyy-MM-dd'),
+        unitMrp: element.UnitMRP,
+        qty: element.Qty,
+        totalAmount: element.TotalMRP,
+        vatPer: element.VatPer,
+        vatAmount: element.VatAmount,
+        discPer: element.DiscPer,
+        discAmount: element.DiscAmt,
+        grossAmount: element.NetAmt,
+        landedPrice: element.LandedRate,
+        totalLandedAmount: element.LandedRateandedTotal,
+        returnQty: 0,
+        purRateWf: element.PurchaseRate,
+        purTotAmt: element.PurTotAmt,
+        cgstper: element.CgstPer,
+        cgstamt: element.CGSTAmt,
+        sgstper: element.SgstPer,
+        sgstamt: element.SGSTAmt,
+        igstper: element.IgstPer,
+        igstamt: element.IGSTAmt,
+        isPurRate: true,
+        stkId: element.StockId,
+        mrp: 0,
+        mrpTotal: 0
+      }
+      itemdetails.push(salesDetailInsert)
+    });
+    this.ItemSubform.get('tSalesDetails').setValue(itemdetails)
+    const dvalue = this.ItemSubform.value
+    console.log(dvalue)
 
     let updateCurStkSalestarr = [];
     this.saleSelectedDatasource.data.forEach((element) => {
       let updateCurStkSales = {};
       updateCurStkSales['itemId'] = element.ItemId;
       updateCurStkSales['issueQty'] = element.Qty;
-      (updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId), (updateCurStkSales['stkID'] = element.StockId);
-      updateCurStkSalestarr.push(updateCurStkSales);
-    }); 
+      updateCurStkSales['iStkId'] = element.StockId;
+      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
+        updateCurStkSalestarr.push(updateCurStkSales);
+    });
 
     let salesDraftStatusUpdate = {};
-    salesDraftStatusUpdate['SalesId'] = this.DraftID || 0;
-    salesDraftStatusUpdate['isclosed'] = 1
+    salesDraftStatusUpdate['dSalesId'] = this.DraftID || 0;
+    salesDraftStatusUpdate['isclosed'] = false
 
-    let salesPrescriptionStatusUpdate = {}; 
-    salesPrescriptionStatusUpdate['opipid'] =  this.IPMedID || 0;
-    salesPrescriptionStatusUpdate['isclosed'] = true || 1 
-   console.log(fomrvalue)
+    let salesPrescriptionStatusUpdate = {};
+    salesPrescriptionStatusUpdate['opipid'] = this.IPMedID || 0;
+    salesPrescriptionStatusUpdate['isclosed'] = false
+
+ 
+    // Fields to not allowed
+    const NotallowedFields = ['FinalDiscPer', 'CashPay', 'referanceNo', 'PaidbyPatient', 'PaidbacktoPatient', 'roundoffAmt','dsalesId','isClosed'];
+    // Get all form values
+    const allValues = this.ItemSubform.value;
+    // Filter out only the fields you want to save
+    const ItemfilteredValues = this.fromEntries(
+      Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
+    );
+    console.log('Saving only selected values:', ItemfilteredValues);
+
+
+    if(this.ItemSubform.get('CashPay').value == 'CashPay'){
+    this.paymentForm.get('paymentDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.paymentForm.get('paymentTime').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+    this.paymentForm.get('cashPayAmount').setValue(this.ItemSubform.get('netAmount').value)
+
       let submitData = {
-      sales: this.ItemSubform.value,
-      tCurrentStock:updateCurStkSalestarr,
-      payment:this.paymentForm.value,
-      prescription:salesPrescriptionStatusUpdate,
-      salesDraft:salesDraftStatusUpdate 
-    }; 
+      sales: ItemfilteredValues,
+      tCurrentStock: updateCurStkSalestarr,
+      payment: this.paymentForm.value,
+      prescription: salesPrescriptionStatusUpdate,
+      salesDraft: salesDraftStatusUpdate
+    };
     console.log(submitData);
-    let vMobileNo = this.MobileNo; 
+    let vMobileNo = this.MobileNo;
     this._salesService.InsertCashSales(submitData).subscribe((response) => {
-        if (response) {  
-            // this.getPrint3(response);
-            // this.getWhatsappshareSales(response, vMobileNo);
-            this.Itemchargeslist = []; 
-            this.ItemFormreset(); 
-            this.ItemSubform.reset();
-            this.Formreset();
-            this.ItemSubform.get('concessionReasonId').reset(); 
-            this.saleSelectedDatasource.data = []; 
-        } 
-      });
+      if (response) {
+        // this.getPrint3(response);
+        // this.getWhatsappshareSales(response, vMobileNo);
+        this.Itemchargeslist = [];
+        this.ItemFormreset();
+        this.ItemSubform.reset();
+        this.Formreset();
+        this.ItemSubform.get('concessionReasonId').reset();
+        this.saleSelectedDatasource.data = [];
+      }
+    });
+    }else if(this.ItemSubform.get('CashPay').value == 'Credit'){
+      let submitData = {
+      sales: ItemfilteredValues,
+      tCurrentStock: updateCurStkSalestarr, 
+      prescription: salesPrescriptionStatusUpdate,
+      salesDraft: salesDraftStatusUpdate
+    };
+    console.log(submitData);
+    let vMobileNo = this.MobileNo;
+    this._salesService.InsertCreditSales(submitData).subscribe((response) => {
+      if (response) {
+        // this.getPrint3(response);
+        // this.getWhatsappshareSales(response, vMobileNo);
+        this.Itemchargeslist = [];
+        this.ItemFormreset();
+        this.ItemSubform.reset();
+        this.Formreset();
+        this.ItemSubform.get('concessionReasonId').reset();
+        this.saleSelectedDatasource.data = [];
+      }
+    });
+    }else if(this.ItemSubform.get('CashPay').value == 'PayOption'){
+
+    }
   }
+
+    onSaveDraftBill() {
+    debugger
+    const fomrvalue = this.ItemSubform.value
+    console.log(fomrvalue)
+    this.ItemSubform.get('date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.ItemSubform.get('time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+
+    let invalidFields = [];
+    if (this.ItemSubform.invalid) {
+      for (const controlName in this.ItemSubform.controls) {
+        if (this.ItemSubform.controls[controlName].invalid) {
+          invalidFields.push(`${controlName}`);
+        }
+      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        );
+      });
+      return
+    }
+    //Sales details
+    let itemdetails = []
+    this.saleSelectedDatasource.data.forEach((element) => { 
+      let salesDetailInsert = {
+        dsalesId: 0,
+        itemId: element.ItemId,
+        batchNo: element.BatchNo,
+        batchExpDate: this.datePipe.transform(element.BatchExpDate, 'yyyy-MM-dd'),
+        unitMrp: element.UnitMRP,
+        qty: element.Qty,
+        totalAmount: element.TotalMRP,
+        vatPer: element.VatPer,
+        vatAmount: element.VatAmount,
+        discPer: element.DiscPer,
+        discAmount: element.DiscAmt,
+        grossAmount: element.NetAmt,
+        landedPrice: element.LandedRate,
+        totalLandedAmount: element.LandedRateandedTotal, 
+        purRateWf: element.PurchaseRate,
+        purTotAmt: element.PurTotAmt,  
+      }
+      itemdetails.push(salesDetailInsert)
+    });   
+    // Fields to not allowed
+    const NotallowedFields = ['discperH"','FinalDiscPer', 'CashPay', 'referanceNo', 'PaidbyPatient', 'PaidbacktoPatient', 
+      'roundoffAmt','salesId','isPurBill','isBillCheck','salesHeadName','salesTypeId','regId','tSalesDetails','discperH','isFree'];
+    // Get all form values
+    const allValues = this.ItemSubform.value;
+    // Filter out only the fields you want to save
+    const ItemfilteredValues = this.fromEntries(
+      Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
+    );
+    console.log('Saving only selected values:', ItemfilteredValues); 
+
+      let submitData = {
+      salesDraft: ItemfilteredValues, 
+      salesDraftDet:itemdetails,  
+    };
+    console.log(submitData);
+    let vMobileNo = this.MobileNo;
+    this._salesService.InsertSalesDraftBill(submitData).subscribe((response) => {
+      if (response) { 
+          this.Itemchargeslist = [];
+          this._matDialog.closeAll(); 
+          this.getDraftorderList();
+      }
+    }); 
+  }
+ 
+
   isLoading123 = false;
   onCashOnlinePaySave() {
     this.isLoading123 = true;
@@ -1921,7 +2084,111 @@ debugger
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
   }
+   onSaveDraftBill1() {
+    let NetAmt = this.ItemSubform.get('netAmount').value;
+    let ConcessionId = 0;
+    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
+    let SalesInsert = {};
+    SalesInsert['Date'] = this.dateTimeObj.date;
+    SalesInsert['time'] = this.dateTimeObj.time;
+
+    if (this.ItemSubform.get('opIpType').value == '2') {
+      SalesInsert['oP_IP_Type'] = 2;
+      SalesInsert['oP_IP_ID'] = 0;
+    } else if (this.ItemSubform.get('opIpType').value == '0') {
+      SalesInsert['oP_IP_Type'] = 0;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    } else if (this.ItemSubform.get('opIpType').value == '1') {
+      SalesInsert['oP_IP_Type'] = 1;
+      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
+    }
+    SalesInsert['totalAmount'] = this.FinalTotalAmt;
+    SalesInsert['vatAmount'] = this.FinalGSTAmt || 0; //this.ItemSubform.get('FinalGSTAmt').value;
+    SalesInsert['discAmount'] = this.FinalDiscAmt;
+    SalesInsert['netAmount'] = NetAmt;
+    SalesInsert['paidAmount'] = NetAmt;
+    SalesInsert['balanceAmount'] = 0;
+    SalesInsert['concessionReasonID'] = ConcessionId || 0;
+    SalesInsert['concessionAuthorizationId'] = 0;
+    SalesInsert['isSellted'] = 0;
+    SalesInsert['isPrint'] = 0;
+    SalesInsert['unitID'] = 1;
+    (SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId), (SalesInsert['externalPatientName'] = this.PatientName || '');
+    SalesInsert['doctorName'] = this.DoctorName || '';
+    SalesInsert['storeId'] = this._salesService.ItemSearchGroup.get('StoreId').value.storeid;
+    SalesInsert['isPrescription'] = this.IPMedID || 0;
+    SalesInsert['creditReason'] = '';
+    SalesInsert['creditReasonID'] = 0;
+    SalesInsert['wardId'] = 0;
+    SalesInsert['bedId'] = 0;
+    SalesInsert['extMobileNo'] = this.MobileNo;
+    SalesInsert['extAddress'] = this.vextAddress;
+
+    SalesInsert['DsalesId'] = 0;
+
+    let salesDetailInsertarr = [];
+    this.saleSelectedDatasource.data.forEach((element) => {
+      let salesDetailInsert = {};
+      salesDetailInsert['DsalesID'] = 0;
+      salesDetailInsert['itemId'] = element.ItemId;
+      salesDetailInsert['batchNo'] = element.BatchNo;
+      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
+      salesDetailInsert['unitMRP'] = element.UnitMRP;
+      salesDetailInsert['qty'] = element.Qty;
+      salesDetailInsert['totalAmount'] = element.TotalMRP;
+      salesDetailInsert['vatPer'] = element.VatPer;
+      salesDetailInsert['vatAmount'] = element.VatAmount;
+      salesDetailInsert['discPer'] = element.DiscPer;
+      salesDetailInsert['discAmount'] = element.DiscAmt;
+      salesDetailInsert['grossAmount'] = element.NetAmt;
+      salesDetailInsert['landedPrice'] = element.LandedRate;
+      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
+      salesDetailInsert['purRateWf'] = element.PurchaseRate;
+      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
+
+      salesDetailInsertarr.push(salesDetailInsert);
+    });
+
+    let submitData = {
+      salesDraftbillInsert: SalesInsert,
+      salesDraftbillDetailInsert: salesDetailInsertarr,
+    };
+    // console.log(submitData);
+    this._salesService.InsertSalesDraftBill(submitData).subscribe(
+      (response) => {
+        if (response) {
+          this.toastr.success('Record Saved Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+
+          this.Itemchargeslist = [];
+          this._matDialog.closeAll();
+
+          //  this.onAddDraftList(response);
+          this.getDraftorderList();
+        } else {
+          this.toastr.error('API Error!', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+        this.sIsLoading = '';
+      },
+      (error) => {
+        // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
+        this.toastr.error('API Error!', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    );
+
+    this.ItemFormreset();
+    this.Formreset();
+    this.ItemSubform.get('concessionReasonId').reset();
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
+  }
   getPrint3(el) {
     if (this.vPaymode == 'Credit') {
       this.type = 'Credit';
@@ -2159,13 +2426,13 @@ debugger
       FromDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
       ToDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
     };
-    this._salesService.getDraftList(m).subscribe(
-      (data) => {
-        this.chargeslist1 = data as ChargesList[];
-        this.dsDraftList.data = this.chargeslist1;
-      },
-      (error) => {}
-    );
+    // this._salesService.getDraftList(m).subscribe(
+    //   (data) => {
+    //     this.chargeslist1 = data as ChargesList[];
+    //     this.dsDraftList.data = this.chargeslist1;
+    //   },
+    //   (error) => {}
+    // );
   }
 
   m_getBalAvaListStore(Param) {
@@ -2326,111 +2593,7 @@ debugger
     // this.Itemchargeslist=[];
   }
 
-  onSaveDraftBill() {
-    let NetAmt = this.ItemSubform.get('netAmount').value;
-    let ConcessionId = 0;
-    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
 
-    let SalesInsert = {};
-    SalesInsert['Date'] = this.dateTimeObj.date;
-    SalesInsert['time'] = this.dateTimeObj.time;
-
-    if (this.ItemSubform.get('opIpType').value == '2') {
-      SalesInsert['oP_IP_Type'] = 2;
-      SalesInsert['oP_IP_ID'] = 0;
-    } else if (this.ItemSubform.get('opIpType').value == '0') {
-      SalesInsert['oP_IP_Type'] = 0;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('opIpType').value == '1') {
-      SalesInsert['oP_IP_Type'] = 1;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    }
-    SalesInsert['totalAmount'] = this.FinalTotalAmt;
-    SalesInsert['vatAmount'] = this.FinalGSTAmt || 0; //this.ItemSubform.get('FinalGSTAmt').value;
-    SalesInsert['discAmount'] = this.FinalDiscAmt;
-    SalesInsert['netAmount'] = NetAmt;
-    SalesInsert['paidAmount'] = NetAmt;
-    SalesInsert['balanceAmount'] = 0;
-    SalesInsert['concessionReasonID'] = ConcessionId || 0;
-    SalesInsert['concessionAuthorizationId'] = 0;
-    SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;
-    SalesInsert['unitID'] = 1;
-    (SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId), (SalesInsert['externalPatientName'] = this.PatientName || '');
-    SalesInsert['doctorName'] = this.DoctorName || '';
-    SalesInsert['storeId'] = this._salesService.ItemSearchGroup.get('StoreId').value.storeid;
-    SalesInsert['isPrescription'] = this.IPMedID || 0;
-    SalesInsert['creditReason'] = '';
-    SalesInsert['creditReasonID'] = 0;
-    SalesInsert['wardId'] = 0;
-    SalesInsert['bedId'] = 0;
-    SalesInsert['extMobileNo'] = this.MobileNo;
-    SalesInsert['extAddress'] = this.vextAddress;
-
-    SalesInsert['DsalesId'] = 0;
-
-    let salesDetailInsertarr = [];
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let salesDetailInsert = {};
-      salesDetailInsert['DsalesID'] = 0;
-      salesDetailInsert['itemId'] = element.ItemId;
-      salesDetailInsert['batchNo'] = element.BatchNo;
-      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
-      salesDetailInsert['unitMRP'] = element.UnitMRP;
-      salesDetailInsert['qty'] = element.Qty;
-      salesDetailInsert['totalAmount'] = element.TotalMRP;
-      salesDetailInsert['vatPer'] = element.VatPer;
-      salesDetailInsert['vatAmount'] = element.VatAmount;
-      salesDetailInsert['discPer'] = element.DiscPer;
-      salesDetailInsert['discAmount'] = element.DiscAmt;
-      salesDetailInsert['grossAmount'] = element.NetAmt;
-      salesDetailInsert['landedPrice'] = element.LandedRate;
-      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
-      salesDetailInsert['purRateWf'] = element.PurchaseRate;
-      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
-
-      salesDetailInsertarr.push(salesDetailInsert);
-    });
-
-    let submitData = {
-      salesDraftbillInsert: SalesInsert,
-      salesDraftbillDetailInsert: salesDetailInsertarr,
-    };
-    // console.log(submitData);
-    this._salesService.InsertSalesDraftBill(submitData).subscribe(
-      (response) => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Save !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-
-          this.Itemchargeslist = [];
-          this._matDialog.closeAll();
-
-          //  this.onAddDraftList(response);
-          this.getDraftorderList();
-        } else {
-          this.toastr.error('API Error!', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-        this.sIsLoading = '';
-      },
-      (error) => {
-        // this.snackBarService.showErrorSnackBar('Sales data not saved !, Please check API error..', 'Error !');
-        this.toastr.error('API Error!', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    );
-
-    this.ItemFormreset();
-    this.Formreset();
-    this.ItemSubform.get('concessionReasonId').reset();
-    this.PatientName = '';
-    this.MobileNo = '';
-    this.saleSelectedDatasource.data = [];
-  }
 
   public onEnterpatientname(event): void {
     if (event.which === 13) {
