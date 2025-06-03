@@ -126,14 +126,17 @@ export class NewRegistrationComponent implements OnInit {
                 this.isSaving = true;
                 const rawDate = this.dateTimeObj.date; 
                 const formattedDate = this.datePipe.transform(rawDate, 'yyyy-MM-dd');
-                const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString();
-
-                this.personalFormGroup.get('GenderId').setValue(Number(this.personalFormGroup.get('GenderId').value))
-                this.personalFormGroup.get('MaritalStatusId').setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
-                this.personalFormGroup.get('ReligionId').setValue(Number(this.personalFormGroup.get('ReligionId').value))
-                this.personalFormGroup.get('AreaId').setValue(Number(this.personalFormGroup.get('AreaId').value))
-                this.personalFormGroup.get('StateId').setValue(Number(this.personalFormGroup.get('StateId').value))
-                this.personalFormGroup.get('CountryId').setValue(Number(this.personalFormGroup.get('CountryId').value))
+                const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString(); 
+                  // Now proceed with form submission or further processing, the 4 fields are converted to numbers 
+                  this.convertNumericStringsToNumbers(this.personalFormGroup, 
+                    ['GenderId', 'MaritalStatusId', 'ReligionId', 'AreaId','StateId','CountryId']); 
+                    
+                // this.personalFormGroup.get('GenderId').setValue(Number(this.personalFormGroup.get('GenderId').value))
+                // this.personalFormGroup.get('MaritalStatusId').setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
+                // this.personalFormGroup.get('ReligionId').setValue(Number(this.personalFormGroup.get('ReligionId').value))
+                // this.personalFormGroup.get('AreaId').setValue(Number(this.personalFormGroup.get('AreaId').value))
+                // this.personalFormGroup.get('StateId').setValue(Number(this.personalFormGroup.get('StateId').value))
+                // this.personalFormGroup.get('CountryId').setValue(Number(this.personalFormGroup.get('CountryId').value))
                 this.personalFormGroup.get('RegDate').setValue(formattedDate)
                 this.personalFormGroup.get('RegTime').setValue(formattedTime)
 
@@ -163,6 +166,16 @@ export class NewRegistrationComponent implements OnInit {
         } else {
             this.toastr.warning("Please Select Birthdate...");
         }
+    }
+    convertNumericStringsToNumbers(formGroup: FormGroup, fields: string[]) {
+        fields.forEach(field => {
+            const value = formGroup.get(field)?.value;
+
+            if (typeof value === 'string' && /^[0-9]+$/.test(value)) {
+                const numValue = Number(value);
+                formGroup.get(field)?.setValue(numValue, { emitEvent: false }); // update value without emitting event
+            }
+        });
     }
 chkChange(){
     if (this.registerObj.dateOfBirth > this.minDate) {

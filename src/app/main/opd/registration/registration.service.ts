@@ -61,7 +61,7 @@ export class RegistrationService {
                 Validators.maxLength(100),
                 Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.notBlankValidator(),this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
-            GenderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator() ]],
             // GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
             Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(200)]],
             DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
