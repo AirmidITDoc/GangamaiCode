@@ -81,6 +81,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'OTBooking Time';
             this.isDatePckrDisabled = false;
         }
+        else if(this.screenFromString == 'Phoneappointment-form'){
+            this.dateLabel = 'Appointment Date';
+            this.timeLabel = 'Appointment Time';
+            this.isDatePckrDisabled = false;
+        }
         else if (this.screenFromString == 'appointment-form') {
             this.dateLabel = 'Admission Date';
             this.timeLabel = 'Admission Start Time';

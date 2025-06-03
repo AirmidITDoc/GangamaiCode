@@ -68,7 +68,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
   isCompanySelected: boolean = false;
   public now: Date = new Date();
   isLoading: string = '';
-  screenFromString = 'admission-form';
+  screenFromString = 'Phoneappointment-form';
   submitted = false;
   sIsLoading: string = '';
   minDate: Date;
@@ -464,19 +464,20 @@ debugger
     
     if(!this.registerObj.PhoneAppId){
     console.log(this.personalFormGroup.get('AppointmentDate').value.Date);
+    const appTime = this.dateTimeObj.date + this.dateTimeObj.time
     var m_data = {
       "phoneAppointmentInsert": {
         "phoneAppId": 0,
         "RegNo":this.RegNo,
-        "appDate":formattedDate, //this.dateTimeObj.date || '16/12/2023',
-        "appTime": formattedTime,// this.datePipe.transform(this.currentDate, 'hh:mm:ss'), //this.dateTimeObj.time,
+        "appDate":this.dateTimeObj.date || '16/12/2023',
+        "appTime":appTime,
         "firstName": this.personalFormGroup.get('FirstName').value || '',
         "middleName": this.personalFormGroup.get('MiddleName').value || '',
         "lastName": this.personalFormGroup.get('LastName').value || '',
         "address": this.personalFormGroup.get('Address').value || '',
         "mobileNo": this.personalFormGroup.get('MobileNo').value || '',
-        "phAppDate": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
-        "phAppTime": this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "HH:mm:ss"),
+        "phAppDate":formattedDate, // this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "yyyy-MM-dd 00:00:00.000"),
+        "phAppTime":  formattedTime,//this.datePipe.transform(this.personalFormGroup.get('AppointmentDate').value, "HH:mm:ss"),
         "departmentId": this.personalFormGroup.get('Departmentid').value.DepartmentId || 0,
         "doctorId": this.personalFormGroup.get('DoctorId').value.DoctorId || 0,
         "addedBy": this.accountService.currentUserValue.user.id,
@@ -610,30 +611,30 @@ if(event.which===13){
 this.dept.nativeElement.focus();
 }
   }
-  public onEnterdept(event,value): void {
+  public onEnterdept(event): void {
    debugger
     if (event.which === 13) {
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
+      // if (value == undefined) {
+      //   this.toastr.warning('Please Enter Valid Department.', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else {
         this.docname.nativeElement.focus();
-      }
+     // }
     }
   }
-  public onEnterdeptdoc(event,value): void {
-   
+  public onEnterdeptdoc(event): void {
+   debugger
     if (event.which === 13) {
-      if (value == undefined) {
-        this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
-        // this.button.nativeElement.focus();
-      }
+      // if (value == undefined) {
+      //   this.toastr.warning('Please Enter Valid Department Dosctor', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // } else {
+      //   // this.button.nativeElement.focus();
+      // }
     }
   }
   

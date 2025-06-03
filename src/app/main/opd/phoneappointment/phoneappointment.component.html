@@ -12,9 +12,9 @@
         </div>
 
         <div fxLayout="row" fxLayoutGap="5px" style="margin-left:10% !important; ">
-            <button mat-raised-button (click)="viewPhoneAppointment()"
+            <!-- <button mat-raised-button (click)="viewPhoneAppointment()"
                 style="background-color: aliceblue;color: brown;margin-left:10% !important">View Phone Appointment
-            </button>
+            </button> -->
 
             <button mat-raised-button (click)="newPhoneAppointment()"
                 style="background-color: aliceblue;color: brown;margin-left:10% !important">New Phone Appointment
@@ -132,10 +132,10 @@
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                                     <ng-container matColumnDef="IsCancelled" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-60">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-50">
                                             
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-60">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-50">
                                             <div class="pill-icon">
                                                 <mat-icon style="border-radius:100% ;" *ngIf="!contact.IsCancelled=='0'"
                                                     matTooltip="Appointment Cancelled"
@@ -182,21 +182,12 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="AppDate" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>App Date
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Phone App.DateTime
                                         </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.PhAppDate}}
+                                                    {{contact.PhAppDate}}-{{contact.PhAppTime}}
                                             </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AppTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>App Time
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-md>
-                                            {{contact.PhAppTime}}
-                                        </mat-cell>
-                                    </ng-container>
-
+                                    </ng-container>  
 
                                     <ng-container matColumnDef="PatientName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
@@ -268,9 +259,9 @@
                                                     cancel</mat-icon>
                                             </button>
 
-                                            <button mat-icon-button matTooltip="creditCard" *ngIf="contact.IsCancelled=='0'">
+                                            <!-- <button mat-icon-button matTooltip="creditCard" *ngIf="contact.IsCancelled=='0'">
                                                 <mat-icon>credit_card</mat-icon>
-                                            </button>
+                                            </button> -->
 
                                         </mat-cell>
                                     </ng-container>

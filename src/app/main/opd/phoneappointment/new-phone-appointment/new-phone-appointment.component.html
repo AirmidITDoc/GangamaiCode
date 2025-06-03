@@ -46,13 +46,19 @@
                   </mat-autocomplete>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxFlex="20%">
+                <!-- <mat-form-field appearance="outline" fxFlex="20%">
                   <mat-label>Date</mat-label>
                   <input name="AppointmentDate" matInput [matDatepicker]="picker" formControlName="AppointmentDate"
                     id=Date>
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+                </mat-form-field> -->
+
+                 <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+
+
 
               </div>
             </form>
@@ -132,7 +138,7 @@
                   <mat-label>Department</mat-label>
                   <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
                     formControlName="Departmentid" [matAutocomplete]="autoDep" required #dept
-                    (keydown)="onEnterdept($event,vDepartmentid)" [(ngModel)]="vDepartmentid">
+                    (keydown)="onEnterdept($event)" [(ngModel)]="vDepartmentid">
                   <span matSuffix style="display: flex;">
                     <mat-icon class="mat-icon-close"
                       (click)="personalFormGroup.get('Departmentid').setValue(''); isDepartmentSelected = false;">close</mat-icon>
@@ -154,7 +160,7 @@
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Doctor Name</mat-label>
                   <input matAutocompletePosition="below" type="text" placeholder="Pick one" matInput
-                    [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event,vDoctorId.DoctorId)"
+                    [(ngModel)]="vDoctorId" (keydown)="onEnterdeptdoc($event)"
                     formControlName="DoctorId" [matAutocomplete]="autoDoctor" required #docname>
                   <span matSuffix style="display: flex;">
                     <mat-icon class="mat-icon-close"
