@@ -60,7 +60,7 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup" [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender [disabled]="true" [mode]="autocompleteModegender">
+                                    <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup" [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender [readonly]="true" [mode]="autocompleteModegender">
                                     </airmid-dropdown>
 
                                 </div>

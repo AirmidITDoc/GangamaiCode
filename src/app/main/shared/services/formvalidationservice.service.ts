@@ -32,16 +32,6 @@ return (control: AbstractControl): ValidationErrors | null => {
 
 //   }
 
- 
-    onlyNumberValidator(): any{
-   return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-      if (value === null || value === '') return null;
-    return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
-    };
-  }
-
-
   nonNegativeValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -55,19 +45,31 @@ return (control: AbstractControl): ValidationErrors | null => {
     };
   }
 
-  allowEmptyStringValidator(): any {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      return value !== null && value !== undefined ? null : { requiredValue: true };
-    };
-  }
-
+  // Date validation
  validDateValidator():any {
  return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
     return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
     };
 }
+
+// Only number is allowed
+ onlyNumberValidator(): any{
+   return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+      if (value === null || value === '') return null;
+    return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
+    };
+  }
+
+  // only string is allowed
+  allowEmptyStringValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      return value !== null && value !== undefined ? null : { requiredValue: true };
+    };
+  }
+  
   dropdownvalidation(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

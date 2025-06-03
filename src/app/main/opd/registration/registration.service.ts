@@ -38,29 +38,31 @@ export class RegistrationService {
         });
     }
 
+    //changed by raksha date:6/3/25
     createPesonalForm1() {
         return this._formBuilder.group({
             RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            PrefixId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            PrefixId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-                Validators.minLength(1), //changed by raksha
-             Validators.maxLength(100),
-            Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.notBlankValidator(),this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
             MiddleName: ['', [
-                Validators.minLength(1), //changed by raksha
-           Validators.maxLength(100),
-            Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.required,
-                Validators.minLength(1), //changed by raksha
-               Validators.maxLength(100),
-            Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.notBlankValidator(),this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
-            GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
+            GenderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
             Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(200)]],
             DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
@@ -68,40 +70,38 @@ export class RegistrationService {
                 // Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['0', [
-                Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['0', [
-                Validators.pattern("^[0-9]*$")]],
+            AgeMonth: ['0', [Validators.pattern("^[0-9]*$")]],
+            AgeDay: ['0', [Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),this._FormvalidationserviceService.onlyNumberValidator()
             ]],
             MobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()
             ]],
             aadharCardNo: ['', [
             Validators.minLength(12),
             Validators.maxLength(12),
-            Validators.pattern("^[0-9]*$")
+            Validators.pattern("^[0-9]*$"),this._FormvalidationserviceService.onlyNumberValidator()
             ]],
 
             panCardNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
             // MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            MaritalStatusId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //changed by raksha
+            MaritalStatusId:[0,[Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //changed by raksha
             ReligionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            CityId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CityId:[0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId:  [0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            CountryId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            StateId:  [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId:  [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            RegDate: [(new Date()).toISOString()],
-            RegTime: [(new Date()).toISOString()],
+            AddedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.onlyNumberValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.onlyNumberValidator()],
+            RegDate: [''],
+            RegTime: [''],
             Photo: [''],
             PinNo: [''],
             // isActive:[]

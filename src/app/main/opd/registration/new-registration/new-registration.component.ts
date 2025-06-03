@@ -87,7 +87,6 @@ export class NewRegistrationComponent implements OnInit {
     ageMonth = 0;
     ageDay = 0;
     OnSubmit() {
-
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
@@ -119,12 +118,26 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
-        console.log(this.personalFormGroup.value)
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
+
         if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
 
             if (this.personalFormGroup.valid) {
                 this.isSaving = true;
+                const rawDate = this.dateTimeObj.date; 
+                const formattedDate = this.datePipe.transform(rawDate, 'yyyy-MM-dd');
+                const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString();
+
+                this.personalFormGroup.get('GenderId').setValue(Number(this.personalFormGroup.get('GenderId').value))
+                this.personalFormGroup.get('MaritalStatusId').setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
+                this.personalFormGroup.get('ReligionId').setValue(Number(this.personalFormGroup.get('ReligionId').value))
+                this.personalFormGroup.get('AreaId').setValue(Number(this.personalFormGroup.get('AreaId').value))
+                this.personalFormGroup.get('StateId').setValue(Number(this.personalFormGroup.get('StateId').value))
+                this.personalFormGroup.get('CountryId').setValue(Number(this.personalFormGroup.get('CountryId').value))
+                this.personalFormGroup.get('RegDate').setValue(formattedDate)
+                this.personalFormGroup.get('RegTime').setValue(formattedTime)
+
+                console.log(this.personalFormGroup.value)
                 this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                     this.onClear(true);
                     this.isSaving = false;
