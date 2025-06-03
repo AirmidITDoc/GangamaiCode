@@ -9,67 +9,69 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     providedIn: 'root'
 })
 export class PhoneAppointListService {
-       constructor(
-        private _httpClient: ApiCaller,private _FormvalidationserviceService: FormvalidationserviceService,
+    constructor(
+        private _httpClient: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService,
         private _httpClient1: HttpClient,
         private _formBuilder: UntypedFormBuilder,
-          private accountService: AuthenticationService,
-    ) {}
+        private accountService: AuthenticationService,
+    ) { }
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
             FirstName: ['', [
-             Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")                
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             LastName: ['', [
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
-            DoctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-            enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+            enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
         });
     }
 
+    //changed by raksha date:3/6/25
     createphoneForm(): FormGroup {
         return this._formBuilder.group({
-            phoneAppId:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            appDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-            appTime:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            appDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+            appTime: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             // seqNo: '',
-           firstName: ['', [
+            firstName: ['', [
                 Validators.required,
-                Validators.minLength(1), //changed by raksha
-                   Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
-            
+                Validators.minLength(1),
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.notBlankValidator()
             ]],
             middleName: ['', [
-                Validators.minLength(1), //changed by raksha
-              Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
             lastName: ['', [
                 Validators.required,
-                Validators.minLength(1), //changed by raksha
-                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.notBlankValidator()
             ]],
-            address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
+            address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             mobileNo: ['', [Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                Validators.minLength(10),
+                Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+                this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-            phAppDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            phAppDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             phAppTime: [""],
-            departmentId: [0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            doctorId:[0, [Validators.required,  this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            regNo: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]], //changed by raksha
-
+            departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            regNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         });
     }
 
@@ -77,7 +79,7 @@ export class PhoneAppointListService {
         return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
     }
     public getDoctorsByDepartment(deptId) {
-        return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+        return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
 
 
@@ -93,8 +95,8 @@ export class PhoneAppointListService {
 
 
     public phoneMasterCancle(Param: any) {
-   return this._httpClient.DeleteData("PhoneAppointment2/Cancel?Id=" + Param.toString());
-      }
+        return this._httpClient.DeleteData("PhoneAppointment2/Cancel?Id=" + Param.toString());
+    }
 
     public getMaster(mode, Id) {
         return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);

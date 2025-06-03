@@ -102,14 +102,14 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="First Name" formControlName="FirstName"
                                             [value]="registerObj.firstName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().firstName" [maxLength]="50">
+                                            [validations]="getValidationMessages().firstName" [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Middle Name" formControlName="MiddleName"
                                             [value]="registerObj.middleName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().middleName" [maxLength]="50">
+                                            [validations]="getValidationMessages().middleName" [maxLength]="100">
                                         </airmid-textbox>
 
                                     </div>
@@ -117,7 +117,7 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Last Name" formControlName="LastName"
                                             [value]="registerObj.lastName" [formGroup]="personalFormGroup"
-                                            [validations]="getValidationMessages().lastName" [maxLength]="50">
+                                            [validations]="getValidationMessages().lastName" [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
 
@@ -125,7 +125,7 @@
                                         <airmid-dropdown label="Gender" formControlName="GenderId"
                                             [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
                                             [validations]="getValidationMessages().genderId" #ddlGender
-                                            [disabled]="true" [mode]="autocompleteModegender">
+                                            [readonly]="true" [mode]="autocompleteModegender">
                                         </airmid-dropdown>
                                     </div>
 
@@ -146,7 +146,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Address" formControlName="Address"
+                                        <airmid-textbox label="Address" formControlName="Address" [maxLength]="200"
                                             [value]="registerObj.address" [formGroup]="personalFormGroup"
                                             [validations]="getValidationMessages().address">
                                         </airmid-textbox>

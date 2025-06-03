@@ -67,7 +67,7 @@ export class NewAppointmentComponent implements OnInit {
     VFollowupcount = 0;
     VBillcount = 0;
     VCrossConscount = 0;
-    CityName=""
+    CityName = ""
     RegOrPhoneflag = '';
     vPhoneFlage = 0;
     vPhoneAppId: any;
@@ -133,7 +133,7 @@ export class NewAppointmentComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
-    ) {}
+    ) { }
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
@@ -209,7 +209,7 @@ export class NewAppointmentComponent implements OnInit {
             this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
             this.patienttype = 1;
         }
-        }
+    }
 
 
     getregdetails() {
@@ -332,7 +332,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
-        
+
         if (this.Patientnewold == 2 && this.RegId == 0)
             this.toastr.warning("Please Select Registered Patient  ...");
         else {
@@ -368,13 +368,13 @@ export class NewAppointmentComponent implements OnInit {
                         return;
                     }
                     this.personalFormGroup.get('City').setValue(this.CityName)
-      
+
                     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                     this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-                    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value,"yyyy-MM-dd"))
-      
+                    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+
                     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                     this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
                     this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
@@ -414,6 +414,14 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
             this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
+        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -431,6 +439,17 @@ export class NewAppointmentComponent implements OnInit {
     onSaveRegistered() {
         this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
+        this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
+        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("MaritalStatusId").setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
+        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
+        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
@@ -438,9 +457,9 @@ export class NewAppointmentComponent implements OnInit {
         console.log(submitData);
 
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-                this.OnViewReportPdf(response)
-                this.onClear(true);
-                this._matDialog.closeAll();
+            this.OnViewReportPdf(response)
+            this.onClear(true);
+            this._matDialog.closeAll();
         });
 
 
@@ -464,7 +483,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onChangecity(e) {
-        this.CityName=e.cityName
+        this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
@@ -633,29 +652,34 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
-
     createPesonalForm() {
         return this._formBuilder.group({
-            RegId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            RegNo:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
-               Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.notBlankValidator()
             ]],
             MiddleName: ['', [
-              Validators.maxLength(50),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
             LastName: ['', [
                 Validators.required,
-               Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.minLength(1),
+                Validators.maxLength(100),
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.notBlankValidator()
             ]],
             // GenderId: new FormControl('', [Validators.required, this._FormvalidationserviceService.dropdownvalidation()]),
-            GenderId: new FormControl(0, [Validators.required]),
-            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
-              DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
+            GenderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+            DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
             Age: ['0'],
             AgeYear: ['', [
                 // Validators.required,
@@ -667,32 +691,35 @@ export class NewAppointmentComponent implements OnInit {
                 Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
-             
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-          
+
             MobileNo: ['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
             ]],
             aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$")
+                Validators.pattern("^[0-9]*$"),
+                this._FormvalidationserviceService.onlyNumberValidator()
             ]],
 
-            panCardNo: '',
-            MaritalStatusId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            ReligionId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            AreaId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            CityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            MaritalStatusId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
-            AddedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
