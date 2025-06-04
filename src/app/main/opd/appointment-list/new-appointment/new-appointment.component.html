@@ -297,13 +297,16 @@
                                 <input type="hidden" name="RegId" formControlName="regId"
                                     [(ngModel)]="registerObj.regId">
 
-                            
-                                <airmid-dropdown class="w-250" label="Unit Name" formControlName="UnitId"
-                                    [value]="UnitId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeunit"></airmid-dropdown>
-                                <airmid-dropdown class="w-250" label="Class Name" formControlName="ClassId"
-                                    [value]="ClassId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeClass"></airmid-dropdown>
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                        [value]="UnitId" [formGroup]="VisitFormGroup"
+                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Class Name" formControlName="ClassId"
+                                        [value]="ClassId" [formGroup]="VisitFormGroup"
+                                        [mode]="autocompleteModeClass"></airmid-dropdown>
+                                </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="patientType" formControlName="PatientTypeId"
@@ -321,7 +324,7 @@
                                         [mode]="autocompleteModetariff">
                                     </airmid-dropdown>
                                 </div>
-    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                                         [value]="data?.departmentId" [formGroup]="VisitFormGroup"
                                         [validations]="getValidationMessages().departmentId"

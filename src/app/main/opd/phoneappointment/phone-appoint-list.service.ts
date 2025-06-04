@@ -71,13 +71,13 @@ export class PhoneAppointListService {
             doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            regNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            regNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         });
     }
 
-    public getPhoenappschdulelist() {
-        return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
-    }
+    // public getPhoenappschdulelist() {
+    //     return this._httpClient1.post("Generic/GetByProc?procName=Rtrv_ScheduledPhoneApp", {})
+    // }
     public getDoctorsByDepartment(deptId) {
         return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
