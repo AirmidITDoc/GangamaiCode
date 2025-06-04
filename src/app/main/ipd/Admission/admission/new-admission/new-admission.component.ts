@@ -207,7 +207,7 @@ export class NewAdmissionComponent implements OnInit {
         (!this.ageMonth || this.ageMonth == 0) &&
         (!this.ageDay || this.ageDay == 0)
       ) {
-        this.toastr.warning('Please select Date of Birth', 'Warning!', {
+        this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+// import { parse, isValid } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +17,21 @@ export class FormvalidationserviceService {
   }
 
   notUndefinedValidator(): any {
-return (control: AbstractControl): ValidationErrors | null => {
+    return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
       return value == undefined ? null : { undefinedValue: { value: value } };
     };
 
   }
 
-//   onlyNumberValidator(): any {
-// debugger
-//     return (control: AbstractControl): ValidationErrors | null => {
-//       const value = control.value;
-//       return typeof value === 'number' && !isNaN(value) ? null : { onlyNumber: true };
-//     };
+  //   onlyNumberValidator(): any {
+  // debugger
+  //     return (control: AbstractControl): ValidationErrors | null => {
+  //       const value = control.value;
+  //       return typeof value === 'number' && !isNaN(value) ? null : { onlyNumber: true };
+  //     };
 
-//   }
+  //   }
 
   nonNegativeValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -45,20 +46,25 @@ return (control: AbstractControl): ValidationErrors | null => {
     };
   }
 
-  // Date validation
- validDateValidator():any {
- return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-    return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
-    };
-}
-
-// Only number is allowed
- onlyNumberValidator(): any{
+    // Date validation
+   validDateValidator():any {
    return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
+        const value = control.value;
+      return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
+      };
+  }
+
+  // validateCustomDateFormat(control: AbstractControl): ValidationErrors | null {
+  //   const parsed = parse(control.value, 'dd-MM-yyyy', new Date());
+  //   return isValid(parsed) ? null : { invalidDateFormat: true };
+  // }
+
+  // Only number is allowed
+  onlyNumberValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
       if (value === null || value === '') return null;
-    return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
+      return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
     };
   }
 
@@ -69,7 +75,7 @@ return (control: AbstractControl): ValidationErrors | null => {
       return value !== null && value !== undefined ? null : { requiredValue: true };
     };
   }
-  
+
   dropdownvalidation(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
@@ -119,3 +125,7 @@ return (control: AbstractControl): ValidationErrors | null => {
     }
   }
 }
+function isValid(parsed: any) {
+  throw new Error('Function not implemented.');
+}
+

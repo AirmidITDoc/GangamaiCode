@@ -63,13 +63,11 @@ export class RegistrationService {
                 Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.notBlankValidator()
             ]],
-            GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator() ]],
-            // GenderId: new FormControl( [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]),
+            GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
             AgeYear: ['0', [
-                // Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
             AgeMonth: ['0', [Validators.pattern("^[0-9]*$")]],
@@ -93,7 +91,6 @@ export class RegistrationService {
             ]],
 
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            // MaritalStatusId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             MaritalStatusId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //changed by raksha
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -105,11 +102,10 @@ export class RegistrationService {
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            RegDate: [''],
-            RegTime: [''],
+            RegDate: ['', Validators.required],
+            RegTime: ['', Validators.required],
             Photo: [''],
             PinNo: [''],
-            // isActive:[]
         });
 
     }

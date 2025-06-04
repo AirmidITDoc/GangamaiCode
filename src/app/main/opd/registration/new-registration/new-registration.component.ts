@@ -30,7 +30,7 @@ export class NewRegistrationComponent implements OnInit {
     isRegSearchDisabled: boolean = true;
     Submitflag: boolean = false;
     newRegSelected: any = 'registration';
-    
+
     msg: any = [];
     AgeYear: any;
     AgeMonth: any;
@@ -100,7 +100,7 @@ export class NewRegistrationComponent implements OnInit {
                 (this.ageMonth)--;
                 const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
                 this.ageDay += previousMonth.getDate(); // Days in previous month
-                
+
             }
 
             if (this.ageMonth < 0) {
@@ -108,80 +108,64 @@ export class NewRegistrationComponent implements OnInit {
                 this.ageMonth += 12;
             }
         }
-        
+
         let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
         this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
         this.personalFormGroup.get('City').setValue(this.CityName)
-      
+
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
 
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
+        if (
+            (!this.ageYear || this.ageYear == 0) &&
+            (!this.ageMonth || this.ageMonth == 0) &&
+            (!this.ageDay || this.ageDay == 0)
+        ) {
+            this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this.personalFormGroup.valid) {
+            this.isSaving = true;
+            const rawDate = this.dateTimeObj.date;
+            const formattedDate = this.datePipe.transform(rawDate, 'yyyy-MM-dd');
+            const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString();
+            this.personalFormGroup.get('RegDate').setValue(formattedDate)
+            this.personalFormGroup.get('RegTime').setValue(formattedTime)
 
-        if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
+            console.log(this.personalFormGroup.value)
+            this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
+                this.onClear(true);
+                this.isSaving = false;
+            });
+        } else {
+            let invalidFields = [];
 
-            if (this.personalFormGroup.valid) {
-                this.isSaving = true;
-                const rawDate = this.dateTimeObj.date; 
-                const formattedDate = this.datePipe.transform(rawDate, 'yyyy-MM-dd');
-                const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString(); 
-                  // Now proceed with form submission or further processing, the 4 fields are converted to numbers 
-                  this.convertNumericStringsToNumbers(this.personalFormGroup, 
-                    ['GenderId', 'MaritalStatusId', 'ReligionId', 'AreaId','StateId','CountryId']); 
-                    
-                // this.personalFormGroup.get('GenderId').setValue(Number(this.personalFormGroup.get('GenderId').value))
-                // this.personalFormGroup.get('MaritalStatusId').setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
-                // this.personalFormGroup.get('ReligionId').setValue(Number(this.personalFormGroup.get('ReligionId').value))
-                // this.personalFormGroup.get('AreaId').setValue(Number(this.personalFormGroup.get('AreaId').value))
-                // this.personalFormGroup.get('StateId').setValue(Number(this.personalFormGroup.get('StateId').value))
-                // this.personalFormGroup.get('CountryId').setValue(Number(this.personalFormGroup.get('CountryId').value))
-                this.personalFormGroup.get('RegDate').setValue(formattedDate)
-                this.personalFormGroup.get('RegTime').setValue(formattedTime)
-
-                console.log(this.personalFormGroup.value)
-                this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
-                    this.onClear(true);
-                    this.isSaving = false;
-                });
-            } else {
-                let invalidFields = [];
-
-                if (this.personalFormGroup.invalid) {
-                    for (const controlName in this.personalFormGroup.controls) {
-                        if (this.personalFormGroup.controls[controlName].invalid) {
-                            invalidFields.push(`Registartion Form: ${controlName}`);
-                        }
+            if (this.personalFormGroup.invalid) {
+                for (const controlName in this.personalFormGroup.controls) {
+                    if (this.personalFormGroup.controls[controlName].invalid) {
+                        invalidFields.push(`Registartion Form: ${controlName}`);
                     }
                 }
-                if (invalidFields.length > 0) {
-                    invalidFields.forEach(field => {
-                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                        );
-                    });
-                }
-
             }
-        } else {
-            this.toastr.warning("Please Select Birthdate...");
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
-    convertNumericStringsToNumbers(formGroup: FormGroup, fields: string[]) {
-        fields.forEach(field => {
-            const value = formGroup.get(field)?.value;
-
-            if (typeof value === 'string' && /^[0-9]+$/.test(value)) {
-                const numValue = Number(value);
-                formGroup.get(field)?.setValue(numValue, { emitEvent: false }); // update value without emitting event
-            }
-        });
-    }
-chkChange(){
-    if (this.registerObj.dateOfBirth > this.minDate) {
-           Swal.fire("Enter Proper Birth Date ")
+    chkChange() {
+        if (this.registerObj.dateOfBirth > this.minDate) {
+            Swal.fire("Enter Proper Birth Date ")
         }
-}
+    }
 
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
@@ -216,13 +200,13 @@ chkChange(){
 
     }
 
-    CityName=""
+    CityName = ""
     onChangestate(e) {
     }
 
-      onChangecity(e) {
+    onChangecity(e) {
         console.log(e)
-        this.CityName=e.cityName
+        this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
         this._registerService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
@@ -240,7 +224,6 @@ chkChange(){
                 { name: "pattern", Message: "only char allowed." }
             ],
             middleName: [
-
                 { name: "pattern", Message: "only char allowed." }
             ],
             lastName: [
