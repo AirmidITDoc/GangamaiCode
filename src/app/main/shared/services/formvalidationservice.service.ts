@@ -49,9 +49,17 @@ export class FormvalidationserviceService {
     // Date validation
    validDateValidator():any {
    return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-      return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
-      };
+      //   const value = control.value;
+      // return !isNaN(Date.parse(value)) ? null : { invalidDate: true };
+      // }; 
+   const value = control.value;
+         const DatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        if(!DatePattern.test(value) && !isNaN(Date.parse(value))){
+          return null
+        }else{
+          return { invalidDate: true }
+        } 
+      }; 
   }
 
   // validateCustomDateFormat(control: AbstractControl): ValidationErrors | null {
@@ -124,6 +132,28 @@ export class FormvalidationserviceService {
         return null;
     }
   }
+
+
+  // Addedby Ambadas => 
+  // Many field in form then save only few field then call this function
+  //Add this code in html
+    // // Fields to not allowed
+    // const NotallowedFields = ['FinalDiscPer', 'CashPay', 'referanceNo', 'PaidbyPatient', 'PaidbacktoPatient', 'roundoffAmt','dsalesId','isClosed'];
+    // // Get all form values
+    // const allValues = this.ItemSubform.value;
+    // // Filter out only the fields you want to save
+    // const ItemfilteredValues = this.fromEntries(
+    //   Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
+    // );
+
+fromEntries(entries: [string, any][]): { [key: string]: any } {
+  const result: { [key: string]: any } = {};
+  for (const [key, value] of entries) {
+    result[key] = value;
+  }
+  return result;
+}
+
 }
 function isValid(parsed: any) {
   throw new Error('Function not implemented.');

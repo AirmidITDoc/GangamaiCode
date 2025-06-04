@@ -54,7 +54,7 @@ export class CommonDateComponent implements OnInit {
             this.dateLabel = 'Payment Date';
             this.timeLabel = 'Payment Time';
             this.isDatePckrDisabled = true;
-        } else if (this.screenFromString == 'advance') {
+        } else if (this.screenFromString == 'advance-form') {
             this.dateLabel = 'Advance Date';
             this.timeLabel = 'Advance Time';
             this.isDatePckrDisabled = true;

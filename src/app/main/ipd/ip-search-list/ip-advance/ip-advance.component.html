@@ -178,12 +178,12 @@
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
 
                     <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Advance Amount" formControlName="advanceAmt" [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="12" (keypress)="keyPressCharater($event)">
+                        <airmid-textbox label="Advance Amount" formControlName="advanceAmount" [formGroup]="AdvFormGroup" [validations]="getValidationMessages().advanceAmt" [maxLength]="12" (keypress)="keyPressCharater($event)">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Reason Of Advacne" formControlName="comment" [formGroup]="AdvFormGroup" [maxLength]="50">
+                        <airmid-textbox label="Reason Of Advacne" formControlName="reason" [formGroup]="AdvFormGroup" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
@@ -191,6 +191,7 @@
                         <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="AdvFormGroup" [mode]="autocompleteModeCashCounter" [validations]="getValidationMessages().CashCounterID">
                         </airmid-dropdown>
                     </div>
+
                 </div>
             </form>
         </div>

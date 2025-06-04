@@ -31,21 +31,7 @@
         <div class="center" fxFlexAlign="start center"> 
             <div class="content-card" style="border-radius:4px;">
                 <div class="nav material" fxLayoutGap="8px">
-                    <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="8px">
-                        <!-- <form [formGroup]="searchFormGroup">
-                            <div fxLayout="row" fxLayoutGap="10px">
-                                <airmid-autocomplete class="w-500" label="Patient Search" [formGroup]="searchFormGroup"
-                                    formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No"
-                                    ApiUrl="OutPatient/auto-complete?Keyword="
-                                    (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-                    
-                                <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID" class="w-300"
-                                    [formGroup]="searchFormGroup" [validations]="getValidationMessages().cashCounterId"
-                                    [mode]="autocompleteModeCashcounter">
-                                </airmid-dropdown>
-                            </div>
-                        </form> -->
-                    
+                    <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="8px">  
                      
                             <mat-card style="padding: 5px;">
                                 <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -248,14 +234,14 @@
                 <div fxLayout="row" fxLayoutGap="6px">
     
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Total Balance Amount" formControlName="BalanceAdvance"
+                        <airmid-textbox label="Total Balance Amount" formControlName="balanceAmount"
                             [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().BalanceAdvance"
                             [maxLength]="12" [readonly]="true">
                         </airmid-textbox>
                     </div>
     
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Refund Amount" formControlName="NewRefundAmount"
+                        <airmid-textbox label="Refund Amount" formControlName="refundAmount"
                             [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().NewRefundAmount"
                             [maxLength]="12" [readonly]="true">
                         </airmid-textbox>
@@ -267,7 +253,7 @@
                     </airmid-dropdown>
     
                     <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="Remark"
+                        <airmid-textbox label="Reason Of Refund Of Advacne" formControlName="remark"
                             [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
                         </airmid-textbox>
                     </div>
