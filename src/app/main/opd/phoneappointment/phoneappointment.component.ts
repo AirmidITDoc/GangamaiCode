@@ -6,7 +6,6 @@ import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
-
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
