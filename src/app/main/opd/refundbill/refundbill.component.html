@@ -309,8 +309,6 @@
           <mat-card-content>
             <div class="net-amt-form input-error-hidden">
               <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
-                <!-- changed by raksha -->
-                <form [formGroup]="RefundOfBillFormGroupDemo" class="gap-8">
                   <mat-form-field appearance="outline">
                   <mat-label>Total Refund Amount</mat-label>
                   <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount" name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required />
@@ -323,10 +321,8 @@
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Remark</mat-label>
-                  <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark" />
+                  <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark" [maxLength]="50"/>
                 </mat-form-field>
-               </form>
-               <!-- end -->
                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                 <div class="footer-navigation-container">
                   <div class="modal-footer-buttons">

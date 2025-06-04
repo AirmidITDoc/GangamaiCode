@@ -769,7 +769,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       if (element.IsRadiology)
         IsRadiology = true
       let InsertAddChargesObj = {};
-      InsertAddChargesObj['chargesId'] = 0,
+        InsertAddChargesObj['chargesId'] = 0,
         InsertAddChargesObj['ChargesDate'] = this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
         InsertAddChargesObj['opdIpdType'] = 0,
         InsertAddChargesObj['OpdIpdId'] = this.totalChargeForm.get('OPIPId')?.value,
@@ -798,7 +798,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         InsertAddChargesObj['BillNo'] = 0,
         InsertAddChargesObj['chargesTime'] = this.datePipe.transform(this.currentDate, "HH:mm:ss"),
         InsertAddChargesObj['classId'] = this.vClassId,
-
         InsertAdddetArr.push(InsertAddChargesObj);
     })
 
@@ -836,14 +835,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     };
     console.log(submitData);
     this._AppointmentlistService.InsertOPBillingCredit(submitData).subscribe(response => {
-      this.toastrService.success(response.message);
       this.viewgetCreditOPBillReportPdf(response)
       this._matDialog.closeAll();
       this.savebtn = true
       if (response)
         this.resetform();
-    }, (error) => {
-      this.toastrService.error(error.message);
     });
 
   }

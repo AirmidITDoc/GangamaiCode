@@ -79,7 +79,7 @@ export class CommonDateComponent implements OnInit {
         else if (this.screenFromString == 'OP-billing') {
             this.dateLabel = 'Billing Date';
             this.timeLabel = 'Billing Time';
-            this.isDatePckrDisabled = true;
+            this.isDatePckrDisabled = false;
         }
         else if (this.screenFromString == 'appointment') {
             this.dateLabel = 'Visit Date';
