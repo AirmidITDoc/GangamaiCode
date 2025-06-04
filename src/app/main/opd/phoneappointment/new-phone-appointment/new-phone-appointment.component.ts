@@ -123,21 +123,15 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnSubmit() {
-
     console.log(this.phoneappForm.value);
     this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
     this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
     if (!this.phoneappForm.invalid) {
-    this.phoneappForm.get('departmentId').setValue(Number(this.depId)); //changed by raksha
-
-      console.log(this.phoneappForm.value);
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
         this.onClear(true);
       });
     } else {
       let invalidFields = [];
-
       if (this.phoneappForm.invalid) {
         for (const controlName in this.phoneappForm.controls) {
           if (this.phoneappForm.controls[controlName].invalid) {
@@ -169,9 +163,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   onClose() { this.dialogRef.close(); }
 
-  depId=0 //changed by raksha
+  depId = 0 //changed by raksha
   selectChangedepartment(obj: any) {
-    this.depId=obj.value
+    this.depId = obj.value
     this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();
