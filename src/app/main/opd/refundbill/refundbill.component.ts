@@ -21,6 +21,7 @@ import { VisitMaster1 } from '../appointment-list/appointment-list.component';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { RegInsert } from '../registration/registration.component';
 import { RefundbillService } from './refundbill.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 type NewType = Observable<any[]>;
 @Component({
   selector: 'app-refundbill',
@@ -33,7 +34,7 @@ export class RefundbillComponent implements OnInit {
 
   screenFromString = 'app-op-refund-bill';
   RefundOfBillFormGroup: FormGroup;
-  RefundOfBillFormGroupDemo: FormGroup;
+  RefundOfBillFormGroupInsert: FormGroup;
   searchFormGroup: FormGroup;
   myRefundBillForm: FormGroup;
   myserviceForm: FormGroup;
@@ -160,12 +161,13 @@ export class RefundbillComponent implements OnInit {
     private changeDetectorRefs: ChangeDetectorRef,
     private commonService: PrintserviceService,
     private accountService: AuthenticationService,
-
-  ) { }
+    private _FormvalidationserviceService: FormvalidationserviceService,
+  ) {
+    this.RefundOfBillFormGroupInsert = this.refundFormInsert();
+  }
 
   ngOnInit(): void {
     this.RefundOfBillFormGroup = this.refundForm();
-    this.RefundOfBillFormGroupDemo = this.refundFormDemo();
     this.searchFormGroup = this.createSearchForm();
   }
 
@@ -175,35 +177,59 @@ export class RefundbillComponent implements OnInit {
     });
   }
 
-  refundFormDemo(): FormGroup {  //changed by raksha
+  refundForm(): FormGroup {  //changed by raksha
     return this.formBuilder.group({
       advanceAmt: [Validators.pattern("^[0-9]*$")],
       BillNo: [''],
       NetBillAmount: [Validators.pattern("^[0-9]*$")],
-
       TotalRefundAmount: [Validators.pattern("^[0-9]*$")],
       RefundBalAmount: [Validators.pattern("^[0-9]*$")],
-
       BillDate: [''],
       RefundAmount: [Validators.pattern("^[0-9]*$")],
       Remark: [''],
       RegNo: [''],
       PatientName: [''],
       serviceName: [''],
-      // serviceId: [''],
-      serviceId: [0], //changed by raksha
+      serviceId: [0],
       Price: [Validators.pattern("^[0-9]*$")],
       Qty: [Validators.pattern("^[0-9]*$")],
       totalAmount: [Validators.pattern("^[0-9]*$")],
-
     });
   }
-
-  refundForm(): FormGroup { //Changed by raksha
+  //Changed by raksha date:4/6/2025
+  refundFormInsert(): FormGroup {
     return this.formBuilder.group({
-      refund: "",
-      tRefundDetails: "",
-      addCharges: "",
+        refund: this.formBuilder.group({
+        refundNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        refundDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900'],
+        refundTime: [this.datePipe.transform(new Date(), 'shortTime')],
+        billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+        transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelled: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900'],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      tRefundDetails: [{
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceAmount: [0],
+        refundAmount:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+        doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
+        addBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      }],
+      addCharges: [{
+        chargesId:[0,this._FormvalidationserviceService.onlyNumberValidator],
+        refundAmount:[0,this._FormvalidationserviceService.onlyNumberValidator]
+      }],
       payment: ""
     });
   }
@@ -402,104 +428,95 @@ export class RefundbillComponent implements OnInit {
     return netAmt;
   }
 
-  onSave() { //changed by raksha
+  //changed by raksha date:4/6/25
+  onSave() {
     debugger
-    if (!this.RefundOfBillFormGroupDemo.invalid) {
-
-      if (this.vOPIPId !== 0 && this.TotalRefundAmount !== "0.00") {
-        if (this.TotalRefundAmount <= this.RefundBalAmount) {
-
-          let InsertRefundObj = {};
-
-          InsertRefundObj['refundNo'] = '';
-          InsertRefundObj['refundDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-          InsertRefundObj['refundTime'] = this.dateTimeObj.time;
-          InsertRefundObj['refundNo'] = "",
-          InsertRefundObj['billId'] = this.BillNo,//parseInt(this.RefundOfBillFormGroupDemo.get('BillNo').value);
-          InsertRefundObj['advanceId'] = 0;
-          InsertRefundObj['opdipdtype'] = 0;
-          InsertRefundObj['opdipdid'] = this.vOPIPId,
-          InsertRefundObj['refundAmount'] = parseInt(this.RefundOfBillFormGroupDemo.get('TotalRefundAmount').value);
-          InsertRefundObj['remark'] = this.RefundOfBillFormGroupDemo.get('Remark').value || "";
-          InsertRefundObj['transactionId'] = 2;
-          InsertRefundObj['addedBy'] = this.accountService.currentUserValue.userId,
-          InsertRefundObj['isCancelled'] = 0;
-          InsertRefundObj['isCancelledBy'] = 0;
-          InsertRefundObj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-          InsertRefundObj['refundId'] = 0;
-
-          // Refund Detail Array
-          const RefundDetailarr = this.dataSource2.data.map(element => ({
-            refundId: 0,
-            serviceId: element.ServiceId || 0,
-            serviceAmount: element.NetAmount || 0,
-            refundAmount: element.RefundAmt || 0,
-            doctorId: element.doctorId,
-            remark: this.RefundOfBillFormGroupDemo.get('Remark').value || '',
-            addBy: this.accountService.currentUserValue.userId,
-            chargesId: element.chargesId
-          }));
-
-          // Add charges array
-          const AddchargesRefundAmountarr = this.dataSource2.data.map(element => ({
-            chargesId: element.chargesId || 0,
-            refundAmount: parseFloat(element.RefundAmt) || 0
-          }));
-
-          // Patient info
-          const PatientHeaderObj = {
-            Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-            PatientName: this.PatientName,
-            RegNo: this.RegNo,
-            DoctorName: this.Doctorname,
-            CompanyName: this.CompanyName,
-            Age: this.AgeYear,
-            NetPayAmount: Math.round(this.RefundOfBillFormGroupDemo.get('TotalRefundAmount').value)
-          };
-
-          const dialogRef = this._matDialog.open(OpPaymentComponent, {
-            maxWidth: "90vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "OP-RefundOfBill",
-              advanceObj: PatientHeaderObj
-            }
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-            if (result && result.submitDataPay) {
-
-              this.RefundOfBillFormGroup.get('refund').setValue(InsertRefundObj);
-              this.RefundOfBillFormGroup.get('tRefundDetails').setValue(RefundDetailarr);
-              this.RefundOfBillFormGroup.get('addCharges').setValue(AddchargesRefundAmountarr);
-              this.RefundOfBillFormGroup.get('payment').setValue(result.submitDataPay.ipPaymentInsert);
-
-              console.log(this.RefundOfBillFormGroup.value);
-
-              this._RefundbillService.InsertOPRefundBilling(this.RefundOfBillFormGroup.value).subscribe(response => {
-                this.viewgetOPRefundBillReportPdf(response);
-                this._matDialog.closeAll();
-              }, error => {
-                this.toastrService.error(error.message);
-              });
-            }
-          });
-
-          this.cleardata();
-
-        } else {
-          Swal.fire("Refund Amount is More than Refund Balance");
-        }
-
-      } else {
-        Swal.fire("Please Add Refund Amount!");
-      }
-
-    } else {
-      Swal.fire("Form is invalid. Please check the fields.");
+    if (this.RefundOfBillFormGroup.invalid || this.RefundOfBillFormGroupInsert.invalid) {
+      this.toastr.warning("Form is invalid. Please check the fields.");
+      return;
     }
+    if (this.vOPIPId === 0 || this.TotalRefundAmount === "0.00") {
+      this.toastr.warning("Please Add Refund Amount");
+      return;
+    }
+    if (this.TotalRefundAmount > this.RefundBalAmount) {
+      this.toastr.warning("Refund amount is more than the refund balance.");
+      return;
+    }
+
+    // refund header
+    const refundObj = this.RefundOfBillFormGroupInsert.get('refund')?.value || {};
+
+    refundObj.refundDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900';
+    refundObj.refundTime = this.dateTimeObj.time;
+    refundObj.billId = this.BillNo;
+    refundObj.opdipdid = this.vOPIPId;
+    refundObj.refundAmount = parseInt(this.RefundOfBillFormGroup.get('TotalRefundAmount')?.value || '0');
+    refundObj.remark = this.RefundOfBillFormGroup.get('Remark').value || '';
+    refundObj.isCancelledDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900';
+
+    console.log(this.RefundOfBillFormGroupInsert.get('refund')?.value)
+
+    // Refund Detail Array
+    const RefundDetailarr = this.dataSource2.data.map(element => ({
+      refundId: 0,
+      serviceId: element.ServiceId || 0,
+      serviceAmount: element.NetAmount || 0,
+      refundAmount: Number(element.RefundAmt) || 0,
+      doctorId: element.doctorId,
+      remark: this.RefundOfBillFormGroup.get('Remark').value || '',
+      addBy: this.accountService.currentUserValue.userId,
+      chargesId: element.chargesId
+    }));
+    console.log(this.RefundOfBillFormGroupInsert.get('tRefundDetails')?.value)
+
+    // Add charges array
+    const AddchargesRefundAmountarr = this.dataSource2.data.map(element => ({
+      chargesId: element.chargesId || 0,
+      refundAmount: parseFloat(element.RefundAmt) || 0
+    }));
+    console.log(this.RefundOfBillFormGroupInsert.get('addCharges')?.value)
+
+    // Patient info
+    const PatientHeaderObj = {
+      Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+      PatientName: this.PatientName,
+      RegNo: this.RegNo,
+      DoctorName: this.Doctorname,
+      CompanyName: this.CompanyName,
+      Age: this.AgeYear,
+      NetPayAmount: Math.round(this.RefundOfBillFormGroup.get('TotalRefundAmount').value)
+    };
+
+    const dialogRef = this._matDialog.open(OpPaymentComponent, {
+      maxWidth: "90vw",
+      height: '650px',
+      width: '80%',
+      data: {
+        vPatientHeaderObj: PatientHeaderObj,
+        FromName: "OP-RefundOfBill",
+        advanceObj: PatientHeaderObj
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.submitDataPay) {
+
+        this.RefundOfBillFormGroupInsert.get('refund')?.setValue(refundObj);
+        this.RefundOfBillFormGroupInsert.get('tRefundDetails').setValue(RefundDetailarr);
+        this.RefundOfBillFormGroupInsert.get('addCharges').setValue(AddchargesRefundAmountarr);
+        this.RefundOfBillFormGroupInsert.get('payment').setValue(result.submitDataPay.ipPaymentInsert);
+
+        console.log(this.RefundOfBillFormGroupInsert.value);
+
+        this._RefundbillService.InsertOPRefundBilling(this.RefundOfBillFormGroupInsert.value).subscribe(response => {
+          this.viewgetOPRefundBillReportPdf(response);
+          this._matDialog.closeAll();
+        });
+      }
+    });
+
+    this.cleardata();
   }
 
   cleardata() {
