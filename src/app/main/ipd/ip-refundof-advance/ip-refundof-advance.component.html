@@ -128,9 +128,10 @@
                      
                     
                         <div fxLayout.gt-md="row" fxLayout="column" fxLayoutGap="12px">
-                            <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%"> 
+                            <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%">  
                                 <div class="airmid-table-container">
-                                    <mat-table matSort   [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}" class="airmid-table"> 
+                                    <mat-table matSort   [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}"  
+                                    class="airmid-table"> 
                                        
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">Date
@@ -139,11 +140,12 @@
                                                 <span> {{element.date}}</span>
                                             </mat-cell>
                                         </ng-container>
+ 
                     
                                         <ng-container matColumnDef="AdvanceAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Advance Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm >
                                                 <span> {{element.advanceAmount}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -151,7 +153,7 @@
                                         <ng-container matColumnDef="UsedAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Used Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm >
                                                 <span> {{element.usedAmount | currency:'INR'}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -159,7 +161,7 @@
                                         <ng-container matColumnDef="BalanceAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Balance Amt </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  > 
                                                 <span *ngIf="!element.isCancelled">
                                                     {{element.balanceAmount | currency:'INR'}}
                                                 </span>
@@ -171,12 +173,14 @@
                                         <ng-container matColumnDef="RefundAmt">
                                             <mat-header-cell *matHeaderCellDef>Refund Amt
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element">
+                                            <mat-cell *matCellDef="let element" >
+                                                    <!-- <form [formGroup]="RefundOfAdvanceFormGroup" > -->
                                                 <mat-form-field  appearance="fill" *ngIf="!element.isCancelled">
-                                                    <input matInput placeholder="RefundAmt" type="text" 
+                                                    <input matInput placeholder="RefundAmt" type="text"  
                                                         [(ngModel)]="element.refundAmt" (keypress)="keyPressCharater($event)"
-                                                        (ngModelChange)="getCellCalculation(element,element.refundAmt)">
+                                                        (keyup)="getCellCalculation(element,element.refundAmt)">
                                                 </mat-form-field>
+                                                <!-- </form> -->
                                                 <ng-container *ngIf="element.isCancelled" >
                                                     <span>--</span>
                                                 </ng-container>
@@ -186,7 +190,7 @@
                                         <ng-container matColumnDef="PreRefundAmt">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.Refund Amt
                                             </mat-header-cell>
-                                            <mat-cell  *matCellDef="let element" fxShow.gt-sm> 
+                                            <mat-cell  *matCellDef="let element" fxShow.gt-sm > 
                                                 <span> {{element.refundAmount | currency:'INR'}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -218,7 +222,7 @@
                                             [ngClass]="{'hide':!(dsrefundlist!=null && dsrefundlist.data.length==0)}">
                                         </mat-footer-row>
                                     </mat-table>
-                                    </div>  
+                                    </div>   
                             </div> 
                         </div> 
                     </div>
@@ -230,15 +234,15 @@
       <!--End of Middle Data-->
     <div class="modal-footer">
         <div class="modal-footer-container" fxLayout="row">
-            <form [formGroup]="RefundOfAdvanceFormGroup">
-                <div fxLayout="row" fxLayoutGap="6px">
-    
+            <form [formGroup]="RefundOfAdvanceFormGroup">  
+                <div fxLayout="row" fxLayoutGap="6px"> 
+                    
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total Balance Amount" formControlName="balanceAmount"
                             [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().BalanceAdvance"
                             [maxLength]="12" [readonly]="true">
                         </airmid-textbox>
-                    </div>
+                    </div> 
     
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Refund Amount" formControlName="refundAmount"
@@ -257,7 +261,7 @@
                             [formGroup]="RefundOfAdvanceFormGroup" [maxLength]="50">
                         </airmid-textbox>
                     </div>
-                </div>
+                </div>  
             </form>
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button>
