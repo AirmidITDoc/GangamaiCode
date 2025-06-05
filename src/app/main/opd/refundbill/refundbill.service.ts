@@ -98,11 +98,6 @@ export class RefundbillService {
         return this._httpClient.GetData("OutPatient/view-OPRefundofBill?RefundId=" + RefundId)
     }
 
-       public getBillingServiceList(employee) {
-        // return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
-        return this._httpClient.PostData("BillingService/BillingList", employee)
-    }
-
     public getVisitById(Id) {
         return this._httpClient.GetData("VisitDetail/" + Id);
     }
