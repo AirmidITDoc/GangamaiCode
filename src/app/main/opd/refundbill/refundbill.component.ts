@@ -304,8 +304,8 @@ export class RefundbillComponent implements OnInit {
   }
 
   calculateTotalAmount(): void {
-    let RefundAmount = this.chargeList.reduce((sum, charge) => sum + (+charge.RefundAmt), 0);
-    let RefBalAmount = this.chargeList.reduce((sum, charge) => sum + (+charge.balanceAmount), 0);
+    let RefundAmount = this.dataSource2.data.reduce((sum, charge) => sum + (+charge.RefundAmt), 0);
+    let RefBalAmount = this.dataSource2.data.reduce((sum, charge) => sum + (+charge.balanceAmount), 0);
 
     this.RefundOfBillFormFooter.patchValue({
       TotalRefundAmount: RefundAmount,
