@@ -134,7 +134,7 @@ export class RefundbillComponent implements OnInit {
     this.refundDetailsArray.push(this.createRefundDetail());
     this.addChargesArray.push(this.createAddCharge());
 
-    this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
+    this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
   }
@@ -215,10 +215,12 @@ export class RefundbillComponent implements OnInit {
   }
 
   allColumns1 = [
-    { heading: "BillDate", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "BillNo", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "BillAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: 9 },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 9}
+    { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA' , type: 6},
+    { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: 22 },
+    { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' , type: 22 },
+    { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: 22 },
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22}
   ]
 
   allFilters1 = [
