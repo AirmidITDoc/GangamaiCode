@@ -32,10 +32,11 @@ export class ReportService {
             DepartmentId: [""],
             CashCounterId: [""],
 
-            // added by raksha
+            // added by raksha date:6/6/25
             GroupId:[""],
             ClassId:[""],
-            WardId:[""]
+            WardId:[""],
+            dischargeTypeId:[""]
             // 
         });
     }

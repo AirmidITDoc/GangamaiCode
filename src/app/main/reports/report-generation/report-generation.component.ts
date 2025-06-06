@@ -56,10 +56,11 @@ export class ReportGenerationComponent implements OnInit {
     ServiceId: any;
     DepartmentId: any;
     CashCounterId: any;
-    // added by raksha
+    // added by raksha date:6/6/25
     GroupId:any;
     ClassId:any;
     WardId:any;
+    dischargeTypeId:any;
     // 
     rid: number = 0;
     UId: any = 0;
@@ -183,13 +184,15 @@ export class ReportGenerationComponent implements OnInit {
             this.flagServiceSelected = true;
         if(controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
-        // created by raksha
+        // created by raksha date:6/6/25
         if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
             this.flagGroupSelected = true;
         if(controllerPermission.filter(x => x == "Class")?.length > 0)
             this.flagClassSelected = true;
         if(controllerPermission.filter(x => x == "Room")?.length > 0)
             this.flagWardSelected = true;
+        if(controllerPermission.filter(x => x == "DichargeType")?.length > 0)
+            this.flagDischargeTypeSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -217,6 +220,9 @@ export class ReportGenerationComponent implements OnInit {
     SelectedWardObj(obj) {
         this.WardId = obj.value;
     }
+    SelectedDischargeObj(obj) {
+        this.WardId = obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -227,6 +233,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get("GroupId").setValue('');
         this._ReportService.userForm.get("ClassId").setValue('');
         this._ReportService.userForm.get("WardId").setValue('');
+        this._ReportService.userForm.get("dischargeTypeId").setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
@@ -235,6 +242,7 @@ export class ReportGenerationComponent implements OnInit {
         this.GroupId = 0;
         this.ClassId = 0;
         this.WardId = 0;
+        this.dischargeTypeId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
         this.flagDepartmentSelected = false;
@@ -243,6 +251,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagGroupSelected = false;
         this.flagClassSelected= false;
         this.flagWardSelected=false;
+        this.flagDischargeTypeSelected=false;
     }
     GetPrint() {
         setTimeout(() => {
@@ -288,6 +297,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.CashCounterId.toString() || "0",
                     "opType": OperatorComparer.Equals          
                 });   
+                // created by raksha date:6/6/25
             if (this.flagGroupSelected)
                 paramFilterList.push({
                     "fieldName": "GroupId",
@@ -305,7 +315,14 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldName": "WardId",
                     "fieldValue": this.WardId.toString() || "0",
                     "opType": OperatorComparer.Equals
-                });                                                           
+                });      
+            if (this.flagWardSelected)
+                paramFilterList.push({
+                    "fieldName": "dischargeTypeId",
+                    "fieldValue": this.dischargeTypeId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                }); 
+                //    
             let param = {
                 "searchFields": paramFilterList,
                 "mode": this.reportDetail?.reportMode,

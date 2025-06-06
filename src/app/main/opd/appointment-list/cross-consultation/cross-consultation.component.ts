@@ -93,10 +93,10 @@ export class CrossConsultationComponent implements OnInit {
     console.log(this.crossconForm.value);
 
     let data = this.crossconForm.value;
-    data.departmentId = this.crossconForm.get('departmentId').value
+    data.departmentId = Number(this.crossconForm.get('departmentId').value)
     data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
-     this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
-      this.crossconForm.get('visitTime').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-ddTHH:mm'))
+    this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
+    this.crossconForm.get('visitTime').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-ddTHH:mm'))
 
      console.log(this.crossconForm.value)
 

@@ -69,7 +69,7 @@ export class CommonDateComponent implements OnInit {
         } else if (this.screenFromString == 'discharge') {
             this.dateLabel = 'Discharge Date';
             this.timeLabel = 'Discharge Time';
-            this.isDatePckrDisabled = true;
+            this.isDatePckrDisabled = false;
         }
         else if (this.screenFromString == 'IP-billing') {
             this.dateLabel = 'Discharge Date';

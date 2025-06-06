@@ -45,13 +45,13 @@ export class EditRefranceDoctorComponent implements OnInit {
 
     createRefranceDrForm() {
           return this._formBuilder.group({
-              visitId: [this.data.visitId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-             refDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+              visitId: [this.data.visitId,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+             refDocId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
   });}
   
 
   onSubmit() {
-    if (this.RefrancedrForm.valid) {
+    if (!this.RefrancedrForm.invalid) {
    
     console.log(this.RefrancedrForm.value);
     this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
