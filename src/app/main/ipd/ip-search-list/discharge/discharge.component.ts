@@ -22,8 +22,6 @@ import { InitiateDischargeComponent } from './initiate-discharge/initiate-discha
   animations: fuseAnimations
 })
 export class DischargeComponent implements OnInit {
-
-
   DischargeForm: FormGroup;
   DischargeInsertForm: FormGroup;
   currentDate = new Date();
@@ -50,7 +48,7 @@ export class DischargeComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-  dischargeTypeId=0;
+  dischargeTypeId = 0;
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
   autocompletemode: string = "ModeOfDischarge";
@@ -69,32 +67,26 @@ export class DischargeComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-     if (this.advanceDataStored.storage) {
+    if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj);
-    
     }
-    this.DischargeForm = this.DischargesaveForm();
-    this.DischargeForm.markAllAsTouched();
-    this.DischargeInsertForm=this.DischargeinsertForm();
-    console.log(this.data.docNameId)
-   
     setInterval(() => {
-  this.now = new Date();
+      this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       if (!this.isTimeChanged) {
         this.DischargeForm.get('dischargeTime').setValue(this.now);
         if (this.DischargeForm.get('dischargeTime'))
           this.DischargeForm.get('dischargeTime').setValue(this.now);
-}
+      }
     }, 1);
-   
+
 
   }
 
   ngOnInit(): void {
-   
-    console.log(this.data)
+    this.DischargeForm = this.DischargesaveForm();
+    this.DischargeForm.markAllAsTouched();
+    this.DischargeInsertForm = this.DischargeinsertForm();
     if (this.data) {
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
@@ -102,51 +94,44 @@ export class DischargeComponent implements OnInit {
       setTimeout(() => {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
-          console.log(this.registerObj)
-        
         });
       }, 500);
-    
     }
- 
     console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
-
     if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
       this.ChkConfigInitiate = false
     else
       this.ChkConfigInitiate = true
-
     this.getchkConfigInitiate();
   }
-  
-  docName(event){
-console.log(event)
+
+  docName(event) {
+    console.log(event)
   }
 
-  selctdischargeType(event){
-this.dischargeTypeId=event.value
+  selctdischargeType(event) {
+    this.dischargeTypeId = event.value
   }
 
   DischargesaveForm(): FormGroup {
     return this._formBuilder.group({
 
       dischargeId: this.DischargeId,
-      admissionId:  this.vAdmissionId,
-      dischargeDate: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-      dischargeTime: [(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      admissionId: this.vAdmissionId,
+      dischargeDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      dischargeTime: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       dischargeTypeId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       dischargedDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      dischargedRmoid: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      modeOfDischargeId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      modifiedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-
-      discharge:"",
+      dischargedRmoid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      modeOfDischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      modifiedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      discharge: "",
       admission: this._formBuilder.group({
-      admissionId: [this.vAdmissionId],
-      isDischarged: [1],
-      dischargeDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      dischargeTime:this.datePipe.transform(new Date(), 'shortTime'),
+        admissionId: [this.vAdmissionId],
+        isDischarged: [1],
+        dischargeDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        dischargeTime: this.datePipe.transform(new Date(), 'shortTime'),
       }),
       bed: this._formBuilder.group({
         bedId: [this.vBedId]
@@ -154,15 +139,15 @@ this.dischargeTypeId=event.value
     });
   }
 
-        // changed by raksha
-   DischargeinsertForm(): FormGroup {
+  // changed by raksha
+  DischargeinsertForm(): FormGroup {
     return this._formBuilder.group({
-      discharge:"",
+      discharge: "",
       admission: this._formBuilder.group({
-      admissionId: [0],
-      dischargeDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      dischargeTime:this.datePipe.transform(new Date(), 'shortTime'),
-      isDischarged: [1],
+        admissionId: [0],
+        dischargeDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        dischargeTime: this.datePipe.transform(new Date(), 'shortTime'),
+        isDischarged: [1],
       }),
       bed: this._formBuilder.group({
         bedId: [0]
@@ -170,126 +155,111 @@ this.dischargeTypeId=event.value
     });
   }
 
-  onDischarge1() {
-    console.log(this.DischargeForm.value)
+  // onDischarge1() {
+  //   // console.log(this.DischargeForm.value)
 
-    // if (this.ChkConfigInitiate == false) {
-    //   if (this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined) {
-    //     this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    //   }
-    // }
-    
+  //   // // if (this.ChkConfigInitiate == false) {
+  //   // //   if (this.vDeptCount < 0 || this.vDeptCount == '' || this.vDeptCount == undefined) {
+  //   // //     this.toastr.warning('Please be informed that your initiate discharge to department', 'Warning !', {
+  //   // //       toastClass: 'tostr-tost custom-toast-warning',
+  //   // //     });
+  //   // //     return;
+  //   // //   }
+  //   // // }
 
-    if (!this.DischargeForm.invalid) {
-      let dischargModeldata = {};
-        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-        dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-        dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
-        dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
-        dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
-        dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
-        dischargModeldata['dischargeId'] = this.DischargeId
-        dischargModeldata['modeOfDischargeId'] = 1
-        dischargModeldata['admissionId'] = this.vAdmissionId
 
-      if (this.data.isDischarged == 0) {
-        var m_data = {
-            "discharge": dischargModeldata,// this.DischargeForm.value,
-            "admission": {
-            "admissionId": this.vAdmissionId,
-            "isDischarged": 1,
-            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-            "dischargeTime": this.dateTimeObj.time
-          },
-          "bed": {
-            "bedId": this.vBedId,
-          }
-        }
-        console.log(m_data)
+  //   // if (!this.DischargeForm.invalid) {
+  //   //   let dischargModeldata = {};
+  //   //     dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+  //   //     dischargModeldata['dischargeTime'] = this.dateTimeObj.time
+  //   //     dischargModeldata['dischargeTypeId'] =this.dischargeTypeId,// this.DischargeForm.get("dischargeTypeId").value.value || 0,
+  //   //     dischargModeldata['dischargedDocId'] = this.DischargeForm.get("dischargedDocId").value || 0,
+  //   //     dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
+  //   //     dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
+  //   //     dischargModeldata['dischargeId'] = this.DischargeId
+  //   //     dischargModeldata['modeOfDischargeId'] = 1
+  //   //     dischargModeldata['admissionId'] = this.vAdmissionId
 
-        this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
-          this.viewgetDischargeSlipPdf(response)
-          this._matDialog.closeAll();
-        });
-      } else if (this.data.isDischarged == 1) {
-        dischargModeldata['dischargeId'] = 1
-        dischargModeldata['modifiedBy'] = 1
-        console.log(this.DischargeForm.value)
-        var m_data1 = {
-          "discharge": dischargModeldata,// this.DischargeForm.value,
-          "admission": {
-            "admissionId": this.vAdmissionId,
-            "isDischarged": 1,
-            "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-            "dischargeTime": this.dateTimeObj.time
-          }
-        }
-        console.log(m_data1)
+  //   //   if (this.data.isDischarged == 0) {
+  //   //     var m_data = {
+  //   //         "discharge": dischargModeldata,// this.DischargeForm.value,
+  //   //         "admission": {
+  //   //         "admissionId": this.vAdmissionId,
+  //   //         "isDischarged": 1,
+  //   //         "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+  //   //         "dischargeTime": this.dateTimeObj.time
+  //   //       },
+  //   //       "bed": {
+  //   //         "bedId": this.vBedId,
+  //   //       }
+  //   //     }
+  //   //     console.log(m_data)
 
-        this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
-          this.viewgetDischargeSlipPdf(response)
-          this._matDialog.closeAll();
-        });
-      }
-      this.DischargeForm.reset();
-    } else {
-      let invalidFields = [];
+  //   //     this._IpSearchListService.DichargeInsert(m_data).subscribe((response) => {
+  //   //       this.viewgetDischargeSlipPdf(response)
+  //   //       this._matDialog.closeAll();
+  //   //     });
+  //   //   } else if (this.data.isDischarged == 1) {
+  //   //     dischargModeldata['dischargeId'] = 1
+  //   //     dischargModeldata['modifiedBy'] = 1
+  //   //     console.log(this.DischargeForm.value)
+  //   //     var m_data1 = {
+  //   //       "discharge": dischargModeldata,// this.DischargeForm.value,
+  //   //       "admission": {
+  //   //         "admissionId": this.vAdmissionId,
+  //   //         "isDischarged": 1,
+  //   //         "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+  //   //         "dischargeTime": this.dateTimeObj.time
+  //   //       }
+  //   //     }
+  //   //     console.log(m_data1)
 
-      if (this.DischargeForm.invalid) {
-        for (const controlName in this.DischargeForm.controls) {
-          if (this.DischargeForm.controls[controlName].invalid) {
-            invalidFields.push(`Discharge Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+  //   //     this._IpSearchListService.DichargeUpdate(m_data1).subscribe((response) => {
+  //   //       this.viewgetDischargeSlipPdf(response)
+  //   //       this._matDialog.closeAll();
+  //   //     });
+  //   //   }
+  //   //   this.DischargeForm.reset();
+  //   // } else {
+  //   //   let invalidFields = [];
 
-    }
-  }
+  //   //   if (this.DischargeForm.invalid) {
+  //   //     for (const controlName in this.DischargeForm.controls) {
+  //   //       if (this.DischargeForm.controls[controlName].invalid) {
+  //   //         invalidFields.push(`Discharge Form: ${controlName}`);
+  //   //       }
+  //   //     }
+  //   //   }
+  //   //   if (invalidFields.length > 0) {
+  //   //     invalidFields.forEach(field => {
+  //   //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+  //   //       );
+  //   //     });
+  //   //   }
+
+  //   // }
+  // }
 
 
   onDischarge() {
-    debugger
     console.log(this.DischargeForm.value)
-
     if (!this.DischargeForm.invalid) {
       let dischargModeldata = {};
-        dischargModeldata['admissionId'] = this.vAdmissionId
-        dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+      dischargModeldata['admissionId'] = this.vAdmissionId
+      dischargModeldata['dischargeDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
         dischargModeldata['dischargeTime'] = this.dateTimeObj.time
-        dischargModeldata['dischargeTypeId'] =Number(this.dischargeTypeId),// this.DischargeForm.get("dischargeTypeId").value.value || 0,
+      dischargModeldata['dischargeTypeId'] = Number(this.dischargeTypeId),// this.DischargeForm.get("dischargeTypeId").value.value || 0,
         dischargModeldata['dischargedDocId'] = Number(this.DischargeForm.get("dischargedDocId").value) || 0,
         dischargModeldata['dischargedRmoid'] = this.DischargeForm.get("dischargedRmoid").value || 0,
         dischargModeldata['modeOfDischargeId'] = 1
-        dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
+      dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId,
         dischargModeldata['dischargeId'] = this.DischargeId
 
-        this.DischargeForm.get("dischargeDate").setValue((this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')))
-        this.DischargeForm.get("admissionId").setValue(this.vAdmissionId)
+      this.DischargeForm.get("dischargeDate").setValue((this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')))
+      this.DischargeForm.get("admissionId").setValue(this.vAdmissionId)
 
 
       if (this.data.isDischarged == 0) {
-        // var m_data = {
-        //     "discharge": this.DischargeForm.value,
-        //     "admission": {
-        //     "admissionId":this.DischargeForm.get("admissionId").value,
-        //     "isDischarged": 1,
-        //     "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-        //     "dischargeTime": this.dateTimeObj.time
-        //   },
-        //   "bed": {
-        //     "bedId": this.vBedId,
-        //   }
-        // }
-
         // changed by raksha
         this.DischargeInsertForm.get("discharge").setValue(dischargModeldata)
         this.DischargeInsertForm.get('admission.admissionId')?.setValue(this.vAdmissionId);
@@ -301,23 +271,13 @@ this.dischargeTypeId=event.value
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         });
-      } else if (this.data.isDischarged == 1) {
+      }
+      else if (this.data.isDischarged == 1) {
         dischargModeldata['dischargeId'] = 1
-        dischargModeldata['modifiedBy'] =  this.accountService.currentUserValue.userId
+        dischargModeldata['modifiedBy'] = this.accountService.currentUserValue.userId
         // modifiedBy:new FormControl(0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
 
         console.log(this.DischargeForm.value)
-        // var m_data1 = {
-        //   "discharge": dischargModeldata,// this.DischargeForm.value,
-        //   "admission": {
-        //     "admissionId": this.vAdmissionId,
-        //     "isDischarged": 1,
-        //     "dischargeDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-        //     "dischargeTime": this.dateTimeObj.time
-        //   }
-        // }
-        // console.log(m_data1)
-
         // changed by raksha
         this.DischargeInsertForm.get("discharge").setValue(dischargModeldata)
         this.DischargeInsertForm.get('admission.admissionId')?.setValue(this.vAdmissionId);
@@ -351,7 +311,7 @@ this.dischargeTypeId=event.value
     }
   }
   viewgetDischargeSlipPdf(data) {
-this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
+    this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
   }
   getValidationMessages() {
     return {
@@ -375,17 +335,15 @@ this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
   vApproved_Cnt: any;
   vDeptCount: any;
   getchkConfigInitiate() {
-     var data={
+    var data = {}
+    this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
+      console.log(data)
+      if (data) {
+        this.vApproved_Cnt = data[0]?.Approved_Cnt
+        this.vDeptCount = data[0]?.DeptCount
 
-     }
-      this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
-        console.log(data)
-        if(data){
-          this.vApproved_Cnt = data[0]?.Approved_Cnt
-          this.vDeptCount = data[0]?.DeptCount
-
-        } 
-      })
+      }
+    })
   }
 
 

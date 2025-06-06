@@ -413,15 +413,15 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
-            this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
-        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
-        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
-        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
-        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
-        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
-        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
-        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+            this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId)
+        this.personalFormGroup.get("GenderId")?.setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("ReligionId")?.setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId")?.setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("StateId")?.setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId")?.setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId")?.setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId")?.setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId")?.setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -437,19 +437,20 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
-        this.VisitFormGroup.get("regId").setValue(this.registerObj.regId)
+        this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
-        this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
-        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
-        this.personalFormGroup.get("MaritalStatusId").setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
-        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
-        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
-        this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
-        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
-        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
-        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
-        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+        this.personalFormGroup.get("PrefixId")?.setValue(Number(this.personalFormGroup.get('PrefixId').value))
+        this.personalFormGroup.get("GenderId")?.setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("MaritalStatusId")?.setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
+        this.personalFormGroup.get("ReligionId")?.setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId")?.setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("CityId")?.setValue(Number(this.personalFormGroup.get('CityId').value))
+        this.personalFormGroup.get("StateId")?.setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId")?.setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId")?.setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId")?.setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId")?.setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value

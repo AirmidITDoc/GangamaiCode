@@ -166,17 +166,19 @@
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="qty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                  <span>{{ element.qty }}</span>
-                </mat-cell>
-              </ng-container>
+          
 
               <ng-container matColumnDef="price">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
                 <mat-cell *matCellDef="let element">
                   <span>{{ element.price }}</span>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="qty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span>{{ element.qty }}</span>
                 </mat-cell>
               </ng-container>
 
@@ -201,13 +203,16 @@
                 </mat-cell>
               </ng-container>
 
+              <!-- (keyup)="gettablecalculation(element, element.RefundAmt)"  -->
               <ng-container matColumnDef="refAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RefundAmt</mat-header-cell>
                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <!-- <mat-form-field appearance="legacy"> -->
                     <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber
-                      (keyup)="gettablecalculation(element, element.RefundAmt)" (keypress)="keyPressCharater($event)" />
+                  
+                      (ngModelChange)="onPriceOrQtyChange(element,element.RefundAmt)"
+                      (keypress)="keyPressCharater($event)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -252,7 +257,7 @@
               <div class="net-amt">
                 <div class="net-amt-box">
                   <span class="net-amt-label">Total of Items :</span>
-                  <span class="net-amt-value">{{ getServicetotSum(dataSource2.data) | currency : 'INR' }}</span>
+                  <span class="net-amt-value">{{getServicetotSum(dataSource2.data) | currency : 'INR' }}</span>
                 </div>
               </div>
             </div>

@@ -86,12 +86,13 @@ export class RefundbillComponent implements OnInit {
   public isModal = false;
   RefundAmt: any;
 
+
   @ViewChild('picker') datePickerElement = MatDatepicker;
   
   displayedColumns1 = [
     'serviceName',
-    'qty',
     'price',
+    'qty',
     'netAmount',
     'chargesDocName',
     'refAmount',
@@ -100,7 +101,7 @@ export class RefundbillComponent implements OnInit {
   ];
 
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
-
+  public chargeList: InsertRefundDetail[] = [];
   @ViewChild('grid') grid: AirmidTableComponent;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -216,8 +217,8 @@ export class RefundbillComponent implements OnInit {
   allColumns1 = [
     { heading: "BillDate", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "BillNo", key: "billDate", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "BillAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' }
+    { heading: "BillAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: 9 },
+    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 9}
   ]
 
   allFilters1 = [
@@ -291,32 +292,51 @@ export class RefundbillComponent implements OnInit {
     this.getfilterdata(obj.value)
   }
 
-  gettablecalculation(element, RefundAmt) {
-    console.log(element)
-    if (RefundAmt > 0 && RefundAmt <= element.balAmt) {
-      element.balanceAmount = ((element.balAmt) - (RefundAmt));
-      element.PrevRefAmount = RefundAmt;
-      this.BalanceAmount = element.balanceAmount
-    }
-    else if (RefundAmt > element.balAmt) {
-      this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      element.RefundAmt = '';
-      element.balanceAmount = element.balAmt;
-    }
-    else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined) {
-      element.RefundAmt = '';
-      element.balanceAmount = element.balAmt;
-    }
-    else if (this.RefundAmount < this.NetBillAmount) {
-      this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      element.RefundAmt = '';
-      element.balanceAmount = element.balAmt;
-    }
+   
+  onPriceOrQtyChange(row : InsertRefundDetail = null, RefundAmt): void {
+    if (!row) return;
+    row.RefundAmt = Math.abs(row.refundAmt);
+    const BalanceAmount = row.balAmt - RefundAmt;
+    row.balanceAmount = BalanceAmount;
+    this.calculateTotalAmount();
   }
+
+  calculateTotalAmount(): void {
+    let RefundAmount = this.chargeList.reduce((sum, charge) => sum + (+charge.RefundAmt), 0);
+    let RefBalAmount = this.chargeList.reduce((sum, charge) => sum + (+charge.balanceAmount), 0);
+
+    this.RefundOfBillFormFooter.patchValue({
+      TotalRefundAmount: RefundAmount,
+      RefundBalAmount: Math.round(RefBalAmount),
+    }, { emitEvent: false });
+  }
+  
+  // gettablecalculation(element, RefundAmt) {
+  //   console.log(element)
+  //   if (RefundAmt > 0 && RefundAmt <= element.balAmt) {
+  //     element.balanceAmount = ((element.balAmt) - (RefundAmt));
+  //     element.PrevRefAmount = RefundAmt;
+  //     this.BalanceAmount = element.balanceAmount
+  //   }
+  //   else if (RefundAmt > element.balAmt) {
+  //     this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     element.RefundAmt = '';
+  //     element.balanceAmount = element.balAmt;
+  //   }
+  //   else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined) {
+  //     element.RefundAmt = '';
+  //     element.balanceAmount = element.balAmt;
+  //   }
+  //   else if (this.RefundAmount < this.NetBillAmount) {
+  //     this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     element.RefundAmt = '';
+  //     element.balanceAmount = element.balAmt;
+  //   }
+  // }
   
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -379,23 +399,20 @@ export class RefundbillComponent implements OnInit {
     this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark').value || '')
     
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
-      console.log("FormValue", this.vRefundOfBillFormGroup.value)
+      
+      // console.log("FormValue", this.vRefundOfBillFormGroup.value)
 
       // Refund table detail assign to array
       this.refundDetailsArray.clear();
       this.dataSource2.data.forEach(item => {
         this.refundDetailsArray.push(this.createRefundDetail(item));
       });
-      console.log('Refund Details FormArray Values:', this.refundDetailsArray.value);
 
       // addCharges table detail assign to array
       this.addChargesArray.clear();
       this.dataSource2.data.forEach(item => {
         this.addChargesArray.push(this.createAddCharge(item));
       });
-      console.log('Add Charges FormArray Values:', this.addChargesArray.value);
-
-      console.log("FormValue", this.vRefundOfBillFormGroup.value)
 
       // Patient info
       const PatientHeaderObj = {
@@ -421,11 +438,7 @@ export class RefundbillComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.submitDataPay) {
-
           this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
-
-          console.log(this.vRefundOfBillFormGroup.value);
-
           this._RefundbillService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
             this.viewgetOPRefundBillReportPdf(response);
             setTimeout(() => {
@@ -442,7 +455,7 @@ export class RefundbillComponent implements OnInit {
       if (this.RefundOfBillFormFooter.invalid) {
         for (const controlName in this.RefundOfBillFormFooter.controls) {
           if (this.RefundOfBillFormFooter.controls[controlName].invalid) {
-            invalidFields.push(`FormFooter: ${controlName}`);
+            invalidFields.push(`Refund of Bill Footer: ${controlName}`);
           }
         }
       }
@@ -454,7 +467,7 @@ export class RefundbillComponent implements OnInit {
           if (control instanceof FormGroup || control instanceof FormArray) {
             for (const nestedKey in control.controls) {
               if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`NestedForm: ${controlName}.${nestedKey}`);
+                invalidFields.push(`Table Data : ${controlName}.${nestedKey}`);
               }
             }
           } else if (control?.invalid) {
@@ -668,6 +681,7 @@ export class InsertRefundDetail {
   balanceAmount: any;
   refAmount: any;
   RefundAmt: any;
+  balAmt: any;
 
   constructor(InsertRefundDetailObj) {
     {
@@ -691,6 +705,7 @@ export class InsertRefundDetail {
       this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
       this.refAmount = InsertRefundDetailObj.refAmount || 0;
       this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
+      this.balAmt = InsertRefundDetailObj.balAmt || 0;
     }
   }
 }
