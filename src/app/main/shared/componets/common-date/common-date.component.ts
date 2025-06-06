@@ -99,6 +99,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'Physio Time';
             this.isDatePckrDisabled = false;
         }
+           else if(this.screenFromString == 'Comman-form'){
+            this.dateLabel = 'Date';
+            this.timeLabel = 'Time';
+            this.isDatePckrDisabled = false;
+        }
         this.dateForm.get('timeController').setValue(this.now);
         setTimeout(() => {
             this.eventEmitForParent(this.dateTimeString[0], this.dateTimeString[1]);

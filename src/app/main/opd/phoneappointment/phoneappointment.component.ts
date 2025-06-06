@@ -15,6 +15,7 @@ import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FutureAppointmentlistComponent } from './future-appointmentlist/future-appointmentlist.component';
 
 @Component({
   selector: 'app-phoneappointment',
@@ -154,7 +155,18 @@ newPhoneAppointment(){
        this.getPhoneAppointList();
     });
   }
-
+getFutureAppointmentlist(){
+    const dialogRef = this._matDialog.open(FutureAppointmentlistComponent,
+      {
+        maxWidth: "90vw",
+        height: '95%',
+        width: '90%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+       console.log('The dialog was closed - Insert Action', result);
+       this.getPhoneAppointList();
+    });
+  }
 CanclePhoneApp(contact) {
   Swal.fire({
     title: 'Do you want to cancel the Phone Appointment?',

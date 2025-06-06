@@ -166,7 +166,7 @@ export class NewRegistrationComponent implements OnInit {
 
         
 
-        this.onChangeCityList(this.registerObj.CityId);
+        this.onChangeCityList(this.registerObj);
         this.setDropdownObjs();
         this.onChangeDateofBirth(this.registerObj.DateofBirth)
     
@@ -410,11 +410,11 @@ export class NewRegistrationComponent implements OnInit {
 
   onChangeStateList(CityId) {
     if (CityId > 0) {
-      this._registerService.getStateList(CityId).subscribe(data => {
-        this.stateList = data;
-        this.selectedState = this.stateList[0].StateName;
+      // this._registerService.getStateList(CityId).subscribe(data => {
+      //   this.stateList = data;
+      //   this.selectedState = this.stateList[0].StateName;
 
-      });
+      // });
     }
   }
 
@@ -525,7 +525,7 @@ debugger
 
   onChangeGenderList(prefixObj) {
     
-    if (prefixObj) {
+    if (prefixObj.PrefixID > 0) {
       this._registerService.getGenderCombo(prefixObj.PrefixID).subscribe(data => {
         this.GenderList = data;
         this.personalFormGroup.get('GenderId').setValue(this.GenderList[0]);

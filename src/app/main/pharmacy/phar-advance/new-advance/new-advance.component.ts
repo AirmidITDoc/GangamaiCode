@@ -45,7 +45,7 @@ export class NewAdvanceComponent implements OnInit {
   PatientListfilteredOptions: any;
   noOptionFound:any;
   filteredOptions:any;
-  screenFromString = 'pharma-advance';
+  screenFromString = 'Comman-form';
   vRegNo:any;
   vPatienName:any;
   vMobileNo:any;

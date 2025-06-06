@@ -36,6 +36,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { PhoneappointmentComponent } from './phoneappointment.component';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { FutureAppointmentlistComponent } from './future-appointmentlist/future-appointmentlist.component';
 
 const routes: Routes = [
     {
@@ -47,6 +48,7 @@ const routes: Routes = [
     declarations: [
         PhoneappointmentComponent,
         NewPhoneAppointmentComponent,
+        FutureAppointmentlistComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

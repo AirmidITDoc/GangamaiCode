@@ -9,8 +9,8 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-              Pharmacy Advance
-            </span> 
+                Pharmacy Advance
+            </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
             <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
@@ -18,11 +18,11 @@
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-        </div> 
+        </div>
     </mat-toolbar>
 
 
-    <div class="content"> 
+    <div class="content">
         <div class="center p-12 pb-56" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; ">
@@ -74,18 +74,17 @@
                                                     <span class="h1">Patient Information</span>
                                                 </div>
                                                 <hr>
-                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                                    class="patient-info">
+                                                <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                    fxLayoutAlign="space-between center" class="patient-info">
                                                     <div class="patient-sub">
-                                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                            fxLayoutAlign="space-between">
+                                                        <div class="patient-info-row patient-info-1-111 pt-8"
+                                                            fxLayout="row" fxLayoutAlign="space-between">
                                                             <div fxLayout="column" fxLayoutGap="6px">
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">UHID No
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{vRegNo}}</span>
+                                                                    <span class="patient-col-value">{{vRegNo}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Patient Name
@@ -97,20 +96,23 @@
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Doctor Name</span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vDoctorName}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vDoctorName}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Department</span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vDepartment}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vDepartment}}</span>
                                                                 </div>
                                                             </div>
                                                             <div fxLayout="column" fxLayoutGap="6px">
-                                                                
+
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">DOA | Time</span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vAdmissionDate | date:'dd/MM/YYYY'}}</span>
+                                                                    <span class="patient-col-value">{{vAdmissionDate |
+                                                                        date:'dd/MM/YYYY'}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">IPD No</span>
@@ -121,44 +123,51 @@
                                                                     <span class="patient-col-key">Age | Sex
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}} D | {{vGenderName}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                                        D | {{vGenderName}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Ref-Doctor Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vRefDocName}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vRefDocName}}</span>
                                                                 </div>
-                                                               
+
                                                             </div>
                                                             <div fxLayout="column" fxLayoutGap="6px">
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Ward | Bed Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vRoomName}} | {{vBedName}}</span>
+                                                                    <span class="patient-col-value">{{vRoomName}} |
+                                                                        {{vBedName}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Patient Type
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vPatientType}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vPatientType}}</span>
                                                                 </div>
                                                                 <div class="patient-col">
                                                                     <span class="patient-col-key">Tarrif Name
                                                                     </span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value">{{vTariffName}}</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{vTariffName}}</span>
                                                                 </div>
-                                                                <div class="patient-col" >
+                                                                <div class="patient-col">
                                                                     <span class="patient-col-key">Company Name</span>
                                                                     <span>:</span>
-                                                                    <span class="patient-col-value" style="color: orange;">{{vCompanyName}}</span>
+                                                                    <span class="patient-col-value"
+                                                                        style="color: orange;">{{vCompanyName}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +182,8 @@
                                     class="backgroundBlur" style="height: 100%;">
                                     <div class="spinner-border text-danger"></div>
                                 </div>
-                                <mat-table matSort [dataSource]="dsIpItemList" [@animateStagger]="{value:'50'}">
+                                <mat-table matSort [dataSource]="dsIpItemList" [@animateStagger]="{value:'50'}"
+                                style="height: 500px;">
 
                                     <ng-container matColumnDef="Date" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
@@ -188,7 +198,7 @@
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.AdvanceNo}}</span>
                                         </mat-cell>
-                                    </ng-container>  
+                                    </ng-container>
 
                                     <ng-container matColumnDef="AdvanceAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -268,7 +278,8 @@
                                             Action
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button matTooltip="print" (click)="viewgetIPAdvanceReportPdf(contact)">
+                                            <button mat-icon-button matTooltip="print"
+                                                (click)="viewgetIPAdvanceReportPdf(contact)">
                                                 <mat-icon>print</mat-icon>
                                             </button>
 
@@ -276,8 +287,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6"
-                                            style="display: none;">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                         </mat-header-cell>
                                     </ng-container>
 
@@ -285,8 +295,8 @@
                                         <mat-footer-cell *matFooterCellDef colspan="6">
                                             no data found...
                                         </mat-footer-cell>
-                                    </ng-container> 
-                                
+                                    </ng-container>
+
                                     <mat-header-row class="accent min-width-1350"
                                         *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
@@ -331,11 +341,15 @@
                                             Advance Amount is required</mat-error>
                                     </mat-form-field>
 
-                                    <div class="sales-footer-buttons gap-8 " fxLayout="row"
-                                        style="padding: 0px 50px 0px 120px;">
-                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                                        <button class="btn btn-primary" [disabled]="!vadvanceAmount"  (click)="onSave()">Save</button>
+                                    <div class="modal-footer-buttons">
+                                        <div class="sales-footer-buttons gap-8 " fxLayout="row"
+                                            style="padding: 0px 50px 0px 120px;">
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                            <button class="btn btn-primary" [disabled]="!vadvanceAmount"
+                                                (click)="onSave()">Save</button>
+                                        </div>
                                     </div>
+
 
                                 </div>
                             </form>
