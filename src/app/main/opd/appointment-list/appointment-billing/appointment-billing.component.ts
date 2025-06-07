@@ -317,9 +317,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       totalNetAmount: [0, [Validators.min(0)]],
       paymentType: ['CashPay'],
       concessionId: [0],
-      hospitalId:[this.patientDetail?.hospitalId ?? null, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      tariffId : [this.patientDetail?.tariffId ?? null, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      OPIPId : [this.patientDetail?.visitId ?? null, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      hospitalId:[this.patientDetail?.hospitalId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      tariffId : [this.patientDetail?.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      OPIPId : [this.patientDetail?.visitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   doctorName: any
@@ -328,9 +328,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
   onAddCharges(): void {
 
-    const serviceNameValue = this.chargeForm.get('serviceName').value;
-    if (!serviceNameValue || this.serviceSelct == false) {
-      this.toastrService.warning('Please select valid Service Name', 'Warning !', {
+    const serviceNameValue = this.chargeForm.get('serviceName')?.value;
+    if (!serviceNameValue || serviceNameValue === '%' || this.serviceSelct == false) {
+      this.toastrService.warning('Please select a valid service name.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
