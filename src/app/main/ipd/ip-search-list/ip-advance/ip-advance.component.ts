@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -25,9 +25,7 @@ import { IPSearchListService } from '../ip-search-list.service';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class IPAdvanceComponent implements OnInit {
-
-
+export class IPAdvanceComponent implements OnInit { 
   AdvFormGroup: FormGroup;
   selectedAdvanceObj: any = [];
   screenFromString = 'advance-form';
@@ -99,9 +97,9 @@ export class IPAdvanceComponent implements OnInit {
     this.createAdvform();
     this.AdvFormGroup.markAllAsTouched();
     if (this.data) {
-      this.registerObj = this.data.Obj;
+      this.registerObj = this.data?.Obj;
       console.log("Advance data:", this.registerObj)
-      this.AdmissionId = this.registerObj.admissionId
+      this.AdmissionId = this.registerObj?.admissionId
 
       if (this.AdmissionId > 0) {
         var vdata = {
@@ -124,7 +122,7 @@ export class IPAdvanceComponent implements OnInit {
           this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
             this.selectedAdvanceObj = response.data;
             if (this.selectedAdvanceObj.length > 0)
-              this.vAdvanceId = this.selectedAdvanceObj[0].advanceId
+              this.vAdvanceId = this.selectedAdvanceObj[0]?.advanceId ?? 0
             this.selectedAdvanceObj.forEach(element => {
               this.TotalAdvanceAmt += element.advanceAmount
               this.TotalAdvUsedAmt += element.usedAmount
@@ -140,101 +138,94 @@ export class IPAdvanceComponent implements OnInit {
   createAdvform() {
     this.AdvFormGroup = this.formBuilder.group({
       CashCounterID: ['5', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
-      date: ['', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-      refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
-      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator,this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
-      advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
-      advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
-      addedBy: [this.accountService.currentUserValue.userId],
-      isCancelled: [false],
-      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-      advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
+      advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      reason: [''],
+
+      advance: this.formBuilder.group({
+        date: ['', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
+        refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdType: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        addedBy: [this.accountService.currentUserValue.userId],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]]
+      }),
       // details 
-      time: ['', [this._FormvalidationserviceService.notBlankValidator]],
-      transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notBlankValidator]],
-      usedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      reasonOfAdvanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      reason: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+      advanceDetail: this.formBuilder.group({
+        date: ['', [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        time: ['', [this._FormvalidationserviceService.notBlankValidator()]],
+        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionId: [2],
+        opdIpdType: [1],
+        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        usedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        reasonOfAdvanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        addedBy: [this.accountService.currentUserValue.userId],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        reason: [''],
+        advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }), 
+      //advanceupdate header
+      advanceupdate: this.formBuilder.group({ 
+        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator(), Validators.min(1)]]
+      })
     });
   }
 
-  onSave() {
-
+  onSave() { 
     debugger
-    this.AdvFormGroup.get('date').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-    this.AdvFormGroup.get('time').setValue(this.dateTimeObj.time)
-    this.AdvFormGroup.get('opdIpdId').setValue(this.registerObj.admissionId)
-    this.AdvFormGroup.get('refId').setValue(this.registerObj.regId)
-    this.AdvFormGroup.get('advanceId').setValue(this.vAdvanceId)
-    this.AdvFormGroup.get('balanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
-
-    let invalidFields = [];
-    if (this.AdvFormGroup.invalid) {
-      for (const controlName in this.AdvFormGroup.controls) {
-        if (this.AdvFormGroup.controls[controlName].invalid) {
-          invalidFields.push(`${controlName}`);
-        }
-      }
-    }
-    if (invalidFields.length > 0) {
-      invalidFields.forEach(field => {
-        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-        );
-      });
-      return
-    }
-
-
-    // Fields to not allowed for Advance header 
-    const NotallowedFields = ['CashCounterID', 'time', 'transactionId', 'usedAmount', 'refundAmount', 'reasonOfAdvanceId', 'reason',
-      'advanceDetailId'];
-    // Get all form values
-    const allValues = this.AdvFormGroup.value;
-    // Filter out only the fields you want to save
-    const AdvanceHeaderFormValues = this._FormvalidationserviceService.fromEntries(
-      Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
-    );
-    console.log('Saving only selected values:', AdvanceHeaderFormValues);
-
-    //For Advance Details
-    // Fields to not allowed for Advance Details
-    const NotallowedFieldsDetails = ['CashCounterID', 'advanceUsedAmount'];
-    // Filter out only the fields you want to save
-    const AdvanceDetailsFormValues = this._FormvalidationserviceService.fromEntries(
-      Object.entries(allValues).filter(([key]) => !NotallowedFieldsDetails.includes(key))
-    );
-    console.log('Saving only selected values details :', AdvanceDetailsFormValues);
-
-    //For Advance header Updates
-    // Fields to not allowed for Advance Details 
-    const NotallowedFieldsAdvUpdates = ['date', 'refId', 'opdIpdType', 'opdIpdId', 'advanceUsedAmount', 'balanceAmount', 'addedBy', 'isCancelled',
-      'isCancelledBy', 'isCancelledDate', 'time', 'transactionId', 'usedAmount', 'refundAmount', 'reasonOfAdvanceId', 'reason', 'advanceUsedAmount',]
-    // Filter out only the fields you want to save
-    const AdvanceHeaderUpdateValues = this._FormvalidationserviceService.fromEntries(
-      Object.entries(allValues).filter(([key]) => !NotallowedFieldsAdvUpdates.includes(key))
-    );
-    console.log('Saving only selected values header update  :', AdvanceHeaderUpdateValues);
-
-
+    this.AdvFormGroup.get('advance.date').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    this.AdvFormGroup.get('advanceDetail.date').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    this.AdvFormGroup.get('advanceDetail.time').setValue(this.dateTimeObj.time)
+    this.AdvFormGroup.get('advance.advanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
+    this.AdvFormGroup.get('advanceDetail.advanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
+    this.AdvFormGroup.get('advanceupdate.advanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
+    this.AdvFormGroup.get('advance.advanceId').setValue(this.vAdvanceId)
+     this.AdvFormGroup.get('advanceDetail.advanceId').setValue(this.vAdvanceId)
+    this.AdvFormGroup.get('advanceupdate.advanceId').setValue(this.vAdvanceId)
+    this.AdvFormGroup.get('advance.balanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
+    this.AdvFormGroup.get('advanceDetail.balanceAmount').setValue(this.AdvFormGroup.get('advanceAmount').value)
+    this.AdvFormGroup.get('advanceDetail.reason').setValue(this.AdvFormGroup.get('reason')?.value) 
+    this.AdvFormGroup.get('advance.opdIpdId').setValue(this.registerObj.admissionId)
+    this.AdvFormGroup.get('advanceDetail.opdIpdId').setValue(this.registerObj.admissionId)
+    this.AdvFormGroup.get('advanceDetail.refId').setValue(this.registerObj.regId)
+    this.AdvFormGroup.get('advance.refId').setValue(this.registerObj.regId)
+ 
+  if(this.AdvFormGroup.valid){
+    console.log(this.AdvFormGroup.value)
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
-    PatientHeaderObj['RegNo'] = this.registerObj.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
-    PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
-    PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
-    PatientHeaderObj['Age'] = this.registerObj.ageYear;
+    PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
+    PatientHeaderObj['RegNo'] = this.registerObj?.regNo,
+    PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
+    PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
+    PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
+    PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
+    PatientHeaderObj['Age'] = this.registerObj?.ageYear;
     PatientHeaderObj['NetPayAmount'] = this.AdvFormGroup.get('advanceAmount').value || 0;
 
     const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -249,11 +240,11 @@ export class IPAdvanceComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('==============================  Advance Amount ===========', result);
-      if (!this.AdvFormGroup.get('advanceId').value) {
+      console.log('Payment Details', result);
+      if (!this.AdvFormGroup.get('advanceupdate.advanceId').value) {
         let submitData = {
-          "advance": AdvanceHeaderFormValues,
-          "advanceDetail": AdvanceDetailsFormValues,
+          "advance": this.AdvFormGroup.value.advance,
+          "advanceDetail": this.AdvFormGroup.value.advanceDetail,
           "advancePayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -266,8 +257,8 @@ export class IPAdvanceComponent implements OnInit {
       }
       else {
         let submitData = {
-          "advance": AdvanceHeaderUpdateValues,
-          "advanceDetail": AdvanceDetailsFormValues,
+          "advance":  this.AdvFormGroup.value.advanceupdate,
+          "advanceDetail":  this.AdvFormGroup.value.advanceDetail,
           "advancePayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
@@ -278,8 +269,40 @@ export class IPAdvanceComponent implements OnInit {
         });
       }
     });
+  }else{
+  let invalidFields = [];
+    // if (this.AdvFormGroup.invalid) {
+    //   for (const controlName in this.AdvFormGroup.controls) {
+    //     if (this.AdvFormGroup.controls[controlName].invalid) {
+    //       invalidFields.push(`${controlName}`);
+    //     }
+    //   }
+    // } 
+       if (this.AdvFormGroup.invalid) {
+            for (const controlName in this.AdvFormGroup.controls) {
+              const control = this.AdvFormGroup.get(controlName);
+    
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`Advance Date : ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`Advance From: ${controlName}`);
+              }
+            }
+          }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        );
+      });
+      return
+    }
+  } 
   }
-
+ 
   // onSaveold() {
   //   const currentDate = new Date();
   //   const datePipe = new DatePipe('en-US');
@@ -412,9 +435,7 @@ export class IPAdvanceComponent implements OnInit {
   //     }
   //   });
 
-  //   this.AdvFormGroup.get('advanceAmount').reset(0);
-  //   this.AdvFormGroup.get('reason').reset('');
-  //   this.AdvFormGroup.get('CashCounterId').setValue(5);
+ 
 
   // } 
   onClose() {

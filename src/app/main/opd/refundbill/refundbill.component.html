@@ -1,64 +1,4 @@
-<!-- <ng-template #serviceTable>
-  <mat-toolbar class="accent" style="width: 100%; height: 40px; justify-content: space-between">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-icon class="logo-icon mr-16" [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }" style="color: white">account_box</mat-icon>
-      <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Nursing Request list</span>
-    </div> -->
-<!-- <div class="close-icon">
-        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div> -->
-<!-- </mat-toolbar>
-
-  <div class="service-table1 p-12" fxFlex="100%">
-    <div class="table-body">
-      <div class="airmid-table">
-        <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{ value: '50' }">
-          <ng-container matColumnDef="ServiceName">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">Item Name</mat-header-cell>
-            <mat-cell *matCellDef="let contact" class="w-180">
-              <span>{{ contact.ServiceName }}</span>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="Price">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
-            <mat-cell *matCellDef="let contact">
-              <span>{{ contact.Price | currency : 'INR' }}</span>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="Qty">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
-            <mat-cell *matCellDef="let contact">
-              <span>{{ contact.Qty }}</span>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="TotalAmt">
-            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">Total Amt</mat-header-cell>
-            <mat-cell *matCellDef="let contact" class="w-110">
-              <span>{{ contact.TotalAmt | currency : 'INR' }}</span>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="NoData">
-            <mat-footer-cell *matFooterCellDef>
-              <span>No Data Found</span>
-            </mat-footer-cell>
-          </ng-container>
-
-          <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true"></mat-header-row>
-          <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-          <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: dsServiceList.data.length > 0 }"></mat-footer-row>
-        </mat-table>
-      </div>
-    </div>
-  </div>
-</ng-template> -->
-
-<div class="modal-page page-layout inner-scroll">
+ <div class="modal-page page-layout inner-scroll">
   <div class="modal-wrapper grid-container">
     <!-- Modal header -->
     <div class="modal-header accent">
@@ -68,13 +8,13 @@
         </div>
         <div class="modal-header-right">
           <div class="comman-date-container">
-            <app-common-date [screenFrom]="'OP-billing'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-            <div class="close-icon" *ngIf="isModal">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <!-- <div class="close-icon" *ngIf="isModal">
               <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                 matTooltip="Close">
                 <mat-icon>close</mat-icon>
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -144,18 +84,7 @@
               (onSelectRow)="onEdit($event)">
 
             </airmid-table>
-          </div>
-          <!-- <div class="modal-card-container">
-            <div class="net-amt-section mt-8">
-              <div class="net-amt">
-                <div class="net-amt-box">
-                  <span class="net-amt-label">Total Refund :</span>
-                  <span class="net-amt-value">{{ getRefundtotSum1(dataSource3.data) }}</span>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
+          </div> 
           <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
 
             <mat-table matSort [dataSource]="dataSource2" [@animateStagger]="{ value: '50' }" class="airmid-table">
@@ -164,9 +93,7 @@
                 <mat-cell *matCellDef="let element">
                   <span>{{ element.serviceName }}</span>
                 </mat-cell>
-              </ng-container>
-
-          
+              </ng-container> 
 
               <ng-container matColumnDef="price">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
@@ -189,6 +116,13 @@
                 </mat-cell>
               </ng-container>
 
+                 <ng-container matColumnDef="ServiceWiseDisc">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Disc Amt</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                  <span>{{ element.serviceWiseDisc || '0' }}</span>
+                </mat-cell>
+              </ng-container>
+
               <ng-container matColumnDef="netAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmount</mat-header-cell>
                 <mat-cell *matCellDef="let element">
@@ -199,7 +133,7 @@
               <ng-container matColumnDef="chargesDocName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDocName</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.chargesDocName }}</span>
+                  <span>{{ element.chargesDocName || '-' }}</span>
                 </mat-cell>
               </ng-container>
 
@@ -209,8 +143,7 @@
                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <!-- <mat-form-field appearance="legacy"> -->
-                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber
-                  
+                    <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
                       (ngModelChange)="onPriceOrQtyChange(element,element.RefundAmt)"
                       (keypress)="keyPressCharater($event)" />
                   </mat-form-field>
@@ -252,7 +185,7 @@
             </mat-table>
            
           </div>
-          <div class="modal-card-container">
+          <!-- <div class="modal-card-container">
             <div class="net-amt-section mt-8">
               <div class="net-amt">
                 <div class="net-amt-box">
@@ -261,7 +194,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -274,24 +207,24 @@
               <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
                 <mat-form-field appearance="outline">
                   <mat-label>Total Refund Amount</mat-label>
-                  <input matInput [(ngModel)]="TotalRefundAmount" readonly formControlName="TotalRefundAmount"
-                    name="TotalRefundAmount" (keyup)="calculateTotalRefund()" required />
+                  <input matInput   readonly formControlName="TotalRefundAmount"
+                    name="TotalRefundAmount"  required />
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>Refund Bal Amount</mat-label>
-                  <input matInput [(ngModel)]="RefundBalAmount" formControlName="RefundBalAmount" name="RefundBalAmount"
-                    [value]="BalanceAmount" readonly />
+                  <input matInput   formControlName="RefundBalAmount" name="RefundBalAmount"
+                     readonly />
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Remark</mat-label>
-                  <input matInput [(ngModel)]="Remark" formControlName="Remark" name="Remark" />
+                  <input matInput  formControlName="Remark" name="Remark" />
                 </mat-form-field>
                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                 <div class="footer-navigation-container">
                   <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button type="button" class="btn btn-danger-outline" (click)="cleardata()">Close</button>
                     <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
                   </div>
                 </div>

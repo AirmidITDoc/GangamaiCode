@@ -131,16 +131,14 @@
                             <div fxFlex.gt-md="100%" fxFlex.md="50%" fxFlex.lt-md="100%">  
                                 <div class="airmid-table-container">
                                     <mat-table matSort   [dataSource]="dsrefundlist" [@animateStagger]="{value:'50'}"  
-                                    class="airmid-table"> 
-                                       
+                                    class="airmid-table">  
                                         <ng-container matColumnDef="Date">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">Date
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
                                                 <span> {{element.date}}</span>
                                             </mat-cell>
-                                        </ng-container>
- 
+                                        </ng-container> 
                     
                                         <ng-container matColumnDef="AdvanceAmount">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -173,14 +171,12 @@
                                         <ng-container matColumnDef="RefundAmt">
                                             <mat-header-cell *matHeaderCellDef>Refund Amt
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let element" >
-                                                    <!-- <form [formGroup]="RefundOfAdvanceFormGroup" > -->
+                                            <mat-cell *matCellDef="let element" > 
                                                 <mat-form-field  appearance="fill" *ngIf="!element.isCancelled">
                                                     <input matInput placeholder="RefundAmt" type="text"  
                                                         [(ngModel)]="element.refundAmt" (keypress)="keyPressCharater($event)"
-                                                        (keyup)="getCellCalculation(element,element.refundAmt)">
-                                                </mat-form-field>
-                                                <!-- </form> -->
+                                                        (ngModelChange)="getCellCalculation(element,element.refundAmt)">
+                                                </mat-form-field> 
                                                 <ng-container *ngIf="element.isCancelled" >
                                                     <span>--</span>
                                                 </ng-container>

@@ -71,7 +71,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       console.log(this.registerObj)
       this.getRefundofAdvanceListRegIdwise();
     } 
-  }
+  } 
   createRefAdvForm() {
     return this.formBuilder.group({
       CashCounterID: ['8', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
@@ -85,79 +85,55 @@ export class IPRefundofAdvanceComponent implements OnInit {
       refundHeader: this.formBuilder.group({
         refundDate: ['', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
         refundTime: ['', [this._FormvalidationserviceService.notBlankValidator]],
-        billId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-        this._FormvalidationserviceService.onlyNumberValidator]],
-        opdIpdType: [true, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-        this._FormvalidationserviceService.onlyNumberValidator]],
-        refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-        this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
-        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-        transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notBlankValidator]],
+        billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdType: [true],
+        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator(),]],
+        remark: [''],
+        transactionId: [2],
         addedBy: [this.accountService.currentUserValue.userId],
         isCancelled: [false],
-        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
       //Advance update
       advanceHeaderupdate: this.formBuilder.group({
-        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-        this._FormvalidationserviceService.onlyNumberValidator]],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-        this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
-      }),
-
-
-      // AdvDetails: [
-      //   { 
-      //     advDetailId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      // this._FormvalidationserviceService.onlyNumberValidator]],
-      //      refundDate: ['', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-      //     refundTime: ['', [this._FormvalidationserviceService.notBlankValidator]], 
-      //     advRefundAmt:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      // this._FormvalidationserviceService.onlyNumberValidator]],
-      //   }
-      // ],
-      //     AdvDetailsUpdate: [
-      //   {  
-      //     advanceDetailID: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      // this._FormvalidationserviceService.onlyNumberValidator]],
-      //     refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      // this._FormvalidationserviceService.onlyNumberValidator]],
-      //     balanceAmount:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      // this._FormvalidationserviceService.onlyNumberValidator]],
-      //   }
-      // ]
-
+        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+        this._FormvalidationserviceService.onlyNumberValidator(), Validators.min(1)]],
+      }),  
       // ✅ Fixed: should be FormArray
       AdvDetailsnew: this.formBuilder.array([]),
       AdvDetailsUpdate: this.formBuilder.array([]),
     });
   } 
+  
   createAdvDetailsnew(item: any): FormGroup {
     return this.formBuilder.group({
-      advDetailId: [item.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
-      refundDate: [this.datePipe.transform(item.date, 'yyyy-MM-dd'),
-      [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-      refundTime: [this.datePipe.transform(item.time, 'hh:mm'),
-      [this._FormvalidationserviceService.notBlankValidator]],
-      advRefundAmt: [item.refundAmt, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
+      advDetailId: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+      this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundDate: [  this.convertToISODate(item?.date),
+      [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      refundTime: [item?.time,
+      [this._FormvalidationserviceService.notBlankValidator()]],
+      advRefundAmt: [item?.refundAmt, [, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   createAdvDetailsUpdate(item: any): FormGroup {
     return this.formBuilder.group({
-      advanceDetailID: [item.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
-      refundAmount: [item.refundAmt, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]],
-      balanceAmount: [item.balanceAmount, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator]]
+      advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+      this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [item?.refundAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.balanceAmount, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+      this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters
@@ -173,7 +149,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     //Assigning value to run time values to from control
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundTime').setValue(this.dateTimeObj.time)
-    this.RefundOfAdvanceFormGroup.get('refundHeader.opdIpdId').setValue(this.registerObj.admissionId)
+    this.RefundOfAdvanceFormGroup.get('refundHeader.opdIpdId').setValue(this.registerObj?.admissionId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceUsedAmount').setValue(this.UsedAmount)
     this.RefundOfAdvanceFormGroup.get('refundHeader.advanceId').setValue(this.AdvanceId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceId').setValue(this.AdvanceId)
@@ -184,16 +160,16 @@ export class IPRefundofAdvanceComponent implements OnInit {
     //getting data from table to array
     if (this.RefundOfAdvanceFormGroup.valid) {
       this.dsrefundlist.data.forEach(item => {
-        this.advaDetailsArray.push(this.createAdvDetailsnew(item));
-        this.AdvDetailsUpdateArray.push(this.createAdvDetailsUpdate(item));
+        this.advaDetailsArray.push(this.createAdvDetailsnew(item as IPRefundofAdvance));
+        this.AdvDetailsUpdateArray.push(this.createAdvDetailsUpdate(item as IPRefundofAdvance));
       });
       //console.log('Saved Form Data:', this.RefundOfAdvanceFormGroup.value);
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-        PatientHeaderObj['PatientName'] = this.registerObj.patientName;
+      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
       PatientHeaderObj['RegNo'] = this.registerObj.regNo,
-        PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
+      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
       PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
       PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
@@ -211,9 +187,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
             advanceObj: PatientHeaderObj,
           }
         });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result.IsSubmitFlag) {
-          console.log('============================== Return RefAdv ===========');
+      dialogRef.afterClosed().subscribe(result => { 
+        if (result && result.IsSubmitFlag) { 
           let submitData = {
             "refund": this.RefundOfAdvanceFormGroup.value.refundHeader,
             "advanceHeaderupdate": this.RefundOfAdvanceFormGroup.value.advanceHeaderupdate,
@@ -221,23 +196,39 @@ export class IPRefundofAdvanceComponent implements OnInit {
             "adveDetailupdate": this.RefundOfAdvanceFormGroup.value.AdvDetailsUpdate,
             "payment": result.submitDataPay.ipPaymentInsert
           };
-          console.log(submitData);
+         // console.log(submitData);
           this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
             this.viewgetRefundofAdvanceReportPdf(response);
             this.getWhatsappsRefundAdvance(response, this.vMobileNo);
             this.onClose()
           });
-        }
+        }  
       });
     } else {
       let invalidFields = [];
-      if (this.RefundOfAdvanceFormGroup.invalid) {
-        for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
-          if (this.RefundOfAdvanceFormGroup.controls[controlName].invalid) {
-            invalidFields.push(`${controlName}`);
+      // if (this.RefundOfAdvanceFormGroup.invalid) {
+      //   for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
+      //     if (this.RefundOfAdvanceFormGroup.controls[controlName].invalid) {
+      //       invalidFields.push(`${controlName}`);
+      //     }
+      //   }
+      // }
+
+        if (this.RefundOfAdvanceFormGroup.invalid) {
+            for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
+              const control = this.RefundOfAdvanceFormGroup.get(controlName);
+    
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`Refund of Advance Date : ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`RefundOfAdvance From: ${controlName}`);
+              }
+            }
           }
-        }
-      }
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
@@ -246,123 +237,6 @@ export class IPRefundofAdvanceComponent implements OnInit {
         return
       }
     }
-  }
-
-  onSaveold() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formValue = this.RefundOfAdvanceFormGroup.value;
-
-
-    let invalidFields = [];
-    if (this.RefundOfAdvanceFormGroup.invalid) {
-      for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
-        if (this.RefundOfAdvanceFormGroup.controls[controlName].invalid) {
-          invalidFields.push(`${controlName}`);
-        }
-      }
-    }
-    if (invalidFields.length > 0) {
-      invalidFields.forEach(field => {
-        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-        );
-      });
-    }
-
-    if (formValue.NewRefundAmount == '' || formValue.NewRefundAmount == 0 || formValue.NewRefundAmount == null || formValue.NewRefundAmount == undefined) {
-      this.toastr.warning('Enter a Refund Amount', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    let IPRefundofAdvanceObj = {};
-    IPRefundofAdvanceObj['refundDate'] = formattedDate;
-    IPRefundofAdvanceObj['refundTime'] = formattedTime;
-    IPRefundofAdvanceObj['billId'] = 0;
-    IPRefundofAdvanceObj['advanceId'] = this.AdvanceId;
-    IPRefundofAdvanceObj['opdipdType'] = true;
-    IPRefundofAdvanceObj['opdipdid'] = this.registerObj.admissionId || 0,
-      IPRefundofAdvanceObj['refundAmount'] = this.RefundOfAdvanceFormGroup.get('NewRefundAmount').value || 0;
-    IPRefundofAdvanceObj['remark'] = this.RefundOfAdvanceFormGroup.get("Remark").value;
-    IPRefundofAdvanceObj['transactionId'] = 2;
-    IPRefundofAdvanceObj['addedBy'] = this.accountService.currentUserValue.userId,
-      IPRefundofAdvanceObj['isCancelled'] = false;
-    IPRefundofAdvanceObj['isCancelledBy'] = 0;
-    IPRefundofAdvanceObj['isCancelledDate'] = '1900-01-01';
-    IPRefundofAdvanceObj['refundId'] = 0;
-
-    let advanceHeaderupdate = {};
-    advanceHeaderupdate['advanceId'] = this.AdvanceId;
-    advanceHeaderupdate['advanceUsedAmount'] = this.UsedAmount;
-    advanceHeaderupdate['balanceAmount'] = this.RefundOfAdvanceFormGroup.get('BalanceAdvance').value || 0;
-
-    let advDetailRefundObj = [];
-    this.dsrefundlist.data.forEach((element) => {
-      let advDetailRefund = {};
-      advDetailRefund['advDetailId'] = element.advanceDetailID || 0;
-      advDetailRefund['refundDate'] = formattedDate;
-      advDetailRefund['refundTime'] = formattedTime;
-      advDetailRefund['advRefundAmt'] = element.refundAmt || 0;
-      advDetailRefundObj.push(advDetailRefund)
-    });
-
-    let adveDetailupdateObj = [];
-    this.dsrefundlist.data.forEach((element) => {
-      let adveDetailupdate = {};
-      adveDetailupdate['advanceDetailID'] = element.advanceDetailID || 0;
-      adveDetailupdate['balanceAmount'] = element.balanceAmount || 0;
-      adveDetailupdate['refundAmount'] = element.refundAmt || 0;
-      adveDetailupdateObj.push(adveDetailupdate)
-    });
-
-    let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
-    PatientHeaderObj['RegNo'] = this.registerObj.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
-    PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
-    PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
-    PatientHeaderObj['Age'] = this.registerObj.ageYear;
-    PatientHeaderObj['NetPayAmount'] = this.RefundOfAdvanceFormGroup.get('NewRefundAmount').value || 0;
-
-    const dialogRef = this._matDialog.open(OpPaymentComponent,
-      {
-        maxWidth: "80vw",
-        height: '650px',
-        width: '80%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "IP-RefundOfAdvance",
-          advanceObj: PatientHeaderObj,
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.IsSubmitFlag) {
-        console.log('============================== Return RefAdv ===========');
-        let submitData = {
-          "refund": IPRefundofAdvanceObj,
-          "advanceHeaderupdate": advanceHeaderupdate,
-          "advDetailRefund": advDetailRefundObj,
-          "adveDetailupdate": adveDetailupdateObj,
-          "payment": result.submitDataPay.ipPaymentInsert
-        };
-        console.log(submitData);
-        this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
-          console.log(response)
-          this.toastr.success(response.message);
-          this.viewgetRefundofAdvanceReportPdf(response);
-          this.getWhatsappsRefundAdvance(response, this.vMobileNo);
-          this.onClose()
-          this._matDialog.closeAll();
-        }, (error) => {
-          this.toastr.error(error.message);
-        });
-      }
-    });
   }
   onClose() {
     this._IpSearchListService.myRefundAdvanceForm.reset();
@@ -387,13 +261,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
       ],
       "Columns": [],
       "exportType": "JSON"
-    }
-    console.log(m_data)
-    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(response => {
-      console.log(response)
+    } 
+    this._IpSearchListService.getRefundofAdvanceList(m_data).subscribe(response => { 
       this.dsrefundlist.data = response.data
-      this.chargeList = this.dsrefundlist.data
-      console.log(this.dsrefundlist.data)
+      this.chargeList = this.dsrefundlist.data 
       this.dsrefundlist.sort = this.sort;
       this.dsrefundlist.paginator = this.paginator;
       this.isLoadingStr = this.dsrefundlist.data.length == 0 ? 'no-data' : '';
@@ -402,8 +273,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   //Refund Amount calculation
-  getCellCalculation(element, RefundAmt) {
-    console.log(element)
+  getCellCalculation(element, RefundAmt) { 
     if (RefundAmt > 0 && RefundAmt <= element.netBallAmt) {
       element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
     }
@@ -506,6 +376,11 @@ export class IPRefundofAdvanceComponent implements OnInit {
       BalanceAdvance: [{ name: "pattern", Message: "only Number allowed." }],
     }
   }
+  //Date convert string to Date 
+   convertToISODate(dateStr: string): string {
+    const [day, month, year] = dateStr.split('/');
+    return `${year}-${month}-${day}`;
+  }
 }
 
 export class IPRefundofAdvance {
@@ -529,6 +404,7 @@ export class IPRefundofAdvance {
   refundAmount: any;
   advanceDetailID: any;
   refundAmt: any;  
+  advRefundAmt:any;
 
   constructor(IPRefundofAdvanceObj) { 
     this.RefundDate = IPRefundofAdvanceObj.RefundDate || '0';
@@ -551,120 +427,7 @@ export class IPRefundofAdvance {
     this.refundAmount = IPRefundofAdvanceObj.refundAmount || 0;
     this.advanceDetailID = IPRefundofAdvanceObj.advanceDetailID || '0';
     this.refundAmt = IPRefundofAdvanceObj.refundAmt || '0';
+     this.advRefundAmt = IPRefundofAdvanceObj.advRefundAmt || 0;
   }
 }
-// export class IPRefundofAdvanceDetail {
-
-//   AdvRefId: number;
-//   AdvDetailId: number;
-//   RefundDate: Date;
-//   RefundTime: any;
-//   AdvRefundAmt: number;
-//   constructor(InsertIPRefundofAdvanceDetailObj) {
-
-//     this.AdvRefId = InsertIPRefundofAdvanceDetailObj.AdvRefId || 0;
-//     this.AdvDetailId = InsertIPRefundofAdvanceDetailObj.AdvDetailId || 0;
-//     this.RefundDate = InsertIPRefundofAdvanceDetailObj.RefundDate || '';
-//     this.RefundTime = InsertIPRefundofAdvanceDetailObj.RefundTime || '';
-//     this.AdvRefundAmt = InsertIPRefundofAdvanceDetailObj.AdvRefundAmt || 0;
-
-//   }
-// }
-// export class BrowseIpdreturnadvanceReceipt {
-//   PaymentId: Number;
-//   BillNo: Number;
-//   RegNo: number;
-//   RegId: number;
-//   PatientName: string;
-//   FirstName: string;
-//   MiddleName: string;
-//   LastName: string;
-//   TotalAmt: number;
-//   BalanceAmt: number;
-//   GenderName: string;
-//   Remark: string;
-//   PaymentDate: any;
-//   CashPayAmount: number;
-//   ChequePayAmount: number;
-//   CardPayAmount: number;
-//   AdvanceUsedAmount: number;
-//   AdvanceId: number;
-//   RefundId: number;
-//   IsCancelled: boolean;
-//   AddBy: number;
-//   UserName: string;
-//   PBillNo: string;
-//   ReceiptNo: string;
-//   TransactionType: number;
-//   PayDate: Date;
-//   PaidAmount: number;
-//   NEFTPayAmount: number;
-//   PayTMAmount: number;
-//   AddedBy: string;
-//   HospitalName: string;
-//   RefundAmount: number;
-//   RefundNo: number;
-//   HospitalAddress: string;
-//   Phone: any;
-//   EmailId: any;
-//   Age: number;
-//   AgeYear: number;
-//   IPDNo: any;
-//   NetPayableAmt: any;
-//   RefundDate: any;
-//   AdvanceAmount: any;
-//   BalanceAmount: any;
-//   /**
-//    * Constructor
-//    *
-//    * @param BrowseIpdreturnadvanceReceipt
-//    */
-//   constructor(BrowseIpdreturnadvanceReceipt) {
-//     {
-//       this.PaymentId = BrowseIpdreturnadvanceReceipt.PaymentId || '';
-//       this.BillNo = BrowseIpdreturnadvanceReceipt.BillNo || '';
-//       this.RegNo = BrowseIpdreturnadvanceReceipt.RegNo || '';
-//       this.RegId = BrowseIpdreturnadvanceReceipt.RegId || '';
-//       this.PatientName = BrowseIpdreturnadvanceReceipt.PatientName || '';
-//       this.FirstName = BrowseIpdreturnadvanceReceipt.FirstName || '';
-//       this.MiddleName = BrowseIpdreturnadvanceReceipt.MiddleName || '';
-//       this.LastName = BrowseIpdreturnadvanceReceipt.LastName || '';
-//       this.TotalAmt = BrowseIpdreturnadvanceReceipt.TotalAmt || '';
-//       this.BalanceAmt = BrowseIpdreturnadvanceReceipt.BalanceAmt || '';
-//       this.Remark = BrowseIpdreturnadvanceReceipt.Remark || '';
-//       this.PaymentDate = BrowseIpdreturnadvanceReceipt.PaymentDate || '';
-//       this.CashPayAmount = BrowseIpdreturnadvanceReceipt.CashPayAmount || '';
-//       this.ChequePayAmount = BrowseIpdreturnadvanceReceipt.ChequePayAmount || '';
-//       this.CardPayAmount = BrowseIpdreturnadvanceReceipt.CardPayAmount || '';
-//       this.AdvanceUsedAmount = BrowseIpdreturnadvanceReceipt.AdvanceUsedAmount || '';
-//       this.AdvanceId = BrowseIpdreturnadvanceReceipt.AdvanceId || '';
-//       this.RefundId = BrowseIpdreturnadvanceReceipt.RefundId || '';
-//       this.IsCancelled = BrowseIpdreturnadvanceReceipt.IsCancelled || '';
-//       this.AddBy = BrowseIpdreturnadvanceReceipt.AddBy || '';
-//       this.UserName = BrowseIpdreturnadvanceReceipt.UserName || '';
-//       this.ReceiptNo = BrowseIpdreturnadvanceReceipt.ReceiptNo || '';
-//       this.PBillNo = BrowseIpdreturnadvanceReceipt.PBillNo || '';
-//       this.TransactionType = BrowseIpdreturnadvanceReceipt.TransactionType || '';
-//       this.PayDate = BrowseIpdreturnadvanceReceipt.PayDate || '';
-//       this.PaidAmount = BrowseIpdreturnadvanceReceipt.PaidAmount || '';
-//       this.NEFTPayAmount = BrowseIpdreturnadvanceReceipt.NEFTPayAmount || '';
-//       this.PayTMAmount = BrowseIpdreturnadvanceReceipt.PayTMAmount || '';
-//       this.HospitalName = BrowseIpdreturnadvanceReceipt.HospitalName;
-//       this.RefundAmount = BrowseIpdreturnadvanceReceipt.RefundAmount || '';
-//       this.RefundNo = BrowseIpdreturnadvanceReceipt.RefundNo || '';
-//       this.GenderName = BrowseIpdreturnadvanceReceipt.GenderName || '';
-//       this.AddedBy = BrowseIpdreturnadvanceReceipt.AddedBy || '';
-//       this.HospitalAddress = BrowseIpdreturnadvanceReceipt.HospitalAddress || '';
-//       this.AgeYear = BrowseIpdreturnadvanceReceipt.AgeYear || ''
-//       this.IPDNo = BrowseIpdreturnadvanceReceipt.IPDNo || '';
-//       this.Phone = BrowseIpdreturnadvanceReceipt.Phone || ''
-//       this.EmailId = BrowseIpdreturnadvanceReceipt.EmailId || '';
-
-//       this.NetPayableAmt = BrowseIpdreturnadvanceReceipt.NetPayableAmt || 0;
-//       this.RefundDate = BrowseIpdreturnadvanceReceipt.RefundDate || '';
-//       this.AdvanceAmount = BrowseIpdreturnadvanceReceipt.AdvanceAmount || 0;
-//       this.BalanceAmount = BrowseIpdreturnadvanceReceipt.BalanceAmount || 0;
-//     }
-
-//   }
-// }
+ 
