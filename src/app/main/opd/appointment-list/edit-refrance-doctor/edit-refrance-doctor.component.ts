@@ -16,18 +16,11 @@ import { AppointmentlistService } from '../appointmentlist.service';
 })
 export class EditRefranceDoctorComponent implements OnInit {
 
-
-  RefrancedrForm: FormGroup;
-
+  ReferdrForm: FormGroup;
   VisitId: any = 0;
-  // RegId: any = 0;
-  // DoctorID=0
   autocompleteModerefdoc: string = "ConDoctor";
   filteredOptionsRefrenceDoc: any;
-  // RefDoctorList: any = [];
   isRefDoctorSelected: boolean = false;
-
-  // screenFromString = 'admission-form';
 
   constructor(
     public _AppointmentlistService: AppointmentlistService,
@@ -40,12 +33,12 @@ export class EditRefranceDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.RefrancedrForm = this.createRefranceDrForm();
-    this.RefrancedrForm.markAllAsTouched();
-    this.RefrancedrForm.patchValue(this.data);
+    this.ReferdrForm = this.createReferDrForm();
+    this.ReferdrForm.markAllAsTouched();
+    this.ReferdrForm.patchValue(this.data);
   }
 
-  createRefranceDrForm() {
+  createReferDrForm() {
     return this._formBuilder.group({
       visitId: [this.data?.visitId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -53,15 +46,15 @@ export class EditRefranceDoctorComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.RefrancedrForm.invalid) {
-      this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
+    if (!this.ReferdrForm.invalid) {
+      this._AppointmentlistService.EditRefDoctor(this.ReferdrForm.value).subscribe((response) => {
         this.onClear(true);
       });
     } else {
       let invalidFields = [];
-      if (this.RefrancedrForm.invalid) {
-        for (const controlName in this.RefrancedrForm.controls) {
-          if (this.RefrancedrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }
+      if (this.ReferdrForm.invalid) {
+        for (const controlName in this.ReferdrForm.controls) {
+          if (this.ReferdrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }
         }
       }
       if (invalidFields.length > 0) {
@@ -72,8 +65,8 @@ export class EditRefranceDoctorComponent implements OnInit {
   }
   RefDoctorId = 0;
   onCancleRefDoc() {
-    this.RefrancedrForm.get("refDocId").setValue(0)
-    this._AppointmentlistService.EditRefDoctor(this.RefrancedrForm.value).subscribe((response) => {
+    this.ReferdrForm.get("refDocId").setValue(0)
+    this._AppointmentlistService.EditRefDoctor(this.ReferdrForm.value).subscribe((response) => {
       this.onClear(true);
     });
   }
@@ -85,13 +78,8 @@ export class EditRefranceDoctorComponent implements OnInit {
       ]
     };
   }
-  // dateTimeObj: any;
-  // getDateTime(dateTimeObj) {
-  //   this.dateTimeObj = dateTimeObj;
-  // }
-
   onClear(val: boolean) {
-    this.RefrancedrForm.reset();
+    this.ReferdrForm.reset();
     this.dialogRef.close(val);
   }
 

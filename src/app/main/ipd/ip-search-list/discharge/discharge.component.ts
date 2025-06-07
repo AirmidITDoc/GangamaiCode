@@ -22,34 +22,19 @@ import { InitiateDischargeComponent } from './initiate-discharge/initiate-discha
   animations: fuseAnimations
 })
 export class DischargeComponent implements OnInit {
-  DischargeForm: FormGroup;
   DischargeInsertForm: FormGroup;
-  currentDate = new Date();
   screenFromString = 'discharge';
-
   DischargeId: any = 0;
-
-  RtrvDischargeList: any = [];
   vComments: any;
-  IsCancelled: any;
   dateTimeObj: any;
   vAdmissionId: any;
-  vMode: any = 0;
-  vDoctorId: any = 0;
-  vDescType: any = 0;
   vBedId = 0;
   ChkConfigInitiate: boolean = false;
   isTimeChanged: boolean = false;
   dateTimeString: any;
-  timeflag = 0
   public now: Date = new Date();
-  minDate: Date;
-  Today: Date = new Date();
   selectedAdvanceObj: AdvanceDetailObj;
-  registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-  // dischargeTypeId = 0;
-  // modeOfDischargeId = 0;
   autocompletcondoc: string = "ConDoctor";
   autocompletedichargetype: string = "DichargeType";
   autocompletemode: string = "ModeOfDischarge";
@@ -83,8 +68,6 @@ export class DischargeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.DischargeForm = this.DischargesaveForm();
-    this.DischargeForm.markAllAsTouched();
     this.DischargeInsertForm = this.DischargeinsertForm();
     this.DischargeInsertForm.markAllAsTouched();
 
@@ -92,7 +75,7 @@ export class DischargeComponent implements OnInit {
       console.log(this.data)
       this.vAdmissionId = this.data.admissionId;
       this.vBedId = this.data.bedId
-      this.DischargeForm.get("dischargedDocId")?.setValue(this.data.docNameId)
+      this.DischargeInsertForm.get("dischargedDocId")?.setValue(this.data.docNameId)
       this.DischargeInsertForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
       this.DischargeInsertForm.get("admission.admissionId")?.setValue(this.data.admissionId)
       this.DischargeInsertForm.get("bed.bedId")?.setValue(this.data.bedId)
@@ -107,7 +90,7 @@ export class DischargeComponent implements OnInit {
           this._IpSearchListService.getDischargeId(this.vAdmissionId).subscribe((response) => {
             console.log("DischargeID", response);
             this.DischargeId = response.dischargeId;
-            this.DischargeForm.get("dischargedDocId")?.setValue(response.dischargedDocId)
+            this.DischargeInsertForm.get("dischargedDocId")?.setValue(response.dischargedDocId)
           });
         }, 500);
       } else {
@@ -135,18 +118,16 @@ export class DischargeComponent implements OnInit {
     console.log(event)
   }
 
-  DischargesaveForm(): FormGroup {
+  // changed by raksha date:7/6/25
+  DischargeinsertForm(): FormGroup {
     return this._formBuilder.group({
+      // main form
       dischargeId: this.DischargeId,
       dischargeTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       dischargedDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       modeOfDischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
-  }
 
-  // changed by raksha date:6/6/25
-  DischargeinsertForm(): FormGroup {
-    return this._formBuilder.group({
+      // detail
       discharge: this._formBuilder.group({
         admissionId: [0, [
           Validators.required,
@@ -184,17 +165,20 @@ export class DischargeComponent implements OnInit {
 
   onDischarge() {
     debugger
-    this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeForm.get("dischargeTypeId").value))
-    this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeForm.get("dischargedDocId").value) || 0)
-    this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeForm.get("modeOfDischargeId").value) || 0)
+    this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
+    this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
+    this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
     this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
       this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(this.dateTimeObj.time)
     this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
       this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(this.dateTimeObj.time)
 
-    if (!this.DischargeForm.invalid && !this.DischargeInsertForm.invalid) {
+    if (!this.DischargeInsertForm.invalid) {
 
       if (this.data.isDischarged == 0) {
+         ['dischargeTypeId', 'dischargedDocId','modeOfDischargeId'].forEach(controlName => {
+              this.DischargeInsertForm.removeControl(controlName);
+            });
         (this.DischargeInsertForm.get('discharge') as FormGroup).removeControl('modifiedBy');
         console.log(this.DischargeInsertForm.value)
 
@@ -205,8 +189,11 @@ export class DischargeComponent implements OnInit {
       }
       else if (this.data.isDischarged == 1) {
         this.DischargeInsertForm.get('discharge.dischargeId')?.setValue(this.DischargeId);
-        (this.DischargeInsertForm.get('discharge') as FormGroup).removeControl('admissionId');
-        this.DischargeInsertForm.removeControl('bed')
+        (this.DischargeInsertForm.get('discharge') as FormGroup).removeControl('admissionId');// to remove unwanted nested control
+         
+         ['dischargeTypeId', 'dischargedDocId','modeOfDischargeId','bed'].forEach(controlName => {// to remove multiple unwanted control
+              this.DischargeInsertForm.removeControl(controlName);
+            });
         console.log(this.DischargeInsertForm.value)
 
         this._IpSearchListService.DichargeUpdate(this.DischargeInsertForm.value).subscribe((response) => {
@@ -214,17 +201,9 @@ export class DischargeComponent implements OnInit {
           this._matDialog.closeAll();
         });
       }
-      this.DischargeForm.reset();
+      this.DischargeInsertForm.reset();
     } else {
       let invalidFields = [];
-
-      if (this.DischargeForm.invalid) {
-        for (const controlName in this.DischargeForm.controls) {
-          if (this.DischargeForm.controls[controlName].invalid) {
-            invalidFields.push(`Discharge Form: ${controlName}`);
-          }
-        }
-      }
       if (this.DischargeInsertForm.invalid) {
         for (const controlName in this.DischargeInsertForm.controls) {
           const control = this.DischargeInsertForm.get(controlName);
@@ -268,7 +247,7 @@ export class DischargeComponent implements OnInit {
   }
 
   onClose() {
-    this.DischargeForm.reset();
+    this.DischargeInsertForm.reset();
     this.dialogRef.close();
   }
 

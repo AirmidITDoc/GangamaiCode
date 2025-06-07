@@ -84,6 +84,20 @@ export class FormvalidationserviceService {
     };
   }
 
+  // created by raksha date:7/6/25
+  allowEmptyStringValidatorOnly(): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (control.value === undefined) {
+      control.setValue('', { emitEvent: false }); // converts undefined to ''
+    }
+
+    const value = control.value;
+    // Allow any string (including empty string), disallow null or non-string
+    return typeof value === 'string' ? null : { requiredValue: true };
+  };
+}
+
+
   dropdownvalidation(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;

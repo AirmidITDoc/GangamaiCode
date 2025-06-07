@@ -61,6 +61,9 @@ export class ReportGenerationComponent implements OnInit {
     ClassId:any;
     WardId:any;
     dischargeTypeId:any;
+    CompanyId:any;
+    StoreId:any;
+    SupplierId:any;
     // 
     rid: number = 0;
     UId: any = 0;
@@ -99,6 +102,8 @@ export class ReportGenerationComponent implements OnInit {
     flagAdmissionSelected:boolean=false; 
     flagCompanySelected:boolean=false; 
     flagDischargeTypeSelected:boolean=false; 
+    flagStoreSelected:boolean=false; 
+    flagSupplierelected:boolean=false;
     // 
 
     constructor(
@@ -184,7 +189,7 @@ export class ReportGenerationComponent implements OnInit {
             this.flagServiceSelected = true;
         if(controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
-        // created by raksha date:6/6/25
+        // created by raksha date:7/6/25
         if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
             this.flagGroupSelected = true;
         if(controllerPermission.filter(x => x == "Class")?.length > 0)
@@ -193,6 +198,12 @@ export class ReportGenerationComponent implements OnInit {
             this.flagWardSelected = true;
         if(controllerPermission.filter(x => x == "DichargeType")?.length > 0)
             this.flagDischargeTypeSelected = true;
+        if(controllerPermission.filter(x => x == "Company")?.length > 0)
+            this.flagCompanySelected = true;
+        if(controllerPermission.filter(x => x == "Store")?.length > 0)
+            this.flagStoreSelected = true;
+        if(controllerPermission.filter(x => x == "SupplierMaster")?.length > 0)
+            this.flagSupplierelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -223,6 +234,15 @@ export class ReportGenerationComponent implements OnInit {
     SelectedDischargeObj(obj) {
         this.WardId = obj.value;
     }
+    SelectedCompanyObj(obj) {
+        this.CompanyId = obj.value;
+    }
+    SelectedStoreObj(obj) {
+        this.StoreId = obj.value;
+    }
+    SelectedSupplierObj(obj) {
+        this.SupplierId = obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -234,6 +254,9 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get("ClassId").setValue('');
         this._ReportService.userForm.get("WardId").setValue('');
         this._ReportService.userForm.get("dischargeTypeId").setValue('');
+        this._ReportService.userForm.get('CompanyId').setValue('');
+        this._ReportService.userForm.get('StoreId').setValue('');
+        this._ReportService.userForm.get('SupplierId').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
@@ -242,6 +265,9 @@ export class ReportGenerationComponent implements OnInit {
         this.GroupId = 0;
         this.ClassId = 0;
         this.WardId = 0;
+        this.StoreId = 0;
+        this.SupplierId=0;
+        this.CompanyId = 0;
         this.dischargeTypeId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
@@ -252,6 +278,9 @@ export class ReportGenerationComponent implements OnInit {
         this.flagClassSelected= false;
         this.flagWardSelected=false;
         this.flagDischargeTypeSelected=false;
+        this.flagCompanySelected=false;
+        this.flagStoreSelected=false;
+        this.flagSupplierelected=false;
     }
     GetPrint() {
         setTimeout(() => {
@@ -297,7 +326,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.CashCounterId.toString() || "0",
                     "opType": OperatorComparer.Equals          
                 });   
-                // created by raksha date:6/6/25
+                // created by raksha date:7/6/25
             if (this.flagGroupSelected)
                 paramFilterList.push({
                     "fieldName": "GroupId",
@@ -322,6 +351,24 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.dischargeTypeId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 }); 
+            if (this.flagCompanySelected)
+                paramFilterList.push({
+                    "fieldName": "CompanyId",
+                    "fieldValue": this.CompanyId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagStoreSelected)
+                paramFilterList.push({
+                    "fieldName": "StoreId",
+                    "fieldValue": this.StoreId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagStoreSelected)
+                paramFilterList.push({
+                    "fieldName": "SupplierId",
+                    "fieldValue": this.SupplierId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
                 //    
             let param = {
                 "searchFields": paramFilterList,

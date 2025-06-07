@@ -105,11 +105,16 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <form [formGroup]="DischargesumForm" fusePerfectScrollbar>
+        
+        <form [formGroup]="DischargesumInsertForm" fusePerfectScrollbar>
           <mat-tab-group class="dynamic-table-wrapper">
+            <!-- 1st tab -->
             <mat-tab label="FINAL DIAGNOSS">
               <mat-card class="mat-tab-card-container">
+          <div [formGroupName]="'dischargModel'">
+
                 <div fxLayout="column" fxLayoutGap="10px">
+
                   <div fxLayout="row" fxLayoutGap="10px">
                     <div fxLayout="column" fxFlex>
                       <div class="form-title mb-2 pb-2 border-bottom">
@@ -160,11 +165,15 @@
                     </div>
                   </div>
                 </div>
+          </div>
               </mat-card>
             </mat-tab>
 
+            <!-- 2nd tab -->
             <mat-tab label="SURGERY / OPRATIVE NOTES">
               <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
+          <div [formGroupName]="'dischargModel'">
+
                 <div>
                   <div class="form-title mb-2 pb-2 border-bottom">
                     <span class="h3 font-weight-600">SURGERY/PROCEDURE DONE</span>
@@ -187,11 +196,15 @@
                     </mat-form-field>
                   </div>
                 </div>
+          </div>
               </mat-card>
             </mat-tab>
 
+            <!-- 3rd tab -->
             <mat-tab label="PATHOLOGY / RADIOLOGY ">
               <mat-card class="mat-tab-card-container">
+          <div [formGroupName]="'dischargModel'">
+
                 <div class="form-title mb-2 pb-2 border-bottom">
                   <span class="h3 font-weight-600">PATHOLOGY</span>
                 </div>
@@ -211,11 +224,15 @@
                     <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology" cols="300" rows="6"></textarea>
                   </mat-form-field>
                 </div>
+              </div>
               </mat-card>
             </mat-tab>
 
+            <!-- 4th tab -->
             <mat-tab label="COURSES IN THE HOSPITAL">
               <mat-card class="mat-tab-card-container">
+          <div [formGroupName]="'dischargModel'">
+
                 <div fxLayout="column" class="gap-8">
                   <div class="card-content">
                     <div class="form-title mb-2 pb-2 border-bottom">
@@ -228,7 +245,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                  <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
                   <div class="card-content">
                     <div class="form-title mb-2 pb-2 border-bottom">
                       <span class="h3 font-weight-600">TREATMENT ADVICED</span>
@@ -248,11 +265,15 @@
                     </div>
                   </div>
                 </div>
+                </div>
               </mat-card>
             </mat-tab>
 
+            <!-- 5th tab -->
             <mat-tab label="OTHER CON DR.OPINION">
               <mat-card class="mat-tab-card-container">
+          <div [formGroupName]="'dischargModel'">
+
                 <div class="form-title mb-2 pb-2 border-bottom">
                   <span class="h3 font-weight-600">OTHER CON DR.OPINION</span>
                 </div>
@@ -262,25 +283,27 @@
                     <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions" [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
                   </mat-form-field>
                 </div>
-                <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
                 <div class="form-title mb-2 pb-2 border-bottom">
                   <span class="h3 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
                 </div>
-                <!-- *ngIf="DischargesumForm.get('isNormalOrDeath').value == 'True'" -->
+                <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
                 <div class="form-input">
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
                     <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique" [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
                   </mat-form-field>
                 </div>
+                </div>
               </mat-card>
             </mat-tab>
 
+            <!-- 6th tab -->
             <mat-tab label="FOLLOW UP">
               <mat-card>
                 <mat-card-content>
                   <div fxLayout="column" class="gap-8">
-                    <div class="card-content">
+                    <div class="card-content" [formGroupName]="'dischargModel'"> 
                       <div class="form-title mb-2 pb-2 border-bottom">
                         <span class="h3 font-weight-600">FOLLOW UP</span>
                       </div>
@@ -312,7 +335,7 @@
                             <airmid-dropdown
                               label="Doctor Name"
                               formControlName="dischargeDoctor1"
-                              [formGroup]="DischargesumForm"
+                              [formGroup]="DischargesumInsertForm.get('dischargModel')"
                               [validations]="getValidationMessages().dischargeDoctor1"
                               [mode]="autocompleteModeRefDoctor"
                             ></airmid-dropdown>
@@ -321,7 +344,7 @@
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Claim Number</mat-label>
-                              <input name="ClaimNumber" formControlName="claimNumber" [(ngModel)]="vClaimNumber" matInput />
+                              <input name="ClaimNumber" formControlName="claimNumber" [(ngModel)]="vClaimNumber" matInput (keypress)="keyPressAlphanumeric($event)"/>
                             </mat-form-field>
                           </div>
 
@@ -329,7 +352,7 @@
                             <airmid-dropdown
                               label="Ref.Doctor Name"
                               formControlName="dischargeDoctor2"
-                              [formGroup]="DischargesumForm"
+                              [formGroup]="DischargesumInsertForm.get('dischargModel')"
                               [validations]="getValidationMessages().dischargeDoctor2"
                               [mode]="autocompleteModeRefDoctor"
                             ></airmid-dropdown>
@@ -338,7 +361,7 @@
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Pre OTH Number</mat-label>
-                              <input name="PreOthNumber" formControlName="preOthNumber" [(ngModel)]="vPreOthNumber" matInput />
+                              <input name="PreOthNumber" formControlName="preOthNumber" [(ngModel)]="vPreOthNumber" matInput (keypress)="keyPressAlphanumeric($event)" />
                             </mat-form-field>
                           </div>
 
@@ -356,6 +379,7 @@
               </mat-card>
             </mat-tab>
 
+            <!-- 7th tab -->
             <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
               <mat-card class="mat-tab-card-container h-100-p" fxLayout="column">
                 <div class="modal-card-container">
@@ -448,14 +472,17 @@
                 </div>
               </mat-card>
             </mat-tab>
+
             <mat-tab>
-              <airmid-dropdown
-                label="Ref.Doctor Name"
-                formControlName="dischargeDoctor3"
-                [formGroup]="DischargesumForm"
-                [validations]="getValidationMessages().dischargeDoctor3"
-                [mode]="autocompleteModeRefDoctor"
-              ></airmid-dropdown>
+              <!-- <form [formGroup]="DischargesumInsertForm"> -->
+                <airmid-dropdown
+                  label="Ref.Doctor Name"
+                  formControlName="dischargeDoctor3"
+                  [formGroup]="DischargesumInsertForm"
+                  [validations]="getValidationMessages().dischargeDoctor3"
+                  [mode]="autocompleteModeRefDoctor">
+                </airmid-dropdown>
+            <!-- </form>               -->
             </mat-tab>
           </mat-tab-group>
         </form>
@@ -464,10 +491,10 @@
   </div>
   <div class="modal-footer">
     <div class="modal-footer-container" fxLayoutAlign="end center" fxLayoutGap="16px">
-      <form [formGroup]="DischargesumForm">
-        <mat-radio-group [formGroup]="DischargesumForm" formControlName="isNormalOrDeath" [(ngModel)]="vIsNormalDeath">
-          <mat-radio-button mat-fab value="1">Normal</mat-radio-button>
-          <mat-radio-button mat-fab value="0">Death Summary</mat-radio-button>
+      <form [formGroup]="DischargesumInsertForm">
+        <mat-radio-group [formGroup]="DischargesumInsertForm" formControlName="isNormalOrDeath" [(ngModel)]="vIsNormalDeath">
+          <mat-radio-button mat-fab value=1>Normal</mat-radio-button>
+          <mat-radio-button mat-fab value=0>Death Summary</mat-radio-button>
         </mat-radio-group>
       </form>
       <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>

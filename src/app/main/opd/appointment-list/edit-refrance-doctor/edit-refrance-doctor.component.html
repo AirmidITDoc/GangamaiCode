@@ -20,7 +20,7 @@
     <!-- Modal body -->
     <div class="modal-body" >
         <div class="modal-body-container">
-            <form [formGroup]="RefrancedrForm">
+            <form [formGroup]="ReferdrForm">
                 <div fxLayout="column" class="gap-12">
                     <div class="modal-card-container">
                         <mat-card>
@@ -113,7 +113,7 @@
                                         <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
 
                                         <airmid-dropdown label="Doctor Name" formControlName="refDocId" fxFlex="60%"
-                                            [formGroup]="RefrancedrForm" [value]="data?.refDocId"
+                                            [formGroup]="ReferdrForm" [value]="data?.refDocId"
                                             [validations]="getValidationMessages().refDocId" 
                                             [mode]="autocompleteModerefdoc">
                                         </airmid-dropdown>

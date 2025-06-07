@@ -36,7 +36,10 @@ export class ReportService {
             GroupId:[""],
             ClassId:[""],
             WardId:[""],
-            dischargeTypeId:[""]
+            dischargeTypeId:[""],
+            CompanyId:[""],
+            StoreId:[""],
+            SupplierId:[""]
             // 
         });
     }

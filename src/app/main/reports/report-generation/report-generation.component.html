@@ -92,7 +92,7 @@
                                         </airmid-autocomplete>
                                     </ng-container>
 
-                                    <!-- created by raksha date:6/6/25 -->
+                                    <!-- created by raksha date:7/6/25 -->
                                     <ng-container *ngIf="flagGroupSelected">
                                         <airmid-autocomplete label="Group Name" [formGroup]="_ReportService.userForm" formControlName="GroupId" placeholderText="Select Group Name" ApiUrl="Report/GroupMasterList/auto-complete?Keyword=" (selectionChange)="SelectedGroupObj($event)">
                                         </airmid-autocomplete>
@@ -110,6 +110,21 @@
 
                                     <ng-container *ngIf="flagDischargeTypeSelected">
                                         <airmid-autocomplete label="Discharge Type" [formGroup]="_ReportService.userForm" formControlName="dischargeTypeId" placeholderText="Select Discharge Type" ApiUrl="DischargeTypeList/auto-complete?Keyword=" (selectionChange)="SelectedDischargeObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagCompanySelected">
+                                        <airmid-autocomplete label="Company Name" [formGroup]="_ReportService.userForm" formControlName="CompanyId" placeholderText="Select Company Name" ApiUrl="CompanyList/auto-complete?Keyword=" (selectionChange)="SelectedCompanyObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagStoreSelected">
+                                        <airmid-autocomplete label="Store Name" [formGroup]="_ReportService.userForm" formControlName="StoreId" placeholderText="Select Store Name" ApiUrl="StoreList/auto-complete?Keyword=" (selectionChange)="SelectedStoreObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagSupplierelected">
+                                        <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="SupplierList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
                                     <!--  -->

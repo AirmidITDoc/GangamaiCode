@@ -12,8 +12,7 @@
             </span>
         </div>
         <div class="close-icon"> 
-            <!-- <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+            
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -23,17 +22,18 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
                 <div fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="TemplateForm">
-                        <mat-card style="padding: 5px;width: 100%;">
+                    <form [formGroup]="TemplateInsertForm">
+                        <div [formGroupName]="'prescriptionOPTemplate'">
+                            <mat-card style="padding: 5px;width: 100%;">
                             <div fxLayout="column" fxLayoutGap="10px" fxFlex="100%">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Template Name</mat-label>
-                                    <input name="TemplateName" formControlName="TemplateName" placeholder="Template Name"
-                                        [(ngModel)]="vTemplatename" matInput type="text" required>
+                                    <input name="TemplateName" formControlName="presTemplateName" placeholder="Template Name"
+                                        matInput type="text">
                                 </mat-form-field>  
                             </div>
                         </mat-card>
-                
+                        </div>                
                     </form>
                     <div style="padding: 8px;" fxLayoutAlign="end">
                         <div class="sales-footer-buttons gap-6" fxLayout="row">

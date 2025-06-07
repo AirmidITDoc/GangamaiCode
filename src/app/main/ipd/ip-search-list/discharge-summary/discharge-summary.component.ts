@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -26,48 +26,34 @@ import { IPSearchListService } from '../ip-search-list.service';
 })
 export class DischargeSummaryComponent implements OnInit {
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '24rem',
-    minHeight: '24rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+  // editorConfig: AngularEditorConfig = {
+  //   editable: true,
+  //   spellcheck: true,
+  //   height: '24rem',
+  //   minHeight: '24rem',
+  //   translate: 'yes',
+  //   placeholder: 'Enter text here...',
+  //   enableToolbar: true,
+  //   showToolbar: true,
+  // };
 
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
-  DischargesumForm: FormGroup;
+  // onBlur(e: any) {
+  //   this.vTemplateDesc = e.target.innerHTML;
+  //   throw new Error('Method not implemented.');
+  // }
+
   DischargesumInsertForm: FormGroup;
   MedicineItemForm: FormGroup;
-
-  msg: any;
-  Id: any;
-  a: any;
-
   DischargeSummaryId: any;
-  isLoading: string = '';
   Chargeslist: any = [];
-  DischargeSList = new DischargeSummary({});
   rtrvDischargeSList = new DischargeSummary({});
-
   screenFromString = 'discharge-summary';
   dateTimeObj: any;
-  filteredOptionsItem: any;
-  noOptionFound: any;
   ItemId: any;
   vDay: any;
   vInstruction: any;
-
-  isDoseSelected: boolean = false;
   ClinicalFInding: any;
-  Istemplate = false;
   saveflag: boolean = false
-  submitted = false;
 
   displayedColumns: string[] = [
     'itemName',
@@ -75,14 +61,7 @@ export class DischargeSummaryComponent implements OnInit {
     'day',
     'Action'
   ]
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @Input() dataArray: any;
-  selectedAdvanceObj: AdvanceDetailObj;
   registerObj = new DischargeSummary({});
-
-
   vAdmissionId: any = 0;
   vDischargeId: any = 0;
   RetrDischargeSumryList: any = [];
@@ -105,22 +84,10 @@ export class DischargeSummaryComponent implements OnInit {
   vOperativeNotes: any;
   vhistory: any;
   vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
-
-  vBp: any;
-  vP: any;
-  vR: any;
-  vSPO2: any;
-  vRS: any;
-  vPA: any;
-  vCVS: any;
-  vCNS: any;
   doseId = 0
   doseName1 = ""
   DocName3 = 0
-  IsDeath: any;
   vIsNormalDeath = "1";
-  bp: any = 0;
-  lngAdmId: any = [];
   ItemName: any;
 
   registerObj1 = new AdmissionPersonlModel({});
@@ -143,24 +110,27 @@ export class DischargeSummaryComponent implements OnInit {
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private commonService: PrintserviceService,
-   private _FormvalidationserviceService: FormvalidationserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe) { }
 
 
   ngOnInit(): void {
-    this.DischargesumForm = this.showDischargeSummaryForm();
-    this.DischargesumInsertForm=this.showDischargeSummaryInsertForm();
+    this.DischargesumInsertForm = this.showDischargeSummaryInsertForm();
+    this.DischargesumInsertForm.markAllAsTouched();
+
     this.MedicineItemForm = this.MedicineItemform();
+    this.MedicineItemForm.markAllAsTouched();
+
+    // loop array defined
+    this.prescriptionDischargeArray.push(this.createprescriptionDischarge());
 
     console.log(this.data)
     if (this.data) {
-
       this.registerObj = this.data;
       this.vAdmissionId = this.data.admissionId;
-
+      this.DischargesumInsertForm.get("dischargModel.admissionId")?.setValue(this.data.admissionId)
       this.getDischargeSummaryData(this.data.admissionId)
       this.getPrescription(this.data.admissionId)
-
     }
 
     if ((this.data?.regId ?? 0) > 0) {
@@ -178,12 +148,12 @@ export class DischargeSummaryComponent implements OnInit {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
           }
-        
+
         });
       }, 500);
     }
 
-}
+  }
 
   isItemIdSelected: boolean = false;
   MedicineItemform(): FormGroup {
@@ -195,53 +165,161 @@ export class DischargeSummaryComponent implements OnInit {
     });
   }
   vTemplateDesc: any;
-  showDischargeSummaryForm(): FormGroup {
-    return this._formBuilder.group({
-      // templateDesc:'',
-      dischargeSummaryId: 0,
-      admissionId: this.vAdmissionId,
-      dischargeId: this.vDischargeId,
-      history: "",
-      diagnosis: "",
-      investigation: "",
-      clinicalFinding: "",
-      opertiveNotes: "",
-      treatmentGiven: "",
-      treatmentAdvisedAfterDischarge: "",
-      followupdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      remark: "",
-      dischargeSummaryDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      opDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      optime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
-      dischargeDoctor1: 0,
-      dischargeDoctor2: 0,
-      dischargeDoctor3: 0,
-      dischargeSummaryTime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
-      doctorAssistantName: "",
-      claimNumber: "0",
-      preOthNumber: "0",
-      addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      surgeryProcDone: "",
-      icd10code: "",
-      clinicalConditionOnAdmisssion: "",
-      otherConDrOpinions: "",
-      conditionAtTheTimeOfDischarge: "",
-      painManagementTechnique: "",
-      lifeStyle: "",
-      warningSymptoms: "",
-      pathology: "",
-      radiology: "",
-      isNormalOrDeath: ["1"],
-      prescriptionDischarge:''
-    });
-  }
 
   showDischargeSummaryInsertForm(): FormGroup {
     return this._formBuilder.group({
-      dischargModel: "",
-      prescriptionDischarge: ""
+      dischargeDoctor3: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isNormalOrDeath: [1],
+
+      dischargModel: this._formBuilder.group({
+        admissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        dischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        history: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        diagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        investigation: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        clinicalFinding: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        opertiveNotes: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        treatmentGiven: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        treatmentAdvisedAfterDischarge: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        followupdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        dischargeSummaryDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        opDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        optime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+        dischargeDoctor1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        dischargeDoctor2: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        dischargeDoctor3: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        dischargeSummaryTime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+        doctorAssistantName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        claimNumber: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        preOthNumber: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+        updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+        surgeryProcDone: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        icd10code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        clinicalConditionOnAdmisssion: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        otherConDrOpinions: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        conditionAtTheTimeOfDischarge: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        painManagementTechnique: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        lifeStyle: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        warningSymptoms: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        pathology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        radiology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        isNormalOrDeath: [1],
+        dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      prescriptionDischarge: this._formBuilder.array([]),
     });
+  }
+
+  // 2. FormArray Group for Refund Detail
+  createprescriptionDischarge(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      opdIpdId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      date: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      pTime: [this.datePipe.transform(new Date(), 'shortTime')],
+      classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      genericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugId: [item.itemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseId: [Number(item.doseId) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [Number(item.days) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instructionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyPerDay: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instruction: [''],
+      remark: [''],
+      isEnglishOrIsMarathi: true,
+      storeId: this.accountService.currentUserValue.user.storeId,
+      createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+  }
+
+  get prescriptionDischargeArray(): FormArray {
+    return this.DischargesumInsertForm.get('prescriptionDischarge') as FormArray;
+  }
+
+  OnSave() {
+    Swal.fire({
+      title: 'Do you want to Save the Discharge Summary ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Save!"
+
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        if (!this.DischargesumInsertForm.invalid) {
+
+          if (this.DischargesumInsertForm.get("isNormalOrDeath").value == false)
+            this.vIsNormalDeath = "0"
+          if (this.DischargesumInsertForm.get("isNormalOrDeath").value == true)
+            this.vIsNormalDeath = "1"
+
+          this.prescriptionDischargeArray.clear();
+          this.dsItemList.data.forEach(item => {
+            this.prescriptionDischargeArray.push(this.createprescriptionDischarge(item));
+          });
+
+          this.DischargesumInsertForm.get("dischargModel.dischargeId")?.setValue(this.vDischargeId)
+          this.DischargesumInsertForm.get("dischargModel.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
+          console.log(this.DischargesumInsertForm.value)
+
+          if (this.DischargeSummaryId == undefined) {
+
+            ['pathology', 'updatedBy'].forEach(ctrl => (this.DischargesumInsertForm.get('dischargModel') as FormGroup)?.removeControl(ctrl));
+            ['dischargeDoctor3', 'isNormalOrDeath'].forEach(controlName => {
+              this.DischargesumInsertForm.removeControl(controlName);
+            });
+            console.log(this.DischargesumInsertForm.value)
+              this._IpSearchListService.insertIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
+                this.getPrint(response)
+                this._matDialog.closeAll();
+              });
+          }
+          else {
+            ['pathology', 'addedBy'].forEach(ctrl => (this.DischargesumInsertForm.get('dischargModel') as FormGroup)?.removeControl(ctrl));
+            ['dischargeDoctor3', 'isNormalOrDeath'].forEach(controlName => {
+              this.DischargesumInsertForm.removeControl(controlName);
+            });
+            this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
+            console.log(this.DischargesumInsertForm.value)
+
+              this._IpSearchListService.updateIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
+                this.getPrint(this.vAdmissionId)
+                this._matDialog.closeAll();
+              });
+          }
+        } else {
+          let invalidFields: string[] = [];
+          // checks nested error 
+          if (this.DischargesumInsertForm.invalid) {
+            for (const controlName in this.DischargesumInsertForm.controls) {
+              const control = this.DischargesumInsertForm.get(controlName);
+
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`NestedForm : ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`MainForm: ${controlName}`);
+              }
+            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+            });
+          }
+        }
+      }
+    })
   }
 
   getdose(event) {
@@ -347,12 +425,12 @@ export class DischargeSummaryComponent implements OnInit {
         }
       ],
       "exportType": "JSON",
-     "columns": [
-      {
-        "data": "string",
-        "name": "string"
-      }
-    ]
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
     console.log(m_data2)
     this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
@@ -378,13 +456,13 @@ export class DischargeSummaryComponent implements OnInit {
         }
       ],
       "exportType": "JSON",
-     "columns": [
-      {
-        "data": "string",
-        "name": "string"
-      }
-    ]
-  }
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
 
     console.log(m_data2)
     this._IpSearchListService.getDischargeSummary(m_data2).subscribe((data) => {
@@ -414,163 +492,37 @@ export class DischargeSummaryComponent implements OnInit {
         this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber) || "0"
         this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber) || "0"
         this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
-        this.DischargesumForm.get("dischargeDoctor1").setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
-        this.DischargesumForm.get("dischargeDoctor2").setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
-        this.DischargesumForm.get("dischargeDoctor3").setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
+        this.DischargesumInsertForm.get("dischargModel.dischargeDoctor1")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
+        this.DischargesumInsertForm.get("dischargModel.dischargeDoctor2")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
+        this.DischargesumInsertForm.get("dischargeDoctor3")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
 
         if (this.RetrDischargeSumryList[0].isNormalOrDeath == 0)
-          this.vIsNormalDeath = "0"
+          this.vIsNormalDeath = "0"       
         else
           this.vIsNormalDeath = "1"
       }
     });
   }
 
-
-  OnSave() {
+  getPrint(contact) {
     Swal.fire({
-      title: 'Do you want to Save the Discharge Summary ',
-      text: "You won't be able to revert this!",
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
       icon: "warning",
+      showDenyButton: true,
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Save!"
-
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
     }).then((result) => {
-
       if (result.isConfirmed) {
-
-        if (this.DischargesumForm.get("isNormalOrDeath").value == false)
-          this.vIsNormalDeath = "0"
-        if (this.DischargesumForm.get("isNormalOrDeath").value == true)
-          this.vIsNormalDeath = "1"
-
-        let dischargModeldata = {};
-
-        dischargModeldata['dischargesummaryId'] = this.DischargeSummaryId || 0,
-          dischargModeldata['dischargeId'] = this.vDischargeId,
-          dischargModeldata['history'] = this.DischargesumForm.get("history").value || '',
-          dischargModeldata['diagnosis'] = this.DischargesumForm.get("diagnosis").value || '',
-          dischargModeldata['investigation'] = this.DischargesumForm.get("investigation").value || '',
-          dischargModeldata['clinicalFinding'] = this.DischargesumForm.get("clinicalFinding").value || '',
-          dischargModeldata['opertiveNotes'] = this.DischargesumForm.get("opertiveNotes").value || '',
-          dischargModeldata['treatmentGiven'] = this.DischargesumForm.get("treatmentGiven").value || '',
-          dischargModeldata['treatmentAdvisedAfterDischarge'] = this.DischargesumForm.get("treatmentAdvisedAfterDischarge").value || '',
-          dischargModeldata['followupdate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-          dischargModeldata['remark'] = ''
-          dischargModeldata['dischargeSummaryDate'] = "2025-08-07",
-          dischargModeldata['opDate'] = (this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-          dischargModeldata['opTime'] = this.dateTimeObj.time,
-          dischargModeldata['dischargeDoctor1'] = Number(this.DischargesumForm.get("dischargeDoctor1").value),
-          dischargModeldata['dischargeDoctor2'] = Number(this.DischargesumForm.get("dischargeDoctor2").value),
-          dischargModeldata['dischargeDoctor3'] = this.DischargesumForm.get("dischargeDoctor3").value,
-          dischargModeldata['dischargeSummaryTime'] = "11:00:00AM",
-          dischargModeldata['doctorAssistantName'] = this.DischargesumForm.get("doctorAssistantName").value || '',
-          dischargModeldata['claimNumber'] = this.DischargesumForm.get("claimNumber").value || "0",
-          dischargModeldata['preOthNumber'] = this.DischargesumForm.get("preOthNumber").value || "0",
-          dischargModeldata['surgeryProcDone'] = this.DischargesumForm.get("surgeryProcDone").value || '',
-          dischargModeldata['icd10code'] = ''
-          dischargModeldata['clinicalConditionOnAdmisssion'] = this.DischargesumForm.get("clinicalConditionOnAdmisssion").value || '',
-          dischargModeldata['otherConDrOpinions'] = this.DischargesumForm.get("otherConDrOpinions").value || '',
-          dischargModeldata['conditionAtTheTimeOfDischarge'] = this.DischargesumForm.get("conditionAtTheTimeOfDischarge").value || '',
-          dischargModeldata['painManagementTechnique'] = this.DischargesumForm.get("painManagementTechnique").value || '',
-          dischargModeldata['lifeStyle'] = this.DischargesumForm.get("lifeStyle").value || '',
-          dischargModeldata['warningSymptoms'] = '',
-          dischargModeldata['radiology'] = this.DischargesumForm.get("radiology").value || '',
-          dischargModeldata['isNormalOrDeath'] = Number(this.vIsNormalDeath)// this.DischargesumForm.get("isNormalOrDeath").value
-
-        console.log(this.DischargesumForm.value)
-
-        let insertIPPrescriptionDischarge = [];
-        this.dsItemList.data.forEach(element => {
-          let Prescdiscgargemodel = {};
-          Prescdiscgargemodel['opdIpdId'] = this.vAdmissionId || 0;
-          Prescdiscgargemodel['opdIpdType'] = 1;
-          Prescdiscgargemodel['date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
-          Prescdiscgargemodel['pTime'] = this.dateTimeObj.time;
-          Prescdiscgargemodel['classId'] = 0;
-          Prescdiscgargemodel['genericId'] = 0;
-          Prescdiscgargemodel['drugId'] = element.itemID || 0;
-          Prescdiscgargemodel['doseId'] = Number(element.doseId) || 0;
-          Prescdiscgargemodel['days'] = Number(element.days )|| 0;
-          Prescdiscgargemodel['instructionId'] = 0;
-          Prescdiscgargemodel['qtyPerDay'] = 0;
-          Prescdiscgargemodel['totalQty'] = 0;
-          Prescdiscgargemodel['instruction'] = "";
-          Prescdiscgargemodel['remark'] = "";
-          Prescdiscgargemodel['isEnglishOrIsMarathi'] = true;
-          Prescdiscgargemodel['storeId'] = 1,//this.accountService.currentUserValue.user.storeId || 0;
-            Prescdiscgargemodel['createdBy'] = this.accountService.currentUserValue.userId,
-            insertIPPrescriptionDischarge.push(Prescdiscgargemodel);
-        });
-
-        if (this.DischargeSummaryId == undefined) {
-          this.DischargesumForm.get("admissionId").setValue(this.vAdmissionId)
-          
-          dischargModeldata['admissionId'] = this.vAdmissionId
-          dischargModeldata['addedBy'] = this.accountService.currentUserValue.userId
-
-          // var data = {
-          //   "dischargModel": dischargModeldata,// this.DischargesumForm.value,
-          //   "prescriptionDischarge": insertIPPrescriptionDischarge
-          // }
-          // console.log(data);
-          this.DischargesumInsertForm.get('dischargModel')?.setValue(dischargModeldata);
-        this.DischargesumInsertForm.get('prescriptionDischarge')?.setValue(insertIPPrescriptionDischarge);
-        console.log(this.DischargesumInsertForm.value)
-          setTimeout(() => {
-            this._IpSearchListService.insertIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
-              this.getPrint(response)
-              this._matDialog.closeAll();
-            });
-          }, 500);
-
-        }
-        else {
-          dischargModeldata['updatedBy'] = this.accountService.currentUserValue.userId
-          // var data1 = {
-          //   "dischargModel": dischargModeldata,//  this.DischargesumForm.value,
-          //   "prescriptionDischarge": insertIPPrescriptionDischarge
-          // }
-          // console.log(data1);
-           this.DischargesumInsertForm.get('dischargModel')?.setValue(dischargModeldata);
-        this.DischargesumInsertForm.get('prescriptionDischarge')?.setValue(insertIPPrescriptionDischarge);
-        console.log(this.DischargesumInsertForm.value)
-
-          setTimeout(() => {
-            this._IpSearchListService.updateIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
-              this.getPrint(this.vAdmissionId)
-              this._matDialog.closeAll();
-            });
-          }, 500);
-
-        }
+        this.viewgetDischargesummaryPdf(contact);
+      } else if (result.isDenied) {
+        this.viewgetDischargesummaryHeaderPdf(contact);
       }
-    })
-  }
-
-
-  getPrint(contact){
- Swal.fire({
-            title: 'Select Report Format',
-            text: "Choose how you want to view the report:",
-            icon: "warning",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            denyButtonColor: "#6c757d",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "With Header",
-            denyButtonText: "Without Header",
-        }).then((result) => {
-            debugger
-            if (result.isConfirmed) {
-                this.viewgetDischargesummaryPdf(contact);
-            } else if (result.isDenied) {
-                this.viewgetDischargesummaryHeaderPdf(contact);
-            }
-        });
+    });
   }
 
 
@@ -725,12 +677,10 @@ export class DischargeSummaryComponent implements OnInit {
     }
   }
   onClose() {
-    this.DischargesumForm.reset();
+    this.DischargesumInsertForm.reset();
     this._matDialog.closeAll();
   }
 }
-
-
 
 export class DischargeSummary {
   AdmissionId: any;

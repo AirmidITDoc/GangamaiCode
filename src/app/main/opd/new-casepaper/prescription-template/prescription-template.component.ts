@@ -1,26 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ToastrService } from 'ngx-toastr';
 import { CasepaperService } from '../casepaper.service';
-
-// interface Prescription {
-//   date: string;
-//   medication: string;
-//   dosage: string;
-// }
-
-// interface Patient {
-//   name: string;
-//   age: number;
-//   gender: string;
-//   prescriptions: Prescription[];
-// }
-
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-prescription-template',
@@ -30,119 +17,134 @@ import { CasepaperService } from '../casepaper.service';
   animations: fuseAnimations
 })
 export class PrescriptionTemplateComponent implements OnInit {
- 
-  TemplateForm:FormGroup; 
-  sIsLoading: string = ''; 
-  currentDate = new Date 
-  vRemark: any; ; 
-  vTemplatename:any;  
-  registerObj:any; 
-  
-  constructor( 
-    private _CasepaperService: CasepaperService, 
+
+  TemplateInsertForm: FormGroup;
+  sIsLoading: string = '';
+  currentDate = new Date
+  vRemark: any;
+  chargelist: any = [];
+  registerObj: any;
+  savebtn: boolean = false;
+
+  constructor(
+    private _CasepaperService: CasepaperService,
     private _formBuilder: UntypedFormBuilder,
-    private advanceDataStored: AdvanceDataStored, 
+    private advanceDataStored: AdvanceDataStored,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
-    public datePipe: DatePipe, 
+    public datePipe: DatePipe,
     public dialogRef: MatDialogRef<PrescriptionTemplateComponent>,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
-  
-chargelist:any=[];
+
   ngOnInit(): void {
-    if(this.data){
+    if (this.data) {
       this.registerObj = this.data.Obj;
-      this.chargelist =  this.registerObj 
+      this.chargelist = this.registerObj
       console.log(this.registerObj)
     }
-    this.TemplateFomr(); 
-
+    this.TemplateForm();
   }
 
-  TemplateFomr() {
-    this.TemplateForm = this._formBuilder.group({ 
-      TemplateName:'', 
+  TemplateForm() {
+    this.TemplateInsertForm = this._formBuilder.group({
+      prescriptionOPTemplate: this._formBuilder.group({
+        presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        presTemplateName: ['', [Validators.required, this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        isActive: true,
+        opIpType: [0],
+        isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isUpdatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      }),
+
+      presTemplate: this._formBuilder.array([
+        this.createprescription()
+      ])
     });
-  } 
-  savebtn:boolean=false;
-  onSave(){
-    
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
+  }
 
-    if(this.vTemplatename == '' || this.vTemplatename == undefined || this.vTemplatename == null){ 
-      this.toastr.warning('Please enter Template Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
+  // 2. FormArray Group for Refund Detail
+  createprescription(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      classId: [item.classID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      genericId: [item.genericId ?? item.GenericId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugId: [item.drugId ?? item.DrugId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseId: [item.doseId != null ? Number(item.doseId) : item.DoseId != null ? Number(item.DoseId) : 0,
+      [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [item.days ?? item.Days ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instructionId: [item.instructionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyPerDay: [item.qtyPerDay ?? item.QtyPerDay ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalQty: [(item.days * item.qtyPerDay) || (item.Days * item.QtyPerDay) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instruction: [item.instruction ?? item.Instruction ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isEnglishOrIsMarathi: true
+    });
+  }
+
+  get prescriptionArray(): FormArray {
+    return this.TemplateInsertForm.get('presTemplate') as FormArray;
+  }
+
+  onSave() {
+    if (!this.TemplateInsertForm.invalid) {
+
+      this.TemplateInsertForm.removeControl('TemplateName');
+
+      this.prescriptionArray.clear();
+
+      // Safely load prescription data from chargelist
+      const dataList = Array.isArray(this.chargelist)
+        ? this.chargelist : Array.isArray(this.chargelist?.data)
+          ? this.chargelist.data : [];
+
+      dataList.forEach(item => {
+        this.prescriptionArray.push(this.createprescription(item));
       });
-      return;
-    }  
-    this.savebtn = true;
-    let insert_TemplateHObj = {};
-    insert_TemplateHObj['presId'] = 0;
-    insert_TemplateHObj['presTemplateName'] = this.TemplateForm.get('TemplateName').value || '';
-    insert_TemplateHObj['isActive'] = true;
-    insert_TemplateHObj['opIpType'] =  0;
-    insert_TemplateHObj['isAddBy'] =  this._loggedService.currentUserValue.userId || 0;
-    insert_TemplateHObj['isUpdatedBy'] = this._loggedService.currentUserValue.userId || 0;
 
-    let insert_TemplateDObj = [];
-    this.chargelist.forEach(element =>{
-      let insert_TemplateD = {};
-      insert_TemplateD['presId'] = 0;
-      insert_TemplateD['date'] = formattedDate;
-      insert_TemplateD['classId'] =   element.classID || 0;
-      insert_TemplateD['genericId'] =  element.genericId || element.GenericId;
-      insert_TemplateD['drugId'] =  element.drugId || element.DrugId;
-      insert_TemplateD['doseId'] = element.doseId || element.DoseId;
-      insert_TemplateD['days'] = element.days || element.Days;
-      insert_TemplateD['instructionId'] =  element.instructionId || 0;
-      insert_TemplateD['qtyPerDay'] = element.qtyPerDay || element.QtyPerDay;
-      insert_TemplateD['totalQty'] =  (element.days * element.qtyPerDay) || (element.Days * element.QtyPerDay)
-      insert_TemplateD['instruction'] = element.instruction || element.Instruction;
-      insert_TemplateD['remark'] = element.instruction || element.Instruction;
-      insert_TemplateD['isEnglishOrIsMarathi'] =  true;
-      insert_TemplateDObj.push(insert_TemplateD)
-    }); 
+      console.log(this.TemplateInsertForm.value);
 
-    let submitData ={
-      "prescriptionOPTemplate":insert_TemplateHObj,
-      "presTemplate":insert_TemplateDObj
+      this._CasepaperService.SavePrescriptionTemplate(this.TemplateInsertForm.value).subscribe(response => {
+        if (response) {
+          this.onClose();
+          this.savebtn = false;
+        } else {
+          this.savebtn = true;
+        }
+      });
     }
-    console.log(submitData);
-    this._CasepaperService.SavePrescriptionTemplate(submitData).subscribe(response =>{
-      if(response){
-        this.toastr.success('Record Successfuly saved','Saved !',{
-          toastClass: 'tostr-tost custom-toast-success',
-        })
-        this.onClose();
-        this.savebtn = false;
-      }else{
-        this.toastr.error('Record not saved','Error !',{
-          toastClass: 'tostr-tost custom-toast-error',
-        })
-         this.savebtn = true;
+    else {
+      let invalidFields: string[] = [];
+      // checks nested error 
+      if (this.TemplateInsertForm.invalid) {
+        for (const controlName in this.TemplateInsertForm.controls) {
+          const control = this.TemplateInsertForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`NestedForm: ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
+          }
+        }
       }
-    },error =>{
-      this.toastr.error('Please Check Api Error','Error !',{
-        toastClass: 'tostr-tost custom-toast-error',
-      })
-      this.savebtn = true;
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
     }
-  );
-
   }
-  onClose(){
-    this.vTemplatename = '';
-    // this.dialogRef.close();
+
+  onClose() {
     this._matDialog.closeAll();
-  }
-
-  onClear(){
-    this.vTemplatename = '';
   }
 
   keyPressAlphanumeric(event) {
@@ -192,6 +194,5 @@ chargelist:any=[];
     }
   }
 
- 
+
 }
- 
