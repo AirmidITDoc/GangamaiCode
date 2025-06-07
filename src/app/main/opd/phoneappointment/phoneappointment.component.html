@@ -22,7 +22,7 @@
                 class="blue-600 s-16">circle
             </mat-icon>
 
-            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo!= 0" matTooltip="Old Patient"
+            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo!=0" matTooltip="Old Patient"
                 class="grey-600 s-16">circle
             </mat-icon>
         </div>
@@ -63,11 +63,6 @@
                 <mat-icon title="Edit Menu" *ngIf="element.isCancelled==0" (click)="CanclePhoneApp(element)">
                     cancel</mat-icon>
             </button>
-
-            <!-- <button mat-icon-button matTooltip="creditCard" *ngIf="element.isCancelled=='0'">
-                <mat-icon>credit_card</mat-icon>
-            </button> -->
-
         </div>
     </ng-template>
 

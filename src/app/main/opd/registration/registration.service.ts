@@ -63,7 +63,7 @@ export class RegistrationService {
                 Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.notBlankValidator()
             ]],
-            GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
@@ -73,25 +73,25 @@ export class RegistrationService {
             AgeMonth: ['0', [Validators.pattern("^[0-9]*$")]],
             AgeDay: ['0', [Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-                this._FormvalidationserviceService.onlyNumberValidator()
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
             ]],
             MobileNo: ['', [Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-                this._FormvalidationserviceService.onlyNumberValidator()
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
             ]],
             aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$"), 
+                Validators.pattern("^[0-9]*$"),
                 this._FormvalidationserviceService.onlyNumberValidator()
             ]],
 
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            MaritalStatusId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //changed by raksha
+            MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], //changed by raksha
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -113,7 +113,6 @@ export class RegistrationService {
     initializeFormGroup() { }
 
     public RegstrationtSaveData(Param: any) {
-
         if (Param.RegId) {
             return this._httpClient1.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient1.PostData("OutPatient/RegistrationInsert", Param);

@@ -328,7 +328,7 @@ export class NewAppointmentComponent implements OnInit {
 
     onSave() {
         if (this.Patientnewold == 2 && this.RegId == 0)
-            this.toastr.warning("Please Select Registered Patient  ...");
+            this.toastr.warning("Kindly select a patient from the list of registered patients.");
         else {
             let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
             if (DateOfBirth1) {
@@ -351,53 +351,60 @@ export class NewAppointmentComponent implements OnInit {
                     this.ageMonth += 12;
                 }
             }
-            if (this.ageYear != 0 || this.ageMonth != 0 || this.ageDay != 0) {
-
-                if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-
-                    if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-                        this.toastr.warning('Please select valid Company ', 'Warning !', {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                        });
-                        return;
-                    }
-                    this.personalFormGroup.get('City').setValue(this.CityName)
-                    this.personalFormGroup.get('Age').setValue(String(this.ageYear))
-                    this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
-                    this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
-                    this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-                    this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-                    this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                    this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-                    this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                    this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-
-                    if (this.searchFormGroup.get('regRadio').value == "registration")
-                        this.OnsaveNewRegister();
-                    else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                        this.onSaveRegistered();
-                        this.onClose();
-                    }
-
-                } else {
-                    let invalidFields = [];
-                    if (this.personalFormGroup.invalid) {
-                        for (const controlName in this.personalFormGroup.controls) {
-                            if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-                        }
-                    }
-                    if (this.VisitFormGroup.invalid) {
-                        for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-                    }
-
-                    if (invalidFields.length > 0) {
-                        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-                    }
-
-                }
-            } else {
-                this.toastr.warning("Please Select Birthdate  ...");
+            if (
+                (!this.ageYear || this.ageYear == 0) &&
+                (!this.ageMonth || this.ageMonth == 0) &&
+                (!this.ageDay || this.ageDay == 0)
+            ) {
+                this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
             }
+
+            if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+
+                if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+                    this.toastr.warning('Please select valid Company ', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
+                this.personalFormGroup.get('City').setValue(this.CityName)
+                this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+                this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+                this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+
+                if (this.searchFormGroup.get('regRadio').value == "registration")
+                    this.OnsaveNewRegister();
+                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                    this.onSaveRegistered();
+                    this.onClose();
+                }
+
+            } else {
+                let invalidFields = [];
+                if (this.personalFormGroup.invalid) {
+                    for (const controlName in this.personalFormGroup.controls) {
+                        if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                    }
+                }
+                if (this.VisitFormGroup.invalid) {
+                    for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+                }
+
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+                }
+
+            }
+           
         }
     }
 
@@ -534,9 +541,7 @@ export class NewAppointmentComponent implements OnInit {
             countryId: [
                 { name: "required", Message: "Country Name is required" }
             ],
-            maritalStatusId: [
-                { name: "required", Message: "Mstatus Name is required" }
-            ],
+           
             stateId: [
                 { name: "required", Message: "State Name is required" }
             ],
@@ -561,7 +566,7 @@ export class NewAppointmentComponent implements OnInit {
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
             ],
             MaritalStatusId: [
-                { name: "required", Message: "Mstatus Name is required" }
+                { Message: "Mstatus Name is required" }
             ],
             patientTypeId: [
                 { name: "required", Message: "Country Name is required" }
@@ -587,14 +592,12 @@ export class NewAppointmentComponent implements OnInit {
             SubCompanyId: [
                 { name: "required", Message: "SubCompany Name is required" }
             ],
-            bedId: [
-                { name: "required", Message: "Bed Name is required" }
-            ],
-            wardId: [
-                { name: "required", Message: "Ward Name is required" }
-            ],
-
-
+            // bedId: [
+            //     { name: "required", Message: "Bed Name is required" }
+            // ],
+            // wardId: [
+            //     { name: "required", Message: "Ward Name is required" }
+            // ],
         };
     }
     onClear(val: boolean) {
@@ -693,7 +696,7 @@ export class NewAppointmentComponent implements OnInit {
             ]],
 
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

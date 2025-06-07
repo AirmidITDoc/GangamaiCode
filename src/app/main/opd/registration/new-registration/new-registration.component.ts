@@ -76,7 +76,6 @@ export class NewRegistrationComponent implements OnInit {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
-                    console.log(this.registerObj)
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                 });
             }, 500);
@@ -117,8 +116,9 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+        this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+        this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
 
-        this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
         if (
             (!this.ageYear || this.ageYear == 0) &&
             (!this.ageMonth || this.ageMonth == 0) &&
@@ -130,17 +130,8 @@ export class NewRegistrationComponent implements OnInit {
             return;
         }
         if (this.personalFormGroup.valid) {
-            this.isSaving = true;
-            const rawDate = this.dateTimeObj.date;
-            const formattedDate = this.datePipe.transform(rawDate, 'yyyy-MM-dd');
-            const formattedTime = new Date(`${this.dateTimeObj.date} ${this.dateTimeObj.time}`).toISOString();
-            this.personalFormGroup.get('RegDate').setValue(formattedDate)
-            this.personalFormGroup.get('RegTime').setValue(formattedTime)
-
-            console.log(this.personalFormGroup.value)
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
-                this.isSaving = false;
             });
         } else {
             let invalidFields = [];
@@ -205,11 +196,11 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangecity(e) {
-        console.log(e)
+        // console.log(e)
         this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
         this._registerService.getstateId(e.stateId).subscribe((Response) => {
-            console.log(Response)
+            // console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
         });
 
@@ -288,7 +279,7 @@ export class NewRegistrationComponent implements OnInit {
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
-        console.log('dateTimeObj ==', dateTimeObj);
+        // console.log('dateTimeObj ==', dateTimeObj);
         this.dateTimeObj = dateTimeObj;
     }
 }
