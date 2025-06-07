@@ -17,9 +17,7 @@ import { AppointmentlistService } from '../appointmentlist.service';
   animations: fuseAnimations,
 })
 export class EditConsultantDoctorComponent implements OnInit {
-
   ConsdrForm: FormGroup;
-
   VisitId: any = 0;
   RegId: any = 0;
   Departmentid = 0;
@@ -27,21 +25,20 @@ export class EditConsultantDoctorComponent implements OnInit {
   regobj = new VisitMaster1({})
   autocompletedepartment: string = "Department";
   autocompleteModedeptdoc: string = "ConDoctor";
-  screenFromString = 'admission-form';
+
   @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
   constructor(
     public _AppointmentlistService: AppointmentlistService,
     public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
-    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
+    private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
     public toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
-
     setTimeout(() => {
       this._AppointmentlistService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
         this.ddldoctor.options = data;
@@ -50,16 +47,15 @@ export class EditConsultantDoctorComponent implements OnInit {
     }, 500);
     this.ConsdrForm = this.createConsultatDrForm();
     this.ConsdrForm.markAllAsTouched();
-    this.ConsdrForm.get("consultantDocId").setValue(this.data.doctorId)
+    this.ConsdrForm.get("consultantDocId")?.setValue(this.data?.doctorId)
   }
 
   createConsultatDrForm() {
     return this._formBuilder.group({
-      visitId: [this.data.visitId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      regId: [this.data.regId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      consultantDocId: [this.data.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      departmentId: [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
+      visitId: [this.data?.visitId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      consultantDocId: [this.data?.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      departmentId: [this.data?.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -67,7 +63,6 @@ export class EditConsultantDoctorComponent implements OnInit {
     if (!this.ConsdrForm.invalid) {
       console.log(this.ConsdrForm.value)
       this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
         this.onClear(true);
       });
     } else {
@@ -101,12 +96,6 @@ export class EditConsultantDoctorComponent implements OnInit {
       this.ddldoctor.bindGridAutoComplete();
     });
   }
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-
 
   onClear(val: boolean) {
     this.ConsdrForm.reset();

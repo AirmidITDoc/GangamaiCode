@@ -31,7 +31,7 @@ export class NewBedComponent implements OnInit {
     this.bedForm = this._BedMasterService.createBedForm();
     this.bedForm.markAllAsTouched();
 
-    if((this.data?.bedId??0) > 0)
+    if((this.data?.bedId ?? 0) > 0)
     {
         this.isActive=this.data.isActive;
         this.isAvailible=this.data.isAvailible;
@@ -40,25 +40,18 @@ export class NewBedComponent implements OnInit {
   }
     
   onSubmit() {
-    if(!this.bedForm.invalid) 
-    {
-        console.log("BedMaster Insert:",this.bedForm.value)
-
-        this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
+    if (!this.bedForm.invalid) {
+       this._BedMasterService.bedMasterSave(this.bedForm.value).subscribe((response) => {
+       this.onClear(true);
       });
-    } 
-    else
-    {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
     }
-}
+    else {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
 
   selectChangeroomId(obj: any){
     console.log(obj);
@@ -73,7 +66,7 @@ export class NewBedComponent implements OnInit {
   getValidationMessages() {
     return {
       roomId: [
-            { name: "required", Message: "Room Name is required" }
+            { name: "required", Message: "Ward Name is required" }
         ],
         bedName: [
           { name: "required", Message: "Bed Name is required" },

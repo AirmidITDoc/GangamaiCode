@@ -60,32 +60,30 @@ export class CrossConsultationComponent implements OnInit {
 
 
   createCrossConForm() {
-
     return this.formBuilder.group({
-      visitId:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      regId: [this.data.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       visitDate: "",
       visitTime: " ",
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientTypeId: this.data.patientTypeId,
-      consultantDocId:   [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      refDocId:[ this.data.refDocId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId:[ this.data.tariffId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      companyId:[ this.data.companyId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      consultantDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refDocId: [this.data?.refDocId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [this.data?.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      companyId: [this.data?.companyId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       isCancelled: true,
-      isCancelledBy:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      isCancelledDate: new Date(),
-      classId:[ this.data.classId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      departmentId: [this.data.departmentId, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelledDate: ['01/01/1900'],
+      classId: [this.data?.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      departmentId: [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientOldNew: this.data.patientOldNew,
-      firstFollowupVisit: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      appPurposeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      followupDate: new Date(),
-      crossConsulFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      phoneAppId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-
+      firstFollowupVisit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      appPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      followupDate: ['01/01/1900'],
+      crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
