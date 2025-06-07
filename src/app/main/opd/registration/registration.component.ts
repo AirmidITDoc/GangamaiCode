@@ -46,7 +46,8 @@ export class RegistrationComponent implements OnInit {
     }
 
     allcolumns = [
-        { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -107,9 +108,7 @@ export class RegistrationComponent implements OnInit {
 
 
     onEdit(row) {
-       
         this._RegistrationService.populateForm(row);
-
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
@@ -117,45 +116,43 @@ export class RegistrationComponent implements OnInit {
                 maxHeight: '90%',
                 width: '95%',
                 data: row
-
             }
         );
-
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);
             this.grid.bindGridData();
         });
     }
 
-    onDeactive(doctorId) {
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+    // onDeactive(doctorId) {
+    //     this.confirmDialogRef = this._matDialog.open(
+    //         FuseConfirmDialogComponent,
+    //         {
+    //             disableClose: false,
+    //         }
+    //     );
+    //     this.confirmDialogRef.componentInstance.confirmMessage =
+    //         "Are you sure you want to deactive?";
+    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
 
-            if (result) {
-                this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
+    //         if (result) {
+    //             this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
+    //                 if (data.StatusCode == 200) {
+    //                     this.toastr.success(
+    //                         "Record updated Successfully.",
+    //                         "updated !",
+    //                         {
+    //                             toastClass:
+    //                                 "tostr-tost custom-toast-success",
+    //                         }
+    //                     );
 
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
+    //                 }
+    //             });
+    //         }
+    //         this.confirmDialogRef = null;
+    //     });
+    // }
 
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

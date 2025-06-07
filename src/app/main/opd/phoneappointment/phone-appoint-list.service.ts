@@ -37,8 +37,8 @@ export class PhoneAppointListService {
         return this._formBuilder.group({
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             appDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            appTime: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            // seqNo: '',
+            appTime: [''],
+            // // seqNo: '',
             firstName: ['', [
                 Validators.required,
                 Validators.minLength(1),
@@ -65,13 +65,13 @@ export class PhoneAppointListService {
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
                 this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-            phAppDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            phAppTime: [""],
+            phAppDate: ['', [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
+            phAppTime: ['',[Validators.required]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            regNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            regNo: [""],
         });
     }
 

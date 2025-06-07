@@ -55,10 +55,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
     setInterval(() => {
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+
       if (!this.isTimeChanged) {
-        this.phoneappForm.get('phAppTime').setValue(this.now);
         if (this.phoneappForm.get('phAppTime'))
           this.phoneappForm.get('phAppTime').setValue(this.now);
+        this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
       }
     }, 1);
   }
@@ -72,24 +73,23 @@ export class NewPhoneAppointmentComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
   }
 
-  createSearchForm() {
-    return this.formBuilder.group({ RegId: 0, });
+  createSearchForm(): FormGroup {
+    return this.formBuilder.group({
+      RegId: [0]  // Initial value is 0
+    });
   }
 
   getSelectedObj(obj) {
     this.RegId = obj.value;
-
     if ((this.RegId ?? 0) > 0) {
       setTimeout(() => {
         this._phoneAppointListService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
           console.log(response)
-
+          this.phoneappForm.get('regNo')?.setValue(response.regId.toString());
         });
-
       }, 500);
     }
-
   }
 
   onChangeDate(value) {
@@ -104,7 +104,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
   onChangeTime(event) {
     this.timeflag = 1
     if (event) {
-
       let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
       let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -123,9 +122,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnSubmit() {
-    console.log(this.phoneappForm.value);
-    this.phoneappForm.get('appDate').setValue(this.datePipe.transform(this.phoneappForm.get('appDate').value, 'yyyy-MM-dd'))
-    this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.phoneappForm.get('phAppDate').value, 'yyyy-MM-dd'))
+     console.log(this.phoneappForm.value);
+    this.phoneappForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.now,'HH:mm'));
+
     if (!this.phoneappForm.invalid) {
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {
         this.onClear(true);
@@ -151,7 +151,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
   Phappcancle(data) {
     this._phoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
-      this.toastr.success(response.message);
     });
   }
 

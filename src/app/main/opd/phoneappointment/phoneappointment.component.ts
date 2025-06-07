@@ -46,8 +46,8 @@ export class PhoneappointmentComponent implements OnInit {
         ];
 
          allcolumns=[
-            { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+            { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
+            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA' },
