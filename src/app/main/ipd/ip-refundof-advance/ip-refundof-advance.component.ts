@@ -159,6 +159,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
     //getting data from table to array
     if (this.RefundOfAdvanceFormGroup.valid) {
+      this.advaDetailsArray.clear();
+      this.AdvDetailsUpdateArray.clear();
       this.dsrefundlist.data.forEach(item => {
         this.advaDetailsArray.push(this.createAdvDetailsnew(item as IPRefundofAdvance));
         this.AdvDetailsUpdateArray.push(this.createAdvDetailsUpdate(item as IPRefundofAdvance));

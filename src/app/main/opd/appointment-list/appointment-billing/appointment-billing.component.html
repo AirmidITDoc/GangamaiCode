@@ -107,8 +107,7 @@
                     <div class="modal-card-container search-container">
                         <div class="patient-search-container input-error-hidden">
                             <form [formGroup]="searchForm">
-                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
-
+                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px"> 
                                     <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" #regIdfocus
                                         [formGroup]="searchForm" formControlName="regId"
                                         placeholderText="Enter Patient Name/RegId.." fxFlex
@@ -119,9 +118,7 @@
                                     <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
                                         [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID"
                                         [mode]="autocompleteModeCashcounter">
-                                    </airmid-dropdown>
-
-
+                                    </airmid-dropdown>   
                                 </div>
                             </form>
                         </div>
@@ -217,8 +214,7 @@
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content >
                                 <form [formGroup]="chargeForm">
-                                    <div fxLayout="row" fxLayoutGap="5px">
-
+                                    <div fxLayout="row" fxLayoutGap="5px"> 
                                         <!-- [disabled]="Regstatus" -->
                                         <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" >
                                             <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" 
@@ -228,14 +224,7 @@
                                                 [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='"
                                                 (selectionChange)="getSelectedserviceObj($event)" 
                                                 TextField="formattedText" 
-                                                ValueField="serviceId"></airmid-autocomplete>
-
-
-                                                <!-- <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm"
-                                                formControlName="serviceName" placeholderText="Enter Service Name" fxFlex
-                                                ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
-                                                TextField="serviceName" ValueField="serviceId">
-                                            </airmid-autocomplete> -->
+                                                ValueField="serviceId"></airmid-autocomplete> 
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Price" formControlName="price"
@@ -306,9 +295,7 @@
                                             </button>
                                         </div>
                                     </div>  
-                                  
-                                </form>
-                               
+                                </form> 
                             </mat-card-content>
                         </mat-card>
                     </div>
@@ -493,14 +480,14 @@
                                                                 <div class="net-amt-box">
                                                                     <span class="net-amt-label">Discount Amount :</span>
                                                                     <span class="net-amt-value">
-                                                                        {{totalChargeForm.get("totalDiscountAmount").value
+                                                                        {{OpBillForm?.get("concessionAmt")?.value
                                                                         |
                                                                         currency:'INR' }}</span>
                                                                 </div>
                                                                 <div class="net-amt-box">
                                                                     <span class="net-amt-label">Net Amount :</span>
                                                                     <span class="net-amt-value">
-                                                                        {{totalChargeForm.get("totalNetAmount").value |
+                                                                        {{OpBillForm?.get("netPayableAmt")?.value |
                                                                         currency:'INR' }}</span>
                                                                 </div>
                                                             </div>
@@ -666,117 +653,48 @@
                                                 </div>
                                             </mat-tab>
                                         </mat-tab-group>
-                                    </div>
-                                    <!-- <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="70%">
-                                        <div class="airmid-table-container">
-                                            <div class="table-header mt-8 mb-3">
-                                                <span class="fw-600 h3">Service List</span>
-                                                <hr>
-                                            </div>
-                                            <div class="table-body">
-                                                <div class="airmid-table">
-                                                    <mat-table matSort [dataSource]="dsServiceList"
-                                                        [@animateStagger]="{value:'50'}">
-
-                                                        <ng-container matColumnDef="ServiceName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                class="w-180">
-                                                                Item Name
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" class="w-180">
-                                                                <span> {{contact.ServiceName}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="Price">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                                Price
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact">
-                                                                <span> {{contact.Price | currency:'INR' }}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="Qty">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact">
-                                                                <span> {{contact.Qty}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
-
-                                                        <ng-container matColumnDef="TotalAmt">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                class="w-110">
-                                                                Total Amt
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" class="w-110">
-                                                                <span> {{contact.TotalAmt | currency:'INR' }}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
-
-
-                                                        <ng-container matColumnDef="NoData">
-                                                            <mat-footer-cell *matFooterCellDef>
-                                                                <span>No Data Found</span>
-                                                            </mat-footer-cell>
-                                                        </ng-container>
-
-                                                        <mat-header-row class="accent"
-                                                            *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
-                                                        </mat-header-row>
-                                                        <mat-row
-                                                            *matRowDef="let contact; columns: displayedPrescriptionColumns;"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <mat-footer-row *matFooterRowDef="['NoData']"
-                                                            [ngClass]="{'hide':dsServiceList.data.length > 0}"></mat-footer-row>
-                                                    </mat-table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-
+                                    </div> 
+                                </div> 
                             </mat-card-content>
                         </mat-card>
                     </div>
                     <div class="modal-card-container">
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content class="py-4">
-                                <form [formGroup]="totalChargeForm">
+                                <form [formGroup]="OpBillForm">
                                     <div fxLayout="row" fxLayoutGap="6px">
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                            <airmid-textbox label="Total Amount" formControlName="totalAmount"
-                                                [formGroup]="totalChargeForm"
+                                            <airmid-textbox label="Total Amount" formControlName="totalAmt"
+                                                [formGroup]="OpBillForm"
                                                 [validations]="getValidationMessages().totalAmount" [type]="'number'"
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
                                             <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
-                                                [formGroup]="totalChargeForm"
+                                                [formGroup]="OpBillForm"
                                                 [validations]="getValidationMessages().discountPer" [type]="'number'"
                                                 [readonly]="isDiscountApplied">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Discount Amount"
-                                                formControlName="totalDiscountAmount" [formGroup]="totalChargeForm"
+                                                formControlName="concessionAmt" [formGroup]="OpBillForm"
                                                 [validations]="getValidationMessages().discountAmount" [type]="'number'"
                                                 [readonly]="isDiscountApplied">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Consessionres">
-                                            <airmid-dropdown label="Concession Reason" formControlName="concessionId"
-                                                [formGroup]="totalChargeForm"
+                                            <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId"
+                                                [formGroup]="OpBillForm"
                                                 [validations]="getValidationMessages().concessionId"
                                                 [mode]="autocompleteModeConcession"
                                                 (selectionChange)="selectChangeConcession($event)">
                                             </airmid-dropdown>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                            <airmid-textbox label="Total Net Amount" formControlName="totalNetAmount"
-                                                [formGroup]="totalChargeForm"
+                                            <airmid-textbox label="Total Net Amount" formControlName="netPayableAmt"
+                                                [formGroup]="OpBillForm"
                                                 [validations]="getValidationMessages().totalNetAmount" [type]="'number'"
                                                 [readonly]="true">
                                             </airmid-textbox>
@@ -795,10 +713,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Modal footer  || savebtn-->
-          <!-- [disabled]="!totalChargeForm.valid || !chargeList.length" -->
+        </div>  
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
