@@ -110,6 +110,7 @@
           <ng-template mat-tab-label>Template Detail</ng-template>
           <div class="content-card mt-8 input-error-hidden">
             <form [formGroup]="DischargesumForm" fxLayout="column" fxLayoutGap="8px">
+              <div [formGroupName]="'discharge'">
               <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                 <airmid-dropdown
                   label="Template"
@@ -133,14 +134,14 @@
               </div>
 
               <!-- EDITOR -->
-              <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor>
+              <airmid-editor label="Template Details" formControlName="templateDescriptionHtml" [(value)]="vTemplateDesc" [formGroup]="DischargesumForm"></airmid-editor>
 
               <div fxLayout="row wrap" fxLayoutGap="8px" class="mt-8">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-dropdown
                     label="Doctor Name"
                     formControlName="dischargeDoctor1"
-                    [formGroup]="DischargesumForm"
+                    [formGroup]="DischargesumForm.get('discharge')"
                     [validations]="getValidationMessages().dischargeDoctor1"
                     [mode]="autocompleteModeDoctor"
                   ></airmid-dropdown>
@@ -148,12 +149,13 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-dropdown
                     label="RMO.Doctor Name"
-                    formControlName="dischargeDoctor2"
-                    [formGroup]="DischargesumForm"
+                    formControlName=DischargesumForm
+                    [formGroup]="DischargesumForm.get('discharge')"
                     [validations]="getValidationMessages().dischargeDoctor2"
                     [mode]="autocompleteModeRefDoctor"
                   ></airmid-dropdown>
                 </div>
+              </div>
               </div>
             </form>
           </div>

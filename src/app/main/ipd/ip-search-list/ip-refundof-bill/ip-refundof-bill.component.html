@@ -273,21 +273,21 @@
 
     <div class="modal-footer" fxLayout="column" >
         <div class="modal-card-container">
-            <form [formGroup]="RefundOfBillFormGroup" class="mat-error-fix">
+            <form [formGroup]="RefundOfBillFormFooter" class="mat-error-fix">
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Total Refund Amount" formControlName="TotalRefundAmount" [formGroup]="RefundOfBillFormGroup"  [maxLength]="12" (keypress)="keyPressCharater($event)">
+                        <airmid-textbox label="Total Refund Amount" formControlName="TotalRefundAmount" [formGroup]="RefundOfBillFormFooter"  [maxLength]="12" (keypress)="keyPressCharater($event)">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="46%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Reason Of Refund" formControlName="Remark" [formGroup]="RefundOfBillFormGroup" [maxLength]="50">
+                        <airmid-textbox label="Reason Of Refund" formControlName="Remark" [formGroup]="RefundOfBillFormFooter" [maxLength]="200">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="RefundOfBillFormGroup" [mode]="autocompleteModeCashCounter"  >
+                        <airmid-dropdown label="Cash Counter" formControlName="CashCounterID" [formGroup]="RefundOfBillFormFooter" [mode]="autocompleteModeCashCounter"  >
                         </airmid-dropdown>
                     </div>
                 </div>
