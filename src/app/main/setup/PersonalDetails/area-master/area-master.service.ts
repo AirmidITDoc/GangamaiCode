@@ -21,13 +21,14 @@ export class AreaMasterService {
 
     createAreaForm(): FormGroup {
         return this._formBuilder.group({
-            areaId: [0],
+            areaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             areaName: ["",
                 [
                     Validators.required, 
                     Validators.maxLength(50),
                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             cityId: [0,

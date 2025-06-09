@@ -35,24 +35,27 @@ export class NewCompanyTypeComponent implements OnInit {
 
     onSubmit() {
         
-      if(!this.companttypeForm.invalid)
-        {
-
-            console.log("newComp JSON :-", this.companttypeForm.value);
-            
+       if (!this.companttypeForm.invalid) {
+            console.log(this.companttypeForm.value)
             this._CompanyTypeMasterService.companytypeMasterSave(this.companttypeForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.companttypeForm.invalid) {
+                for (const controlName in this.companttypeForm.controls) {
+                    if (this.companttypeForm.controls[controlName].invalid) {
+                        invalidFields.push(`companttype Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 

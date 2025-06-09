@@ -41,21 +41,27 @@ export class NewAreaComponent implements OnInit {
 
   
     onSubmit() {
-        if (this.areaForm.valid) {
-
-            console.log("area json :- ",this.areaForm.value);
-
+        if (!this.areaForm.invalid) {
+            console.log(this.areaForm.value)
             this._AreaMasterService.AreaMasterSave(this.areaForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else {
-            this.toastr.warning('Please Enter Valid Data.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
+        } {
+            let invalidFields = [];
+            if (this.areaForm.invalid) {
+                for (const controlName in this.areaForm.controls) {
+                    if (this.areaForm.controls[controlName].invalid) {
+                        invalidFields.push(`Area Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 

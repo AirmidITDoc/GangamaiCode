@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class GenderMasterService {
@@ -8,22 +9,24 @@ export class GenderMasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             GenderNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            IsDeletedSearch: [""],
         });
     }
     createGenderForm() {
         return this._formBuilder.group({
-            genderId: [0],
+            genderId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             genderName: ['', [
                 Validators.required, Validators.maxLength(50),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.pattern('^[a-zA-Z () ]*$'),
+                this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
             isActive:[true,[Validators.required]],
         });
