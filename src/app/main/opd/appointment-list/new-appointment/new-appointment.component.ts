@@ -327,84 +327,84 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
-        if (this.Patientnewold == 2 && this.RegId == 0)
+        if (this.Patientnewold == 2 && this.RegId == 0) {
             this.toastr.warning("Kindly select a patient from the list of registered patients.");
-        else {
-            let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-            if (DateOfBirth1) {
-                const todayDate = new Date();
-                const dob = new Date(DateOfBirth1);
-                const timeDiff = Math.abs(Date.now() - dob.getTime());
-                this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-                this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-                this.ageDay = (todayDate.getDate() - dob.getDate());
+            return;
+        }
+        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        if (DateOfBirth1) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth1);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
 
-                if (this.ageDay < 0) {
-                    (this.ageMonth)--;
-                    const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                    this.ageDay += previousMonth.getDate(); // Days in previous month
-                    // this.ageDay = this.ageDay+1
-                }
-
-                if (this.ageMonth < 0) {
-                    this.ageYear--;
-                    this.ageMonth += 12;
-                }
+            if (this.ageDay < 0) {
+                (this.ageMonth)--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+                // this.ageDay = this.ageDay+1
             }
-            if (
-                (!this.ageYear || this.ageYear == 0) &&
-                (!this.ageMonth || this.ageMonth == 0) &&
-                (!this.ageDay || this.ageDay == 0)
-            ) {
-                this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
+        }
+        if (
+            (!this.ageYear || this.ageYear == 0) &&
+            (!this.ageMonth || this.ageMonth == 0) &&
+            (!this.ageDay || this.ageDay == 0)
+        ) {
+            this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+        this.personalFormGroup.get('City').setValue(this.CityName)
+        this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+        this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+        this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+        this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+        this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+        this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+
+        console.log('Personal Form : ',this.personalFormGroup.value)
+        console.log('Visit Form : ',this.VisitFormGroup.value)
+        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+
+            if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+                this.toastr.warning('Please select valid Company ', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
-
-            if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
-
-                if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-                    this.toastr.warning('Please select valid Company ', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
-                this.personalFormGroup.get('City').setValue(this.CityName)
-                this.personalFormGroup.get('Age').setValue(String(this.ageYear))
-                this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
-                this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
-                this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-                this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
-                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-
-                if (this.searchFormGroup.get('regRadio').value == "registration")
-                    this.OnsaveNewRegister();
-                else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                    this.onSaveRegistered();
-                    this.onClose();
-                }
-
-            } else {
-                let invalidFields = [];
-                if (this.personalFormGroup.invalid) {
-                    for (const controlName in this.personalFormGroup.controls) {
-                        if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-                    }
-                }
-                if (this.VisitFormGroup.invalid) {
-                    for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-                }
-
-                if (invalidFields.length > 0) {
-                    invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-                }
-
+            if (this.searchFormGroup.get('regRadio').value == "registration")
+                this.OnsaveNewRegister();
+            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                this.onSaveRegistered();
+                this.onClose();
             }
-           
+
+        } else {
+            let invalidFields = [];
+            if (this.personalFormGroup.invalid) {
+                for (const controlName in this.personalFormGroup.controls) {
+                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                }
+            }
+            if (this.VisitFormGroup.invalid) {
+                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+            }
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+
         }
     }
 
@@ -412,15 +412,15 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         if (this.vPhoneAppId)
-            this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId)
-        this.personalFormGroup.get("GenderId")?.setValue(Number(this.personalFormGroup.get('GenderId').value))
-        this.personalFormGroup.get("ReligionId")?.setValue(Number(this.personalFormGroup.get('ReligionId').value))
-        this.personalFormGroup.get("AreaId")?.setValue(Number(this.personalFormGroup.get('AreaId').value))
-        this.personalFormGroup.get("StateId")?.setValue(Number(this.personalFormGroup.get('StateId').value))
-        this.personalFormGroup.get("CountryId")?.setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.VisitFormGroup.get("DepartmentId")?.setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
-        this.VisitFormGroup.get("RefDocId")?.setValue(Number(this.VisitFormGroup.get('RefDocId').value))
-        this.VisitFormGroup.get("AppPurposeId")?.setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+            this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
+        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -438,17 +438,17 @@ export class NewAppointmentComponent implements OnInit {
     onSaveRegistered() {
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
-        this.personalFormGroup.get("PrefixId")?.setValue(Number(this.personalFormGroup.get('PrefixId').value))
-        this.personalFormGroup.get("GenderId")?.setValue(Number(this.personalFormGroup.get('GenderId').value))
-        this.personalFormGroup.get("MaritalStatusId")?.setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
-        this.personalFormGroup.get("ReligionId")?.setValue(Number(this.personalFormGroup.get('ReligionId').value))
-        this.personalFormGroup.get("AreaId")?.setValue(Number(this.personalFormGroup.get('AreaId').value))
-        this.personalFormGroup.get("CityId")?.setValue(Number(this.personalFormGroup.get('CityId').value))
-        this.personalFormGroup.get("StateId")?.setValue(Number(this.personalFormGroup.get('StateId').value))
-        this.personalFormGroup.get("CountryId")?.setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.VisitFormGroup.get("DepartmentId")?.setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
-        this.VisitFormGroup.get("RefDocId")?.setValue(Number(this.VisitFormGroup.get('RefDocId').value))
-        this.VisitFormGroup.get("AppPurposeId")?.setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+        this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
+        this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
+        this.personalFormGroup.get("MaritalStatusId").setValue(Number(this.personalFormGroup.get('MaritalStatusId').value))
+        this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
+        this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
+        this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
+        this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+        this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
+        this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
+        this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
 
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,

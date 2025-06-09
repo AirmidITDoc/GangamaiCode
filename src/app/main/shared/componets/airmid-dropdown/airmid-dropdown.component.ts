@@ -75,7 +75,7 @@ export class AirmidDropDownComponent implements OnInit {
             }
             // Find active validation 
             return this.validations
-                .filter((validation: any) => this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
+                .filter((validation: any) =>  typeof validation?.name === 'string' && this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
                 .map((validation: any) => validation.Message);
         } catch (error) {
             console.log("Textbox Error => ", error);

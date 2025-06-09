@@ -71,11 +71,11 @@ export class FormvalidationserviceService {
   onlyNumberValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-     // if (value === null || value === '') return null;
-      if (value === null || value === '') {
-      control.setValue(0, { emitEvent: false });  
-      return null; 
-    }
+     if (value === null || value === '') return null;
+    //   if (value === null || value === '') {
+    //   control.setValue(0, { emitEvent: false });  
+    //   return null; 
+    // }
       return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
     };
   }
