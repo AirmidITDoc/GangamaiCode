@@ -649,8 +649,7 @@ export class NewAppointmentComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.notBlankValidator()
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             MiddleName: ['', [
                 Validators.maxLength(100),
@@ -661,8 +660,7 @@ export class NewAppointmentComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.notBlankValidator()
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],

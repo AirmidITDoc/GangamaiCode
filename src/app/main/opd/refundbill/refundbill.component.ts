@@ -130,7 +130,7 @@ export class RefundbillComponent implements OnInit {
         addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelled: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 

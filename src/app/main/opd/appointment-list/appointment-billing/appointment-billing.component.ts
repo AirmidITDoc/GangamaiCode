@@ -299,7 +299,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   createChargeForm() {
     return this.formBuilder.group({
       serviceName: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(0),this._FormvalidationserviceService.inputFieldValidator()]],
+      price: [0, [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required, Validators.min(1)]],
       totalAmount: [0,],
       discountPer: [0, [Validators.min(0), Validators.max(100)]],

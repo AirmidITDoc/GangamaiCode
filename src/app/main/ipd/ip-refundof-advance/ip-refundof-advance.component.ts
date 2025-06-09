@@ -83,8 +83,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
       // refund header
       refundHeader: this.formBuilder.group({
-        refundDate: ['', [this._FormvalidationserviceService.notBlankValidator, this._FormvalidationserviceService.validDateValidator]],
-        refundTime: ['', [this._FormvalidationserviceService.notBlankValidator]],
+        refundDate: ['', [this._FormvalidationserviceService.validDateValidator]],
+        refundTime: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -98,7 +98,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         addedBy: [this.accountService.currentUserValue.userId],
         isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
@@ -121,9 +121,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
       advDetailId: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
       refundDate: [  this.convertToISODate(item?.date),
-      [this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      [this._FormvalidationserviceService.validDateValidator()]],
       refundTime: [item?.time,
-      [this._FormvalidationserviceService.notBlankValidator()]],
+      []],
       advRefundAmt: [item?.refundAmt, [, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }

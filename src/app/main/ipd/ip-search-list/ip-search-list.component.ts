@@ -135,9 +135,9 @@ export class IPSearchListComponent implements OnInit {
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
 
-            if (this._configue.configParams.IsDischargeTemplate)
+            // if (this._configue.configParams.IsDischargeTemplate)
                 this.menuActions.push('Discharge Summary Template');
-            else
+            // else
                 this.menuActions.push('Discharge Summary');
 
         }

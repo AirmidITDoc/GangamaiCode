@@ -52,7 +52,7 @@ export class PrescriptionTemplateComponent implements OnInit {
     this.TemplateInsertForm = this._formBuilder.group({
       prescriptionOPTemplate: this._formBuilder.group({
         presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        presTemplateName: ['', [Validators.required, this._FormvalidationserviceService.notBlankValidator(), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        presTemplateName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         isActive: true,
         opIpType: [0],
         isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

@@ -43,8 +43,7 @@ export class PhoneAppointListService {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.notBlankValidator()
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             middleName: ['', [
                 Validators.maxLength(50),
@@ -55,8 +54,7 @@ export class PhoneAppointListService {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
-                this._FormvalidationserviceService.notBlankValidator()
+                Validators.pattern("^[A-Za-z/() ]*$")
             ]],
             address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             mobileNo: ['', [Validators.required,
