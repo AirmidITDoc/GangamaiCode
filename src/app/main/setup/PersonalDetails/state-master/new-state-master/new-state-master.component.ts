@@ -42,24 +42,28 @@ export class NewStateMasterComponent implements OnInit {
 
   
     onSubmit() {
-    if(!this.stateForm.invalid)
-        {
-        console.log(this.stateForm.value);
-          this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
+     if (!this.stateForm.invalid) {
+            console.log(this.stateForm.value)
+            this._StateMasterService.stateMasterSave(this.stateForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.stateForm.invalid) {
+                for (const controlName in this.stateForm.controls) {
+                    if (this.stateForm.controls[controlName].invalid) {
+                        invalidFields.push(`State Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
+        }
     }
       
     getValidationMessages() {

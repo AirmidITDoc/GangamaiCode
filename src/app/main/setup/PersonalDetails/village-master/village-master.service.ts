@@ -21,10 +21,11 @@ export class VillageMasterService {
 
     createVillageForm(): FormGroup {
         return this._formBuilder.group({
-            villageId: [0],
+            villageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             villageName: ["",
                 [ Validators.required,
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                    ]
             ],
             talukaName: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
