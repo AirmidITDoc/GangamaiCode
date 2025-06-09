@@ -1,193 +1,180 @@
 <div class="modal-wrapper grid-container">
-    <!-- Modal header -->
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">MLC Update</span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">MLC Update</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Modal body -->
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            
-                <div fxLayout="column" class="gap-12">
-                    <div class="modal-card-container">
-                        <mat-card>
-                            <div class="patient-info-container">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                class="patient-col-value">{{Personaldata.regNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                class="patient-col-value">{{Personaldata.patientName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.doctorname}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Department</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.departmentName}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
-
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">DOA | Time</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.admissionTime}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">IPD No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.ipdno}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.ageYear}}Y|{{Personaldata.ageMonth}}M|{{Personaldata.ageDay}} D | {{Personaldata.GenderName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Ref-Doctor Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.refDocName}}</span>
-                                            </div>
-
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="10px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Ward | Bed Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.roomName}} | {{Personaldata.bedName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Type
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.patientType}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Tarrif Name
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.tariffName}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Company Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{Personaldata.companyName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                            </div>
-                            </div>
-                        </mat-card>
+  </div>
+  <!-- Modal body -->
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <div fxLayout="column" class="gap-12">
+        <div class="modal-card-container">
+          <mat-card>
+            <div class="patient-info-container">
+              <div class="patient-sub">
+                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                  <div fxLayout="column" fxLayoutGap="10px">
+                    <div class="patient-col">
+                      <span class="patient-col-key">UHID No</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.regNo }}</span>
                     </div>
-                    <div class="modal-card-container">
-                        <mat-card>
-                            <div fxLayout="column" class="gap-8">
-                                <div class="form-title mb-2 border-bottom pb-2">
-                                    <span class="h3 font-weight-600">MLC Information</span>
-                                </div>
-                                <form [formGroup]="MlcInfoFormGroup" style="border: blue;">
-                                    <h3 style="font-weight:bold ;">Medico Legal Case Information</h3>
-                                    <div fxLayoutGap="5px">
-                                        <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid">
-                                        <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="Personaldata.admissionId">
-                
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Mlcno" formControlName="mlcno" [value]="registerObj.mlcno"
-                                                [formGroup]="MlcInfoFormGroup" [validations]="getValidationMessages().mlcno"
-                                                [maxLength]="50">
-                                            </airmid-textbox>
-                                        </div>
-                                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                
-                                            <mat-form-field appearance="outline">
-                                                <mat-label>Reporting Collection Date / Time</mat-label>
-                                                <input matInput type="datetime-local" placeholder="start date" [value]="date"
-                                                    [(ngModel)]="Mlcdate" (change)="date=$event.target.value"
-                                                    formControlName="reportingDate">
-                                            </mat-form-field>
-                                        </div> -->
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" class="dateField">
-                                                    <mat-label>Report Date</mat-label>
-                                                    <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                                        formControlName="reportingDate" (dateChange)="onChangeDate($event.value)">
-                                                    <mat-datepicker-toggle matSuffix [for]="picker1"
-                                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
-                                                    <mat-datepicker #picker1></mat-datepicker>
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-form-field appearance="outline" class="timeField">
-                                                    <mat-label>ReportTime</mat-label>
-                                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="reportingTime"
-                                                        (timeChange)="onChangeTime($event)"
-                                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                                    <mat-icon matSuffix
-                                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                                </mat-form-field>
-                
-                                            </div>
-                
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="authorityName" formControlName="authorityName"
-                                                    [value]="registerObj.authorityName" [formGroup]="MlcInfoFormGroup"
-                                                    [validations]="getValidationMessages().authorityName" [maxLength]="50">
-                                                </airmid-textbox>
-                                            </div>
-                
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="buckleNo" formControlName="buckleNo"
-                                                    [value]="registerObj.buckleNo" [formGroup]="MlcInfoFormGroup"
-                                                    [validations]="getValidationMessages().buckleNo" [maxLength]="50">
-                                                </airmid-textbox>
-                                            </div>
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="policeStation" formControlName="policeStation"
-                                                    [value]="registerObj.policeStation" [formGroup]="MlcInfoFormGroup"
-                                                    [validations]="getValidationMessages().policeStation" [maxLength]="50">
-                                                </airmid-textbox>
-                                            </div>
-                                        </div>
-                
-                
-                                        <div fxLayoutGap="5px" fxlayout="column">
-                
-                                            <!-- <mat-form-field appearance="outline" fxFlex>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Patient Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.patientName }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Doctor Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.doctorname }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Department</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.departmentName }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="10px">
+                    <div class="patient-col">
+                      <span class="patient-col-key">DOA | Time</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.admissionTime }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">IPD No</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.ipdno }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Age | Sex</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.ageYear }}Y|{{ Personaldata.ageMonth }}M|{{ Personaldata.ageDay }} D | {{ Personaldata.GenderName }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Ref-Doctor Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.refDocName }}</span>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutGap="10px">
+                    <div class="patient-col">
+                      <span class="patient-col-key">Ward | Bed Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.roomName }} | {{ Personaldata.bedName }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Patient Type</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.patientType }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Tarrif Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.tariffName }}</span>
+                    </div>
+                    <div class="patient-col">
+                      <span class="patient-col-key">Company Name</span>
+                      <span>:</span>
+                      <span class="patient-col-value">{{ Personaldata.companyName }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="modal-card-container">
+          <mat-card>
+            <div fxLayout="column" class="gap-8">
+              <div class="form-title mb-2 border-bottom pb-2">
+                <span class="h3 font-weight-600">MLC Information</span>
+              </div>
+              <form [formGroup]="MlcInfoFormGroup" style="border: blue">
+                <h3 style="font-weight: bold">Medico Legal Case Information</h3>
+                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid" >
+                  <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid" />
+                  <input type="hidden" name="admissionId" formControlName="admissionId" [(ngModel)]="Personaldata.admissionId" />
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox
+                      label="Mlcno"
+                      formControlName="mlcno"
+                      [value]="registerObj.mlcno"
+                      [formGroup]="MlcInfoFormGroup"
+                      [validations]="getValidationMessages().mlcno"
+                      [maxLength]="50"
+                    ></airmid-textbox>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <mat-form-field appearance="outline" class="dateField" fxFlex>
+                      <mat-label>Report Date</mat-label>
+                      <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="reportingDate" (dateChange)="onChangeDate($event.value)" />
+                      <mat-datepicker-toggle matSuffix [for]="picker1" [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <mat-form-field appearance="outline" class="timeField" fxFlex>
+                      <mat-label>ReportTime</mat-label>
+                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="reportingTime" (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled" />
+                      <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox
+                      label="authorityName"
+                      formControlName="authorityName"
+                      [value]="registerObj.authorityName"
+                      [formGroup]="MlcInfoFormGroup"
+                      [validations]="getValidationMessages().authorityName"
+                      [maxLength]="50"
+                    ></airmid-textbox>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox
+                      label="buckleNo"
+                      formControlName="buckleNo"
+                      [value]="registerObj.buckleNo"
+                      [formGroup]="MlcInfoFormGroup"
+                      [validations]="getValidationMessages().buckleNo"
+                      [maxLength]="50"
+                    ></airmid-textbox>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox
+                      label="policeStation"
+                      formControlName="policeStation"
+                      [value]="registerObj.policeStation"
+                      [formGroup]="MlcInfoFormGroup"
+                      [validations]="getValidationMessages().policeStation"
+                      [maxLength]="50"
+                    ></airmid-textbox>
+                  </div>
+                </div>
+
+                <div fxLayoutGap="5px" fxlayout="column">
+                  <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Detail Given</mat-label>
                                                 <textarea matInput name="Given" formControlName="Given" cols="200" rows="5"
                                                     [(ngModel)]="DetailGiven"></textarea>
@@ -198,22 +185,20 @@
                                                 <textarea matInput name="Remark" formControlName="Remark" cols="200" rows="5"
                                                     [(ngModel)]="Remark"></textarea>
                                             </mat-form-field> -->
-                                        </div>
-                
-                                        <div class="next-div button-row-group" style="margin-left: 1250px;">
-                                           
-                                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                            <button class="btn btn-primary" color="accent" (click)="onSubmit()">
-                                                <span>Save</span>
-                                            </button>
-                                        </div>
-                                </form>
-                            </div>
-                        </mat-card>
-                    </div>
                 </div>
-           
+              </form>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+        <div class="modal-footer-buttons">
+          <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
         </div>
     </div>
-
+  </div>
 </div>

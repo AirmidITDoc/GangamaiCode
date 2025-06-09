@@ -332,7 +332,7 @@ export class AdmissionComponent implements OnInit {
       const dialogRef = this._matDialog.open(MLCInformationComponent,
         {
           maxWidth: "85vw",
-          height: '450px',
+          height: 'auto',
           width: '100%',
           data: element
         });
@@ -522,7 +522,7 @@ export class AdmissionComponent implements OnInit {
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
         maxWidth: '85vw',
-        height: '450px', width: '100%',
+        height: 'auto', width: '100%',
         data: contact
       });
 
