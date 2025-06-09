@@ -18,12 +18,12 @@ export class CityMasterService {
 
     createCityForm(): FormGroup {
         return this._formBuilder.group({
-            cityId: [0],
+            cityId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cityName: ["",
                 [
                     Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
             ],
             stateId: [0, 

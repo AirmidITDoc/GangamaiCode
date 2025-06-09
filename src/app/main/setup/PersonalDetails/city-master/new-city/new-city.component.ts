@@ -19,6 +19,7 @@ export class NewCityComponent implements OnInit {
     cityId = 0;
     cityName = '';
     isActive: boolean = true;
+    autocompleteModestatus: string = "State";
 
     constructor(
         public _CityMasterService: CityMasterService,
@@ -27,32 +28,37 @@ export class NewCityComponent implements OnInit {
         public toastr: ToastrService
     ) { }
 
-    autocompleteModestatus: string = "State";
-
     ngOnInit(): void {
         this.cityForm = this._CityMasterService.createCityForm();
-    this.cityForm.markAllAsTouched();
-        if ((this.data?.cityId??0) > 0) {
-            this.isActive=this.data.isActive
+        this.cityForm.markAllAsTouched();
+        if ((this.data?.cityId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.cityForm.patchValue(this.data);
         }
     }
 
-    
     onSubmit() {
-        if(this.cityForm.valid) 
-        {
-            
+        if (!this.cityForm.invalid) {
+            console.log(this.cityForm.value)
             this._CityMasterService.cityMasterSave(this.cityForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        } else {
-            this.toastr.warning('Please Enter Valid Data.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
+        } {
+            let invalidFields = [];
+            if (this.cityForm.invalid) {
+                for (const controlName in this.cityForm.controls) {
+                    if (this.cityForm.controls[controlName].invalid) {
+                        invalidFields.push(`City Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 
