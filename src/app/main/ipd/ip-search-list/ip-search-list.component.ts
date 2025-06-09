@@ -135,9 +135,9 @@ export class IPSearchListComponent implements OnInit {
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
 
-            // if (this._configue.configParams.IsDischargeTemplate)
+            if (this._configue.configParams.IsDischargeTemplate)
                 this.menuActions.push('Discharge Summary Template');
-            // else
+            else
                 this.menuActions.push('Discharge Summary');
 
         }
@@ -420,7 +420,7 @@ export class IPSearchListComponent implements OnInit {
     apiUrl: any;
     IsDischarge: boolean = false
     onChangeFirst(event) {
-        debugger
+        // debugger
         console.log(event)
         // if(this.myFilterform.get('fromDate').value==null || this.myFilterform.get('fromDate').value== ''){
         // this.fromDate = "1900-01-01"
@@ -456,7 +456,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: this.apiUrl,
             columnsList: this.allcolumns,
@@ -500,7 +500,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
     onChangeStatus(event) {
-        debugger
+        // debugger
         console.log(event)
         if (event.value == "1")
             this.status = "0"

@@ -93,8 +93,10 @@ export class DischargeComponent implements OnInit {
             this.DischargeInsertForm.get("dischargedDocId")?.setValue(response.dischargedDocId)
           });
         }, 500);
+        this.DischargeInsertForm.get("admission.isDischarged")?.setValue(this.data.isDischarged)
       } else {
         this.DischargeId = 0;
+        this.DischargeInsertForm.get("admission.isDischarged")?.setValue(0)
       }
 
     }
@@ -139,8 +141,8 @@ export class DischargeComponent implements OnInit {
         dischargedDocId: [0], //validation applied in mainform
         dischargedRmoid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         modeOfDischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-        modifiedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+        addedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+        modifiedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
         dischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
@@ -169,34 +171,36 @@ export class DischargeComponent implements OnInit {
     this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
     this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
     this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-      this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(this.dateTimeObj.time)
+    this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(this.dateTimeObj.time)
     this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-      this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(this.dateTimeObj.time)
+    this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(this.dateTimeObj.time)
 
     if (!this.DischargeInsertForm.invalid) {
 
-      if (this.data.isDischarged == 0) {
-         ['dischargeTypeId', 'dischargedDocId','modeOfDischargeId'].forEach(controlName => {
-              this.DischargeInsertForm.removeControl(controlName);
-            });
-        (this.DischargeInsertForm.get('discharge') as FormGroup).removeControl('modifiedBy');
-        console.log(this.DischargeInsertForm.value)
-
-        this._IpSearchListService.DichargeInsert(this.DischargeInsertForm.value).subscribe((response) => {
+      if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
+        this.DischargeInsertForm.get('discharge.addedBy')?.setValue(this.accountService.currentUserValue.userId);
+        this.DischargeInsertForm.get("admission.isDischarged")?.setValue(1)
+        let insertData = {
+          "discharge": this.DischargeInsertForm.value.discharge,
+          "admission": this.DischargeInsertForm.value.admission,
+          "bed": this.DischargeInsertForm.value.bed
+        };
+        console.log(insertData)
+        this._IpSearchListService.DichargeInsert(insertData).subscribe((response) => {
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         });
       }
-      else if (this.data.isDischarged == 1) {
+      else {
+        this.DischargeInsertForm.get('discharge.modifiedBy')?.setValue(this.accountService.currentUserValue.userId);
         this.DischargeInsertForm.get('discharge.dischargeId')?.setValue(this.DischargeId);
-        (this.DischargeInsertForm.get('discharge') as FormGroup).removeControl('admissionId');// to remove unwanted nested control
-         
-         ['dischargeTypeId', 'dischargedDocId','modeOfDischargeId','bed'].forEach(controlName => {// to remove multiple unwanted control
-              this.DischargeInsertForm.removeControl(controlName);
-            });
-        console.log(this.DischargeInsertForm.value)
+        let updateData = {
+          "discharge": this.DischargeInsertForm.value.discharge,
+          "admission": this.DischargeInsertForm.value.admission
+        };
+        console.log(updateData)
 
-        this._IpSearchListService.DichargeUpdate(this.DischargeInsertForm.value).subscribe((response) => {
+        this._IpSearchListService.DichargeUpdate(updateData).subscribe((response) => {
           this.viewgetDischargeSlipPdf(response)
           this._matDialog.closeAll();
         });

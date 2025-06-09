@@ -39,23 +39,29 @@ export class NewPatientTypeComponent implements OnInit {
   onSubmit() {
    
     
-    if (this.patienttypeForm.invalid) {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-          toastClass:'tostr-tost custom-toast-warning',
-      })
-      return;
-    }else{
-        if (this.patienttypeForm.valid) {
-            console.log("json :- ",this.patienttypeForm.value);
+    if (!this.patienttypeForm.invalid) {
+            console.log(this.patienttypeForm.value)
             this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
+        } {
+            let invalidFields = [];
+            if (this.patienttypeForm.invalid) {
+                for (const controlName in this.patienttypeForm.controls) {
+                    if (this.patienttypeForm.controls[controlName].invalid) {
+                        invalidFields.push(`PatientType Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
-}
 
 getValidationMessages() {
     return {

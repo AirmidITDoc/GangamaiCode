@@ -32,23 +32,29 @@ export class NewMaritalstatusComponent implements OnInit {
   }
   
   onSubmit() {
-    if(!this.maritalForm.invalid)
-        {
-        this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+    if (!this.maritalForm.invalid) {
+            console.log(this.maritalForm.value)
+            this._MaritalstatusMasterService.MaritalStatusMasterSave(this.maritalForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.maritalForm.invalid) {
+                for (const controlName in this.maritalForm.controls) {
+                    if (this.maritalForm.controls[controlName].invalid) {
+                        invalidFields.push(`Maritalstatus Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
-    else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
-}
  
     getValidationMessages() {
       return {

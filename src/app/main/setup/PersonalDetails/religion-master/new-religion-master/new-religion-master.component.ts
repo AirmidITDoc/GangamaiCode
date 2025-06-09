@@ -35,27 +35,29 @@ export class NewReligionMasterComponent implements OnInit {
  
   onSubmit() {
     
-    if(this.religionForm.valid) 
-    {
-        console.log("JSON :-",this.religionForm.value);
+     if (!this.religionForm.invalid) {
+            console.log(this.religionForm.value)
+            this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.religionForm.invalid) {
+                for (const controlName in this.religionForm.controls) {
+                    if (this.religionForm.controls[controlName].invalid) {
+                        invalidFields.push(`Religion Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
-        this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+        }
     }
-    else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
-
-  }
-
     getValidationMessages() {
         return {
             religionName: [

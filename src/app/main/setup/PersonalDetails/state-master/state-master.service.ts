@@ -18,12 +18,13 @@ export class StateMasterService {
 
     createStateForm(): FormGroup {
         return this._formBuilder.group({
-            stateId: [0],
+            stateId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             stateName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             countryId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

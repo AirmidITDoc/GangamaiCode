@@ -44,7 +44,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   DischargesumInsertForm: FormGroup;
   MedicineItemForm: FormGroup;
-  DischargeSummaryId: any;
+  DischargeSummaryId: any = 0;
   Chargeslist: any = [];
   rtrvDischargeSList = new DischargeSummary({});
   screenFromString = 'discharge-summary';
@@ -193,8 +193,8 @@ export class DischargeSummaryComponent implements OnInit {
         doctorAssistantName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         claimNumber: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         preOthNumber: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-        updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+        addedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+        updatedBy: [0, this._FormvalidationserviceService.onlyNumberValidator()],
         surgeryProcDone: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         icd10code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         clinicalConditionOnAdmisssion: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -266,32 +266,35 @@ export class DischargeSummaryComponent implements OnInit {
 
           this.DischargesumInsertForm.get("dischargModel.dischargeId")?.setValue(this.vDischargeId)
           this.DischargesumInsertForm.get("dischargModel.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
-          console.log(this.DischargesumInsertForm.value)
+          this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
 
-          if (this.DischargeSummaryId == undefined) {
+          debugger
+          if (this.DischargesumInsertForm.get('dischargModel.dischargeSummaryId')?.value) {
+            this.DischargesumInsertForm.get('dischargModel.updatedBy').setValue(this.accountService.currentUserValue.userId);
 
-            ['pathology', 'updatedBy'].forEach(ctrl => (this.DischargesumInsertForm.get('dischargModel') as FormGroup)?.removeControl(ctrl));
-            ['dischargeDoctor3', 'isNormalOrDeath'].forEach(controlName => {
-              this.DischargesumInsertForm.removeControl(controlName);
+            let updateData = {
+              "dischargModel": this.DischargesumInsertForm.value.dischargModel,
+              "prescriptionDischarge": this.DischargesumInsertForm.value.prescriptionDischarge
+            };
+            console.log(updateData)
+
+            this._IpSearchListService.updateIPDDischargSummary(updateData).subscribe(response => {
+              this.getPrint(this.vAdmissionId)
+              this._matDialog.closeAll();
             });
-            console.log(this.DischargesumInsertForm.value)
-              this._IpSearchListService.insertIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
-                this.getPrint(response)
-                this._matDialog.closeAll();
-              });
           }
           else {
-            ['pathology', 'addedBy'].forEach(ctrl => (this.DischargesumInsertForm.get('dischargModel') as FormGroup)?.removeControl(ctrl));
-            ['dischargeDoctor3', 'isNormalOrDeath'].forEach(controlName => {
-              this.DischargesumInsertForm.removeControl(controlName);
-            });
-            this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
-            console.log(this.DischargesumInsertForm.value)
+            this.DischargesumInsertForm.get('dischargModel.addedBy').setValue(this.accountService.currentUserValue.userId);
 
-              this._IpSearchListService.updateIPDDischargSummary(this.DischargesumInsertForm.value).subscribe(response => {
-                this.getPrint(this.vAdmissionId)
-                this._matDialog.closeAll();
-              });
+            let insertData = {
+              "dischargModel": this.DischargesumInsertForm.value.dischargModel,
+              "prescriptionDischarge": this.DischargesumInsertForm.value.prescriptionDischarge
+            };
+            console.log(insertData)
+            this._IpSearchListService.insertIPDDischargSummary(insertData).subscribe(response => {
+              this.getPrint(response)
+              this._matDialog.closeAll();
+            });
           }
         } else {
           let invalidFields: string[] = [];
@@ -497,7 +500,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.DischargesumInsertForm.get("dischargeDoctor3")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
 
         if (this.RetrDischargeSumryList[0].isNormalOrDeath == 0)
-          this.vIsNormalDeath = "0"       
+          this.vIsNormalDeath = "0"
         else
           this.vIsNormalDeath = "1"
       }

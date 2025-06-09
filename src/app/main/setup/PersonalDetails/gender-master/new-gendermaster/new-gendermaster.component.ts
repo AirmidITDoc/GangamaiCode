@@ -38,14 +38,27 @@ export class NewGendermasterComponent implements OnInit {
     
     onSubmit() {
         
-        if (this.genderForm.valid) {
-            console.log("json :- ",this.genderForm.value);
+      if (!this.genderForm.invalid) {
+            console.log(this.genderForm.value)
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
+        } {
+            let invalidFields = [];
+            if (this.genderForm.invalid) {
+                for (const controlName in this.genderForm.controls) {
+                    if (this.genderForm.controls[controlName].invalid) {
+                        invalidFields.push(`Gender Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 
