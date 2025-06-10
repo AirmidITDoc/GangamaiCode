@@ -1,20 +1,16 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
-import { AdvanceDetailObj } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 
 @Component({
@@ -25,22 +21,6 @@ import { IPSearchListService } from '../ip-search-list.service';
   animations: fuseAnimations
 })
 export class DischargeSummaryComponent implements OnInit {
-
-  // editorConfig: AngularEditorConfig = {
-  //   editable: true,
-  //   spellcheck: true,
-  //   height: '24rem',
-  //   minHeight: '24rem',
-  //   translate: 'yes',
-  //   placeholder: 'Enter text here...',
-  //   enableToolbar: true,
-  //   showToolbar: true,
-  // };
-
-  // onBlur(e: any) {
-  //   this.vTemplateDesc = e.target.innerHTML;
-  //   throw new Error('Method not implemented.');
-  // }
 
   DischargesumInsertForm: FormGroup;
   MedicineItemForm: FormGroup;
@@ -89,17 +69,18 @@ export class DischargeSummaryComponent implements OnInit {
   DocName3 = 0
   vIsNormalDeath = "1";
   ItemName: any;
-
+  isItemIdSelected: boolean = false;
+  dateTimeString: any;
+  public now: Date = new Date();
   registerObj1 = new AdmissionPersonlModel({});
   @ViewChild('itemid') itemid: ElementRef;
-
   autocompleteModeDose: string = "DoseMaster";
   autocompleteModeRefDoctor: string = "RefDoctor";
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteitem: string = "Item";
   autocompletetemplate: string = "DischargeTemplate";
-
   dsItemList = new MatTableDataSource<MedicineItemList>();
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
 
   constructor(public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
@@ -113,7 +94,6 @@ export class DischargeSummaryComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe) { }
 
-
   ngOnInit(): void {
     this.DischargesumInsertForm = this.showDischargeSummaryInsertForm();
     this.DischargesumInsertForm.markAllAsTouched();
@@ -121,9 +101,7 @@ export class DischargeSummaryComponent implements OnInit {
     this.MedicineItemForm = this.MedicineItemform();
     this.MedicineItemForm.markAllAsTouched();
 
-    // loop array defined
     this.prescriptionDischargeArray.push(this.createprescriptionDischarge());
-
     console.log(this.data)
     if (this.data) {
       this.registerObj = this.data;
@@ -139,23 +117,19 @@ export class DischargeSummaryComponent implements OnInit {
         this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
-
         });
-
         this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
           if (this.registerObj1) {
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
           }
-
         });
       }, 500);
     }
 
   }
 
-  isItemIdSelected: boolean = false;
   MedicineItemform(): FormGroup {
     return this._formBuilder.group({
       ItemId: '',
@@ -172,7 +146,7 @@ export class DischargeSummaryComponent implements OnInit {
       isNormalOrDeath: [1],
 
       dischargModel: this._formBuilder.group({
-        admissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         dischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         history: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         diagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -181,11 +155,11 @@ export class DischargeSummaryComponent implements OnInit {
         opertiveNotes: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         treatmentGiven: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         treatmentAdvisedAfterDischarge: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        followupdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        followupdate: [new Date(),[this._FormvalidationserviceService.validDateValidator()]],
         remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         dischargeSummaryDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        opDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        optime: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+        opDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        optime: [this.datePipe.transform(new Date(), 'hh:mm:ss a')],
         dischargeDoctor1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         dischargeDoctor2: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         dischargeDoctor3: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -203,7 +177,6 @@ export class DischargeSummaryComponent implements OnInit {
         painManagementTechnique: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         lifeStyle: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         warningSymptoms: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        pathology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         radiology: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         isNormalOrDeath: [1],
         dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -267,8 +240,9 @@ export class DischargeSummaryComponent implements OnInit {
           this.DischargesumInsertForm.get("dischargModel.dischargeId")?.setValue(this.vDischargeId)
           this.DischargesumInsertForm.get("dischargModel.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
           this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
-
-          debugger
+          this.DischargesumInsertForm.get("dischargModel.dischargeSummaryDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+          this.DischargesumInsertForm.get("dischargModel.dischargeSummaryTime")?.setValue(this.dateTimeObj.time)
+        
           if (this.DischargesumInsertForm.get('dischargModel.dischargeSummaryId')?.value) {
             this.DischargesumInsertForm.get('dischargModel.updatedBy').setValue(this.accountService.currentUserValue.userId);
 
@@ -333,35 +307,14 @@ export class DischargeSummaryComponent implements OnInit {
     this.ItemId = obj.itemId
     this.ItemName = obj.itemName
     console.log(obj)
+  }
+  
+ onChangeDate(value) {
+  console.log(value)
+  const formatted = this.datePipe.transform(value, 'yyyy-MM-dd');
+  this.DischargesumInsertForm.get("dischargModel.followupdate").setValue(formatted);
+}
 
-  }
-  @ViewChild('dosename') dosename: ElementRef;
-  @ViewChild('Day') Day: ElementRef;
-  @ViewChild('Instruction') Instruction: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  add: boolean = false;
-
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      this.dosename.nativeElement.focus();
-    }
-  }
-  public onEnterDose(event): void {
-    if (event.which === 13) {
-      this.Day.nativeElement.focus();
-    }
-  }
-  public onEnterqty(event): void {
-    if (event.which === 13) {
-      this.Instruction.nativeElement.focus();
-    }
-  }
-  public onEnterremark(event): void {
-    if (event.which === 13) {
-      this.addbutton.focus;
-      this.add = true;
-    }
-  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -483,7 +436,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.vClinicalFinding = this.RetrDischargeSumryList[0].clinicalFinding
         this.vSURGERYprocedure = this.RetrDischargeSumryList[0].surgeryProcDone
         this.vOperativeNotes = this.RetrDischargeSumryList[0].opertiveNotes
-        this.vPathology = this.RetrDischargeSumryList[0].pathology
+        this.vPathology = this.RetrDischargeSumryList[0].investigation
         this.vRadiology = this.RetrDischargeSumryList[0].radiology
         this.vTreatmentGiven = this.RetrDischargeSumryList[0].treatmentGiven
         this.vTreatmentAdvisedAfterDischarge = this.RetrDischargeSumryList[0].treatmentAdvisedAfterDischarge
@@ -495,6 +448,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.vClaimNumber = String(this.RetrDischargeSumryList[0].claimNumber) || "0"
         this.vPreOthNumber = String(this.RetrDischargeSumryList[0].preOthNumber) || "0"
         this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
+        this.DischargesumInsertForm.get("dischargModel.followupdate")?.setValue(this.RetrDischargeSumryList[0].followupdate)
         this.DischargesumInsertForm.get("dischargModel.dischargeDoctor1")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor1)
         this.DischargesumInsertForm.get("dischargModel.dischargeDoctor2")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor2)
         this.DischargesumInsertForm.get("dischargeDoctor3")?.setValue(this.RetrDischargeSumryList[0].dischargeDoctor3)
@@ -534,11 +488,9 @@ export class DischargeSummaryComponent implements OnInit {
     this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReport");
   }
 
-
   viewgetDischargesummaryHeaderPdf(AdmId) {
     this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReportWithoutHeader");
   }
-
 
   getItemMaster() {
     // const dialogRef = this._matDialog.open(AddItemComponent,
@@ -551,10 +503,6 @@ export class DischargeSummaryComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log('The dialog was closed - Insert Action', result);
     // });
-  }
-
-  SetDeathOrNormal() {
-
   }
 
   getValidationMessages() {
