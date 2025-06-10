@@ -14,65 +14,68 @@ import { SubGroupMasterService } from '../sub-group-master.service';
 })
 export class NewSubgroupComponent implements OnInit {
 
-  autocompleteModegroupName:string="GroupName";
+    autocompleteModegroupName: string = "GroupName";
 
-  subgroupForm: FormGroup;
-  isActive:boolean=true;
+    subgroupForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _SubGroupMasterService: SubGroupMasterService,
-      public dialogRef: MatDialogRef<NewSubgroupComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
- 
- 
+    constructor(
+        public _SubGroupMasterService: SubGroupMasterService,
+        public dialogRef: MatDialogRef<NewSubgroupComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+
     ngOnInit(): void {
         this.subgroupForm = this._SubGroupMasterService.createSubgroupForm();
         this.subgroupForm.markAllAsTouched();
 
-        if((this.data?.subGroupId??0) > 0){
-            this.isActive=this.data.isActive
+        if ((this.data?.subGroupId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.subgroupForm.patchValue(this.data);
         }
     }
 
 
-    onSubmit() {    
-      
-        if(!this.subgroupForm.invalid)
-        {
-            
-            console.log("sub group:", this.subgroupForm.value);
-  
-            this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-          }, (error)=>{
-            this.toastr.error(error.message);
-          })
-        } 
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
+    onSubmit() {
+
+        if (!this.subgroupForm.invalid) {
+            console.log(this.subgroupForm.value)
+            this._SubGroupMasterService.SubGroupMasterSave(this.subgroupForm.value).subscribe((response) => {
+                this.onClear(true);
             });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.subgroupForm.invalid) {
+                for (const controlName in this.subgroupForm.controls) {
+                    if (this.subgroupForm.controls[controlName].invalid) {
+                        invalidFields.push(`subgroup Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 
-  onClear(val: boolean) {
-      this.subgroupForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.subgroupForm.reset();
+        this.dialogRef.close(val);
+    }
 
-  //new api
+    //new api
 
-  groupId=0;
+    groupId = 0;
 
-  selectChangegroupName(obj:any){
-    this.groupId=obj.value;
-  }
+    selectChangegroupName(obj: any) {
+        this.groupId = obj.value;
+    }
 
     getValidationMessages() {
         return {

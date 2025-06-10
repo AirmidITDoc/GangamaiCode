@@ -20,12 +20,13 @@ export class BedMasterService {
 
     createBedForm(): FormGroup {
         return this._formBuilder.group({
-            bedId:[0],
+            bedId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             bedName: ["",
                 [
                     Validators.required,
                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             roomId: [0,

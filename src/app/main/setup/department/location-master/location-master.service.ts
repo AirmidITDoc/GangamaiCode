@@ -20,12 +20,13 @@ export class LocationMasterService {
 
     createLocationForm(): FormGroup {
         return this._formBuilder.group({
-            locationId: [0],
+            locationId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             locationName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             isActive:[true,[Validators.required]],

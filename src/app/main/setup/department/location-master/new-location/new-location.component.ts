@@ -13,45 +13,47 @@ import { LocationMasterService } from '../location-master.service';
     animations: fuseAnimations,
 })
 export class NewLocationComponent implements OnInit {
-  locationForm: FormGroup;
-  isActive:boolean=true;
+    locationForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor( public _LocationMasterService: LocationMasterService,
-    public dialogRef: MatDialogRef<NewLocationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService) { }
+    constructor(public _LocationMasterService: LocationMasterService,
+        public dialogRef: MatDialogRef<NewLocationComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService) { }
 
     ngOnInit(): void {
         this.locationForm = this._LocationMasterService.createLocationForm();
         this.locationForm.markAllAsTouched();
-        if((this.data?.locationId??0) > 0)
-        {
-            this.isActive=this.data.isActive
+        if ((this.data?.locationId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.locationForm.patchValue(this.data);
         }
     }
 
-  onSubmit() {
-    if(!this.locationForm.invalid) 
-    {
-        
-        console.log("location JSON :-",this.locationForm.value);
-        
-        this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+    onSubmit() {
+        if (!this.locationForm.invalid) {
+            console.log(this.locationForm.value)
+            this._LocationMasterService.locationMasterSave(this.locationForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.locationForm.invalid) {
+                for (const controlName in this.locationForm.controls) {
+                    if (this.locationForm.controls[controlName].invalid) {
+                        invalidFields.push(`location Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
-    else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
-  }
 
     onClear(val: boolean) {
         this.locationForm.reset();

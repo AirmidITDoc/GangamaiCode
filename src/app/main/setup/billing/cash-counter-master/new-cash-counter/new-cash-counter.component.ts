@@ -37,24 +37,27 @@ export class NewCashCounterComponent implements OnInit {
 
     onSubmit() {
         
-        if (!this.cashcounterForm.invalid) 
-        {
-            
-            console.log("cashcounter JSON :-",this.cashcounterForm.value);
-
+        if (!this.cashcounterForm.invalid) {
+            console.log(this.cashcounterForm.value)
             this._CashCounterMasterService.cashcounterMasterSave(this.cashcounterForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
+        } {
+            let invalidFields = [];
+            if (this.cashcounterForm.invalid) {
+                for (const controlName in this.cashcounterForm.controls) {
+                    if (this.cashcounterForm.controls[controlName].invalid) {
+                        invalidFields.push(`cashcounter Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
                 });
-            return;
+            }
+
         }
     }
 

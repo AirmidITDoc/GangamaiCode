@@ -5,51 +5,55 @@ import { ToastrService } from 'ngx-toastr';
 import { DischargetypeMasterService } from '../dischargetype-master.service';
 
 @Component({
-  selector: 'app-new-dischargetype',
-  templateUrl: './new-dischargetype.component.html',
-  styleUrls: ['./new-dischargetype.component.scss']
+    selector: 'app-new-dischargetype',
+    templateUrl: './new-dischargetype.component.html',
+    styleUrls: ['./new-dischargetype.component.scss']
 })
 export class NewDischargetypeComponent implements OnInit {
 
-  dischargetypeForm: FormGroup;
-  isActive:boolean=true;
+    dischargetypeForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _DischargetypeMasterService: DischargetypeMasterService,
-      public dialogRef: MatDialogRef<NewDischargetypeComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    constructor(
+        public _DischargetypeMasterService: DischargetypeMasterService,
+        public dialogRef: MatDialogRef<NewDischargetypeComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
     ngOnInit(): void {
         this.dischargetypeForm = this._DischargetypeMasterService.createDischargetypeForm();
         this.dischargetypeForm.markAllAsTouched();
-        if((this.data?.dischargeTypeId??0) > 0){
-        this.isActive=this.data.isActive
-        this.dischargetypeForm.patchValue(this.data);}
+        if ((this.data?.dischargeTypeId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.dischargetypeForm.patchValue(this.data);
+        }
     }
-        
-    onSubmit() {
-        if(!this.dischargetypeForm.invalid)
-        {            
-            console.log("dischragetype JSON :",this.dischargetypeForm.value);
 
+    onSubmit() {
+        if (!this.dischargetypeForm.invalid) {
+            console.log(this.dischargetypeForm.value)
             this._DischargetypeMasterService.dischargeTypeMasterSave(this.dischargetypeForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
+        } {
+            let invalidFields = [];
+            if (this.dischargetypeForm.invalid) {
+                for (const controlName in this.dischargetypeForm.controls) {
+                    if (this.dischargetypeForm.controls[controlName].invalid) {
+                        invalidFields.push(`dischargetype Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
                 });
-            return;
+            }
+
         }
     }
-  
     onClear(val: boolean) {
         this.dischargetypeForm.reset();
         this.dialogRef.close(val);
