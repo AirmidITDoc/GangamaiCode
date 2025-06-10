@@ -10,6 +10,7 @@ export class CommonDateComponent implements OnInit {
 
     @Input('screenFrom') screenFromString = '';
     @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+    @Input() isDisableFuture:boolean=false;
     dateForm: FormGroup;
     public now: Date = new Date();
     currentDate: any;
@@ -99,7 +100,9 @@ export class CommonDateComponent implements OnInit {
             this.eventEmitForParent(this.dateTimeString[0], this.dateTimeString[1]);
         }, 2);
     }
-
+    myFilter = (d: Date | null): boolean => {
+        return this.isDisableFuture? d<=new Date():true;
+    };
     onChangeDate(value) {
         if (value) {
             const dateOfReg = new Date(value);

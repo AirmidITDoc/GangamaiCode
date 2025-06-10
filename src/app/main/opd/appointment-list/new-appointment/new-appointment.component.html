@@ -8,7 +8,7 @@
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
