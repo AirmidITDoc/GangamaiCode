@@ -480,14 +480,14 @@
                                                                 <div class="net-amt-box">
                                                                     <span class="net-amt-label">Discount Amount :</span>
                                                                     <span class="net-amt-value">
-                                                                        {{OpBillForm?.get("concessionAmt")?.value
+                                                                        {{OPFooterForm?.get("concessionAmt")?.value
                                                                         |
                                                                         currency:'INR' }}</span>
                                                                 </div>
                                                                 <div class="net-amt-box">
                                                                     <span class="net-amt-label">Net Amount :</span>
                                                                     <span class="net-amt-value">
-                                                                        {{OpBillForm?.get("netPayableAmt")?.value |
+                                                                        {{OPFooterForm?.get("netPayableAmt")?.value |
                                                                         currency:'INR' }}</span>
                                                                 </div>
                                                             </div>
@@ -661,32 +661,32 @@
                     <div class="modal-card-container">
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content class="py-4">
-                                <form [formGroup]="OpBillForm">
+                                <form [formGroup]="OPFooterForm">
                                     <div fxLayout="row" fxLayoutGap="6px">
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Total Amount" formControlName="totalAmt"
-                                                [formGroup]="OpBillForm"
+                                                [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().totalAmount" [type]="'number'"
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
                                             <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
-                                                [formGroup]="OpBillForm"
+                                                [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().discountPer" [type]="'number'"
                                                 [readonly]="isDiscountApplied">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Discount Amount"
-                                                formControlName="concessionAmt" [formGroup]="OpBillForm"
+                                                formControlName="concessionAmt" [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().discountAmount" [type]="'number'"
                                                 [readonly]="isDiscountApplied">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Consessionres">
                                             <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId"
-                                                [formGroup]="OpBillForm"
+                                                [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().concessionId"
                                                 [mode]="autocompleteModeConcession"
                                                 (selectionChange)="selectChangeConcession($event)">
@@ -694,7 +694,7 @@
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Total Net Amount" formControlName="netPayableAmt"
-                                                [formGroup]="OpBillForm"
+                                                [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().totalNetAmount" [type]="'number'"
                                                 [readonly]="true">
                                             </airmid-textbox>
@@ -721,7 +721,7 @@
                         aria-label="Close dialog" matTooltip="Close">Close</button>
                     <button type="button" class="btn btn-primary"
                         [disabled]="!chargeList.length" 
-                        (click)="onsave()">Save</button>
+                        (click)="BillSave()">Save</button>
                 </div>
             </div>
         </div>

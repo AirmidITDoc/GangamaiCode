@@ -21,8 +21,7 @@
                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                 placeholderText="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
-                                fxFlex="40%"></airmid-autocomplete>
-
+                                fxFlex="40%"></airmid-autocomplete> 
                         </div>
                     </div>
                 </form>
@@ -67,16 +66,7 @@
                     </mat-card>
                 </div>
             </div>
-        </div>
-
-
-        <ng-template #balTemplate let-element>
-
-            <mat-cell *matCellDef="let element" style="background-color: lightcoral;" class="w-130">
-                {{element.balanceAmt | currency:'INR'}}
-            </mat-cell>
-
-        </ng-template>
+        </div>  
 
         <ng-template #actionsTemplate let-element>
             <div>
@@ -108,22 +98,7 @@
         </ng-template>
 
 
-        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-            <ng-container filters>
-                <form [formGroup]="myFormGroup">
-                    <mat-form-field appearance="outline">
-                        <mat-label>RegId</mat-label>
-                        <input matInput placeholder="Search RegId" autocomplete="off" [formGroup]="myFormGroup"
-                            formControlName="RegId" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                </form>
-
-            </ng-container>
+        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"> 
         </airmid-table>
     </div>
 </div>

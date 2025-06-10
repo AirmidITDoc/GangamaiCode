@@ -20,8 +20,8 @@ export class FormvalidationserviceService {
    validDateValidator():any {
    return (control: AbstractControl): ValidationErrors | null => {
    const value = control.value;
-         const DatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-        if(!DatePattern.test(value) && !isNaN(Date.parse(value))){
+       //  const DatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        if(!isNaN(Date.parse(value))){
           return null
         }else{
           return { invalidDate: true }
