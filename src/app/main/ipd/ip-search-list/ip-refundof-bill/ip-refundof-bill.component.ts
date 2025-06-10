@@ -16,7 +16,6 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
 
-
 @Component({
   selector: 'app-ip-refundof-bill',
   templateUrl: './ip-refundof-bill.component.html',
@@ -38,14 +37,17 @@ export class IPRefundofBillComponent implements OnInit {
 
   AdmissionId: any = '0'
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   AllColumns = [
-    { heading: "Bil Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', width: 160 },
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', width: 160 },
+    { heading: "Bil Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+    { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+    { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22 },
   ]
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
   gridConfig: gridModel = {
     apiUrl: "RefundOfBill/IPBillListforRefundList",
     columnsList: this.AllColumns,
@@ -131,7 +133,7 @@ export class IPRefundofBillComponent implements OnInit {
         refundAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
         this._FormvalidationserviceService.notEmptyOrZeroValidator()
         ]],
-        remark: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         transactionId: [2, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelled: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -187,7 +189,7 @@ export class IPRefundofBillComponent implements OnInit {
 
   getSelectedRow(contact) {
     console.log(contact)
-      this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(contact.billNo)  
+    this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(contact.billNo)
     if (contact.netPayableAmt == contact.refundAmount) {
       this.toastr.warning('Selected Bill already Refunded.!', 'warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -243,45 +245,38 @@ export class IPRefundofBillComponent implements OnInit {
 
   }
 
-  gettablecalculation(element, RefundAmt) {
-    // debugger 
-    if (RefundAmt > 0 && RefundAmt <= element.balAmt) {
-      element.balanceAmount = ((element.balAmt) - (RefundAmt));
-      element.previousRefundAmt = RefundAmt;
-    }
-    else if (RefundAmt > element.balAmt) {
-      this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      element.refundAmount = '';
-      element.balanceAmount = element.balAmt;
-    }
-    else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined) {
-      element.refundAmount = '';
-      element.balanceAmount = element.balAmt;
-    }
-    else if (this.RefundAmount < this.NetBillAmount) {
-      this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      element.refundAmount = '';
-      element.balanceAmount = element.balAmt;
-    }
-    this.getServicetotSum()
+  gettablecalculation(row: InsertRefundDetail = null, refundAmount): void {
+  if (refundAmount > 0 && refundAmount <= row.balAmt) {
+    const balanceAmount = row.balAmt - refundAmount;
+    row.balanceAmount = balanceAmount;
+  } else if (refundAmount > row.balAmt) {
+    this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    row.refundAmount = 0;
+    row.balanceAmount = row.balAmt;
+  } else if (refundAmount == 0 || refundAmount === '' || refundAmount == null || refundAmount === undefined) {
+    row.refundAmount = 0;
+    row.balanceAmount = row.balAmt;
   }
-  getServicetotSum() {
-    let totalRefundAmt = this.Chargelist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0);
-    let netAmt = this.Chargelist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-    this.RefundOfBillFormFooter.patchValue({
-      TotalRefundAmount: totalRefundAmt
-    })
-  }
+  this.calculateTotalAmount();
+}
+
+calculateTotalAmount(): void {
+  let RefundAmount = this.dataSource2.data.reduce((sum, { refundAmount }) => sum + +(refundAmount || 0), 0);
+  let RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum + +(balanceAmount || 0), 0);
+
+  this.RefundOfBillFormFooter.patchValue({
+    TotalRefundAmount: RefundAmount,
+    RefundBalAmount: Math.round(RefBalAmount),
+  }, { emitEvent: false });
+}
 
   onSave() {
-    debugger
-      console.log("FormValue", this.vRefundOfBillFormGroup.value)
     this.vRefundOfBillFormGroup.get("refund.refundAmount")?.setValue(parseInt(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value))
     this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
+    this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
+    this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
 
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
 
@@ -293,40 +288,40 @@ export class IPRefundofBillComponent implements OnInit {
         this.refundDetailsArray.push(this.createRefundDetail(item));
         this.addChargesArray.push(this.createAddCharge(item));
       });
-      
-    let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-    PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo,
-    PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
-    PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
-    PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
-    PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
-    PatientHeaderObj['NetPayAmount'] = this.RefundOfBillFormFooter.get('TotalRefundAmount').value || 0
 
-     const dialogRef = this._matDialog.open(OpPaymentComponent,
-      {
-        maxWidth: "80vw",
-        height: '650px',
-        width: '80%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "IP-RefundOfBill",
-          advanceObj: PatientHeaderObj,
+      let PatientHeaderObj = {};
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
+      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo,
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
+      PatientHeaderObj['NetPayAmount'] = this.RefundOfBillFormFooter.get('TotalRefundAmount').value || 0
+
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-RefundOfBill",
+            advanceObj: PatientHeaderObj,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.submitDataPay) {
+          this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
+          console.log(this.vRefundOfBillFormGroup.value);
+          this._IpSearchListService.InsertRefundOfBill(this.vRefundOfBillFormGroup.value).subscribe(response => {
+            this.viewgetRefundofBillReportPdf(response)
+            this.grid.bindGridData();
+            this.onClose();
+          });
         }
       });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.submitDataPay) {
-          this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
-        console.log(this.vRefundOfBillFormGroup.value);
-        this._IpSearchListService.InsertRefundOfBill(this.vRefundOfBillFormGroup.value).subscribe(response => {
-          this.viewgetRefundofBillReportPdf(response)
-          this.grid.bindGridData();
-          this.onClose();
-        });
-      }
-    });
     } else {
       let invalidFields: string[] = [];
       // checks nested error 
@@ -352,7 +347,7 @@ export class IPRefundofBillComponent implements OnInit {
         });
       }
     }
-   }
+  }
 
   viewgetRefundofBillReportPdf(RefundId) {
     this.commonService.Onprint("RefundId", RefundId, "IpBillRefundReceipt");
@@ -415,10 +410,6 @@ export class InsertRefund {
   IsCancelledBy: number;
   IsCancelledDate: any;
   RefundNo: string;
-  // BillNo: number;
-  // BillDate: any;
-  // PatientName: String;
-  // IsRefundFlag : boolean;
 
   constructor(InsertRefundObj) {
     {
@@ -437,13 +428,6 @@ export class InsertRefund {
       this.IsCancelledBy = InsertRefundObj.IsCancelledBy || 0;
       this.IsCancelledDate = InsertRefundObj.IsCancelledDate || '';
       this.RefundNo = InsertRefundObj.RefundNo || '';
-
-      // this.BillNo = InsertRefundObj.BillNo || 0;
-      // this.BillDate = InsertRefundObj.BillDate || '';
-      // this.PatientName = InsertRefundObj.PatientName || '';
-
-      // this.IsRefundFlag  = InsertRefundObj.IsRefundFlag  || 0;
-
     }
   }
 }
@@ -465,6 +449,8 @@ export class InsertRefundDetail {
   NetAmount: number;
   chargesDocName: any;
   RefundAmt: any;
+  balAmt: any;
+  balanceAmount: any;
 
   constructor(InsertRefundDetailObj) {
     {
@@ -484,6 +470,9 @@ export class InsertRefundDetail {
       this.NetAmount = InsertRefundDetailObj.NetAmount || '';
       this.chargesDocName = InsertRefundDetailObj.chargesDocName || 0;
       this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
+      this.balAmt = InsertRefundDetailObj.balAmt || 0;
+      this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
+
     }
   }
 }

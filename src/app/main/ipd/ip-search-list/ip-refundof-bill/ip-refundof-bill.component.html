@@ -215,7 +215,7 @@
                                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                         <mat-form-field appearance="fill">
                                             <input matInput [(ngModel)]="element.refundAmount" type="text" OnlyNumber
-                                                (keyup)="gettablecalculation(element,element.refundAmount)"
+                                                (ngModelChange)="gettablecalculation(element,element.refundAmount)"
                                                 (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
                                     </mat-cell>

@@ -211,7 +211,7 @@
                 <div class="form-input">
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>PATHOLOGY</mat-label>
-                    <textarea matInput name="Pathology" formControlName="pathology" [(ngModel)]="vPathology" cols="300" rows="6"></textarea>
+                    <textarea matInput name="investigation" formControlName="investigation" [(ngModel)]="vPathology" cols="300" rows="6"></textarea>
                   </mat-form-field>
                 </div>
 
@@ -371,6 +371,16 @@
                               <input name="DoctorAssistantName" formControlName="doctorAssistantName" [(ngModel)]="vDoctorAssistantName" matInput />
                             </mat-form-field>
                           </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%">
+                             <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>FollowUp Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" formControlName="followupdate"
+                                (dateChange)="onChangeDate($event.value)">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -473,8 +483,7 @@
               </mat-card>
             </mat-tab>
 
-            <mat-tab>
-              <!-- <form [formGroup]="DischargesumInsertForm"> -->
+            <!-- <mat-tab>
                 <airmid-dropdown
                   label="Ref.Doctor Name"
                   formControlName="dischargeDoctor3"
@@ -482,8 +491,7 @@
                   [validations]="getValidationMessages().dischargeDoctor3"
                   [mode]="autocompleteModeRefDoctor">
                 </airmid-dropdown>
-            <!-- </form>               -->
-            </mat-tab>
+            </mat-tab> -->
           </mat-tab-group>
         </form>
       </div>
