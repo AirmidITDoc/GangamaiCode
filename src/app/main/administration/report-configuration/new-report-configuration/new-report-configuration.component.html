@@ -8,8 +8,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -24,125 +23,193 @@
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportSection" formControlName="reportSection"
-                                [value]="data?.reportSection" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportSection" [maxLength]="50">
+                            <airmid-textbox 
+                                label="ReportSection" 
+                                formControlName="reportSection" 
+                                [value]="data?.reportSection" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportSection" 
+                                [maxLength]="50">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportName" formControlName="reportName" [value]="data?.reportName"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportName"
+                            <airmid-textbox 
+                                label="ReportName" 
+                                formControlName="reportName" 
+                                [value]="data?.reportName" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportName" 
                                 [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ParentID" formControlName="parentid" [value]="data?.parentid"
-                                [formGroup]="myform" [validations]="getValidationMessages().parentid" [maxLength]="10">
+                            <airmid-textbox 
+                                label="ParentID" 
+                                formControlName="parentid" 
+                                [value]="data?.parentid" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().parentid" 
+                                [maxLength]="10">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportMode" formControlName="reportMode" [value]="data?.reportMode"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportMode"
+                            <airmid-textbox 
+                                label="ReportMode" 
+                                formControlName="reportMode" 
+                                [value]="data?.reportMode" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportMode" 
                                 [maxLength]="500">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportTitle" formControlName="reportTitle"
-                                [value]="data?.reportTitle" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportTitle" [maxLength]="200">
+                            <airmid-textbox 
+                                label="ReportTitle" 
+                                formControlName="reportTitle" 
+                                [value]="data?.reportTitle" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportTitle" 
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportHeaderFile" formControlName="reportHeaderFile"
-                                [value]="data?.reportHeaderFile" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportHeaderFile" [maxLength]="1000">
+                            <airmid-textbox 
+                                label="ReportHeaderFile" 
+                                formControlName="reportHeaderFile" 
+                                [value]="data?.reportHeaderFile" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportHeaderFile" 
+                                [maxLength]="1000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="ReportHeader" formControlName="reportHeader"
-                                [value]="data?.reportHeader" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportHeader" [maxLength]="1000">
+                            <airmid-textbox label="ReportHeader" formControlName="reportHeader" [value]="data?.reportHeader"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportHeader" [maxLength]="1000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="ReportColumn" formControlName="reportColumn"
-                                [value]="data?.reportColumn" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportColumn" [maxLength]="1000">
+                            <airmid-textbox label="ReportColumn" formControlName="reportColumn" [value]="data?.reportColumn"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportColumn" [maxLength]="1000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="reportTotalField" formControlName="reportTotalField"
-                                [value]="data?.reportTotalField" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportTotalField" [maxLength]="2000">
+                            <airmid-textbox label="reportTotalField" formControlName="reportTotalField" [value]="data?.reportTotalField"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportTotalField" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>
-                    <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                      <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="reportTotalField" formControlName="reportTotalField"
-                                [value]="data?.reportTotalField" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportTotalField" [maxLength]="2000">
-                            </airmid-textbox>
-                        </div>
-                    </div> -->
-                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="summaryLabel" formControlName="summaryLabel"
-                                [value]="data?.summaryLabel" [formGroup]="myform"
-                                [validations]="getValidationMessages().summaryLabel">
+                            <airmid-textbox label="summaryLabel" formControlName="summaryLabel" [value]="data?.summaryLabel"
+                                [formGroup]="myform" [validations]="getValidationMessages().summaryLabel" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="ReportFilter" formControlName="reportFilter"
-                                [value]="data?.reportFilter" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportFilter" [maxLength]="100">
+                            <airmid-textbox label="reportGroupByLabel" formControlName="reportGroupByLabel" [value]="data?.reportGroupByLabel"
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportGroupByLabel"
+                                >
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="ReportHeader" 
+                                formControlName="reportHeader" 
+                                [value]="data?.reportHeader" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportHeader" 
+                                [maxLength]="100">
+                            </airmid-textbox>
+                        </div> -->
+
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox 
+                                label="ReportColumn" 
+                                formControlName="reportColumn" 
+                                [value]="data?.reportColumn" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportColumn" 
+                                [maxLength]="100">
+                            </airmid-textbox>
+                        </div> -->
+
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox 
+                                label="ReportFilter" 
+                                formControlName="reportFilter" 
+                                [value]="data?.reportFilter" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportFilter" 
+                                [maxLength]="100">
                             </airmid-textbox>
                         </div>
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <!-- <airmid-textbox 
+                                label="ReportBodyFile" 
+                                formControlName="reportBodyFile" 
+                                [value]="data?.reportBodyFile" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportBodyFile" 
+                                [maxLength]="200">
+                            </airmid-textbox> -->
+
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>reportBodyFile</mat-label>
-                                <mat-select placeholder="ReportBodyFile" formControlName="reportBodyFile"
-                                    name="reportBodyFile">
+                                <mat-select placeholder="ReportBodyFile" formControlName="reportBodyFile" name="reportBodyFile">
                                     <mat-option *ngFor="let i of reportBodyFile" [value]="i">{{i}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportFolderName" formControlName="reportFolderName"
-                                [value]="data?.reportFolderName" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportFolderName" [maxLength]="200">
+                            <airmid-textbox 
+                                label="ReportFolderName" 
+                                formControlName="reportFolderName" 
+                                [value]="data?.reportFolderName" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportFolderName" 
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportFileName" formControlName="reportFileName"
-                                [value]="data?.reportFileName" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportFileName" [maxLength]="200">
+                            <airmid-textbox 
+                                label="ReportFileName" 
+                                formControlName="reportFileName" 
+                                [value]="data?.reportFileName" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportFileName" 
+                                [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="ReportSPName" formControlName="reportSpname"
-                                [value]="data?.reportSpname" [formGroup]="myform"
-                                [validations]="getValidationMessages().reportSpname" [maxLength]="500">
+                            <airmid-textbox 
+                                label="ReportSPName" 
+                                formControlName="reportSpname" 
+                                [value]="data?.reportSpname" 
+                                [formGroup]="myform" 
+                                [validations]="getValidationMessages().reportSpname" 
+                                [maxLength]="500">
                             </airmid-textbox>
                         </div>
                     </div>
@@ -150,8 +217,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageOrientation</mat-label>
-                                <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation"
-                                    name="reportPageOrientation">
+                                <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation" name="reportPageOrientation">
                                     <mat-option *ngFor="let i of reportPageOrientation" [value]="i">{{
                                         i}}</mat-option>
                                 </mat-select>
@@ -161,8 +227,7 @@
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageSize</mat-label>
-                                <mat-select placeholder="reportPageSize" formControlName="reportPageSize"
-                                    name="reportPageSize">
+                                <mat-select placeholder="reportPageSize" formControlName="reportPageSize" name="reportPageSize">
                                     <mat-option *ngFor="let i of reportPageSize" [value]="i">{{
                                         i}}</mat-option>
                                 </mat-select>
@@ -172,19 +237,28 @@
 
                 </div>
 
-
-            </form>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <div fxLayoutAlign="end">
-                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                        style="margin: 20px 20px 0px 50px; ">
-                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <!-- <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center"> -->
+                        <!-- <div class="modal-footer-actins">
+                            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform" [(ngModel)]="isActive"></app-airmid-slider>
+                        </div> -->
+                        <!-- <div class="modal-footer-buttons">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div> -->
+                    <div fxLayoutAlign="end">
+                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
+                            <button class="btn btn-primary"   (click)="onSubmit()">Save</button>
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                           
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
