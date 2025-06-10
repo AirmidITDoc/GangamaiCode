@@ -15,7 +15,7 @@ import { TariffMasterService } from '../tariff-master.service';
 export class NewTariffComponent implements OnInit {
 
     tariffForm: FormGroup;
-    isActive:boolean=true;
+    isActive: boolean = true;
 
     constructor(
         public _TariffMasterService: TariffMasterService,
@@ -25,35 +25,38 @@ export class NewTariffComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.tariffForm=this._TariffMasterService.createTariffForm();
+        this.tariffForm = this._TariffMasterService.createTariffForm();
         this.tariffForm.markAllAsTouched();
-        if((this.data?.tariffId??0) > 0){
-            this.isActive=this.data.isActive
+        if ((this.data?.tariffId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.tariffForm.patchValue(this.data);
         }
     }
 
-    onSubmit(){
-        
-        if(!this.tariffForm.invalid)
-        {
-        
-            console.log("insert tariff:", this.tariffForm.value);
-            
-            this._TariffMasterService.tariffMasterSave(this.tariffForm.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error)=>{
-            this.toastr.error(error.message);
+    onSubmit() {
+
+        if (!this.tariffForm.invalid) {
+            console.log(this.tariffForm.value)
+            this._TariffMasterService.tariffMasterSave(this.tariffForm.value).subscribe((response) => {
+                this.onClear(true);
             });
-        } 
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }   
+        } {
+            let invalidFields = [];
+            if (this.tariffForm.invalid) {
+                for (const controlName in this.tariffForm.controls) {
+                    if (this.tariffForm.controls[controlName].invalid) {
+                        invalidFields.push(`tariff Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
 
     onClear(val: boolean) {
@@ -61,8 +64,8 @@ export class NewTariffComponent implements OnInit {
         this.dialogRef.close(val);
     }
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             tariffName: [
                 { name: "required", Message: "Tariff Name is required" },
                 { name: "maxlength", Message: "Tariff Name should not be greater than 50 char." },

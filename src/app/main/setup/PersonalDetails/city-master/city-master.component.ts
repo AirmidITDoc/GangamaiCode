@@ -23,31 +23,32 @@ export class CityMasterComponent implements OnInit {
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    allColumns=[
-            { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
+    allColumns = [
+        { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
 
-        allFilters=[
-            { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+    allFilters = [
+        { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
         apiUrl: "CityMaster/List",
         columnsList: this.allColumns,

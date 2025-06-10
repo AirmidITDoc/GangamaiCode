@@ -27,7 +27,7 @@ export class NewBankComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
+
     this.bankForm = this._BankMasterService.createBankForm();
     this.bankForm.markAllAsTouched();
 
@@ -42,21 +42,26 @@ export class NewBankComponent implements OnInit {
 
   onSubmit() {
     if (!this.bankForm.invalid) {
-
-      console.log("bank json:", this.bankForm.value);
-
+      console.log(this.bankForm.value)
       this._BankMasterService.bankMasterSave(this.bankForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
         this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
       });
-    }
-    else {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+    } {
+      let invalidFields = [];
+      if (this.bankForm.invalid) {
+        for (const controlName in this.bankForm.controls) {
+          if (this.bankForm.controls[controlName].invalid) {
+            invalidFields.push(`bank Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     }
   }
 

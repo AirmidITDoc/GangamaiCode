@@ -11,7 +11,7 @@ export class WardMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createWardForm();
         this.myformSearch = this.createSearchForm();
@@ -19,23 +19,23 @@ export class WardMasterService {
 
     createWardForm(): FormGroup {
         return this._formBuilder.group({
-            roomId: [0],
+            roomId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             roomName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             locationId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             classId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             roomType: [0],
             isAvailible: true,
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
         });
     }
 
@@ -49,9 +49,9 @@ export class WardMasterService {
     initializeFormGroup() {
         this.createWardForm();
     }
-    
+
     public roomMasterSave(Param: any) {
-        
+
         if (Param.roomId) {
             return this._httpClient.PutData("WardMaster/" + Param.roomId, Param);
         } else return this._httpClient.PostData("WardMaster", Param);

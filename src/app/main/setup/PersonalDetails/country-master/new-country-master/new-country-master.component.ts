@@ -34,26 +34,29 @@ export class NewCountryMasterComponent implements OnInit {
 
 
   onSubmit() {
-    if(!this.countryForm.invalid)
-    {
-   
-            console.log("Country json :-",this.countryForm.value);
+    if (!this.countryForm.invalid) {
+            console.log(this.countryForm.value)
+            this._CountryMasterService.countryMasterSave(this.countryForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.countryForm.invalid) {
+                for (const controlName in this.countryForm.controls) {
+                    if (this.countryForm.controls[controlName].invalid) {
+                        invalidFields.push(`country Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
-        this._CountryMasterService.countryMasterSave(this.countryForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+        }
     }
-    else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
-}
 
     getValidationMessages() {
       return {

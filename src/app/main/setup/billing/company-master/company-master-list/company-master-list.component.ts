@@ -62,24 +62,27 @@ export class CompanyMasterListComponent implements OnInit {
     
     onSubmit() {  
                
-        if(!this.companyForm.invalid)
-        {
-
-            console.log("Company Insert:-",this.companyForm.value);
-
+        if (!this.companyForm.invalid) {
+            console.log(this.companyForm.value)
             this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error) => {
-            this.toastr.error(error.message);
+                this.onClear(true);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.companyForm.invalid) {
+                for (const controlName in this.companyForm.controls) {
+                    if (this.companyForm.controls[controlName].invalid) {
+                        invalidFields.push(`company Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
   

@@ -20,12 +20,13 @@ export class SubGroupMasterService {
 
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
-            subGroupId: [0],
+            subGroupId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             subGroupName: ["", 
                 [
                     Validators.required, Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             groupId: [0,

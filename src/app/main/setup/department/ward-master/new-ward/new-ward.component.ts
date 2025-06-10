@@ -40,27 +40,29 @@ export class NewWardComponent implements OnInit {
     }
 
     onSubmit() {
-        if(!this.roomForm.invalid) 
-        {
-        
-            console.log("WardMaster Insert:",this.roomForm.value)
-
+       if (!this.roomForm.invalid) {
+            console.log(this.roomForm.value)
             this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
+                this.onClear(true);
             });
-        }
-        else
-        {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.roomForm.invalid) {
+                for (const controlName in this.roomForm.controls) {
+                    if (this.roomForm.controls[controlName].invalid) {
+                        invalidFields.push(`room Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
-
     selectChangelocation(obj: any)
     {
         console.log(obj);

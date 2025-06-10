@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { gridRequest } from "app/core/models/gridRequest";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -12,7 +13,8 @@ export class DepartmentMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createDepartmentForm();
         this.myformSearch = this.createSearchForm();
@@ -20,12 +22,13 @@ export class DepartmentMasterService {
 
     createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
-            departmentId: [0],
+            departmentId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             departmentName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             isActive:[true,[Validators.required]],

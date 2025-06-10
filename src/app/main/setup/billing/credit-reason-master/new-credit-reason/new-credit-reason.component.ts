@@ -14,45 +14,48 @@ import { CreditreasonService } from '../creditreason.service';
 })
 export class NewCreditReasonComponent implements OnInit {
 
-  creditreasonForm: FormGroup;
-  isActive:boolean=true;
+    creditreasonForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _CreditreasonService: CreditreasonService,
-      public dialogRef: MatDialogRef<NewCreditReasonComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    constructor(
+        public _CreditreasonService: CreditreasonService,
+        public dialogRef: MatDialogRef<NewCreditReasonComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
 
-  ngOnInit(): void {
-      this.creditreasonForm = this._CreditreasonService.createCreditreasonForm();
-      if((this.data?.creditId??0) > 0){
-        this.isActive=this.data.isActive
-        this.creditreasonForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.creditreasonForm = this._CreditreasonService.createCreditreasonForm();
+        if ((this.data?.creditId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.creditreasonForm.patchValue(this.data);
+        }
     }
-  }
-  onSubmit() {
-    if(!this.creditreasonForm.invalid)
-            {
+    onSubmit() {
+        if (!this.creditreasonForm.invalid) {
+            console.log(this.creditreasonForm.value)
+            this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.creditreasonForm.invalid) {
+                for (const controlName in this.creditreasonForm.controls) {
+                    if (this.creditreasonForm.controls[controlName].invalid) {
+                        invalidFields.push(`creditreason Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
-            console.log("JSON: ", this.creditreasonForm.value);
-
-        this._CreditreasonService.creditreasonMasterSave(this.creditreasonForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-    } 
-    else
-    {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-    }   
-  }
+        }
+    }
 
     onClear(val: boolean) {
         this.creditreasonForm.reset();
@@ -61,7 +64,7 @@ export class NewCreditReasonComponent implements OnInit {
 
     getValidationMessages() {
         return {
-        creditReason: [
+            creditReason: [
                 { name: "required", Message: "Credit Reason is required" },
                 { name: "maxlength", Message: "Credit Reason should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
