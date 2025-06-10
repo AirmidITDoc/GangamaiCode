@@ -1,5 +1,5 @@
 import { DatePipe, Time } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
@@ -44,32 +44,34 @@ export class RegistrationComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
+     ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Age-Y", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "PhoneNo", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onEdit(data);
-                        this.grid.bindGridData();
-                    }
-                },
-                {
-                    action: gridActions.print, callback: (data: any) => { //changed by raksha
-                        // this.onEdit(data);
-                    }
-                }
-            ]
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
         }
+
+        // {
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.onEdit(data);
+        //                 this.grid.bindGridData();
+        //             }},]
+        // }
     ];
 
     gridConfig: gridModel = {
@@ -87,6 +89,8 @@ export class RegistrationComponent implements OnInit {
            
         ]
     }
+    OnPrint(Param) { console.log(Param) }
+    OnNewAppointment(Param) { console.log(Param) }
 
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -107,7 +111,7 @@ export class RegistrationComponent implements OnInit {
     }
 
 
-    onEdit(row) {
+    OnEditRegistration(row) {
         this._RegistrationService.populateForm(row);
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
@@ -124,36 +128,6 @@ export class RegistrationComponent implements OnInit {
         });
     }
 
-    // onDeactive(doctorId) {
-    //     this.confirmDialogRef = this._matDialog.open(
-    //         FuseConfirmDialogComponent,
-    //         {
-    //             disableClose: false,
-    //         }
-    //     );
-    //     this.confirmDialogRef.componentInstance.confirmMessage =
-    //         "Are you sure you want to deactive?";
-    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
-
-    //         if (result) {
-    //             this._RegistrationService.deactivateTheStatus(doctorId).subscribe((data: any) => {
-    //                 if (data.StatusCode == 200) {
-    //                     this.toastr.success(
-    //                         "Record updated Successfully.",
-    //                         "updated !",
-    //                         {
-    //                             toastClass:
-    //                                 "tostr-tost custom-toast-success",
-    //                         }
-    //                     );
-
-    //                 }
-    //             });
-    //         }
-    //         this.confirmDialogRef = null;
-    //     });
-    // }
-
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
@@ -165,7 +139,6 @@ export class RegistrationComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
         this.gridConfig = {
             apiUrl: "OutPatient/RegistrationList",
             columnsList: this.allcolumns,
@@ -178,7 +151,6 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
-             
             ],
             row: 25
         }
