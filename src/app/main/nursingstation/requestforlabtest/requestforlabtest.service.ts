@@ -52,6 +52,9 @@ export class RequestforlabtestService {
   public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
+    public getLastVisitedPatientListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_LastVisited_PatientListSearch", employee)
+  }
 
   public getPathologyTempReport(PathReportId,OP_IP_Type,loader = true){
     if (loader) {

@@ -86,7 +86,7 @@
                                                                     [value]="option">
                                                                     {{option.FirstName}} {{option.MiddleName}}
                                                                     {{option.LastName}} | {{option.RegNo}} |
-                                                                    {{option.MobileNo}}
+                                                                    {{option.MobileNo}} | VisitDate: {{option.VisitDate}}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                            
@@ -118,7 +118,13 @@
                                                                 </mat-option>
                                                             </mat-autocomplete> 
                                                         </mat-form-field>
-                                                       </div>
+                                                       </div>  
+                                                       <div style="padding: 15px;"
+                                                          *ngIf="ItemSubform.get('PatientType').value != 'IP' && ItemSubform.get('PatientType').value != 'External'">
+                                                            <mat-checkbox fxFlex="15%" [checked] formControlName="isMark"
+                                                                (change)="getSearchListIP()">IsMark
+                                                            </mat-checkbox>
+                                                        </div> 
                                                         <mat-form-field appearance="outline"
                                                             *ngIf="ItemSubform.get('PatientType').value == 'External'"
                                                             fxFlex="60%">
@@ -602,11 +608,11 @@
                                 </div>
 
                               
-                                    <marquee behavior="scroll" direction="left" scrollamount="4">
+                                    <!-- <marquee behavior="scroll" direction="left" scrollamount="4">
                                         <span *ngFor="let item of ExpiryItem" style="background-color: rgb(240, 100, 100);">
                                           {{item.ItemName}}
                                           </span>
-                                      </marquee> 
+                                      </marquee>  -->
                                
                                 
                                 
