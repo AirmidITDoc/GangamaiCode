@@ -36,6 +36,7 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "ReportColumn", key: "reportColumn", sort: true, align: 'left', emptySign: 'NA', width: 350 },
                 { heading: "reportTotalField", key: "reportTotalField", sort: true, align: "left", emptySign: 'NA', width: 350 },
                 { heading: "reportGroupByLabel", key: "reportGroupByLabel", sort: true, align: "left", emptySign: 'NA', width: 250 },
+                { heading: "summaryLabel", key: "summaryLabel", sort: true, align: "left", emptySign: 'NA', width: 250 },
                 { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -60,7 +61,7 @@ export class ReportConfigurationComponent implements OnInit{
                 } //Action 1-view, 2-Edit,3-delete
             ],
             sortField: "ReportId",
-            sortOrder: 0,
+            sortOrder: 1,
             filters: [
                 { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
                 { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }

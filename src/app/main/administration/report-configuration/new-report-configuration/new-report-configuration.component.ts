@@ -37,25 +37,40 @@ export class NewReportConfigurationComponent implements OnInit{
             this.isActive=this.data.isActive
             this.myform.patchValue(this.data);
         }
+
+        // Listen to changes on 'reportSection' and update other fields
+        this.myform.get('reportName')?.valueChanges.subscribe(value => {
+            const noSpacesValue = value.replace(/\s+/g, '');
+            this.myform.patchValue({
+                reportMode: noSpacesValue,
+                reportTitle: noSpacesValue,
+                reportFolderName: noSpacesValue,
+                reportFileName: noSpacesValue
+                // Add any other fields you want to auto-fill
+            }, { emitEvent: false }); // Avoid infinite loop
+        });
     }
 
     onSubmit() {
+        console.log("Report-Config JSON :-", this.myform.value);
         if (!this.myform.invalid) 
         {
             console.log("Report-Config JSON :-", this.myform.value);
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
-                console.log(data)
-                this.toastr.success(data.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
         } 
-        else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
+       else {
+            let invalidFields = [];
+            if (this.myform.invalid) {
+                for (const controlName in this.myform.controls) {
+                    if (this.myform.controls[controlName].invalid) { invalidFields.push(`Report Form: ${controlName}`); }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+
         }
     }
 
@@ -93,6 +108,9 @@ export class NewReportConfigurationComponent implements OnInit{
             reportTotalField:[
                 // { name: "required", Message: "Report column is required" },
                 // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
+            ],
+             summaryLabel:[
+                { name: "maxlength", Message: "Report Column should not be greater than 1000 char." },
             ],
             reportColumn:[
                 { name: "required", Message: "Report column is required" },

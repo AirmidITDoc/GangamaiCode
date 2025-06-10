@@ -70,8 +70,8 @@ export class ReportConfigurationService {
             ],
 
             reportTotalField: [""],
-            reportGroupByLabel: ["",
-            ],
+            summaryLabel:[""],
+            reportGroupByLabel: [""],
             reportHeaderFile: ["",
                 [
                     Validators.required,
