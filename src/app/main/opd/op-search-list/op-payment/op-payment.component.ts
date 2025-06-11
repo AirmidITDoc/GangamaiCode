@@ -604,9 +604,10 @@ console.log(this.data)
     }
     else if (this.data.FromName == "OP-RefundOfBill" ) {
       this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
+      this.Paymentobj['ReceiptNo'] = '';
       this.Paymentobj['PaymentId'] = 0;
-      this.Paymentobj['PaymentDate'] = formattedDate
-      this.Paymentobj['PaymentTime'] = formattedTime
+      this.Paymentobj['PaymentDate'] = formattedDate,
+      this.Paymentobj['PaymentTime'] = formattedTime,
       this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
       this.Paymentobj['ChequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
       this.Paymentobj['ChequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
@@ -615,14 +616,14 @@ console.log(this.data)
       this.Paymentobj['CardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
       this.Paymentobj['CardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
       this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
-      this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || "01/01/1900";
       this.Paymentobj['AdvanceUsedAmount'] = 0;
       this.Paymentobj['AdvanceId'] = 0;
       this.Paymentobj['RefundId'] = 0; 
       this.Paymentobj['TransactionType'] = 2;
-      this.Paymentobj['Remark'] = " ";
-      this.Paymentobj['AddBy'] =1// this._loggedService.currentUserValue.user.id,
-        this.Paymentobj['IsCancelled'] = false;
+      this.Paymentobj['Remark'] = '';
+      this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
+      this.Paymentobj['IsCancelled'] = false;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['CashCounterId'] = 0;
