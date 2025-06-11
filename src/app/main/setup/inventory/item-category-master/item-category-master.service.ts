@@ -21,18 +21,19 @@ export class ItemCategoryMasterService {
 
     createItemCategoryForm(): FormGroup {
         return this._formBuilder.group({
-            itemCategoryId: [0],
+            itemCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemCategoryName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             itemTypeId: ["",
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 

@@ -21,23 +21,18 @@
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
                 <div fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="myform">
+                    <form [formGroup]="itemForm">
 
                         <div fxLayout="column" fxFlex="100%">
 
-                            <!-- <airmid-dropdown label="Item Search" formControlName="SearchItemId" [formGroup]="myform"
-                                [validations]="getValidationMessages().SearchItemId" [mode]="autocompleteModeItem"
-                                (selectionChange)="selectChangeItemName($event)">
-                            </airmid-dropdown> -->
-
-                            <airmid-autocomplete label="Item Name" 
-                            [formGroup]="myform"
-                            formControlName="SearchItemId" 
-                            placeholderText="Search Item Name" fxFlex
-                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                            (selectionChange)="selectChangeItemName($event)" 
-                            TextField="formattedText" ValueField="SearchItemId">
+                            <form [formGroup]="myform">
+                                <airmid-autocomplete label="Item Name" [formGroup]="myform" formControlName="SearchItemId"
+                                placeholderText="Search Item Name" fxFlex
+                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + storeID + '&ItemName='"
+                                (selectionChange)="selectChangeItemName($event)" TextField="formattedText"
+                                ValueField="SearchItemId">
                             </airmid-autocomplete>
+                            </form>
 
                             <mat-card style="padding: 5px;">
                                 <div class="item-title">
@@ -46,53 +41,46 @@
                                     </span>
                                 </div>
                                 <hr>
-                                <div fxLayout="column">
-                                    <input name="ItemId" formControlName="ItemId" type="hidden" [(ngModel)]="vItemId">
+                                <div fxLayout="column">                                    
+                                    
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>ItemName</mat-label>
-                                        <input name="ItemName" formControlName="ItemName" #Itemname
+                                        <input name="itemName" formControlName="itemName" #Itemname
                                             [(ngModel)]="vItemName" placeholder="Enter Item Name" matInput
-                                            (keydown)="onEnterItemName($event)" required
-                                            (ngModelChange)="vItemName = $event.toUpperCase()">
+                                            (ngModelChange)="vItemName = $event?.toUpperCase() || ''">
                                     </mat-form-field>
 
-                                    <airmid-dropdown label="ItemGeneric Name" formControlName="ItemGenericNameId"
-                                        [formGroup]="myform" [validations]="getValidationMessages().ItemGenericNameId"
+                                    <airmid-dropdown label="ItemGeneric Name" formControlName="itemGenericNameId"
+                                        [formGroup]="itemForm" [validations]="getValidationMessages().itemGenericNameId"
                                         [mode]="autocompleteModeItemGeneric"
                                         (selectionChange)="selectChangeItemGenericName($event)">
                                     </airmid-dropdown>
 
-                                    <airmid-dropdown label="UnitofMeasurement Name" formControlName="PurchaseUOMId"
-                                        [formGroup]="myform" [validations]="getValidationMessages().PurchaseUOMId"
+                                    <airmid-dropdown label="UnitofMeasurement Name" formControlName="purchaseUomid"
+                                        [formGroup]="itemForm" [validations]="getValidationMessages().purchaseUomid"
                                         [mode]="autocompleteModePurchaseUOMId"
                                         (selectionChange)="selectChangePurchaseUOMId($event)">
                                     </airmid-dropdown>
 
                                     <div fxLayout="row" fxLayoutGap="6px">
 
-                                        <form [formGroup]="myform">
+                                        <form [formGroup]="itemForm">
                                             <div fxLayout="row">
                                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                                    <airmid-dropdown 
-                                                        label="Store" 
-                                                        formControlName="mAssignItemToStores"
-                                                        [formGroup]="myform" 
-                                                        [IsMultiPle]="true" 
+                                                    <airmid-dropdown label="Store" formControlName="mAssignItemToStores"
+                                                        [formGroup]="itemForm" [IsMultiPle]="true"
                                                         [validations]="getValidationMessages().StoreId" #ddlStore
-                                                        ValueField="storeId" 
-                                                        TextField="storeName"
-                                                        ApiUrl="StoreMaster/get-store" 
-                                                        [ReqFullObj]="true"
+                                                        ValueField="storeId" TextField="storeName"
+                                                        ApiUrl="StoreMaster/get-store" [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeStoreId($event)">
                                                     </airmid-dropdown>
                                                     <!-- [value]="registerObj.mAssignItemToStores" -->
                                                 </div>
                                                 <mat-chip-listbox #chipList>
-                                                    <mat-chip *ngFor="let item of myform.value.mAssignItemToStores">
+                                                    <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
                                                         <!-- {{ item.storeName }} -->
-                                                        {{ item.storeName }}  {{ item.name }}
-                                                         <mat-icon
-                                                            (click)="removestore(item)">close</mat-icon>
+                                                        {{ item.storeName }} {{ item.name }}
+                                                        <mat-icon (click)="removestore(item)">close</mat-icon>
                                                     </mat-chip>
                                                 </mat-chip-listbox>
                                             </div>

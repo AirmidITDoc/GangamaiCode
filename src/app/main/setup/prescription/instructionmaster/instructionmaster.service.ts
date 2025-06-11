@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +11,8 @@ export class InstructionmasterService {
     myformSearch: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myForm = this.createInstructionForm();
         this.myformSearch = this.createSearchForm();
@@ -18,19 +20,20 @@ export class InstructionmasterService {
 
     createInstructionForm(): FormGroup {
         return this._formBuilder.group({
-            instructionId: [0],
-            instructionDescription: ["", 
+            instructionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            instructionDescription: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             instructioninMarathi: "string",
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             InstructionNameSearch: [""],
@@ -46,7 +49,7 @@ export class InstructionmasterService {
         if (Param.instructionId) {
             return this._httpClient.PutData("InstructionMastere/" + Param.instructionId, Param);
         } else
-        return this._httpClient.PostData("InstructionMastere", Param);
+            return this._httpClient.PostData("InstructionMastere", Param);
     }
 
     public deactivateTheStatus(m_data) {

@@ -2,6 +2,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable()
 export class PrescriptionclassmasterService {
@@ -10,6 +11,7 @@ export class PrescriptionclassmasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
         
     ) {
         this.myformSearch = this.createSearchForm();
@@ -25,12 +27,13 @@ export class PrescriptionclassmasterService {
 
     createPrescriptionclassForm(): FormGroup {
         return this._formBuilder.group({
-            classId: [0],
+            classId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             className: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             templateDescName: ["",[Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')],

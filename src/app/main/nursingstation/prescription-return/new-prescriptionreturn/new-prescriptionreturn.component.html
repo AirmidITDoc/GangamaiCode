@@ -28,7 +28,7 @@
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <mat-card>
-                        <form [formGroup]="MyForm">
+                        <form [formGroup]="ItemSubform">
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
                                 <div class="radio-container">
                                     <mat-radio-group aria-label="Select an option" formControlName="PatientType"
@@ -42,16 +42,16 @@
                                 </div>
                                 <div class="input-container gap-8" fxFlex="80%">
 
-                                    <airmid-autocomplete lbl="RgId" *ngIf="MyForm.get('PatientType').value == 'OP'"
-                                        [formGroup]="MyForm" formControlName="RegID"
+                                    <airmid-autocomplete lbl="RgId" *ngIf="ItemSubform.get('PatientType').value == 'OP'"
+                                        [formGroup]="ItemSubform" formControlName="RegID"
                                         placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                         ValueField="regId">
                                     </airmid-autocomplete>
 
-                                    <airmid-autocomplete lbl="RgId" *ngIf="MyForm.get('PatientType').value == 'IP'"
-                                        [formGroup]="MyForm" formControlName="RegID"
+                                    <airmid-autocomplete lbl="RgId" *ngIf="ItemSubform.get('PatientType').value == 'IP'"
+                                        [formGroup]="ItemSubform" formControlName="RegID"
                                         placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
@@ -214,7 +214,7 @@
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
-                                    [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '2') + '&ItemName='"
+                                    [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)"
                                     [validations]="getValidationMessages().ItemId" TextField="formattedText"
                                     ValueField="ItemId">

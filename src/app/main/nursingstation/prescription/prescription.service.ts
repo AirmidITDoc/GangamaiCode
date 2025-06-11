@@ -11,20 +11,19 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class PrescriptionService {
 
   mysearchform: FormGroup;
-  mypreretunForm: FormGroup;
+  // mypreretunForm: FormGroup;
   myForm: FormGroup;
   ItemForm: FormGroup;
 
   constructor(
     public _httpClient:HttpClient, public _httpClient1:ApiCaller,
-    private _formBuilder: UntypedFormBuilder,  
-    private _loggedService: AuthenticationService,    
+    private _formBuilder: UntypedFormBuilder,     
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { 
     this.mysearchform= this.SearchFilterFrom();
     this.myForm = this.createMyForm();
     this.ItemForm = this.createItemForm();
-    this.mypreretunForm=this.PrescriptionReturnFilterForm();
+    // this.mypreretunForm=this.PrescriptionReturnFilterForm();
   }
 
   SearchFilterFrom(): FormGroup{
@@ -35,7 +34,7 @@ export class PrescriptionService {
       RegNo:''
     })  
   }
-
+// dd form
    createMyForm() {
       return this._formBuilder.group({
         RegId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -56,43 +55,11 @@ export class PrescriptionService {
         roundVisitDate: [(new Date()).toISOString().split('T')[0]],
         roundVisitTime: [(new Date()).toISOString()],
         inHouseFlag: true,
-        tIpPrescriptions: "",
+        tIpPrescriptions: this._formBuilder.array([]),
       })
     }
 
-//     createPrescForm(_fb: FormBuilder): FormGroup {
-//   return _fb.group({
-//     medicalRecoredId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-//     admissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-//     roundVisitDate: [(new Date()).toISOString().split('T')[0]],
-//     roundVisitTime: [(new Date()).toISOString()],
-//     inHouseFlag: [true],
-//     tIpPrescriptions: _fb.array([
-//       _fb.group({     
-//         ippreId: [0],
-//         ipmedId: [0],
-//         opIpId: [0],
-//         opdIpdType: [1],
-//         pdate: [(new Date()).toISOString()],
-//         ptime: [(new Date()).toISOString()],
-//         classId:[],
-//         genericId:[1],
-//         drugId:[],
-//         doseId:[0],
-//         days:[0],
-//         qtyPerDay:[0],
-//         totalQty:[0],
-//         remark:[''],
-//         isClosed:[false],
-//         isAddBy:[this._loggedService.currentUserValue.userId],
-//         storeId:[0],
-//         wardID:[0]
-//       })
-//     ])
-//   });
-// }
-
-
+// table form
     createItemForm() {
       return this._formBuilder.group({
         ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
@@ -104,14 +71,14 @@ export class PrescriptionService {
       })
     }
 
-  PrescriptionReturnFilterForm():FormGroup{
-    return this._formBuilder.group({
-      startdate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
-      RegNo:'',
-      PrescriptionStatus:['Pending']
-    })
-  }
+  // PrescriptionReturnFilterForm():FormGroup{
+  //   return this._formBuilder.group({
+  //     startdate: [(new Date()).toISOString()],
+  //     enddate: [(new Date()).toISOString()],
+  //     RegNo:'',
+  //     PrescriptionStatus:['Pending']
+  //   })
+  // }
 
   validateSelectedItem(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && typeof control.value !== 'object') {
@@ -171,6 +138,12 @@ public getRegistraionById(Id) {
     return this._httpClient.get("InPatient/view-IP_Prescription?OP_IP_ID=" + OP_IP_ID+"&PatientType="+PatientType);
   }
 
+public getItemMasterById(Id) {
+  return this._httpClient1.GetData("ItemMaster/" + Id);
+}
+public getDoseMasterById(Id) {
+  return this._httpClient1.GetData("DoseMaster/" + Id);
+}
 
   public getPriscriptionretList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPrescriptionReturnListFromWard",Param)

@@ -6,59 +6,63 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoryMasterService } from '../category-master.service';
 
 @Component({
-  selector: 'app-new-category',
-  templateUrl: './new-category.component.html',
-  styleUrls: ['./new-category.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-category',
+    templateUrl: './new-category.component.html',
+    styleUrls: ['./new-category.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewCategoryComponent implements OnInit {
 
-  categoryForm: FormGroup;
-  isActive:boolean=true;
+    categoryForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _CategorymasterService: CategoryMasterService,
-      public dialogRef: MatDialogRef<NewCategoryComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
- 
-  ngOnInit(): void {
-      this.categoryForm = this._CategorymasterService.createCategoryForm();
-      this.categoryForm.markAllAsTouched()
-      if((this.data?.categoryId??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.categoryForm.patchValue(this.data);
+    constructor(
+        public _CategorymasterService: CategoryMasterService,
+        public dialogRef: MatDialogRef<NewCategoryComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+    ngOnInit(): void {
+        this.categoryForm = this._CategorymasterService.createCategoryForm();
+        this.categoryForm.markAllAsTouched()
+        if ((this.data?.categoryId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.categoryForm.patchValue(this.data);
         }
-  }
+    }
 
-  
-  onSubmit() {
-        
-      if(!this.categoryForm.invalid) {
-        
-          this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
-          }, (error) => {
-              this.toastr.error(error.message);
-          });
-      }
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
 
-  }
+    onSubmit() {
+        if (!this.categoryForm.invalid) {
+            console.log(this.categoryForm.value)
+            this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.categoryForm.invalid) {
+                for (const controlName in this.categoryForm.controls) {
+                    if (this.categoryForm.controls[controlName].invalid) {
+                        invalidFields.push(`category Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
+    }
+
 
     onClear(val: boolean) {
-      this.categoryForm.reset();
-      this.dialogRef.close(val);
+        this.categoryForm.reset();
+        this.dialogRef.close(val);
     }
 
     getValidationMessages() {

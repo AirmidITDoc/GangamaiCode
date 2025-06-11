@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { map, Observable, startWith } from 'rxjs';
 import { CasepaperService } from './casepaper.service';
-// import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -27,12 +26,12 @@ import { PrePresciptionListComponent } from './pre-presciption-list/pre-prescipt
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
-interface Patient {
-  PHeight: string;
-  PWeight: number;
-  Pulse: string;
-  VisitDate: any; // Changed to visitDate for clarity
-}
+// interface Patient {
+//   PHeight: string;
+//   PWeight: number;
+//   Pulse: string;
+//   VisitDate: any; // Changed to visitDate for clarity
+// }
 
 @Component({
   selector: 'app-new-casepaper',
@@ -48,10 +47,6 @@ export class NewCasepaperComponent implements OnInit {
     'DoseName',
     'Days',
     'Remark',
-    // 'DoseName1',
-    // 'Day1',
-    // 'DoseName2',
-    // 'Day2',
     'Action'
   ]
   displayedpreviousColumn: string[] = [
@@ -59,26 +54,7 @@ export class NewCasepaperComponent implements OnInit {
     'DoseName',
     'Days',
     'Remark'
-    // 'DoseName1',
-    // 'Day1',
-    // 'DoseName2',
-    // 'Day2', 
   ]
-  displayedVisitColumns = [
-    'VisitId',
-    'VisitTime',
-    'DocName'
-  ];
-
-  displayedVisitinfoColumns = [
-    'PHeight',
-    'PWeight',
-    'Pulse'
-  ];
-
-  isRegIdSelected: boolean = false;
-  sIsLoading: string = '';
-  noOptionFound: boolean = false;
   currentDate = new Date();
   caseFormGroup: FormGroup;
   searchFormGroup: FormGroup;
@@ -88,39 +64,23 @@ export class NewCasepaperComponent implements OnInit {
   CompanyName: any;
   Tarrifname: any;
   Doctorname: any;
-  Paymentdata: any;
   vOPIPId: any = 0;
   vOPDNo: any = 0;
-  vTariffId: any = 0;
   vClassId: any = 0;
   CompanyId: any = 0;
   AgeYear: any = 0;
   RegNo: any = 0;
-  City: any;
   RegId: any;
-  registerObj1 = new AdmissionPersonlModel({});
-  registerObj = new CasepaperVisitDetails({});
-
   PatientName: any;
-  MobileNo: any;
   VisitDate: any;
   DepartmentName: any;
   AgeMonth: any;
   AgeDay: any;
   GenderName: any;
   RefDocName: any;
-  BedName: any;
-  vClassName: any;
   add: boolean = false;
   ItemName: any;
-  BalanceQty: any;
-  vQty: any;
   ItemId: any;
-  PresItemlist: any = [];
-  vRemark: any;
-  selectedAdvanceObj: AdmissionPersonlModel;
-  isDrugIdSelected: any;
-  filteredOptionsItem: any;
   vDay: any;
   vInstruction: any;
   Chargelist: any[] = [];  // changed here for onAdd purpose
@@ -138,47 +98,25 @@ export class NewCasepaperComponent implements OnInit {
   vChiefComplaint: any;
   vDiagnosis: any;
   vExamination: any;
-  isItemIdSelected: boolean = false;
-  isTemplateSelected: boolean = false;
-  filteredOptionsDosename: Observable<string[]>;
   doseList: any = [];
-  isDoseSelected: boolean = false;
   dateTimeObj: any;
   vMobileNo: any = 0;
   doseresults: any[] = [];
-  vDepartmentid: any;
-  filteredOptionsDoc: any;
-  filteredOptionsService: Observable<string[]>;
-  DoctorList: any = [];
-  isDoctorSelected: boolean = false;
-  vDoctorId: any;
-  vTemplateId: any;
-  vServiceId: any;
-  isServiceIdSelected: boolean = false;
-  vFollowUpDays: any = 0;
   patientDetail: any;
   patientDetail1: any;
   savebtn: boolean = true;
   regObj = new CasepaperVisitDetails({});
   vItemGenericName: any;
   vItemGenericNameId: any;
-  PatientReferDocId: any;
   selectable = true;
   removable = true;
-
-  PatientListfilteredOptions: any;
   ConsultantDocId: any;
-
-  RefDocNameId: any;
   PrefollowUpDate: string;
-
   RtrvDescriptionList: any = [];
   HistoryList: any = [];
   addCheiflist: any[] = [];
   addDiagnolist: any = [];
   addExaminlist: any = [];
-  nValue: any[] = [];
-
   doseId = 0
   doseName = ""
   durgId = 0
@@ -188,13 +126,17 @@ export class NewCasepaperComponent implements OnInit {
   itemObjects: any;
   itemGeneric: any;
   vdoseName: any;
-
+  AllTypeDescription: any = []
+  filteredCheifComplaint: Observable<string[]>
+  vDays: any = 10;
+  followUpDate: string;
+  specificDate: Date;
+  dateStyle: string;
+  selectedOption: string = 'Day';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
-  dataSource1 = new MatTableDataSource<CasepaperVisitDetails>();
-  dsItemList1 = new MatTableDataSource<MedicineItemList>();
   dsCopyItemList = new MatTableDataSource<MedicineItemList>();
 
   autocompleteModeItem: string = "Item"; //ItemType
@@ -207,7 +149,6 @@ export class NewCasepaperComponent implements OnInit {
 
   vstoreId = this._loggedService.currentUserValue.user.storeId;
 
-  AllTypeDescription: any = []
   @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
   @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
   @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
@@ -215,33 +156,37 @@ export class NewCasepaperComponent implements OnInit {
 
   constructor(
     private _CasepaperService: CasepaperService,
-    private _snackBar: MatSnackBar,
     private _formBuilder: UntypedFormBuilder,
-    private advanceDataStored: AdvanceDataStored,
-    private cdr: ChangeDetectorRef,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<NewCasepaperComponent>,
     public _WhatsAppEmailService: WhatsAppEmailService,
-    private configService: ConfigService,
-     private _FormvalidationserviceService: FormvalidationserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { console.log('Dialog Data:', data); }
 
   ngOnInit(): void {
-    // 
     this.searchFormGroup = this.createSearchForm();
+
     this.caseFormGroup = this.createForm();
+    this.caseFormGroup.markAllAsTouched();
+
     this.casePaperInsertForm = this.createCasePaperForm();
+    this.casePaperInsertForm.markAllAsTouched();
+
+    // loop array defined
+    this.tPrescriptionArray.push(this.createtPrescription());
+    this.topRequestListArray.push(this.createtopRequestList());
+    this.mopCasepaperDignosisArray.push(this.createmopCasepaperDignosis());
+
     this.MedicineItemform();
     this.specificDate = new Date();
     this.dateStyle = 'Day'
     this.onDaysChange();
     console.log("dddddddddd:", this.patients);
-    // this.getHistoryList();
 
     if (this.data) {
       this.regObj = this.data
@@ -267,7 +212,7 @@ export class NewCasepaperComponent implements OnInit {
       this.getnewVisistListDemo(this.regObj);
       this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
-      this.getCheifComplaintList();
+      // this.getCheifComplaintList();
     }
 
     setTimeout(() => {
@@ -286,12 +231,6 @@ export class NewCasepaperComponent implements OnInit {
     }, 500);
   }
 
-  // removedignosis(item) {
-  //   let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id == item.id);
-  //   this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
-  //   this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
-  // }
-
   removedignosis(item) {
     let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id === item.id);
 
@@ -308,12 +247,6 @@ export class NewCasepaperComponent implements OnInit {
       console.log("Updated addDiagnolist after removal:", this.addDiagnolist);
     }
   }
-
-  // removeChiefComplaint(item) {
-  //   let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId == item.complaintId);
-  //   this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
-  //   this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
-  // }
 
   removeChiefComplaint(item) {
 
@@ -333,12 +266,6 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
-  // removeExamination(item) {
-  //   let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId == item.examinationId);
-  //   this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
-  //   this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
-  // }
-
   removeExamination(item) {
 
     let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId === item.examinationId);
@@ -357,12 +284,6 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
-  // removeService(item) {
-  //   let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId == item.serviceId);
-  //   this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
-  //   this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
-  // }
-
   removeService(item) {
     let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
 
@@ -376,73 +297,61 @@ export class NewCasepaperComponent implements OnInit {
       console.log("Updated selectedItems after removal:", this.selectedItems);
     }
   }
-  filteredCheifComplaint: Observable<string[]>
 
-  // demo check
-  addCheiflist1: any = [];
-  CheifCompListCombo:any=[];
+  // demo check requied
+  //   onSelecteCheif:any=0;
+  // addCheiflist1: any = [];
+  // CheifCompListCombo:any=[];
 
-    addCheif1(event: any): void { 
-    if(this.onSelecteCheif != 1){
-      const input = event.input;
-      const value = event.value;
-      // Add cheif
-      if ((value || '').trim()) {
-        this.addCheiflist.push(value.trim());
-      }
-      // Reset the input value
-      if (input) {
-        input.value = '';
-      }
-    } 
-    this.onSelecteCheif = 0
-  }
-
-   removeCheif1(cheif: string): void {
-    const index = this.addCheiflist.indexOf(cheif);
-    if (index >= 0) {
-      this.addCheiflist.splice(index, 1);  
-    }
-  }
-
-    onSelecteCheif:any=0;
-
-  selectedobjCheif(obj): void { 
-    this.onSelecteCheif = 1
-    const value = obj.complaintDescr;
-    if ((value || '').trim()) {
-      this.addCheiflist.push(value.trim());
-    } 
-  }
-
-  getCheifComplaintList() { 
-    this._CasepaperService.getDemo().subscribe(data => {
-      this.CheifCompListCombo = data;
-      //console.log(this.CheifCompListCombo)
-      this.filteredCheifComplaint = this.caseFormGroup.get('mAssignChiefComplaint').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filter(value) : this.CheifCompListCombo.slice()),
-      );  
-    }); 
-  }
-  private _filter(value: any): string[] {  
-    if (value) {
-      const filterValue = value && value.complaintDescr ? value.complaintDescr.toLowerCase() : value.toLowerCase();
-      return this.CheifCompListCombo.filter(option => option.complaintDescr.toLowerCase().includes(filterValue));
-    } 
-  }
-  
-  // demo end
-  // getCheifComplaintList() {
-  //   this._CasepaperService.getDemo().subscribe((response) => {
-  //     this.filteredCheifComplaint = response;
-  //     console.log(this.patientDetail)
-  //   });
+  //   addCheif1(event: any): void { 
+  //   if(this.onSelecteCheif != 1){
+  //     const input = event.input;
+  //     const value = event.value;
+  //     // Add cheif
+  //     if ((value || '').trim()) {
+  //       this.addCheiflist.push(value.trim());
+  //     }
+  //     // Reset the input value
+  //     if (input) {
+  //       input.value = '';
+  //     }
+  //   } 
+  //   this.onSelecteCheif = 0
   // }
 
-  vDays: any = 10;
-  followUpDate: string;
-  specificDate: Date;
+  //  removeCheif1(cheif: string): void {
+  //   const index = this.addCheiflist.indexOf(cheif);
+  //   if (index >= 0) {
+  //     this.addCheiflist.splice(index, 1);  
+  //   }
+  // }
+
+  // selectedobjCheif(obj): void { 
+  //   this.onSelecteCheif = 1
+  //   const value = obj.complaintDescr;
+  //   if ((value || '').trim()) {
+  //     this.addCheiflist.push(value.trim());
+  //   } 
+  // }
+
+  // getCheifComplaintList() { 
+  //   this._CasepaperService.getDemo().subscribe(data => {
+  //     this.CheifCompListCombo = data;
+  //     //console.log(this.CheifCompListCombo)
+  //     this.filteredCheifComplaint = this.caseFormGroup.get('mAssignChiefComplaint').valueChanges.pipe(
+  //       startWith(''),
+  //       map(value => value ? this._filter(value) : this.CheifCompListCombo.slice()),
+  //     );  
+  //   }); 
+  // }
+  // private _filter(value: any): string[] {  
+  //   if (value) {
+  //     const filterValue = value && value.complaintDescr ? value.complaintDescr.toLowerCase() : value.toLowerCase();
+  //     return this.CheifCompListCombo.filter(option => option.complaintDescr.toLowerCase().includes(filterValue));
+  //   } 
+  // }
+
+  // demo end
 
   onDaysChange() {
 
@@ -479,9 +388,6 @@ export class NewCasepaperComponent implements OnInit {
         this.specificDate = new Date();
     }
   }
-  dateStyle: string;
-
-  selectedOption: string = 'Day';
 
   OnChangeDobType(e) {
     this.dateStyle = e.value;
@@ -492,50 +398,44 @@ export class NewCasepaperComponent implements OnInit {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
       LangaugeRadio: ["true"],
-      Height: ['', [ 
-        Validators.required,
-        Validators.maxLength(20),
-        this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      Weight: ['', [ 
-        Validators.required,
-        Validators.maxLength(20),
-        this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      BMI: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
-      BSL: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
-      SpO2: ['',[this._FormvalidationserviceService.allowEmptyStringValidator,Validators.maxLength(20)]],
-      Pulse: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
-      BP: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
-      Temp: ['',[this._FormvalidationserviceService.allowEmptyStringValidator, Validators.maxLength(10)]],
-      ChiefComplaint: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      serviceId: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      Diagnosis: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      Examination: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      ExaminationControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      DiagnosisControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      CheifComplaintControl: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-
-      mAssignChiefComplaint: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignDiagnosis: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignExamination: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
-
-      mAssignService: ['',[this._FormvalidationserviceService.allowEmptyStringValidator]],
+      Height: ['', [Validators.required, Validators.maxLength(20),
+      this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      Weight: ['', [Validators.required, Validators.maxLength(20),
+      this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      BMI: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      BSL: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      SpO2: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      Pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      BP: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      Temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      ChiefComplaint: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      serviceId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      Diagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      Examination: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      ExaminationControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      DiagnosisControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      CheifComplaintControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      mAssignChiefComplaint: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignDiagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignExamination: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
     });
   }
 
   MedicineItemform() {
     this.MedicineItemForm = this._formBuilder.group({
       ItemId: [0, [Validators.required]],
-      DoseId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      DoseId1: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      DoseId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DoseId1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       Day: ['', [Validators.required, Validators.pattern("^^[1-9]+[0-9]*$")]],
       ItemGenericNameId: '',
-      Instruction: ['',[Validators.maxLength(200)]],
+      Instruction: ['', [Validators.maxLength(200)]],
       DoctorID: '',
       Departmentid: '',
       FollowupDays: '',
       start: [''],
-      Remark: ['',[Validators.maxLength(200)]],
-      Days: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      Remark: ['', [Validators.maxLength(200)]],
+      Days: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: '',
       FollowupMonths: '',
       FollowupYears: '',
@@ -544,12 +444,79 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-   createCasePaperForm() {
+  createCasePaperForm() {
     return this._formBuilder.group({
-      tPrescription:"",
-      topRequestList:"",
-      mopCasepaperDignosisMaster:"",
+      tPrescription: this._formBuilder.array([]),
+      topRequestList: this._formBuilder.array([]),
+      mopCasepaperDignosisMaster: this._formBuilder.array([]),
     });
+  }
+
+  createtPrescription(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      opdIpdIp: [this.vOPIPId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      date: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      ptime: [this.datePipe.transform(new Date(), 'h:mm:ss a')],
+      classId: [this.vClassId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      genericId: [element.GenericId ?? element.genericId ?? element.genericid ?? 0],
+      drugId: [element.DrugId ?? element.drugId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseId: [Number(element.DoseId ?? element.doseId ?? 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [element.Days ?? element.days ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instruction: [element.Instruction ?? element.instructionDescription],
+      remark: [element.remark],
+      doseOption2: [0],
+      daysOption2: [0],
+      doseOption3: [0],
+      daysOption3: [0],
+      instructionId: [0],
+      qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
+      totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
+      [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isClosed: true,
+      isEnglishOrIsMarathi: [true],
+      chiefComplaint: [element.chiefComplaint ?? ''],
+      diagnosis: [element.diagnosis ?? ''],
+      examination: [element.examination ?? ''],
+      height: [element.pHeight],
+      pweight: [element.pWeight ?? ''],
+      bmi: [element.bmi ?? ''],
+      bsl: [element.bsl ?? ''],
+      spO2: [element.spO2 ?? ''],
+      temp: [element.temp ?? ''],
+      pulse: [element.pulse ?? ''],
+      bp: [element.bp ?? ''],
+      storeId: [this._loggedService.currentUserValue.user.storeId ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      patientReferDocId: [element.patientReferDocId ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      advice: [element.advice ?? ''],
+      isAddBy: [this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+  createtopRequestList(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      opIpId: [this.vOPIPId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId: [element.serviceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+  createmopCasepaperDignosis(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      visitId: [this.VisitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
+    });
+  }
+  // 5.FormArray Getters
+  get tPrescriptionArray(): FormArray {
+    return this.casePaperInsertForm.get('tPrescription') as FormArray;
+  }
+
+  get topRequestListArray(): FormArray {
+    return this.casePaperInsertForm.get('topRequestList') as FormArray;
+  }
+
+  get mopCasepaperDignosisArray(): FormArray {
+    return this.casePaperInsertForm.get('mopCasepaperDignosisMaster') as FormArray;
   }
 
   createSearchForm() {
@@ -559,6 +526,146 @@ export class NewCasepaperComponent implements OnInit {
       RegId: [''],
     });
   }
+
+  onSave() {
+
+    if (this.addCheiflist.length > 0) {
+      this.addCheiflist.forEach(element => {
+        this.AllTypeDescription.push({
+          descriptionName: element.complaintDescr,
+          descriptionType: "Complaint"
+        });
+      });
+    }
+
+    if (this.addDiagnolist.length > 0) {
+      this.addDiagnolist.forEach(element => {
+        this.AllTypeDescription.push({
+          descriptionName: element.descriptionName,
+          descriptionType: "Diagnosis"
+        });
+      });
+    }
+
+    if (this.addExaminlist.length > 0) {
+      this.addExaminlist.forEach(element => {
+        this.AllTypeDescription.push({
+          descriptionName: element.examinationDescr,
+          descriptionType: "Examination"
+        });
+      });
+    }
+    console.log("Updated AllTypeDescription:", this.AllTypeDescription);
+
+    let ReferDocNameID = 0;
+    if (this.MedicineItemForm.get('DoctorID').value) {
+      ReferDocNameID = this.MedicineItemForm.get('DoctorID').value || 1;
+    } else {
+      ReferDocNameID = this.ConsultantDocId || 1
+    }
+    debugger
+
+    if (!this.caseFormGroup.invalid && !this.casePaperInsertForm.invalid) {
+
+      this.tPrescriptionArray.clear();
+      if (this.dsItemList.data.length === 0) {
+        this.toastr.warning('Please add prescription!', 'Warning');
+        return; // Stop further execution
+      }
+      this.dsItemList.data.forEach((item, index) => {
+        const group = this.createtPrescription(item);
+
+        // Set additional fields individually per item
+        group.get('advice').setValue(this.MedicineItemForm.get('Remark').value);
+        group.get('remark').setValue(this.MedicineItemForm.get('Remark').value);
+        group.get('isEnglishOrIsMarathi').setValue(JSON.parse(this.caseFormGroup.get('LangaugeRadio').value));
+        group.get('chiefComplaint').setValue(this.caseFormGroup.get('ChiefComplaint').value);
+        group.get('diagnosis').setValue(this.caseFormGroup.get('Diagnosis').value);
+        group.get('examination').setValue(this.caseFormGroup.get('Examination').value);
+        group.get('height').setValue(this.caseFormGroup.get('Height').value);
+        group.get('pweight').setValue(this.caseFormGroup.get('Weight').value);
+        group.get('bmi').setValue(String(this.caseFormGroup.get('BMI').value));
+        group.get('bsl').setValue(this.caseFormGroup.get('BSL').value);
+        group.get('spO2').setValue(this.caseFormGroup.get('SpO2').value);
+        group.get('pulse').setValue(this.caseFormGroup.get('Pulse').value);
+        group.get('bp').setValue(this.caseFormGroup.get('BP').value);
+        group.get('temp').setValue(this.caseFormGroup.get('Temp').value);
+        group.get('patientReferDocId').setValue(Number(ReferDocNameID) || 1);
+
+        this.tPrescriptionArray.push(group);
+      });
+
+      // 2nd detail
+      this.topRequestListArray.clear();
+      if (this.selectedItems.length === 0) {
+        const opRequestListFormGroup: FormGroup = this.createtopRequestList({ serviceId: 0 });
+        this.topRequestListArray.push(opRequestListFormGroup);
+      } else {
+        this.selectedItems.forEach(element => {
+          const opRequestListFormGroup: FormGroup = this.createtopRequestList(element);
+          this.topRequestListArray.push(opRequestListFormGroup);
+        });
+      }
+
+      // 3rd detail array
+      this.mopCasepaperDignosisArray.clear();
+      if (this.AllTypeDescription.length === 0) {
+        const mopCasePaperFormGroup: FormGroup = this.createmopCasepaperDignosis({ visitId: 0 });
+        this.mopCasepaperDignosisArray.push(mopCasePaperFormGroup);
+      } else {
+        this.AllTypeDescription.forEach(element => {
+          const mopCasePaperFormGroup: FormGroup = this.createmopCasepaperDignosis(element);
+          this.mopCasepaperDignosisArray.push(mopCasePaperFormGroup);
+        });
+      }
+
+      console.log('form:', this.casePaperInsertForm.value)
+      this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
+
+        if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+          this.OnViewReportPdf(this.VisitId)
+        else
+          this.OnViewReportPdf(this.VisitId)
+        this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
+        this.onClear();
+        this.onClose();
+      });
+    } else {
+      let invalidFields: string[] = [];
+      if (this.caseFormGroup.invalid) {
+        for (const controlName in this.caseFormGroup.controls) {
+          if (this.caseFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Refund of Bill Footer: ${controlName}`);
+          }
+        }
+      }
+
+      // checks nested error 
+      if (this.casePaperInsertForm.invalid) {
+        for (const controlName in this.casePaperInsertForm.controls) {
+          const control = this.casePaperInsertForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Nested : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -576,7 +683,6 @@ export class NewCasepaperComponent implements OnInit {
           this.PatientName = this.patientDetail.firstName + " " + this.patientDetail.middleName + " " + this.patientDetail.lastName
           console.log(this.patientDetail)
         });
-
       }, 500);
 
       setTimeout(() => {
@@ -595,7 +701,6 @@ export class NewCasepaperComponent implements OnInit {
     this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
-  // tried
   vDrugName: any;
   vDoseName: any;
   vItemGN: any;
@@ -633,26 +738,16 @@ export class NewCasepaperComponent implements OnInit {
 
       if (this.dsItemList.data.length > 0) {
         for (let item of this.dsItemList.data) {
-          
-          // this.vHeight = item.pHeight;
-          // this.vWeight = item.pWeight;
-          // this.vBMI = item.bmi;
-          // this.vSpO2 = item.spO2;
-          // this.vTemp = item.temp;
-          // this.vPulse = item.pulse;
-          // this.vBSL = item.bsl;
-          // this.vBP = item.bp;
-
-            this.caseFormGroup.patchValue({
-              Height: item.pHeight,
-              Weight: item.pWeight,
-              BMI: item.bmi,
-              BSL: item.bsl,
-              SpO2: item.spO2,
-              Pulse: item.pulse,
-              BP: item.bp,
-              Temp: item.temp
-            });
+          this.caseFormGroup.patchValue({
+            Height: item.pHeight,
+            Weight: item.pWeight,
+            BMI: item.bmi,
+            BSL: item.bsl,
+            SpO2: item.spO2,
+            Pulse: item.pulse,
+            BP: item.bp,
+            Temp: item.temp
+          });
 
           this.vChiefComplaint = item.chiefComplaint;
           this.vDiagnosis = item.diagnosis;
@@ -670,31 +765,6 @@ export class NewCasepaperComponent implements OnInit {
         }
 
       }
-
-      // if (this.dsItemList.data.length > 0) {
-      //   this.vHeight = this.dsItemList.data[0].pHeight;
-      //   this.vWeight = this.dsItemList.data[0].pWeight;
-      //   this.vBMI = this.dsItemList.data[0].bmi;
-      //   this.vSpO2 = this.dsItemList.data[0].spO2;
-      //   this.vTemp = this.dsItemList.data[0].temp;
-      //   this.vPulse = this.dsItemList.data[0].pulse;
-      //   this.vBSL = this.dsItemList.data[0].bsl;
-      //   this.vBP = this.dsItemList.data[0].bp;
-
-      //   this.vChiefComplaint = this.dsItemList.data[0].chiefComplaint;
-      //   this.vDiagnosis = this.dsItemList.data[0].diagnosis;
-      //   this.vExamination = this.dsItemList.data[0].examination;
-      //   this.PrefollowUpDate = this.datePipe.transform(this.dsItemList.data[0].followupDate, 'MM/dd/YYYY');
-      //   this.specificDate = new Date(this.PrefollowUpDate)
-      //   this.MedicineItemForm.get('Remark').setValue(this.dsItemList.data[0].advice)
-      //   this.RefDocName = this.dsItemList.data[0].doctorname
-      //   this.vDrugName = this.dsItemList.data[0].drugName
-      //   this.vDoseName = this.dsItemList.data[0].doseName
-      //   this.vItemGN = this.dsItemList.data[0].genericName
-      //   this.vDayys = this.dsItemList.data[0].days
-      //   this.vInst = this.dsItemList.data[0].instruction
-      //   this.MedicineItemForm.get("DoctorID").setValue(this.dsItemList.data[0].patientReferDocId)
-      // }
     });
 
   }
@@ -724,9 +794,6 @@ export class NewCasepaperComponent implements OnInit {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         console.log("RtrvDescriptionList:", this.RtrvDescriptionList);
-
-        // Process Chief Complaints
-        // this.addCheiflist = []; 
         let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
         this.addCheiflist = [];
         if (ChiefComplaint.length > 0) {
@@ -738,8 +805,6 @@ export class NewCasepaperComponent implements OnInit {
               }
             )
           })
-          // this.ddlChiefComplaint.SetSelection(this.addCheiflist);
-          // this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
           setTimeout(() => {
             this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
           }, 100);
@@ -799,52 +864,36 @@ export class NewCasepaperComponent implements OnInit {
 
   }
 
-  // getBMIcalculation() {
-  //   if (this.vHeight > 0 && this.vWeight > 0) {
-  //     let Height = (this.vHeight / 100)
-  //     this.vBMI = Math.round((this.vWeight) / ((Height) * (Height)));
-  //   }
-  //   else if (this.vHeight <= 0) {
-  //     this.vBMI = 0;
-  //     //Swal.fire('Please enter Height')
-  //   }
-  //   else if (this.vWeight <= 0) {
-  //     this.vBMI = 0;
-  //     //Swal.fire('Please enter Weight')
-  //   }
-  // }
-
   getBMIcalculation() {
-    debugger
-  const height = this.caseFormGroup.get('Height')?.value;
-  const weight = this.caseFormGroup.get('Weight')?.value;
+    const height = this.caseFormGroup.get('Height')?.value;
+    const weight = this.caseFormGroup.get('Weight')?.value;
 
-  if (height > 0 && weight > 0) {
-    const heightInMeters = height / 100;
-    const bmi = weight / (heightInMeters * heightInMeters);
-    this.caseFormGroup.get('BMI')?.setValue(Math.round(bmi));
-  } else {
-    this.caseFormGroup.get('BMI')?.setValue(0);
+    if (height > 0 && weight > 0) {
+      const heightInMeters = height / 100;
+      const bmi = weight / (heightInMeters * heightInMeters);
+      this.caseFormGroup.get('BMI')?.setValue(Math.round(bmi));
+    } else {
+      this.caseFormGroup.get('BMI')?.setValue(0);
+    }
   }
-}
 
   selectChangeItemName(row) {
     // debugger
     console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
-    this.vdoseName=row.doseName
+    this.vdoseName = row.doseName
     this.vDay = row.doseDay
-    this.vInstruction=row.instruction
+    this.vInstruction = row.instruction
 
-     if (this.vdoseName) {
-    const doseRow = {
-      value: this.vdoseName,   // assuming doseName is used as ID
-      text: this.vdoseName     // or whatever label you're using
-    };
+    if (this.vdoseName) {
+      const doseRow = {
+        value: this.vdoseName,   // assuming doseName is used as ID
+        text: this.vdoseName     // or whatever label you're using
+      };
 
-    this.selectChangeDoseName(doseRow);
-  }
+      this.selectChangeDoseName(doseRow);
+    }
 
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
@@ -912,7 +961,6 @@ export class NewCasepaperComponent implements OnInit {
 
   FetchList: any = [];
   listrefresh(contact) {
-    debugger
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -930,7 +978,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     console.log("VisitId:", m_data2)
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
-      debugger
+      // debugger
       this.FetchList = Visit.data as MedicineItemList[];
       this.Chargelist = this.dsItemList.data.filter(item => item.OPD_IPD_IP != contact.OPD_IPD_IP)
       this.FetchList.forEach(element => {
@@ -972,7 +1020,6 @@ export class NewCasepaperComponent implements OnInit {
   DoseObjects: any;
   DoseQtyPerDay: any;
   selectChangeDoseName(row) {
-    debugger
     console.log("Dose:", row)
     this.doseId = row.value
     // this.doseName = row.text
@@ -993,7 +1040,6 @@ export class NewCasepaperComponent implements OnInit {
   originalValue: string | null = null;
 
   editDose(index: number, data) {
-
     console.log(data)
     this.editingIndex = index;
     this.originalValue = data.doseName;
@@ -1037,7 +1083,6 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   selectedItems = [];
-
   selectChangeServiceName(row) {
     console.log("Selected Services:", row);
 
@@ -1047,7 +1092,6 @@ export class NewCasepaperComponent implements OnInit {
 
     console.log("Updated selectedItems:", this.selectedItems);
   }
-
 
   RtrvTestServiceList: any = [];
   getRtrvTestServiceList(obj) {
@@ -1100,31 +1144,6 @@ export class NewCasepaperComponent implements OnInit {
     console.log("Updated selectedItems:", this.addCheiflist);
   }
 
-  //   selectChangeCheifComplaint(row) {
-  //     debugger
-  //     console.log("Selected Services:", row);
-
-  //     if (!this.addCheiflist || !Array.isArray(this.addCheiflist)) {
-  //         this.addCheiflist = [];
-  //     }
-  //     const selectedData = Array.isArray(row) ? row : [row];
-
-  //     const newItems = selectedData.map(item => ({
-  //         complaintDescr: item.complaintDescr,
-  //     }));
-
-  //     if (newItems.length > 0) {
-  //         this.addCheiflist = [...this.addCheiflist, ...newItems];
-
-  //         this.addCheiflist = this.addCheiflist.filter((value, index, self) =>
-  //             index === self.findIndex(item => item.complaintDescr === value.complaintDescr)
-
-  //         );
-  //     }
-  //     console.log("Updated selectedItems:", this.addCheiflist);
-  //     this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
-  // }
-
   selectChangeDiagnosis(row) {
     console.log("Selected Services:", row);
     const selectedData = Array.isArray(row) ? row : [row];
@@ -1144,31 +1163,6 @@ export class NewCasepaperComponent implements OnInit {
     }));
     console.log("Updated selectedItems:", this.addExaminlist);
   }
-
-  //   selectChangeExamination(row) {
-  //     debugger
-  //     console.log("Selected Services:", row);
-
-  //     if (!this.addExaminlist || !Array.isArray(this.addExaminlist)) {
-  //         this.addExaminlist = [];
-  //     }
-  //     const selectedData = Array.isArray(row) ? row : [row];
-
-  //     const newItems = selectedData.map(item => ({
-  //         examinationDescr: item.examinationDescr,
-  //     }));
-
-  //     if (newItems.length > 0) {
-  //         this.addExaminlist = [...this.addExaminlist, ...newItems];
-
-  //         this.addExaminlist = this.addExaminlist.filter((value, index, self) =>
-  //             index === self.findIndex(item => item.examinationDescr === value.examinationDescr)
-
-  //         );
-  //     }
-  //     console.log("Updated selectedItems:", this.addExaminlist);
-  //     this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
-  // }
 
   getValidationMessages() {
     return {
@@ -1298,7 +1292,7 @@ export class NewCasepaperComponent implements OnInit {
   itemObjects1: any[] = [];
 
   onTemplDetAdd() {
-    debugger
+    // debugger
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1346,172 +1340,6 @@ export class NewCasepaperComponent implements OnInit {
 
   }
 
-  onSave() {
-    debugger
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    if (this.addCheiflist.length > 0) {
-      this.addCheiflist.forEach(element => {
-        this.AllTypeDescription.push({
-          descriptionName: element.complaintDescr,
-          descriptionType: "Complaint"
-        });
-      });
-    }
-
-    if (this.addDiagnolist.length > 0) {
-      this.addDiagnolist.forEach(element => {
-        this.AllTypeDescription.push({
-          descriptionName: element.descriptionName,
-          descriptionType: "Diagnosis"
-        });
-      });
-    }
-
-    if (this.addExaminlist.length > 0) {
-      this.addExaminlist.forEach(element => {
-        this.AllTypeDescription.push({
-          descriptionName: element.examinationDescr,
-          descriptionType: "Examination"
-        });
-      });
-    }
-    console.log("Updated AllTypeDescription:", this.AllTypeDescription);
-
-    if (this.RegNo == '' || this.RegNo == undefined || this.RegNo == null) {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.caseFormGroup.get("Height")?.value) {
-      this.toastr.warning('Please Enter Height', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.caseFormGroup.get("Weight")?.value) {
-      this.toastr.warning('Please Enter Weight', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.dsItemList.data.length == 0) {
-      Swal.fire('Error !', 'Please add prescription', 'error');
-      return
-    }
-
-    let ReferDocNameID = 0;
-    if (this.MedicineItemForm.get('DoctorID').value) {
-      ReferDocNameID = this.MedicineItemForm.get('DoctorID').value || 1;
-    } else {
-      ReferDocNameID = this.ConsultantDocId
-    }
-
-    let insertOPDPrescriptionarray = [];
-    this.dsItemList.data.forEach(element => {
-      let insertOPDPrescription = {};
-      insertOPDPrescription['opdIpdIp'] = this.vOPIPId;
-      insertOPDPrescription['opdIpdType'] = 0;
-      insertOPDPrescription['date'] = formattedDate,
-        insertOPDPrescription['pTime'] = this.dateTimeObj.time;
-      insertOPDPrescription['classId'] = this.vClassId || 12;
-      insertOPDPrescription['genericId'] = element.GenericId || element.genericId || element.genericid
-      insertOPDPrescription['drugId'] = element.DrugId || element.drugId;
-      insertOPDPrescription['doseId'] = Number(element.DoseId) || Number(element.doseId);
-      insertOPDPrescription['days'] = Number(element.Days) || Number(element.days);
-      insertOPDPrescription['instruction'] = element.Instruction || element.instructionDescription || '';
-      insertOPDPrescription['remark'] = this.MedicineItemForm.get('Remark').value || '';
-      insertOPDPrescription['doseOption2'] = 0,
-        insertOPDPrescription['daysOption2'] = 0,
-        insertOPDPrescription['doseOption3'] = 0,
-        insertOPDPrescription['daysOption3'] = 0,
-        insertOPDPrescription['instructionId'] = 0;
-      insertOPDPrescription['qtyPerDay'] = element.QtyPerDay || element.qtyPerDay || 0;
-      insertOPDPrescription['totalQty'] = (element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0;
-      insertOPDPrescription['isClosed'] = true;
-      insertOPDPrescription['isEnglishOrIsMarathi'] = JSON.parse(this.caseFormGroup.get('LangaugeRadio').value), //this.caseFormGroup.get('LangaugeRadio').value;
-        insertOPDPrescription['chiefComplaint'] = this.caseFormGroup.get('ChiefComplaint').value || '';
-      insertOPDPrescription['diagnosis'] = this.caseFormGroup.get('Diagnosis').value || '';
-      insertOPDPrescription['examination'] = this.caseFormGroup.get('Examination').value || '';
-      insertOPDPrescription['height'] = this.caseFormGroup.get('Height').value || '';
-      insertOPDPrescription['pWeight'] = this.caseFormGroup.get('Weight').value || '';
-      insertOPDPrescription['bmi'] = parseInt(this.caseFormGroup.get('BMI').value).toString() || '';
-      insertOPDPrescription['bsl'] = this.caseFormGroup.get('BSL').value || '';
-      insertOPDPrescription['spO2'] = this.caseFormGroup.get('SpO2').value || '';
-      insertOPDPrescription['temp'] = this.caseFormGroup.get('Temp').value || '';
-      insertOPDPrescription['pulse'] = this.caseFormGroup.get('Pulse').value || '';
-      insertOPDPrescription['bp'] = this.caseFormGroup.get('BP').value || '';
-      insertOPDPrescription['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-      insertOPDPrescription['patientReferDocId'] = Number(ReferDocNameID) || 0;
-      // insertOPDPrescription['patientReferDocId'] = ReferDocNameID || element.doctorname || 0;
-      insertOPDPrescription['advice'] = this.MedicineItemForm.get('Remark').value || '';
-      insertOPDPrescription['isAddBy'] = this._loggedService.currentUserValue.userId;
-
-      insertOPDPrescriptionarray.push(insertOPDPrescription);
-    });
-
-    let opRequestList = [];
-    if (this.selectedItems.length == 0) {
-      let opRequestListObj = {};
-      opRequestListObj['opipid'] = this.vOPIPId;
-      opRequestListObj['serviceId'] = 0
-      opRequestList.push(opRequestListObj);
-    } else {
-      this.selectedItems.forEach(element => {
-        let opRequestListObj = {};
-        opRequestListObj['opipid'] = this.vOPIPId;
-        opRequestListObj['serviceId'] = element.serviceId || 32;
-        opRequestList.push(opRequestListObj);
-      });
-    }
-
-    let OpDescriptinList = [];
-    if (this.AllTypeDescription.length == 0) {
-      let OpDescriptinListObj = {};
-      OpDescriptinListObj['visitId'] = this.VisitId || 0;
-      OpDescriptinListObj['descriptionType'] = '';
-      OpDescriptinListObj['descriptionName'] = ''
-      OpDescriptinList.push(OpDescriptinListObj);
-    } else {
-      this.AllTypeDescription.forEach(element => {
-        let OpDescriptinListObj = {};
-        OpDescriptinListObj['visitId'] = this.VisitId || 0;
-        OpDescriptinListObj['descriptionType'] = element.descriptionType || '';
-        OpDescriptinListObj['descriptionName'] = element.descriptionName || '';
-        OpDescriptinList.push(OpDescriptinListObj);
-      });
-    }
-
-    this.casePaperInsertForm.get("tPrescription").setValue(insertOPDPrescriptionarray)
-      this.casePaperInsertForm.get("topRequestList").setValue(opRequestList)
-      this.casePaperInsertForm.get("mopCasepaperDignosisMaster").setValue(OpDescriptinList)
-    console.log(this.casePaperInsertForm.value);
-
-    this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'Casepaper save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-
-            if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-              this.OnViewReportPdf(this.VisitId)
-            else
-              this.OnViewReportPdf(this.VisitId)
-            this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
-            this.onClear();
-            this.onClose();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Casepaper not saved', 'error');
-      }
-    });
-
-  }
-
   OnViewReportPdf(element) {
 
     console.log('Third action clicked for:', element);
@@ -1537,15 +1365,12 @@ export class NewCasepaperComponent implements OnInit {
     this.RegNo = " ";
     this.vOPIPId = " ";
     this.vOPDNo = " ";
-    this.vTariffId = " ";
     this.vClassId = " ";
     this.AgeYear = " ";
     this.AgeMonth = " ";
-    this.vClassName = " ";
     this.AgeDay = " ";
     this.GenderName = " ";
     this.RefDocName = " ";
-    this.BedName = " ";
     this.PatientType = " ";
     this.caseFormGroup.get('LetteHeadRadio').setValue('NormalHead');
     this.caseFormGroup.get('LangaugeRadio').setValue("true");
@@ -1798,10 +1623,8 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   extractUniqueDates() {
-    // 
     const visitId = this.patients.map(patient => patient.visitId);
     this.uniqueDates = Array.from(new Set(visitId));
-    // this.uniqueDates = Array.from(new Set(dates));
   }
   //datewise table data
   getFirstPatientForDate(visitId: string) {
@@ -1828,7 +1651,6 @@ export class NewCasepaperComponent implements OnInit {
   preExamination: any;
   preDiagnosis: any;
   preFollowupDate: Date;
-
 
   getPreviousPrescriptionlist() {
     console.log(this.RegId)
@@ -1942,10 +1764,6 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-  //chipset cheifcomplaint
-  // CheifComplaintControl = new FormControl();
-  // ExaminationControl = new FormControl();
-  // DiagnosisControl = new FormControl();
   filteredHistory: Observable<string[]>;
 
   getItemMaster() {

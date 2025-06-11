@@ -171,21 +171,9 @@ public updateItemMaster(param,loader = true){
   return this._httpClient.post("Inventory/ItemMasterUpdate", param);
 }
 public insertItemMaster(Param: any) {  
-  return this._httpClient1.PostData("ItemMaster/InsertEDMX", Param);
-}
-
-public updateItemMaster1(Param: any) {
-  
-  if (Param.itemId) {
+   if (Param.itemId) {
       return this._httpClient1.PutData("ItemMaster/Edit/" + Param.itemId, Param);
-  }
-}
-
-public insertItemMasterDemo(Param: any) {
-  if (Param.itemId) {
-
-      return this._httpClient1.PutData("ItemMaster/Edit/" + Param.itemId, Param);
-  } else return this._httpClient1.PostData("ItemMaster/InsertEDMX", Param);
+  }else return this._httpClient1.PostData("ItemMaster/InsertEDMX", Param);
 }
 
 public RtrvPreviousprescriptionDetailsdemo(employee) {

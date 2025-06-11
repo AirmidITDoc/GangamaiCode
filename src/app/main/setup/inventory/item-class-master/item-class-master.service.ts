@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class ItemClassMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createItemclassForm();
         this.myformSearch = this.createSearchForm();
@@ -19,18 +21,19 @@ export class ItemClassMasterService {
 
     createItemclassForm(): FormGroup {
         return this._formBuilder.group({
-            itemClassId: [0],
+            itemClassId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemClassName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ] 
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
             ],
             IsDeleted: ["true"],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 

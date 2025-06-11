@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,43 +15,34 @@ import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
-
 @Component({
   selector: 'app-new-prescriptionreturn',
   templateUrl: './new-prescriptionreturn.component.html',
   styleUrls: ['./new-prescriptionreturn.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-
 })
+
 export class NewPrescriptionreturnComponent implements OnInit {
-  SpinLoading: boolean = false;
+
   PresItemlist: any = [];
-  Store1List: any = [];
-  filteredOptionsItem: any;
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  isItemIdSelected: boolean = false;
   ItemSubform: FormGroup;
-  MyForm: FormGroup;
-  prescReturnForm: FormGroup;
+  // MyForm: FormGroup;
+  prescriptionReturnForm: FormGroup;
   registerObj = new RegInsert({});
   RegId: any;
-  PatientListfilteredOptions: any;
   PatientName: any;
   OP_IP_Id: any;
   sIsLoading: string = '';
-  isLoading = true;
   OP_IPType: any;
-  Itemchargeslist: any = [];
   ItemName: any;
   ItemId: any;
   itemName: any;
   BalanceQty: any;
+  BatchExpDate: any;
   BatchNo: any = '';
   Qty: any;
   screenFromString = 'Common-form';
-  autocompleteitem: string = "ItemType";
   Chargelist: any = [];
   vPresReturnId: any = 0;
   vPresDetailsId: any;
@@ -59,7 +50,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vRegNo: any;
   vPatientName: any;
   vAdmissionDate: any;
-  vMobileNo: any;
   vIPDNo: any;
   vTariffName: any;
   vCompanyName: any;
@@ -77,10 +67,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vDOA: any;
   vSelectedOption: any = 'OP';
   vOPDNo: any;
-  vstoreId: any = 2;
+  vstoreId: any = this._loggedService.currentUserValue.user.storeId;
+  dateTimeObj: any;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  add: boolean = false;
 
-  constructor(public _PrescriptionReturnService: PrescriptionReturnService,
-    private _fuseSidebarService: FuseSidebarService,
+  constructor(
+    public _PrescriptionReturnService: PrescriptionReturnService,
     public _httpClient: HttpClient,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -90,7 +83,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
     private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<NewPrescriptionreturnComponent>,
-    public datePipe: DatePipe,) { }
+    public datePipe: DatePipe
+  ) { }
 
   selectedSaleDisplayedCol = [
     'ItemId',
@@ -110,55 +104,112 @@ export class NewPrescriptionreturnComponent implements OnInit {
       console.log("Icd RegisterObj:", this.registerObj1)
     }
     this.getItemSubform();
-    this.createMyForm();
     this.ItemSubform.markAllAsTouched();
-    this.prescReturnForm = this.presReturnForm();
+    this.prescriptionReturnForm = this.presReturnForm();
+    this.prescriptionReturnForm.markAllAsTouched();
+
+    this.prescriptionReturnArray.push(this.createPresReturnFormInsert());
   }
 
   getItemSubform() {
     this.ItemSubform = this._formBuilder.group({
-      ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
-      ItemName: '',
-      BatchNo: ['', Validators.required],
-      Qty: ['', Validators.required],
-      PatientName: '',
-      DoctorName: '',
-      extAddress: '',
-      MobileNo: ['', [
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
       PatientType: ['OP', [Validators.required]],
-      TotalAmt: '',
+      RegID: ['', Validators.required],
+      ItemId: ['', [Validators.required, this.validateSelectedItem.bind(this)]],
+      BatchNo: ['', Validators.required],
+      Qty: ['', Validators.required]
     });
   }
 
   // prescription return insert form
   presReturnForm(): FormGroup {
     return this._formBuilder.group({
-      presReId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      presNo: ['0',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      presNo: ['0', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       presDate: [(new Date()).toISOString().split('T')[0]],
       presTime: [(new Date()).toISOString()],
-      toStoreId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      toStoreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpType: 0,
       addedby: this._loggedService.currentUserValue.userId,
       isActive: 1,
       isclosed: true,
-      tIpprescriptionReturnDs: ""
+      tIpprescriptionReturnDs: this._formBuilder.array([]),
     })
   }
 
-  createMyForm() {
-    this.MyForm = this._formBuilder.group({
-      PatientType: ['OP', [Validators.required]],
-      RegID: ['', Validators.required],
-    })
+  createPresReturnFormInsert(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      presDetailsId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.ItemID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      batchNo: [element.BatchNo],
+      batchExpDate: [element.BatchexpDate ?? this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      qty: [element.Qty ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isClosed: [true]
+    });
   }
 
-  dateTimeObj: any;
+  get prescriptionReturnArray(): FormArray {
+    return this.prescriptionReturnForm.get('tIpprescriptionReturnDs') as FormArray;
+  }
+
+  OnSavePrescriptionreturn() {
+    // debugger
+    let opip_Type;
+    if (this.ItemSubform.get('PatientType').value == 'IP') { opip_Type = 1; }
+    else { opip_Type = 0; }
+
+    if (!this.prescriptionReturnForm.invalid) {
+
+      this.prescriptionReturnArray.clear();
+      if (this.saleSelectedDatasource.data.length === 0) {
+        this.toastr.warning('No data in the item list!', 'Warning');
+        return;
+      }
+      this.saleSelectedDatasource.data.forEach(item => {
+        this.prescriptionReturnArray.push(this.createPresReturnFormInsert(item));
+      });
+
+      this.prescriptionReturnForm.get("presDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.prescriptionReturnForm.get("presTime").setValue(this.dateTimeObj.time)
+      this.prescriptionReturnForm.get("toStoreId").setValue(this.vstoreId)
+      this.prescriptionReturnForm.get("opIpId").setValue(this.OP_IP_Id)
+      this.prescriptionReturnForm.get("opIpType").setValue(opip_Type)
+      console.log(this.prescriptionReturnForm.value)
+
+      this._PrescriptionReturnService.presciptionreturnSave(this.prescriptionReturnForm.value).subscribe(response => {
+        if (response) {
+          this.viewgetIpprescriptionreturnReportPdf(response)
+          this._matDialog.closeAll();
+        }
+      });
+    } else {
+      let invalidFields = [];
+      if (this.prescriptionReturnForm.invalid) {
+        for (const controlName in this.prescriptionReturnForm.controls) {
+          const control = this.prescriptionReturnForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`tIpprescriptionReturnDs : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -171,15 +222,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
-    
+  }
+
   selectChangeItem(obj: any) {
 
     if (!obj || typeof obj !== 'object') {
@@ -197,7 +248,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   getBatch(obj) {
-
     const dialogRef = this._matDialog.open(BatchpopupComponent,
       {
         maxWidth: "800px",
@@ -213,7 +263,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.BatchNo = result.batchNo;
       this.Qty = result.balanceQty;
       this.BalanceQty = result.balanceQty;
-
+      this.BatchExpDate = result.batchExpDate;
     });
   }
 
@@ -221,30 +271,10 @@ export class NewPrescriptionreturnComponent implements OnInit {
     if (event.value == 'OP') {
       this.OP_IPType = 0;
       this.RegId = "";
-      // this.paymethod = true;
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
     }
     else if (event.value == 'IP') {
       this.OP_IPType = 1;
       this.RegId = "";
-
-      this.ItemSubform.get('MobileNo').clearValidators();
-      this.ItemSubform.get('PatientName').clearValidators();
-      this.ItemSubform.get('MobileNo').updateValueAndValidity();
-      this.ItemSubform.get('PatientName').updateValueAndValidity();
-    } else {
-      this.ItemSubform.get('MobileNo').reset();
-      this.ItemSubform.get('MobileNo').setValidators([Validators.required]);
-      this.ItemSubform.get('MobileNo').enable();
-      this.ItemSubform.get('PatientName').reset();
-      this.ItemSubform.get('PatientName').setValidators([Validators.required]);
-      this.ItemSubform.get('PatientName').enable();
-      this.ItemSubform.updateValueAndValidity();
-
-      this.OP_IPType = 2;
     }
     this.patientInfoReset();
   }
@@ -303,13 +333,12 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   patientInfoReset() {
-    this.MyForm.get('RegID').setValue('');
-    this.MyForm.get('RegID').reset();
+    this.ItemSubform.get('RegID').setValue('');
+    this.ItemSubform.get('RegID').reset();
     this.vRegNo = '';
     this.vPatientName = '';
     this.vAdmissionDate = '';
     this.vAdmissionTime = '';
-    this.vMobileNo = '';
     this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
@@ -322,37 +351,12 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.vDOA = ''
   }
 
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  // @ViewChild('BatchNo') BatchNo: ElementRef;
-
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  add: boolean = false;
-
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-
-    }
-  }
-
-  public onEnterqty(event): void {
-    // 
-    if (event.which === 13) {
-      this.add = true;
-      this.addbutton.focus();
-    }
-  }
-
   addData() {
     this.add = true;
     this.addbutton.focus();
   }
 
-  selectedItem: any;
-
   onAdd() {
-    // this.selectedItem = this.ItemSubform.get('ItemId').value;
     if (!this.ItemSubform.invalid) {
       const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.ItemId)
       if (!iscekDuplicate) {
@@ -363,6 +367,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
             ItemName: this.itemName || '',
             BatchNo: this.BatchNo || '',
             Qty: this.Qty,
+            BatchexpDate: this.BatchExpDate || ''
           });
         this.saleSelectedDatasource.data = this.Chargelist
       } else {
@@ -409,84 +414,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
     this.RegId = obj.RegID;
     this.OP_IP_Id = this.registerObj.AdmissionID;
-  }
-
-
-  selectChangeStore(obj: any) {
-    console.log("Store:", obj);
-    this.vstoreId = obj.value
-  }
-
-  OnSavePrescriptionreturn() {
-    debugger
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'dd-MM-yyyy hh:mm:ss a');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-    let opip_Type;
-    if (this.MyForm.get('PatientType').value == 'IP') {
-      opip_Type = 1;
-    }
-    else {
-      opip_Type = 0;
-    }
-
-    if (!this.prescReturnForm.invalid) {
-      if (!this.MyForm.invalid && this.saleSelectedDatasource.data.length > 0) {
-        if (!this.vPresReturnId && !this.vPresDetailsId) {
-
-          let tIpprescriptionReturnDs = this.saleSelectedDatasource.data.map((row: any) => ({
-            "presDetailsId": 0,
-            "presReId": 0,
-            "itemId": row.ItemID || 0,
-            "batchNo": row.BatchNo,
-            "batchExpDate": datePipe.transform(currentDate, 'yyyy-MM-dd'),
-            "qty": row.Qty,
-            "isClosed": true
-          }));
-
-          this.prescReturnForm.get("toStoreId").setValue(this.vstoreId)
-          this.prescReturnForm.get("opIpId").setValue(this.OP_IP_Id)
-          this.prescReturnForm.get("opIpType").setValue(opip_Type)
-          this.prescReturnForm.get("tIpprescriptionReturnDs").setValue(tIpprescriptionReturnDs)
-          console.log(this.prescReturnForm.value)
-
-          this._PrescriptionReturnService.presciptionreturnSave(this.prescReturnForm.value).subscribe(response => {
-            this.toastr.success(response.message);
-            console.log(response)
-            if (response) {
-              this.viewgetIpprescriptionreturnReportPdf(response)
-              this._matDialog.closeAll();
-            }
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
-        }
-      } else {
-        let invalidFields = [];
-
-        if (this.saleSelectedDatasource.data.length === 0) {
-          invalidFields.push('No data in the item list!');
-        }
-
-        if (this.MyForm.invalid) {
-          for (const controlName in this.MyForm.controls) {
-            if (this.MyForm.controls[controlName].invalid) {
-              invalidFields.push(`My Form: ${controlName}`);
-            }
-          }
-        }
-
-        if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-            );
-          });
-        }
-      }
-    }
-
   }
 
   getValidationMessages() {
@@ -557,15 +484,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
 }
 export class IndentList {
-  ItemId:any;
-  ItemID:any;
+  ItemId: any;
+  ItemID: any;
   ItemName: string;
   Qty: number;
-  IssQty:number;
-  Bal:number;
-  StoreId:any;
-  StoreName:any;
-  BatchExpDate:any;
+  IssQty: number;
+  Bal: number;
+  StoreId: any;
+  StoreName: any;
+  BatchExpDate: any;
   /**
    * Constructor
    *
@@ -574,14 +501,14 @@ export class IndentList {
   constructor(IndentList) {
     {
       this.ItemId = IndentList.ItemId || 0;
-        this.ItemID = IndentList.ItemID || 0;
+      this.ItemID = IndentList.ItemID || 0;
       this.ItemName = IndentList.ItemName || "";
       this.Qty = IndentList.Qty || 0;
       this.IssQty = IndentList.IssQty || 0;
-      this.Bal = IndentList.Bal|| 0;
+      this.Bal = IndentList.Bal || 0;
       this.StoreId = IndentList.StoreId || 0;
-      this.StoreName =IndentList.StoreName || '';
-      this.BatchExpDate =IndentList.BatchExpDate || '';
+      this.StoreName = IndentList.StoreName || '';
+      this.BatchExpDate = IndentList.BatchExpDate || '';
     }
   }
 }

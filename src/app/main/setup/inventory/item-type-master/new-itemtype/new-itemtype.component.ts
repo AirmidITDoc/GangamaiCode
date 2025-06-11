@@ -5,62 +5,62 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemTypeMasterService } from '../item-type-master.service';
 
 @Component({
-  selector: 'app-new-itemtype',
-  templateUrl: './new-itemtype.component.html',
-  styleUrls: ['./new-itemtype.component.scss']
+    selector: 'app-new-itemtype',
+    templateUrl: './new-itemtype.component.html',
+    styleUrls: ['./new-itemtype.component.scss']
 })
 export class NewItemtypeComponent implements OnInit {
 
-  itemtypeForm: FormGroup;
-  isActive:boolean=true;
+    itemtypeForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _ItemTypeMasterService: ItemTypeMasterService,
-      public dialogRef: MatDialogRef<NewItemtypeComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
+    constructor(
+        public _ItemTypeMasterService: ItemTypeMasterService,
+        public dialogRef: MatDialogRef<NewItemtypeComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
     ) { }
 
 
-  ngOnInit(): void {
-      this.itemtypeForm = this._ItemTypeMasterService.createItemtypeForm();
-      this.itemtypeForm.markAllAsTouched();
-      if((this.data?.itemTypeId??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.itemtypeForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.itemtypeForm = this._ItemTypeMasterService.createItemtypeForm();
+        this.itemtypeForm.markAllAsTouched();
+        if ((this.data?.itemTypeId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.itemtypeForm.patchValue(this.data);
         }
     }
 
-  
-  onSubmit() 
-  {
-    if (!this.itemtypeForm.invalid) 
-    {
 
-        console.log("itemtype json :-",this.itemtypeForm.value);
+    onSubmit() {
+        if (!this.itemtypeForm.invalid) {
+            console.log(this.itemtypeForm.value)
+            this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.itemtypeForm.invalid) {
+                for (const controlName in this.itemtypeForm.controls) {
+                    if (this.itemtypeForm.controls[controlName].invalid) {
+                        invalidFields.push(`itemtype Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
-        this._ItemTypeMasterService.itemtypeMasterSave(this.itemtypeForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+        }
     }
-    else
-    {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-    }
-  }
 
-  onClear(val: boolean) 
-  {
-    this.itemtypeForm.reset();
-    this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.itemtypeForm.reset();
+        this.dialogRef.close(val);
+    }
 
     getValidationMessages() {
         return {

@@ -14,8 +14,8 @@ import { DosemasterService } from '../dosemaster.service';
 })
 export class NewDoseMasterComponent implements OnInit {
 
-    doseForm:FormGroup;
-    isActive:boolean=true;
+    doseForm: FormGroup;
+    isActive: boolean = true;
 
     constructor(
         public _doseMasterService: DosemasterService,
@@ -25,46 +25,49 @@ export class NewDoseMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.doseForm=this._doseMasterService.createDoseForm();
+        this.doseForm = this._doseMasterService.createDoseForm();
         this.doseForm.markAllAsTouched();
-        if((this.data?.doseId??0) > 0)
-            {
-            this.isActive=this.data.isActive
+        if ((this.data?.doseId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.doseForm.patchValue(this.data);
         }
     }
 
 
-    
-    onSubmit() {
-    
-    if(!this.doseForm.invalid){
-   
-      console.log("dose json:", this.doseForm.value);
 
-      this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response)=>{
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error)=>{
-        this.toastr.error(error.message);
-      });
-    } 
-    else
-    {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
+    onSubmit() {
+
+        if (!this.doseForm.invalid) {
+            console.log(this.doseForm.value)
+            this._doseMasterService.doseMasterInsert(this.doseForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.doseForm.invalid) {
+                for (const controlName in this.doseForm.controls) {
+                    if (this.doseForm.controls[controlName].invalid) {
+                        invalidFields.push(`dose Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
-  }
 
     onClear(val: boolean) {
         this.doseForm.reset();
         this.dialogRef.close(val);
     }
 
-     getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             doseName: [
                 { name: "required", Message: "Dose Name is required" },
                 { name: "maxlength", Message: "Dose name should not be greater than 50 char." },

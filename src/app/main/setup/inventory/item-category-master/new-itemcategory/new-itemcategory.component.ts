@@ -33,22 +33,26 @@ export class NewItemcategoryComponent implements OnInit {
 
     onSubmit() {
         if (!this.categoryForm.invalid) {
-
-            console.log("ItemCategoryMaster Insert:", this.categoryForm.value)
-
+            console.log(this.categoryForm.value)
             this._CategorymasterService.categoryMasterSave(this.categoryForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            },
-                (error) => {
-                    this.toastr.error(error.message);
-                });
-        }
-        else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
             });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.categoryForm.invalid) {
+                for (const controlName in this.categoryForm.controls) {
+                    if (this.categoryForm.controls[controlName].invalid) {
+                        invalidFields.push(`category Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 
