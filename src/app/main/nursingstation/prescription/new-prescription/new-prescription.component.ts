@@ -11,8 +11,8 @@ import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { PrescriptionService } from '../prescription.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-prescription',
@@ -23,83 +23,43 @@ import { PrescriptionService } from '../prescription.service';
 })
 export class NewPrescriptionComponent implements OnInit {
 
-  vItemID: any;
-  vItemName: any;
   vQty: any;
-  vRemark: any;
-
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   prescForm: FormGroup;
   ItemForm: FormGroup;
   screenFromString = 'Common-form';
   ItemId: any;
-  vOpIpId: any;
-  displayedVisitColumns: string[] = [
-    'Date',
-    'Time'
-  ]
+  // displayedVisitColumns: string[] = [
+  //   'Date',
+  //   'Time'
+  // ]
   displayedColumns: string[] = [
     'ItemName',
-    //'DoseName',
     'Qty',
     'Remark',
     'Action'
   ]
-  WardList: any = [];
-  StoreList: any = [];
-  Itemlist: any = [];
   PresItemlist: any = [];
-  dataArray: any = [];
-
-  noOptionFound: boolean = false;
-  isRegIdSelected: boolean = false;
-  isItemIdSelected: boolean = false;
   registerObj = new RegInsert({});
   selectedAdvanceObj = new AdmissionPersonlModel({});
   PatientName: any;
   RegNo: any;
   DoctorName: any;
   vAdmissionID: any;
-  filteredOptions: any;
-  filteredOptionsItem: any;
-  PatientListfilteredOptions: any;
-  ItemListfilteredOptions: any;
   isRegSearchDisabled: boolean;
-  RegId: any;
   registration: any;
-  isLoading: String = '';
-  sIsLoading: string = "";
-
   ItemName: any;
-  BalanceQty: any;
-  matDialogRef: any;
   add: boolean = false;
-  isDoseSelected: boolean = false;
-  vDay: any = 0;
   vInstruction: any;
   Chargelist: any = [];
-
-  filteredOptionsWard: Observable<string[]>;
-  filteredOptionsDosename: Observable<string[]>;
   optionsWard: any[] = [];
   isWardselected: boolean = false;
-  filteredOptionsStore: Observable<string[]>;
-  optionsStore: any[] = [];
-  isStoreselected: boolean = false;
-
   CompanyName: any;
-  Tarrifname: any;
-  Doctorname: any;
-  Paymentdata: any;
-  vOPIPId: any = 0;
-  vOPDNo: any = 0;
-  vTariffId: any = 0;
   vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
   vAdmissionDate: any;
-  vMobileNo: any;
   vIPDNo: any;
   vTariffName: any;
   vCompanyName: any;
@@ -115,53 +75,56 @@ export class NewPrescriptionComponent implements OnInit {
   vRefDocName: any;
   vPatientType: any;
   vDOA: any;
+  vstoreId: any = '';
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
-  dsiVisitList = new MatTableDataSource<MedicineItemList>();
+  // dsiVisitList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
 
   autocompletestore: string = "Store";
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
   Regstatus: boolean = true;
-  ApiURL: any;
   vitemId: any;
   vitemname: any;
+  dateTimeObj: any;
+  WardName: any;
+  vdoseId: any;
+  doseName: any;
+  day: any;
 
   @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
-  constructor(private _FormBuilder: UntypedFormBuilder,
+  constructor(
     private ref: MatDialogRef<NewPrescriptionComponent>,
     public _PrescriptionService: PrescriptionService,
     private _loggedService: AuthenticationService,
     public _registerService: RegistrationService,
     public toastr: ToastrService,
+    private formBuilder: FormBuilder,
     private advanceDataStored: AdvanceDataStored,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    private _fb: FormBuilder,
   ) {
     if (this.advanceDataStored.storage) {
-
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
     }
   }
 
   ngOnInit(): void {
     this.myForm = this._PrescriptionService.createMyForm();
-    this.ItemForm = this._PrescriptionService.createItemForm();
-    this.prescForm=this._PrescriptionService.createPrescForm();
-    // this.prescForm=this._PrescriptionService.createPrescForm(this._fb);
-    this.ItemForm.markAllAsTouched();
     this.myForm.markAllAsTouched();
+
+    this.ItemForm = this._PrescriptionService.createItemForm();
+    this.ItemForm.markAllAsTouched();
+
+    this.prescForm = this._PrescriptionService.createPrescForm();
+    this.prescriptionArray.push(this.createPrescriptionFormInsert());
   }
-  dateTimeObj: any;
-  WardName: any;
-  BedNo: any;
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -194,7 +157,6 @@ export class NewPrescriptionComponent implements OnInit {
     }
   }
 
-  vstoreId: any = '';
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value
@@ -211,9 +173,6 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeItem(obj: any) {
-    // debugger;
-    console.log("ssss:", this.vstoreId)
-
     if (!this.vstoreId) {
       return;
     }
@@ -226,7 +185,18 @@ export class NewPrescriptionComponent implements OnInit {
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
+    this.vdoseId = obj.doseName;
+    this.day = obj.doseDay;
     this.ItemForm.get('ItemId').setValue(obj);
+
+    if ((this.vdoseId ?? 0) > 0) {
+      setTimeout(() => {
+        this._PrescriptionService.getDoseMasterById(this.vdoseId).subscribe((response) => {
+          this.doseName = response;
+          console.log("Dose Data:", response)
+        });
+      }, 500);
+    }
 
     setTimeout(() => {
       const nativeElement = this.qtyTextboxRef?.nativeElement;
@@ -238,8 +208,6 @@ export class NewPrescriptionComponent implements OnInit {
       }
     }, 100);
   }
-
-  doseList: any = [];
 
   deleteTableRow1(event, element) {
     // if (this.key == "Delete") {
@@ -253,8 +221,6 @@ export class NewPrescriptionComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
-
-  WardId: any;
 
   getValidationMessages() {
     return {
@@ -276,7 +242,6 @@ export class NewPrescriptionComponent implements OnInit {
 
   onEdit(row) {
     console.log(row);
-
     this.registerObj = row;
     this.getSelectedObjIP(row);
   }
@@ -356,108 +321,57 @@ export class NewPrescriptionComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('dosename') dosename: ElementRef;
-  @ViewChild('remark') remark: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  @ViewChild('qty') qty: ElementRef;
 
-  public onEnterqty(event): void {
-    if (event.which === 13) {
-      this.remark.nativeElement.focus();
-    }
+  createPrescriptionFormInsert(element: any = {}): FormGroup {
+    return this.formBuilder.group({
+      ippreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      ipmedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpId: [this.vAdmissionID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pdate: [this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')],
+      ptime: [this.dateTimeObj.time],
+      classId: [this.vClassId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      genericId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugId: [element.ItemID,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseId: [Number(this.vdoseId), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [this.day, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyPerDay: [Number(element.Qty) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalQty: [Number(element.Qty) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      remark: [element.Remark ?? '',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      isClosed: [false],
+      isAddBy: [this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [Number(this.vstoreId) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      wardID: [Number(this.myForm.get('WardName').value) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
   }
 
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      // this.dosename.nativeElement.focus(); 
-      this.qty.nativeElement.focus();
-    }
-  }
-  public onEnterDose(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-    }
-  }
-
-  public onEnterremark(event): void {
-    if (event.which === 13) {
-      this.addbutton.focus;
-      this.add = true;
-    }
+  get prescriptionArray(): FormArray {
+    return this.prescForm.get('tIpPrescriptions') as FormArray;
   }
 
   OnSavePrescription() {
-debugger
-    if(!this.prescForm.invalid){
-      if (!this.myForm.invalid && this.dsItemList.data.length > 0) {
-      let insertIP_Prescriptionarray = [];
+    debugger
+    if (!this.prescForm.invalid && this.prescriptionArray.controls.every(c => !c.invalid)) {
 
-      this.dsItemList.data.forEach((element) => {
-        let insertIP_Prescription = {};
-        insertIP_Prescription['ippreId'] = 0;
-        insertIP_Prescription['ipmedId'] = 0;
-        insertIP_Prescription['opIpId'] = this.vAdmissionID;
-        insertIP_Prescription['opdIpdType'] = 1;
-        insertIP_Prescription['pdate'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-        insertIP_Prescription['ptime'] = this.datePipe.transform(new Date(), 'shortTime');
-        insertIP_Prescription['classId'] = this.vClassId;
-        insertIP_Prescription['genericId'] = 1;
-        insertIP_Prescription['drugId'] = element.ItemID;
-        insertIP_Prescription['doseId'] = 0;
-        insertIP_Prescription['days'] = 0;
-        insertIP_Prescription['qtyPerDay'] = Number(element.Qty) || 0;
-        insertIP_Prescription['totalQty'] = Number(element.Qty) || 0;
-        insertIP_Prescription['remark'] = element.Remark || '';
-        insertIP_Prescription['isClosed'] = false;
-        insertIP_Prescription['isAddBy'] = this._loggedService.currentUserValue.userId;
-        insertIP_Prescription['storeId'] = Number(this.vstoreId) || 0;
-        insertIP_Prescription['wardID'] = Number(this.myForm.get('WardName').value) || 0;
-        insertIP_Prescriptionarray.push(insertIP_Prescription);
+      this.prescriptionArray.clear();
+      if (this.dsItemList.data.length === 0) {
+        this.toastr.warning('No data in the item list!', 'Warning');
+        return;
+      }
+      this.dsItemList.data.forEach(item => {
+        this.prescriptionArray.push(this.createPrescriptionFormInsert(item));
       });
-
-      // tried to insert in formcontrol
-    //   const formArray = this.prescForm.get("tIpPrescriptions") as FormArray;
-
-    //   formArray.controls.forEach((group: FormGroup, index: number) => {
-    //   const element = this.dsItemList.data[index];
-    //   if (element) {
-    //     group.get("opIpId").setValue(this.vAdmissionID);
-    //     group.get("pdate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    //     group.get("ptime").setValue(this.datePipe.transform(new Date(), 'shortTime'));
-    //     group.get("classId").setValue(this.vClassId);
-    //     group.get("drugId")?.setValue(element.ItemID);
-    //     group.get("qtyPerDay")?.setValue(Number(element.Qty));
-    //     group.get("totalQty")?.setValue(Number(element.Qty));
-    //     group.get("remark")?.setValue(element.Remark);
-    //     group.get("storeId")?.setValue(Number(this.vstoreId));
-    //     group.get("wardID")?.setValue(Number(this.myForm.get('WardName').value));
-    //   }
-    // });
-    // 
-
       this.prescForm.get("admissionId").setValue(this.vAdmissionID)
-      this.prescForm.get("tIpPrescriptions").setValue(insertIP_Prescriptionarray)
-
       console.log(this.prescForm.value)
 
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
-        this.toastr.success(response.message);
-        console.log(response)
         if (response) {
           this.viewgetIpprescriptionReportPdf(response)
           this._matDialog.closeAll();
         }
-      },(error)=>{
-         this.toastr.error(error.message);
       });
-
     } else {
       let invalidFields = [];
-
-      if (this.dsItemList.data.length === 0) {
-        invalidFields.push('No data in the item list!');
-      }
 
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
@@ -466,15 +380,21 @@ debugger
           }
         }
       }
-
-      // Show a toast for each invalid field
+      this.prescriptionArray.controls.forEach((control, index) => {
+        if (control instanceof FormGroup) {
+          for (const key in control.controls) {
+            if (control.get(key)?.invalid) {
+              invalidFields.push(`Prescription Row ${index + 1}: ${key}`);
+            }
+          }
+        }
+      });
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
           );
         });
       }
-    }
     }
   }
 

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -8,7 +8,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable } from 'rxjs';
 import { CasepaperService } from '../casepaper.service';
-import { MedicineItemList } from '../new-casepaper.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-add-item',
@@ -19,35 +19,26 @@ import { MedicineItemList } from '../new-casepaper.component';
 })
 export class AddItemComponent {
 
+  itemForm: FormGroup;
   myform: FormGroup;
-  sIsLoading: string = '';
   currentDate = new Date
-  vRemark: any;;
   vItemName: any;
-  registerObj = new MedicineItemList({});
-  isItemGenericNameIdSelected: boolean = false;
-  filteredItemgeneric: Observable<string[]>
   vItemGeneric: any;
-  ItemGenericcmbList: any = [];
-  ItemUomcmbList: any = [];
-  vPurchaseUOMId: any;
-  isPurchaseUOMIdSelected: boolean = false;
-  filteredUnitofmeasurement: Observable<string[]>
-  vStoreName: any;
-  isStoreSelected: boolean = false;
-  StorecmbList: any;
-  filteredOptionsStore: Observable<string[]>
-  isItemIdSelected: boolean = false;
   vItemId: any;
-  ItemListfilteredOptions: any;
-  noOptionFound: any;
-  vSearchItemId: any;
   vStoreIds: any;
+  storeID = this._loggedService.currentUserValue.user.storeId;
 
   autocompleteModeItem: string = "Item";
   autocompleteModeItemGeneric: string = "ItemGeneric";
   autocompleteModePurchaseUOMId: string = "UnitOfMeasurment";
   autocompleteModeStoreId: string = "Store";
+  itemId = 0
+  itemObjects: any;
+  itemGeneric: any;
+  vItemGenericNameId: any;
+  vItemGenericName: any;
+  name = ''
+  selectedItems = [];
 
   @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
 
@@ -59,116 +50,47 @@ export class AddItemComponent {
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddItemComponent>,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
-
-  itemForm: FormGroup;
   ngOnInit(): void {
     this.myform = this.CreateMyform();
 
     this.itemForm = this.createItemmasterForm();
-
+    this.itemForm.markAllAsTouched();;
     // this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
   }
   CreateMyform() {
     return this._formBuilder.group({
-      ItemName: [''],
-      ItemGenericNameId: [''],
-      PurchaseUOMId: [''],
-      StoreId: [''],
-      ItemId: [''],
       SearchItemId: [''],
-      mAssignItemToStores: [
-        {
-          assignId: 0,
-          storeId: 0,
-          supplierId: 0,
-          storeName: ''
-        }
-      ]
     })
   }
 
   createItemmasterForm(): FormGroup {
     return this._formBuilder.group({
-      itemId: 0,
-      itemShortName: ["",
-        [
-        ]
-      ],
-      itemName: ["",
-        [
-        ]
-      ],
-      itemTypeId: ["",
-        [
-        ]
-      ],
-      itemCategaryId: ["",
-        [
-        ]
-      ],
-      itemGenericNameId: ["",
-        [
-        ]
-      ],
-      itemClassId: ["",
-        [
-        ]
-      ],
-      purchaseUomid: [0,
-        [
-        ]
-      ],
-      stockUomid: [0,
-        [
-        ]
-      ],
-      conversionFactor: ["",
-        [
-        ]
-      ],
-      currencyId: ["",
-        [
-        ]
-      ],
-      taxPer: ["0"],
-      isBatchRequired: [true as boolean],
-      minQty: ["",
-        [
-        ]
-      ],
-      maxQty: ["",
-        [
-        ]
-      ],
-      reOrder: ["0",
-        [
-        ]
-      ],
-      hsNcode: ["",
-        [
-        ]
-      ],
-      cgst: ["",
-        [
-        ]
-      ],
-      sgst: ["",
-        [
-        ]
-      ],
-      igst: ["",
-        [
-        ]
-      ],
-
-      manufId: ["",
-        [
-          // Validators.required,
-        ]
-      ],
+      itemId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemShortName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      itemName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      itemTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemCategaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemGenericNameId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      itemClassId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseUomid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      stockUomid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      conversionFactor: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      currencyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      taxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isActive: true,
+      isBatchRequired: [true],
+      minQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      maxQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reOrder: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      hsncode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      cgst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      manufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isNarcotic: true,
       isH1drug: true,
       isScheduleH: true,
@@ -176,112 +98,138 @@ export class AddItemComponent {
       isScheduleX: true,
       isLasa: true,
       isEmgerency: true,
-      drugType: [0,
-        [
-        ]
-      ],
-      drugTypeName: [""],
-      prodLocation: ["",
-        [
-        ]
-      ],
-      itemCompnayId: ["",
-        [
-          // Validators.required,
-        ]
-      ],
-      itemTime: [(new Date()).toISOString()],
-      mAssignItemToStores: [
-        {
-          assignId: 0,
-          storeId: 0,
-          itemId: 0
-        }
-      ]
-
+      drugType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugTypeName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      prodLocation: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      itemCompnayId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemTime: [this.datePipe.transform(new Date(), 'h:mm:ss a')],
+      addedby: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      upDatedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doseDay: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instruction: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mAssignItemToStores: [{assignId: 0,storeId: 0,itemId: 0},[Validators.required]]
     });
   }
 
   populateForm(param) {
-    this.myform.patchValue(param);
+    this.itemForm.patchValue(param);
   }
 
-  removestore(item) {
-    
-    let removedIndex = this.myform.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
-    this.myform.value.mAssignItemToStores.splice(removedIndex, 1);
-    this.ddlStore.SetSelection(this.myform.value.mAssignItemToStores.map(x => x.storeId));
+  onSave() {
+    debugger
+    if (!this.itemForm.invalid) {
+      var data2 = [];
+      this.selectedItems.forEach(element => {
+        let data = {
+          assignId: 0, //element.assignId ?? 0,
+          storeId: element.storeId ?? 0,
+          itemId: 0, //element.itemId ?? 0,
+        }
+        data2.push(data);
+      });
+      this.itemForm.get('itemGenericNameId').setValue(Number(this.itemForm.get("itemGenericNameId").value))
+      this.itemForm.get('purchaseUomid').setValue(Number(this.itemForm.get("purchaseUomid").value))
+      this.itemForm.get('itemId').setValue(this.vItemId )
+      this.itemForm.get("mAssignItemToStores").setValue(data2)
+        console.log("FormValue", this.itemForm.value)
+        this._CasepaperService.insertItemMaster(this.itemForm.value).subscribe((data) => {
+          this.onClose();
+        });
+      }else {
+        let invalidFields: string[] = [];
+
+        if(this.itemForm.invalid) {
+        for (const controlName in this.itemForm.controls) {
+          if (this.itemForm.controls[controlName].invalid) {
+            invalidFields.push(`Refund of Bill Footer: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
   }
 
-  filteredStore: any = [];
-  storelist: any = [];
+  // removestore(item) {
+  //   let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
+  //   this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
+  //   this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
+  // }
 
-  itemId = 0
-  itemObjects: any;
-  itemGeneric: any;
-  vItemGenericNameId: any;
-  vItemGenericName: any;
-  name = ''
-  selectedItems = [];
+
+ removestore(item) {
+debugger
+    let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId === item.storeId);
+
+    if (removedIndex !== -1) {
+      this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
+
+      this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
+
+      this.selectedItems = this.itemForm.value.mAssignItemToStores.map(x => ({
+        storeId: x.storeId,
+        assignId: x.assignId,
+        itemId: x.itemId
+      }));
+
+      console.log("Updated addExaminlist after removal:", this.selectedItems);
+    }
+  }
+
   selectChangeItemName(row) {
-    
     console.log("Drug:", row)
     this.itemId = row.itemId
     this.vItemName = row.itemName
 
     if ((this.itemId ?? 0) > 0) {
-      // setTimeout(() => {
+
       this._CasepaperService.getItemMasterById(this.itemId).subscribe((response) => {
         this.itemObjects = response;
         console.log("all data:", this.itemObjects)
         this.vItemId = this.itemObjects.itemId
-        this.myform.get("ItemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
-        this.myform.get("PurchaseUOMId").setValue(this.itemObjects.purchaseUomid)
-        // this.myform.get("mAssignItemToStores").setValue(this.itemObjects.mAssignItemToStores)
+        this.itemForm.get("itemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
+        this.itemForm.get("purchaseUomid").setValue(this.itemObjects.purchaseUomid)
+        this.itemForm.get("itemShortName").setValue(this.itemObjects.itemShortName)
+        this.itemForm.get("conversionFactor").setValue(this.itemObjects.conversionFactor)
+        this.itemForm.get("hsncode").setValue(this.itemObjects.hsncode)
+        this.itemForm.get("cgst").setValue(this.itemObjects.cgst)
+        this.itemForm.get("igst").setValue(this.itemObjects.igst)
+        this.itemForm.get("itemCategaryId").setValue(this.itemObjects.itemCategaryId)
+        this.itemForm.get("itemClassId").setValue(this.itemObjects.itemClassId)
+        this.itemForm.get("itemTypeId").setValue(this.itemObjects.itemTypeId)
+        this.itemForm.get("sgst").setValue(this.itemObjects.sgst)
+        this.itemForm.get("stockUomid").setValue(this.itemObjects.stockUomid)
+        this.itemForm.get("manufId").setValue(this.itemObjects.manufId)
 
         // retriving store data
         console.log("jjjj:", this.itemObjects.mAssignItemToStores)
         this.selectedItems = this.itemObjects.mAssignItemToStores;
-        // this.vStoreId = this.itemObjects.mAssignItemToStores[0].storeId;
-
-        // if ((this.vStoreId ?? 0) > 0) {
-        //   setTimeout(() => {
-        //     this._CasepaperService.getStoreById(this.vStoreId).subscribe((response) => {
-        //       this.registerObj = response;
-        //       console.log("getStore:", this.registerObj)
-        //       this.name = this.registerObj.storeName
-        //       console.log("ssssssssssssssssssss:", this.name)
-        //       this.myform.get("mAssignItemToStores").setValue(
-        //         this.itemObjects.mAssignItemToStores.map(store => ({
-        //           ...store,
-        //           name: this.name 
-        //         }))
-        //       );
-
-        //     });
-        //   }, 500);
-        // }
 
         this.vStoreIds = this.itemObjects.mAssignItemToStores.map(store => store.storeId); // Extract all storeIds
-        
+
         if (this.vStoreIds.length > 0) {
           setTimeout(() => {
             const requests = this.vStoreIds.map(storeId =>
               this._CasepaperService.getStoreById(storeId)
             );
-        
+
             forkJoin(requests).subscribe((responses: any[]) => {
               console.log("getStores:", responses);
-        
+
               // Map store names to corresponding store IDs
               const storeMap: { [key: number]: string } = responses.reduce((acc, store, index) => {
                 acc[this.vStoreIds[index]] = store.storeName;
                 return acc;
               }, {} as { [key: number]: string });
-        
+
               console.log("Store Map:", storeMap);
-        
-              this.myform.get("mAssignItemToStores").setValue(
+
+              this.itemForm.get("mAssignItemToStores").setValue(
                 this.itemObjects.mAssignItemToStores.map(store => ({
                   ...store,
                   name: storeMap[store.storeId] // Assign name dynamically to each item
@@ -290,10 +238,9 @@ export class AddItemComponent {
             });
           }, 500);
         }
-        
+
 
       });
-      // }, 500);
     }
   }
 
@@ -308,267 +255,38 @@ export class AddItemComponent {
     console.log("StoreId:", row);
 
     if (!this.selectedItems) {
-        this.selectedItems = [];
+      this.selectedItems = [];
     }
 
     row.forEach(newStore => {
-        const isDuplicate = this.selectedItems.some(item => item.storeId === newStore.storeId);
-        if (!isDuplicate) {
-            this.selectedItems.push(newStore);
-        }
+      const isDuplicate = this.selectedItems.some(item => item.storeId === newStore.storeId);
+      if (!isDuplicate) {
+        this.selectedItems.push(newStore);
+      }
     });
 
     console.log("Updated selectedItems:", this.selectedItems);
-}
-
+  }
 
   getValidationMessages() {
     return {
       ItemId: [],
-      ItemGenericNameId: [],
-      PurchaseUOMId: [],
-      StoreId: [],
-      SearchItemId: [],
+      itemGenericNameId: [],
+      purchaseUomid: [],
+      StoreId: []
     }
   }
 
   get f() {
-    return this.myform.controls;
+    return this.itemForm.controls;
   }
 
-  onSave() {
-    
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
-    // if (!this.myform.get("ItemId")?.value) {
-    //   this.toastr.warning('Please select a Item Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if (this.myform.get("ItemId")?.value !== null && this.myform.get("ItemId")?.value !== undefined && this.myform.get("ItemId")?.value !== '') {
-    //   this.toastr.warning('Please select an Item Name', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-
-    if (!this.myform.get("ItemGenericNameId")?.value) {
-      this.toastr.warning('Please enter Item Generic Name.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (!this.myform.get("PurchaseUOMId")?.value) {
-      this.toastr.warning('Please enter UnitMeasurementName..', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((!this.myform.get("mAssignItemToStores")?.value)) {
-      this.toastr.warning('Please select StoreName.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    let itemGenericNameId = 0;
-    if (this.myform.get("ItemGenericNameId").value)
-      itemGenericNameId = this.myform.get("ItemGenericNameId").value;
-
-    let PURumoId = 0;
-    if (this.myform.get("PurchaseUOMId").value)
-      PURumoId = this.myform.get("PurchaseUOMId").value
-
-    //   if (!this.itemForm.invalid) {
-    //     console.log("Item JSON :-", this.itemForm.value);
-    //     
-    //     this._CasepaperService.insertItemMasterDemo(this.itemForm.value).subscribe((data) => {
-    //         this.toastr.success(data.message);
-    //         // this.onClear(true);
-    //     }, (error) => {
-    //         this.toastr.error(error.message);
-    //     });
-    // }
-    // else {
-    //     this.toastr.warning('please check from is invalid', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //     return;
-    // }
-
-    console.log(this.selectedItems);
-    if (!this.vItemId) {
-      var data2 = [];
-      this.selectedItems.forEach(element => {
-        let data = {
-          assignId: 0,
-          storeId: element.storeId,
-          itemId: 0,
-        }
-        data2.push(data);
-      });
-      var m_data = {
-        itemId: 0,
-        itemName: this.myform.get("ItemName").value || "%",
-        itemShortName: '%',
-        itemTypeId: 0,
-        ItemCategaryId: 0,
-        itemGenericNameId: itemGenericNameId || 0,
-        itemClassId: 0,
-        purchaseUOMId: PURumoId || 0,
-        stockUOMId: 0,
-        conversionFactor: "%",
-        currencyId: 0,
-        taxPer: 0,
-        isActive:true,
-        isBatchRequired: true,
-        minQty: 0,
-        maxQty: 0,
-        reOrder: 0,
-        hsNcode: "%",
-        cgst: "0",
-        sgst: "0",
-        igst: "0",
-        manufId: 0,
-        isNarcotic: true,
-        isH1Drug: true,
-        isScheduleH: true,
-        isHighRisk: true,
-        isScheduleX: true,
-        isLasa: true,
-        isEmgerency: true,
-        drugType: 0,
-        drugTypeName: '',
-        prodLocation: '',
-        itemCompnayId: 0,
-        itemTime: formattedTime,
-        mAssignItemToStores: data2,
-      };
-      console.log(m_data);
-      this._CasepaperService.insertItemMaster(m_data).subscribe((data) => {
-        if (data) {
-          this.toastr.success('Record Saved Successfully.', 'Saved !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.onClose();
-        } else {
-          this.toastr.error('Item-Form Master Master Data not Saved !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, error => {
-        this.toastr.error('Item-Form not Saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
-    } else {
-      var data3 = [];
-      this.selectedItems.forEach(element => {
-        let data4 = {
-          assignId: element.assignId || 0,
-          storeId: element.storeId || 0,
-          itemId: element.itemId || 0 //this.myform.get("ItemId").value || 0,
-        }
-        data3.push(data4);
-      });
-      console.log(data3);
-
-      var U_data = {
-        itemId: this.vItemId || 0,
-        itemName: this.myform.get("ItemName").value || "%",
-        itemShortName: '%',
-        itemTypeId: 0,
-        ItemCategaryId: 0,
-        itemGenericNameId: itemGenericNameId || 0,
-        itemClassId: 0,
-        purchaseUOMId: PURumoId || 0,
-        stockUOMId: 0,
-        conversionFactor: '%',
-        currencyId: 0,
-        taxPer: 0,
-        isActive:true,
-        isBatchRequired: true,
-        minQty: 0,
-        maxQty: 0,
-        reOrder: 0,
-        hsNcode: "%",
-        cgst: "0",
-        sgst: "0",
-        igst: "0",
-        manufId: 0,
-        isNarcotic: true,
-        isH1Drug: true,
-        isScheduleH: true,
-        isHighRisk: true,
-        isScheduleX: true,
-        isLasa: true,
-        isEmgerency: true,
-        drugType: 0,
-        drugTypeName: '',
-        prodLocation: '',
-        itemCompnayId: 0,
-        itemTime: formattedTime,
-        mAssignItemToStores: data3,
-      };
-      console.log(U_data);
-      this._CasepaperService.updateItemMaster1(U_data).subscribe((data) => {
-        if (data) {
-          this.toastr.success('Record updated Successfully.', 'updated !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
-          this.onClose();
-        } else {
-          this.toastr.error('Record Data not updated !, Please check API error..', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
-      }, error => {
-        this.toastr.error('Record not updated !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      });
-    }
-
-  }
   onClose() {
-    this.myform.reset();
+    this.itemForm.reset();
     this.dialogRef.close();
   }
   OnClear() {
-    this.myform.reset();
+    this.itemForm.reset();
     this.selectedItems = [];
-  }
-
-  @ViewChild('Itemname') Itemname: ElementRef;
-  @ViewChild('ItemGeneric') ItemGeneric: ElementRef;
-  @ViewChild('PurchaseUOMId') PurchaseUOMId: ElementRef;
-  @ViewChild('Storname') Storname: ElementRef;
-
-  public onEnterItemName(event): void {
-
-    if (event.which === 13) {
-      this.ItemGeneric.nativeElement.focus();
-    }
-  }
-  public onEnterItemGeneric(event): void {
-    if (event.which === 13) {
-      this.PurchaseUOMId.nativeElement.focus();
-    }
-  }
-  public onEnterPurchaseUOMId(event): void {
-    if (event.which === 13) {
-      this.Storname.nativeElement.focus();
-    }
-  }
-
-  public onEnterstorename(event): void {
-    if (event.which === 13) {
-      //this.PurchaseUOMId.nativeElement.focus();
-    }
   }
 }

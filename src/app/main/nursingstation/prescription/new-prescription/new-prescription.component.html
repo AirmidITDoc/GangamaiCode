@@ -220,7 +220,7 @@
                         <div class="modal-card-container table-container">
                             <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
                                 <!-- Table 1 -->
-                                <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
+                                <div class="table-left" fxFlex fxFlex.xs="100%" fxFlex.sm="70%">
                                     <mat-card>
                                         <mat-table class="h-280" matSort [dataSource]="dsItemList"
                                             [@animateStagger]="{value:'50'}">
@@ -272,7 +272,7 @@
 
                                 </div>
                                 <!-- Table 2 -->
-                                <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
+                                <!-- <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                                     <mat-card>
                                         <mat-table class="mat-table-2 h-280" matSort [dataSource]="dsiVisitList"
                                             [@animateStagger]="{value:'50'}">
@@ -300,7 +300,7 @@
                                                 class="element" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                         </mat-table>
                                     </mat-card>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -320,7 +320,6 @@
                 <button class="btn btn-primary" (click)="OnSavePrescription()">
                     Save
                 </button>
-                <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
             </div>
         </div>
     </div>
