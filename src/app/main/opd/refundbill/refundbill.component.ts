@@ -73,6 +73,7 @@ export class RefundbillComponent implements OnInit {
   PatientName: any = "";
   RegId: any;     
   RegNo: any; ;  
+  billNo:any;
 
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();   
 
@@ -175,7 +176,7 @@ export class RefundbillComponent implements OnInit {
   refundFormFooter(): FormGroup {
     return this.formBuilder.group({
       TotalRefundAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      RefundBalAmount:  [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      RefundBalAmount:  [0,[Validators.required]],
       Remark: [''],
     });
   }  
@@ -188,6 +189,8 @@ export class RefundbillComponent implements OnInit {
           this.RegId = this.registerObj?.regId
           this.RegNo = this.registerObj?.regNo
           this.PatientName = this.registerObj?.firstName + " " + this.registerObj?.middleName + " " + this.registerObj?.lastName
+          this.billNo = this.registerObj.billNo;
+          this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
           console.log(response)
         });
       }, 500);
@@ -210,7 +213,6 @@ export class RefundbillComponent implements OnInit {
 
    
   onPriceOrQtyChange(row : InsertRefundDetail = null, RefundAmt): void {
-    debugger 
     if (RefundAmt > 0 && RefundAmt <= row.balAmt) {
       const BalanceAmount = row.balAmt - RefundAmt;
        row.balanceAmount = BalanceAmount;
@@ -241,9 +243,12 @@ export class RefundbillComponent implements OnInit {
   // new save method date:5/6/25
   onSave() {
 
+    this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundAmount")?.setValue(parseInt(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value))
     this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
-    
+    this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
+    this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) { 
        console.log("FormValue", this.vRefundOfBillFormGroup.value)
 
@@ -265,7 +270,8 @@ export class RefundbillComponent implements OnInit {
         PatientName: this.PatientName,
         RegNo: this.RegNo, 
         Age: this.registerObj?.ageYear,
-        NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value)
+        NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value),
+        billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value
       };
 
       const dialogRef = this._matDialog.open(OpPaymentComponent, {
@@ -282,6 +288,9 @@ export class RefundbillComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.submitDataPay) {
           this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
+          
+          console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
+
           this._RefundbillService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
             this.viewgetOPRefundBillReportPdf(response);
             setTimeout(() => {
