@@ -263,6 +263,7 @@ export class RegInsert {
     doctorName:any;
     departmentName:any;
     UnitId:any;
+    billNo:any;
     // religionId:any;
     // updatedBy:any;
 
@@ -338,9 +339,10 @@ export class RegInsert {
             this.VisitId = RegInsert.VisitId || 0;
             this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
             this.maritalStatusId = RegInsert.maritalStatusId || 0 ;
-               this.doctorName= RegInsert.doctorName || "" ;
-             this.departmentName= RegInsert.departmentName || "" ;
-             this.UnitId=RegInsert.UnitId||0;
+            this.doctorName= RegInsert.doctorName || "" ;
+            this.departmentName= RegInsert.departmentName || "" ;
+            this.UnitId=RegInsert.UnitId||0;
+            this.billNo=RegInsert.billNo||0;
         }
     }
 }

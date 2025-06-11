@@ -449,7 +449,7 @@ console.log(this.data)
       this.Paymentobj['TransactionType'] = 4;
       this.Paymentobj['Remark'] = '';
       this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        this.Paymentobj['IsCancelled'] = 0;
+      this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       this.Paymentobj['opD_IPD_Type'] = 3;
@@ -603,7 +603,7 @@ console.log(this.data)
       
     }
     else if (this.data.FromName == "OP-RefundOfBill" ) {
-      this.Paymentobj['BillNo'] = this.data.billNo;
+      this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
       this.Paymentobj['PaymentId'] = 0;
       this.Paymentobj['PaymentDate'] = formattedDate
       this.Paymentobj['PaymentTime'] = formattedTime

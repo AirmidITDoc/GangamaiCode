@@ -270,7 +270,7 @@ export class AppComponent implements OnInit, OnDestroy {
             .PostData("Common", Params).subscribe(data => {
                 this.configSettingParam = data;
                 this.configService.setCongiParam(this.configSettingParam[0]);
-                console.log(this.configSettingParam);
+                // console.log(this.configSettingParam);
             });
     }
 }
