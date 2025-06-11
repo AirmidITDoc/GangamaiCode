@@ -19,8 +19,8 @@ export class TemplateFormComponent implements OnInit {
     templateForm: FormGroup;
     vTemplateName: any;
     TemplateId = 0;
-    vTemplateDescInHtml='';
-    vTemplateDesc='';
+    vTemplateDescInHtml = '';
+    vTemplateDesc = '';
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -30,20 +30,20 @@ export class TemplateFormComponent implements OnInit {
         placeholder: 'Enter text here...',
         enableToolbar: true,
         showToolbar: true,
-    
-      };
-    
-         
-           onBlur(e: any) {
-             this.vTemplateDesc = e.target.innerHTML;
-             throw new Error('Method not implemented.');
-           }
+
+    };
+
+
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
     constructor(
         public _TemplateServieService: TemplateServieService,
         public dialogRef: MatDialogRef<TemplateFormComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-          private _formBuilder: FormBuilder,
-          private _formBuilder1: UntypedFormBuilder,
+        private _formBuilder: FormBuilder,
+        private _formBuilder1: UntypedFormBuilder,
         public toastr: ToastrService
     ) { }
 
@@ -71,34 +71,41 @@ export class TemplateFormComponent implements OnInit {
         });
     }
 
-add(){
-    this.vTemplateDesc =""
-}
+    add() {
+        this.vTemplateDesc = ""
+    }
     onSubmit() {
-        debugger
-        console.log(this.templateForm.value)
-        var mdata = {
-            "templateId": 0,
-            "templateName": this.templateForm.get("templateName").value,
-            "templateDesc": this.templateForm.get("templateDesc").value,
-            "templateDescInHtml": this.templateForm.get("templateDesc").value
+        if (!this.templateForm.invalid) {
+            console.log(this.templateForm.value)
+            this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.templateForm.invalid) {
+                for (const controlName in this.templateForm.controls) {
+                    if (this.templateForm.controls[controlName].invalid) {
+                        invalidFields.push(`template Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
-        console.log('json mdata:', mdata);
-
-        this._TemplateServieService.templateMasterSave(mdata).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear();
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-
-        this.onClose();
     }
     onClose() {
         this.templateForm.reset();
         this.dialogRef.close();
     }
 
-    onClear() { }
+    onClear(val: boolean) {
+        this.templateForm.reset();
+        this.dialogRef.close(val);
+    }
 
 }

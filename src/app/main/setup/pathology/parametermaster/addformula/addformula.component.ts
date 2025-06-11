@@ -78,7 +78,7 @@ export class AddformulaComponent implements OnInit {
      this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
     console.log(this.paraname)
   }
-  onClear() {
+  onClear(p0: boolean) {
     this._ParameterService.formulaform.reset();
   }
 
@@ -94,29 +94,29 @@ export class AddformulaComponent implements OnInit {
 
   onSubmit() {
 // 
-    if (!this._ParameterService.formulaform.invalid) {
+    if (!this.paraname.invalid) {
+            console.log(this.paraname.value)
+            this._ParameterService.getParameterMasterList(this.paraname.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.paraname.invalid) {
+                for (const controlName in this.paraname.controls) {
+                    if (this.paraname.controls[controlName].invalid) {
+                        invalidFields.push(`paraname Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
-        var mdata = {
-            "parameterId":this.ParameterId,
-            "formula":this._ParameterService.formulaform.get("Formula").value
-          };
-
-          console.log('json mdata:', mdata);
-
-        this._ParameterService.formulaUpdate(mdata).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClose();
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+        }
     }
-    else {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-  }
   onClose() {
     this.dialogRef.close();
     this._ParameterService.formulaform.reset();

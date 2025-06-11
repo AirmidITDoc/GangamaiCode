@@ -7,80 +7,82 @@ import { ToastrService } from 'ngx-toastr';
 import { CertificateserviceService } from '../certificateservice.service';
 
 @Component({
-  selector: 'app-new-certificate',
-  templateUrl: './new-certificate.component.html',
-  styleUrls: ['./new-certificate.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations
+    selector: 'app-new-certificate',
+    templateUrl: './new-certificate.component.html',
+    styleUrls: ['./new-certificate.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class NewCertificateComponent implements OnInit {
     templateForm: FormGroup;
-    vTemplateDesc:any;
-    vTemplateName:any;
-    vcertificateName:any;
-    isActive:boolean=true;
+    vTemplateDesc: any;
+    vTemplateName: any;
+    vcertificateName: any;
+    isActive: boolean = true;
     editorConfig: AngularEditorConfig = {
-            editable: true,
-            spellcheck: true,
-            height: '20rem',
-            minHeight: '20rem',
-            translate: 'yes',
-            placeholder: 'Enter text here...',
-            enableToolbar: true,
-            showToolbar: true,
-        
-          };
-                     
+        editable: true,
+        spellcheck: true,
+        height: '20rem',
+        minHeight: '20rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+
+    };
+
     onBlur(e: any) {
         this.vTemplateDesc = e.target.innerHTML;
         throw new Error('Method not implemented.');
     }
 
-  constructor(
-      public _CertificateserviceService: CertificateserviceService,
-      public dialogRef: MatDialogRef<NewCertificateComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
- 
+    constructor(
+        public _CertificateserviceService: CertificateserviceService,
+        public dialogRef: MatDialogRef<NewCertificateComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
 
     ngOnInit(): void {
         this.templateForm = this._CertificateserviceService.createRadiologytemplateForm();
         this.templateForm.markAllAsTouched();
-        if((this.data?.certificateId??0) > 0)
-        {
+        if ((this.data?.certificateId ?? 0) > 0) {
             this.isActive = this.data.isActive
-            this.vTemplateDesc=this.data.certificateDesc
-            this.vcertificateName=this.data.certificateName
+            this.vTemplateDesc = this.data.certificateDesc
+            this.vcertificateName = this.data.certificateName
             this.templateForm.patchValue(this.data);
         }
     }
 
     onSubmit() {
-            
-        if(!this.templateForm.invalid)
-        {
-        
-        console.log("template json:", this.templateForm.value);
 
-        this._CertificateserviceService.templateMasterSave(this.templateForm.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error)=>{
-            this.toastr.error(error.message);
-        });
-        } 
-        else
-        {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+        if (!this.templateForm.invalid) {
+            console.log(this.templateForm.value)
+            this._CertificateserviceService.templateMasterSave(this.templateForm.value).subscribe((response) => {
+                this.onClear(true);
             });
-            return;
-        }             
+        } {
+            let invalidFields = [];
+            if (this.templateForm.invalid) {
+                for (const controlName in this.templateForm.controls) {
+                    if (this.templateForm.controls[controlName].invalid) {
+                        invalidFields.push(`template Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             certificateName: [
                 { name: "required", Message: "TemplateName is required" },
                 { name: "maxlength", Message: "templateName name should not be greater than 50 char." },
@@ -89,7 +91,7 @@ export class NewCertificateComponent implements OnInit {
         }
     }
 
-    onClose(){
+    onClose() {
         this.templateForm.reset();
         this.dialogRef.close();
     }

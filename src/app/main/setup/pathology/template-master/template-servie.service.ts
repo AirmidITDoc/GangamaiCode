@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class TemplateServieService {
 
   constructor(
     private _httpClient: ApiCaller,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+     private _FormvalidationserviceService: FormvalidationserviceService
   ) {
     this.myformSearch = this.createSearchForm();
     // this.myform = this.createTemplateForm();
@@ -22,6 +24,7 @@ export class TemplateServieService {
       TemplateNameSearch: ["",
          [ Validators.required,
          Validators.pattern('^[a-zA-Z0-9 ]*$')],
+           this._FormvalidationserviceService.allowEmptyStringValidator()
       ],
         IsDeletedSearch: [""],
     });

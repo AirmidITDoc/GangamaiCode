@@ -36,25 +36,28 @@ export class NewGnericMasterComponent implements OnInit {
 
     onSubmit() {
         
-      if(!this.genericForm.invalid)
-      {  
-       
-        console.log("generic json:", this.genericForm.value);
-  
-        this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response)=>{
-          this.toastr.success(response.message);
-          this.onClear(true);
-        }, (error)=>{
-          this.toastr.error(error.message);
-        });
-      } 
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
+      if (!this.genericForm.invalid) {
+            console.log(this.genericForm.value)
+            this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.genericForm.invalid) {
+                for (const controlName in this.genericForm.controls) {
+                    if (this.genericForm.controls[controlName].invalid) {
+                        invalidFields.push(`generic Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
 
     onClear(val: boolean) {

@@ -6,16 +6,16 @@ import { ToastrService } from 'ngx-toastr';
 import { UnitmasterService } from '../unitmaster.service';
 
 @Component({
-  selector: 'app-new-unit',
-  templateUrl: './new-unit.component.html',
-  styleUrls: ['./new-unit.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-unit',
+    templateUrl: './new-unit.component.html',
+    styleUrls: ['./new-unit.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewUnitComponent implements OnInit {
-  
+
     unitForm: FormGroup;
-    isActive:boolean=true;
+    isActive: boolean = true;
 
     constructor(
         public _UnitmasterService: UnitmasterService,
@@ -23,38 +23,41 @@ export class NewUnitComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
- 
+
     ngOnInit(): void {
         this.unitForm = this._UnitmasterService.createUnitmasterForm();
         this.unitForm.markAllAsTouched();
-        if((this.data?.unitId??0) > 0)
-            {
-            this.isActive=this.data.isActive
+        if ((this.data?.unitId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.unitForm.patchValue(this.data);
         }
     }
 
-    
-    onSubmit() {
-        
-    if (!this.unitForm.invalid){
-    
-        console.log("unit JSON :-",this.unitForm.value);
 
-        this._UnitmasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
-      }
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
+    onSubmit() {
+
+        if (!this.unitForm.invalid) {
+            console.log(this.unitForm.value)
+            this._UnitmasterService.unitMasterSave(this.unitForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.unitForm.invalid) {
+                for (const controlName in this.unitForm.controls) {
+                    if (this.unitForm.controls[controlName].invalid) {
+                        invalidFields.push(`unit Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
 
     onClear(val: boolean) {

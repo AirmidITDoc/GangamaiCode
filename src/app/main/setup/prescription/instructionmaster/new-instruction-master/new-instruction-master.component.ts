@@ -6,15 +6,15 @@ import { ToastrService } from 'ngx-toastr';
 import { InstructionmasterService } from '../instructionmaster.service';
 
 @Component({
-    selector: 'app-new-instruction-master',
-    templateUrl: './new-instruction-master.component.html',
-    styleUrls: ['./new-instruction-master.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-new-instruction-master',
+  templateUrl: './new-instruction-master.component.html',
+  styleUrls: ['./new-instruction-master.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewInstructionMasterComponent implements OnInit {
-  instructionForm:FormGroup;
-  isActive:boolean=true;
+  instructionForm: FormGroup;
+  isActive: boolean = true;
 
   constructor(
     public _InstructionMasterService: InstructionmasterService,
@@ -22,53 +22,55 @@ export class NewInstructionMasterComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService) { }
 
-    ngOnInit(): void {
-        this.instructionForm=this._InstructionMasterService.createInstructionForm();
-        this.instructionForm.markAllAsTouched();
-        if((this.data?.instructionId??0) > 0)
-            {
-            this.isActive=this.data.isActive
-            this.instructionForm.patchValue(this.data);
-        }
+  ngOnInit(): void {
+    this.instructionForm = this._InstructionMasterService.createInstructionForm();
+    this.instructionForm.markAllAsTouched();
+    if ((this.data?.instructionId ?? 0) > 0) {
+      this.isActive = this.data.isActive
+      this.instructionForm.patchValue(this.data);
     }
+  }
 
-    
-    onSubmit() {
-        
-      if(!this.instructionForm.invalid)
-      {
-      
-        console.log("Instruction json:", this.instructionForm.value);
-  
-        this._InstructionMasterService.instructionMasterInsert(this.instructionForm.value).subscribe((response)=>{
-          this.toastr.success(response.message);
-          this.onClear(true);
-        }, (error)=>{
-          this.toastr.error(error.message);
+
+  onSubmit() {
+
+    if (!this.instructionForm.invalid) {
+      console.log(this.instructionForm.value)
+      this._InstructionMasterService.instructionMasterInsert(this.instructionForm.value).subscribe((response) => {
+        this.onClear(true);
+      });
+    } {
+      let invalidFields = [];
+      if (this.instructionForm.invalid) {
+        for (const controlName in this.instructionForm.controls) {
+          if (this.instructionForm.controls[controlName].invalid) {
+            invalidFields.push(`instruction Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-      } 
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }             
-    }
-    
-    onClear(val: boolean) {
-        this.instructionForm.reset();
-        this.dialogRef.close(val);
-    }
+      }
 
-    getValidationMessages(){
-        return{
-            instructionDescription: [
-                { name: "required", Message: "Instruction Name is required" },
-                { name: "maxlength", Message: "Instruction name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        }
     }
+  }
+
+  onClear(val: boolean) {
+    this.instructionForm.reset();
+    this.dialogRef.close(val);
+  }
+
+  getValidationMessages() {
+    return {
+      instructionDescription: [
+        { name: "required", Message: "Instruction Name is required" },
+        { name: "maxlength", Message: "Instruction name should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ]
+    }
+  }
 
 }
