@@ -1,0 +1,47 @@
+<div class="modal-page page-layout inner-scroll">
+  <div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+      <div class="modal-header-content">
+        <div class="modal-header-title">
+          <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Excel report</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+      <div class="modal-body-container">
+        <div fxLayout="column" class="gap-8 h-100-p">
+          <div class="modal-card-container search-container">
+            <div class="patient-search-container input-error-hidden">
+              <form [formGroup]="excelForm">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                  <airmid-dropdown fxFlex label="Choose file name" formControlName="fileId" [formGroup]="excelForm" [options]="fileOptions" [TextField]="'name'" [ValueField]="'id'"></airmid-dropdown>
+                  <div>
+                    <button class="btn btn-primary" (click)="downloadFile()" [disabled]="!this.excelForm.valid">Download</button>
+                  </div>
+                  <button class="btn btn-primary-outline" (click)="excelInputRef.click()">Import excel</button>
+
+                  <input hidden #excelInputRef type="file" (change)="handleFileChange($event, excelInputRef)" />
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-card-container overflow-auto" fxFlex>
+            <app-import-excel-table [data]="tableData"></app-import-excel-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="footer-navigation-container">
+        <div class="modal-footer-buttons">
+          <button type="button" class="btn btn-danger-outline" aria-label="Close dialog" matTooltip="Close">Cancel</button>
+          <button type="button" class="btn btn-primary" [disabled]="false">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

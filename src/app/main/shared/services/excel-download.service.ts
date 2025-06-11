@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'
 import { ExcelData } from '../model';
+import { ToastrService } from 'ngx-toastr';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
@@ -13,7 +14,7 @@ const EXCEL_EXTENSION = '.xlsx';
 })
 export class ExcelDownloadService {
 
-  constructor() { }
+  constructor(private toast: ToastrService) { }
 
   getExportJsonData(dataSource: any, requiredHeaders: any, fileName: string) {
 
@@ -83,4 +84,21 @@ export class ExcelDownloadService {
       reader.readAsBinaryString(file);
     });
   }
+  downloadFileFromUrl(fileUrl: string, fileName: string): void {
+    fetch(fileUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('File not found or inaccessible.');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        FileSaver.saveAs(blob, fileName);
+      })
+      .catch(error => {
+        console.error('Download error:', error);
+        this.toast.error(error.message || "File not found");
+      });
+  }
+
 }

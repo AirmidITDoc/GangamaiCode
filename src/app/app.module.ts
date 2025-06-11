@@ -146,6 +146,10 @@ const appRoutes: Routes = [
             import("./main/ambulancemanagement/ambulancemanagement.module").then((m) => m.AmbulancemanagementModule),
     },
     {
+        path: "import-excel",
+        loadChildren: () => import("./main/import-excel/import-excel.module").then(m => m.ImportExcelModule)
+    },
+    {
         path: '',
         redirectTo: 'auth/login',
         pathMatch: 'full'

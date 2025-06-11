@@ -260,5 +260,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             });
 
     }
-
+    navigateToImportExcel() {
+        this.router.navigate(['/import-excel']);
+    }
 }

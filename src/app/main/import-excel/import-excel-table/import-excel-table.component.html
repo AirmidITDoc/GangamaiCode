@@ -1,0 +1,22 @@
+<div class="airmid-table-container h-100-p">
+    <mat-card class="h-100-p" *ngIf="data && data.length">
+        <mat-table class="airmid-table" matSort [dataSource]="data" [@animateStagger]="{ value: '30' }">
+          <ng-container *ngFor="let col of displayedColumns()" [matColumnDef]="col">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="min-width-100">{{ col }}</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="min-width-100">
+              <span>{{ element[col] }}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="NoData">
+            <mat-footer-cell *matFooterCellDef>
+              <span>No Data Found</span>
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row class="accent" *matHeaderRowDef="displayedColumns(); sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let contact; columns: displayedColumns()" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+          <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: data.length > 0 }"></mat-footer-row>
+        </mat-table>
+    </mat-card>
+</div>
