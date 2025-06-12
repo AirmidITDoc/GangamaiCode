@@ -378,46 +378,33 @@ export class NewCasepaperComponent implements OnInit {
 
   // demo end
 
-  onDaysChange() {
+onDaysChange() {
+  const today = new Date();
+  let followUp = new Date(today);
 
-    if (this.dateStyle == 'Day') {
-      const today = new Date();
-      const todaydays = today.getDate()
-      const followDays = ((todaydays) + parseInt(this.vDays))
-      console.log(followDays)
-      const followUp = new Date();
-      followUp.setDate((todaydays) + parseInt(this.vDays));
-      this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
-      this.specificDate = new Date(this.followUpDate);
-      console.log(this.followUpDate)
-    }
-    else if (this.dateStyle == 'Month') {
-      const today = new Date();
-      const followUp = new Date();
-      followUp.setMonth((today.getMonth()) + parseInt(this.vDays));
-      this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
-      this.specificDate = new Date(this.followUpDate);
-      console.log(this.followUpDate)
-    }
-    else if (this.dateStyle == 'Year') {
-      const today = new Date();
-      const Currentyear = today.getFullYear()
-      const followUp = new Date();
-      followUp.setFullYear((Currentyear) + parseInt(this.vDays));
-      this.followUpDate = this.datePipe.transform(followUp.toDateString(), 'MM/dd/YYYY');
-      this.specificDate = new Date(this.followUpDate);
-      console.log(this.followUpDate)
-    }
-    else {
-      if (this.vDays == '' || this.vDays == 0 || this.vDays == null || this.vDays == undefined)
-        this.specificDate = new Date();
-    }
+   if (!this.vDays || isNaN(this.vDays) || parseInt(this.vDays) <= 0) {
+    this.MedicineItemForm.get('start')?.setValue(today);
+    return;
   }
+
+  const value = parseInt(this.vDays);
+
+  if (this.dateStyle === 'Day') {
+    followUp.setDate(today.getDate() + value);
+  } else if (this.dateStyle === 'Month') {
+    followUp.setMonth(today.getMonth() + value);
+  } else if (this.dateStyle === 'Year') {
+    followUp.setFullYear(today.getFullYear() + value);
+  }
+
+  this.specificDate = followUp;
+  this.MedicineItemForm.get('start')?.setValue(followUp);
+  console.log(this.specificDate)
+}
 
   OnChangeDobType(e) {
     this.dateStyle = e.value;
     this.onDaysChange();
-    console.log(this.dateStyle)
   }
   createForm() {
     return this._formBuilder.group({
@@ -458,7 +445,7 @@ export class NewCasepaperComponent implements OnInit {
       DoctorID: '',
       Departmentid: '',
       FollowupDays: '',
-      start: [''],
+      start: [new Date()],
       Remark: ['', [Validators.maxLength(200)]],
       Days: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: '',
@@ -778,7 +765,7 @@ export class NewCasepaperComponent implements OnInit {
           this.vDiagnosis = item.diagnosis;
           this.vExamination = item.examination;
           this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
-          this.specificDate = new Date(this.PrefollowUpDate)
+          // this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
           this.MedicineItemForm.get('Remark').setValue(item.advice)
           this.RefDocName = item.doctorname
           this.vDrugName = item.drugName

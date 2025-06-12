@@ -8,84 +8,76 @@ import { ToastrService } from 'ngx-toastr';
 import { DoctornoteService } from '../doctornote.service';
 
 @Component({
-  selector: 'app-new-template',
-  templateUrl: './new-template.component.html',
-  styleUrls: ['./new-template.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-template',
+    templateUrl: './new-template.component.html',
+    styleUrls: ['./new-template.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewTemplateComponent implements OnInit {
-    
+
     myform: FormGroup;
-  Templateform: FormGroup;
+    Templateform: FormGroup;
+    vTemplateDesc: any;
+    isActive: boolean = true;
 
-    vTemplateDesc:any;
-    vTemplateName:any;
-    isActive:boolean=true;
-    autocompleteModetemplate: string = "Template";
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: '20rem',
+        minHeight: '20rem',
+        translate: 'yes',
+        placeholder: 'Enter text here...',
+        enableToolbar: true,
+        showToolbar: true,
+    };
 
-    
-     editorConfig: AngularEditorConfig = {
-            editable: true,
-            spellcheck: true,
-            height: '20rem',
-            minHeight: '20rem',
-            translate: 'yes',
-            placeholder: 'Enter text here...',
-            enableToolbar: true,
-            showToolbar: true,
-        };
-    
-        onBlur(e: any) {
-            this.vTemplateDesc = e.target.innerHTML;
-            throw new Error('Method not implemented.');
-        }
-
+    onBlur(e: any) {
+        this.vTemplateDesc = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
 
     constructor(
         public _DoctornoteService: DoctornoteService,
-        public dialogRef: MatDialogRef<NewTemplateComponent>, 
-        private accountService: AuthenticationService,        
+        public dialogRef: MatDialogRef<NewTemplateComponent>,
+        private accountService: AuthenticationService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
 
     ngOnInit(): void {
         this.myform = this._DoctornoteService.createtemplateForm();
-        this.Templateform=this._DoctornoteService.templateForm();
-        if((this.data?.templateId??0) > 0)
-        {
+        this.Templateform = this._DoctornoteService.templateForm();
+        if ((this.data?.templateId ?? 0) > 0) {
             this.isActive = this.data.isActive
             this.Templateform.patchValue(this.data);
         }
     }
 
     onSubmit() {
-            
-        if(!this.Templateform.invalid)
-        {
+
+        if (!this.Templateform.invalid) {
             this.Templateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
             this.Templateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
-        console.log("template json:", this.Templateform.value);
+            console.log("template json:", this.Templateform.value);
 
-        this._DoctornoteService.templateMasterSave(this.Templateform.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error)=>{
-            this.toastr.error(error.message);
-        });
-        } 
-        else
-        {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+            this._DoctornoteService.templateMasterSave(this.Templateform.value).subscribe((response) => {
+                this.toastr.success(response.message);
+                this.onClear(true);
+            }, (error) => {
+                this.toastr.error(error.message);
+            });
+        }
+        else {
+            this.toastr.warning('please check from is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }             
+        }
     }
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             docsTempName: [
                 { name: "required", Message: "Template Name is required" },
                 { name: "maxlength", Message: "Template name should not be greater than 50 char." },
@@ -94,7 +86,7 @@ export class NewTemplateComponent implements OnInit {
         }
     }
 
-    onClose(){
+    onClose() {
         this.myform.reset();
         this.Templateform.reset();
         this.dialogRef.close();

@@ -17,7 +17,6 @@ import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
 
-
 @Component({
   selector: 'app-doctornote',
   templateUrl: './doctornote.component.html',
@@ -25,13 +24,11 @@ import { NewTemplateComponent } from './new-template/new-template.component';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
+
 export class DoctornoteComponent implements OnInit {
   myform: FormGroup;
   myHandOverform: FormGroup;
   myNoteform: FormGroup;
-  vTemplateDesc: any;
-  vTemplateName: any;
-  isActive: boolean = true;
   autocompleteModetemplate: string = "Template";
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -44,15 +41,11 @@ export class DoctornoteComponent implements OnInit {
     showToolbar: true,
   };
 
-  currentDate = new Date();
-  screenFromString = 'opd-casepaper';
-
   vCompanyName: any;
   vRegNo: any;
   vDescription: any;
   vGender: any;
   vAdmissionDate: any;
-  vAdmissionID: any;
   vIPDNo: any;
   vAgeyear: any;
   vAgeMonth: any;
@@ -62,37 +55,29 @@ export class DoctornoteComponent implements OnInit {
   vPatientType: any;
   vRefDocName: any;
   vTariffName: any;
-
-  selectedAdvanceObj: AdmissionPersonlModel;
-  dsPatientList = new MatTableDataSource;
-  dsDoctorNoteList = new MatTableDataSource<DocNote>();
   dsHandOverNoteList = new MatTableDataSource<PatientHandNote>();
-  searchFormGroup: FormGroup;
   autocompleteModeTemplate: string = "DoctorNote" //Template 
-  vDoctNoteId: any=0;
+  vDoctNoteId: any = 0;
   IsAddFlag: boolean = true;
   vDoctorName: any;
   vPatientName: any;
   vDepartment: any;
-  vAdmissionTime: any;
+  // vAdmissionTime: any;
   vAge: any;
   vGenderName: any;
-  vRoomName: any;
   vDOA: any;
   OP_IP_Id: any;
   vdocHandId: any;
-
+  PatientName: any = '';
+  registerObj: any;
   tempdesc: any = '';
   docNoteTempId: any;
-
   HandOverNoteList: any = [];
-
   vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
   vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
   vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-
   vHandOverType = 'morning';
 
   @ViewChild(MatSort) sort: MatSort;
@@ -101,19 +86,11 @@ export class DoctornoteComponent implements OnInit {
   constructor(
     public _NursingStationService: DoctornoteService,
     private accountService: AuthenticationService,
-    private advanceDataStored: AdvanceDataStored,
     private formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
-  ) {
-    if (this.advanceDataStored.storage) {
-
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-    }
-  }
+  ) {}
 
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
@@ -150,10 +127,9 @@ export class DoctornoteComponent implements OnInit {
           }
         },
         {
-          action: gridActions.print, callback: (data: any) => {
-          }
+          action: gridActions.print, callback: (data: any) => { }
         }]
-    } //Action 1-view, 2-Edit,3-delete
+    }
   ]
 
   allFilters = [
@@ -192,8 +168,9 @@ export class DoctornoteComponent implements OnInit {
   ngOnInit(): void {
     this.myform = this._NursingStationService.createtemplateForm();
     this.myHandOverform = this._NursingStationService.creathandOverForm();
+    this.myHandOverform.markAllAsTouched()
     this.myNoteform = this._NursingStationService.createDoctorNoteForm();
-    this.searchFormGroup = this.createSearchForm();
+    this.myNoteform.markAllAsTouched()
   }
 
   gridConfig: gridModel = {
@@ -222,7 +199,6 @@ export class DoctornoteComponent implements OnInit {
         { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
       ]
     }
-
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
@@ -245,11 +221,9 @@ export class DoctornoteComponent implements OnInit {
   }
 
   onEdit(row) {
-    // debugger
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.doctorsNotes || '';
-    // this.myform.get('templateDesc').setValue(this.vDescription);   
     this.myNoteform.get('doctorsNotes').setValue(this.vDescription);
     this.vDoctNoteId = this.registerObj.doctNoteId
     this.IsAddFlag = true;
@@ -280,16 +254,7 @@ export class DoctornoteComponent implements OnInit {
     this.myform.get('TemplateId').setValue('');
   }
 
-  getValidationMessages() {
-    return {
-      Note: [
-        // { name: "required", Message: "Note Name is required" }
-      ]
-    };
-  }
-
   onSubmit() {
-    debugger
     if (!this.vDescription || this.vDescription.trim() === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -297,26 +262,40 @@ export class DoctornoteComponent implements OnInit {
       return;
     }
 
-    if (this.myNoteform.valid) {
+    if (!this.myNoteform.invalid) {
+      this.myNoteform.get('admId').setValue(this.OP_IP_Id);
+      this.myNoteform.get('tdate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+      this.myNoteform.get('ttime').setValue(this.datePipe.transform(new Date(), 'shortTime'));
+      this.myNoteform.get('isAddedBy').setValue(this.accountService.currentUserValue.userId)
+      this.myNoteform.get('doctNoteId').setValue(this.vDoctNoteId ?? 0);
+
       console.log(this.myNoteform.value)
-      let data = this.myNoteform.value;
-      data.admId = this.OP_IP_Id;
-      data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
-        data.doctNoteId=this.vDoctNoteId
-        this._NursingStationService.DoctorNoteInsert(data).subscribe(response => {
-          this.toastr.success(response.message);
-          this.initializeGridConfig()
-          this.onClear();
-        }, (error) => {
-          this.toastr.error(error.message);
+
+      this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
+        this.initializeGridConfig()
+        this.onClear();
+      });
+    } else {
+      let invalidFields = [];
+
+      if (this.myNoteform.invalid) {
+        for (const controlName in this.myNoteform.controls) {
+          if (this.myNoteform.controls[controlName].invalid) {
+            invalidFields.push(`My Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
+      }
     }
-  } 
+  }
 
   onSubmitHandOver() {
     debugger
-
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -324,20 +303,33 @@ export class DoctornoteComponent implements OnInit {
       return;
     }
 
-    if (this.myHandOverform.valid) {
+    if (!this.myHandOverform.invalid) {
       console.log(this.myHandOverform.value)
       let data = this.myHandOverform.value;
       data.admId = this.OP_IP_Id;
       data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
-        data.docHandId=this.vdocHandId || 0
-        this._NursingStationService.HandOverInsert(data).subscribe(response => {
-          this.toastr.success(response.message);
-          this.getHandOverNotelist()
-          this.onClear();
-        }, (error) => {
-          this.toastr.error(error.message);
+        data.docHandId = this.vdocHandId || 0
+      this._NursingStationService.HandOverInsert(data).subscribe(response => {
+        this.getHandOverNotelist()
+        this.onClear();
+      });
+    }else {
+      let invalidFields = [];
+
+      if (this.myHandOverform.invalid) {
+        for (const controlName in this.myHandOverform.controls) {
+          if (this.myHandOverform.controls[controlName].invalid) {
+            invalidFields.push(`My Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
+      }
     }
 
     this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
@@ -360,18 +352,6 @@ export class DoctornoteComponent implements OnInit {
     this.VAssessment = row.patHandA
   }
 
-  createSearchForm() {
-    return this.formBuilder.group({
-      RegID: ['', Validators.required],
-    });
-  }
-
-  RegOrPhoneflag = '';
-  PatientName: any = '';
-  RegId: any = 0;
-  VisitFlagDisp: boolean = false;
-  registerObj: any;
-
   getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
@@ -381,14 +361,14 @@ export class DoctornoteComponent implements OnInit {
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
       this.vAdmissionDate = obj.admissionDate
-      this.vAdmissionTime = obj.admissionTime
+      // this.vAdmissionTime = obj.admissionTime
       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
       this.vRefDocName = obj.refDocName
-      this.vRoomName = obj.roomName
+      this.vWardName = obj.roomName
       this.vBedName = obj.bedName
       this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
@@ -423,7 +403,7 @@ export class DoctornoteComponent implements OnInit {
     this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
     this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this.myHandOverform.get('HandOverType').setValue('morning')
+    this.myHandOverform.get('shiftInfo').setValue('morning')
     this.dsHandOverNoteList.data = [];
     // this.HandOverNoteList = [];
     this.IsAddFlag = true

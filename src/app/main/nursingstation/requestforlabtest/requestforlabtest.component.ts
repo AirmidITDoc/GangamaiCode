@@ -9,6 +9,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { RequestforlabtestService } from './requestforlabtest.service';
+import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-requestforlabtest',
@@ -150,23 +152,74 @@ export class RequestforlabtestComponent implements OnInit {
         });
     }
 
-    viewgetPathologyTemplateReportPdf() {
-
+    viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+        debugger
+        setTimeout(() => {
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "PathReportId",
+                        fieldValue: String(contact.pathReportID),
+                        opType: "Equals"
+                    },
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(contact.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: mode  // dynamic
+            };
+            console.log(param)
+            this._RequestforlabtestService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Template Report Viewer"
+                    }
+                });
+                matDialog.afterClosed().subscribe(result => {});
+            });
+        }, 100);
     }
+
+    getPrint(contact) {
+        debugger           
+           console.log(contact)
+   
+           Swal.fire({
+               title: 'Select Report Format',
+               text: "Choose how you want to view the report:",
+               icon: "warning",
+               showDenyButton: true,
+               showCancelButton: true,
+               confirmButtonColor: "#3085d6",
+               denyButtonColor: "#6c757d",
+               cancelButtonColor: "#d33",
+               confirmButtonText: "With Header",
+               denyButtonText: "Without Header",
+           }).then((result) => {
+             
+               if (result.isConfirmed) {
+                   this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
+               } else if (result.isDenied) {
+                   this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
+               }
+           });
+       }
+
     onSave(row: any = null) {
-        let that = this;
         const dialogRef = this._matDialog.open(NewRequestforlabComponent,
             {
-                // maxWidth: "95vw",
                 maxHeight: '95vh',
-                // height:'90%',
                 width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
             this.grid.bindGridData();
-            // }
         });
     }
 

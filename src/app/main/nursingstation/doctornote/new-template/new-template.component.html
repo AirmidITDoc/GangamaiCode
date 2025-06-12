@@ -23,14 +23,10 @@
                     <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
 
-                            <airmid-textbox 
-                            label="TemplateName" fxFlex
-                            formControlName="docsTempName" 
-                            [value]="data?.docsTempName"
-                            [formGroup]="Templateform"
-                            [validations]="getValidationMessages().docsTempName"
-                            [maxLength]="100">
-                        </airmid-textbox>                        
+                            <airmid-textbox label="TemplateName" fxFlex formControlName="docsTempName"
+                                [value]="data?.docsTempName" [formGroup]="Templateform"
+                                [validations]="getValidationMessages().docsTempName" [maxLength]="100">
+                            </airmid-textbox>
 
                             <form [formGroup]="myform">
                                 <div fxFlex="20%" fxLayout="row">
@@ -52,11 +48,10 @@
                             <!-- <airmid-editor label="Template Details" formControlName="templateDesc"
                                 [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor> -->
 
-                                <mat-label>Template Details</mat-label>
-                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                    formControlName="templateDesc">
-                                </angular-editor>
+                            <mat-label>Template Details</mat-label>
+                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
+                                [(ngModel)]="vTemplateDesc" required formControlName="templateDesc">
+                            </angular-editor>
                         </div>
                     </div>
                 </form>
@@ -67,14 +62,14 @@
     </div>
 
     <div class="modal-footer" style="margin-top: 10px;">
-            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">
-        <form [formGroup]="myform">
+        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
+            <!-- <form [formGroup]="myform">
                 <div>
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform"
                         [(ngModel)]="isActive"></app-airmid-slider>
                 </div>
-                </form>
-        <form [formGroup]="Templateform">
+                </form> -->
+            <form [formGroup]="Templateform">
                 <div class="modal-footer-buttons">
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                     <button class="btn btn-primary" (click)="onSubmit()">
@@ -82,9 +77,9 @@
                     </button>
                     <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
                 </div>
-        </form>
+            </form>
 
-            </div>
+        </div>
     </div>
 
 </div>

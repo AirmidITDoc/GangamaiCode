@@ -25,23 +25,7 @@ export class NursingnoteService {
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
       TemplateId: [''],
-      DoctNoteId: '',
-      Note: [''], 
-      Description:[''],
-      Op_ip_id:['1'],
-      RegID:[''],
-      HandOverType:['Morning'],
-      staffName: [''],
-      SYMPTOMS: [''],
-      Instruction: [''],
-      Stable: [''],
-      Assessment: [''],
-      Category:['NursNote'],
-      isActive:[true,[Validators.required]],
-      templateDesc: [''],
-      templateName:[''],
-      patHandId:0,
-      Comments:['']
+      RegID:['']
     });
   }
 
@@ -52,7 +36,7 @@ export class NursingnoteService {
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
       nursingNotes: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(2000)]],
-      isAddedBy: this._loggedService.currentUserValue.userId
+      isAddedBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
@@ -68,7 +52,7 @@ export class NursingnoteService {
       patHandB: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
       patHandA: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
       patHandR: ['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      comments:['',[Validators.maxLength(500),this._FormvalidationserviceService.allowEmptyStringValidator()]]
+      comments:['',[Validators.maxLength(500)]]
     });
   }
 
@@ -77,21 +61,10 @@ export class NursingnoteService {
       nursingId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       templateDesc: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       nursTempName:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
-      addedBy:this._loggedService.currentUserValue.userId,
-      updatedBy:this._loggedService.currentUserValue.userId
+      addedBy:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      updatedBy:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
-
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemCategoryMaster?Id=" + m_data.toString());
-    }
-
-    public getRefundofBillOPDList(employee) {
-        console.log(employee)
-        
-     return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
-
-    }
 
     public templateMasterSave(Param: any) {
         return this._httpClient.PostData("Nursing/NursingTemplateInsert", Param);

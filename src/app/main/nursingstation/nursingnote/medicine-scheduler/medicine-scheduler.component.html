@@ -22,14 +22,14 @@
 
                             <mat-form-field appearance="outline" fxFlex="15%">
                                 <mat-label>Item Name</mat-label>
-                                <input type="text" name="ItemId" [(ngModel)]="registerObj.itemName"
+                                <input type="text" name="ItemId" [(ngModel)]="vItemName"
                                     formControlName="ItemId" matInput readonly>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
                                 <mat-label>Qty</mat-label>
                                 <input type="text" name="Qty" matInput readonly
-                                    formControlName="Qty" [(ngModel)]="registerObj.qty">
+                                    formControlName="Qty" [(ngModel)]="vQty">
                             </mat-form-field>
 
                             <!-- <mat-form-field appearance="outline">
@@ -59,7 +59,7 @@
                             <mat-form-field appearance="outline" fxFlex="10%">
                                 <mat-label>Route</mat-label>
                                 <input type="text" OnlyNumber [(ngModel)]="vRoute" name="Route" [maxLength]="50"
-                                   formControlName="Route" matInput required>
+                                   formControlName="Route" matInput>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="15%">

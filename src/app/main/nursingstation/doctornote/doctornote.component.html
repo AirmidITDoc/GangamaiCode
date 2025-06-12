@@ -9,11 +9,11 @@
             <div class="modal-card-container">
                 <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
                     <div class="layout-card-container">
-                        <form [formGroup]="searchFormGroup">
+                        <form [formGroup]="myform">
                             <div class="patient-search">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                     <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                                        <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="searchFormGroup"
+                                        <airmid-autocomplete class="w-500" lbl="RgId" [formGroup]="myform"
                                             formControlName="RegID" label="Search Reg No / Patient Name / Mobile No"
                                             ApiUrl="Admission/search-patient?Keyword="
                                             placeholderText="Search UHID / Patient Name / Mobile No"

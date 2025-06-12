@@ -16,43 +16,43 @@ import { MedicineItemList } from '../new-casepaper.component';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class PrePresciptionListComponent implements OnInit { 
+export class PrePresciptionListComponent implements OnInit {
 
- displayedItemColumn: string[] = [
+  displayedItemColumn: string[] = [
     'ItemName',
     'DoseName',
     'Days',
-    'Remark' 
+    'Remark'
   ]
-  RegId:any;
+  RegId: any;
   visitData: any[] = [];
-  groupedData: { [key: string]: any[]} = {}; 
+  groupedData: { [key: string]: any[] } = {};
   dsItemList = new MatTableDataSource<MedicineItemList>();
-  
+
   patients: any[] = []; // Using 'any' type for simplicity
-  uniqueDates: string[] = [];   
+  uniqueDates: string[] = [];
 
   constructor(
-    private _CasepaperService: CasepaperService, 
-    private _formBuilder: UntypedFormBuilder, 
+    private _CasepaperService: CasepaperService,
+    private _formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
-    public datePipe: DatePipe, 
+    public datePipe: DatePipe,
     public dialogRef: MatDialogRef<PrePresciptionListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // 
-    if(this.data){
-      this.RegId = this.data.Obj 
+    if (this.data) {
+      this.RegId = this.data.Obj
       console.log(this.data.Obj)
     }
     // this.getPrescriptionListFill1(); 
-    this.getnewVisistListDemo(this.data); 
+    this.getnewVisistListDemo(this.data);
   }
-  
+
   getnewVisistListDemo(obj) {
     // 
     var D_data = {
@@ -67,6 +67,7 @@ export class PrePresciptionListComponent implements OnInit {
           "opType": "Equals"
         }
       ],
+      "Columns": [],
       "exportType": "JSON"
     }
     console.log(D_data);
@@ -80,18 +81,18 @@ export class PrePresciptionListComponent implements OnInit {
   extractUniqueDates() {
     const dates = this.patients.map(patient => patient.visitDate);
     this.uniqueDates = Array.from(new Set(dates));
-  } 
+  }
   getFirstPatientForDate(date: string) {
     return this.patients.filter(patient => patient.visitDate === date); //
   }
 
-  CopyPresciptionList:any=[];
-  CopyList:any=[];
-  getCopyPreviouseList(date:string){ 
+  CopyPresciptionList: any = [];
+  CopyList: any = [];
+  getCopyPreviouseList(date: string) {
     this.CopyPresciptionList.date = [];
-    this.CopyList =  this.patients.filter(patient => patient.visitDate === date); // 
+    this.CopyList = this.patients.filter(patient => patient.visitDate === date); // 
     console.log(this.CopyList)
-   this.dialogRef.close(this.CopyList); 
+    this.dialogRef.close(this.CopyList);
   }
 
 }

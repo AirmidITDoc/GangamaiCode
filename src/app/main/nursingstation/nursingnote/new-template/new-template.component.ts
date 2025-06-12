@@ -19,9 +19,8 @@ export class NewTemplateComponent implements OnInit {
     myform: FormGroup;
     myTemplateform: FormGroup;
     vTemplateDesc: any;
-    vTemplateName: any;
     isActive: boolean = true;
-    
+
     editorConfig: AngularEditorConfig = {
         editable: true,
         spellcheck: true,
@@ -56,18 +55,11 @@ export class NewTemplateComponent implements OnInit {
     }
 
     onSubmit() {
-        debugger
         if (!this.myTemplateform.invalid) {
-
             this.myTemplateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
             this.myTemplateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
-            console.log("template json:", this.myTemplateform.value);
-
             this._NursingnoteService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
         }
         else {

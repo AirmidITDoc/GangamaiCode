@@ -48,9 +48,8 @@
                                 [(value)]="vTemplateDesc" [formGroup]="myTemplateform">
                             </airmid-editor> -->
                             <mat-label>Template Details</mat-label>
-                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                formControlName="templateDesc">
+                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
+                                [(ngModel)]="vTemplateDesc" required formControlName="templateDesc">
                             </angular-editor>
                         </div>
                     </div>
@@ -63,14 +62,14 @@
     </div>
 
     <div class="modal-footer" style="margin-top: 10px;">
-            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between">
-        <form [formGroup]="myform">
+        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
+            <!-- <form [formGroup]="myform">
                 <div>
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform"
                         [(ngModel)]="isActive"></app-airmid-slider>
                 </div>
-            </form>
-                <form [formGroup]="myTemplateform">
+            </form> -->
+            <form [formGroup]="myTemplateform">
                 <div class="modal-footer-buttons">
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                     <button class="btn btn-primary" (click)="onSubmit()">
@@ -78,8 +77,8 @@
                     </button>
                     <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
                 </div>
-                </form>
-            </div>
+            </form>
+        </div>
     </div>
 
 </div>

@@ -690,8 +690,8 @@
                                                 <mat-form-field appearance="outline" fxFlex="20%">
                                                     <mat-label>Follow Up Date</mat-label>
                                                     <input matInput [matDatepicker]="picker1"
-                                                        placeholder="Choose a date" formControlName="start"
-                                                        [(ngModel)]="specificDate">
+                                                        placeholder="Choose a date" formControlName="start">
+                                                        <!-- [(ngModel)]="specificDate" -->
                                                     <mat-datepicker-toggle matSuffix
                                                         [for]="picker1"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker1></mat-datepicker>

@@ -27,7 +27,7 @@
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <!-- <mat-card> -->
-                        <form [formGroup]="searchFormGroup">
+                        <form [formGroup]="myFormGroup">
                             <div fxLayout="row wrap" class="gap-16" fxLayoutAlign="center center">
                                 <div class="radio-container">
                                     <mat-radio-group formControlName="radioIp">
@@ -37,7 +37,7 @@
                                 <div class="input-container gap-8" fxFlex>
 
                                     <airmid-autocomplete lbl="RgId" 
-                                        [formGroup]="searchFormGroup" formControlName="RegID" 
+                                        [formGroup]="myFormGroup" formControlName="RegID" 
                                         placeholderText="IP-RegNo/FirstName/LastName" 
                                         ApiUrl="Admission/search-patient?Keyword=" 
                                         (selectionChange)="getSelectedObjIP($event)"
@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="input-container gap-8" fxLayout="row">
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <input type="text" name="ServiceName2" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceList()" matInput>
+                                        <input type="text" name="ServiceId" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceList()" matInput>
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close" (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">search</mat-icon>
@@ -300,7 +300,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSave()" [disabled]="savebtn">Save</button>
+                <button class="btn btn-primary" (click)="OnSave()">Save</button>
             </div>
         </div>
     </div>

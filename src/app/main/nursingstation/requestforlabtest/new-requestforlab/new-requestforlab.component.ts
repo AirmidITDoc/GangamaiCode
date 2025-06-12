@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { RequestforlabtestService } from '../requestforlabtest.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
-
 @Component({
   selector: 'app-new-requestforlab',
   templateUrl: './new-requestforlab.component.html',
@@ -24,14 +23,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations
 })
 export class NewRequestforlabComponent implements OnInit {
-
-  isRegIdSelected: boolean = false;
   isServiceIdSelected: boolean = false;
   isRegSearchDisabled: boolean;
-  isServiceSearchDisabled: boolean;
-  filteredOptions: any;
-  PatientListfilteredOptions: any;
-  noOptionFound: boolean = false;
   registerObj = new RegInsert({});
   PatientName: any;
   RegId: any;
@@ -39,13 +32,7 @@ export class NewRequestforlabComponent implements OnInit {
   registration: any;
   isLoading: String = '';
   sIsLoading: string = "";
-  matDialogRef: any;
-  SpinLoading: boolean = false;
   CompanyName: any;
-  Tarrifname: any;
-  Doctorname: any;
-  vOPIPId: any = 0;
-  vOPDNo: any = 0;
   vTariffId: any = 0;
   vClassId: any = 0;
   vAge: any = 0;
@@ -53,7 +40,6 @@ export class NewRequestforlabComponent implements OnInit {
   vRegNo: any;
   vPatientName: any;
   vAdmissionDate: any;
-  vMobileNo: any;
   vIPDNo: any;
   vTariffName: any;
   vCompanyName: any;
@@ -70,6 +56,12 @@ export class NewRequestforlabComponent implements OnInit {
   vDOA: any;
   vRegId: any;
   currentDate = new Date();
+  myFormGroup: FormGroup;
+  labRequestInsert: FormGroup;
+  labReqFormArray: FormGroup;
+  vAdmissionID = 0;
+  date: Date;
+
   displayedServiceColumns: string[] = [
     'ServiceName',
     'Action'
@@ -81,19 +73,11 @@ export class NewRequestforlabComponent implements OnInit {
     'buttons'
   ]
 
-  searchFormGroup: FormGroup;
-  myFormGroup: FormGroup;
-  labReqForm: FormGroup;
-
   dstable1 = new MatTableDataSource<LabRequest>();
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  vAdmissionID = 0;
-  date: Date;
-
 
   constructor(private _FormBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
@@ -107,17 +91,22 @@ export class NewRequestforlabComponent implements OnInit {
     private _loggedService: AuthenticationService) {
     this.date = new Date();
     if (this.advanceDataStored.storage) {
-
       this.selectedAdvanceObj = this.advanceDataStored.storage;
-      // this.PatientHeaderObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
     }
   }
 
   ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
+
     this.myFormGroup = this.createMyForm();
-    this.labReqForm = this.labRequestForm();
+    this.myFormGroup.markAllAsTouched();
+
+    this.labRequestInsert = this.labRequestInsertForm();
+    this.labRequestInsert.markAllAsTouched();
+
+    this.labReqFormArray=this.createlabRequestFormArray();
+    this.labReqFormArray.markAllAsTouched();
+    this.labeRequestArray.push(this.createlabRequestFormArray());
   }
  
   getServiceList() {
@@ -165,7 +154,7 @@ export class NewRequestforlabComponent implements OnInit {
         console.log(this.dsLabRequest2.data)
       });
     } else {
-      if (!this.searchFormGroup.get('RegID')?.value && !this.vRegId) {
+      if (!this.myFormGroup.get('RegID')?.value && !this.vRegId) {
         this.toastr.warning('Please Select Patient', 'Warning!', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -177,44 +166,101 @@ export class NewRequestforlabComponent implements OnInit {
   createMyForm(): FormGroup {
     return this._FormBuilder.group({
       IsPathRad: ['3'],
-      ServiceName1: '',
-      Price1: '',
-      ServiceId: '',
-      ServiceName2: '',
-      Price2: '',
-      PatientName: '',
-      RegId: '',
-      AdmissionID: 0,
-      Requestdate: '',
+      ServiceId: [''],
       isOnFileTest: false,
-      NameSearch: ''
+      RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      radioIp: ['1']
     })
   }
 
-  labRequestForm(): FormGroup {
+  labRequestInsertForm(): FormGroup {
     return this._FormBuilder.group({
       requestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       reqDate:[(new Date()).toISOString().split('T')[0]],
       reqTime:[(new Date()).toISOString()],
-      opIpId:0,
-      opIpType:1,
+      opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
       isAddedBy:this._loggedService.currentUserValue.userId,
-      isCancelled:true,
-      isCancelledBy:this._loggedService.currentUserValue.userId,
-      isCancelledDate:[(new Date()).toISOString().split('T')[0]],
+      isCancelled:false,
+      isCancelledBy:0,
+      isCancelledDate:['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],//[(new Date()).toISOString().split('T')[0]],
       isCancelledTime:[(new Date()).toISOString()],
       isType:0,
       isOnFileTest:false,
-      tDlabRequests:""
+      tDlabRequests:this._FormBuilder.array([]),
     })
   }
 
-  createSearchForm(): FormGroup {
-    return this._FormBuilder.group({
-      RegID: [''],
-      radioIp: ['1']
-    });
+    createlabRequestFormArray(element: any = {}): FormGroup {
+      return this._FormBuilder.group({
+        reqDetId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        requestId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [Number(element.ServiceId) ?? 0],
+        price: [element.Price ?? 0],
+        isStatus: false,
+        addedBillingId: 2,
+        addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
+        charId: [0], //260570
+        isTestCompted: false,
+        isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
+      });
+    }
+  
+    get labeRequestArray(): FormArray {
+      return this.labRequestInsert.get('tDlabRequests') as FormArray;
+    }
+    
+  OnSave() {
+    debugger
+    console.log(this.labRequestInsert.value)
+
+    if(!this.labRequestInsert.invalid){
+      this.labeRequestArray.clear();
+      if (this.dstable1.data.length === 0) {
+        this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning');
+        return;
+      }
+      this.dstable1.data.forEach(item => {
+        this.labeRequestArray.push(this.createlabRequestFormArray(item));
+      });
+    
+      this.labRequestInsert.get("opIpId").setValue(this.vAdmissionID)
+      this.labRequestInsert.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
+      console.log(this.labRequestInsert.value)
+      this._RequestforlabtestService.LabRequestSave(this.labRequestInsert.value).subscribe(response => {
+              if (response) {
+                this.viewgetLabrequestReportPdf(response)
+                this._matDialog.closeAll();
+              }
+            });
+    }else {
+      let invalidFields: string[] = [];
+
+      if (this.labRequestInsert.invalid) {
+        for (const controlName in this.labRequestInsert.controls) {
+          const control = this.labRequestInsert.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Nested: ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
   }
+  
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -254,20 +300,17 @@ export class NewRequestforlabComponent implements OnInit {
   onEdit(row) {
     console.log(row);
     this.registerObj = row;
-    // this.getSelectedObj(row);
   }
-
 
   onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
-      this.searchFormGroup.get('RegId').disable();
+      this.myFormGroup.get('RegID').disable();
     }
     else {
       this.isRegSearchDisabled = false;
     }
   }
-
 
   viewgetLabrequestReportPdf(requestId) {
     this.commonService.Onprint("RequestId", requestId, "NurLabRequestTest");
@@ -299,7 +342,6 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   addChargList(row) {
-
     this.chargeslist.push(
       {
         ServiceId: row.serviceId,
@@ -330,67 +372,6 @@ export class NewRequestforlabComponent implements OnInit {
     this.myFormGroup.reset();
     this.dsLabRequest2.data = [];
     this.dstable1.data = [];
-  }
-
-  savebtn: boolean = false;
-  OnSave() {
-    debugger
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'hh:mm:ssa');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    
-    if ((this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined)) {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((!this.dstable1.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    let submissionObj = {};
-
-    if (this.vAdmissionID != 0 && this.dstable1.data.length != 0) {
-      let ipPathOrRadiRequestLabRequestInsertArray = [];
-      this.dstable1.data.forEach((element) => {
-        console.log(element)
-        let ipPathOrRadiRequestLabRequestInsert = {};
-        ipPathOrRadiRequestLabRequestInsert['reqDetId'] = 0;
-        ipPathOrRadiRequestLabRequestInsert['requestId'] = 0;
-        ipPathOrRadiRequestLabRequestInsert['serviceId'] = Number(element.ServiceId) || 1;
-        ipPathOrRadiRequestLabRequestInsert['price'] = element.Price || 1;
-        ipPathOrRadiRequestLabRequestInsert['isStatus'] = false;
-        ipPathOrRadiRequestLabRequestInsert['addedBillingId'] = 2,
-        ipPathOrRadiRequestLabRequestInsert['addedByDate'] = formattedDate,
-        ipPathOrRadiRequestLabRequestInsert['addedByTime'] = formattedTime,
-        ipPathOrRadiRequestLabRequestInsert['charId'] = 260570,
-        // ipPathOrRadiRequestLabRequestInsert['charId'] = 0,
-        ipPathOrRadiRequestLabRequestInsert['isTestCompted'] = false,
-        ipPathOrRadiRequestLabRequestInsert['isOnFileTest'] = this.myFormGroup.get('isOnFileTest').value || false;
-        ipPathOrRadiRequestLabRequestInsertArray.push(ipPathOrRadiRequestLabRequestInsert);
-      });
-
-      this.labReqForm.get("opIpId").setValue(this.vAdmissionID)
-      this.labReqForm.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
-      this.labReqForm.get("tDlabRequests").setValue(ipPathOrRadiRequestLabRequestInsertArray)
-      console.log(this.labReqForm.value)
-
-      this._RequestforlabtestService.LabRequestSave(this.labReqForm.value).subscribe(response => {
-        this.toastr.success(response.message);
-        console.log(response)
-        if (response) {
-          this.viewgetLabrequestReportPdf(response)
-          this._matDialog.closeAll();
-        }
-      },(error)=>{
-         this.toastr.error(error.message);
-      });
-    }
   }
 
   onClear(val: boolean) {

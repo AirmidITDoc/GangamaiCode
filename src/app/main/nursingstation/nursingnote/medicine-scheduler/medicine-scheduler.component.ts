@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -21,6 +21,10 @@ export class MedicineSchedulerComponent {
   MedicineItemForm: FormGroup
   MedicineItemLoopForm: FormGroup
   registerObj: any;
+  vItemName: any;
+  vQty: any;
+  vAddmissionId: any;
+  vItemId: any;
   dsItemList = new MatTableDataSource<MedicineItemList>();
   vRoute: any;
   vFrequency: any;
@@ -41,7 +45,8 @@ export class MedicineSchedulerComponent {
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
   isDatePckrDisabled: boolean = false;
   minDate: Date;
-  doseDateTime:any;
+  doseDateTime: any;
+  Chargelist: any = [];
 
   constructor(
     public _NursingStationService: NursingnoteService,
@@ -72,10 +77,8 @@ export class MedicineSchedulerComponent {
   }
 
   onChangeTime(event) {
- 
     this.timeflag = 1
     if (event) {
-
       let selectedDate = new Date(this.MedicineItemForm.get('DoseTime').value);
       let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       let splitTime = this.MedicineItemForm.get('DoseTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
@@ -92,34 +95,31 @@ export class MedicineSchedulerComponent {
   setDoseDateTime(date: Date | null, time: any): void {
     // debugger;
     if (!date || !time) return;
-  
     let hours: number, minutes: number;
-  
-    // If time is a string (e.g., "14:30")
+
     if (typeof time === 'string') {
       [hours, minutes] = time.split(':').map(Number);
-    } 
-    // If time is a Date object
+    }
     else if (time instanceof Date) {
       hours = time.getHours();
       minutes = time.getMinutes();
-    } 
+    }
     else {
       console.error('Unsupported time format:', time);
       return;
     }
-  
+
     const combined = new Date(date);
     combined.setHours(hours);
     combined.setMinutes(minutes);
     combined.setSeconds(0);
     combined.setMilliseconds(0);
-  
+
     this.MedicineItemForm.patchValue({ DoseDateTime: combined });
     console.log(this.MedicineItemForm.value.DoseDateTime);
     this.doseDateTime = this.MedicineItemForm.value.DoseDateTime;
   }
-  
+
   eventEmitForParent(actualDate, actualTime) {
     let localaDateValues = actualDate.split('/');
     let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
@@ -128,46 +128,76 @@ export class MedicineSchedulerComponent {
 
   ngOnInit(): void {
     this.MedicineItemForm = this.createMedicineItemForm();
+    this.MedicineItemForm.markAllAsTouched();
+
     this.MedicineItemLoopForm = this.createMedicineItemLoopForm();
+    this.MedicineItemLoopForm.markAllAsTouched();
+
+    this.medicationItemArray.push(this.createMedicationItemArray());
+
     if (this.data) {
       this.registerObj = this.data
+      this.vItemName = this.registerObj.itemName
+      this.vQty = this.registerObj.qty
+      this.vAddmissionId = this.registerObj.admissionID
+      this.vItemId = this.registerObj.itemId
       console.log("Medication:", this.registerObj)
     }
   }
 
   createMedicineItemForm() {
     return this._formBuilder.group({
-      ItemId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      DoseId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      Route: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
-      Frequency: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
-      NurseName: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(50)]],
+      ItemId: [0],
+      DoseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      Route: ['', [Validators.required, Validators.maxLength(50)]],
+      Frequency: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(50)]],
+      NurseName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(50)]],
       DoseDate: '',
       DoseTime: '',
       Qty: '',
-      DoseDateTime:''
+      DoseDateTime: ''
     })
   }
 
   createMedicineItemLoopForm() {
     return this._formBuilder.group({
-      nursingMedicationChart:''
+      nursingMedicationChart: this._formBuilder.array([]),
     })
   }
 
-  keyPressOnlyCharacters(event: KeyboardEvent): boolean {
-  const inp = String.fromCharCode(event.keyCode || event.which);
-  if (/^[a-zA-Z ]$/.test(inp)) {
-    return true;
-  } else {
-    event.preventDefault();
-    return false;
+  createMedicationItemArray(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      medChartId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      admId: this.vAddmissionId ?? 0,
+      mdate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      mtime: this.datePipe.transform(new Date(), 'shortTime'),
+      durgId: this.vItemId ?? 0,
+      doseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      route: element.Route || '',
+      freq: element.Frequency || '',
+      isAddedBy: [this._loggedService.currentUserValue.userId],
+      nurseName: element.NurseName || '',
+      isCancelled: true,
+      // "doseName": element.DoseDateTime || '',
+      doseName: this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
+    });
   }
-}
 
-  Chargelist: any = [];
+  get medicationItemArray(): FormArray {
+    return this.MedicineItemLoopForm.get('nursingMedicationChart') as FormArray;
+  }
+
+  keyPressOnlyCharacters(event: KeyboardEvent): boolean {
+    const inp = String.fromCharCode(event.keyCode || event.which);
+    if (/^[a-zA-Z ]$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
   onAddMedicine() {
-    debugger
     if (this.registerObj.qty == this.dsItemList.data.length) {
       this.toastr.warning('selected item Qty is 0,You cannot add new scheduler', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -212,7 +242,7 @@ export class MedicineSchedulerComponent {
         DrugId: this.registerObj.itemId || 0,
         DrugName: this.registerObj.itemName || '',
         // DoseDateTime: this.MedicineItemForm.get('DoseDateTime').value || '01/01/1900',
-        DoseDateTime:this.doseDateTime || '01/01/1900',
+        DoseDateTime: this.doseDateTime || '01/01/1900',
         Route: this.MedicineItemForm.get('Route').value || '',
         Frequency: this.MedicineItemForm.get('Frequency').value || 0,
         NurseName: this.MedicineItemForm.get('NurseName').value || '',
@@ -226,6 +256,7 @@ export class MedicineSchedulerComponent {
     this.MedicineItemForm.get('DoseTime').setValue('');
 
   }
+
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
@@ -239,49 +270,50 @@ export class MedicineSchedulerComponent {
   }
 
   onSubmit() {
-    debugger
-    if (!this.dsItemList.data.length) {
-      this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return
-    }
-
-    let saveTNursingMedicationChartParamsObj = [];
-    this.dsItemList.data.forEach(element => {
-
-      let saveTNursingMedicationChartParams = {
-
-        "medChartId": 0,
-        "admId": this.registerObj.admissionID,
-        "mdate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        "mtime": this.datePipe.transform(new Date(), 'shortTime'),
-        "durgId": this.registerObj.itemId,
-        "doseId": 0,
-        "route": element.Route || '',
-        "freq": element.Frequency || '',
-        "isAddedBy": this._loggedService.currentUserValue.userId,
-        "nurseName": element.NurseName || '',
-        "isCancelled": true,
-        // "doseName": element.DoseDateTime || '',
-        "doseName": this.datePipe.transform(element.DoseDateTime, 'h:mm a') || '',
+    // debugger
+    console.log(this.MedicineItemLoopForm.value)
+    if (!this.MedicineItemLoopForm.invalid) {
+      this.medicationItemArray.clear();
+      if (!this.dsItemList.data.length) {
+        this.toastr.warning('Please add Scheduler in list !,list is blank', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return
       }
-
-      saveTNursingMedicationChartParamsObj.push(saveTNursingMedicationChartParams)
-    })
-
-    this.MedicineItemLoopForm.get('nursingMedicationChart').setValue(saveTNursingMedicationChartParamsObj)
-    console.log(this.MedicineItemLoopForm.value);
-    this._NursingStationService.insertMedicationChart(this.MedicineItemLoopForm.value).subscribe(response => {
-      console.log(response)
-        this.toastr.success(response.message);
+      this.dsItemList.data.forEach(item => {
+        this.medicationItemArray.push(this.createMedicationItemArray(item));
+      });
+      console.log(this.MedicineItemLoopForm.value)
+      this._NursingStationService.insertMedicationChart(this.MedicineItemLoopForm.value).subscribe(response => {
         this._matDialog.closeAll();
         this.onClose();
-    }, error => {
-      this.toastr.error(error.message);
-    });
-  }
+      });
+    } else {
+      let invalidFields: string[] = [];
+      // checks nested error 
+      if (this.MedicineItemLoopForm.invalid) {
+        for (const controlName in this.MedicineItemLoopForm.controls) {
+          const control = this.MedicineItemLoopForm.get(controlName);
 
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Table Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
 
   onClose() {
     this.MedicineItemForm.reset();
