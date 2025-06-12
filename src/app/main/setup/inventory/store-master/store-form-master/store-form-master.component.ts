@@ -89,47 +89,27 @@ export class StoreFormMasterComponent implements OnInit {
     updated: boolean = false;
 
     onSubmit() {
-        debugger
-        const isPhar = this.storeForm.get('isPharStore')?.value;
-        if (isPhar) {
-            this.storeForm.get('dlNo')?.setValidators([Validators.required]);
-            this.storeForm.get('gstin')?.setValidators([Validators.required]);
-        } else {
-            this.storeForm.get('dlNo')?.clearValidators();
-            this.storeForm.get('gstin')?.clearValidators();
-        }
-
-        this.storeForm.get('dlNo')?.updateValueAndValidity();
-        this.storeForm.get('gstin')?.updateValueAndValidity();
-
-        if (!this.storeForm.invalid) {
-            
-            console.log("StoreCategoryMaster Insert:", this.storeForm.value)
-            
+       if (!this.storeForm.invalid) {
+            console.log(this.storeForm.value)
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else {
+        } {
             let invalidFields = [];
-
             if (this.storeForm.invalid) {
                 for (const controlName in this.storeForm.controls) {
-                if (this.storeForm.controls[controlName].invalid) {
-                    invalidFields.push(`My Form: ${controlName}`);
-                }
+                    if (this.storeForm.controls[controlName].invalid) {
+                        invalidFields.push(`store Form: ${controlName}`);
+                    }
                 }
             }
-
             if (invalidFields.length > 0) {
                 invalidFields.forEach(field => {
-                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                  );
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
                 });
-              }
+            }
+
         }
     }
 

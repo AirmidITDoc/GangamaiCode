@@ -14,46 +14,47 @@ import { TaxMasterService } from '../tax-master.service';
 })
 export class NewTaxComponent implements OnInit {
 
-  taxForm: FormGroup;
-  isActive:boolean=true;
-  
-  constructor(
-      public _TaxMasterService: TaxMasterService,
-      public dialogRef: MatDialogRef<NewTaxComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    taxForm: FormGroup;
+    isActive: boolean = true;
+
+    constructor(
+        public _TaxMasterService: TaxMasterService,
+        public dialogRef: MatDialogRef<NewTaxComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
     ngOnInit(): void {
         this.taxForm = this._TaxMasterService.createTaxMasterForm();
         this.taxForm.markAllAsTouched();
-        if((this.data?.id??0) > 0)
-        {
+        if ((this.data?.id ?? 0) > 0) {
             this.isActive = this.data.isActive;
             this.taxForm.patchValue(this.data);
         }
     }
 
     onSubmit() {
-        ;
         if (!this.taxForm.invalid) {
-
-            console.log("TaxMaster Insert:", this.taxForm.value);
-
-            this._TaxMasterService.taxMasterSave(this.taxForm.value).subscribe(
-                (response) => {
-                    this.toastr.success(response.message);
-                    this.onClear(true);
-                },
-                (error) => {
-                    this.toastr.error(error.message);
-                }
-            );
-        } else {
-            this.toastr.warning("please check from is invalid", "Warning !", {
-                toastClass: "tostr-tost custom-toast-warning",
+            console.log(this.taxForm.value)
+            this._TaxMasterService.taxMasterSave(this.taxForm.value).subscribe((response) => {
+                this.onClear(true);
             });
-            return;
+        } {
+            let invalidFields = [];
+            if (this.taxForm.invalid) {
+                for (const controlName in this.taxForm.controls) {
+                    if (this.taxForm.controls[controlName].invalid) {
+                        invalidFields.push(`tax Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
         }
     }
 
@@ -66,7 +67,7 @@ export class NewTaxComponent implements OnInit {
         return {
             taxNature: [
                 { name: "required", Message: "TaxNature Name is required" },
-                { name: "maxlength",Message: "TaxNature name should not be greater than 50 char."},
+                { name: "maxlength", Message: "TaxNature name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." },
             ],
         };

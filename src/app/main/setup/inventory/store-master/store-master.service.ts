@@ -23,13 +23,14 @@ export class StoreMasterService {
 
     createStoremasterForm(): FormGroup {
         return this._formBuilder.group({
-            storeId: [0],
+            storeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             storeShortName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z ]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             storeName: ["",
@@ -37,91 +38,105 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                   //  Validators.pattern("^[A-Za-z ]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             indentPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             indentNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             purchasePrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                
                 ]
             ],
             purchaseNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnreturnNoPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnreturnNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern("^[0-9 ]*$")
+                    Validators.pattern("^[0-9 ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             issueToDeptPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             issueToDeptNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern("^[0-9 ]*$")
+                    Validators.pattern("^[0-9 ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             returnFromDeptNoPrefix: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern("^[A-Za-z ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             returnFromDeptNo: ["",
                 [
                     Validators.required,
                     Validators.maxLength(30),
-                    Validators.pattern("^[0-9 ]*$")
+                    Validators.pattern("^[0-9 ]*$"),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             // isDeleted: ["true"],

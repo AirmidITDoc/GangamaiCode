@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -11,7 +12,8 @@ export class TaxMasterService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createTaxMasterForm();
         this.myformSearch = this.createSearchForm();
@@ -19,15 +21,16 @@ export class TaxMasterService {
 
     createTaxMasterForm(): FormGroup {
         return this._formBuilder.group({
-            id: [0],
+            id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             taxNature: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -44,12 +47,12 @@ export class TaxMasterService {
 
     public taxMasterSave(Param: any) {
         if (Param.id) {
-            return this._httpClient.PutData("TaxMaster/" + Param.id,Param);
+            return this._httpClient.PutData("TaxMaster/" + Param.id, Param);
         } else return this._httpClient.PostData("TaxMaster", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        
+
         return this._httpClient.DeleteData("TaxMaster?Id=" + m_data.toString());
     }
 }
