@@ -25,6 +25,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 
 // interface Patient {
 //   PHeight: string;
@@ -41,6 +42,10 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations
 })
 export class NewCasepaperComponent implements OnInit {
+  
+  selectedLang = 'en-US';
+  languages: LanguageOption[] = [];
+
   displayedItemColumn: string[] = [
     'ItemName',
     'ItemGenericName',
@@ -166,9 +171,15 @@ export class NewCasepaperComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { console.log('Dialog Data:', data); }
+    public speechService: SpeechRecognitionService
+  ) { 
+    console.log('Dialog Data:', data);
+  }
 
   ngOnInit(): void {
+    //Common language list
+    this.languages = this.speechService.supportedLanguages;
+
     this.searchFormGroup = this.createSearchForm();
 
     this.caseFormGroup = this.createForm();
@@ -230,7 +241,21 @@ export class NewCasepaperComponent implements OnInit {
       });
     }, 500);
   }
-
+  onLangChange() {
+    console.log(this.selectedLang);
+    if (this.speechService.isListening) {
+      this.speechService.stopRecognition();
+    }
+  }
+  onMicToggle() {
+    console.log(this.selectedLang);
+    this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+      const currentText = this.MedicineItemForm.get('Remark')?.value || '';
+      const updated = currentText ? `${currentText} ${text}` : text;
+      this.MedicineItemForm.get('Remark')?.setValue(updated);
+    });
+  }
+  
   removedignosis(item) {
     let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id === item.id);
 

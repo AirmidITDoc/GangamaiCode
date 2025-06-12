@@ -164,31 +164,32 @@
                                                     <!-- BMI [(ngModel)]="vBMI"-->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BMI</mat-label>
-                                                        <input matInput formControlName="BMI" placeholder="BMI" readonly>
+                                                        <input matInput formControlName="BMI" placeholder="BMI"
+                                                            readonly>
                                                     </mat-form-field>
 
                                                     <!-- BSL [(ngModel)]="vBSL"-->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>BSL</mat-label>
-                                                        <input matInput formControlName="BSL" placeholder="BSL" [maxLength]="20"
-                                                             (keydown)="onEnterBSL($event)" OnlyNumber
+                                                        <input matInput formControlName="BSL" placeholder="BSL"
+                                                            [maxLength]="20" (keydown)="onEnterBSL($event)" OnlyNumber
                                                             (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
 
                                                     <!-- SpO2 [(ngModel)]="vSpO2" -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>SpO2</mat-label>
-                                                        <input matInput formControlName="SpO2" placeholder="SpO2" [maxLength]="20"
-                                                             (keydown)="onEnterSpO2($event)"
-                                                            OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="SpO2" placeholder="SpO2"
+                                                            [maxLength]="20" (keydown)="onEnterSpO2($event)" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
                                                     </mat-form-field>
 
                                                     <!-- Pulse [(ngModel)]="vPulse" -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Pulse</mat-label>
-                                                        <input matInput formControlName="Pulse" placeholder="Pulse" [maxLength]="10"
-                                                             (keydown)="onEnterPulse($event)"
-                                                            OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="Pulse" placeholder="Pulse"
+                                                            [maxLength]="10" (keydown)="onEnterPulse($event)" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">bpm</span>
@@ -197,8 +198,8 @@
                                                     <!-- BP [(ngModel)]="vBP"-->
                                                     <mat-form-field appearance="outline" fxFlex="12%">
                                                         <mat-label>BP</mat-label>
-                                                        <input matInput formControlName="BP" placeholder="BP" [maxLength]="10"
-                                                        (keydown)="onEnterBP($event)" OnlyNumber
+                                                        <input matInput formControlName="BP" placeholder="BP"
+                                                            [maxLength]="10" (keydown)="onEnterBP($event)" OnlyNumber
                                                             (keypress)="keyPressOk($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
@@ -208,9 +209,9 @@
                                                     <!-- Temperature [(ngModel)]="vTemp" -->
                                                     <mat-form-field appearance="outline" fxFlex="11%">
                                                         <mat-label>Temp</mat-label>
-                                                        <input matInput formControlName="Temp" placeholder="Temp" [maxLength]="10"
-                                                         (keydown)="onEnterTemp($event)"
-                                                            OnlyNumber (keypress)="keyPressCharater($event)">
+                                                        <input matInput formControlName="Temp" placeholder="Temp"
+                                                            [maxLength]="10" (keydown)="onEnterTemp($event)" OnlyNumber
+                                                            (keypress)="keyPressCharater($event)">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
                                                         <span matSuffix
@@ -251,7 +252,7 @@
                                                     </form>
 
                                                     <!-- demo check -->
-                                                        <!-- <form [formGroup]="caseFormGroup">
+                                                    <!-- <form [formGroup]="caseFormGroup">
                                                          <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
                                                         <mat-label>ChiefComplaint</mat-label>
                                                         <mat-chip-list #chipList aria-label="ChiefComplaint selection">
@@ -280,7 +281,7 @@
                                                     </mat-form-field>
                                                         </form> -->
 
-                                                        <!-- demo check -->
+                                                    <!-- demo check -->
 
                                                     <form [formGroup]="caseFormGroup">
                                                         <div class="investigation-title">
@@ -458,7 +459,8 @@
                                                                     fxHide fxShow.gt-sm>
                                                                     Drug Name</mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.DrugName || element.drugName}}</span>
+                                                                    <span> {{element.DrugName ||
+                                                                        element.drugName}}</span>
                                                                     <!-- <span> {{element.DrugName || vDrugName}}</span> -->
                                                                 </mat-cell>
                                                             </ng-container>
@@ -482,7 +484,8 @@
                                                                     <!-- Show dropdown and save button when in edit mode -->
                                                                     <div *ngIf="editingIndex1 === in"
                                                                         style="display: flex; align-items: center; gap: 10px; width: 300px;">
-                                                                        <airmid-dropdown label="ItemGeneric Name" fxFlex="80%"
+                                                                        <airmid-dropdown label="ItemGeneric Name"
+                                                                            fxFlex="80%"
                                                                             formControlName="ItemGenericNameId"
                                                                             [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeItemGeneric"
@@ -524,8 +527,8 @@
 
                                                                     <div *ngIf="editingIndex === i"
                                                                         style="display: flex; align-items: center; gap: 5px; width: 300px;">
-                                                                        <airmid-dropdown formControlName="DoseId1" fxFlex="50%"
-                                                                            [formGroup]="MedicineItemForm"
+                                                                        <airmid-dropdown formControlName="DoseId1"
+                                                                            fxFlex="50%" [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeDose"
                                                                             (selectionChange)="selectChangeDoseName($event)">
                                                                         </airmid-dropdown>
@@ -697,25 +700,44 @@
                                             </div>
                                         </form>
                                     </mat-card>
-
                                     <mat-card fxLayout="column" style="padding: 5px;">
-                                        <form [formGroup]="MedicineItemForm">
-                                            <div class="advice-title">
-                                                <span style="font-weight: 700;">
-                                                    Advice
-                                                </span>
-                                            </div>
-                                            <hr>
-                                            <div fxLayout="row" fxLayoutGap="6px">
-                                                <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Remark</mat-label>
-                                                    <textarea rows="1" name="Remark" formControlName="Remark" [maxLength]="200"
-                                                        placeholder="Remark" matInput></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                        </form>
-                                    </mat-card>
+                                        <div class="advice-title">
+                                            <span style="font-weight: 700;">Advice</span>
+                                        </div>
+                                        <hr />
 
+                                        <!-- 🎯 Row: Remark + Mic (inside form) + Language (outside form) -->
+                                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+
+                                            <!-- ✅ Form starts here -->
+                                            <form [formGroup]="MedicineItemForm" fxFlex>
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Remark</mat-label>
+                                                    <textarea rows="1" formControlName="Remark" placeholder="Remark"
+                                                        matInput></textarea>
+
+                                                    <!-- 🎤 Mic button -->
+                                                    <button mat-icon-button matSuffix (click)="onMicToggle()"
+                                                        [color]="speechService.isListening ? 'warn' : 'primary'"
+                                                        type="button">
+                                                        <i
+                                                            [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                                    </button>
+                                                </mat-form-field>
+                                            </form>
+
+                                            <!-- ✅ Language dropdown outside form -->
+                                            <mat-form-field appearance="outline" style="min-width: 180px;">
+                                                <mat-label>Language</mat-label>
+                                                <mat-select [(ngModel)]="selectedLang"
+                                                    (selectionChange)="onLangChange()" name="languageSelect">
+                                                    <mat-option *ngFor="let lang of languages" [value]="lang.code">
+                                                        {{ lang.label }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </mat-card>
                                     <div fxLayout="row" fxLayoutAlign="space-between">
                                         <form [formGroup]="caseFormGroup" fxLayoutAlign="space-between">
                                             <mat-radio-group aria-label="Select an option"
@@ -994,3 +1016,41 @@
         </div>
     </div>
 </div>
+
+<!-- <h2>Speech Recognition (Native Web API)</h2>
+
+<label for="language">Choose a language:</label>
+<select id="language" [(ngModel)]="selectedLang">
+  <option value="en-US">English (US)</option>
+  <option value="hi-IN">Hindi</option>
+  <option value="mr-IN">Marathi</option>
+</select>
+
+<br /><br />
+<button (click)="startRecognition()" [disabled]="isListening">
+  <i class="fas fa-microphone"></i> Start
+</button>
+
+<button (click)="stopRecognition()" [disabled]="!isListening">
+  <i class="fas fa-microphone-slash"></i> Stop
+</button>
+
+<label for="speechInput">Speech to Input:</label>
+<input type="text" id="speechInput" [(ngModel)]="transcript" placeholder="Speak something..." /> -->
+
+
+<!-- Language selection -->
+<!-- <select [(ngModel)]="selectedLang">
+  <option value="en-US">English</option>
+  <option value="hi-IN">Hindi</option>
+  <option value="mr-IN">Marathi</option>
+</select> -->
+
+<!-- Input field for speech transcript -->
+<!-- <input type="text" [(ngModel)]="transcript" placeholder="Speak something..." /> -->
+
+<!-- Single toggle button with icon -->
+<!-- <button (click)="toggleRecognition()">
+  <i [class]="isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+  {{ isListening ? 'Stop' : 'Start' }}
+</button> -->
