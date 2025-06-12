@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
+import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 
 @Component({
     selector: 'app-new-registration',
@@ -46,6 +47,8 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
+    imagePreview!: string;
+
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -85,6 +88,34 @@ export class NewRegistrationComponent implements OnInit {
     ageYear = 0;
     ageMonth = 0;
     ageDay = 0;
+
+    openCamera(type: string, place: string) {
+        const dialogRef = this._matDialog.open(ImageViewComponent,
+            {
+                width: '750px',
+                height: '550px',
+
+                data: {
+                    docData: type == 'camera' ? 'camera' : '',
+                    type: type == 'camera' ? 'camera' : '',
+                    place: place
+                }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (place == "photo") {
+                    this.imagePreview = result.url;
+                }
+                else {
+                    // this.imgArr.push(result.name);
+                    // this.images.push(result);
+                    // this.imgDataSource.data = this.images;
+                }
+            }
+        });
+    }
+
     OnSubmit() {
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
