@@ -2716,7 +2716,7 @@ export class SalesHospitalComponent implements OnInit {
     salesInsertCredit['discAmount'] = this.ItemSubform.get('FinalDiscAmt').value || 0; //this.FinalDiscAmt;
     salesInsertCredit['netAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;
     salesInsertCredit['paidAmount'] = 0;
-    salesInsertCredit['balanceAmount'] = NetAmt;
+    salesInsertCredit['balanceAmount'] = this.ItemSubform.get('roundoffAmt').value || 0;
     salesInsertCredit['concessionReasonID'] = ConcessionId || 0;
     salesInsertCredit['concessionAuthorizationId'] = 0;
     salesInsertCredit['isSellted'] = 0;
@@ -4231,7 +4231,7 @@ export class SalesHospitalComponent implements OnInit {
     this._salesService.getBillSummaryQuery(query).subscribe((data) => {
       console.log(data)
       if (data[0].CreditAmount > 0) {
-        this.TotalCreditAmt = data[0]?.CreditAmount;
+        this.TotalCreditAmt = data[0]?.CreditAmount ?? 0;
       } else {
         this.TotalCreditAmt = 0;
       }
@@ -4241,8 +4241,8 @@ export class SalesHospitalComponent implements OnInit {
     this._salesService.getBillSummaryQuery(query).subscribe((data) => {
       console.log(data)
       let mdata =
-        this.TotalAdvanceAmt = data[0]?.AdvanceAmount;
-      this.TotalBalanceAmt = data[0]?.BalanceAmount;
+        this.TotalAdvanceAmt = data[0]?.AdvanceAmount ?? 0;
+      this.TotalBalanceAmt = data[0]?.BalanceAmount ?? 0;
     });
   }
 
