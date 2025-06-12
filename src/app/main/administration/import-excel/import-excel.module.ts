@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ImportExcelComponent } from './import-excel.component';
-import { SharedModule } from '../shared/shared.module';
+// import { ImportExcelComponent } from './import-excel.component';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -15,6 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ImportExcelTableComponent } from './import-excel-table/import-excel-table.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { ImportExcelComponent } from './import-excel.component';
 
 const routes: Routes = [
   {

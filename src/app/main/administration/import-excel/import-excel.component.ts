@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { ExcelDownloadService } from '../shared/services/excel-download.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 
 @Component({
   selector: 'app-import-excel',
