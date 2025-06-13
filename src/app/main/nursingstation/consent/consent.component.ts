@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -69,21 +69,27 @@ export class ConsentComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-
+  @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'opipType')!.template = this.actionsIPOP;
+  }
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   allcolumns = [
-    { heading: "-", key: "type", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UHID", key: "uhid", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Date&Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    {
+        heading: "-", key: "opipType", sort: true, align: 'left', type: gridColumnTypes.template,
+        template: this.actionsIPOP
+    },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date&Time", key: "createdDatetime", sort: true, align: 'left', emptySign: 'NA', type:9,width:200},
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:200},
     { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Consent Desc", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Age", key: "age", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "MobileNo", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Consent Desc", key: "consentText", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -169,17 +175,13 @@ export class ConsentComponent implements OnInit {
   NewConsent() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
     const dialogRef = this._matDialog.open(NewConsentComponent,
       {
         maxHeight: '90vh',
         width: '100%'
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
+        this.grid.bindGridData();
     });
   }
 

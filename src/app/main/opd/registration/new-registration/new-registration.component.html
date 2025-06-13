@@ -4,7 +4,7 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Registration</span>
-
+                <span *ngIf="isEditMode">RegNo: {{ regNo }}</span>
             </div>
             <div class="modal-header-right">
 

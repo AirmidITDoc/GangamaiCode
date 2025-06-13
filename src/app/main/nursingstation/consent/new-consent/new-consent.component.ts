@@ -41,7 +41,7 @@ export class NewConsentComponent {
   vPatientType: any;
   vDOA: any;
   vRegId: any;
-  OP_IPType: any=0;
+  OP_IPType: any = 0;
   vSelectedOption: any = 'OP';
   isButtonDisabled: boolean = false;
   selectedDepartment: string = '';
@@ -54,7 +54,7 @@ export class NewConsentComponent {
   ConsentinsertForm: FormGroup;
 
   autocompletedepartment: string = "Department";
-  autocompleteModeTemplate: string = "Template";
+  autocompleteModeTemplate: string = "ConsentMaster";
 
   @ViewChild('ddlTemplate') ddlTemplate: AirmidDropDownComponent;
 
@@ -88,13 +88,20 @@ export class NewConsentComponent {
 
   ngOnInit(): void {
     this._ConsentService.myform.markAllAsTouched();
-    this.ConsentinsertForm=this._ConsentService.CreateMyInsertform();
+    this.ConsentinsertForm = this._ConsentService.CreateMyInsertform();
     this.ConsentinsertForm.markAllAsTouched();
 
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
-    if (this.data) {
-      this.registerObj = this.data.row;
-      console.log("RegisterObj:", this.registerObj)
+    if ((this.data?.consentId ?? 0) > 0) {
+      this.vConsentText = this.data.consentText
+      this.OP_IP_Id=this.data.opipid
+      this.OP_IPType=this.data.opipType
+      this.vdepartmentId=this.data.consentDeptId
+      this.templateId=this.data.consentTempId
+      this.ConsentinsertForm.patchValue(this.data);
+      console.log(this.data)
+      this.getSelectedObjOP(this.data)
+      this.getSelectedObjIP(this.data)
     }
   }
 
@@ -111,56 +118,50 @@ export class NewConsentComponent {
   }
 
   getSelectedObjOP(obj) {
-
-    if ((obj.regId ?? 0) > 0) {
-      console.log("Visite Patient:", obj)
-      this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vDepartment = obj.departmentName
-      this.vAdmissionDate = obj.admissionDate
-      this.vAdmissionTime = obj.admissionTime
-      this.vOPDNo = obj.opdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vRefDocName = obj.refDocName
-      this.vRoomName = obj.roomName
-      this.vBedName = obj.bedName
-      this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
-      this.vPatientName = extractedName;
-      this.OP_IP_Id = obj.visitId
-    }
+    console.log("Visite Patient:", obj)
+    this.vRegNo = obj.regNo
+    this.vDoctorName = obj.doctorName
+    this.vDepartment = obj.departmentName
+    this.vAdmissionDate = obj.admissionDate
+    this.vAdmissionTime = obj.admissionTime
+    this.vOPDNo = obj.opdNo
+    this.vAge = obj.age
+    this.vAgeMonth = obj.ageMonth
+    this.vAgeDay = obj.ageDay
+    this.vGenderName = obj.genderName
+    this.vRefDocName = obj.refDocName
+    this.vRoomName = obj.roomName
+    this.vBedName = obj.bedName
+    this.vPatientType = obj.patientType
+    this.vTariffName = obj.tariffName
+    this.vCompanyName = obj.companyName
+    let nameField = obj.formattedText;
+    let extractedName = nameField.split('|')[0].trim();
+    this.vPatientName = extractedName;
+    this.OP_IP_Id = obj.visitId
   }
 
   getSelectedObjIP(obj) {
-
-    if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:", obj)
-      this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment = obj.departmentName
-      this.vAdmissionDate = obj.admissionDate
-      this.vAdmissionTime = obj.admissionTime
-      this.vIPDNo = obj.ipdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vRefDocName = obj.refDocName
-      this.vRoomName = obj.roomName
-      this.vBedName = obj.bedName
-      this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-      this.vDOA = obj.admissionDate
-      this.OP_IP_Id = obj.admissionID
-    }
+    console.log("Admitted patient:", obj)
+    this.vRegNo = obj.regNo
+    this.vDoctorName = obj.doctorName
+    this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+    this.vDepartment = obj.departmentName
+    this.vAdmissionDate = obj.admissionDate
+    this.vAdmissionTime = obj.admissionTime
+    this.vIPDNo = obj.ipdNo
+    this.vAge = obj.age
+    this.vAgeMonth = obj.ageMonth
+    this.vAgeDay = obj.ageDay
+    this.vGenderName = obj.genderName
+    this.vRefDocName = obj.refDocName
+    this.vRoomName = obj.roomName
+    this.vBedName = obj.bedName
+    this.vPatientType = obj.patientType
+    this.vTariffName = obj.tariffName
+    this.vCompanyName = obj.companyName
+    this.vDOA = obj.admissionDate
+    this.OP_IP_Id = obj.admissionID
   }
 
   patientInfoReset() {
@@ -193,44 +194,22 @@ export class NewConsentComponent {
     // });
   }
 
-  templateId="0"
+  templateId = "0"
   onTemplateSelect(option: any) {
     console.log("selectedTemplateOption:", option)
-    this.templateId=option.value
+    this.templateId = option.value
     this.selectedTemplateOption = option.text; //details of template dd should pass
   }
 
   onSave() {
-    debugger
-    if (!this.ConsentinsertForm.get('consentDeptId')?.value) {
-      this.toastr.warning('Please select Department ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.ConsentinsertForm.get('consentTempId')?.value) {
-      this.toastr.warning('Please select Template ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (!this.vConsentText || this.vConsentText.trim() === '') {
-      this.toastr.warning('Please enter template description', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
     if (!this.ConsentinsertForm.invalid) {
-      console.log(this.ConsentinsertForm.value);
-      let data=this.ConsentinsertForm.value;
-      data.consentDate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      data.consentTime=this.datePipe.transform(new Date(), 'shortTime');
-      data.opipid=this.OP_IP_Id
-      data.opiptype=this.OP_IPType
-      data.consentDeptId=Number(this.vdepartmentId)
-      data.consentTempId=Number(this.templateId)
+      let data = this.ConsentinsertForm.value;
+      data.consentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      data.consentTime = this.datePipe.transform(new Date(), 'shortTime');
+      data.opipid = this.OP_IP_Id
+      data.opiptype = this.OP_IPType
+      data.consentDeptId = Number(this.vdepartmentId)
+      data.consentTempId = Number(this.templateId)
 
       const isUpdate = data.consentId && data.consentId > 0;
 
@@ -241,19 +220,15 @@ export class NewConsentComponent {
       }
 
       this._ConsentService.ConsentSave(data).subscribe((response) => {
-        console.log(response)
-        this.toastr.success(response.message);
         this.onClose();
-      }, (error) => {
-        this.toastr.error(error.message);
       });
     } else {
       let invalidFields = [];
 
-      if (this._ConsentService.myform.invalid) {
+      if (this.ConsentinsertForm.invalid) {
         for (const controlName in this.ConsentinsertForm.controls) {
           if (this.ConsentinsertForm.controls[controlName].invalid) {
-            invalidFields.push(`phoneapp Form: ${controlName}`);
+            invalidFields.push(`My Form: ${controlName}`);
           }
         }
       }
@@ -270,19 +245,21 @@ export class NewConsentComponent {
   addTemplateDescription() {
     this.isButtonDisabled = false
 
-    if (this.vRegNo == '' || this.vRegNo== null || this.vRegNo == undefined || this.vRegNo == 0) {
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined || this.vRegNo == 0) {
       this.toastr.warning('Please select patient ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }    
-    if (!this.ConsentinsertForm.get('consentDeptId')?.value) {
+    }
+    const deptId = this.ConsentinsertForm.get('consentDeptId')?.value;
+    if (deptId === null || deptId === 0 || deptId === '' || deptId === "0") {
       this.toastr.warning('Please select Department ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.ConsentinsertForm.get('consentTempId')?.value) {
+    const tempId=this.ConsentinsertForm.get('consentTempId')?.value ;
+    if (tempId === null || tempId === 0 || tempId === '' || tempId === "0") {
       this.toastr.warning('Please select Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -300,7 +277,7 @@ export class NewConsentComponent {
       Language: '1',
       IsIPOrOP: '2'
     });
-     this.ConsentinsertForm.reset({
+    this.ConsentinsertForm.reset({
       Language: '1',
       IsIPOrOP: '2'
     });
