@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationService } from './registration.service';
 import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -32,8 +33,12 @@ export class RegistrationComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    constructor(public _RegistrationService: RegistrationService, public _matDialog: MatDialog,
-        public toastr: ToastrService, public datePipe: DatePipe) { }
+    constructor(
+        public _RegistrationService: RegistrationService, 
+        public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
+        public toastr: ToastrService, public datePipe: DatePipe) 
+        { }
 
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
@@ -45,7 +50,7 @@ export class RegistrationComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
-     ngAfterViewInit() {
+    ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
@@ -87,10 +92,10 @@ export class RegistrationComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
-           
+
         ]
     }
-    OnPrint(Param) { console.log(Param) }  
+   
     OnNewAppointment(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button 
@@ -110,16 +115,18 @@ export class RegistrationComponent implements OnInit {
                 that.grid.bindGridData(); 
             });
         }
-
+    OnPrint(Param) {
+        this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
+    } 
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         let that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
-                maxWidth: "98vw",
+                maxWidth: "90vw",
                 maxHeight: '90%',
-                width: '95%',
+                width: '90%',
 
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -135,9 +142,9 @@ export class RegistrationComponent implements OnInit {
         const dialogRef = this._matDialog.open(
             NewRegistrationComponent,
             {
-                maxWidth: "100vw",
+                maxWidth: "90vw",
                 maxHeight: '90%',
-                width: '95%',
+                width: '90%',
                 data: row
             }
         );
@@ -207,7 +214,8 @@ export class RegistrationComponent implements OnInit {
                 { name: "minLength", Message: "10 digit required." },
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
-            ], }
+            ],
+        }
     }
         
 }
@@ -220,7 +228,7 @@ export class RegInsert {
     RegDate: Date;
     regDate: Date;
     PatientName: string;
-    patientName:string;
+    patientName: string;
     RegTime: Time;
     prefixId: number;
     PrefixId: number;
@@ -280,10 +288,10 @@ export class RegInsert {
     AdmissionID: any;
     VisitId: any;
     isSeniorCitizen: boolean
-    doctorName:any;
-    departmentName:any;
-    UnitId:any;
-    billNo:any;
+    doctorName: any;
+    departmentName: any;
+    UnitId: any;
+    billNo: any;
     // religionId:any;
     // updatedBy:any;
 
@@ -342,7 +350,7 @@ export class RegInsert {
             this.CityId = RegInsert.CityId || 0;
             this.cityId = RegInsert.cityId || 0;
             this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
-            
+
             this.IsCharity = RegInsert.IsCharity || false;
             this.ReligionId = RegInsert.ReligionId || 0;
             this.religionId = RegInsert.religionId || 0;
@@ -358,11 +366,11 @@ export class RegInsert {
             this.AdmissionID = RegInsert.AdmissionID || '';
             this.VisitId = RegInsert.VisitId || 0;
             this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
-            this.maritalStatusId = RegInsert.maritalStatusId || 0 ;
-            this.doctorName= RegInsert.doctorName || "" ;
-            this.departmentName= RegInsert.departmentName || "" ;
-            this.UnitId=RegInsert.UnitId||0;
-            this.billNo=RegInsert.billNo||0;
+            this.maritalStatusId = RegInsert.maritalStatusId || 0;
+            this.doctorName = RegInsert.doctorName || "";
+            this.departmentName = RegInsert.departmentName || "";
+            this.UnitId = RegInsert.UnitId || 0;
+            this.billNo = RegInsert.billNo || 0;
         }
     }
 }

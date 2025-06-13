@@ -127,6 +127,16 @@
                                         <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="SupplierList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
+
+                                    <ng-container *ngIf="flagPaymentSelected">
+                                        <airmid-autocomplete label="Payment Mode" [formGroup]="_ReportService.userForm" formControlName="PaymentId" placeholderText="Select Payment Mode" ApiUrl="PaymentList/auto-complete?Keyword=" (selectionChange)="SelectedPaymentObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagDrugTypeSelected">
+                                        <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="DrugTypeList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
                                     <!--  -->
                                 </div>
 

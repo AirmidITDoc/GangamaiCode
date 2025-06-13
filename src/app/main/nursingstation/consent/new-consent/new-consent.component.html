@@ -188,6 +188,7 @@
                                          <form [formGroup]="ConsentinsertForm" class="gap-8" style="height: 80px;">
                                                <airmid-dropdown label="Department Name" formControlName="consentDeptId"
                                                 [formGroup]="ConsentinsertForm" fxFlex="35%"
+                                                [value]="data?.consentDeptId"    
                                                 [validations]="getValidationMessages().consentDeptId"
                                                 [mode]="autocompletedepartment"
                                                 (selectionChange)="selectChangedepartment($event)">
@@ -195,6 +196,7 @@
 
                                             <airmid-dropdown label="Template" formControlName="consentTempId"
                                                 [formGroup]="ConsentinsertForm" fxFlex="35%"
+                                                [value]="data?.consentTempId"    
                                                 [validations]="getValidationMessages().consentTempId" #ddlTemplate
                                                 [mode]="autocompleteModeTemplate"
                                                 (selectionChange)="onTemplateSelect($event)">
@@ -224,7 +226,7 @@
                                                 <mat-label>Template Details</mat-label>
                                                 <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                     style="height:400px;" [(ngModel)]="vConsentText" required
-                                                    formControlName="ConsentText">
+                                                    formControlName="ConsentText" >
                                                 </angular-editor>
                                                </form>
                                             </div>

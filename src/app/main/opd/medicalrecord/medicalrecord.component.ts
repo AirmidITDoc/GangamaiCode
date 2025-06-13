@@ -17,6 +17,7 @@ import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component'
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 import { RegInsert } from '../registration/registration.component';
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
+import Swal from 'sweetalert2';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -186,15 +187,15 @@ export class MedicalrecordComponent implements OnInit {
   }
 
   ListView(value) {
-        
+
     console.log(value)
-     if(value.value!==0)
-        this.DoctorId=value.value
+    if (value.value !== 0)
+      this.DoctorId = value.value
     else
-    this.DoctorId="0"
+      this.DoctorId = "0"
 
     this.onChangeFirst();
-}
+  }
 
   onSave(row: any = null) {
 
@@ -269,8 +270,32 @@ export class MedicalrecordComponent implements OnInit {
     });
   }
 
-  OnViewReportPdf(element) {
-    this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+  getPrint(element) {
+    Swal.fire({
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Step 3A: Call function with "With Header"
+        this.OnViewReportPdf(element, true);
+      } else if (result.isDenied) {
+        // Step 3B: Call function with "Without Header"
+        this.OnViewReportPdf(element, false);
+      }
+    });
+  }
+
+  OnViewReportPdf(element: any, withHeader: boolean) {
+    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
+    this.commonService.Onprint("VisitId", element.visitId, reportName);
   }
 
   OnNewCrossConsultation(element) {

@@ -4,14 +4,16 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Registration</span>
-
+                <span *ngIf="isEditMode">RegNo: {{ regNo }}</span>
             </div>
             <div class="modal-header-right">
 
                 <div class="comman-date-container">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    <app-common-date [screenFrom]="screenFromString"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -37,47 +39,68 @@
 
                             <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-                                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
+                                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                    fxLayoutGap="4px grid">
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup" [value]="registerObj?.prefixId" [validations]="getValidationMessages().prefixId" ValueField="prefixId" TextField="prefixName" (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
+                                        <airmid-dropdown label="Prefix" formControlName="PrefixId"
+                                            [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
+                                            [validations]="getValidationMessages().prefixId" ValueField="prefixId"
+                                            TextField="prefixName" (selectionChange)="onChangePrefix($event)"
+                                            ApiUrl="Prefix/get-prefixs">
                                         </airmid-dropdown>
 
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="First Name" formControlName="FirstName" [value]="registerObj.firstName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().firstName" [maxLength]="100">
+                                        <airmid-textbox label="First Name" formControlName="FirstName"
+                                            [value]="registerObj.firstName" [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().firstName" [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Middle Name" formControlName="MiddleName" [value]="registerObj.middleName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().middleName" [maxLength]="100">
+                                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                            [value]="registerObj.middleName" [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().middleName" [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Last Name" formControlName="LastName" [value]="registerObj.lastName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().lastName" [maxLength]="100">
+                                        <airmid-textbox label="Last Name" formControlName="LastName"
+                                            [value]="registerObj.lastName" [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().lastName" [maxLength]="100">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup" [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender [readonly]="true" [mode]="autocompleteModegender">
+                                        <airmid-dropdown label="Gender" formControlName="GenderId"
+                                            [formGroup]="personalFormGroup" [value]="registerObj?.genderId"
+                                            [validations]="getValidationMessages().genderId" #ddlGender
+                                            [readonly]="true" [mode]="autocompleteModegender">
                                         </airmid-dropdown>
 
                                     </div>
 
 
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth" (dateChange)="chkChange()"></app-airmid-dateofbirth>
+                                        <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                            formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"
+                                            (dateChange)="chkChange()"></app-airmid-dateofbirth>
                                     </div>
 
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo" [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup" [maxLength]="12" [validations]="getValidationMessages().aadharCardNo" (keypress)="keyPressAlphanumeric($event)">
+                                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                            [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"
+                                            [maxLength]="12" [validations]="getValidationMessages().aadharCardNo"
+                                            (keypress)="keyPressAlphanumeric($event)">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Address" formControlName="Address" [value]="registerObj.address" [formGroup]="personalFormGroup" [validations]="getValidationMessages().address" [maxLength]="200">
+                                        <airmid-textbox label="Address" formControlName="Address"
+                                            [value]="registerObj.address" [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().address" [maxLength]="200">
                                         </airmid-textbox>
 
                                     </div>
@@ -85,32 +108,54 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
 
-                                        <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId" [mode]="autocompleteModearea">
+                                        <airmid-dropdown label="Area" formControlName="AreaId"
+                                            [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
+                                            [validations]="getValidationMessages().areaId"
+                                            [mode]="autocompleteModearea">
                                         </airmid-dropdown>
 
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup" [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
+                                        <airmid-dropdown label="City" formControlName="CityId"
+                                            [formGroup]="personalFormGroup" [value]="registerObj?.cityId"
+                                            [validations]="getValidationMessages().cityId" ValueField="cityId"
+                                            TextField="cityName" (selectionChange)="onChangecity($event)"
+                                            ApiUrl="CityMaster/get-cities">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="State" formControlName="StateId" [value]="registerObj?.stateId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState [mode]="autocompleteModestate" (optionSelected)="onChangestate($event)" [readonly]="true">
+                                        <airmid-dropdown label="State" formControlName="StateId"
+                                            [value]="registerObj?.stateId" [formGroup]="personalFormGroup"
+                                            [disabled]="true" [validations]="getValidationMessages().stateId" #ddlState
+                                            [mode]="autocompleteModestate" (optionSelected)="onChangestate($event)"
+                                            [readonly]="true">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Country" formControlName="CountryId" [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId" #ddlCountry [mode]="autocompleteModecountry" [readonly]="true">
+                                        <airmid-dropdown label="Country" formControlName="CountryId"
+                                            [value]="registerObj?.countryId" [formGroup]="personalFormGroup"
+                                            [disabled]="true" [validations]="getValidationMessages().countryId"
+                                            #ddlCountry [mode]="autocompleteModecountry" [readonly]="true">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">
-                                            <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MaritalStatus" formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().maritalStatusId" [mode]="autocompleteModemstatus">
+                                            <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                label="MaritalStatus" formControlName="MaritalStatusId"
+                                                [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup"
+                                                [validations]="getValidationMessages().maritalStatusId"
+                                                [mode]="autocompleteModemstatus">
                                             </airmid-dropdown>
-                                            <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="Religion Name" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion">
+                                            <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                label="Religion Name" formControlName="ReligionId"
+                                                [value]="registerObj?.religionId" [formGroup]="personalFormGroup"
+                                                [validations]="getValidationMessages().religionId"
+                                                [mode]="autocompleteModereligion">
                                             </airmid-dropdown>
                                         </div>
                                     </div>
@@ -120,10 +165,18 @@
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <div fxLayout="row" class="gap-8">
 
-                                            <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo" formControlName="MobileNo" [value]="registerObj.mobileNo" [formGroup]="personalFormGroup" [validations]="getValidationMessages().mobileNo" (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
+                                            <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                label="MobileNo" formControlName="MobileNo"
+                                                [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
+                                                [validations]="getValidationMessages().mobileNo"
+                                                (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
                                             </airmid-textbox>
 
-                                            <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo" formControlName="PhoneNo" [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo" [formGroup]="personalFormGroup" [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
+                                            <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                label="PhoneNo" formControlName="PhoneNo"
+                                                [validations]="getValidationMessages().phoneNo"
+                                                [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
+                                                [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
                                             </airmid-textbox>
                                         </div>
                                     </div>
@@ -159,9 +212,8 @@
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-
+                <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
             </div>
         </div>
     </div>

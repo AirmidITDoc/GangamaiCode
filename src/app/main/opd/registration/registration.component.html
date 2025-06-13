@@ -26,7 +26,7 @@
                 </button>
 
                 <!-- Button 2: Print Registration  -->
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element,true)">
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
                     <mat-icon> print</mat-icon>
                 </button>
 
@@ -49,7 +49,7 @@
                   
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"/>
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -59,7 +59,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName"  (input)="onChangeFirst()"/>
+                            formControlName="LastName"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
@@ -69,7 +69,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>RegNo</mat-label>
                         <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo"  (input)="onChangeFirst()"/>
+                            formControlName="RegNo"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
@@ -79,7 +79,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
                         <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                            [maxLength]="10" (input)="onChangeFirst()" />
+                            [maxLength]="10"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('MobileNo')">
                             <mat-icon>close</mat-icon>

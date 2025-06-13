@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-new-registration',
@@ -39,7 +40,8 @@ export class NewRegistrationComponent implements OnInit {
     matDialogRef: any;
     RegID: number = 0;
     isSaving: boolean = false;
-
+    regNo: any;
+    isEditMode: boolean = false;
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
@@ -60,6 +62,7 @@ export class NewRegistrationComponent implements OnInit {
         public toastr: ToastrService,
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe,
+        private commonService: PrintserviceService,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) { }
 
@@ -79,6 +82,8 @@ export class NewRegistrationComponent implements OnInit {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
+                    this.isEditMode = true;
+                    this.regNo=this.registerObj.regNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                 });
             }, 500);
@@ -163,6 +168,7 @@ export class NewRegistrationComponent implements OnInit {
         if (this.personalFormGroup.valid) {
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
+                this.OnPrint(response);
             });
         } else {
             let invalidFields = [];
@@ -201,6 +207,9 @@ export class NewRegistrationComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
+     OnPrint(Param) {
+        this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
+    }
     onClear(val: boolean) {
         this.personalFormGroup.reset();
         this.dialogRef.close(val);
@@ -227,11 +236,9 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangecity(e) {
-        // console.log(e)
         this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
         this._registerService.getstateId(e.stateId).subscribe((Response) => {
-            // console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
         });
 
@@ -310,7 +317,6 @@ export class NewRegistrationComponent implements OnInit {
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
-        // console.log('dateTimeObj ==', dateTimeObj);
         this.dateTimeObj = dateTimeObj;
     }
 }

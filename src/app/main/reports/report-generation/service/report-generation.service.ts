@@ -39,7 +39,9 @@ export class ReportService {
             dischargeTypeId:[""],
             CompanyId:[""],
             StoreId:[""],
-            SupplierId:[""]
+            SupplierId:[""],
+            PaymentId:[""],
+            DrugTypeId:[""]
             // 
         });
     }
