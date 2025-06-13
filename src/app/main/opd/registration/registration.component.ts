@@ -10,6 +10,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationService } from './registration.service';
+import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 
 
 @Component({
@@ -89,8 +90,26 @@ export class RegistrationComponent implements OnInit {
            
         ]
     }
-    OnPrint(Param) { console.log(Param) }
-    OnNewAppointment(Param) { console.log(Param) }
+    OnPrint(Param) { console.log(Param) }  
+    OnNewAppointment(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button 
+            let that = this;
+            const dialogRef = this._matDialog.open(NewAppointmentComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '95%',
+                    width: '90%',
+                    data: {
+                       Obj:row,
+                       FormName:"Registration-Page"  
+                    },
+                   
+                });
+            dialogRef.afterClosed().subscribe(result => { 
+                that.grid.bindGridData(); 
+            });
+        }
 
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -190,6 +209,7 @@ export class RegistrationComponent implements OnInit {
 
             ], }
     }
+        
 }
 
 

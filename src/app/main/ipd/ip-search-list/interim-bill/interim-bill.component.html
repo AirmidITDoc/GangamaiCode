@@ -17,13 +17,7 @@
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button>
-
-                    <!-- <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-            <span class="modal-icon">
-                <mat-icon>close</mat-icon>
-            </span>
-        </button> -->
+                    </button> 
                 </div>
             </div>
         </div>
@@ -207,23 +201,23 @@
     </div>
     <div class="modal-footer" fxLayout="column">
         <div class="bill-amts" fxFlexFill fxLayout="column">
-            <form [formGroup]="InterimFormGroup">
+            <form [formGroup]="InterimFooterForm">
                 <div fxLayout="row" fxLayoutGap="4px">
                     <div fxFlex="10%">
-                        <airmid-textbox label="Total Amount" formControlName="TotalAmt" [formGroup]="InterimFormGroup"
+                        <airmid-textbox label="Total Amount" formControlName="TotalAmt" [formGroup]="InterimFooterForm"
                             [validations]="getValidationMessages().TotalAmt" [type]="'text'" [readonly]="true">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="6%" *ngIf="!DiscountFlag">
-                        <airmid-textbox label="Disc %" formControlName="discPer" [formGroup]="InterimFormGroup"
+                        <airmid-textbox label="Disc %" formControlName="discPer" [formGroup]="InterimFooterForm"
                             [validations]="getValidationMessages().discPer" [type]="'text'" [min]="0" [max]="100"
                             (keypress)="keyPressCharater($event)" (keyup)="calculateDiscPer()">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="8%">
                         <airmid-textbox label="Disc Amount" formControlName="concessionAmt"
-                            [formGroup]="InterimFormGroup" [validations]="getValidationMessages().concessionAmt"
+                            [formGroup]="InterimFooterForm" [validations]="getValidationMessages().concessionAmt"
                             [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)" [readonly]="DiscountFlag"
                             (keyup)="calculateDiscamt()">
                         </airmid-textbox>
@@ -231,26 +225,26 @@
                     <!-- *ngIf="ConShow" -->
                     <div fxFlex="16%" *ngIf="ConShow">
                         <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
-                            [formGroup]="InterimFormGroup" [validations]="getValidationMessages().concessionId"
+                            [formGroup]="InterimFooterForm" [validations]="getValidationMessages().concessionId"
                             [mode]="autocompleteModeConcession" (selectionChange)="selectChangeConcession($event)">
                         </airmid-dropdown>
                     </div>
 
                     <div fxFlex="10%">
                         <airmid-textbox label="Net Paid Amount" formControlName="NetpayAmount"
-                            [formGroup]="InterimFormGroup" [validations]="getValidationMessages().NetpayAmount"
+                            [formGroup]="InterimFooterForm" [validations]="getValidationMessages().NetpayAmount"
                             [type]="'text'" [readonly]="true">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="16%">
                         <airmid-dropdown label="Cash Counter" formControlName="CashCounterID"
-                            [formGroup]="InterimFormGroup" [mode]="autocompleteModeCashCounter"
+                            [formGroup]="InterimFooterForm" [mode]="autocompleteModeCashCounter"
                             [validations]="getValidationMessages().cashCounterId">
                         </airmid-dropdown>
                     </div>
 
                     <div fxFlex>
-                        <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="InterimFormGroup"
+                        <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="InterimFooterForm"
                             [validations]="getValidationMessages().Remark" [type]="'text'">
                         </airmid-textbox>
                     </div>
@@ -274,7 +268,7 @@
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                             required="required" value="987665868822">
                         <mat-error class="error"
-                            *ngIf="InterimFormGroup.get('UPINO').invalid && InterimFormGroup.get('UPINO').touched">12
+                            *ngIf="InterimFooterForm.get('UPINO').invalid && InterimFooterForm.get('UPINO').touched">12
                             digits upi number is required</mat-error>
                     </mat-form-field>
 

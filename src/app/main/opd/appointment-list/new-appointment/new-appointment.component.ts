@@ -134,6 +134,8 @@ export class NewAppointmentComponent implements OnInit {
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
     ) { }
+    FromRegistration:any;
+    chkregisterd:boolean=false;
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
@@ -142,6 +144,27 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.markAllAsTouched();
 
         this.searchFormGroup = this.createSearchForm();
+
+        if(this.data){
+            this.FromRegistration = this.data?.Obj
+            console.log(this.FromRegistration) 
+            if(this.data?.FormName == 'Registration-Page'){
+            this.chkregisterd = true
+            this.searchFormGroup.get('regRadio').setValue('registrered')
+             this.personalFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').reset();
+            this.personalFormGroup.reset();
+            this.Patientnewold = 2; 
+            this.personalFormGroup = this.createPesonalForm();
+            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm(); 
+            this.Regflag = true;
+            this.IsPhoneAppflag = false;
+            this.isRegSearchDisabled = true; 
+            //this.registerObj = this.FromRegistration;
+            this.getSelectedObj(this.FromRegistration) 
+            }
+        }
 
     }
     createSearchForm() {
@@ -284,11 +307,13 @@ export class NewAppointmentComponent implements OnInit {
         });
 
     }
-    getSelectedObj(obj) {
-        this.PatientName = obj.PatientName;
-        this.RegId = obj.value;
-        this.VisitFlagDisp = true;
-        if ((this.RegId ?? 0) > 0) {
+    getSelectedObj(obj) {  
+        debugger
+        if(this.data?.FormName == 'Registration-Page'){
+        this.PatientName = obj.firstName + ' ' + obj.lastName;
+        this.RegId = obj.regId;
+        this.VisitFlagDisp = true; 
+          if ((this.RegId ?? 0) > 0) {
             console.log(this.data)
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
@@ -297,8 +322,23 @@ export class NewAppointmentComponent implements OnInit {
                 });
 
             }, 100);
-        }
+        }  
+        }else{
+         this.PatientName = obj.PatientName;
+        this.RegId = obj.value;
+        this.VisitFlagDisp = true; 
+          if ((this.RegId ?? 0) > 0) {
+            console.log(this.data)
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+                });
 
+            }, 100);
+        }  
+        }
+      
     }
     getSelectedObjphone(obj) {
 

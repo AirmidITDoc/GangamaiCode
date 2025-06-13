@@ -245,7 +245,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.amount1 = parseInt(this.advanceData.NetPayAmount);
             this.Paymentobj['TransactionType'] = 1;
         }
-        if (this.data.FromName == "OP-Bill" || this.data.FromName == "IP-Bill") {
+        if (this.data.FromName == "IP-Bill") {
 
             this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
             this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
@@ -624,7 +624,7 @@ export class OpPaymentVimalComponent implements OnInit {
             ipPaymentInsert:this.Paymentobj
         };
         let IsSubmit
-        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "OP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill"){
+        if(this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill"){
 
             let Advancesarr = [];
             this.dataSource.data.forEach((element) => {

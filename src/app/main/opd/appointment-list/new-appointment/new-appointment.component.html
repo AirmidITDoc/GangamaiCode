@@ -32,7 +32,7 @@
                     <div class="redio-container pb-3">
                         <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                             (change)="onChangeReg($event)">
-                            <mat-radio-button value="registration">New Registration
+                            <mat-radio-button value="registration" [disabled]="chkregisterd">New Registration
                             </mat-radio-button>
                             <mat-radio-button value="registrered">Registered</mat-radio-button>
                         </mat-radio-group>

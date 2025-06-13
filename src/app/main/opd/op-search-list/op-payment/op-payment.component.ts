@@ -396,7 +396,7 @@ console.log(this.data)
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       return
     }
-    
+     //new changes done by Ambadas op SETTLEMENT 10/6/2025
     if (this.data.FromName == "OP-SETTLEMENT") { 
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = this.advanceData?.billNo; 
@@ -565,9 +565,8 @@ console.log(this.data)
         this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
         this.Paymentobj['tdsAmount'] =  this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
     }
-    else if(this.data.FromName == "IP-IntrimBIll" ) {
-
-
+     //new changes done by Ambadas ip IntrimBIll 13/6/2025
+    else if(this.data.FromName == "IP-IntrimBIll" ) {  
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate
@@ -590,7 +589,6 @@ console.log(this.data)
       this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-      // this.Paymentobj['CashCounterId'] = 0;
       this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
       this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "";
       this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
@@ -598,9 +596,7 @@ console.log(this.data)
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-      this.Paymentobj['tdsAmount'] = 0; 
-      
-      
+      this.Paymentobj['tdsAmount'] = 0;  
     }
     else if (this.data.FromName == "OP-RefundOfBill" ) {
       this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
@@ -638,6 +634,7 @@ console.log(this.data)
       this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
       this.Paymentobj['tdsAmount'] = 0;
     }
+    //new changes done by Ambadas op bill 10/6/2025
  else if (this.data.FromName == "OP-Bill") {  
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = 0;
