@@ -345,7 +345,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.WardId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });      
-            if (this.flagWardSelected)
+            if (this.flagDischargeTypeSelected)
                 paramFilterList.push({
                     "fieldName": "dischargeTypeId",
                     "fieldValue": this.dischargeTypeId.toString() || "0",
@@ -363,7 +363,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.StoreId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-            if (this.flagStoreSelected)
+            if (this.flagSupplierelected)
                 paramFilterList.push({
                     "fieldName": "SupplierId",
                     "fieldValue": this.SupplierId.toString() || "0",
