@@ -157,15 +157,13 @@ export class IPAdvanceComponent implements OnInit {
         isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [ this._FormvalidationserviceService.validDateValidator()]],
-        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
-        this._FormvalidationserviceService.onlyNumberValidator()]]
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
       }),
       // details 
       advanceDetail: this.formBuilder.group({
         date: ['', [ this._FormvalidationserviceService.validDateValidator()]],
-        time: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
-        this._FormvalidationserviceService.onlyNumberValidator()]],
+        time: [''],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
         transactionId: [2],
@@ -188,8 +186,7 @@ export class IPAdvanceComponent implements OnInit {
       }), 
       //advanceupdate header
       advanceupdate: this.formBuilder.group({ 
-        advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
-        this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator(), Validators.min(1)]]
       })

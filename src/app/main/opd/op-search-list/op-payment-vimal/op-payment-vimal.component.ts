@@ -608,7 +608,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-            this.Paymentobj['nEFTNo'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
+            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
             this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
              this.Paymentobj['neftdate'] =this.datePipe.transform( this.dateTimeObj.date,'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;

@@ -1,15 +1,18 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { ToastrService } from 'ngx-toastr';
 import { AppointmentlistService } from '../../appointmentlist.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-previous-dept-list',
   templateUrl: './previous-dept-list.component.html',
-  styleUrls: ['./previous-dept-list.component.scss']
+  styleUrls: ['./previous-dept-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class PreviousDeptListComponent {
   displayedColumns: string[] = [

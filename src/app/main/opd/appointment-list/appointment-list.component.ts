@@ -475,20 +475,21 @@ Clearfilter(event) {
         console.log("Selected row : ", row);
     }
     updateRegisteredPatientInfo(obj) {
-        const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
+        const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
-                maxWidth: "100%",
-                height: '95%',
-                width: '95%',
-                data: obj
+                maxWidth: "95vw",
+                        height: '95%',
+                        width: '90%',
+                        data: {
+                           Obj:obj,
+                           FormName:"Registration-Dropdown"  
+                        },
             });
         dialogRef.afterClosed().subscribe(result => {
             this.searchFormGroup.get('RegId').setValue('');
               this.grid.bindGridData();
-        });
-      
-    }
-
+        }); 
+    } 
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
     }

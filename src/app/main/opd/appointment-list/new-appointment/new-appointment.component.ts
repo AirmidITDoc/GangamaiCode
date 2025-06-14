@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
+import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -148,7 +149,7 @@ export class NewAppointmentComponent implements OnInit {
         if(this.data){
             this.FromRegistration = this.data?.Obj
             console.log(this.FromRegistration) 
-            if(this.data?.FormName == 'Registration-Page'){
+            if(this.data?.FormName == 'Registration-Page' || this.data?.FormName == 'Registration-Dropdown'){
             this.chkregisterd = true
             this.searchFormGroup.get('regRadio').setValue('registrered')
              this.personalFormGroup.get('RegId').enable();
@@ -318,6 +319,7 @@ export class NewAppointmentComponent implements OnInit {
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
+                       this.getLastDepartmetnNameList(this.registerObj)
                     console.log(this.registerObj)
                 });
 
@@ -332,14 +334,32 @@ export class NewAppointmentComponent implements OnInit {
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
+                       this.getLastDepartmetnNameList(this.registerObj)
                     console.log(this.registerObj)
                 });
 
             }, 100);
         }  
-        }
-      
+        } 
     }
+      PrevregisterObj: any;
+      getLastDepartmetnNameList(row) {
+        console.log(row)
+        const dialogRef = this._matDialog.open(PreviousDeptListComponent,
+          {
+            maxWidth: "45vw",
+            height: '45%',
+            width: '100%',
+            data: {
+              Obj: row,
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+          this.PrevregisterObj = result  
+         this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId) 
+        });
+      }
     getSelectedObjphone(obj) {
 
         this.PatientName = obj.text;

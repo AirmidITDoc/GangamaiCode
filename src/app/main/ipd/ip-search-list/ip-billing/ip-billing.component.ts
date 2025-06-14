@@ -165,8 +165,7 @@ export class IPBillingComponent implements OnInit {
 
   isOpen: boolean = false; // Sidebar starts open  
   Ipbillform: FormGroup;
-  serviceInsertform: FormGroup;
-  billSaveform: FormGroup;
+  serviceInsertform: FormGroup; 
   draftSaveform: FormGroup;
   BillDiscperFlag: boolean = false;
   sIsLoading: string = '';
@@ -259,7 +258,7 @@ export class IPBillingComponent implements OnInit {
     this.serviceInsertform=this.createserviceSaveForm();
 
 
-    this.billSaveform=this.createbillSaveForm();
+    this.IPBillMyForm=this.CreateIPBillForm();
     this.draftSaveform=this.createDraftSaveForm();
    
     this.Ipbillform.markAllAsTouched();
@@ -272,6 +271,8 @@ export class IPBillingComponent implements OnInit {
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
       this.Serviceform.get("ChargeClass").setValue(this.selectedAdvanceObj.classId)
+       this.draftSaveform=this.createDraftSaveForm();
+       this.IPBillMyForm=this.CreateIPBillForm();
     }
     this.getChargesList();
     this.getLabRequestChargelist();
@@ -451,44 +452,65 @@ export class IPBillingComponent implements OnInit {
   createBillForm() {
     this.Ipbillform = this.formBuilder.group({
       AdminPer: ['', [Validators.max(100)]],
-      AdminAmt: [0, [Validators.min(0)]],
-      totaldiscPer: [0, [Validators.min(0), Validators.max(100)]],
-      totalconcessionAmt: [0, [Validators.min(0)]],
-      ConcessionId: [''],
-      FinalAmount: [0, [Validators.required]],
+      AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totaldiscPer: [0, [Validators.min(0), Validators.max(100),]],
+      totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      ConcessionId: [0,this._FormvalidationserviceService.onlyNumberValidator()],
+      FinalAmount:  [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       CashCounterID: [4, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
-      Remark: [''],
+      Remark: ['' ,[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       Admincheck: [''],
-      GenerateBill: [1],
-      CreditBill: [''],
+      GenerateBill: [false],
+      CreditBill: [false,],
       ChargeDate: [new Date()],
-      BillType: ['1'],
-      EditDoctor: ['']
+      BillType: ['1',this._FormvalidationserviceService.onlyNumberValidator()],
+      EditDoctor: [''],
+      TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+ 
     });
   }
-  createbillSaveForm() {
-    return this.formBuilder.group({
-      bill: "",
-      billDetail: "",
-      addCharge: "",
-      addmission: "",
-      payment: "",
-      bills: "",
-      advancesupdate: "",
-      advancesHeaderupdate: "",
-      addChargessupdate: ""
-    });
-  }
-
+ 
    createDraftSaveForm() {
-    return this.formBuilder.group({
-      tDrbill:"",
-      tdrBillDet:""
+    return this.formBuilder.group({  
+            //ipInterim bill header  
+      tDrbill: this.formBuilder.group({
+        drbno: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        paidAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAdvanceAmount: [this.TotalAdvanceAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount:[0],
+        addedBy: [this.accountService.currentUserValue.userId],
+        billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSettled: false,
+        isPrinted: true,
+        isFree: true,   
+        companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        companyRefNo: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        taxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        taxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+         }),
+      // IP bill details in array
+      tdrBillDet: this.formBuilder.array([]),
     });
   }
-  // 
-IPBillMyForm:FormGroup 
-
+   createDraftBillDetails(item: any): FormGroup {
+    return this.formBuilder.group({
+      drNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  }  
+IPBillMyForm:FormGroup  
   CreateIPBillForm(): FormGroup {
     return this.formBuilder.group({
       //ipInterim bill header  
@@ -513,7 +535,7 @@ IPBillMyForm:FormGroup
         tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        companyRefNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         speTaxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         speTaxAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -529,10 +551,10 @@ IPBillMyForm:FormGroup
       }),
       // Admission Id Insert
       addmission: this.formBuilder.group({
-        admissionID: [this.selectedAdvanceObj.admissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        admissionID: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
       //Payment form
-      payments: this.formBuilder.group({
+      payment: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         receiptNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -568,11 +590,7 @@ IPBillMyForm:FormGroup
       bills: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
-      //Addcharges
-      addChargessupdate: this.formBuilder.group({
-        chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
+      }), 
       // Advance details update in array
       advancesupdate: this.formBuilder.array([]),
       // Advacne header update
@@ -580,7 +598,11 @@ IPBillMyForm:FormGroup
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         balanceAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      })
+      }),
+        //Addcharges
+      addChargessupdate: this.formBuilder.group({
+        chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
     });
   }
   createBillDetails(item: any): FormGroup {
@@ -603,6 +625,10 @@ IPBillMyForm:FormGroup
     get AdvacnedetUpdateArray(): FormArray {
     return this.IPBillMyForm.get('advancesupdate') as FormArray;
   }   
+      get DraftBillDetArray(): FormArray {
+    return this.draftSaveform.get('tdrBillDet') as FormArray;
+  }   
+
 
 
   //service selected data
@@ -1078,7 +1104,8 @@ checkAdvBalAmt:any=0;
 
     this.Ipbillform.patchValue({
       FinalAmount: this.FinalNetAmt,
-      totalconcessionAmt: this.DiscShowAmt
+      totalconcessionAmt: this.DiscShowAmt,
+       TotalAmt:this.TotalShowAmt 
     }, { emitEvent: false }); // Prevent infinite loop
 
     if (this.DiscShowAmt > 0) {
@@ -1326,15 +1353,34 @@ checkAdvBalAmt:any=0;
   }
 
   SaveBill1() {
+    debugger
+    this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.Ipbillform.get('TotalAmt')?.value)
+    this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.Ipbillform.get('totalconcessionAmt')?.value)
+    this.IPBillMyForm.get('bill.netPayableAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+    this.IPBillMyForm.get('bill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    this.IPBillMyForm.get('bill.billTime').setValue(this.dateTimeObj.time)
+    this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.Ipbillform.get('ConcessionId')?.value)
+    this.IPBillMyForm.get('bill.discComments')?.setValue(this.Ipbillform.get('Remark')?.value)
+    this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.Ipbillform.get('CashCounterID')?.value)
+    this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
+    this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.Ipbillform.get('AdminPer').value || 0)
+    this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.Ipbillform.get('AdminAmt').value)
+
     if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
       if (this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
         this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
         this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
-        this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value) 
+        this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+
+        this.BillDetailsArray.clear();
+        this.dataSource.data.forEach(item => {
+          this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+        });
 
         console.log(this.IPBillMyForm.value);
         this._IpSearchListService.InsertIPBillingCredit(this.IPBillMyForm.value).subscribe(response => {
           this.viewgetBillReportPdf(response);
+          this._matDialog.closeAll();
         });
       }
       else {
@@ -1369,38 +1415,25 @@ checkAdvBalAmt:any=0;
           if (result && result.IsSubmitFlag) {
             let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
             UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-
-            this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.Ipbillform.get('TotalAmt')?.value)
-            this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.Ipbillform.get('totalconcessionAmt')?.value)
-            this.IPBillMyForm.get('bill.netPayableAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
             this.IPBillMyForm.get('bill.paidAmt')?.setValue(result?.PaidAmt ?? 0)
             this.IPBillMyForm.get('bill.balanceAmt')?.setValue(result?.BalAmt ?? 0)
-            this.IPBillMyForm.get('bill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-            this.IPBillMyForm.get('bill.billTime').setValue(this.dateTimeObj.time)
-            this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.Ipbillform.get('ConcessionId')?.value)
-            this.IPBillMyForm.get('bill.discComments')?.setValue(this.Ipbillform.get('Remark')?.value)
-            this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.Ipbillform.get('CashCounterID')?.value)
-            this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
-            this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.Ipbillform.get('AdminPer').value)
-            this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.Ipbillform.get('AdminAmt').value)
             this.IPBillMyForm.get('bills.balanceAmt')?.setValue(result?.BalAmt ?? 0)
-
-
-            this.IPBillMyForm.get('advancesHeaderupdate.advanceId')?.setValue(UpdateAdvanceDetailarr1[0]['AdvanceId'])
+            if(UpdateAdvanceDetailarr1.length > 0){
+             this.IPBillMyForm.get('advancesHeaderupdate.advanceId')?.setValue(UpdateAdvanceDetailarr1[0]['AdvanceId'] )
             this.IPBillMyForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(UpdateAdvanceDetailarr1[0]['AdvanceAmount'])
             this.IPBillMyForm.get('advancesHeaderupdate.balanceAmount')?.setValue(UpdateAdvanceDetailarr1[0]['BalanceAmount'])
 
-
+            }  
             this.BillDetailsArray.clear();
             this.dataSource.data.forEach(item => {
               this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-            });
-
-            this.AdvacnedetUpdateArray.clear();
+            }); 
+            
+             this.AdvacnedetUpdateArray.clear();
             UpdateAdvanceDetailarr1.forEach(item => {
               this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
             });
-
+            this.IPBillMyForm.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert)
             //this.IPBillMyForm.get('payment').setValue()
             console.log("form values", this.IPBillMyForm.value)
 
@@ -1561,30 +1594,19 @@ checkAdvBalAmt:any=0;
           addChargessupdate['chargesID'] = 0;
 
           if (this.flagSubmit == true) {
-            // let submitData = {
-            //   "bill": InsertBillUpdateBillNoObj,
-            //   "billDetail": Billdetsarr,
-            //   "addCharge": addChargeObj,
-            //   "addmission": addmissionObj,
-            //   "payment": result.submitDataPay.ipPaymentInsert,
-            //   "bills": UpdateBillBalAmtObj,
-            //   "advancesupdate": UpdateAdvanceDetailarr,
-            //   "advancesHeaderupdate": UpdateAdvanceHeaderObj,
-            //   "addChargessupdate": addChargessupdate
-            // };
-            // console.log(submitData)
-            this.billSaveform.get("bill").setValue(InsertBillUpdateBillNoObj)
-            this.billSaveform.get("billDetail").setValue(Billdetsarr)
-            this.billSaveform.get("addCharge").setValue(addChargeObj)
-            this.billSaveform.get("addmission").setValue(addmissionObj)
-            this.billSaveform.get("payment").setValue(result.submitDataPay.ipPaymentInsert)
-            this.billSaveform.get("bills").setValue(UpdateBillBalAmtObj)
-            this.billSaveform.get("advancesupdate").setValue(UpdateAdvanceDetailarr)
-            this.billSaveform.get("advancesHeaderupdate").setValue(UpdateAdvanceHeaderObj)
-            this.billSaveform.get("addChargessupdate").setValue(addChargessupdate)
-             console.log(this.billSaveform.value)
-
-            this._IpSearchListService.InsertIPBilling(this.billSaveform.value).subscribe(response => {
+            let submitData = {
+              "bill": InsertBillUpdateBillNoObj,
+              "billDetail": Billdetsarr,
+              "addCharge": addChargeObj,
+              "addmission": addmissionObj,
+              "payment": result.submitDataPay.ipPaymentInsert,
+              "bills": UpdateBillBalAmtObj,
+              "advancesupdate": UpdateAdvanceDetailarr,
+              "advancesHeaderupdate": UpdateAdvanceHeaderObj,
+              "addChargessupdate": addChargessupdate
+            };
+            console.log(submitData)  
+            this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
               this.toastr.success(response.message);
               this._matDialog.closeAll();
               this.viewgetBillReportPdf(response);
@@ -1683,7 +1705,37 @@ checkAdvBalAmt:any=0;
 
     this.advanceDataStored.storage = [];
   }
+
   onSaveDraft() {
+    debugger
+    this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.Ipbillform.get('TotalAmt')?.value)
+    this.draftSaveform.get('tDrbill.concessionAmt')?.setValue(this.Ipbillform.get('totalconcessionAmt')?.value)
+    this.draftSaveform.get('tDrbill.netPayableAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+    this.draftSaveform.get('tDrbill.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+    this.draftSaveform.get('tDrbill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    this.draftSaveform.get('tDrbill.billTime').setValue(this.dateTimeObj.time)
+    this.draftSaveform.get('tDrbill.concessionReasonId')?.setValue(this.Ipbillform.get('ConcessionId')?.value ?? 0)
+    this.draftSaveform.get('tDrbill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
+    this.draftSaveform.get('tDrbill.taxPer')?.setValue(this.Ipbillform.get('AdminPer')?.value || 0)
+    this.draftSaveform.get('tDrbill.taxAmount')?.setValue(this.Ipbillform.get('AdminAmt')?.value ?? 0)
+    this.DraftBillDetArray.clear();
+      this.dataSource.data.forEach(item => {
+        this.DraftBillDetArray.push(this.createDraftBillDetails(item));
+      });
+      
+    if (this.dataSource.data.length > 0 && this.draftSaveform.valid) { 
+      console.log("Draft form values", this.draftSaveform.value)
+      this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
+        if (this.Ipbillform.get("BillType").value == 1)
+          this.viewgetDraftBillReportPdf(response.drbno);
+        else
+          this.viewgetDraftBillservicewiseReportPdf(response.drbno);
+        this._matDialog.closeAll();
+      });
+    }
+  }
+
+  onSaveDraftold() {
     if (this.dataSource.data.length > 0 && this.Ipbillform.valid) {
       this.isLoading = 'submit';
       let InsertDraftBillOb = {};
@@ -1719,24 +1771,16 @@ checkAdvBalAmt:any=0;
         DraftBillDetailsInsertObj['drNo'] = 0;
         DraftBillDetailsInsertObj['chargesId'] = element.chargesId;
         DraftBilldetsarr.push(DraftBillDetailsInsertObj);
-      });
-
-      // let submitData = {
-      //   "tDrbill": InsertDraftBillOb,
-      //   "tdrBillDet": DraftBilldetsarr
-      // };
+      }); 
       this.draftSaveform.get('tDrbill').setValue(InsertDraftBillOb);
       this.draftSaveform.get('tdrBillDet').setValue(DraftBilldetsarr );
       console.log('============== Save IP Draft Bill Json ===========', this.draftSaveform.value)
-      this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
-        this.toastr.success(response.message);
+      this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => { 
         if (this.Ipbillform.get("BillType").value == 1)
           this.viewgetDraftBillReportPdf(response.drbno);
         else
           this.viewgetDraftBillservicewiseReportPdf(response.drbno);
         this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
       });
     }
     this._matDialog.closeAll();
