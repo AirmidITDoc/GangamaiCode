@@ -58,11 +58,13 @@ import { ExcelDownloadService } from './services/excel-download.service';
 import { OnlinePaymentService } from './services/online-payment.service';
 import { SnackBarService } from './services/snack-bar.service';
 import { ToasterService } from './services/toaster.service';
+import { AirmidChipautocompleteComponent } from './componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective],
+      AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -90,7 +92,8 @@ import { ToasterService } from './services/toaster.service';
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatSlideToggleModule,
-        MatExpansionModule
+        // added by raksha date:14/6/25
+        MatChipsModule
     ],
     providers: [
         ExcelDownloadService,
@@ -120,7 +123,8 @@ import { ToasterService } from './services/toaster.service';
         AirmidTimePickerComponent,
         PatientInfoComponent,
         AirmidDateTimePickerComponent,
-        TableKeyboardNavigationDirective
+        TableKeyboardNavigationDirective,
+        AirmidChipautocompleteComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

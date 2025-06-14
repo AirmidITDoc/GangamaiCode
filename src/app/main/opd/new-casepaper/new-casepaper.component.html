@@ -220,9 +220,7 @@
                                                 </div>
 
                                                 <div fxLayout="column">
-
-                                                    <form [formGroup]="caseFormGroup">
-                                                        <div class="investigation-title">
+                                                        <!-- <div class="investigation-title">
                                                             <span style="font-weight: 700;">
                                                                 Chief Complaint
                                                             </span>
@@ -248,8 +246,23 @@
                                                                         (click)="removeChiefComplaint(item)">close</mat-icon>
                                                                 </mat-chip>
                                                             </mat-chip-listbox>
+                                                        </div> -->
+                                                        <div class="investigation-title">
+                                                            <span style="font-weight: 700;">
+                                                                Chief Complaint
+                                                            </span>
                                                         </div>
-                                                    </form>
+                                                        <hr>
+                                                        <app-airmid-chipautocomplete
+                                                            [formGroup]="caseFormGroup"
+                                                            [controlName]="'mAssignChiefComplaint'"
+                                                            [apiUrl]="'OPDPrescriptionMedical/get-ChiefComplaint'"
+                                                            [label]="'Chief Complaint'"
+                                                            [placeholder]="'New Chief Complaint...'"
+                                                            [displayWith]="'complaintDescr'"
+                                                            [allowFreeText]="true"
+                                                            (selectedItemsChange)="selectChangeChiefComplaint($event)">
+                                                        </app-airmid-chipautocomplete>
 
                                                     <!-- demo check -->
                                                     <!-- <form [formGroup]="caseFormGroup">

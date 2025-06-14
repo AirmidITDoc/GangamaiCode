@@ -26,6 +26,7 @@ import { PrePresciptionListComponent } from './pre-presciption-list/pre-prescipt
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
+import { setValue } from '@ngx-translate/core';
 
 // interface Patient {
 //   PHeight: string;
@@ -332,61 +333,6 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
-  // demo check requied
-  //   onSelecteCheif:any=0;
-  // addCheiflist1: any = [];
-  // CheifCompListCombo:any=[];
-
-  //   addCheif1(event: any): void { 
-  //   if(this.onSelecteCheif != 1){
-  //     const input = event.input;
-  //     const value = event.value;
-  //     // Add cheif
-  //     if ((value || '').trim()) {
-  //       this.addCheiflist.push(value.trim());
-  //     }
-  //     // Reset the input value
-  //     if (input) {
-  //       input.value = '';
-  //     }
-  //   } 
-  //   this.onSelecteCheif = 0
-  // }
-
-  //  removeCheif1(cheif: string): void {
-  //   const index = this.addCheiflist.indexOf(cheif);
-  //   if (index >= 0) {
-  //     this.addCheiflist.splice(index, 1);  
-  //   }
-  // }
-
-  // selectedobjCheif(obj): void { 
-  //   this.onSelecteCheif = 1
-  //   const value = obj.complaintDescr;
-  //   if ((value || '').trim()) {
-  //     this.addCheiflist.push(value.trim());
-  //   } 
-  // }
-
-  // getCheifComplaintList() { 
-  //   this._CasepaperService.getDemo().subscribe(data => {
-  //     this.CheifCompListCombo = data;
-  //     //console.log(this.CheifCompListCombo)
-  //     this.filteredCheifComplaint = this.caseFormGroup.get('mAssignChiefComplaint').valueChanges.pipe(
-  //       startWith(''),
-  //       map(value => value ? this._filter(value) : this.CheifCompListCombo.slice()),
-  //     );  
-  //   }); 
-  // }
-  // private _filter(value: any): string[] {  
-  //   if (value) {
-  //     const filterValue = value && value.complaintDescr ? value.complaintDescr.toLowerCase() : value.toLowerCase();
-  //     return this.CheifCompListCombo.filter(option => option.complaintDescr.toLowerCase().includes(filterValue));
-  //   } 
-  // }
-
-  // demo end
-
   onDaysChange() {
     const today = new Date();
     let followUp = new Date(today);
@@ -435,7 +381,7 @@ export class NewCasepaperComponent implements OnInit {
       ExaminationControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       DiagnosisControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       CheifComplaintControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      mAssignChiefComplaint: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignChiefComplaint: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignDiagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignExamination: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
@@ -467,6 +413,10 @@ export class NewCasepaperComponent implements OnInit {
   createCasePaperForm() {
     return this._formBuilder.group({
       tPrescription: this._formBuilder.array([]),
+       visitDetails: this._formBuilder.group({
+          visitId: [null], 
+          followupDate: [''] 
+        }),
       topRequestList: this._formBuilder.array([]),
       mopCasepaperDignosisMaster: this._formBuilder.array([]),
     });
@@ -634,8 +584,10 @@ export class NewCasepaperComponent implements OnInit {
           this.mopCasepaperDignosisArray.push(mopCasePaperFormGroup);
         });
       }
+     this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
+      this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
+      console.log('form:', this.casePaperInsertForm.value);
 
-      console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
 
         if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
@@ -794,6 +746,7 @@ export class NewCasepaperComponent implements OnInit {
       console.log("three response:", response);
 
       if (response && Array.isArray(response.data)) {
+        debugger
         this.RtrvDescriptionList = response.data;
         let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
         this.addCheiflist = [];
@@ -806,11 +759,14 @@ export class NewCasepaperComponent implements OnInit {
               }
             )
           })
-          setTimeout(() => {
+          console.log('About to set addCheiflist:', this.addCheiflist);
+          // setTimeout(() => {
             this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
-          }, 100);
+          // }, 100);
+          // const currentValue = this.caseFormGroup.get('mAssignChiefComplaint')?.value;
+          // this.caseFormGroup.get('mAssignChiefComplaint')?.setValue([...currentValue]);
         }
-        // console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
+        console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
         // Process Diagnosis
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
@@ -1097,14 +1053,14 @@ export class NewCasepaperComponent implements OnInit {
 
   selectChangeDoctorName(row) {
   }
-
-  selectChangeCheifComplaint(row) {
+// 
+  selectChangeChiefComplaint(row) {
     const selectedData = Array.isArray(row) ? row : [row];
     this.addCheiflist = selectedData.map(item => ({
       complaintId: item.complaintId,
       complaintDescr: item.complaintDescr
     }));
-    // console.log("Updated selectedItems:", this.addCheiflist);
+    console.log("Updated selectedItems:", this.addCheiflist);
   }
 
   selectChangeDiagnosis(row) {
