@@ -27,28 +27,41 @@
             <div fxLayout="row" fxFlex="100" fxFlex.gt-sm="50" class="content" fxLayout.gt-xs="column">
                 <div class="webcam-video-container p-12 gap-12" fxLayout="column">
                     <div class="webcam-video">
-                        <webcam [height]="300" [width]="300" [trigger]="invokeObservable"
-                            (imageCapture)="captureImg($event)">
+                        <webcam
+                            *ngIf="showWebcam"
+                            [height]="300"
+                            [width]="300"
+                            [trigger]="invokeObservable"
+                            [allowCameraSwitch]="allowCameraSwitch"
+                            [switchCamera]="nextWebcamObservable"
+                            (imageCapture)="captureImg($event)"
+                            (initError)="handleInitError($event)"
+                            [videoOptions]="{ width: 300, height: 300 }">
                         </webcam>
                     </div>
                     <div class="webcam-button">
-                        <button class="btn btn-primary-outline" (click)="getSnapshot()">Capture Image</button>
+                        <button class="btn btn-primary-outline" (click)="takeSnapshot()">Capture Image</button>
                     </div>
                 </div>
             </div>
             <div fxLayout="row" fxFlex="100" fxFlex.gt-sm="50" class="content" fxLayout.gt-xs="column">
                 <div class="webcam-result p-12 gap-12" fxLayout="column">
                     <div class="webcam-result-image">
-                        <span>
-                            <img [src]="webcamImage?.imageAsDataUrl" />
+                        <span *ngIf="webcamImage">
+                            <img [src]="webcamImage.imageAsDataUrl" />
                         </span>
                     </div>
                     <div class="webcam-upload-button">
-                        <div *ngIf="webcamImage?.imageAsDataUrl">
+                        <div *ngIf="webcamImage">
                             <button class="btn btn-primary" (click)="onUpload()">Upload</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div *ngIf="errors.length > 0" class="webcam-errors px-12 py-12">
+            <div class="error-message" *ngFor="let error of errors">
+                {{ error.message }}
             </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="end center" id="results" class="webcam-footer px-12 py-12">

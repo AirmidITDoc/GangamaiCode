@@ -57,7 +57,7 @@ export class RegistrationComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
-        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
