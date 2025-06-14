@@ -48,6 +48,7 @@ import { ImageViewComponent } from './image-view/image-view.component';
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { PreviousDeptListComponent } from './update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
+import { WebcamModule } from "ngx-webcam";
 
 
 const routes: Routes = [
@@ -103,7 +104,7 @@ const routes: Routes = [
         //NgxQRCodeModule,
         //NgxPrintModule,
         MatButtonToggleModule,
-        
+        WebcamModule
     ],
     providers: [AppointmentlistService, DatePipe]
 })
