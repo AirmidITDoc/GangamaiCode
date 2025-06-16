@@ -3,17 +3,18 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ConfigurationService {
     myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder)
-        { this.myform = this.createConfigForm();
-            this.myformSearch = this.createSearchForm();}
-    
+        private _formBuilder: UntypedFormBuilder) {
+        this.myform = this.createConfigForm();
+        this.myformSearch = this.createSearchForm();
+    }
+
     createConfigForm(): FormGroup {
         return this._formBuilder.group({
             configId: 0,
@@ -43,11 +44,11 @@ export class ConfigurationService {
             ipdRefundOfBillCounterId: 0,
             ipdRefundOfAdvanceCounterId: 0,
             regPrefix: "",
-            regNo:"",
+            regNo: "",
             ipprefix: "",
             ipno: "",
             opprefix: "",
-            opno:"",
+            opno: "",
             pathDepartment: 0,
             isPathologistDr: 0,
             labSampleNo: "",
@@ -83,17 +84,40 @@ export class ConfigurationService {
             gIsIppaperSetting: true,
             gIpprintName: "",
             gIppaperName: "",
-          
+
+            CashCounterID1: "",
+            CashCounterID2: "",
+            CashCounterID3: "",
+            CashCounterID4: "",
+
+            IPDCashCounterID1: "",
+            IPDCashCounterID2: "",
+            IPDCashCounterID3: "",
+            IPDCashCounterID4: "",
+
+            Isprint: 0,
+            Isprint1: 0,
+            Isprint2: 0,
+            IPPrintName: "",
+            IPPaperName: "",
+
+            IPPrintName1: "",
+            IPPaperName1: "",
+            IPPrintName2: "",
+            IPPaperName2: "",
+
+            OPSalesdisc: '',
+            IPSalesdisc: ''
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ConfigNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-    
+
     initializeFormGroup() {
         this.createConfigForm();
     }

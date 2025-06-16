@@ -1,4 +1,4 @@
-<div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar"fusePerfectScrollbar
+<!-- <div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar"fusePerfectScrollbar
 dynamicTableHeight>
     <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -176,10 +176,9 @@ dynamicTableHeight>
 
                                             <mat-label style="font-size: medium;font-weight: bold;">Hospital
                                                 Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:200px;" [(ngModel)]="registerObj.Header" required
-                                                formControlName="HospitalHeader"></angular-editor>
-
+                                              <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" formControlName="header">
+                                                </angular-editor>
                                         </div>
                                     </div>
                                     <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
@@ -202,4 +201,4 @@ dynamicTableHeight>
 
             </div>
         </div>
-    </div>
+    </div> -->

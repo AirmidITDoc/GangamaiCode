@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -25,6 +25,19 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { HospitalMasterComponent } from "./hospital-master.component";
 import { HospitalService } from "./hospital.service";
 import { NewHospitalComponent } from './new-hospital/new-hospital.component';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatMenuModule } from "@angular/material/menu";
+import { SharedModule } from "app/main/shared/shared.module";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const routes: Routes = [
     {
@@ -37,30 +50,44 @@ const routes: Routes = [
     declarations: [HospitalMasterComponent, NewHospitalComponent],
     imports: [
         RouterModule.forChild(routes),
-        CommonModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatStepperModule,
-        NgxMatSelectSearchModule,
-        MatToolbarModule,
-        MatAutocompleteModule,
-        AngularEditorModule
+       MatChipsModule,
+               SharedModule,
+                       MatButtonModule,
+                       MatCheckboxModule,
+                       MatDatepickerModule,
+                       MatFormFieldModule,
+                       MatIconModule,
+                       MatInputModule,
+                       MatMenuModule,
+                       MatTableModule,
+                       MatToolbarModule,
+                       MatPaginatorModule,
+                       MatSortModule,
+                       MatSelectModule,
+                       MatRadioModule,
+                       MatTabsModule,
+                       FuseSidebarModule,
+                       MatListModule,
+                       MatSlideToggleModule,
+                       MatDividerModule,
+                       MatDialogModule,
+                       FuseSharedModule,
+                       FuseConfirmDialogModule,
+                       ReactiveFormsModule,
+                       MatSnackBarModule,
+                       MatStepperModule,
+                       MatAutocompleteModule,
+                       SharedModule,
+                       NgxMatSelectSearchModule,
+                       MatCardModule,
+                       MatListModule,
+                       MatTooltipModule,
+                       MatExpansionModule,
+                       MatListModule,
+                       ScrollingModule,
+                       MatSidenavModule,
+                      MatButtonToggleModule,
     ],
-    providers: [HospitalService]
+    providers: [DatePipe,HospitalService]
 })
 export class HospitalModule { }

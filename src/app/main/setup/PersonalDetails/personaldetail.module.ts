@@ -87,6 +87,13 @@ const appRoutes: Routes = [
                 (m) => m.AreaMasterModule
             ),
     },
+    {
+        path: "hospital-master",
+        loadChildren: () =>
+            import("./hospital-master/hospital.module").then(
+                (m) => m.HospitalModule
+            ),
+    },
 ];
 
 @NgModule({

@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 
 @Component({
@@ -22,15 +23,17 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 export class HospitalMasterComponent implements OnInit {
  
   msg: any;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
   gridConfig: gridModel = {
-      apiUrl: "StateMaster/List",
+      apiUrl: "HospitalMaster/List",
       columnsList: [
-          { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "IsDeleted", key: "isActive", type: gridColumnTypes.status, align: "center" },
-          {
+          { heading: "Hospital Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA',Width:300 },
+          { heading: "Hospital Address", key: "hospitalAddress", sort: true, align: 'left', emptySign: 'NA',Width:400 },
+          { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA',Width:100 },
+          { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA',Width:100 },
+          { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA',Width:100 },
+         {
               heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                   {
                       action: gridActions.edit, callback: (data: any) => {
@@ -43,12 +46,9 @@ export class HospitalMasterComponent implements OnInit {
                   }]
           } //Action 1-view, 2-Edit,3-delete
       ],
-      sortField: "stateId",
+      sortField: "HospitalId",
       sortOrder: 0,
-      filters: [
-          { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
-          { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-      ]
+      filters: []
   }
 
   constructor( public _HospitalService: HospitalService,

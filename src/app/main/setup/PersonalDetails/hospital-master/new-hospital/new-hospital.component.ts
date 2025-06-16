@@ -20,20 +20,25 @@ import { HospitalService } from '../hospital.service';
 })
 export class NewHospitalComponent implements OnInit {
   Header: string;
-  editorConfig: AngularEditorConfig = {
-      editable: true,
-      spellcheck: true,
-      height: '35rem',
-      minHeight: '35rem',
-      translate: 'yes',
-      placeholder: 'Enter text here...',
-      enableToolbar: true,
-      showToolbar: true,
+  vTemplateDesc:''
+ 
+    editorConfig: AngularEditorConfig = {
+           editable: true,
+           spellcheck: true,
+           height: '20rem',
+           minHeight: '20rem',
+           translate: 'yes',
+           placeholder: 'Enter text here...',
+           enableToolbar: true,
+           showToolbar: true,
+       
+         };
+                   
+    onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+    }
 
-  };
-  onBlur(e: any) {
-      this.Header = e.target.innerHTML;
-  }
   
     registerObj= new HospitalMaster({});
     optionsCity: any[] = [];
