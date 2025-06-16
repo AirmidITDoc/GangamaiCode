@@ -59,20 +59,20 @@ patientType: any = "";
 
     ngOnInit(): void { }
 //filters addedby avdhoot vedpathak date-27/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'PatientTypeSearch')
-            this._PatienttypeMasterService.myformSearch.get('PatientTypeSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'PatientTypeSearch')
+    //         this._PatienttypeMasterService.myformSearch.get('PatientTypeSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //    // this.onChangeFirst();
+    // }
 
-    onChangeFirst() 
-    {
-        debugger
-        this.patientType = this._PatienttypeMasterService.myformSearch.get("PatientTypeSearch").value
-        this.getfilterdata();
-    }
+    // onChangeFirst() 
+    // {
+    //     debugger
+    //     this.patientType = this._PatienttypeMasterService.myformSearch.get("PatientTypeSearch").value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

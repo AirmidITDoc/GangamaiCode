@@ -62,18 +62,18 @@ export class TalukaMasterComponent implements OnInit {
    
        ngOnInit(): void { }
    //filters addedby avdhoot vedpathak date-27/05/2025
-       Clearfilter(event) {
-        console.log(event)
-        if (event == 'TalukaNameSearch')
-            this._TalukaMasterService.myformSearch.get('TalukaNameSearch').setValue("")
+    //    Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'TalukaNameSearch')
+    //         this._TalukaMasterService.myformSearch.get('TalukaNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     //this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.talukaName = this._TalukaMasterService.myformSearch.get('TalukaNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.talukaName = this._TalukaMasterService.myformSearch.get('TalukaNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

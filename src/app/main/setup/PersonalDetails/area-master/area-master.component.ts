@@ -61,18 +61,18 @@ export class AreaMasterComponent implements OnInit {
 
     ngOnInit(): void { }
     //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'AreaNameSearch')
-            this._AreaMasterService.myformSearch.get('AreaNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'AreaNameSearch')
+    //         this._AreaMasterService.myformSearch.get('AreaNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //    // this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.areaName = this._AreaMasterService.myformSearch.get('AreaNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.areaName = this._AreaMasterService.myformSearch.get('AreaNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

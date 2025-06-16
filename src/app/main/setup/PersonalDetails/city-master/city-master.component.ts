@@ -65,17 +65,17 @@ export class CityMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'CityNameSearch')
-            this._CityMasterService.myformSearch.get('CityNameSearch').setValue("")
-        this.onChangeFirst();
-    }
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'CityNameSearch')
+    //         this._CityMasterService.myformSearch.get('CityNameSearch').setValue("")
+    //    // this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.cityName = this._CityMasterService.myformSearch.get('CityNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.cityName = this._CityMasterService.myformSearch.get('CityNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

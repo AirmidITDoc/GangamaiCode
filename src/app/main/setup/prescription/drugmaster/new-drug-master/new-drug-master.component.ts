@@ -37,26 +37,30 @@ export class NewDrugMasterComponent implements OnInit {
   
     onSubmit() {
         
-      if(!this.drugForm.invalid)
-      { 
-      
-        console.log("drug json:", this.drugForm.value);
-  
-        this._durgMasterService.drugMasterSave(this.drugForm.value).subscribe((response)=>{
-          this.toastr.success(response.message);
-          this.onClear(true);
-        }, (error)=>{
-          this.toastr.error(error.message);
-        });
-      } 
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      }
+      if (!this.drugForm.invalid) {
+            console.log(this.drugForm.value)
+            this._durgMasterService.drugMasterSave(this.drugForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } {
+            let invalidFields = [];
+            if (this.drugForm.invalid) {
+                for (const controlName in this.drugForm.controls) {
+                    if (this.drugForm.controls[controlName].invalid) {
+                        invalidFields.push(`drug Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
     }
+
 
     onClear(val: boolean) {
         this.drugForm.reset();

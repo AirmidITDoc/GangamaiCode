@@ -56,18 +56,18 @@ export class CountryMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'CountryNameSearch')
-            this._CountryService.myformSearch.get('CountryNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'CountryNameSearch')
+    //         this._CountryService.myformSearch.get('CountryNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //   //  this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.countryName = this._CountryService.myformSearch.get('CountryNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.countryName = this._CountryService.myformSearch.get('CountryNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

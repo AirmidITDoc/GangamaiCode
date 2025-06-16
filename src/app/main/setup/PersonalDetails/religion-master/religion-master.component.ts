@@ -57,18 +57,18 @@ export class ReligionMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'ReligionNameSearch')
-            this._religionService.myformSearch.get('AreaNaReligionNameSearchmeSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'ReligionNameSearch')
+    //         this._religionService.myformSearch.get('AreaNaReligionNameSearchmeSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //   //  this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.religionName = this._religionService.myformSearch.get('ReligionNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.religionName = this._religionService.myformSearch.get('ReligionNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

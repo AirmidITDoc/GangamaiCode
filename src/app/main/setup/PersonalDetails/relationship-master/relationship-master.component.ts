@@ -62,18 +62,18 @@ export class RelationshipMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 //filters addedby avdhoot vedpathak date-27/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'RelationshipNameSearch')
-            this._relationshipService.myformSearch.get('RelationshipNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'RelationshipNameSearch')
+    //         this._relationshipService.myformSearch.get('RelationshipNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //    // this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.relationshipName = this._relationshipService.myformSearch.get('RelationshipNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.relationshipName = this._relationshipService.myformSearch.get('RelationshipNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger
