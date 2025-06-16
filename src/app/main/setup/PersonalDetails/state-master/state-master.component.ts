@@ -61,18 +61,18 @@ export class StateMasterComponent implements OnInit {
 
     ngOnInit(): void { }
     //filters addedby avdhoot vedpathak date-27/05/2025
-Clearfilter(event) {
-        console.log(event)
-        if (event == 'StateNameSearch')
-            this._StateMasterService.myformSearch.get('StateNameSearch').setValue("")
+// Clearfilter(event) {
+//         console.log(event)
+//         if (event == 'StateNameSearch')
+//             this._StateMasterService.myformSearch.get('StateNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+//         //this.onChangeFirst();
+//     }
 
-    onChangeFirst() {
-        this.stateName = this._StateMasterService.myformSearch.get('StateNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.stateName = this._StateMasterService.myformSearch.get('StateNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger

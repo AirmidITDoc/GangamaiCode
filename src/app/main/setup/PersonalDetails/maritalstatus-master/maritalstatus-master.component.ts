@@ -59,18 +59,18 @@ export class MaritalstatusMasterComponent implements OnInit {
 
     }
     //filters addedby avdhoot vedpathak date-27/05/2025
- Clearfilter(event) {
-        console.log(event)
-        if (event == 'MaritalStatusNameSearch')
-            this._maritalService.myformSearch.get('MaritalStatusNameSearch').setValue("")
+//  Clearfilter(event) {
+//         console.log(event)
+//         if (event == 'MaritalStatusNameSearch')
+//             this._maritalService.myformSearch.get('MaritalStatusNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+//         //this.onChangeFirst();
+//     }
 
-    onChangeFirst() {
-        this.Maritalstatus = this._maritalService.myformSearch.get('MaritalStatusNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.Maritalstatus = this._maritalService.myformSearch.get('MaritalStatusNameSearch').value
+    //     this.getfilterdata();
+    // }
 
     getfilterdata() {
         debugger
