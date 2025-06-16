@@ -366,8 +366,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.patientDetailsFormGrp = this.createForm(); 
-        this.getBankNameList1(); 
+        this.patientDetailsFormGrp = this.createForm();  
         //Advance Calculation need balAmt
         var vdata = {
             "first": 0,
@@ -401,34 +400,9 @@ export class OpPaymentVimalComponent implements OnInit {
             bankName1: [''],
             regDate1: [(new Date()).toISOString()],
             paidAmountController: [this.paidAmt],
-            balanceAmountController: [this.balanceAmt],
-            EditAdvance:['']
+            balanceAmountController: [this.balanceAmt]
         });
-    }
-
-    private _filterBank1(value: any): string[] {
-        if (value) {
-            const filterValue = value && value.BankName ? value.BankName.toLowerCase() : value.toLowerCase();
-            return this.optionsBank1.filter(option => option.BankName.toLowerCase().includes(filterValue));
-        }
-
-    }
-
-    getBankNameList1() {
-        this.opService.getBankMasterCombo().subscribe(data => {
-            this.BankNameList1 = data;
-            this.optionsBank1 = this.BankNameList1.slice();
-            this.filteredOptionsBank1 = this.patientDetailsFormGrp.get('bankName1').valueChanges.pipe(
-                startWith(''),
-                map(value => value ? this._filterBank1(value) : this.BankNameList1.slice()),
-            );
-
-        });
-    }
-   
-    getOptionTextBank1(option) {
-        return option && option.BankName ? option.BankName : '';
-    }
+    } 
     onClose() {
         this.dialogRef.close();
     }
