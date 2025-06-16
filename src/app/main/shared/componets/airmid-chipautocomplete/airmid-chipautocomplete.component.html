@@ -6,7 +6,8 @@
               [selectable]="selectable"
               [removable]="removable"
               (removed)="remove(item)">
-      {{ displayFn(item) }}
+      <!-- {{ displayFn(item) }} -->
+        {{ item[displayWith] || item }}
       <mat-icon *ngIf="removable" (click)="remove(item)">close</mat-icon>
     </mat-chip>
 

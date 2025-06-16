@@ -9,7 +9,7 @@ import { map, Observable, startWith } from 'rxjs';
   styleUrls: ['./airmid-chipautocomplete.component.scss']
 })
 export class AirmidChipautocompleteComponent implements OnInit {
-@Input() formGroup!: FormGroup;
+  @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
   @Input() apiUrl!: string;
   @Input() label: string = 'Select Items';
@@ -27,55 +27,84 @@ export class AirmidChipautocompleteComponent implements OnInit {
 
   constructor(
     public _httpClient1: ApiCaller,
-  ) {}
+  ) { }
 
- ngOnInit(): void {
-  if (!this.apiUrl) {
-    console.error('API URL is required');
-    return;
+  ngOnInit(): void {
+    if (!this.apiUrl) {
+      console.error('API URL is required');
+      return;
+    }
+
+    const control = this.control;
+    if (!control) {
+      console.error('FormControl not found for controlName:', this.controlName);
+      return;
+    }
+
+    this._httpClient1.GetData(this.apiUrl).subscribe((data: any[]) => {
+      this.allOptions = data;
+      // debugger
+      // ✅ STEP 1: Load selected values from FormGroup (if already set)
+      const retrievedItems = this.formGroup.get(this.controlName)?.value || [];
+
+      // ✅ STEP 2: Match retrieved items with full objects from API
+      const selectedFromBackend = retrievedItems.map((item: any) => {
+        if (typeof item === 'string') {
+          // For freeText mode, allow raw string chip
+          return this.allowFreeText ? { [this.displayWith]: item, isCustom: true } : null;
+        }
+        const match = this.allOptions.find(opt => opt[this.displayWith] === item[this.displayWith]);
+        return match || item;
+      }).filter(Boolean); // remove any nulls
+
+      // ✅ STEP 3: Assign to chip list
+      this.selectedItems = selectedFromBackend;
+
+      // ✅ STEP 4: Set cleaned selectedItems into the form control
+      this.formGroup.get(this.controlName)?.setValue(this.selectedItems);
+
+      // ✅ STEP 5: Set up autocomplete filtering
+      this.filteredOptions$ = control.valueChanges.pipe(
+        startWith(''),
+        map(value => {
+          const inputText = typeof value === 'string'
+            ? value
+            : this.displayFn(value);
+          const filterValue = (inputText || '').toLowerCase();
+
+          return this.allOptions.filter(opt =>
+            this.displayFn(opt).toLowerCase().includes(filterValue) &&
+            !this.selectedItems.some(sel => this.displayFn(sel) === this.displayFn(opt))
+          );
+        })
+      );
+    });
   }
 
-  const control = this.control;
-  if (!control) {
-    console.error('FormControl not found for controlName:', this.controlName);
-    return;
+  get control(): FormControl {
+    return this.formGroup.get(this.controlName) as FormControl;
   }
-
-  this._httpClient1.GetData(this.apiUrl).subscribe((data: any[]) => {
-    this.allOptions = data;
-
-    this.filteredOptions$ = control.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const inputText = typeof value === 'string'
-          ? value
-          : this.displayFn(value);
-        const filterValue = (inputText || '').toLowerCase();
-
-        return this.allOptions.filter(opt =>
-          this.displayFn(opt).toLowerCase().includes(filterValue) &&
-          !this.selectedItems.some(sel => this.displayFn(sel) === this.displayFn(opt))
-        );
-      })
-    );
-  });
-}
-
-get control(): FormControl {
-  return this.formGroup.get(this.controlName) as FormControl;
-}
 
   // displayFn(item: any): string {
   //   if (!item) return '';
-  //   return typeof item === 'string' ? item : item[this.displayWith] || '';
+  //   if (typeof item === 'string') return item;
+
+  //   if (this.displayWith && item[this.displayWith] != null) {
+  //     return String(item[this.displayWith]);
+  //   }
+
+  //   // Optional fallback if displayWith is missing or invalid
+  //   const fallbackKey = Object.keys(item).find(k => typeof item[k] === 'string');
+  //   return fallbackKey ? item[fallbackKey] : 'Unknown';
   // }
-
-  displayFn(item: any): string {
-  if (!item) return '';
+ displayFn(item: any): string {
+      if (!item) return '';
   if (typeof item === 'string') return item;
-  return this.displayWith && item[this.displayWith] ? item[this.displayWith] : JSON.stringify(item);
+  if (this.displayWith && typeof item === 'object' && item[this.displayWith]) {
+    return item[this.displayWith];
+  }
+  return ''; // fallback to empty string instead of showing [object Object]
 }
-
   addFromInput(event: any): void {
     const input = (event.value || '').trim();
     if (!input) return;

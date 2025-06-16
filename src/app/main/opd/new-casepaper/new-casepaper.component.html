@@ -253,7 +253,7 @@
                                                             </span>
                                                         </div>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete
+                                                        <app-airmid-chipautocomplete 
                                                             [formGroup]="caseFormGroup"
                                                             [controlName]="'mAssignChiefComplaint'"
                                                             [apiUrl]="'OPDPrescriptionMedical/get-ChiefComplaint'"
@@ -263,7 +263,6 @@
                                                             [allowFreeText]="true"
                                                             (selectedItemsChange)="selectChangeChiefComplaint($event)">
                                                         </app-airmid-chipautocomplete>
-
                                                     <!-- demo check -->
                                                     <!-- <form [formGroup]="caseFormGroup">
                                                          <mat-form-field appearance="outline" class="example-chip-list" fxFlex>

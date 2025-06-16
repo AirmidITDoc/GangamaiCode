@@ -414,7 +414,7 @@ export class NewCasepaperComponent implements OnInit {
     return this._formBuilder.group({
       tPrescription: this._formBuilder.array([]),
        visitDetails: this._formBuilder.group({
-          visitId: [null], 
+          visitId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]], 
           followupDate: [''] 
         }),
       topRequestList: this._formBuilder.array([]),
@@ -708,7 +708,7 @@ export class NewCasepaperComponent implements OnInit {
           this.vDiagnosis = item.diagnosis;
           this.vExamination = item.examination;
           this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
-          // this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
+          this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
           this.MedicineItemForm.get('Remark').setValue(item.advice)
           this.RefDocName = item.doctorname
           this.vDrugName = item.drugName
@@ -722,8 +722,9 @@ export class NewCasepaperComponent implements OnInit {
     });
 
   }
+  
 
-  getRtrvCheifComplaintList(obj) {
+   getRtrvCheifComplaintList(obj) {
     // debugger
     this.addCheiflist = [];
     this.addDiagnolist = [];
@@ -751,22 +752,25 @@ export class NewCasepaperComponent implements OnInit {
         let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
         this.addCheiflist = [];
         if (ChiefComplaint.length > 0) {
-          ChiefComplaint.forEach(element => {
-            this.addCheiflist.push(
-              {
-                complaintId: element.id,
-                complaintDescr: element.descriptionName,
-              }
-            )
-          })
+          // ChiefComplaint.forEach(element => {
+          //   this.addCheiflist.push(
+          //     {
+          //       complaintId: element.id,
+          //       complaintDescr: element.descriptionName,
+          //     }
+          //   )
+          // })
+          this.addCheiflist = ChiefComplaint.map(element => ({
+            // complaintId: element.id,
+            complaintDescr: element.descriptionName
+          }));
+
           console.log('About to set addCheiflist:', this.addCheiflist);
-          // setTimeout(() => {
             this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
-          // }, 100);
-          // const currentValue = this.caseFormGroup.get('mAssignChiefComplaint')?.value;
-          // this.caseFormGroup.get('mAssignChiefComplaint')?.setValue([...currentValue]);
+          console.log('addCheiflist:', this.caseFormGroup.get('mAssignChiefComplaint').value);
+
         }
-        console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
+        // console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
         // Process Diagnosis
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
@@ -1699,25 +1703,6 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-  //Cheifcomplaint
-  addCheif(event: any): void {
-    const input = event.input;
-    const value = event.value;
-    // Add cheif
-    if ((value || '').trim()) {
-      this.addCheiflist.push(value.trim());
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-  selectedobjCheif1(obj): void {
-    const value = obj.ChiefComplaint;
-    if ((value || '').trim()) {
-      this.addCheiflist.push(value.trim());
-    }
-  }
   //Diagnosis
   addDiagnos(event: any): void {
     const input = event.input;
