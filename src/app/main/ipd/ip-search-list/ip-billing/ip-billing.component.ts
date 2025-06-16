@@ -26,8 +26,8 @@ import { IpPaymentInsert } from '../ip-advance-payment/ip-advance-payment.compon
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { IPPackageDetComponent } from '../ippackage-det/ippackage-det.component';
-import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
-
+import { PrebillDetailsComponent } from './prebill-details/prebill-details.component'; 
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-ip-billing',
@@ -86,8 +86,7 @@ export class IPBillingComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate5;
-  }
-
+  } 
   allColumns = [
     { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 9 },
     { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
@@ -142,8 +141,7 @@ export class IPBillingComponent implements OnInit {
     sortField: "BillNo",
     sortOrder: 0,
     filters: [{ fieldName: "IP_Id", fieldValue: String(this.opD_IPD_Id), opType: OperatorComparer.Equals }]
-  }
-
+  } 
   gridConfig: gridModel = {
     apiUrl: "Advance/PatientWiseAdvanceList",
     columnsList: this.AdvanceColumns,
@@ -163,31 +161,20 @@ export class IPBillingComponent implements OnInit {
     ]
   }
 
-  isOpen: boolean = false; // Sidebar starts open  
-  Ipbillform: FormGroup;
-  serviceInsertform: FormGroup; 
+ 
+  IpbillFooterform: FormGroup; 
   draftSaveform: FormGroup;
-  BillDiscperFlag: boolean = false;
-  sIsLoading: string = '';
-  showTable: boolean;
+  IPBillMyForm:FormGroup 
+  Serviceform: FormGroup; 
+  sIsLoading: string = ''; 
   chargeslist: any = [];
   chargeslist1: any = [];
-  currentDate: Date = new Date();
-  vClassId: any = 0;
-  vClassName: any;
-  vService: any;
-  vAdminPer: any;
+  currentDate: Date = new Date();   
   dateTimeObj: any;
-  PharmacyAmont: any = 0;
-  ServiceName: any;
+  PharmacyAmont: any = 0; 
   interimArray: any = [];
   screenFromString = 'Common-form';
-  isLoadingStr: string = '';
-  paidamt: any;
-  balanceamt: any;
-  flagSubmit: boolean;
-  Adminamt: any;
-  Adminper: any;
+  isLoadingStr: string = '';  
   vMobileNo: any;
   isLoading: String = '';
   selectedAdvanceObj: any;
@@ -197,22 +184,15 @@ export class IPBillingComponent implements OnInit {
   isDoctor: boolean = false;
   Admincharge: boolean = true;
   isFilteredDateDisabled: boolean = false;
-  ConcessionShow: boolean = false;
-  showAutocomplete = false;
-  Serviceform: FormGroup;
-  SelectedAdvancelist: any = [];
-  vPrice: any = '0';
-  vQty: any;
-  vServiceTotalAmt: any;
-  vServiceNetAmt: any;
-  vServiceDiscPer: any;
-  doctorName: any
-  doctorID: any;
-  serviceId: any;
+  ConcessionShow: boolean = false; 
+  BillDiscperFlag: boolean = false;
+  isOpen: boolean = false; // Sidebar starts open  
+  SelectedAdvancelist: any = []; 
+  doctorID: any; 
   vAdvanceId: any = 0;
   TotalAdvanceAmt: any = 0;
   BillBalAmount: any = 0;
-   AdvanceBalAmt: any = 0;
+  AdvanceBalAmt: any = 0;
   ApiURL: any;
 
   autocompleteModeCashcounter: string = "CashCounter";
@@ -245,23 +225,17 @@ export class IPBillingComponent implements OnInit {
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    private formBuilder: UntypedFormBuilder) {
-    this.showTable = false;
+    private formBuilder: UntypedFormBuilder) { 
   }
 
   ngOnInit(): void {
     this.createserviceForm();
     this.createBillForm();
 
-     this.Serviceform.markAllAsTouched();
-
-    this.serviceInsertform=this.createserviceSaveForm();
-
-
+     this.Serviceform.markAllAsTouched();  
     this.IPBillMyForm=this.CreateIPBillForm();
-    this.draftSaveform=this.createDraftSaveForm();
-   
-    this.Ipbillform.markAllAsTouched();
+    this.draftSaveform=this.createDraftSaveForm(); 
+    this.IpbillFooterform.markAllAsTouched();
 
     if (this.data) {
       this.selectedAdvanceObj = this.data.Obj;
@@ -270,7 +244,7 @@ export class IPBillingComponent implements OnInit {
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
-      this.Serviceform.get("ChargeClass").setValue(this.selectedAdvanceObj.classId)
+      this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
        this.draftSaveform=this.createDraftSaveForm();
        this.IPBillMyForm=this.CreateIPBillForm();
     }
@@ -280,36 +254,31 @@ export class IPBillingComponent implements OnInit {
     // this.getPharmacyAmount();
 
     if (this.selectedAdvanceObj.isDischarged) {
-      this.Ipbillform.get('GenerateBill').enable();
-      this.Ipbillform.get('GenerateBill').setValue(true);
+      this.IpbillFooterform.get('GenerateBill').enable();
+      this.IpbillFooterform.get('GenerateBill').setValue(true);
     }
     else {
-      this.Ipbillform.get('GenerateBill').disable();
-      this.Ipbillform.get('GenerateBill').setValue(false);
+      this.IpbillFooterform.get('GenerateBill').disable();
+      this.IpbillFooterform.get('GenerateBill').setValue(false);
     }
     if (this.selectedAdvanceObj.companyName) {
-      this.Ipbillform.get('CreditBill').enable();
-      this.Ipbillform.get('CreditBill').setValue(true);
+      this.IpbillFooterform.get('CreditBill').enable();
+      this.IpbillFooterform.get('CreditBill').setValue(true);
     }
     else {
-      this.Ipbillform.get('CreditBill').setValue(false);
+      this.IpbillFooterform.get('CreditBill').setValue(false);
     }
     this.setupFormListener();
   }
-  openServiceTable(): void {
-    this._matDialog.open(this.serviceTable, {
-      width: '50%',
-      height: '60%',
-    })
-  }
+
   oncloseservice() {
     this.dialogRef.close(this.serviceTable);
   }
   private setupFormListener(): void {
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
-    this.handleChange('discPer', () => this.updateDiscountAmount());
-    this.handleChange('discAmount', () => this.updateDiscountdiscPer());
+    this.handleChange('concessiondiscPer', () => this.updateDiscountAmount());
+    this.handleChange('concessionAmount', () => this.updateDiscountdiscPer());
   } 
   toggleSidebar() {
     this.isOpen = !this.isOpen;
@@ -322,51 +291,49 @@ export class IPBillingComponent implements OnInit {
       total = qty * price;
     }
     this.Serviceform.patchValue({
-      TotalAmt: total,
+      totalAmt: total,
       netAmount: total  // Set net amount initially
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.updateDiscountAmount();
-    this.updateDiscountdiscPer();
-
+    this.updateDiscountdiscPer(); 
   }
   // Trigger when discount discPer change
   updateDiscountAmount(row: any = null): void {
     if (this.isUpdating) return; // Stop recursion
     this.isUpdating = true;
 
-    const perControl = this.Serviceform.get("discPer");
+    const perControl = this.Serviceform.get("concessionPercentage");
     if (!perControl.valid) {
-      this.Serviceform.get("discAmount").setValue(0);
-      this.Serviceform.get("discPer").setValue(0);
+      this.Serviceform.get("concessionAmount").setValue(0);
+      this.Serviceform.get("concessionPercentage").setValue(0);
       this.isUpdating = false;
       this.toastr.error("Enter discount % between 0-100");
       return;
     }
     let discPer = perControl.value;
-    let totalAmount = this.Serviceform.get("TotalAmt").value;
+    let totalAmount = this.Serviceform.get("totalAmt").value;
     let discountAmount = parseFloat((totalAmount * discPer / 100).toFixed(2));
     let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
     this.Serviceform.patchValue({
-      discAmount: discountAmount,
+      concessionAmount: discountAmount,
       netAmount: netAmount
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.isUpdating = false; // Reset flag
   }
   // Trigger when discount amount change
-  updateDiscountdiscPer(): void {
-
+  updateDiscountdiscPer(): void { 
     if (this.isUpdating) return;
     this.isUpdating = true;
 
-    let discountAmount = this.Serviceform.get("discAmount").value;
-    let totalAmount = this.Serviceform.get("TotalAmt").value;
+    let discountAmount = this.Serviceform.get("concessionAmount").value;
+    let totalAmount = this.Serviceform.get("totalAmt").value;
 
     if (discountAmount < 0 || discountAmount > totalAmount) {
-      this.Serviceform.get("discAmount").setValue(0);
-      this.Serviceform.get("discPer").setValue(0);
+      this.Serviceform.get("concessionAmount").setValue(0);
+      this.Serviceform.get("concessionPercentage").setValue(0);
       this.isUpdating = false;
       this.toastr.error("Discount must be between 0 and the total amount.");
       return;
@@ -375,7 +342,7 @@ export class IPBillingComponent implements OnInit {
     let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
     let netAmount = Number((totalAmount - discountAmount).toFixed(2));
     this.Serviceform.patchValue({
-      discPer: percent,
+      concessionPercentage: percent,
       netAmount: netAmount
     }, { emitEvent: false }); // Prevent infinite loop
 
@@ -384,73 +351,60 @@ export class IPBillingComponent implements OnInit {
   getFixedDecimal(value: number) {
     return Number(value.toFixed(2));
   }
-  // Create registered form group
+  // Create servie form
   createserviceForm() {
-    this.Serviceform = this.formBuilder.group({
-      ChargeClass: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Date: [new Date(), [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ServiceName: ['', [Validators.required]],
-      price: [0, [Validators.required, Validators.min(0)]],
-      qty: [1, [Validators.required]],
-      TotalAmt: [0, [Validators.required, Validators.min(1)]],
-      DoctorID: [''],
-      discPer: [0, [Validators.min(0), Validators.max(100)]],
-      discAmount: [0, [Validators.min(0)]],
-      netAmount: [0, [Validators.required, Validators.min(1)]],
-    });
-  }
-
-  // changed by raksha
-  createserviceSaveForm() {
-    return this.formBuilder.group({
-        chargesId: 0,
+    this.Serviceform = this.formBuilder.group({ 
+     // Date: [new Date(), [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],  
+        chargesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
-        opdIpdType: 1,
-        opdIpdId: this.opD_IPD_Id,
-        serviceId: 0,
-        price: 0,
-        qty: 0,
-        totalAmt: 0,
-        concessiondiscPer: 0,
-        concessionAmount: 0,
-        netAmount: 0,
-        doctorId: 0,
-        docdiscPer: 0,
-        docAmt: 0,
-        hospitalAmt: 0,
-        isGenerated: false,
+        opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [0,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        price:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        qty: [1,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionPercentage:[0, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAmount:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        docPercentage:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        docAmt: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        hospitalAmt:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isGenerated: [false],
         addedBy: this.accountService.currentUserValue.userId,
-        isCancelled: false,
-        isCancelledBy: 0,
+        isCancelled: [false],
+        isCancelledBy:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: "1900-01-01",
-        isPathology: 0,
-        isRadiology: 0,
-        isDoctorShareGenerated: 0,
-        isInterimBillFlag: 0,
-        isPackage: 0,
-        isSelfOrCompanyService: 0,
-        packageId: 0,
+        isPathology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isDoctorShareGenerated:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isInterimBillFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-        packageMainChargeId: 0,
-        classId: 0,
-        refundAmount: 0,
-        cPrice: 0,
-        cQty: 0,
-        cTotalAmount: 0,
-        isComServ: false,
-        isPrintCompSer: false,
-        serviceName: "",
-        chPrice: 0,
-        chQty: 0,
-        chTotalAmount: 0,
-        isBillableCharity: false,
-        salesId: 0,
-        billNo: 1,
-        isHospMrk: 0
+        packageMainChargeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        classId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        cPrice:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        cQty: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        cTotalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isComServ: [false],
+        isPrintCompSer: [false],
+        serviceName:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        chPrice:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chQty:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chTotalAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isBillableCharity: [false],
+        salesId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        billNo: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isHospMrk: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+
     });
-  }
+  } 
+  //Ip Bill Footer form
   createBillForm() {
-    this.Ipbillform = this.formBuilder.group({
+    this.IpbillFooterform = this.formBuilder.group({
       AdminPer: ['', [Validators.max(100)]],
       AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       totaldiscPer: [0, [Validators.min(0), Validators.max(100),]],
@@ -468,8 +422,8 @@ export class IPBillingComponent implements OnInit {
       TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
  
     });
-  }
- 
+  } 
+  //IP Draft Bill form
    createDraftSaveForm() {
     return this.formBuilder.group({  
             //ipInterim bill header  
@@ -510,7 +464,7 @@ export class IPBillingComponent implements OnInit {
       chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }  
-IPBillMyForm:FormGroup  
+  //IP bill save form 
   CreateIPBillForm(): FormGroup {
     return this.formBuilder.group({
       //ipInterim bill header  
@@ -627,9 +581,7 @@ IPBillMyForm:FormGroup
   }   
       get DraftBillDetArray(): FormArray {
     return this.draftSaveform.get('tdrBillDet') as FormArray;
-  }   
-
-
+  }  
 
   //service selected data
   getselectObj(obj) {
@@ -637,53 +589,59 @@ IPBillMyForm:FormGroup
       price: obj.classRate
     })
     if (obj.creditedtoDoctor == true) {
-      this.Serviceform.get('DoctorID').reset();
-      this.Serviceform.get('DoctorID').setValidators([Validators.required]);
-      this.Serviceform.get('DoctorID').enable();
+      this.Serviceform.get('doctorId').reset();
+      this.Serviceform.get('doctorId').setValidators([Validators.required]);
+      this.Serviceform.get('doctorId').enable();
       this.isDoctor = true;
     } else {
-      this.Serviceform.get('DoctorID').reset();
-      this.Serviceform.get('DoctorID').clearValidators();
-      this.Serviceform.get('DoctorID').updateValueAndValidity();
-      this.Serviceform.get('DoctorID').disable();
+      this.Serviceform.get('doctorId').reset();
+      this.Serviceform.get('doctorId').clearValidators();
+      this.Serviceform.get('doctorId').updateValueAndValidity();
+      this.Serviceform.get('doctorId').disable();
       this.isDoctor = false;
     }
-    //this.getpackagedetList(obj)
+    //this.getpackagedetList(obj) 
   }
   //Doctor selected 
-  getdocdetail(event) {
-    this.doctorName = event.text
-    this.doctorID = event.value
-
-    const discPerElement = document.querySelector(`[name='discPer']`) as HTMLElement;
+  getdocdetail(event) { 
+    this.doctorID = event.value 
+    const discPerElement = document.querySelector(`[name='concessionPercentage']`) as HTMLElement;
     if (event.value) {
       discPerElement.focus();
-    }
-
+    } 
   }
   //Class selected 
-  getSelectedClassObj(event) {
-    this.vClassName = event.text
-    this.vClassId = event.value
+  getSelectedClassObj(event) {  
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&ServiceName="
-  }
-
+  } 
   // Service Add 
-  onSaveAddCharges() {
-    let doctorid = 0;
-    let doctorName = '';
+  onSaveAddCharges() { 
     const formValue = this.Serviceform.value 
-
+    let doctorid = 0; 
     if (this.isDoctor) {
-      if ((formValue.DoctorID == '' || formValue.DoctorID == null || formValue.DoctorID == '0')) {
+      if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
-      if (formValue.DoctorID)
-        doctorid = this.Serviceform.get("DoctorID").value;
-    } 
+      if (formValue.doctorId)
+        doctorid = this.Serviceform.get("doctorId").value;
+    }    
+      this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0) 
+      this.Serviceform.get("isPathology").setValue(formValue.serviceId?.isPathology ?? 0)
+      this.Serviceform.get("isRadiology").setValue(formValue.serviceId?.isRadiology ?? 0)
+      this.Serviceform.get("isPackage").setValue(formValue.serviceId?.isPackage ?? 0) 
+      this.Serviceform.get("serviceId").setValue(formValue.serviceId?.serviceId ?? 0)  
+      this.Serviceform.get("doctorId").setValue(doctorid) 
+
+      console.log(this.Serviceform.value)
+    if (this.Serviceform.valid) {   
+      console.log('valida service form',this.Serviceform.value)   
+      this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => { 
+        this.getChargesList();
+      }); 
+    }else{
     let invalidFields = [];
     if (this.Serviceform.invalid) {
       for (const controlName in this.Serviceform.controls) {
@@ -698,169 +656,25 @@ IPBillMyForm:FormGroup
         );
       });
     }
-
-
-    if (this.Serviceform.valid) {
-      // console.log("Form values:", formValue) 
-      // Calculate total amount, discount amount, and net amount
-      const totalAmount = formValue.price * formValue.qty;
-      const discountAmount = (totalAmount * formValue.discPer) / 100;
-      const netAmount = totalAmount - discountAmount;
-
-      // var m_data =
-      // {
-      //   "chargesId": 0,
-      //   "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
-      //   "opdIpdType": 1,
-      //   "opdIpdId": this.opD_IPD_Id,
-      //   "serviceId": formValue.ServiceName.serviceId,
-      //   "price": formValue.price || 0,
-      //   "qty": formValue.qty || 0,
-      //   "totalAmt": totalAmount || 0,
-      //   "concessiondiscPer": formValue.discPer || 0,
-      //   "concessionAmount": discountAmount || 0,
-      //   "netAmount": netAmount || 0,
-      //   "doctorId": doctorid,
-      //   "docdiscPer": 0,
-      //   "docAmt": 0,
-      //   "hospitalAmt": 0,
-      //   "isGenerated": false,
-      //   "addedBy": this.accountService.currentUserValue.userId,
-      //   "isCancelled": false,
-      //   "isCancelledBy": 0,
-      //   "isCancelledDate": "1900-01-01",
-      //   "isPathology": formValue.ServiceName.isPathology,
-      //   "isRadiology": formValue.ServiceName.isRadiology,
-      //   "isDoctorShareGenerated": 0,
-      //   "isInterimBillFlag": 0,
-      //   "isPackage": formValue.ServiceName.isPackage,
-      //   "isSelfOrCompanyService": 0,
-      //   "packageId": 0,
-      //   "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      //   "packageMainChargeId": 0,
-      //   "classId": formValue.ChargeClass,
-      //   "refundAmount": 0,
-      //   "cPrice": 0,
-      //   "cQty": 0,
-      //   "cTotalAmount": 0,
-      //   "isComServ": false,
-      //   "isPrintCompSer": false,
-      //   "serviceName": "",
-      //   "chPrice": 0,
-      //   "chQty": 0,
-      //   "chTotalAmount": 0,
-      //   "isBillableCharity": false,
-      //   "salesId": 0,
-      //   "billNo": 1,
-      //   "isHospMrk": 0
-      // }
-
-      // var m_data = {  
-      //   "adddCharges": {
-      //   "chargesId": 0,
-      //   "chargesDate": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01',
-      //   "opdIpdType": 1,
-      //   "opdIpdId": this.opD_IPD_Id,
-      //   "serviceId": formValue.ServiceName.serviceId,
-      //   "price": formValue.price || 0,
-      //   "qty": formValue.qty || 0,
-      //   "totalAmt": totalAmount || 0,
-      //   "concessionPercentage":  formValue.discPer || 0,
-      //   "concessionAmount": discountAmount || 0,
-      //   "netAmount": netAmount || 0,
-      //   "doctorId": doctorid,
-      //   "docdiscPer": 0,
-      //   "docAmt": 0,
-      //   "hospitalAmt": 0,
-      //   "isGenerated": false,
-      //   "addedBy": this.accountService.currentUserValue.userId,
-      //   "isCancelled": false,
-      //   "isCancelledBy": 0,
-      //   "isCancelledDate": "1900-01-01",
-      //   "isPathology": formValue.ServiceName.isPathology,
-      //   "isRadiology": formValue.ServiceName.isRadiology,
-      //   "isPackage": formValue.ServiceName.isPackage,
-      //   "isSelfOrCompanyService": 0,
-      //   "packageId": 0,
-      //   "chargesTime": this.datePipe.transform(formValue.Date, "yyyy-MM-dd") || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      //   "packageMainChargeId": 0,
-      //   "classId": formValue.ChargeClass
-      //   },
-
-      //   "addCharge": [
-      //     {
-      //       "chargesDate": "2025-04-21",
-      //   "opdIpdType": 1,
-      //   "opdIpdId": 1,
-      //   "serviceId": 23,
-      //   "price": 203,
-      //   "qty": 10,
-      //   "totalAmt": 100,
-      //   "concessionPercentage": 2,
-      //   "concessionAmount": 200,
-      //   "netAmount": 900,
-      //   "doctorId": 1,
-      //   "docPercentage": 3,
-      //   "docAmt": 122,
-      //   "hospitalAmt": 800,
-      //   "isGenerated": true,
-      //   "addedBy": 1,
-      //   "isCancelled": true,
-      //   "isCancelledBy": 1,
-      //   "isCancelledDate": "2025-04-21",
-      //   "isPathology": 1,
-      //   "isRadiology": 0,
-      //   "isPackage": 1,
-      //   "isSelfOrCompanyService": 12,
-      //   "packageId": 1,
-      //    "packageMainChargeId": 1,
-      //     "chargesTime": "2025-04-17 00:00:00.000"
-
-      //     }
-      //   ]
-      // }
-
-      this.serviceInsertform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
-      this.serviceInsertform.get("serviceId").setValue(formValue.ServiceName.serviceId || 0)
-      this.serviceInsertform.get("price").setValue(formValue.price || 0)
-      this.serviceInsertform.get("qty").setValue(formValue.qty || 0)
-      this.serviceInsertform.get("totalAmt").setValue(totalAmount || 0)
-      this.serviceInsertform.get("concessiondiscPer").setValue(formValue.discPer || 0)
-      this.serviceInsertform.get("concessionAmount").setValue(discountAmount || 0)
-      this.serviceInsertform.get("netAmount").setValue(netAmount || 0)
-      this.serviceInsertform.get("doctorId").setValue(doctorid || 0)
-      this.serviceInsertform.get("isPathology").setValue(formValue.ServiceName.isPathology || 0)
-      this.serviceInsertform.get("isRadiology").setValue(formValue.ServiceName.isRadiology || 0)
-      this.serviceInsertform.get("isPackage").setValue(formValue.ServiceName.isPackage || 0)
-      this.serviceInsertform.get("classId").setValue(Number(formValue.ChargeClass) || 0)
-
-      console.log("Save JSON:", this.serviceInsertform.value);
-      this._IpSearchListService.InsertIPAddCharges(this.serviceInsertform.value).subscribe(response => {
-        this.toastr.success(response.message);
-        this.getChargesList();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-
     }
     this.interimArray = [];
     this.isDoctor = false;
     this.onClearServiceAddList();
-    const serviceNameElement = document.querySelector(`[name='ServiceName']`) as HTMLElement;
-    if (serviceNameElement) {
-      serviceNameElement.focus();
+    const serviceIdElement = document.querySelector(`[name='serviceId']`) as HTMLElement;
+    if (serviceIdElement) {
+      serviceIdElement.focus();
     }
     this.Serviceform.markAllAsTouched();
-    this.Ipbillform.markAllAsTouched();
+    this.IpbillFooterform.markAllAsTouched();
   }
   onClearServiceAddList() {
-    this.Serviceform.get('ServiceName').setValue("a");
+    this.Serviceform.get('serviceId').setValue("a");
     this.Serviceform.get('price').reset();
     this.Serviceform.get('qty').reset('1');
-    this.Serviceform.get('TotalAmt').reset();
-    this.Serviceform.get('DoctorID').reset();
-    this.Serviceform.get('discPer').reset();
-    this.Serviceform.get('discAmount').reset();
+    this.Serviceform.get('totalAmt').reset();
+    this.Serviceform.get('doctorId').reset();
+    this.Serviceform.get('concessionPercentage').reset();
+    this.Serviceform.get('concessionAmount').reset();
     this.Serviceform.get('netAmount').reset();
   }
   deletecharges(contact) {
@@ -906,31 +720,7 @@ IPBillMyForm:FormGroup
       }
     });
 
-  }
-  //IPD package list  
-  // this.newlist.forEach(element => {
-  //   debugger
-  //   this.PacakgeList.push(
-  //     {
-  //       ServiceId: element.packageServiceId,
-  //       serviceName: element.serviceName,
-  //       price: element.price || 0,
-  //       qty: element.qty || 1,
-  //       totalAmt: element.totalAmt || 0,
-  //       concessionPercentage: element.concessionPercentage || 0,
-  //       concessionAmount: element.concessionAmount || 0,
-  //       netAmount: element.netAmount || 0,
-  //       isPathology: element.isPathology,
-  //       isRadiology: element.isRadiology,
-  //       packageId: element.packageId,
-  //       PackageServiceId: element.serviceId,
-  //       PacakgeServiceName: element.pacakgeServiceName,
-  //       DoctorId: element.doctorId || 0,
-  //       DoctorName: element.doctorName || '',
-  //       ChargesId: element.chargesId || 0
-  //     })
-  // }) 
-  //package list 
+  } 
   PacakgeList: any = [];
   PacakgeOptionlist: any = [];
   getpackagedetList(obj) {
@@ -1038,11 +828,10 @@ IPBillMyForm:FormGroup
     }
   }
 checkAdvBalAmt:any=0;
-  getbillbalamt() {
-    debugger
+  getbillbalamt() { 
     this.AdvanceBalAmt = this.checkAdvBalAmt
     if (this.AdvanceBalAmt > 0) {
-      let netAmt = this.Ipbillform.get('FinalAmount').value || 0
+      let netAmt = this.IpbillFooterform.get('FinalAmount').value || 0
       if (netAmt > this.AdvanceBalAmt) {
         this.AdvanceBalAmt = this.checkAdvBalAmt
         this.BillBalAmount = netAmt - this.checkAdvBalAmt
@@ -1102,7 +891,7 @@ checkAdvBalAmt:any=0;
     this.TotalShowAmt = this.chargeslist.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
     this.DiscShowAmt = this.chargeslist.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
 
-    this.Ipbillform.patchValue({
+    this.IpbillFooterform.patchValue({
       FinalAmount: this.FinalNetAmt,
       totalconcessionAmt: this.DiscShowAmt,
        TotalAmt:this.TotalShowAmt 
@@ -1125,8 +914,8 @@ checkAdvBalAmt:any=0;
       this.isAdminDisabled = true;
     } else {
       this.isAdminDisabled = false;
-      this.Ipbillform.get('AdminPer').reset();
-      this.Ipbillform.get('AdminAmt').reset();
+      this.IpbillFooterform.get('AdminPer').reset();
+      this.IpbillFooterform.get('AdminAmt').reset();
     }
   }
   //Admin calculation
@@ -1135,8 +924,8 @@ checkAdvBalAmt:any=0;
     // debugger
     let finalNetAmt = 0
     let finalDiscAmt = 0
-    let discPer = this.Ipbillform.get('totaldiscPer').value || 0;
-    const perControl = this.Ipbillform.get("AdminPer");
+    let discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
+    const perControl = this.IpbillFooterform.get("AdminPer");
     let adminPer = perControl.value;
     let totalAmount = this.TotalShowAmt;
     let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
@@ -1151,7 +940,7 @@ checkAdvBalAmt:any=0;
         finalDiscAmt = this.DiscShowAmt
         finalNetAmt = this.FinalNetAmt
       }
-      this.Ipbillform.patchValue({
+      this.IpbillFooterform.patchValue({
         AdminPer: '',
         AdminAmt: 0,
         totalconcessionAmt: finalDiscAmt,
@@ -1173,7 +962,7 @@ checkAdvBalAmt:any=0;
         finalNetAmt = finalTotalAmt
       }
     }
-    this.Ipbillform.patchValue({
+    this.IpbillFooterform.patchValue({
       totalconcessionAmt: finalDiscAmt,
       AdminAmt: adminAmt || 0,
       FinalAmount: Math.round(finalNetAmt),
@@ -1184,10 +973,10 @@ checkAdvBalAmt:any=0;
   CalFinalDiscper() {
     // debugger
     let netAmount = this.FinalNetAmt;
-    const perControl = this.Ipbillform.get("totaldiscPer");
+    const perControl = this.IpbillFooterform.get("totaldiscPer");
     let discper = perControl.value;
     let totalAmount = this.TotalShowAmt;
-    let AdminAmt = this.Ipbillform.get('AdminAmt').value || 0;
+    let AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
     let discountAmt = 0;
     let finalNetAmt
     let FinalTotalAmt
@@ -1203,7 +992,7 @@ checkAdvBalAmt:any=0;
       // else
       //   discountAmt = '' 
       this.ConcessionShow = false
-      this.Ipbillform.patchValue({
+      this.IpbillFooterform.patchValue({
         totaldiscPer: '',
         totalconcessionAmt: '',
         FinalAmount: Math.round(finalNetAmt),
@@ -1222,7 +1011,7 @@ checkAdvBalAmt:any=0;
       finalNetAmt = parseFloat((totalAmount - discountAmt).toFixed(2));
       this.ConcessionShow = true
     }
-    this.Ipbillform.patchValue({
+    this.IpbillFooterform.patchValue({
       totalconcessionAmt: discountAmt,
       FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop 
@@ -1233,11 +1022,11 @@ checkAdvBalAmt:any=0;
   vTotalAmount: any;
   getDiscAmtCal() {
     // debugger
-    const perControl = this.Ipbillform.get("totalconcessionAmt");
+    const perControl = this.IpbillFooterform.get("totalconcessionAmt");
     let netAmount = this.FinalNetAmt;
     let totalAmount = this.TotalShowAmt;
     let discAmt = perControl.value;
-    let AdminAmt = this.Ipbillform.get('AdminAmt').value || 0;
+    let AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
     let discper = ''
     let finalNetAmt
     let FinalTotalAmt
@@ -1249,7 +1038,7 @@ checkAdvBalAmt:any=0;
         finalNetAmt = this.FinalNetAmt
       }
       this.ConcessionShow = false
-      this.Ipbillform.patchValue({
+      this.IpbillFooterform.patchValue({
         totaldiscPer: '',
         totalconcessionAmt: '',
         FinalAmount: Math.round(finalNetAmt),
@@ -1270,21 +1059,20 @@ checkAdvBalAmt:any=0;
       finalNetAmt = parseFloat((totalAmount - discAmt).toFixed(2));
     }
 
-    this.Ipbillform.patchValue({
+    this.IpbillFooterform.patchValue({
       totaldiscPer: discper,
       totalconcessionAmt: discAmt,
       FinalAmount: Math.round(finalNetAmt),
     }, { emitEvent: false }); // Prevent infinite loop 
       this.BillBalAmount();
-  } 
-
+  }  
   //Save
   onSave() {
     debugger
     let invalidFields = [];
-    if (this.Ipbillform.invalid) {
-      for (const controlName in this.Ipbillform.controls) {
-        if (this.Ipbillform.controls[controlName].invalid) {
+    if (this.IpbillFooterform.invalid) {
+      for (const controlName in this.IpbillFooterform.controls) {
+        if (this.IpbillFooterform.controls[controlName].invalid) {
           invalidFields.push(`${controlName}`);
         }
       }
@@ -1294,9 +1082,8 @@ checkAdvBalAmt:any=0;
         this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
         );
       });
-    }
-
-    const formValue = this.Ipbillform.value
+    } 
+    const formValue = this.IpbillFooterform.value
     if (formValue.totalconcessionAmt > 0 || formValue.totaldiscPer > 0) {
       if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1304,16 +1091,9 @@ checkAdvBalAmt:any=0;
         });
         return;
       }
-    }
-    if (formValue.CashCounterID == '' || formValue.CashCounterID == null || formValue.CashCounterID == '0') {
-      this.toastr.warning('Please select Cash Counter.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
+    }  
     if (this.dataSource.data.length > 0) {
-      if (this.Ipbillform.get('GenerateBill').value) {
+      if (this.IpbillFooterform.get('GenerateBill').value) {
         Swal.fire({
           title: 'Do you want to generate the Final Bill ',
           text: "You won't be able to revert this!",
@@ -1321,10 +1101,8 @@ checkAdvBalAmt:any=0;
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Generate!"
-
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
+          confirmButtonText: "Yes, Generate!" 
+        }).then((result) => { 
           if (result.isConfirmed) {
             this.SaveBill1();
           }
@@ -1347,30 +1125,28 @@ checkAdvBalAmt:any=0;
         })
       }
     } else {
-      Swal.fire("Please check list is blank ")
-
+      Swal.fire("Please check list is blank ") 
     }
   }
 
-  SaveBill1() {
-    debugger
-    this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.Ipbillform.get('TotalAmt')?.value)
-    this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.Ipbillform.get('totalconcessionAmt')?.value)
-    this.IPBillMyForm.get('bill.netPayableAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+  SaveBill1() { 
+    this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
+    this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value)
+    this.IPBillMyForm.get('bill.netPayableAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
     this.IPBillMyForm.get('bill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.IPBillMyForm.get('bill.billTime').setValue(this.dateTimeObj.time)
-    this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.Ipbillform.get('ConcessionId')?.value)
-    this.IPBillMyForm.get('bill.discComments')?.setValue(this.Ipbillform.get('Remark')?.value)
-    this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.Ipbillform.get('CashCounterID')?.value)
+    this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.IpbillFooterform.get('ConcessionId')?.value)
+    this.IPBillMyForm.get('bill.discComments')?.setValue(this.IpbillFooterform.get('Remark')?.value)
+    this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
     this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
-    this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.Ipbillform.get('AdminPer').value || 0)
-    this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.Ipbillform.get('AdminAmt').value)
+    this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.IpbillFooterform.get('AdminPer').value || 0)
+    this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value)
 
     if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
-      if (this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
+      if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
         this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
-        this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
-        this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+        this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+        this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
 
         this.BillDetailsArray.clear();
         this.dataSource.data.forEach(item => {
@@ -1387,8 +1163,8 @@ checkAdvBalAmt:any=0;
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.dateTimeObj.date;
         PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-        PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
-        PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
+        PatientHeaderObj['AdvanceAmount'] = this.IpbillFooterform.get('FinalAmount').value;
+        PatientHeaderObj['NetPayAmount'] = this.IpbillFooterform.get('FinalAmount').value;
         PatientHeaderObj['BillNo'] = 0;
         PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
         PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno;
@@ -1413,16 +1189,23 @@ checkAdvBalAmt:any=0;
         dialogRef.afterClosed().subscribe(result => {
           console.log(result);
           if (result && result.IsSubmitFlag) {
-            let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+            let UpdateAdvanceDetailarr1 = [];
             UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
             this.IPBillMyForm.get('bill.paidAmt')?.setValue(result?.PaidAmt ?? 0)
             this.IPBillMyForm.get('bill.balanceAmt')?.setValue(result?.BalAmt ?? 0)
             this.IPBillMyForm.get('bills.balanceAmt')?.setValue(result?.BalAmt ?? 0)
             if(UpdateAdvanceDetailarr1.length > 0){
-             this.IPBillMyForm.get('advancesHeaderupdate.advanceId')?.setValue(UpdateAdvanceDetailarr1[0]['AdvanceId'] )
-            this.IPBillMyForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(UpdateAdvanceDetailarr1[0]['AdvanceAmount'])
-            this.IPBillMyForm.get('advancesHeaderupdate.balanceAmount')?.setValue(UpdateAdvanceDetailarr1[0]['BalanceAmount'])
+              let AdvanceBalAmt = 0;
+              let  AdvanceUsedAmt = 0;
+            UpdateAdvanceDetailarr1.forEach(element=>{ 
+            this.IPBillMyForm.get('advancesHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+            AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+            AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+            this.IPBillMyForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+            this.IPBillMyForm.get('advancesHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
 
+            })
+           
             }  
             this.BillDetailsArray.clear();
             this.dataSource.data.forEach(item => {
@@ -1447,9 +1230,9 @@ checkAdvBalAmt:any=0;
       }
     } else {
       let invalidFields = [];
-      if (this.Ipbillform.invalid) {
-        for (const controlName in this.Ipbillform.controls) {
-          if (this.Ipbillform.controls[controlName].invalid) {
+      if (this.IpbillFooterform.invalid) {
+        for (const controlName in this.IpbillFooterform.controls) {
+          if (this.IpbillFooterform.controls[controlName].invalid) {
             invalidFields.push(`${controlName}`);
           }
         }
@@ -1461,263 +1244,19 @@ checkAdvBalAmt:any=0;
         });
       }
     }
-  }
-
-
-  SaveBill1old() {
-    if (this.dataSource.data.length > 0 && this.Ipbillform.valid) {
-      this.isLoading = 'submit';
-      if (this.Ipbillform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
-        this.IPCreditBill();
-      }
-      else {
-        let PatientHeaderObj = {};
-        PatientHeaderObj['Date'] = this.dateTimeObj.date;
-        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-        PatientHeaderObj['AdvanceAmount'] = this.Ipbillform.get('FinalAmount').value;
-        PatientHeaderObj['NetPayAmount'] = this.Ipbillform.get('FinalAmount').value;
-        PatientHeaderObj['BillNo'] = 0;
-        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
-        PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno;
-        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo;
-        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
-        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
-        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-        PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
-
-
-        //==============-======--==============Payment====================== 
-        this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj); 
-        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-          {
-            maxWidth: "75vw",
-            height: '650px',
-            width: '100%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "IP-Bill",
-              advanceObj: PatientHeaderObj
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => { 
-          console.log(result);
-          this.flagSubmit = result.IsSubmitFlag
-          if (this.flagSubmit) {
-            this.paidamt = result.PaidAmt;
-            this.balanceamt = result.BalAmt;
-          }
-          else {
-            this.balanceamt = result.BalAmt;
-          }
-          let InsertBillUpdateBillNoObj = {};
-
-          InsertBillUpdateBillNoObj['billNo'] = 0;
-          InsertBillUpdateBillNoObj['opdipdid'] = this.selectedAdvanceObj.admissionId;
-          InsertBillUpdateBillNoObj['totalAmt'] = this.TotalShowAmt || 0;
-          InsertBillUpdateBillNoObj['concessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
-          InsertBillUpdateBillNoObj['netPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-          InsertBillUpdateBillNoObj['paidAmt'] = this.paidamt || 0;
-          InsertBillUpdateBillNoObj['balanceAmt'] = this.balanceamt || 0;
-          InsertBillUpdateBillNoObj['billDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-          InsertBillUpdateBillNoObj['opdipdType'] = 1;
-          InsertBillUpdateBillNoObj['addedBy'] = this.accountService.currentUserValue.userId,
-            InsertBillUpdateBillNoObj['totalAdvanceAmount'] = this.TotalAdvanceAmt || 0;
-          InsertBillUpdateBillNoObj['billTime'] = this.dateTimeObj.time;
-          InsertBillUpdateBillNoObj['concessionReasonId'] = this.Ipbillform.get('ConcessionId').value || 0;
-          InsertBillUpdateBillNoObj['isSettled'] = false;
-          InsertBillUpdateBillNoObj['isPrinted'] = true;
-          InsertBillUpdateBillNoObj['isFree'] = false;
-          InsertBillUpdateBillNoObj['companyId'] = this.selectedAdvanceObj.companyId || 0;
-          InsertBillUpdateBillNoObj['tariffId'] = this.selectedAdvanceObj.tariffId || 0;
-          InsertBillUpdateBillNoObj['unitId'] = this.selectedAdvanceObj.hospitalID || 0;
-          InsertBillUpdateBillNoObj['interimOrFinal'] = 0;
-          InsertBillUpdateBillNoObj['companyRefNo'] = "";
-          InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
-          InsertBillUpdateBillNoObj['speTaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
-          InsertBillUpdateBillNoObj['speTaxAmt'] = this.Ipbillform.get('AdminAmt').value || 0;
-          InsertBillUpdateBillNoObj['discComments'] = this.Ipbillform.get('Remark').value || '';
-          InsertBillUpdateBillNoObj['compDiscAmt'] = 0;
-          InsertBillUpdateBillNoObj['cashCounterId'] = this.Ipbillform.get('CashCounterID').value || 0;
-
-          let Billdetsarr = [];
-          this.dataSource.data.forEach((element) => {
-            let BillDetailsInsertObj = {};
-            BillDetailsInsertObj['billNo'] = 0;
-            BillDetailsInsertObj['chargesId'] = element.chargesId;
-            Billdetsarr.push(BillDetailsInsertObj);
-          });
-
-          let addChargeObj = {};
-          addChargeObj['billNo'] = 0;
-
-          let addmissionObj = {};
-          addmissionObj['admissionID'] = this.selectedAdvanceObj.admissionId;
-
-          let UpdateBillBalAmtObj = {};
-          UpdateBillBalAmtObj['billNo'] = 0;
-          UpdateBillBalAmtObj['balanceAmt'] = this.balanceamt || 0;
-
-          let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-          UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-
-          let UpdateAdvanceDetailarr = [];
-          if (result.submitDataAdvancePay.length > 0) {
-            result.submitDataAdvancePay.forEach((element) => {
-              let UpdateAdvanceDetailObj = {};
-              UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
-              UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
-              UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
-              UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-            });
-          }
-          else {
-            let UpdateAdvanceDetailObj = {};
-            UpdateAdvanceDetailObj['advanceDetailID'] = 0,
-              UpdateAdvanceDetailObj['usedAmount'] = 0,
-              UpdateAdvanceDetailObj['balanceAmount'] = 0,
-              UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-          }
-
-          let UpdateAdvanceHeaderObj = {};
-          if (result.submitDataAdvancePay.length > 0) {
-            UpdateAdvanceHeaderObj['advanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-              UpdateAdvanceHeaderObj['advanceUsedAmount'] = UpdateAdvanceDetailarr1[0]['AdvanceAmount'],
-              UpdateAdvanceHeaderObj['balanceAmount'] = UpdateAdvanceDetailarr1[0]['BalanceAmount']
-          }
-          else {
-            UpdateAdvanceHeaderObj['advanceId'] = 0,
-              UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
-              UpdateAdvanceHeaderObj['balanceAmount'] = 0
-          }
-
-          let addChargessupdate = {}
-          addChargessupdate['chargesID'] = 0;
-
-          if (this.flagSubmit == true) {
-            let submitData = {
-              "bill": InsertBillUpdateBillNoObj,
-              "billDetail": Billdetsarr,
-              "addCharge": addChargeObj,
-              "addmission": addmissionObj,
-              "payment": result.submitDataPay.ipPaymentInsert,
-              "bills": UpdateBillBalAmtObj,
-              "advancesupdate": UpdateAdvanceDetailarr,
-              "advancesHeaderupdate": UpdateAdvanceHeaderObj,
-              "addChargessupdate": addChargessupdate
-            };
-            console.log(submitData)  
-            this._IpSearchListService.InsertIPBilling(submitData).subscribe(response => {
-              this.toastr.success(response.message);
-              this._matDialog.closeAll();
-              this.viewgetBillReportPdf(response);
-              this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
-            }, (error) => {
-              this.toastr.error(error.message);
-            });
-          }
-        });
-      }
-    }
-  }
-  IPCreditBill() {
-    if (this.Ipbillform.get('CreditBill').value) {
-      let InsertBillUpdateBillNoObj = {};
-      InsertBillUpdateBillNoObj['billNo'] = 0;
-      InsertBillUpdateBillNoObj['opdipdid'] = this.selectedAdvanceObj.admissionId;
-      InsertBillUpdateBillNoObj['totalAmt'] = this.TotalShowAmt || 0;
-      InsertBillUpdateBillNoObj['concessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
-      InsertBillUpdateBillNoObj['netPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-      InsertBillUpdateBillNoObj['paidAmt'] = 0;
-      InsertBillUpdateBillNoObj['balanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-      InsertBillUpdateBillNoObj['billDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-      InsertBillUpdateBillNoObj['opdipdType'] = 1;
-      InsertBillUpdateBillNoObj['addedBy'] = this.accountService.currentUserValue.userId,
-        InsertBillUpdateBillNoObj['totalAdvanceAmount'] = this.TotalAdvanceAmt || 0;
-      InsertBillUpdateBillNoObj['billTime'] = this.dateTimeObj.time;
-      InsertBillUpdateBillNoObj['concessionReasonId'] = this.Ipbillform.get('ConcessionId').value || 0;
-      InsertBillUpdateBillNoObj['isSettled'] = false;
-      InsertBillUpdateBillNoObj['isPrinted'] = true;
-      InsertBillUpdateBillNoObj['isFree'] = false;
-      InsertBillUpdateBillNoObj['companyId'] = this.selectedAdvanceObj.companyId || 0;
-      InsertBillUpdateBillNoObj['tariffId'] = this.selectedAdvanceObj.tariffId || 0;
-      InsertBillUpdateBillNoObj['unitId'] = this.selectedAdvanceObj.hospitalID || 0;
-      InsertBillUpdateBillNoObj['interimOrFinal'] = 0;
-      InsertBillUpdateBillNoObj['companyRefNo'] = "";
-      InsertBillUpdateBillNoObj['concessionAuthorizationName'] = 0;
-      InsertBillUpdateBillNoObj['speTaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
-      InsertBillUpdateBillNoObj['speTaxAmt'] = this.Ipbillform.get('AdminAmt').value || 0;
-      InsertBillUpdateBillNoObj['discComments'] = this.Ipbillform.get('Remark').value || '';
-      InsertBillUpdateBillNoObj['compDiscAmt'] = 0;
-      InsertBillUpdateBillNoObj['cashCounterId'] = this.Ipbillform.get('CashCounterID').value || 0;
-
-      let billDetailscreditInsert = [];
-      this.dataSource.data.forEach((element) => {
-        let BillDetailsInsertObj = {};
-        BillDetailsInsertObj['billNo'] = 0;
-        BillDetailsInsertObj['chargesId'] = element.chargesId;
-        billDetailscreditInsert.push(BillDetailsInsertObj);
-      });
-
-      let addChargeObj = {};
-      addChargeObj['billNo'] = 0;
-
-      let addmissionObj = {};
-      addmissionObj['admissionID'] = this.selectedAdvanceObj.admissionId;
-
-      let billsObj = {};
-      billsObj['billNo'] = 0;
-      billsObj['balanceAmt'] = parseFloat(this.Ipbillform.get('FinalAmount').value) || 0;
-
-      let advancesupdate = [];
-      let advancesupdateObj = {};
-      advancesupdateObj['advanceDetailID'] = 0,
-        advancesupdateObj['usedAmount'] = 0,
-        advancesupdateObj['balanceAmount'] = 0,
-        advancesupdate.push(advancesupdateObj);
-
-      let advancesHeaderupdate = {};
-      advancesHeaderupdate['advanceId'] = 0,
-        advancesHeaderupdate['advanceUsedAmount'] = 0,
-        advancesHeaderupdate['balanceAmount'] = 0
-
-
-      let submitData = {
-        "bill": InsertBillUpdateBillNoObj,
-        "billDetail": billDetailscreditInsert,
-        "addCharge": addChargeObj,
-        "addmission": addmissionObj,
-        "bills": billsObj,
-        "advancesupdate": advancesupdate,
-        "advancesHeaderupdate": advancesHeaderupdate
-      };
-      console.log(submitData);
-      this._IpSearchListService.InsertIPBillingCredit(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        this.viewgetBillReportPdf(response);
-        this._matDialog.closeAll();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    }
-    else {
-      Swal.fire('check is a credit bill or not ')
-    }
-
-    this.advanceDataStored.storage = [];
-  }
-
+  } 
   onSaveDraft() {
     debugger
-    this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.Ipbillform.get('TotalAmt')?.value)
-    this.draftSaveform.get('tDrbill.concessionAmt')?.setValue(this.Ipbillform.get('totalconcessionAmt')?.value)
-    this.draftSaveform.get('tDrbill.netPayableAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
-    this.draftSaveform.get('tDrbill.balanceAmt')?.setValue(this.Ipbillform.get('FinalAmount')?.value)
+    this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
+    this.draftSaveform.get('tDrbill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value)
+    this.draftSaveform.get('tDrbill.netPayableAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+    this.draftSaveform.get('tDrbill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
     this.draftSaveform.get('tDrbill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.draftSaveform.get('tDrbill.billTime').setValue(this.dateTimeObj.time)
-    this.draftSaveform.get('tDrbill.concessionReasonId')?.setValue(this.Ipbillform.get('ConcessionId')?.value ?? 0)
+    this.draftSaveform.get('tDrbill.concessionReasonId')?.setValue(this.IpbillFooterform.get('ConcessionId')?.value ?? 0)
     this.draftSaveform.get('tDrbill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
-    this.draftSaveform.get('tDrbill.taxPer')?.setValue(this.Ipbillform.get('AdminPer')?.value || 0)
-    this.draftSaveform.get('tDrbill.taxAmount')?.setValue(this.Ipbillform.get('AdminAmt')?.value ?? 0)
+    this.draftSaveform.get('tDrbill.taxPer')?.setValue(this.IpbillFooterform.get('AdminPer')?.value || 0)
+    this.draftSaveform.get('tDrbill.taxAmount')?.setValue(this.IpbillFooterform.get('AdminAmt')?.value ?? 0)
     this.DraftBillDetArray.clear();
       this.dataSource.data.forEach(item => {
         this.DraftBillDetArray.push(this.createDraftBillDetails(item));
@@ -1726,65 +1265,14 @@ checkAdvBalAmt:any=0;
     if (this.dataSource.data.length > 0 && this.draftSaveform.valid) { 
       console.log("Draft form values", this.draftSaveform.value)
       this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
-        if (this.Ipbillform.get("BillType").value == 1)
+        if (this.IpbillFooterform.get("BillType").value == 1)
           this.viewgetDraftBillReportPdf(response.drbno);
         else
           this.viewgetDraftBillservicewiseReportPdf(response.drbno);
         this._matDialog.closeAll();
       });
     }
-  }
-
-  onSaveDraftold() {
-    if (this.dataSource.data.length > 0 && this.Ipbillform.valid) {
-      this.isLoading = 'submit';
-      let InsertDraftBillOb = {};
-      InsertDraftBillOb['drbno'] = 0;
-      InsertDraftBillOb['opdIpdId'] = this.selectedAdvanceObj.admissionId;
-      InsertDraftBillOb['totalAmt'] = this.TotalShowAmt || 0;
-      InsertDraftBillOb['concessionAmt'] = this.Ipbillform.get('totalconcessionAmt').value || 0;
-      InsertDraftBillOb['netPayableAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-      InsertDraftBillOb['paidAmt'] = 0;
-      InsertDraftBillOb['balanceAmt'] = this.Ipbillform.get('FinalAmount').value || 0;
-      InsertDraftBillOb['billDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-      InsertDraftBillOb['opdIpdType'] = 1;
-      InsertDraftBillOb['totalAdvanceAmount'] = this.TotalAdvanceAmt || 0;
-      InsertDraftBillOb['advanceUsedAmount'] = 0;
-      InsertDraftBillOb['addedBy'] = this.accountService.currentUserValue.userId;
-      InsertDraftBillOb['billTime'] = this.dateTimeObj.time;
-      InsertDraftBillOb['concessionReasonId'] = this.Ipbillform.get('ConcessionId').value || 0;
-      InsertDraftBillOb['isSettled'] = false;
-      InsertDraftBillOb['isPrinted'] = true;
-      InsertDraftBillOb['isFree'] = false;
-      InsertDraftBillOb['companyId'] = this.selectedAdvanceObj.companyId || 0;
-      InsertDraftBillOb['tariffId'] = 3,//this.selectedAdvanceObj.tariffId || 0;
-        InsertDraftBillOb['unitId'] = this.selectedAdvanceObj.hospitalID || 0;
-      InsertDraftBillOb['interimOrFinal'] = 0;
-      InsertDraftBillOb['companyRefNo'] = "";
-      InsertDraftBillOb['concessionAuthorizationName'] = 0;
-      InsertDraftBillOb['taxPer'] = this.Ipbillform.get('AdminPer').value || 0;
-      InsertDraftBillOb['taxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
-
-      let DraftBilldetsarr = [];
-      this.dataSource.data.forEach((element) => {
-        let DraftBillDetailsInsertObj = {};
-        DraftBillDetailsInsertObj['drNo'] = 0;
-        DraftBillDetailsInsertObj['chargesId'] = element.chargesId;
-        DraftBilldetsarr.push(DraftBillDetailsInsertObj);
-      }); 
-      this.draftSaveform.get('tDrbill').setValue(InsertDraftBillOb);
-      this.draftSaveform.get('tdrBillDet').setValue(DraftBilldetsarr );
-      console.log('============== Save IP Draft Bill Json ===========', this.draftSaveform.value)
-      this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => { 
-        if (this.Ipbillform.get("BillType").value == 1)
-          this.viewgetDraftBillReportPdf(response.drbno);
-        else
-          this.viewgetDraftBillservicewiseReportPdf(response.drbno);
-        this._matDialog.closeAll();
-      });
-    }
-    this._matDialog.closeAll();
-  }
+  } 
   onClose() {
     this.dialogRef.close({ result: "cancel" });
     this.advanceDataStored.storage = [];
@@ -1823,53 +1311,7 @@ checkAdvBalAmt:any=0;
     }
     this.getChargesList();
     this.interimArray = [];
-  } 
-  //Pharamcy Amount 
-  getPharmacyAmount() {
-    let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
-    this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
-
-      this.PharmacyAmont = data[0].PhBillCredit;
-    })
-  }
-  getValidationMessages() {
-    return {
-      ChargeClass: [
-        { name: "required", Message: "Class Name is required" },
-      ],
-      ServiceName: [
-        { name: "required", Message: "Service Name is required" },
-      ],
-      cashCounterId: [
-        { name: "required", Message: "First Name is required" },
-
-        { name: "pattern", Message: "only Number allowed." }
-      ],
-      price: [
-        { name: "pattern", Message: "only Number allowed." }
-      ],
-      qty: [
-        { name: "required", Message: "Qty required!", },
-        { name: "pattern", Message: "only Number allowed.", },
-        { name: "min", Message: "Enter valid qty.", }
-      ],
-      totalAmount: [
-        {
-          name: "pattern", Message: "only Number allowed."
-        }
-      ],
-      DoctorId: [
-        { name: "pattern", Message: "only Char allowed." }
-      ],
-      discPer: [
-        { name: "pattern", Message: "only Number allowed." }
-      ],
-      discAmount: [{ name: "pattern", Message: "only Number allowed." }],
-      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-      concessionId: [{}],
-      DoctorID: [{}]
-    }
-  }
+  }  
   getLabRequestChargelist() {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
@@ -1912,12 +1354,11 @@ checkAdvBalAmt:any=0;
 
       if (this.billheaderlist > 0) {
         this.isAdminDisabled = true;
-        this.Ipbillform.get('Admincheck').setValue(true)
-        this.vAdminPer = this.billheaderlist
-        //   console.log(this.vAdminPer)
+        this.IpbillFooterform.get('Admincheck').setValue(true)
+       // this.vAdminPer = this.billheaderlist 
       } else {
         this.isAdminDisabled = false;
-        this.Ipbillform.get('Admincheck').setValue(false)
+        this.IpbillFooterform.get('Admincheck').setValue(false)
       }
     });
   }
@@ -1977,6 +1418,12 @@ checkAdvBalAmt:any=0;
 
     }, 100)
     this.chkprint = false;
+  }
+    openServiceTable(): void {
+    this._matDialog.open(this.serviceTable, {
+      width: '50%',
+      height: '60%',
+    })
   }
   // onwhatsappbill() {
   getWhatsappshareIPFinalBill(el, vmono) {
@@ -2043,7 +1490,7 @@ checkAdvBalAmt:any=0;
   getDatewiseChargesList(param) {
     this.chargeslist = [];
     this.dataSource.data = [];
-    this.chargeDate = this.datePipe.transform(this.Ipbillform.get('ChargeDate').value, "MM/dd/yyyy")
+    this.chargeDate = this.datePipe.transform(this.IpbillFooterform.get('ChargeDate').value, "MM/dd/yyyy")
     this.getChargesList()
   }
   OnDateChange() {
@@ -2108,8 +1555,8 @@ checkAdvBalAmt:any=0;
     }
 
     let DoctorId = 0
-    if (this.Ipbillform.get('EditDoctor').value) {
-      DoctorId = this.Ipbillform.get('EditDoctor').value
+    if (this.IpbillFooterform.get('EditDoctor').value) {
+      DoctorId = this.IpbillFooterform.get('EditDoctor').value
     } else {
       DoctorId = element.doctorId
     }
@@ -2138,7 +1585,7 @@ checkAdvBalAmt:any=0;
   }
   DoctorisableEditing(row: ChargesList) {
     row.EditDoctor = false;
-    this.Ipbillform.get('EditDoctor').setValue('')
+    this.IpbillFooterform.get('EditDoctor').setValue('')
     this.getChargesList()
   }
   SelectedDocName: any = [];
@@ -2187,6 +1634,52 @@ checkAdvBalAmt:any=0;
     this.subscription.push(form.get(key).valueChanges.subscribe(value => {
       callback();
     }));
+  }
+    //Pharamcy Amount 
+  getPharmacyAmount() {
+    let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
+    this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
+
+      this.PharmacyAmont = data[0].PhBillCredit;
+    })
+  }
+  getValidationMessages() {
+    return {
+      ChargeClass: [
+        { name: "required", Message: "Class Name is required" },
+      ],
+      ServiceName: [
+        { name: "required", Message: "Service Name is required" },
+      ],
+      cashCounterId: [
+        { name: "required", Message: "First Name is required" },
+
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      price: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      qty: [
+        { name: "required", Message: "Qty required!", },
+        { name: "pattern", Message: "only Number allowed.", },
+        { name: "min", Message: "Enter valid qty.", }
+      ],
+      totalAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      DoctorId: [
+        { name: "pattern", Message: "only Char allowed." }
+      ],
+      discPer: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      discAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      netAmount: [{ name: "pattern", Message: "only Number allowed." }],
+      concessionId: [{}],
+      DoctorID: [{}]
+    }
   }
 }
 
