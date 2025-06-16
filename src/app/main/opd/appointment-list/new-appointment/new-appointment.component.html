@@ -285,7 +285,6 @@
                         </form>
                     </mat-expansion-panel>
 
-                    <!-- changed by raksha -->
                     <mat-expansion-panel expanded class="mt-12">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -298,14 +297,12 @@
                                     [(ngModel)]="registerObj.regId">
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                        [value]="UnitId" [formGroup]="VisitFormGroup"
-                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                    <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="UnitId"
+                                        [formGroup]="VisitFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Class Name" formControlName="ClassId"
-                                        [value]="ClassId" [formGroup]="VisitFormGroup"
-                                        [mode]="autocompleteModeClass"></airmid-dropdown>
+                                    <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="ClassId"
+                                        [formGroup]="VisitFormGroup" [mode]="autocompleteModeClass"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -373,6 +370,260 @@
                                 </div>
                             </div>
                         </form>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel expanded class="mt-12">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Emergency Contact Details
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Relationship" formControlName="RelationshipId"
+                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Landline" formControlName="landlineNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Address" formControlName="Address"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="12">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Driving Licence No." formControlName="drivingNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="16">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="How do you know about us" formControlName="aboutUsId"
+                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel expanded class="mt-12">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Emergency Contact Details
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
+                            <div fxLayout="row wrap" fxLayoutGap="10px grid">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Relationship" formControlName="RelationshipId"
+                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Landline" formControlName="landlineNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Address" formControlName="Address"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="12">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Driving Licence No." formControlName="drivingNo"
+                                        [formGroup]="EmergencyFormGroup" [maxLength]="16">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="How do you know about us" formControlName="aboutUsId"
+                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                    <mat-checkbox (change)="chkMedical($event)">Medical Tourism</mat-checkbox>
+                                    <mat-checkbox (change)="chkAbha($event)">Abha</mat-checkbox>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel expanded class="mt-12" *ngIf="Medicalflag">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Medical Tourism
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="MedicalFormGroup" class="mat-form-field-100">
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Passport Number" formControlName="PassportNo"
+                                        [formGroup]="MedicalFormGroup" [maxLength]="20">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Visa Issue Date</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="VisaDate"
+                                            (dateChange)="onChangeDate($event.value)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Visa Validity</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="VisaValidityDate"
+                                            (dateChange)="onChangeDate($event.value)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Nationality ID Number" formControlName="NationalityIdNo"
+                                        [formGroup]="MedicalFormGroup" [maxLength]="20">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="CitizenShip" formControlName="CountryId"
+                                        [formGroup]="MedicalFormGroup" [mode]="autocompleteModecountry">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Port Of Entry" formControlName="PortEntry"
+                                        [formGroup]="MedicalFormGroup" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Date Of Entry</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="EntryDate"
+                                            (dateChange)="onChangeDate($event.value)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Residential Address" formControlName="ResidentAddress"
+                                        [formGroup]="MedicalFormGroup" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Office/Work Address" formControlName="workAddress"
+                                        [formGroup]="MedicalFormGroup" [maxLength]="100">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+
+                    <!-- added by raksha date:16/6/25 -->
+                    <mat-expansion-panel expanded class="mt-12" *ngIf="Abhaflag">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Abha
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="abhaForm" class="mat-form-field-100">
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="HIP Code" formControlName="hipCode" [formGroup]="abhaForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Abha Address" formControlName="abhaAddress"
+                                        [formGroup]="abhaForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Abha Number" formControlName="abhaNumber"
+                                        [formGroup]="abhaForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Full Name" formControlName="fullName" [formGroup]="abhaForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Token #" formControlName="token" [formGroup]="abhaForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                    <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
+                                        <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
+                                        <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                    <button type="button" class="btn btn-primary">Create ABHA</button>
+                                    <button type="button" class="btn btn-primary">Verify ABHA</button>
+                                    <button type="button" class="btn btn-primary">HIP QR Q</button>
+                                </div>
+                            </div>
+                        </form>
+
                     </mat-expansion-panel>
 
                     <!-- <mat-expansion-panel expanded class="mt-12">

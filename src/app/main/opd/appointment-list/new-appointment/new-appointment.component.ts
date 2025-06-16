@@ -32,7 +32,11 @@ export class NewAppointmentComponent implements OnInit {
     dateStyle?: string = 'Date';
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
-    searchFormGroup: FormGroup;
+    searchFormGroup: FormGroup;    
+    EmergencyFormGroup:FormGroup;
+    MedicalFormGroup:FormGroup;
+    abhaForm:FormGroup;
+
     currentDate = new Date();
 
     registerObj = new RegInsert({});
@@ -78,6 +82,8 @@ export class NewAppointmentComponent implements OnInit {
     DoctorId: any;
     vhealthCardNo: any;
     Healthcardflag: boolean = false;
+    Medicalflag: boolean = false;
+    Abhaflag: boolean = false;
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
@@ -115,6 +121,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
     autocompleteModeClass: string = "Class";
+  autocompleteModerelationship: string = "Relationship";
 
     public imagePreview!: string;
 
@@ -143,6 +150,12 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.personalFormGroup.markAllAsTouched();
         this.VisitFormGroup.markAllAsTouched();
+
+        this.EmergencyFormGroup=this._AppointmentlistService.createEmergencydetailForm();
+        this.EmergencyFormGroup.markAllAsTouched();
+        this.MedicalFormGroup=this._AppointmentlistService.createMedicaldetailForm();
+        this.MedicalFormGroup.markAllAsTouched();
+        this.abhaForm=this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
 
@@ -531,6 +544,25 @@ export class NewAppointmentComponent implements OnInit {
             this.personalFormGroup.get('HealthCardNo').clearValidators();
             this.personalFormGroup.get('HealthCardNo').updateValueAndValidity();
         }
+    }
+
+    // created by raksha date:16/6/25
+    chkMedical(event) {
+        if (event.checked) {
+            this.Medicalflag = true;
+        } else {
+            this.Medicalflag = false;
+        }
+    }
+    chkAbha(event) {
+        if (event.checked) {
+            this.Abhaflag = true;
+        } else {
+            this.Abhaflag = false;
+        }
+    }
+     onChangeDate(value) {
+        console.log(value)
     }
 
     onChangePrefix(e) {

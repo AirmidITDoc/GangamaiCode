@@ -141,9 +141,9 @@ getfilterdata(){
         let that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
             {
-                maxWidth: "75vw",
-                maxHeight: '60%',
-                width: '70%',
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

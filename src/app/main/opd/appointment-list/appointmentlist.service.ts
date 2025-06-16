@@ -144,6 +144,43 @@ export class AppointmentlistService {
         });
     }
 
+    // created by raksha date:16/6/25
+    createEmergencydetailForm() {
+        return this._formBuilder.group({
+            PersonName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$") ]],
+            RelationshipId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            MobileNo: ['', [ Validators.minLength(10),Validators.maxLength(10), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+            landlineNo: ['', [ Validators.minLength(10),Validators.maxLength(10), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+            aadharCardNo: ['', [ Validators.minLength(12),Validators.maxLength(12),Validators.pattern("^[0-9]*$") ]],
+            Address:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+            drivingNo:['', [ Validators.minLength(16),Validators.maxLength(16),Validators.pattern("^[A-Z]{2}[0-9]{2}[0-9]{4}[0-9]{7}$") ]], //eg:KA0120041234567
+            aboutUsId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+     createMedicaldetailForm() {
+        return this._formBuilder.group({
+            PassportNo: ['', [Validators.required,Validators.maxLength(20), Validators.pattern("^[A-PR-WY][0-9]{7}$")]],//eg:A1234567
+            VisaDate: [new Date(),[this._FormvalidationserviceService.validDateValidator()]],
+            VisaValidityDate: [new Date(),[this._FormvalidationserviceService.validDateValidator()]],
+            NationalityIdNo: ['', [ Validators.required,Validators.maxLength(20), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+            CountryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            PortEntry:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
+            EntryDate:[new Date(),[this._FormvalidationserviceService.validDateValidator()]],
+            ResidentAddress:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+            workAddress:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
+        });
+    }
+    createAbhadetailForm() {
+        return this._formBuilder.group({
+            hipCode: ['',this._FormvalidationserviceService.onlyNumberValidator()],
+            abhaAddress: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
+            abhaNumber: ['', this._FormvalidationserviceService.onlyNumberValidator()],
+            fullName: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
+            token: [''],
+            nameFormat: ['F_M_L']
+        });
+    }
+
     public documentuploadInsert(employee, loader = true) {
         if (loader) {
             this._loaderService.show();
