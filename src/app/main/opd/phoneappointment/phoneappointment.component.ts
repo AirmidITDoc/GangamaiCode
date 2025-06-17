@@ -32,7 +32,7 @@ export class PhoneappointmentComponent implements OnInit {
     l_name:any="" 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('newoldIcon') newoldIcon!: TemplateRef<any>;
     @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -47,7 +47,7 @@ export class PhoneappointmentComponent implements OnInit {
 
          allcolumns=[
             { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
-            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
+            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40},
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA' },
@@ -64,7 +64,7 @@ export class PhoneappointmentComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template1 = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template = this.newoldIcon;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }

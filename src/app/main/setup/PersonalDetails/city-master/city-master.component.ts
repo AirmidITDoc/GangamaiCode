@@ -77,23 +77,23 @@ export class CityMasterComponent implements OnInit {
     //     this.getfilterdata();
     // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._CityMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "CityMaster/List",
-            columnsList: this.allColumns,
-            sortField: "cityId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
-    }
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._CityMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "CityMaster/List",
+    //         columnsList: this.allColumns,
+    //         sortField: "cityId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

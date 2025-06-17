@@ -65,7 +65,8 @@ export class ReportGenerationComponent implements OnInit {
     StoreId:any;
     SupplierId:any;
     PaymentId:any;
-    DrugTypeId:any
+    DrugTypeId:any;
+    ItemId:any;
     // 
     rid: number = 0;
     UId: any = 0;
@@ -108,6 +109,7 @@ export class ReportGenerationComponent implements OnInit {
     flagSupplierelected:boolean=false;
     flagPaymentSelected:boolean=false;
     flagDrugTypeSelected:boolean=false;
+    flagItemSelected:boolean=false;
     // 
 
     constructor(
@@ -212,6 +214,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagPaymentSelected = true;
         if(controllerPermission.filter(x => x == "ItemDrugType")?.length > 0)
             this.flagDrugTypeSelected = true;
+        if(controllerPermission.filter(x => x == "Item")?.length > 0)
+            this.flagItemSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -257,6 +261,9 @@ export class ReportGenerationComponent implements OnInit {
     SelectedDrugTypeObj(obj){
         this.DrugTypeId=obj.value;
     }
+    SelectedItemObj(obj){
+        this.ItemId=obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -273,6 +280,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('SupplierId').setValue('');
         this._ReportService.userForm.get('PaymentId').setValue('');
         this._ReportService.userForm.get('DrugTypeId').setValue('');
+        this._ReportService.userForm.get('ItemId').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
@@ -285,7 +293,8 @@ export class ReportGenerationComponent implements OnInit {
         this.SupplierId=0;
         this.PaymentId=0
         this.CompanyId = 0;
-        this.DrugTypeId=0
+        this.DrugTypeId=0;
+        this.ItemId=0;
         this.dischargeTypeId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
@@ -301,6 +310,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagSupplierelected=false;
         this.flagPaymentSelected=false;
         this.flagDrugTypeSelected=false;
+        this.flagItemSelected=false;
     }
     GetPrint() {
         setTimeout(() => {
@@ -387,6 +397,24 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "SupplierId",
                     "fieldValue": this.SupplierId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagDrugTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "DrugTypeId",
+                    "fieldValue": this.DrugTypeId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPaymentSelected)
+                paramFilterList.push({
+                    "fieldName": "PaymentId",
+                    "fieldValue": this.PaymentId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagItemSelected)
+                paramFilterList.push({
+                    "fieldName": "ItemId",
+                    "fieldValue": this.ItemId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
                 //    

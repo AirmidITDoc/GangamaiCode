@@ -59,50 +59,50 @@ bankName: any = "";
 
     ngOnInit(): void { }
  //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'BankNameSearch')
-            this._bankService.myformSearch.get('BankNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'BankNameSearch')
+    //         this._bankService.myformSearch.get('BankNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.bankName = this._bankService.myformSearch.get('BankNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.bankName = this._bankService.myformSearch.get('BankNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._bankService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "BankMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "bankId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "bankName", fieldValue: this.bankName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._bankService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "BankMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "bankId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "bankName", fieldValue: this.bankName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
-    onSearchClear() {
-        this._bankService.myformSearch.reset({
-            BankNameSearch: "",
-            IsDeletedSearch: "2",
-        });
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
+    // onSearchClear() {
+    //     this._bankService.myformSearch.reset({
+    //         BankNameSearch: "",
+    //         IsDeletedSearch: "2",
+    //     });
 
-    }
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

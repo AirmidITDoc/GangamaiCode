@@ -81,43 +81,43 @@ export class CompanyMasterComponent implements OnInit {
 
     }
 //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'CompanyNameSearch')
-            this._CompanyMasterService.myformSearch.get('CompanyNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'CompanyNameSearch')
+    //         this._CompanyMasterService.myformSearch.get('CompanyNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.companyName = this._CompanyMasterService.myformSearch.get('CompanyNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.companyName = this._CompanyMasterService.myformSearch.get('CompanyNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "CompanyMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "companyId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "CompanyMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "companyId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
