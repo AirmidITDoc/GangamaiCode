@@ -379,65 +379,6 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
-                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="50">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Relationship" formControlName="RelationshipId"
-                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Landline" formControlName="landlineNo"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="10">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Address" formControlName="Address"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="100">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="12">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Driving Licence No." formControlName="drivingNo"
-                                        [formGroup]="EmergencyFormGroup" [maxLength]="16">
-                                    </airmid-textbox>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="How do you know about us" formControlName="aboutUsId"
-                                        [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship">
-                                    </airmid-dropdown>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-expansion-panel>
-
-                    <mat-expansion-panel expanded class="mt-12">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Emergency Contact Details
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
                             <div fxLayout="row wrap" fxLayoutGap="10px grid">
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName"
