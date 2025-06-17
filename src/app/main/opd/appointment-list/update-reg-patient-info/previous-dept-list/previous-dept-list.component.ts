@@ -57,7 +57,8 @@ export class PreviousDeptListComponent {
           "opType": "Equals"
         }
       ],
-      "exportType": "JSON"
+      "exportType": "JSON",
+       "columns": []
     }
     this._opappointmentService.getLastVisitDoctorList(vdata).subscribe(data => {
     this.dsLastDepartmentname.data = data.data as RegInsert[]
