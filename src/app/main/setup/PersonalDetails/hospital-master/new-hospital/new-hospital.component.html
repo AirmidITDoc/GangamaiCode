@@ -1,204 +1,262 @@
-<!-- <div id="content" class="simple page-layout left-sidebar inner-scroll inner-sidebar"fusePerfectScrollbar
-dynamicTableHeight>
-    <mat-toolbar style="width: 100%;justify-content: space-between;height:40px;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">menu
-            </mat-icon>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Hospital Master</span>
+<!-- NEW -->
+<div class="modal-wrapper grid-container page-layout">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Hospital Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close" (click)="onClose()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
         </div>
-        <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog" style="color: white;">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-toolbar>
-    <div class="content">
-        <div class="center p-24 pb-56" fusePerfectScrollbar>
-            <div class="content-card">
+    </div>
 
-                <mat-tab-group class="mat-tab-header-small">
-                    <mat-tab style="color: blue;font-weight: bold;" label="Hospital Detail">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
+    <!-- Modal body -->
+    <div class="modal-body">
+        <div class="modal-body-container">
 
+            <mat-tab-group class="mat-tab-header-small">
+                <mat-tab label="Hospital Detail">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card>
+                                <form [formGroup]="HospitalForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
+                                    <input type="hidden" name="HospitalId" formControlName="HospitalId"
+                                        [(ngModel)]="HospitalId">
+                                    <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                                        class="top-header accent heading-container h-40 border-radius-4">
+                                        <span
+                                            style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Hospital
+                                            Details</span>
+                                    </div>
 
-                                <mat-card>
-                                    <form [formGroup]="_HospitalService.HospitalForm" fxLayout="column"
-                                        style="padding: 5px 5px 0px 5px;">
-                                        <input type="hidden" name="HospitalId" formControlName="HospitalId"
-                                            [(ngModel)]="HospitalId">
-                                        <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                                            class="top-header accent heading-container h-40 border-radius-4">
-                                            <span
-                                                style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Hospital
-                                                Details</span>
-                                        </div>
+                                    <mat-card>
+                                        <div fxLayout="column" class="gap-12" style="padding: 10px;">
 
-                                        <mat-card>
-                                            <div fxLayout="column" class="gap-12">
+                                            <div fxLayout="column" class="gap-8" style="margin-top: 10px;">
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Hospital Name</mat-label>
+                                                    <input name="HospitalName" formControlName="HospitalName"
+                                                        placeholder="Hospital Name" matInput #hname
+                                                        (keydown)="onEnterhname($event)" required
+                                                        [(ngModel)]="registerObj.HospitalName">
+                                                    <mat-error class="error"
+                                                        *ngIf="HospitalForm.get('HospitalName').invalid && HospitalForm.get('HospitalName').touched">
+                                                        First
+                                                        Name is required Enter
+                                                        only
+                                                        Alphabets</mat-error>
+                                                </mat-form-field> -->
 
-                                                <div fxLayout="column" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Hospital Name</mat-label>
-                                                        <input name="HospitalName" formControlName="HospitalName"
-                                                            placeholder="Hospital Name" matInput #hname
-                                                            (keydown)="onEnterhname($event)" required
-                                                            [(ngModel)]="registerObj.HospitalName">
-                                                        <mat-error class="error"
-                                                            *ngIf="_HospitalService.HospitalForm.get('HospitalName').invalid && _HospitalService.HospitalForm.get('HospitalName').touched">
-                                                            First
-                                                            Name is required Enter
-                                                            only
-                                                            Alphabets</mat-error>
-                                                    </mat-form-field>
-                                                </div>
-
-
-                                                <div fxLayout="column" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex="50%">
-                                                        <mat-label>HospitalAddress</mat-label>
-                                                        <input name="HospitalAddress" formControlName="HospitalAddress"
-                                                            placeholder="HospitalAddress" matInput #address
-                                                            (keydown)="onEnteraddress($event)"
-                                                            [(ngModel)]="registerObj.HospitalAddress">
-                                                        <mat-error
-                                                            *ngIf="_HospitalService.HospitalForm.get('HospitalAddress').invalid && _HospitalService.HospitalForm.get('HospitalAddress').touched">Please
-                                                            enter Address </mat-error>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div fxLayout="row" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex="80%">
-                                                        <mat-label>City</mat-label>
-                                                        <input matAutocompletePosition="below" type="text"
-                                                            placeholder="Select City" matInput #city
-                                                            (keydown)="onEntercity($event)" formControlName="CityId"
-                                                            [(ngModel)]="vCityId" [matAutocomplete]="autoCity" required>
-                                                        <span matSuffix style="display: flex;">
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="_HospitalService.HospitalForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
-                                                            <mat-icon class="mat-icon-close"
-                                                                (click)="_HospitalService.HospitalForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
-                                                        </span>
-                                                        <mat-autocomplete #autoCity="matAutocomplete"
-                                                            [displayWith]="getOptionTextCity">
-                                                            <mat-option
-                                                                *ngFor="let option of filteredOptionsCity | async"
-                                                                [value]="option">
-                                                                {{option.CityName}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Pin</mat-label>
-                                                        <input name="Pin" formControlName="Pin" placeholder="First Name"
-                                                            matInput #pin (keydown)="onEnterpin($event)" required
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,7);"
-                                                            [(ngModel)]="registerObj.Pin">
-                                                        <mat-error class="error"
-                                                            *ngIf="_HospitalService.HospitalForm.get('Pin').invalid && _HospitalService.HospitalForm.get('Pin').touched">
-                                                            First
-                                                            Name is required Enter
-                                                            only
-                                                            Alphabets</mat-error>
-                                                    </mat-form-field>
-                                                </div>
-
-
-                                                <div fxLayout="row" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Phone Number</mat-label>
-                                                        <input name="Phone" formControlName="Phone"
-                                                            placeholder="Phone Number" matInput required #phone
-                                                            (keydown)="onEntermobile($event)"
-                                                            [(ngModel)]="registerObj.Phone"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
-                                                            required="required" value="9876658688">
-                                                        <mat-error class="error"
-                                                            *ngIf="_HospitalService.HospitalForm.get('Phone').invalid && _HospitalService.HospitalForm.get('Phone').touched">10
-                                                            digits Phone number is
-                                                            required</mat-error>
-                                                    </mat-form-field>
-
-
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Email</mat-label>
-                                                        <input name="Email" formControlName="Email"
-                                                            placeholder="Email Id" matInput required #email
-                                                            (keydown)="onEnterEmail($event)"
-                                                            [(ngModel)]="registerObj.EmailID">
-                                                        <mat-error class="error"
-                                                            *ngIf="_HospitalService.HospitalForm.get('Email').invalid && _HospitalService.HospitalForm.get('Email').touched">
-                                                            is
-                                                            required</mat-error>
-                                                    </mat-form-field>
-
-                                                </div>
-                                                <div fxLayout="column" class="gap-8">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Website</mat-label>
-                                                        <input name="website" formControlName="website"
-                                                            placeholder="website" matInput required #phone
-                                                            (keydown)="onEnterwebsite($event)"
-                                                            [(ngModel)]="registerObj.WebSiteInfo">
-                                                        <mat-error class="error"
-                                                            *ngIf="_HospitalService.HospitalForm.get('website').invalid && _HospitalService.HospitalForm.get('website').touched">
-                                                            Website is
-                                                            required</mat-error>
-                                                    </mat-form-field>
-
-                                                </div>
-
+                                                <airmid-textbox label="HospitalName" formControlName="HospitalName"
+                                                    [formGroup]="HospitalForm" [maxLength]="100"
+                                                    [(ngModel)]="registerObj.hospitalName"
+                                                    [validations]="getValidationMessages().HospitalName">
+                                                </airmid-textbox>
                                             </div>
 
 
-                                        </mat-card>
+                                            <div fxLayout="column" class="gap-8">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="50%">
+                                                    <mat-label>HospitalAddress</mat-label>
+                                                    <input name="HospitalAddress" formControlName="HospitalAddress"
+                                                        placeholder="HospitalAddress" matInput #address
+                                                        (keydown)="onEnteraddress($event)"
+                                                        [(ngModel)]="registerObj.HospitalAddress">
+                                                    <mat-error
+                                                        *ngIf="HospitalForm.get('HospitalAddress').invalid && HospitalForm.get('HospitalAddress').touched">Please
+                                                        enter Address </mat-error>
+                                                </mat-form-field> -->
+
+                                                <airmid-textbox label="HospitalAddress"
+                                                    [(ngModel)]="registerObj.hospitalAddress"
+                                                    formControlName="HospitalAddress" [formGroup]="HospitalForm"
+                                                    [maxLength]="100"
+                                                    [validations]="getValidationMessages().HospitalAddress">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxLayout="row" class="gap-20">
+                                                <!-- <mat-form-field appearance="outline" fxFlex="80%">
+                                                    <mat-label>City</mat-label>
+                                                    <input matAutocompletePosition="below" type="text"
+                                                        placeholder="Select City" matInput #city
+                                                        (keydown)="onEntercity($event)" formControlName="CityId"
+                                                        [(ngModel)]="vCityId" [matAutocomplete]="autoCity" required>
+                                                    <span matSuffix style="display: flex;">
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="HospitalForm.get('CityId').setValue(''); isCitySelected = false;">close</mat-icon>
+                                                        <mat-icon class="mat-icon-close"
+                                                            (click)="HospitalForm.get('CityId').setValue(''); isCitySelected = false;">search</mat-icon>
+                                                    </span>
+                                                    <mat-autocomplete #autoCity="matAutocomplete"
+                                                        [displayWith]="getOptionTextCity">
+                                                        <mat-option *ngFor="let option of filteredOptionsCity | async"
+                                                            [value]="option">
+                                                            {{option.CityName}}
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                </mat-form-field> -->
+
+
+                                                <airmid-dropdown label="City" formControlName="City"
+                                                    [formGroup]="HospitalForm" [value]="vCityId"
+                                                    [validations]="getValidationMessages().cityId" ValueField="cityId"
+                                                    TextField="cityName" ApiUrl="CityMaster/get-cities">
+                                                </airmid-dropdown>
+
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Pin</mat-label>
+                                                    <input name="Pin" formControlName="Pin" placeholder="First Name"
+                                                        matInput #pin (keydown)="onEnterpin($event)" required
+                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,7);"
+                                                        [(ngModel)]="registerObj.Pin">
+                                                    <mat-error class="error"
+                                                        *ngIf="HospitalForm.get('Pin').invalid && HospitalForm.get('Pin').touched">
+                                                        First
+                                                        Name is required Enter
+                                                        only
+                                                        Alphabets</mat-error>
+                                                </mat-form-field> -->
+
+                                                <airmid-textbox label="Pin" formControlName="Pin"
+                                                    [(ngModel)]="registerObj.pin" [formGroup]="HospitalForm"
+                                                    [maxLength]="7" [validations]="getValidationMessages().Pin">
+                                                </airmid-textbox>
+
+                                                <airmid-textbox label="Phone" formControlName="Phone"
+                                                    [formGroup]="HospitalForm" [maxLength]="10"
+                                                    [(ngModel)]="registerObj.phone"
+                                                    [validations]="getValidationMessages().Phone">
+                                                </airmid-textbox>
+
+                                                <airmid-textbox label="Email" formControlName="Email"
+                                                    [formGroup]="HospitalForm" [(ngModel)]="registerObj.emailID"
+                                                    [validations]="getValidationMessages().Email">
+                                                </airmid-textbox>
+                                            </div>
+
+
+                                            <div fxLayout="row" class="gap-8">
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Phone Number</mat-label>
+                                                    <input name="Phone" formControlName="Phone"
+                                                        placeholder="Phone Number" matInput required #phone
+                                                        (keydown)="onEntermobile($event)"
+                                                        [(ngModel)]="registerObj.Phone"
+                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                                        required="required" value="9876658688">
+                                                    <mat-error class="error"
+                                                        *ngIf="HospitalForm.get('Phone').invalid && HospitalForm.get('Phone').touched">10
+                                                        digits Phone number is
+                                                        required</mat-error>
+                                                </mat-form-field> -->
+                                                <!-- <airmid-textbox label="Phone" formControlName="Phone"
+                                                    [formGroup]="HospitalForm" [maxLength]="10"  [(ngModel)]="registerObj.Phone"
+                                                    [validations]="getValidationMessages().Phone">
+                                                </airmid-textbox> -->
+
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Email</mat-label>
+                                                    <input name="Email" formControlName="Email" placeholder="Email Id"
+                                                        matInput required #email (keydown)="onEnterEmail($event)"
+                                                        [(ngModel)]="registerObj.EmailID">
+                                                    <mat-error class="error"
+                                                        *ngIf="HospitalForm.get('Email').invalid && HospitalForm.get('Email').touched">
+                                                        is
+                                                        required</mat-error>
+                                                </mat-form-field> -->
+
+                                                <!-- <airmid-textbox label="Email" formControlName="Email"
+                                                    [formGroup]="HospitalForm"  [(ngModel)]="registerObj.EmailID"
+                                                    [validations]="getValidationMessages().Email">
+                                                </airmid-textbox> -->
+
+                                            </div>
+                                            <div fxLayout="column" class="gap-8">
+                                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Website</mat-label>
+                                                    <input name="website" formControlName="website"
+                                                        placeholder="website" matInput required #phone
+                                                        (keydown)="onEnterwebsite($event)"
+                                                        [(ngModel)]="registerObj.WebSiteInfo">
+                                                    <mat-error class="error"
+                                                        *ngIf="HospitalForm.get('website').invalid && HospitalForm.get('website').touched">
+                                                        Website is
+                                                        required</mat-error>
+                                                </mat-form-field> -->
+
+                                                <airmid-textbox label="website" formControlName="website"
+                                                    [formGroup]="HospitalForm" [(ngModel)]="registerObj.webSiteInfo"
+                                                    [validations]="getValidationMessages().website">
+                                                </airmid-textbox>
+                                            </div>
+
+                                        </div>
+
+
+                                    </mat-card>
+                                </form>
+
+                            </mat-card>
+
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+
+                <mat-tab label="Hospital Template Detail">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+
+                                    <form [formGroup]="HospitalForm">
+                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-label>Hospital Header Details</mat-label>
+                                                <!-- <airmid-editor label="Template Details" formControlName="templateDesc" [(value)]="vTemplateDesc" [formGroup]="storeForm"></airmid-editor> -->
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:400px;" [(ngModel)]="vTemplateDesc"
+                                                    formControlName="header">
+                                                </angular-editor>
+
+                                                <mat-checkbox aria-label="Is Active" formControlName="IsActive"
+                                                    (checked)=true [(ngModel)]="registerObj.isActive"
+                                                    style="font-weight: bold;margin-right: 20px;">IsActive
+                                                </mat-checkbox>
+                                            </div>
+
+                                        </div>
                                     </form>
 
-                                </mat-card>
-
-
+                                </div>
                             </div>
+
                         </div>
-                    </mat-tab>
-
-
-
-                    <mat-tab style="color: blue;font-weight: bold;" label="Hospital Template Detail">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <form [formGroup]="_HospitalService.HospitalForm">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                        <div fxFlex.gt-sm="100%" fxFlex>
-
-                                            <mat-label style="font-size: medium;font-weight: bold;">Hospital
-                                                Details</mat-label>
-                                              <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" formControlName="header">
-                                                </angular-editor>
-                                        </div>
-                                    </div>
-                                    <mat-checkbox aria-label="Is Active" formControlName="IsDeleted" (checked)=true
-                                        [(ngModel)]="registerObj.IsDeleted"
-                                        style="font-weight: bold;margin-right: 20px;">IsActive
-                                    </mat-checkbox>
-                                </form>
-                            </div>
-                        </div>
-                    </mat-tab>
-
-                </mat-tab-group>
-                <div fxLayoutAlign="end">
-                    <div class="sales-footer-buttons gap-8">
-                        <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                        <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                     </div>
+                </mat-tab>
+
+            </mat-tab-group>
+            <div fxLayoutAlign="end">
+                <div class="sales-footer-buttons gap-8">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                 </div>
-
-
             </div>
         </div>
-    </div> -->
+
+    </div>
+
+
+
+    <!-- Modal footer -->
+
+</div>

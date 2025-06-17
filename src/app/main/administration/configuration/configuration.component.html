@@ -10,10 +10,7 @@
                 </span>
             </div>
         </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New Configuration
-            </button>
-        </div>
+       
     </div>
     <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
     </airmid-table>

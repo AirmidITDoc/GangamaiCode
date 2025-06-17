@@ -36,7 +36,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ConfigurationComponent } from './configuration.component';
 import { ConfigurationService } from './configuration.service';
-import { NewconfigComponent } from './newconfig/newconfig.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -51,7 +50,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [ConfigurationComponent, NewconfigComponent,NewConfigurationComponent],
+  declarations: [ConfigurationComponent,NewConfigurationComponent],
   imports: [
     RouterModule.forChild(routes),
    MatChipsModule,

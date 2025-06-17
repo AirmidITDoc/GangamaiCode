@@ -38,23 +38,23 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{RegNo}}</span>
+                                                <span class="patient-col-value">{{regObj.regNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientName}}</span>
+                                                <span class="patient-col-value">{{regObj.patientName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Doctor Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{Doctorname}}</span>
+                                                <span class="patient-col-value">{{regObj.doctorName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{DepartmentName}}</span>
+                                                <span class="patient-col-value">{{regObj.departmentName}}</span>
                                             </div>
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px">
@@ -62,25 +62,25 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">DOA | Time</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{DOA}} | {{DOT}}</span>
+                                                <span class="patient-col-value">{{regObj.doa}} | {{regObj.dot}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">OPD/IPD No</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{vOPDIPdNo}}</span>
+                                                <span class="patient-col-value">{{regObj.oP_IP_No}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}} D
-                                                    | {{GenderName}}</span>
+                                                <span class="patient-col-value">{{regObj.ageYear}}Y|{{regObj.ageMonth}}M|{{regObj.ageDay}} D
+                                                    | {{regObj.GenderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{RefDocName}}</span>
+                                                <span class="patient-col-value">{{regObj.refDocName}}</span>
                                             </div>
 
                                         </div>
@@ -89,25 +89,25 @@
                                                 <span class="patient-col-key">Ward | Bed Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{WardName}}</span>
+                                                <span class="patient-col-value">{{regObj.wardName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Type
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientType}}</span>
+                                                <span class="patient-col-value">{{regObj.patientType}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Tarrif Name
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{Tarrifname}}</span>
+                                                <span class="patient-col-value">{{regObj.tariffName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value"
-                                                    style="color: orange;">{{CompanyName}}</span>
+                                                    style="color: orange;">{{regObj.companyName}}</span>
                                             </div>
                                         </div>
                                     </div>

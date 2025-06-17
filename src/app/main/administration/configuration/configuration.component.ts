@@ -7,7 +7,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationService } from './configuration.service';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
-import { NewconfigComponent } from './newconfig/newconfig.component';
+
 
 @Component({
     selector: 'app-configuration',

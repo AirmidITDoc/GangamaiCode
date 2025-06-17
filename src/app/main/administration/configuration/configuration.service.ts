@@ -107,7 +107,9 @@ export class ConfigurationService {
             IPPaperName2: "",
 
             OPSalesdisc: '',
-            IPSalesdisc: ''
+            IPSalesdisc: '',
+
+            classId:''
         });
     }
 

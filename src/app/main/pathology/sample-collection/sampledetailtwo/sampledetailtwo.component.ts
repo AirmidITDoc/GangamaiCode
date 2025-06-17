@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +12,8 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import Swal from 'sweetalert2';
 import { SampleCollectionService } from '../sample-collection.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-sampledetailtwo',
@@ -24,9 +26,9 @@ export class SampledetailtwoComponent implements OnInit {
 
   interimArray: any = [];
   samplelist: any = [];
-  msg: any;
+  // msg: any;
   date: any;
-  isLoading: String = '';
+  // isLoading: String = '';
   Currentdate: any;
   displayedColumns: string[] = [
     'select',
@@ -37,40 +39,40 @@ export class SampledetailtwoComponent implements OnInit {
   selectedAdvanceObj: AdvanceDetailObj;
   hasSelectedContacts: boolean;
   screenFromString = 'OP-billing';
-  advanceData: any;
-  VADate: Date;
-  PathTestID: Number;
-  ServiceName: String;
-  IsSampleCollection: boolean;
-  SampleCollectionTime: Date;
-  PathReportID: any;
+  // advanceData: any;
+  // VADate: Date;
+  // PathTestID: Number;
+  // ServiceName: String;
+  // IsSampleCollection: boolean;
+  // SampleCollectionTime: Date;
+  // PathReportID: any;
   dateTimeObj: any;
   // selectedAdvanceObj1:AdmissionPersonlModel;
   selectedAdvanceObj1: any;
 
   regObj: any;
-  PatientName: any;
-  MobileNo: any;
-  DepartmentName: any;
-  AgeMonth: any;
-  AgeDay: any;
-  GenderName: any;
-  RefDocName: any;
-  WardName: any;
-  RegNo: any;
-  vOPIPId: any;
-  VisitId: any;
-  RegId: any;
-  Doctorname: any;
-  vOPDIPdNo: any;
-  AgeYear: any;
-  PatientType: any;
-  Tarrifname: any;
-  CompanyName: any;
-  vClassId: any;
-  Lbl:any;
-  DOA:any;
-  DOT:any;
+  // PatientName: any;
+  // MobileNo: any;
+  // DepartmentName: any;
+  // AgeMonth: any;
+  // AgeDay: any;
+  // GenderName: any;
+  // RefDocName: any;
+  // WardName: any;
+  // RegNo: any;
+  // vOPIPId: any;
+  // VisitId: any;
+  // RegId: any;
+  // Doctorname: any;
+  // vOPDIPdNo: any;
+  // AgeYear: any;
+  // PatientType: any;
+  // Tarrifname: any;
+  // CompanyName: any;
+  // vClassId: any;
+  // Lbl:any;
+  // DOA:any;
+  // DOT:any;
 
   dataSource = new MatTableDataSource<SampleList>();
   sIsLoading: string = '';
@@ -85,76 +87,52 @@ export class SampledetailtwoComponent implements OnInit {
     public dialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private _fuseSidebarService: FuseSidebarService,
-
+private _FormvalidationserviceService: FormvalidationserviceService,
+private accountService: AuthenticationService,
 
   ) {
     dialogRef.disableClose = true;
-    this.advanceData = data;
-    console.log(this.advanceData);
-    console.log(new Date())
-
+    // this.advanceData = data;
+   
     let mydate = new Date()
-
-    // this.date = mydate.toISOString().slice(0, 19).replace('T', ' ');
-
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
-
-    //this.date= (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm")).toString().slice(0, 16) || '01/01/1900',
-    //this.date = new Date();
-
-
-    console.log(this.date)
-
-
+   
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
-
+vSampleCollFormGroup:FormGroup
   ngOnInit(): void {
-
+ this.vSampleCollFormGroup = this.vSamplecollFormInsert();
     if (this.data) {
       this.regObj = this.data
       console.log(this.regObj)
-      this.RegNo = this.regObj.regNo
-      this.vOPIPId = this.regObj.visitId
-      this.VisitId = this.regObj.visitId
-      this.RegId = this.regObj.regId
-      this.PatientName = this.regObj.patientName
-      this.Doctorname = this.regObj.doctorName
-      this.vOPDIPdNo = this.regObj.oP_IP_No
-      this.AgeYear = this.regObj.ageYear
-      this.AgeMonth = this.regObj.ageMonth
-      this.AgeDay = this.regObj.ageDay
-      this.GenderName = this.regObj.GenderName
-      this.DepartmentName = this.regObj.departmentName
-      this.PatientType = this.regObj.patientType
-      this.Tarrifname = this.regObj.tariffName
-      this.CompanyName = this.regObj.companyName
-      this.RefDocName = this.regObj.refDocName
-      this.vClassId = this.regObj.classId
-      this.Lbl = this.regObj.lbl
-      this.DOA = this.regObj.doa
-      this.DOT = this.regObj.dot
-      this.WardName=this.regObj.wardName
+      // this.RegNo = this.regObj.regNo
+      // this.vOPIPId = this.regObj.visitId
+      // this.VisitId = this.regObj.visitId
+      // this.RegId = this.regObj.regId
+      // this.PatientName = this.regObj.patientName
+      // this.Doctorname = this.regObj.doctorName
+      // this.vOPDIPdNo = this.regObj.oP_IP_No
+      // this.AgeYear = this.regObj.ageYear
+      // this.AgeMonth = this.regObj.ageMonth
+      // this.AgeDay = this.regObj.ageDay
+      // this.GenderName = this.regObj.GenderName
+      // this.DepartmentName = this.regObj.departmentName
+      // this.PatientType = this.regObj.patientType
+      // this.Tarrifname = this.regObj.tariffName
+      // this.CompanyName = this.regObj.companyName
+      // this.RefDocName = this.regObj.refDocName
+      // this.vClassId = this.regObj.classId
+      // this.Lbl = this.regObj.lbl
+      // this.DOA = this.regObj.doa
+      // this.DOT = this.regObj.dot
+      // this.WardName=this.regObj.wardName
     }
-
-    // if (this.advanceData) {
-    //   this.selectedAdvanceObj = this.advanceData.regobj;
-    //   this.selectedAdvanceObj1 = this.advanceData.regobj;
-    //   console.log(this.selectedAdvanceObj1);
-    // }
-
-    // this.getSampledetailList();
     this.getSampledetailList1(this.regObj);
   }
 
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+ 
 
   tableElementChecked(event, element) {
 
@@ -259,36 +237,67 @@ debugger
       });
   }
 
+
+
+   vSamplecollFormInsert(): FormGroup {
+    return this.formBuilder.group({
+    pathlogySampleCollection: this.formBuilder.array([])// FormArray for details
+      
+    });
+  }
+
+  // 2. FormArray Group for Refund Detail
+    createSampleDetail(item: any = {}): FormGroup {
+      return this.formBuilder.group({
+        PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900' , [Validators.required]],
+        IsSampleCollection: [true],
+        SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]]
+       
+      });
+    }
+  
+    get refundDetailsArray(): FormArray {
+        return this.vSampleCollFormGroup.get('pathlogySampleCollection') as FormArray;
+      }
+
+      
   onSave() {
     
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    // const currentDate = new Date();
+    // const datePipe = new DatePipe('en-US');
+    // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    // const formattedTime = datePipe.transform(currentDate, 'shortTime');
     if (this.selection.selected.length == 0) {
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
-    let updatesamcollection = [];
+    // let updatesamcollection = [];
 
-      this.selection.selected.forEach((element) => {
-        console.log(element);
-        let UpdateAddSampleDetailsObj = {
-          "PathReportId": element.pathReportID || 1,
-          "sampleCollectionTime": this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900',
-          "IsSampleCollection": true, //String(element.isSampleCollection) === "True" ? true : false,
-          "SampleNo": String(element.sampleNo || 0)
-        }
-        updatesamcollection.push(UpdateAddSampleDetailsObj);
+    //   this.selection.selected.forEach((element) => {
+    //     console.log(element);
+    //     let UpdateAddSampleDetailsObj = {
+    //       "PathReportId": element.pathReportID || 1,
+    //       "sampleCollectionTime": this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900',
+    //       "IsSampleCollection": true, //String(element.isSampleCollection) === "True" ? true : false,
+    //       "SampleNo": String(element.sampleNo || 0)
+    //     }
+    //     updatesamcollection.push(UpdateAddSampleDetailsObj);
+    //   });
+
+    //   let submitData={
+    //     "pathlogySampleCollection":updatesamcollection
+    //   }
+
+        this.refundDetailsArray.clear();
+      this.selection.selected.forEach(item => {
+        this.refundDetailsArray.push(this.createSampleDetail(item));
       });
 
-      let submitData={
-        "pathlogySampleCollection":updatesamcollection
-      }
 
-    console.log(submitData);
-    this._SampleService.UpdateSampleCollection(submitData).subscribe(data => {
-      this.msg = data;
+    console.log(this.vSampleCollFormGroup.value);
+    this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
+      // this.msg = data;
       if (data) {
         Swal.fire('Congratulations !', 'Pathology Sample collection data updated Successfully !', 'success').then((result) => {
           if (result.isConfirmed) {
@@ -299,7 +308,7 @@ debugger
         Swal.fire('Error !', 'Pathology Sample collection data not update', 'error');
       }
     });
-    this.isLoading = '';
+    // this.isLoading = '';
   }
 
 
@@ -329,7 +338,12 @@ debugger
     return numSelected === numRows;
 
   }
-
+ toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
   onClose() {
     this.dialogRef.close();
   }
