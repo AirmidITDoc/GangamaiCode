@@ -31,8 +31,7 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { CompanysettlementComponent } from './companysettlement.component';
-import { NewSettlementComponent } from './new-settlement/new-settlement.component';
+import { CompanysettlementComponent } from './companysettlement.component'; 
 
 
 const routes: Routes = [
@@ -42,7 +41,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [CompanysettlementComponent, NewSettlementComponent],
+  declarations: [CompanysettlementComponent],
   imports: [
    RouterModule.forChild(routes),
            MatButtonModule,
