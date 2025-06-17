@@ -38,6 +38,9 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { PhoneAppointListService } from './phone-appoint-list.service';
 import { PhoneappointmentComponent } from './phoneappointment.component';
+import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 const routes: Routes = [
     {
@@ -49,9 +52,14 @@ const routes: Routes = [
     declarations: [
         PhoneappointmentComponent,
         NewPhoneAppointmentComponent,
+        NewPhoneAppoinmentCalendarComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

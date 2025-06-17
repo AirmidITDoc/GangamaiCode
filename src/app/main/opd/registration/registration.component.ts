@@ -292,6 +292,8 @@ export class RegInsert {
     departmentName: any;
     UnitId: any;
     billNo: any;
+    departmentId:any;
+    doctorId:any;
     // religionId:any;
     // updatedBy:any;
 
@@ -371,6 +373,8 @@ export class RegInsert {
             this.departmentName = RegInsert.departmentName || "";
             this.UnitId = RegInsert.UnitId || 0;
             this.billNo = RegInsert.billNo || 0;
+            this.departmentId = RegInsert.departmentId || 0;
+            this.doctorId = RegInsert.doctorId || 0;
         }
     }
 }

@@ -7,8 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { AuthenticationService } from 'app/core/services/authentication.service'; 
 import { parseInt } from 'lodash';
 import * as converter from 'number-to-words';
 import { Subscription } from 'rxjs';
@@ -29,6 +28,7 @@ import { SubstitutesComponent } from '../sales/substitutes/substitutes.component
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -1742,7 +1742,7 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     PatientHeaderObj['Age'] = this.Age;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
 
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent, {
+    const dialogRef = this._matDialog.open(OpPaymentComponent, {
       maxWidth: '80vw',
       height: '650px',
       width: '80%',

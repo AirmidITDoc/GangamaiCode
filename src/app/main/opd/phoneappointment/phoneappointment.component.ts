@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -32,7 +33,7 @@ export class PhoneappointmentComponent implements OnInit {
     l_name:any="" 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('newoldIcon') newoldIcon!: TemplateRef<any>;
     @ViewChild('actionsflgBillNo') actionsflgBillNo!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -47,7 +48,7 @@ export class PhoneappointmentComponent implements OnInit {
 
          allcolumns=[
             { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
-            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10},
+            { heading: "-", key: "regNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40},
             { heading: "SeqNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Date", key: "phAppDate", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "App Time", key: "phAppTime", sort: true, align: 'left', emptySign: 'NA' },
@@ -64,7 +65,7 @@ export class PhoneappointmentComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template1 = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'regNo')!.template = this.newoldIcon;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -140,6 +141,24 @@ getfilterdata(){
 
         let that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+    onSave1(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewPhoneAppoinmentCalendarComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: '80%',

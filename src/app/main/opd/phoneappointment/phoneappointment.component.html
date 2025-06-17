@@ -11,20 +11,20 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave1()">New Phone Appointment With Calendar
+            </button>
             <button mat-raised-button (click)="onSave()">New Phone Appointment
             </button>
         </div>
     </div>
 
-    <ng-template #actionsTemplate1 let-element>
+    <ng-template #newoldIcon let-element>
         <div>
-            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo==0" matTooltip="New Patient"
-                class="blue-600 s-16">circle
-            </mat-icon>
+            <mat-icon style="border-radius:100%;" *ngIf="element.regNo === '' || element.regNo === '0'"
+                matTooltip="New Patient" class="blue-600 s-16">circle</mat-icon>
 
-            <mat-icon style="border-radius:100% ;" *ngIf="element.regNo!=0" matTooltip="Old Patient"
-                class="grey-600 s-16">circle
-            </mat-icon>
+            <mat-icon style="border-radius:100%;" *ngIf="element.regNo !== '' && element.regNo !== '0'"
+                matTooltip="Registred Patient" class="grey-600 s-16">circle</mat-icon>
         </div>
     </ng-template>
 
@@ -34,9 +34,9 @@
                 class="red-600 s-16">circle
             </mat-icon>
 
-            <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='1'" matTooltip="Appointment Approved"
+            <!-- <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='1'" --matTooltip="Appointment Approved"
                 class="green-600 s-16">circle
-            </mat-icon>
+            </mat-icon> -->
         </div>
     </ng-template>
 
@@ -54,14 +54,18 @@
                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
             </button>
 
-
-            <button mat-icon-button (click)="Appointmentcancle(element)" matTooltip="Appointment Cancel"
+            <!-- <button mat-icon-button (click)="Appointmentcancle(element)" matTooltip="Appointment Cancel"
                 *ngIf="element.isCancelled=='0'">
                 <mat-icon title="Edit Menu" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
                     class="disabled-icon">
                     cancel</mat-icon>
                 <mat-icon title="Edit Menu" *ngIf="element.isCancelled==0" (click)="CanclePhoneApp(element)">
                     cancel</mat-icon>
+            </button> -->
+
+            <button mat-icon-button (click)="Appointmentcancle(element)" matTooltip="Appointment Cancel"
+                *ngIf="element.isCancelled == '0' && element.flagAppDone != '1'">
+                <mat-icon title="Cancel Appointment">cancel</mat-icon>
             </button>
         </div>
     </ng-template>
@@ -75,24 +79,26 @@
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
                         [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
 
-                    
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeFirst()"/>
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-    
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform" formControlName="LastName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-    
-                       
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
                         [(ngModel)]="gridConfig.filters[2].fieldValue"
                         [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"

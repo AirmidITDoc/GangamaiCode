@@ -137,6 +137,11 @@
                                         <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="MItemDrugTypeMasterList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
+                                    
+                                    <ng-container *ngIf="flagItemSelected">
+                                        <airmid-autocomplete label="Item Name" [formGroup]="_ReportService.userForm" formControlName="ItemId" placeholderText="Select Item Name" ApiUrl="MItemMasterList/auto-complete?Keyword=" (selectionChange)="SelectedItemObj($event)">
+                                        </airmid-autocomplete>
+                                    </ng-container>
                                     <!-- Creadit Reason & sales dd remaining -->
                                 </div>
 
