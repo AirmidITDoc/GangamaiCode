@@ -88,6 +88,9 @@ export class NewAppointmentComponent implements OnInit {
     ageMonth = 0
     ageDay = 0
 
+    // <mat-expansion-panel> default to closed,
+    isExpanded = false; // Defaults to closed
+
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;

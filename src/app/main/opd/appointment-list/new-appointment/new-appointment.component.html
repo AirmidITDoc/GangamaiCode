@@ -26,39 +26,48 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="searchFormGroup">
-                <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="space-between start"
-                    fxLayoutAlign.gt-sm="space-between center" class="appointment-header gap-12">
-
-                    <div class="redio-container pb-3">
-                        <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
-                            (change)="onChangeReg($event)">
-                            <mat-radio-button value="registration" [disabled]="chkregisterd">New Registration
-                            </mat-radio-button>
-                            <mat-radio-button value="registrered">Registered</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-
-                    <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="center center">
-                        <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
-
-                        <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
-                            [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
-                            placeholderText="Search Reg No / Patient Name / Mobile No"
-                            ApiUrl="OutPatient/auto-complete?Keyword="
-                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
-
-                        <airmid-autocomplete class="w-350" label="Phone Appointment" [formGroup]="searchFormGroup"
-                            formControlName="PhoneRegId" *ngIf="IsPhoneAppflag"
-                            placeholderText="Search Reg No / Patient Name / Mobile No"
-                            ApiUrl="PhoneAppointment2/auto-complete?Keyword="
-                            (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
-                    </div>
-
-                </div>
+                <mat-card>
+                    <mat-card-content>
+                        <!-- class="appointment-header gap-12"  fxLayoutAlign.gt-sm="space-between center" -->
+                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center">
+                            <div class="radio-container">
+                                <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
+                                    (change)="onChangeReg($event)">
+                                    <mat-radio-button value="registration" [disabled]="chkregisterd">New Registration
+                                    </mat-radio-button>
+                                    <mat-radio-button value="registrered">Registered</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+            
+                            <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+                                <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
+            
+                                <airmid-autocomplete class="w-450" label="Search Reg No / Patient Name / Mobile No"
+                                    [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
+                                    placeholderText="Search Reg No / Patient Name / Mobile No"
+                                    ApiUrl="OutPatient/auto-complete?Keyword="
+                                    (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+            
+                                <airmid-autocomplete class="w-450" label="Phone Appointment" [formGroup]="searchFormGroup"
+                                    formControlName="PhoneRegId" *ngIf="IsPhoneAppflag"
+                                    placeholderText="Search Reg No / Patient Name / Mobile No"
+                                    ApiUrl="PhoneAppointment2/auto-complete?Keyword="
+                                    (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
+                            </div>
+            
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            
             </form>
             <div class="personal-panel">
                 <mat-accordion multi>
-                    <!-- <mat-expansion-panel expanded class="mt-12"> -->
+                    <mat-expansion-panel expanded class="mt-12">
+                          <mat-expansion-panel-header>
+                            <!-- <mat-panel-title>
+                                Visit Details
+                            </mat-panel-title> -->
+                        </mat-expansion-panel-header>
                         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                             <mat-tab label="Personal Detail">
                                 <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
@@ -411,7 +420,7 @@
                                 </div>
                             </mat-tab>
                         </mat-tab-group>
-                    <!-- </mat-expansion-panel> -->
+                    </mat-expansion-panel>
 
                     <mat-expansion-panel expanded class="mt-12">
                         <mat-expansion-panel-header>
@@ -500,7 +509,7 @@
                         </form>
                     </mat-expansion-panel>
 
-                    <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Health Card Details
@@ -535,7 +544,7 @@
                     <mat-expansion-panel expanded class="mt-12">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                Abha
+                                ABHA
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <form [formGroup]="abhaForm" class="mat-form-field-100">
