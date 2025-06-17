@@ -119,12 +119,12 @@
                                     </ng-container>
 
                                     <ng-container *ngIf="flagStoreSelected">
-                                        <airmid-autocomplete label="Store Name" [formGroup]="_ReportService.userForm" formControlName="StoreId" placeholderText="Select Store Name" ApiUrl="StoreList/auto-complete?Keyword=" (selectionChange)="SelectedStoreObj($event)">
+                                        <airmid-autocomplete label="Store Name" [formGroup]="_ReportService.userForm" formControlName="StoreId" placeholderText="Select Store Name" ApiUrl="MStoreMasterList/auto-complete?Keyword=" (selectionChange)="SelectedStoreObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagSupplierelected">
-                                        <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="SupplierList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
+                                        <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="MSupplierMasterList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
@@ -134,10 +134,10 @@
                                     </ng-container>
 
                                     <ng-container *ngIf="flagDrugTypeSelected">
-                                        <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="DrugTypeList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
+                                        <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="MItemDrugTypeMasterList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
-                                    <!--  -->
+                                    <!-- Creadit Reason & sales dd remaining -->
                                 </div>
 
                                 <!-- Print Button -->
