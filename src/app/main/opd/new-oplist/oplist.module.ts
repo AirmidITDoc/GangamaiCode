@@ -34,14 +34,8 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { NewOPListComponent } from "./new-oplist.component";
-import { OPListService } from "./oplist.service";
-//import { NgxPrintModule } from "ngx-print";
-//import { WebcamModule } from "ngx-webcam";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-//import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
-import { OPSettlementComponent } from './op-settlement/op-settlement.component';
-
-
+import { OPListService } from "./oplist.service"; 
+import { MatButtonToggleModule } from "@angular/material/button-toggle";  
 
 const routes: Routes = [
     {
@@ -51,7 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NewOPListComponent, OPSettlementComponent],
+    declarations: [NewOPListComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

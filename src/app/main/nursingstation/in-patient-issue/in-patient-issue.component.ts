@@ -6,8 +6,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component'; 
 import { BrowsSalesBillService } from 'app/main/pharmacy/brows-sales-bill/brows-sales-bill.service';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +14,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PrescriptionComponent } from '../prescription/prescription.component';
 import { InPatientIssueService } from './in-patient-issue.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
 @Component({
   selector: 'app-in-patient-issue',
@@ -1196,7 +1196,7 @@ export class InPatientIssueComponent implements OnInit {
     PatientHeaderObj['Age'] = this.Age ;
     PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
   
-    const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "80vw",
           height: '650px',

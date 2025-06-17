@@ -7,8 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { OpPaymentNewComponent } from 'app/main/opd/op-search-list/op-payment-new/op-payment-new.component';
+import { AuthenticationService } from 'app/core/services/authentication.service'; 
 import { parseInt } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -2162,7 +2161,7 @@ export class SalesComponent implements OnInit {
         PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
         PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; //this.ItemSubform.get('FinalNetAmount').value;
         this.isLoading123 = false;
-        const dialogRef = this._matDialog.open(OpPaymentNewComponent,
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
