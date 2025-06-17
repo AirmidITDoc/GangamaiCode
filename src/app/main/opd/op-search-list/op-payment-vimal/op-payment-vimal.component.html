@@ -163,14 +163,12 @@
                                         Used Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
                                         <!-- {{element.UsedAmount | currency:'INR'}} -->
-                                        <!-- [readonly]="element.BalanceAmount == 0" -->
-                                        <form [formGroup]="patientDetailsFormGrp" class="mat-form-field-auto mat-error-fix">
+                                        <!-- [readonly]="element.BalanceAmount == 0" --> 
                                             <mat-form-field appearance="fill">
                                                 <input matInput type="text" OnlyNumber [(ngModel)]="element.usedAmount" [value]="element.usedAmount"
                                                     (keyup)="onKeyAdv(element,$event)" (keypress)="keyPressAlphanumeric($event)"
-                                                    [disabled]="element.refundAmount == element.advanceAmount" formControlName="EditAdvance">
-                                            </mat-form-field>
-                                        </form>
+                                                    [disabled]="element.refundAmount == element.advanceAmount"  >
+                                            </mat-form-field> 
                                     </mat-cell>
                                 </ng-container> 
 

@@ -147,12 +147,26 @@ export class AppointmentListComponent implements OnInit {
         this.myformSearch.reset();
     }
     onChangeFirst() {
+      
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value 
         this.getfilterdata();
+       
+    }
+        onChangeFirst1(event) {
+            debugger
+        console.log(event)
+        if(event.key==13){
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value 
+        this.getfilterdata();
+        }
     }
 
 getfilterdata(){

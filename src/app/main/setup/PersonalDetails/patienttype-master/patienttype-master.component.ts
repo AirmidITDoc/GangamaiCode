@@ -74,30 +74,30 @@ patientType: any = "";
     //     this.getfilterdata();
     // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._PatienttypeMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "PatientType/List",
-            columnsList: this.allcolumns,
-            sortField: "patientTypeId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "patientType", fieldValue: this.patientType, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._PatienttypeMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "PatientType/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "patientTypeId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "patientType", fieldValue: this.patientType, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

@@ -1,459 +1,527 @@
-<!-- <div class=" simple page-layout inner-scroll inner-sidebar left-sidebar">
-    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
-      <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-          Configuration Form
-        </span>
-      </div>
-  
-      <div class="close-icon">
-        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
-  
-    <div class="content">
-  
-      <div class="center p-12 pb-56" fxFlexAlign="start center">
-  
-        <div class="content-card" style="border-radius:4px;"> -->
-          <!-- <form  fxLayoutAlign="space-between start">
-                    <div class="register-container" fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                      
-                   
-                      <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs()" style="border-radius: 16px;display:none;">
-                        Show
-                      </button>
-                      <div class="search-field">
-                      <mat-form-field appearance="outline" fxFlex="20">
-                        <input name="RegId" formControlName="RegId" placeholder="RegNo" matInput required>
-                        <mat-error>Please enter Reg No </mat-error>
-                      </mat-form-field>
-          
-                   
-                      </div>
-                      
-                    </div>
-                  </form> -->
-  
-          <!-- <div class="nav material2">
-  
-            <div fxLayout="column" fxLayoutAlign="start none">
-  
-              <form [formGroup]="configFormGroup">
-  
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                  class="top-header accent heading-container h-40 border-radius-4">
-                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                    Config
-                  </span>
-                </div>
-  
-                <mat-card>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px">
-                    <mat-checkbox formControlName="PrintReg">Print After Registration </mat-checkbox>
-                    <mat-checkbox formControlName="PrintOPDVisit">Print Case Proper After OPD Visit </mat-checkbox>
-                    <mat-checkbox formControlName="PrintAdm">Print IPD Admission </mat-checkbox>
-  
-                  </div>
-                  <br>
-                  <span style="font-size:16px; font-weight: bold; ">Registration Mandatory Field:</span>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="50px" style="padding-top: 5px;">
-                    <mat-checkbox formControlName="FirstName">First Name </mat-checkbox>
-                    <mat-checkbox formControlName="MiddleName">Middle Name </mat-checkbox>
-                    <mat-checkbox formControlName="LastName">Last Name</mat-checkbox>
-                    <mat-checkbox formControlName="Address">Address </mat-checkbox>
-                    <mat-checkbox formControlName="City">City </mat-checkbox>
-                    <mat-checkbox formControlName="PhoneNo">Phone No</mat-checkbox>
-                    <mat-checkbox formControlName="Age">Age</mat-checkbox>
-                    <mat-checkbox formControlName="isPathologistDr">IsPathologistDr</mat-checkbox>
-                    <mat-checkbox formControlName="OTCharges">OTCharges</mat-checkbox>
-                  </div>
-                  <br>
-                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>RegistrationNo</mat-label>
-                      <input name="RegPrefix" formControlName="RegPrefix" [(ngModel)]="configObj.RegPrefix"
-                        placeholder="Reg No" matInput>
-  
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IP No</mat-label>
-                      <input name="IPPrefix" formControlName="IPPrefix" [(ngModel)]="configObj.IPPrefix"
-                        placeholder="IP No" matInput>
-  
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>OP No</mat-label>
-                      <input name="OPPrefix" formControlName="OPPrefix" [(ngModel)]="configObj.OPPrefix"
-                        placeholder="OP No" matInput>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>PatientType</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Patient Type" matInput
-                        formControlName="PatientTypeID" [matAutocomplete]="autoPatient" required
-                         [(ngModel)]="selectedPatienttype">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PatientTypeID').setValue(''); isPatientSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PatientTypeID').setValue(''); isPatientSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="getOptionTextPatient">
-                        <mat-option *ngFor="let option of filteredOptionsPatient | async" [value]="option">
-                          {{option.PatientType}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <div>
-                      <mat-checkbox aria-label="Checked" formControlName="ClassEdit" style="margin-top:15px">Class Edit
-                        Option For IP Patient</mat-checkbox>
-                    </div>
-                  </div>
-                </mat-card>
-  
-                <br>
-  
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                  class="top-header accent heading-container h-40 border-radius-4">
-                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                    OP Billing Config
-                  </span>
-                </div>
-  
-                <mat-card>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px">
-                    <mat-checkbox formControlName="Charges"> After OPD Appointment Pop add Charges Form </mat-checkbox>
-                    <mat-checkbox formControlName="PopPayBill"> After Charges Pop Payment Form </mat-checkbox>
-                    <mat-checkbox formControlName="GenerateOPBill">Generated Bill Cash </mat-checkbox>
-  
-                  </div>
-                  <br>
-                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>OPD Billing Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Billing Counter" matInput
-                        formControlName="OPD_Billing_CounterId" [matAutocomplete]="autoOPD_Billing_CounterId" required
-                         [(ngModel)]="selectedOpBilling">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Billing_CounterId').setValue(''); isOpBillingSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Billing_CounterId').setValue(''); isOpBillingSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoOPD_Billing_CounterId="matAutocomplete" [displayWith]="getOptionTextOpBilling">
-                        <mat-option *ngFor="let option of filteredOptionsOpBilling | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>OPD Receipt Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Receipt Counter" matInput
-                        formControlName="OPD_Receipt_CounterId" [matAutocomplete]="autoOPD_Receipt_CounterId" required
-                         [(ngModel)]="selectedOpdReceipt">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Receipt_CounterId').setValue(''); isOpdReceiptSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Receipt_CounterId').setValue(''); isOpdReceiptSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoOPD_Receipt_CounterId="matAutocomplete" [displayWith]="getOptionTextOpdReceipt">
-                        <mat-option *ngFor="let option of filteredOptionsOpdReceipt | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>OPD Refund Of Bill Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select OPD Refund Of Bill Counter" matInput
-                        formControlName="OPD_Refund_Bill_CounterId" [matAutocomplete]="autoOPD_Refund_Bill_CounterId" required
-                         [(ngModel)]="selectedOpdRefund">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(''); isOpdRefundSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('OPD_Refund_Bill_CounterId').setValue(''); isOpdRefundSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoOPD_Refund_Bill_CounterId="matAutocomplete" [displayWith]="getOptionTextOpdRefund">
-                        <mat-option *ngFor="let option of filteredOptionsOpdRefund | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                    <div>
-  
-                    </div>
-                  </div>
-                </mat-card>
-  
-                <br>
-  
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                  class="top-header accent heading-container h-40 border-radius-4">
-                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                    IPD Billing Config
-                  </span>
-                </div>
-  
-                <mat-card>
-                  <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IPD Advance Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Advance Counter" matInput
-                        formControlName="IPD_Advance_CounterId" [matAutocomplete]="autoIPD_Advance_CounterId" required
-                         [(ngModel)]="selectedIpdAdvCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Advance_CounterId').setValue(''); isIpdAdvCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoIPD_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdAdvCounter">
-                        <mat-option *ngFor="let option of filteredOptionsIpdAdvCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IPD Billing Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Billing Counter" matInput
-                        formControlName="IPD_Billing_CounterId" [matAutocomplete]="autoIPD_Billing_CounterId" required
-                         [(ngModel)]="selectedIpdBillCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Billing_CounterId').setValue(''); isIpdBillCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoIPD_Billing_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdBillCounter">
-                        <mat-option *ngFor="let option of filteredOptionsIpdBillCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IPD Receipt Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Receipt Counter" matInput
-                        formControlName="IPD_Receipt_CounterId" [matAutocomplete]="autoIPD_Receipt_CounterId" required
-                         [(ngModel)]="selectedIpdReceiptCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Receipt_CounterId').setValue(''); isIpdReceiptCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoIPD_Receipt_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdReceiptCounter">
-                        <mat-option *ngFor="let option of filteredOptionsIpdReceiptCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IPD Refund Of Bill Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD RefundOfBill Counter" matInput
-                        formControlName="IPD_Refund_of_Bill_CounterId" [matAutocomplete]="autoIPD_Refund_of_Bill_CounterId" required
-                         [(ngModel)]="selectedIpdRefundOfBillCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Refund_of_Bill_CounterId').setValue(''); isIpdRefundOfBillCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoIPD_Refund_of_Bill_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfBillCounter">
-                        <mat-option *ngFor="let option of filteredOptionsIpdRefundOfBillCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>IPD Refund Advance Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select IPD Refund Advance Counter" matInput
-                        formControlName="IPD_Refund_of_Advance_CounterId" [matAutocomplete]="autoIPD_Refund_of_Advance_CounterId" required
-                         [(ngModel)]="selectedIpdRefundOfAdvanceCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('IPD_Refund_of_Advance_CounterId').setValue(''); isIpdRefundOfAdvanceCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoIPD_Refund_of_Advance_CounterId="matAutocomplete" [displayWith]="getOptionTextIpdRefundOfAdvanceCounter">
-                        <mat-option *ngFor="let option of filteredOptionsIPDRefundOfAdvanceCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                  </div>
-                </mat-card>
-  
-                <br>
-  
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                  class="top-header accent heading-container h-40 border-radius-4">
-                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                    Pathology Config
-                  </span>
-                </div>
-  
-                <mat-card>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Pathology Department</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Department" matInput
-                        formControlName="DepartmentId" [matAutocomplete]="autoDepartmentId" required
-                         [(ngModel)]="selectedDepartment">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('DepartmentId').setValue(''); isDepartmentSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoDepartmentId="matAutocomplete" [displayWith]="getOptionTextDepartment"
-                      (optionSelected)="onDepartmentSelected($event)">
-                        <mat-option *ngFor="let option of filteredOptionsDepartment | async" [value]="option">
-                          {{option.DepartmentName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Pathology Doctor</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Doctor" matInput
-                        formControlName="DoctorId" [matAutocomplete]="autoDoctorId" required
-                         [(ngModel)]="selectedDoctor">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('DoctorId').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoDoctorId="matAutocomplete" [displayWith]="getOptionTextDoctor"
-                      (optionSelected)='onDoctorSelect($event.option.value)'>
-                        <mat-option *ngFor="let option of filteredOptionsDoctor | async" [value]="option">
-                          {{option.Doctorname}} <b>|</b> {{option.DepartmentName }}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                  </div>
-                </mat-card>
-  
-                <br>
-  
-                <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                  class="top-header accent heading-container h-40 border-radius-4">
-                  <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                    Pharmacy Config
-                  </span>
-                </div>
-  
-                <mat-card>
-                  <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Sales Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Counter" matInput
-                        formControlName="PharmacySales_CounterId" [matAutocomplete]="autoPharmacySales_CounterId" required
-                         [(ngModel)]="selectedSalesCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacySales_CounterId').setValue(''); isSalesCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoPharmacySales_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesCounter">
-                        <mat-option *ngFor="let option of filteredOptionsSalesCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Sales Return Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Return Counter" matInput
-                        formControlName="PharmacySalesReturn_CounterId" [matAutocomplete]="autoPharmacySalesReturn_CounterId" required
-                         [(ngModel)]="selectedSalesReturnCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacySalesReturn_CounterId').setValue(''); isSalesReturnCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoPharmacySalesReturn_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReturnCounter">
-                        <mat-option *ngFor="let option of filteredOptionsSalesReturnCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-  
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>Sales Receipt Counter</mat-label>
-                      <input matAutocompletePosition="below" type="text" placeholder="Select Sales Receipt Counter" matInput
-                        formControlName="PharmacyReceipt_CounterId" [matAutocomplete]="autoPharmacyReceipt_CounterId" required
-                         [(ngModel)]="selectedSalesReceiptCounter">
-                      <span matSuffix style="display: flex;">
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">close</mat-icon>
-                        <mat-icon class="mat-icon-close"
-                          (click)="configFormGroup.get('PharmacyReceipt_CounterId').setValue(''); isSalesReceiptCounterSelected = false;">search</mat-icon>
-                      </span>
-    
-                      <mat-autocomplete #autoPharmacyReceipt_CounterId="matAutocomplete" [displayWith]="getOptionTextSalesReceiptCounter">
-                        <mat-option *ngFor="let option of filteredOptionsSalesReceiptCounter | async" [value]="option">
-                          {{option.CashCounterName}}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                  </div>
-                </mat-card>
-  
-                <div class="modal-footer-buttons gap-8 mt-12" fxLayout="row" fxLayoutAlign="end"> 
-                  <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                  <button class="btn btn-primary " (click)="onSubmit()">Save</button>
-              </div>
-  
-              </form>
-  
+<div class="modal-wrapper grid-container discharge-summary-section p-12">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Config Manager</span>
             </div>
-  
-          </div>
-  
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-      </div>
-  
     </div>
-  
-  </div> -->
+
+    <div class="modal-body">
+        <div class="content-card ">
+            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+
+                <mat-tab-group>
+
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            Config Detail
+                        </ng-template>
+                        <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+
+                            <div fxFlex.gt-sm="100%" fxFlex>
+
+                                <mat-card>
+                                    <div class="personal-panel">
+                                        <mat-accordion multi>
+                                            <mat-expansion-panel expanded>
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                        Configuration Information: </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <div class="panel-title" fxLayout="row"
+                                                    fxLayoutAlign="space-between center" fxFlex="65%"
+                                                    fxFlex.lt-md="100%">
+                                                    <div fxLayoutGap="25px"
+                                                        style="margin-left:20px;font-weight: bold;padding: 20px;">
+
+                                                        <mat-slide-toggle name="PrintReg"
+                                                            (change)="onChangePrintReg($event)"
+                                                            formControlName="PrintReg">Print After
+                                                            Registration</mat-slide-toggle>
+                                                        <mat-slide-toggle name="PrintOPDVisit"
+                                                            (change)="onChangePrintAfterReg($event)"
+                                                            formControlName="PrintOPDVisit">Print Case Proper
+                                                            After OPD
+                                                            Visit</mat-slide-toggle>
+
+                                                        <mat-slide-toggle name="PrintAdm"
+                                                            (change)="onChangeIPDAdd($event)"
+                                                            formControlName="PrintAdm">Print IPD
+                                                            Admission</mat-slide-toggle>
+
+                                                    </div>
+                                                </div>
+                                            </mat-expansion-panel>
+
+                                            <mat-expansion-panel expanded class="mt-12">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                        Registration Mandatory Field: </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                    fxLayoutGap="30px">
+
+                                                    <mat-checkbox formControlName="FirstName">First Name </mat-checkbox>
+                                                    <mat-checkbox formControlName="MiddleName">Middle Name
+                                                    </mat-checkbox>
+                                                    <mat-checkbox formControlName="LastName">Last Name</mat-checkbox>
+                                                    <mat-checkbox formControlName="Address">Address </mat-checkbox>
+                                                    <mat-checkbox formControlName="City">City </mat-checkbox>
+                                                    <mat-checkbox formControlName="PhoneNo">Phone No</mat-checkbox>
+                                                    <mat-checkbox formControlName="Age">Age</mat-checkbox>
+                                                    <mat-checkbox
+                                                        formControlName="isPathologistDr">IsPathologistDr</mat-checkbox>
+                                                    <mat-checkbox formControlName="OTCharges">OTCharges</mat-checkbox>
+                                                </div>
+                                            </mat-expansion-panel>
+                                            <mat-expansion-panel expanded class="mt-12">
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                        Cash Counter:</mat-panel-title>
+                                                </mat-expansion-panel-header>
+
+                                                <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Registration No"
+                                                            formControlName="registrationNo"
+                                                            [value]="data?.registrationNo" [formGroup]="myform"
+                                                            [validations]="getValidationMessages().registrationNo"
+                                                            [maxLength]="50">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="IP No" formControlName="ipNo"
+                                                            [value]="data?.ipNo" [formGroup]="myform"
+                                                            [validations]="getValidationMessages().ipNo"
+                                                            [maxLength]="50">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="OP No" formControlName="opNo"
+                                                            [value]="data?.opNo" [formGroup]="myform"
+                                                            [validations]="getValidationMessages().opNo"
+                                                            [maxLength]="50">
+                                                        </airmid-textbox>
+                                                    </div>
+
+
+                                                    <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+
+                                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                            <airmid-dropdown label="PatientType"
+                                                                formControlName="patientType"
+                                                                [value]="data?.patientType" [formGroup]="myform"
+                                                                [validations]="getValidationMessages().patientType"
+                                                                (selectDdlObject)="selectChangeItem($event)"
+                                                                [mode]="autocompleteModeItem">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <mat-checkbox aria-label="Checked" formControlName="ClassEdit"
+                                                            style="margin-top:15px">Class Edit For
+                                                            IPPatient</mat-checkbox>
+                                                    </div>
+                                                </div>
+
+                                            </mat-expansion-panel>
+
+                                        </mat-accordion>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            OPD Billing Config
+                        </ng-template>
+                        <!-- <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+
+                            <div fxFlex.gt-sm="100%" fxFlex>
+                                <mat-card>
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="25px">
+                                        <mat-checkbox formControlName="Charges"> After OPD Appointment Pop add Charges
+                                            Form
+                                        </mat-checkbox>
+                                        <mat-checkbox formControlName="PopPayBill"> After Charges Pop Payment Form
+                                        </mat-checkbox>
+                                        <mat-checkbox formControlName="GenerateOPBill">Generated Bill Cash
+                                        </mat-checkbox>
+                                    </div>
+                                    <span style="font-size:16px; font-weight: bold; ">Cash Counter:</span>
+                                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="OPD Billing Counter" formControlName="patientType"
+                                                [value]="data?.patientType" [formGroup]="myform"
+                                                [validations]="getValidationMessages().patientType"
+                                                (selectDdlObject)="selectChangeItem($event)"
+                                                [mode]="autocompleteModeCashcounter">
+                                            </airmid-dropdown>
+
+                                        </div>
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="OPD Receipt Counter" formControlName="patientType"
+                                                [value]="data?.patientType" [formGroup]="myform"
+                                                [validations]="getValidationMessages().patientType"
+                                                (selectDdlObject)="selectChangeItem($event)"
+                                                [mode]="autocompleteModeCashcounter">
+                                            </airmid-dropdown>
+                                        </div>
+                                        <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="OPD Refund Of Bill Counter"
+                                                formControlName="patientType" [value]="data?.patientType"
+                                                [formGroup]="myform" [validations]="getValidationMessages().patientType"
+                                                (selectDdlObject)="selectChangeItem($event)"
+                                                [mode]="autocompleteModeCashcounter">
+                                            </airmid-dropdown>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div> -->
+                        <mat-card>
+                            <div class="personal-panel">
+                                <mat-accordion multi>
+                                    <mat-expansion-panel expanded>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                Configuration Information: </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
+                                            fxFlex="95%" fxFlex.lt-md="100%">
+                                            <div fxLayoutGap="45px"
+                                                style="margin-left:20px;font-weight: bold;padding: 20px;">
+
+                                                <mat-slide-toggle name="Charges" (change)="onChangePrintReg($event)"
+                                                    formControlName="Charges"> After OPD Appointment Pop add Charges
+                                                    Form</mat-slide-toggle>
+                                                <mat-slide-toggle name="PopPayBill"
+                                                    (change)="onChangePrintAfterReg($event)"
+                                                    formControlName="PopPayBill"> After Charges Pop Payment
+                                                    Form</mat-slide-toggle>
+
+                                                <mat-slide-toggle name="GenerateOPBill"
+                                                    (change)="onChangeIPDAdd($event)"
+                                                    formControlName="GenerateOPBill">Generated Bill
+                                                    Cash</mat-slide-toggle>
+
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+
+
+                                    <mat-expansion-panel expanded class="mt-12">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                Cash Counter:</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <form [formGroup]="myform">
+                                            <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="CashCounterID1" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeOpbillCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="CashCounterID2" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeopreceiptCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="CashCounterID3" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeoprefundCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="CashCounterID4" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeoprefundreeiptCashcounter"></airmid-dropdown>
+                                                </div>
+
+
+                                               <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+                                                 <mat-slide-toggle name="Isprint" (change)="onChangeprint($event)"
+                                                        formControlName="Isprint">
+                                                        Is Printer Setting
+                                                    </mat-slide-toggle>
+
+                                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint">
+                                                        <airmid-textbox label="IPPrintName"
+                                                            formControlName="IPPrintName" [formGroup]="myform"
+                                                            [maxLength]="12"
+                                                            [validations]="getValidationMessages().IPPrintName">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint">
+                                                        <airmid-textbox label="IPPaperName"
+                                                            formControlName="IPPaperName" [formGroup]="myform"
+                                                            [maxLength]="12"
+                                                            [validations]="getValidationMessages().IPPaperName">
+                                                        </airmid-textbox>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-expansion-panel>
+
+                                </mat-accordion>
+                            </div>
+                        </mat-card>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            IPD Billing Config
+                        </ng-template>
+                        <mat-card>
+                            <div class="personal-panel">
+                                <mat-accordion multi>
+                                    <mat-expansion-panel expanded>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                IPD Configuration Information: </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
+                                            fxFlex="95%" fxFlex.lt-md="100%">
+                                            <div fxLayoutGap="45px"
+                                                style="margin-left:20px;font-weight: bold;padding: 20px;">
+
+                                                <mat-slide-toggle name="Charges" (change)="onChangePrintReg($event)"
+                                                    formControlName="Charges">Chk Pharmacy Due
+                                                </mat-slide-toggle>
+
+                                            </div>
+                                        </div>
+                                    </mat-expansion-panel>
+
+
+                                    <mat-expansion-panel expanded class="mt-12">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                                Cash Counter:</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <form [formGroup]="myform">
+                                            <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="IPDCashCounterID1" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeIpbillCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="IPDCashCounterID2" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeIpreceiptCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="IPDCashCounterID3" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeIprefundCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="IPDCashCounterID4" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeIprefundreeiptCashcounter"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-dropdown label="Select Cash Counter "
+                                                        formControlName="IPDCashCounterID4" [formGroup]="myform"
+                                                        [validations]="getValidationMessages().cashCounterId"
+                                                        [mode]="autocompleteModeIpAdvanceCashcounter"></airmid-dropdown>
+                                                </div>
+
+                                               <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+                                            
+                                                    <mat-slide-toggle name="Isprint" (change)="onChangeprintIp($event)"
+                                                        formControlName="Isprint1">
+                                                        Is Printer Setting
+                                                    </mat-slide-toggle>
+
+
+                                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint1">
+                                                        <airmid-textbox label="IPPrintName"
+                                                            formControlName="IPPrintName1" [formGroup]="myform"
+                                                            [maxLength]="12"
+                                                            [validations]="getValidationMessages().IPPrintName">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint1">
+                                                        <airmid-textbox label="IPPaperName"
+                                                            formControlName="IPPaperName1" [formGroup]="myform"
+                                                            [maxLength]="12"
+                                                            [validations]="getValidationMessages().IPPaperName">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-expansion-panel>
+
+                                </mat-accordion>
+                            </div>
+                        </mat-card>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            Pathology Config
+                        </ng-template>
+                        <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+                            <mat-expansion-panel expanded class="mt-12">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                        Department Details:</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div fxFlex.gt-sm="100%" fxFlex>
+
+                                    <mat-card>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Pathology Department"
+                                                    formControlName="patientType" [value]="data?.patientType"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().patientType"
+                                                    (selectDdlObject)="selectChangeItem($event)"
+                                                    [mode]="autocompleteModeDepartment">
+                                                </airmid-dropdown>
+                                            </div>
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Pathology Doctor" formControlName="patientType"
+                                                    [value]="data?.patientType" [formGroup]="myform"
+                                                    [validations]="getValidationMessages().patientType"
+                                                    (selectDdlObject)="selectChangeItem($event)"
+                                                    [mode]="autocompleteModedoctorty">
+                                                </airmid-dropdown>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </mat-expansion-panel>
+
+
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            Pharmacy Config
+                        </ng-template>
+                        <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+
+                            <mat-expansion-panel expanded class="mt-12">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title style="font-size: large;color: rgb(4, 43, 83);">
+                                        Pharmacy Details:</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div fxFlex.gt-sm="100%" fxFlex>
+
+                                    <mat-card>
+
+                                        <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="OPSalesdisc" formControlName="OPSalesdisc"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().OPSalesdisc" [maxLength]="2">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="IPSalesdisc" formControlName="IPSalesdisc"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().IPSalesdisc" [maxLength]="2">
+                                                </airmid-textbox>
+                                            </div>
+
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+                                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Sales Counter" formControlName="patientType"
+                                                    [value]="data?.patientType" [formGroup]="myform"
+                                                    [validations]="getValidationMessages().patientType"
+                                                    (selectDdlObject)="selectChangeItem($event)"
+                                                    [mode]="autocompleteModeCashcounter">
+                                                </airmid-dropdown>
+                                            </div>
+                                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Sales Return Counter"
+                                                    formControlName="patientType" [value]="data?.patientType"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().patientType"
+                                                    (selectDdlObject)="selectChangeItem($event)"
+                                                    [mode]="autocompleteModeCashcounter">
+                                                </airmid-dropdown>
+                                            </div>
+                                            <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Sales Receipt Counter"
+                                                    formControlName="patientType" [value]="data?.patientType"
+                                                    [formGroup]="myform"
+                                                    [validations]="getValidationMessages().patientType"
+                                                    (selectDdlObject)="selectChangeItem($event)"
+                                                    [mode]="autocompleteModeCashcounter">
+                                                </airmid-dropdown>
+                                            </div>
+                                            <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+                                                <mat-slide-toggle name="Isprint" (change)="onChangeprintphar($event)"
+                                                    formControlName="Isprint2">
+                                                    Is Printer Setting
+                                                </mat-slide-toggle>
+
+                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint2">
+                                                    <airmid-textbox label="IPPrintName" formControlName="IPPrintName2"
+                                                        [formGroup]="myform"
+                                                        [validations]="getValidationMessages().IPPrintName"
+                                                        [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Isprint2">
+                                                    <airmid-textbox label="IPPaperName" formControlName="IPPaperName2"
+                                                        [formGroup]="myform"
+                                                        [validations]="getValidationMessages().IPPaperName"
+                                                        [maxLength]="50">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </mat-expansion-panel>
+                        </div>
+                    </mat-tab>
+
+                </mat-tab-group>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer-buttons" style="margin-left: 1200px;">
+        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button class="btn btn-primary" (click)="onSubmit()">Save </button>
+    </div>
+
+    <!-- </div> -->

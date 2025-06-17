@@ -75,30 +75,30 @@ export class RelationshipMasterComponent implements OnInit {
     //     this.getfilterdata();
     // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._relationshipService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "RelationshipMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "relationshipId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "relationshipName", fieldValue: this.relationshipName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._relationshipService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "RelationshipMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "relationshipId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "relationshipName", fieldValue: this.relationshipName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

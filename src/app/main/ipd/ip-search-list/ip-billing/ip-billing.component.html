@@ -113,7 +113,7 @@
                 <div style="width: 260px">
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Service Date</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="Date" (dateChange)="OnDateChange()" />
+                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="chargesDate" (dateChange)="OnDateChange()" />
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                   </mat-form-field>
@@ -121,7 +121,7 @@
                 <div style="width: 260px">
                   <airmid-dropdown
                     label="Class Name"
-                    formControlName="ChargeClass"
+                    formControlName="classId"
                     [formGroup]="Serviceform"
                     [validations]="getValidationMessages().ChargeClass"
                     [mode]="autocompleteModeClass"
@@ -133,13 +133,12 @@
                   <airmid-autocomplete
                     label="Enter Service Name"
                     [formGroup]="Serviceform"
-                    formControlName="ServiceName"
+                    formControlName="serviceId"
                     placeholderText="Enter Service Name"
                     fxFlex
                     ApiUrl="{{ ApiURL }}"
                     (selectionChange)="getselectObj($event)"
-                    TextField="formattedText"
-                    
+                    TextField="formattedText" 
                   ></airmid-autocomplete>
                 </div>
 
@@ -152,8 +151,7 @@
                         [formGroup]="Serviceform"
                         [validations]="getValidationMessages().price"
                         [type]="'text'"
-                        (keypress)="keyPressCharater($event)"
-                        [value]="vPrice"
+                        (keypress)="keyPressCharater($event)" 
                       ></airmid-textbox>
                     </div>
                     <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="48%">
@@ -171,10 +169,9 @@
                 <div style="width: 260px">
                   <airmid-textbox
                     label="TotalAmt"
-                    formControlName="TotalAmt"
+                    formControlName="totalAmt"
                     [formGroup]="Serviceform"
-                    [type]="'text'"
-                    [value]="vServiceTotalAmt"
+                    [type]="'text'" 
                     [validations]="getValidationMessages().totalAmount"
                     [readonly]="true"
                   ></airmid-textbox>
@@ -183,7 +180,7 @@
                 <div style="width: 260px" *ngIf="isDoctor">
                   <airmid-dropdown
                     label="Doctor Name"
-                    formControlName="DoctorID"
+                    formControlName="doctorId"
                     [formGroup]="Serviceform"
                     [validations]="getValidationMessages().DoctorId"
                     [mode]="autocompleteModedeptdoc"
@@ -196,25 +193,24 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                       <airmid-textbox
                         label="Discount per"
-                        formControlName="discPer"
+                        formControlName="concessionPercentage"
                         [formGroup]="Serviceform"
                         [validations]="getValidationMessages().discPer"
                         [min]="0"
                         [max]="100"
                         [type]="'text'"
-                        (keypress)="keyPressCharater($event)"
-                        [value]="vServiceDiscPer"
+                        (keypress)="keyPressCharater($event)" 
                       ></airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
                       <airmid-textbox
                         label="Discount amount"
                         [formGroup]="Serviceform"
-                        formControlName="discAmount"
+                        formControlName="concessionAmount"
                         [validations]="getValidationMessages().discAmount"
                         [type]="'text'"
                         [min]="0"
-                        [max]="Serviceform.get('TotalAmt')?.value"
+                        [max]="Serviceform.get('totalAmt')?.value"
                         (keypress)="keyPressCharater($event)"
                       ></airmid-textbox>
                     </div>
@@ -234,11 +230,12 @@
 
                 <div fxFlex="100%" fxLayout="row">
                   <div class="mt-2">
+                    <!-- [disabled]="!Serviceform.valid" -->
                     <button
                       type="button"
                       (click)="onSaveAddCharges()"
                       class="btn btn-primary btn-with-icon py-8"
-                      [disabled]="!Serviceform.valid"
+                      
                       [matTooltip]="!Serviceform.valid ? 'Enter all data to enable this button!!' : ''"
                       [matTooltipPosition]="'above'"
                       fxFlex
@@ -385,7 +382,7 @@
                             <div class="list-item">
                               <span class="list-item-key">Bill Amount :</span>
                               <span class="list-item-value">
-                                {{ Ipbillform.get('FinalAmount').value | currency : 'INR' }}
+                                {{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}
                               </span>
                             </div>
                           </li>
@@ -413,7 +410,7 @@
                       </div>-->
                        <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
                         <ng-container *ngIf="isFilteredDateDisabled">
-                          <form [formGroup]="Ipbillform">
+                          <form [formGroup]="IpbillFooterform">
                             <mat-form-field appearance="outline" fxFlex class="padding-fix">
                               <mat-label>Choose date</mat-label>
                               <input
@@ -437,35 +434,7 @@
                           </button> -->
                         </div>
                       </div>
-                    </div> 
-                    <!-- <div fxFlex="100%">
-                      <div fxLayout="row" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
-                        <ng-container *ngIf="isFilteredDateDisabled">
-                          <form [formGroup]="Ipbillform">
-                            <mat-form-field appearance="outline" fxFlex class="padding-fix">
-                              <mat-label>Choose date</mat-label>
-                              <input
-                                name="ChargeDate"
-                                matInput
-                                [matDatepicker]="picker"
-                                formControllName="ChargeDate"
-                                (dateChange)="getDatewiseChargesList($event.value)"
-                                [value]="currentDate"
-                                [readonly]="true"
-                              />
-                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                              <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                          </form>
-                        </ng-container>
-                        <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
-                          <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">Show All Charges</mat-checkbox>
-                          <button mat-icon-button (click)="openServiceTable()">
-                            <span class="material-icons">notifications_none</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div> -->
+                    </div>  
                   </div>
                 </mat-expansion-panel>
               </mat-accordion>
@@ -480,7 +449,7 @@
                     <div class="patient-col">
                       <span class="patient-col-key font-weight-600">Bill Amount</span>
                       <span>:</span>
-                      <span class="patient-col-value">{{ Ipbillform.get('FinalAmount').value | currency : 'INR' }}</span>
+                      <span class="patient-col-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}</span>
                     </div>
 
                     <div class="patient-col">
@@ -569,28 +538,7 @@
                                   (keypress)="keyPressCharater($event)"  >
                           </mat-form-field>
                           </mat-cell>
-                        </ng-container>
-
-                        <!-- <ng-container matColumnDef="EditQty">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                            </mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100"> 
-                              <ng-container *ngIf="!contact.QtyEditable; else showInput">
-                                  <button mat-icon-button (click)="QtyenableEditing(contact)" class="clear-button">
-                                      <mat-icon>edit</mat-icon></button>
-                              </ng-container>
-                              <ng-template #showInput> 
-                                <mat-form-field appearance="legacy" class="w-50">
-                                  <input matInput  type="text" OnlyNumber (keyup)="getQtytable(contact,contact.Qty)"
-                                  (keypress)="keyPressCharater($event)" autocomplete="off" [(ngModel)]="contact.Qty">
-                              </mat-form-field>
-                                  <mat-icon matTooltip="Close" (click)="QtydisableEditing(contact)">cancel</mat-icon> 
-                                  <buttom mati-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save">
-                                      <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                                  </buttom> 
-                              </ng-template>
-                          </mat-cell>
-                      </ng-container>    -->
+                        </ng-container> 
 
                         <ng-container matColumnDef="Qty">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
@@ -642,9 +590,9 @@
                                   <mat-icon>edit</mat-icon></button>
                           </ng-container>
                           <ng-template #showInput>
-                              <form [formGroup]="Ipbillform" fxLayout="row" fxLayoutGap="2px">
+                              <form [formGroup]="IpbillFooterform" fxLayout="row" fxLayoutGap="2px">
                                   <airmid-dropdown formControlName="EditDoctor" class="w-180" appearance="fill"
-                                      [formGroup]="Ipbillform" [mode]="autocompleteModedeptdoc"
+                                      [formGroup]="IpbillFooterform" [mode]="autocompleteModedeptdoc"
                                       [validations]="getValidationMessages().DoctorId"
                                       (selectionChange)="DropDownValue($event)"></airmid-dropdown> 
                               </form>
@@ -847,7 +795,7 @@
                   <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
                 </mat-tab>
               </mat-tab-group>
-              <form class="example-form" [formGroup]="Ipbillform">
+              <form class="example-form" [formGroup]="IpbillFooterform">
                 <div class="net-amt-section mb-2 mt-16" style="margin-left: 500px">
                   <div class="net-amt gap-24">
                     <div class="net-amt-box">
@@ -860,12 +808,12 @@
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
-                      <span class="net-amt-value">{{ Ipbillform.get('totalconcessionAmt').value || 0 | currency : 'INR' }}</span>
+                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency : 'INR' }}</span>
                     </div>
 
                     <div class="net-amt-box">
                       <span class="net-amt-label">Net Amt :</span>
-                      <span class="net-amt-value">{{ Ipbillform.get('FinalAmount').value | currency : 'INR' }}</span>
+                      <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}</span>
                     </div>
                   </div>
                 </div>
@@ -875,9 +823,8 @@
                       <airmid-textbox
                         label="Admin %"
                         formControlName="AdminPer"
-                        [formGroup]="Ipbillform"
-                        [type]="'text'"
-                        [value]="vAdminPer"
+                        [formGroup]="IpbillFooterform"
+                        [type]="'text'" 
                         (keypress)="keyPressCharater($event)"
                         [min]="0"
                         (keyup)="CalculateAdminCharge()"
@@ -889,7 +836,7 @@
                       <airmid-textbox
                         label="Admin Amount"
                         formControlName="AdminAmt"
-                        [formGroup]="Ipbillform"
+                        [formGroup]="IpbillFooterform"
                         [type]="'text'"
                         [min]="0"
                         (keypress)="keyPressCharater($event)"
@@ -901,7 +848,7 @@
                       <airmid-textbox
                         label="Disc %"
                         formControlName="totaldiscPer"
-                        [formGroup]="Ipbillform"
+                        [formGroup]="IpbillFooterform"
                         [type]="'text'"
                         [min]="0"
                         [max]="100"
@@ -914,7 +861,7 @@
                       <airmid-textbox
                         label="Disc Amount"
                         formControlName="totalconcessionAmt"
-                        [formGroup]="Ipbillform"
+                        [formGroup]="IpbillFooterform"
                         [type]="'text'"
                         [min]="0"
                         (keypress)="keyPressCharater($event)"
@@ -927,28 +874,28 @@
                       <airmid-dropdown
                         label="Concession Reason"
                         formControlName="ConcessionId"
-                        [formGroup]="Ipbillform"
+                        [formGroup]="IpbillFooterform"
                         [validations]="getValidationMessages().ConcessionId"
                         [mode]="autocompleteModeConcession"
                       ></airmid-dropdown>
                     </div>
 
                     <div fxFlex="10%">
-                      <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="Ipbillform" [type]="'text'" [readonly]="true"></airmid-textbox>
+                      <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="IpbillFooterform" [type]="'text'" [readonly]="true"></airmid-textbox>
                     </div>
 
                     <div fxFlex="15%">
                       <airmid-dropdown
                         label="Select Cash Counter "
                         formControlName="CashCounterID"
-                        [formGroup]="Ipbillform"
+                        [formGroup]="IpbillFooterform"
                         [validations]="getValidationMessages().cashCounterId"
                         [mode]="autocompleteModeCashcounter"
                       ></airmid-dropdown>
                     </div>
 
                     <div fxFlex>
-                      <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="Ipbillform" [type]="'text'"></airmid-textbox>
+                      <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="IpbillFooterform" [type]="'text'"></airmid-textbox>
                     </div>
                   </div>
 

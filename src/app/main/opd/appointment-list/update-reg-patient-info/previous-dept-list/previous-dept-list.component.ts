@@ -57,6 +57,7 @@ export class PreviousDeptListComponent {
           "opType": "Equals"
         }
       ],
+      "Columns":[],
       "exportType": "JSON"
     }
     this._opappointmentService.getLastVisitDoctorList(vdata).subscribe(data => {
