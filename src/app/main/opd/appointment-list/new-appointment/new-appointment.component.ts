@@ -81,9 +81,6 @@ export class NewAppointmentComponent implements OnInit {
     DosctorId: any;
     DoctorId: any;
     vhealthCardNo: any;
-    Healthcardflag: boolean = false;
-    Medicalflag: boolean = false;
-    Abhaflag: boolean = false;
     vDays: any = 0;
     HealthCardExpDate: any;
     followUpDate: string;
@@ -246,7 +243,6 @@ export class NewAppointmentComponent implements OnInit {
         }
     }
 
-
     getregdetails() {
         let RegId = this.searchFormGroup.get("RegId").value
         if (RegId > 0) {
@@ -322,7 +318,6 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     getSelectedObj(obj) {  
-        debugger
         if(this.data?.FormName == 'Registration-Page'){
         this.PatientName = obj.firstName + ' ' + obj.lastName;
         this.RegId = obj.regId;
@@ -333,6 +328,7 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                        this.getLastDepartmetnNameList(this.registerObj)
+                       this.selectChangedepartment(this.registerObj)
                     console.log(this.registerObj)
                 });
 
@@ -348,6 +344,7 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                        this.getLastDepartmetnNameList(this.registerObj)
+                       this.selectChangedepartment(this.registerObj)
                     console.log(this.registerObj)
                 });
 
@@ -371,22 +368,46 @@ export class NewAppointmentComponent implements OnInit {
           console.log('The dialog was closed - Insert Action', result);
           this.PrevregisterObj = result  
          this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId) 
+        this.selectChangedepartment(this.PrevregisterObj)
+
         });
       }
-    getSelectedObjphone(obj) {
 
+    //   changed by raksha date:17/6/25
+    getSelectedObjphone(obj) {
         this.PatientName = obj.text;
-        this.RegId = obj.value;
+        this.RegId = obj.regId;
         this.vPhoneAppId = obj.value;
         this.VisitFlagDisp = false;
         this.registerObj = obj;
         console.log(obj)
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
-                this._AppointmentlistService.getPhoneappById(this.RegId).subscribe((response) => {
+                this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                this.onChangeReg({ value: 'registrered' });
+                this._AppointmentlistService.getPhoneappById(this.vPhoneAppId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
                     this.registerObj.religionId = 0;
+                    this.VisitFormGroup.get('DepartmentId').setValue(this.registerObj.departmentId)
+                    this.selectChangedepartment(this.registerObj)
+                    this.registerObj.maritalStatusId = 0;
+                    this.registerObj.areaId = 0
+                    this.registerObj.regId = 0
+                    this.registerObj.phoneNo = ''
+                    this.registerObj.aadharCardNo = ''
+                    this.registerObj.dateOfBirth = new Date();
+                    this.registerObj.mobileNo = this.registerObj.mobileNo.trim()
+                });
+            }, 500);
+        }else{
+            setTimeout(() => {
+                this._AppointmentlistService.getPhoneappById(this.vPhoneAppId).subscribe((response) => {
+                    this.registerObj = response;
+                    console.log(this.registerObj)
+                    this.registerObj.religionId = 0;
+                    this.VisitFormGroup.get('DepartmentId').setValue(this.registerObj.departmentId)
+                    this.selectChangedepartment(this.registerObj) //to set doctorid
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
                     this.registerObj.regId = 0
@@ -534,33 +555,6 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
-    chkHealthcard(event) {
-        if (event.checked) {
-            this.Healthcardflag = true;
-            this.personalFormGroup.get('HealthCardNo').setValidators([Validators.required]);
-        } else {
-            this.Healthcardflag = false;
-            this.personalFormGroup.get('HealthCardNo').reset();
-            this.personalFormGroup.get('HealthCardNo').clearValidators();
-            this.personalFormGroup.get('HealthCardNo').updateValueAndValidity();
-        }
-    }
-
-    // created by raksha date:16/6/25
-    chkMedical(event) {
-        if (event.checked) {
-            this.Medicalflag = true;
-        } else {
-            this.Medicalflag = false;
-        }
-    }
-    chkAbha(event) {
-        if (event.checked) {
-            this.Abhaflag = true;
-        } else {
-            this.Abhaflag = false;
-        }
-    }
      onChangeDate(value) {
         console.log(value)
     }
@@ -587,10 +581,25 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     selectChangedepartment(obj: any) {
+        if(obj.value){
         this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;
             this.ddlDoctor.bindGridAutoComplete();
         });
+        }else{
+        this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+            console.log(data)
+            this.ddlDoctor.options = data;
+            this.ddlDoctor.bindGridAutoComplete();
+            const incomingDoctorId = obj.consultantDocId || obj.doctorId;
+            if (incomingDoctorId) {
+                const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                if (matchedDoctor) {
+                this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                }
+            }
+        });
+        }
     }
 
     getValidationMessages() {

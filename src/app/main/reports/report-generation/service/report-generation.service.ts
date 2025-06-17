@@ -41,7 +41,8 @@ export class ReportService {
             StoreId:[""],
             SupplierId:[""],
             PaymentId:[""],
-            DrugTypeId:[""]
+            DrugTypeId:[""],
+            ItemId:[""]
             // 
         });
     }
