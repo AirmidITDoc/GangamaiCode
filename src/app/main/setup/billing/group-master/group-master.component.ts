@@ -62,43 +62,43 @@ groupName: any = "";
 
     }
      //filters addedby avdhoot vedpathak date-27/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'GroupNameSearch')
-            this._GroupMasterService.myformSearch.get('GroupNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'GroupNameSearch')
+    //         this._GroupMasterService.myformSearch.get('GroupNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.groupName = this._GroupMasterService.myformSearch.get('GroupNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.groupName = this._GroupMasterService.myformSearch.get('GroupNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._GroupMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "GroupMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "groupId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "groupName", fieldValue: this.groupName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._GroupMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "GroupMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "groupId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "groupName", fieldValue: this.groupName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
