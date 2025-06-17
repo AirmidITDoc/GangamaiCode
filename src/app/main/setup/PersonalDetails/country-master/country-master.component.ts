@@ -69,23 +69,23 @@ export class CountryMasterComponent implements OnInit {
     //     this.getfilterdata();
     // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._CountryService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "CountryMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "countryId",
-            sortOrder: 0,
-            filters: [
-            { fieldName: "countryName", fieldValue: this.countryName, opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-        ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
-    }
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._CountryService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "CountryMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "countryId",
+    //         sortOrder: 0,
+    //         filters: [
+    //         { fieldName: "countryName", fieldValue: this.countryName, opType: OperatorComparer.Contains },
+    //         { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //     ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

@@ -67,43 +67,43 @@ export class CompanyTypeMasterComponent implements OnInit {
 
     }
 //filters addedby avdhoot vedpathak date-27/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'TypeNameSearch')
-            this._CompanyMasterService.myformSearch.get('TypeNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'TypeNameSearch')
+    //         this._CompanyMasterService.myformSearch.get('TypeNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.typeName = this._CompanyMasterService.myformSearch.get('TypeNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.typeName = this._CompanyMasterService.myformSearch.get('TypeNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "CompanyTypeMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "companyTypeId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "typeName", fieldValue: this.typeName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "CompanyTypeMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "companyTypeId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "typeName", fieldValue: this.typeName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

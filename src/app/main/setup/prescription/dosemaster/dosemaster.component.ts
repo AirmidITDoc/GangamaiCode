@@ -60,43 +60,43 @@ export class DosemasterComponent implements OnInit {
 
     ngOnInit(): void { }
     //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'DoseNameSearch')
-            this._DoseService.myformSearch.get('DoseNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'DoseNameSearch')
+    //         this._DoseService.myformSearch.get('DoseNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.doseName = this._DoseService.myformSearch.get('DoseNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.doseName = this._DoseService.myformSearch.get('DoseNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._DoseService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "DoseMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "doseId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "doseName", fieldValue: this.doseName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._DoseService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "DoseMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "doseId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "doseName", fieldValue: this.doseName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     onSearch() { }
 
     onSearchClear() {

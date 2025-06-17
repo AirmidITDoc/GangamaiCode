@@ -74,30 +74,30 @@ export class AreaMasterComponent implements OnInit {
     //     this.getfilterdata();
     // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._AreaMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "AreaMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "areaId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "areaName", fieldValue: this.areaName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._AreaMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "AreaMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "areaId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "areaName", fieldValue: this.areaName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
