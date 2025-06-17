@@ -15,6 +15,7 @@ import { RegInsert } from '../../registration/registration.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-new-appointment',
@@ -122,7 +123,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModepurpose: string = "Purpose";
     autocompleteModeClass: string = "Class";
   autocompleteModerelationship: string = "Relationship";
-
+    selectedTabIndex = 0;
     public imagePreview!: string;
 
     constructor(
@@ -704,6 +705,11 @@ export class NewAppointmentComponent implements OnInit {
             // ],
         };
     }
+
+    onTabChange(event: MatTabChangeEvent) {
+        this.selectedTabIndex = event.index;
+      }
+    
     onClear(val: boolean) {
         this.personalFormGroup.reset();
         this.dialogRef.close(val);
