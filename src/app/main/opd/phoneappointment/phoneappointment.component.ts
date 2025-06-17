@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -140,6 +141,24 @@ getfilterdata(){
 
         let that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+    onSave1(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewPhoneAppoinmentCalendarComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: '80%',
