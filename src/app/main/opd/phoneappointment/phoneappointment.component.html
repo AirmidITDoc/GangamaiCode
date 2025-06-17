@@ -22,7 +22,7 @@
                 matTooltip="New Patient" class="blue-600 s-16">circle</mat-icon>
 
             <mat-icon style="border-radius:100%;" *ngIf="element.regNo !== '' && element.regNo !== '0'"
-                matTooltip="Old Patient" class="grey-600 s-16">circle</mat-icon>
+                matTooltip="Registred Patient" class="grey-600 s-16">circle</mat-icon>
         </div>
     </ng-template>
 
@@ -32,9 +32,9 @@
                 class="red-600 s-16">circle
             </mat-icon>
 
-            <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='1'" matTooltip="Appointment Approved"
+            <!-- <mat-icon style="border-radius:100% ;" *ngIf="!element.isCancelled=='1'" --matTooltip="Appointment Approved"
                 class="green-600 s-16">circle
-            </mat-icon>
+            </mat-icon> -->
         </div>
     </ng-template>
 
