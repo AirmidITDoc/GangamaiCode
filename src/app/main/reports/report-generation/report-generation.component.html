@@ -109,37 +109,37 @@
                                     </ng-container>
 
                                     <ng-container *ngIf="flagDischargeTypeSelected">
-                                        <airmid-autocomplete label="Discharge Type" [formGroup]="_ReportService.userForm" formControlName="dischargeTypeId" placeholderText="Select Discharge Type" ApiUrl="DischargeTypeList/auto-complete?Keyword=" (selectionChange)="SelectedDischargeObj($event)">
+                                        <airmid-autocomplete label="Discharge Type" [formGroup]="_ReportService.userForm" formControlName="dischargeTypeId" placeholderText="Select Discharge Type" ApiUrl="Report/DischargeTypeList/auto-complete?Keyword=" (selectionChange)="SelectedDischargeObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagCompanySelected">
-                                        <airmid-autocomplete label="Company Name" [formGroup]="_ReportService.userForm" formControlName="CompanyId" placeholderText="Select Company Name" ApiUrl="CompanyList/auto-complete?Keyword=" (selectionChange)="SelectedCompanyObj($event)">
+                                        <airmid-autocomplete label="Company Name" [formGroup]="_ReportService.userForm" formControlName="CompanyId" placeholderText="Select Company Name" ApiUrl="Report/CompanyList/auto-complete?Keyword=" (selectionChange)="SelectedCompanyObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagStoreSelected">
-                                        <airmid-autocomplete label="Store Name" [formGroup]="_ReportService.userForm" formControlName="StoreId" placeholderText="Select Store Name" ApiUrl="MStoreMasterList/auto-complete?Keyword=" (selectionChange)="SelectedStoreObj($event)">
+                                        <airmid-autocomplete label="Store Name" [formGroup]="_ReportService.userForm" formControlName="StoreId" placeholderText="Select Store Name" ApiUrl="Report/MStoreMasterList/auto-complete?Keyword=" (selectionChange)="SelectedStoreObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagSupplierelected">
-                                        <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="MSupplierMasterList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
+                                        <airmid-autocomplete label="Supplier Name" [formGroup]="_ReportService.userForm" formControlName="SupplierId" placeholderText="Select Supplier Name" ApiUrl="Report/MSupplierMasterList/auto-complete?Keyword=" (selectionChange)="SelectedSupplierObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagPaymentSelected">
-                                        <airmid-autocomplete label="Payment Mode" [formGroup]="_ReportService.userForm" formControlName="PaymentId" placeholderText="Select Payment Mode" ApiUrl="PaymentList/auto-complete?Keyword=" (selectionChange)="SelectedPaymentObj($event)">
+                                        <airmid-autocomplete label="Payment Mode" [formGroup]="_ReportService.userForm" formControlName="PaymentId" placeholderText="Select Payment Mode" ApiUrl="Report/PaymentList/auto-complete?Keyword=" (selectionChange)="SelectedPaymentObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
 
                                     <ng-container *ngIf="flagDrugTypeSelected">
-                                        <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="MItemDrugTypeMasterList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
+                                        <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm" formControlName="DrugTypeId" placeholderText="Select Drug Type" ApiUrl="Report/MItemDrugTypeMasterList/auto-complete?Keyword=" (selectionChange)="SelectedDrugTypeObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
                                     
                                     <ng-container *ngIf="flagItemSelected">
-                                        <airmid-autocomplete label="Item Name" [formGroup]="_ReportService.userForm" formControlName="ItemId" placeholderText="Select Item Name" ApiUrl="MItemMasterList/auto-complete?Keyword=" (selectionChange)="SelectedItemObj($event)">
+                                        <airmid-autocomplete label="Item Name" [formGroup]="_ReportService.userForm" formControlName="ItemId" placeholderText="Select Item Name" ApiUrl="Report/MItemMasterList/auto-complete?Keyword=" (selectionChange)="SelectedItemObj($event)">
                                         </airmid-autocomplete>
                                     </ng-container>
                                     <!-- Creadit Reason & sales dd remaining -->

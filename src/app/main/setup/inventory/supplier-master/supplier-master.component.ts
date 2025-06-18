@@ -76,37 +76,37 @@ export class SupplierMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        debugger
-        console.log(event)
-        if (event == 'SupplierNameSearch')
-            this.myformSearch.get('SupplierNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     debugger
+    //     console.log(event)
+    //     if (event == 'SupplierNameSearch')
+    //         this.myformSearch.get('SupplierNameSearch').setValue("")
        
-        this.onChangeFirst();
-      }
+    //     this.onChangeFirst();
+    //   }
       
-    onChangeFirst() {
-        debugger
-        this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
-        // this.type = this.myformSearch.get('IsDeletedSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     debugger
+    //     this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
+    //     // this.type = this.myformSearch.get('IsDeletedSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata(){
-        debugger
-        this.gridConfig = {
-            apiUrl: "Supplier/SupplierList",
-            columnsList:this.allColumns, 
-            sortField: "SupplierId",
-            sortOrder: 0,
-            filters:  [
-                { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
-                { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
-    }
+    // getfilterdata(){
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "Supplier/SupplierList",
+    //         columnsList:this.allColumns, 
+    //         sortField: "SupplierId",
+    //         sortOrder: 0,
+    //         filters:  [
+    //             { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
+    //             { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData(); 
+    // }
 
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
         private accountService: AuthenticationService,

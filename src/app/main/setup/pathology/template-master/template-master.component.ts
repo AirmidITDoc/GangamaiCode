@@ -67,43 +67,43 @@ export class TemplateMasterComponent implements OnInit {
 
     }
     //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'TemplateNameSearch')
-            this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'TemplateNameSearch')
+    //         this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "PathologyTemplate/List",
-            columnsList: this.allcolumns,
-            sortField: "templateId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "PathologyTemplate/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "templateId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

@@ -77,37 +77,37 @@ export class StoreMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        debugger
-        console.log(event)
-        if (event == 'StoreNameSearch')
-            this.myformSearch.get('StoreNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     debugger
+    //     console.log(event)
+    //     if (event == 'StoreNameSearch')
+    //         this.myformSearch.get('StoreNameSearch').setValue("")
        
-        this.onChangeFirst();
-      }
+    //     this.onChangeFirst();
+    //   }
       
-    onChangeFirst() {
-        debugger
-        this.storeName = this.myformSearch.get('StoreNameSearch').value + "%"
-        this.type = this.myformSearch.get('IsDeletedSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     debugger
+    //     this.storeName = this.myformSearch.get('StoreNameSearch').value + "%"
+    //     this.type = this.myformSearch.get('IsDeletedSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata(){
-        debugger
-        this.gridConfig = {
-            apiUrl: "StoreMaster/List", //StoreMasterList
-            columnsList:this.allColumns, 
-            sortField: "storeId",
-            sortOrder: 0,
-            filters:  [
-                { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.StartsWith },
-                // { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
-    }
+    // getfilterdata(){
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "StoreMaster/List", //StoreMasterList
+    //         columnsList:this.allColumns, 
+    //         sortField: "storeId",
+    //         sortOrder: 0,
+    //         filters:  [
+    //             { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.StartsWith },
+    //             // { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData(); 
+    // }
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }

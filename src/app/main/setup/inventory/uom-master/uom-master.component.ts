@@ -58,43 +58,43 @@ gridConfig: gridModel = {
 
     ngOnInit(): void { }
     //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'UnitofMeasurementSearch')
-            this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'UnitofMeasurementSearch')
+    //         this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.unitofMeasurementName = this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.unitofMeasurementName = this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._UomMasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "UnitOfMeasurement/List",
-            columnsList: this.allcolumns,
-            sortField: "unitofMeasurementId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "unitofMeasurementName", fieldValue: this.unitofMeasurementName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._UomMasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "UnitOfMeasurement/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "unitofMeasurementId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "unitofMeasurementName", fieldValue: this.unitofMeasurementName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

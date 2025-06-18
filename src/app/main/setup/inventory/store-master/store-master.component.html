@@ -29,7 +29,7 @@
         </ng-template>
         
         <airmid-table [gridConfig]="gridConfig"  class="content">
-            <ng-container filters>
+            <!-- <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
 
                 <mat-form-field appearance="outline" fxFlex>
@@ -42,13 +42,30 @@
                     </button>
                 </mat-form-field>
 
-                <!-- <mat-radio-group value="" [formGroup]="myformSearch" formControlName="IsDeletedSearch" 
+                <mat-radio-group value="" [formGroup]="myformSearch" formControlName="IsDeletedSearch" 
                 (change)="onChangeFirst()" fxLayoutAlign="center center">
                     <mat-radio-button value="2">All</mat-radio-button>
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group> -->
+                </mat-radio-group>
                 </form>
+            </ng-container> -->
+             <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Store Name</mat-label>
+                    <input matInput placeholder="Search Store  Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
+                    <mat-radio-button value="">All</mat-radio-button>
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group> -->
             </ng-container>
         </airmid-table>
     </div>

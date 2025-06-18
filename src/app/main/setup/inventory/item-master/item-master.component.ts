@@ -80,37 +80,37 @@ export class ItemMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        debugger
-        console.log(event)
-        if (event == 'ItemNameSearch')
-            this.myformSearch.get('ItemNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     debugger
+    //     console.log(event)
+    //     if (event == 'ItemNameSearch')
+    //         this.myformSearch.get('ItemNameSearch').setValue("")
        
-        this.onChangeFirst();
-      }
+    //     this.onChangeFirst();
+    //   }
       
-    onChangeFirst() {
-        debugger
-        this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
-        this.type = this.myformSearch.get('IsDeletedSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     debugger
+    //     this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
+    //     this.type = this.myformSearch.get('IsDeletedSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata(){
-        debugger
-        this.gridConfig = {
-            apiUrl: "ItemMaster/ItemMasterList",
-            columnsList:this.allColumns, 
-            sortField: "ItemID",
-            sortOrder: 0,
-            filters:  [
-                { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
-                { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
-    }
+    // getfilterdata(){
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "ItemMaster/ItemMasterList",
+    //         columnsList:this.allColumns, 
+    //         sortField: "ItemID",
+    //         sortOrder: 0,
+    //         filters:  [
+    //             { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
+    //             { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData(); 
+    // }
 
     constructor(
         public _itemService: ItemMasterService,
