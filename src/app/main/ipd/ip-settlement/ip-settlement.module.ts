@@ -34,7 +34,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { IPSettlementComponent } from './ip-settlement.component';
 import { IPSettlementService } from './ip-settlement.service';
-import { IPpaymentWithadvanceComponent } from './ippayment-withadvance/ippayment-withadvance.component';
 
 const routes: Routes = [
   { 
@@ -45,8 +44,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        IPSettlementComponent,
-        IPpaymentWithadvanceComponent,
+        IPSettlementComponent
     ],
     imports: [
         CommonModule,

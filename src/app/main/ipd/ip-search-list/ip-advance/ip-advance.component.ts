@@ -451,3 +451,90 @@ export class AdvanceDetails {
   }
 
 }
+
+
+export class IpPaymentInsert {
+  PaymentId: number;
+  BillNo: number;
+  ReceiptNo: any;
+  PaymentDate: Date;
+  PaymentTime: any;
+  CashPayAmount: number;
+  ChequePayAmount: number;
+  ChequeNo: any;
+  BankName: any;
+  ChequeDate: Date;
+  CardPayAmount: number;
+  CardNo: any;
+  CardBankName: any;
+  CardDate: Date;
+  AdvanceUsedAmount: number;
+  AdvanceId: any;
+  RefundId: any;
+  TransactionType: any;
+  Remark: any;
+  AddBy: any;
+  IsCancelled: boolean;
+  IsCancelledBy: any;
+  IsCancelledDate: Date;
+  CashCounterId: number;
+  IsSelfORCompany: number;
+  CompanyId: any;
+  NEFTPayAmount: number;
+  NEFTNo: any;
+  NEFTBankMaster: any;
+  NEFTDate: any;
+  PayTMAmount: number;
+  PayTMTranNo: any;
+  PayTMDate: Date;
+  PaidAmt: number;
+  BalanceAmt: number;
+  UsedAmount: number;
+    BalanceAmount: number;
+
+  constructor(IpPayment) {
+    this.PaymentId = IpPayment.PaymentId || 0;
+    this.BillNo = IpPayment.BillNo || 0;
+    this.ReceiptNo = IpPayment.ReceiptNo || '';
+    this.PaymentDate = IpPayment.PaymentDate || '01/01/1900';
+    this.PaymentTime = IpPayment.PaymentTime || '01/01/1900';
+    this.CashPayAmount = IpPayment.CashPayAmount || 0;
+    this.ChequePayAmount = IpPayment.ChequePayAmount || 0;
+    this.ChequeNo = IpPayment.ChequeNo || '';
+
+    this.BankName = IpPayment.BankName || '';
+    this.ChequeDate = IpPayment.ChequeDate || '01/01/1900';
+    this.CardPayAmount = IpPayment.CardPayAmount || 0;
+    this.CardNo = IpPayment.CardNo || '';
+    this.CardBankName = IpPayment.CardBankName || '';
+   this.BalanceAmount = IpPayment.BalanceAmount || 0;
+    this.CardDate = IpPayment.CardDate || '01/01/1900';
+    this.AdvanceUsedAmount = IpPayment.AdvanceUsedAmount || 0;
+    this.AdvanceId = IpPayment.AdvanceId || 0;
+    this.RefundId = IpPayment.RefundId || 0;
+    this.TransactionType = IpPayment.TransactionType || 0;
+    this.Remark = IpPayment.Remark || '';
+ this.UsedAmount = IpPayment.UsedAmount || 0;
+    this.AddBy = IpPayment.AddBy || 0;
+    this.IsCancelled = IpPayment.IsCancelled || 0;
+    this.IsCancelledBy = IpPayment.IsCancelledBy || 0;
+    this.IsCancelledDate = IpPayment.IsCancelledDate || '01/01/1900';
+
+    this.CashCounterId = IpPayment.CashCounterId || 0;
+    this.IsSelfORCompany = IpPayment.IsSelfORCompany || 0;
+    this.CompanyId = IpPayment.CompanyId || 0;
+
+    this.NEFTPayAmount = IpPayment.NEFTPayAmount || 0;
+    this.NEFTNo = IpPayment.NEFTNo || '';
+    this.NEFTBankMaster = IpPayment.NEFTBankMaster || '';
+    this.NEFTDate = IpPayment.NEFTDate || '01/01/1900';
+
+    this.PayTMAmount = IpPayment.PayTMAmount || 0;
+    this.PayTMTranNo = IpPayment.PayTMTranNo || '';
+    this.PayTMDate = IpPayment.PayTMDate || '01/01/1900';
+
+    this.PaidAmt = IpPayment.PaidAmt || 0;
+    this.BalanceAmt = IpPayment.BalanceAmt || 0;
+  }
+
+}

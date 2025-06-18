@@ -18,7 +18,7 @@
     
         <div class="modal-card-container">
             <div fxLayout="column" >
-                <form [formGroup]="_IpSalesRetService.userFormGroup">
+                <form [formGroup]="ItemFormGroup">
                     <div fxLayout="column" fxLayoutGap="10px"> 
                         <div fxLayout="row" fxLayoutGap="8px">
                             <div class="p-12">
@@ -28,7 +28,7 @@
                             </div>
                             <div fxFlex="50%" fxFlex.sm="100%">
                                 <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
-                                    [formGroup]="_IpSalesRetService.userFormGroup" formControlName="PatientName"
+                                    [formGroup]="ItemFormGroup" formControlName="PatientName"
                                     placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex 
                                     ApiUrl="Admission/search-patient?Keyword="
                                     (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
@@ -127,9 +127,9 @@
                                             formControlName="ItemName" [matAutocomplete]="auto" >
                                         <span matSuffix style="display: flex;">
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_IpSalesRetService.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
+                                                (click)="ItemFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
                                             <mat-icon class="mat-icon-close"
-                                                (click)="_IpSalesRetService.userFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">search</mat-icon>
+                                                (click)="ItemFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">search</mat-icon>
                                         </span>
                                         <mat-autocomplete #auto="matAutocomplete"  (optionSelected)='getSelectedItemObj($event.option.value)'
                                             [displayWith]="getOptionTextitemname">
@@ -143,7 +143,7 @@
     
                             <div fxFlex="12%">
                                 <airmid-textbox label="Total Qty" formControlName="TotalQty" [readonly]="true" type="number" min="1"
-                                    [formGroup]="_IpSalesRetService.userFormGroup"></airmid-textbox>
+                                    [formGroup]="ItemFormGroup"></airmid-textbox>
                             </div>
                             
                             
@@ -343,31 +343,31 @@
     <div class="modal-footer  p-12">  
     
          <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
-            <form [formGroup]="_IpSalesRetService.IPFinalform">
+            <form [formGroup]="IPSalesRetFooterform">
                 <div fxLayout="row" fxLayoutGap="6px">
     
                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total Amt" formControlName="FinalTotalAmt"
                             type="number" [readonly]="true"
-                            [formGroup]="_IpSalesRetService.IPFinalform"></airmid-textbox>
+                            [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>
 
                     <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total GST Amt"  formControlName="FinalGSTAmt"
                             type="number" [readonly]="true"
-                            [formGroup]="_IpSalesRetService.IPFinalform"></airmid-textbox>
+                            [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total Disc Amt"  
                             formControlName="FinalDiscAmount" type="number" [readonly]="true"
-                            [formGroup]="_IpSalesRetService.IPFinalform"></airmid-textbox>
+                            [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Net Amount"  
                             formControlName="FinalNetAmount" type="number" [readonly]="true"
-                            [formGroup]="_IpSalesRetService.IPFinalform"></airmid-textbox>
+                            [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>
                 </div>
             </form>

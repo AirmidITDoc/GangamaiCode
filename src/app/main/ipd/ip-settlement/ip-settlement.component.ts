@@ -1,10 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { DatePipe } from '@angular/common';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { AuthenticationService } from 'app/core/services/authentication.service'; 
 // import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -15,6 +14,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../Admission/admission/admission.component';
 import { IPSettlementService } from './ip-settlement.service';
+import { IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -30,8 +31,10 @@ export class IPSettlementComponent implements OnInit {
     RegId1 = "0";
     BillNo: any;
     vpaidamt: any = 0;
-    vbalanceamt: any = 0;
-    FinalAmt = 0;
+    vbalanceamt: any = 0; 
+        registerObj = new RegInsert({});  
+    PatientName: any;
+    AdmissionId:any=0;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -79,198 +82,163 @@ export class IPSettlementComponent implements OnInit {
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
         public toastr: ToastrService,
+        public _FormvalidationserviceService:FormvalidationserviceService,
         public formBuilder: UntypedFormBuilder,) { }
 
     ngOnInit(): void {
-        this.searchFormGroup = this.createSearchForm();
-        this.myFormGroup = this.createSearchForm1();
+        this.searchFormGroup = this.createSearchForm(); 
+        this.IPBillMyForm = this.CreateIPBillForm();
     }
     createSearchForm() {
         return this.formBuilder.group({
             RegId: 0,
             AppointmentDate: [(new Date()).toISOString()],
         });
-    }
-    createSearchForm1() {
-        return this.formBuilder.group({
-            RegId: 0
-        });
-    }
-
-    //    110193
-    registerObj = new RegInsert({});  
-    PatientName: any;
-    AdmissionId:any=0;
-    getSelectedObj(obj) {
-        console.log(obj)
+    } 
+    IPBillMyForm:FormGroup;
+  //IP bill save form 
+  CreateIPBillForm(): FormGroup {
+    return this.formBuilder.group({ 
+      //Payment form
+      payment: this.formBuilder.group({ 
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        chequeDate: ['1999-01-01'],
+        cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardDate: ['1999-01-01'],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        addBy: [this.accountService.currentUserValue.userId],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1999-01-01'],
+        opdipdType:[3,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftdate: ['1999-01-01'],
+        payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payTmdate: ['1999-01-01'],
+        tdsAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      // BIll update
+      billupdate: this.formBuilder.group({
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }), 
+      // Advance details update in array
+      advanceDetailupdate: this.formBuilder.array([]),
+      // Advacne header update
+      advanceHeaderupdate: this.formBuilder.group({
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }), 
+    });
+  } 
+  createAdvanceUpdate(item: any): FormGroup {
+    return this.formBuilder.group({
+      advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  }  
+  // Getters  
+    get AdvacnedetUpdateArray(): FormArray {
+    return this.IPBillMyForm.get('advanceDetailupdate') as FormArray;
+  }    
+    //    110193 
+    getSelectedObj(obj) { 
         this.RegId1 = obj.value; 
         setTimeout(() => {
             this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
                 this.registerObj = response;
                 this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
-                console.log(response)
-            }); 
-
-            // this._IPSettlementService.getAdmissionById(this.RegId1).subscribe((response) => { 
-            //     this.AdmissionId =  response.admissionId
-            //     console.log(this.AdmissionId)
-            // });
+               
+            });  
         }, 500);
         this.GetDetails(this.RegId1)
     }
-    openPaymentpopup(contact) {
 
-        console.log(contact)
+
+    openPaymentpopup(contact) { 
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-        this.FinalAmt = contact.NetPayableAmt;
 
-        let PatientHeaderObj = {}; 
+        let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
-        PatientHeaderObj['PatientName'] = this.PatientName; 
+        PatientHeaderObj['PatientName'] = this.PatientName;
         PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
         PatientHeaderObj['IPDNo'] = contact.ipdNo;
-        PatientHeaderObj['RegNo'] =  contact.regNo; 
-        PatientHeaderObj['DoctorName'] = contact.doctorname; 
-        PatientHeaderObj['CompanyName'] =contact.companyName;
+        PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['DoctorName'] = contact.doctorname;
+        PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['DepartmentName'] = contact.departmentName;
-        PatientHeaderObj['Age'] = this.registerObj.age; 
+        PatientHeaderObj['Age'] = this.registerObj.age;
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
                 maxWidth: "85vw",
                 height: '700px',
                 width: '100%',
-
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "IP-SETTLEMENT",
                     advanceObj: PatientHeaderObj,
                 }
             });
-
-
-        dialogRef.afterClosed().subscribe(result => {
-            let NeftNo = "0"
-            // console.log(result.submitDataPay.ipPaymentInsert)
-
-            if (result.submitDataPay.ipPaymentInsert.NEFTNo == "undefined")
-                NeftNo = "0"
-            else
-                NeftNo = String(result.submitDataPay.ipPaymentInsert.NEFTNo)
-            if (result.IsSubmitFlag) {
-                let Paymentobj = {};
-
-                Paymentobj['PaymentId'] = '0';
-                Paymentobj['billNo'] = contact.billNo;
-                Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.PaymentDate;
-                Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.PaymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-                Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.CashPayAmount ?? 0;
-                Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.ChequePayAmount ?? 0;
-                Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.ChequeNo) ?? "0";
-                Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.BankName ?? "";
-                Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.ChequeDate;
-                Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.CardPayAmount
-                Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.CardNo);
-                Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.CardBankName
-                Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.CardDate
-                Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.AdvanceUsedAmount
-                Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.AdvanceId
-                Paymentobj['RefundId'] = 0;
-                Paymentobj['TransactionType'] = 0;
-                Paymentobj['Remark'] = '';
-                Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
-                    Paymentobj['IsCancelled'] = false;
-                Paymentobj['IsCancelledBy'] = '0';
-                Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.IsCancelledDate
-                Paymentobj['opdipdType'] = 1;
-                Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.NEFTPayAmount
-                Paymentobj['neftno'] = NeftNo;
-                Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
-                Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
-                Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.PayTMAmount
-                Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.PayTMTranNo || 0
-                    Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.PayTMDate
-                Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
-
-                let BillUpdateObj = {};
-
-                BillUpdateObj['billNo'] = contact.billNo;
-                BillUpdateObj['balanceAmt'] = result.BalAmt;
-
-                console.log("Procced with Payment Option");
+        dialogRef.afterClosed().subscribe(result => { 
+            if (result && result.IsSubmitFlag) {
                 let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+                UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-                if (result.IsSubmitFlag) {
-                    console.log(result);
-                    result.submitDataPay.ipPaymentInsert.TransactionType = 0;
-                    UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-                    console.log(UpdateAdvanceDetailarr1);
+                this.IPBillMyForm.get('billupdate.billNo').setValue(contact.billNo)
+                this.IPBillMyForm.get('billupdate.balanceAmt').setValue(result.BalAmt) 
 
-                    let UpdateAdvanceDetailarr = [];
-                    let BalanceAmt = 0;
-                    let UsedAmt = 0;
-                    if (result.submitDataAdvancePay.length > 0) {
-                        result.submitDataAdvancePay.forEach((element) => {
-                            let UpdateAdvanceDetailObj = {};
-                            UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
-                            UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
-                            UsedAmt += element.UsedAmount;
-                            UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
-                            BalanceAmt += element.BalanceAmount;
-                            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                        });
-                    }
-                    else {
-                        let UpdateAdvanceDetailObj = {};
-                        UpdateAdvanceDetailObj['advanceDetailID'] = 0,
-                            UpdateAdvanceDetailObj['usedAmount'] = 0,
-                            UpdateAdvanceDetailObj['balanceAmount'] = 0,
-                            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                    }
-
-
-                    let UpdateAdvanceHeaderObj = {};
-                    if (result.submitDataAdvancePay.length > 0) {
-                        UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-                            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
-                            UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
-                    }
-                    else {
-                        UpdateAdvanceHeaderObj['advanceId'] = 0,
-                            UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
-                            UpdateAdvanceHeaderObj['balanceAmount'] = 0
-                    }
-
-                    let submitData = {
-                        "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,
-                        "billupdate": BillUpdateObj,
-                        "advanceDetailupdate": UpdateAdvanceDetailarr,
-                        "advanceHeaderupdate": UpdateAdvanceHeaderObj
-                    };
-                    let data = {
-                        submitDataPay: submitData
-                    }
-                    console.log(submitData);
-                    this._IPSettlementService.InsertIPSettlementPayment(submitData).subscribe(response => {
-                        this.toastr.success(response.message);
-                        this.GetDetails(this.RegId1)
-                        this.viewgetIPPayemntPdf(response)
-                        this.reset();
-                    });
-
-                }
-
+                this.AdvacnedetUpdateArray.clear();
+                UpdateAdvanceDetailarr1.forEach(item => {
+                    this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
+                }); 
+                    let AdvanceBalAmt = 0;
+                    let AdvanceUsedAmt = 0;  
+                if (UpdateAdvanceDetailarr1.length > 0) {
+                    UpdateAdvanceDetailarr1.forEach(element => {
+                        AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                        AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                        this.IPBillMyForm.get('advanceHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                        this.IPBillMyForm.get('advanceHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                        this.IPBillMyForm.get('advanceHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
+                    })
+                } 
+               
+                this.IPBillMyForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
+                console.log(this.IPBillMyForm.value);
+                this._IPSettlementService.InsertIPSettlementPayment(this.IPBillMyForm.value).subscribe(response => {
+                    this.GetDetails(this.RegId1)
+                    this.viewgetIPPayemntPdf(response)
+                    this.reset();
+                });
             }
         });
         this.searchFormGroup.get('RegId').setValue('')
-    }
-
+    } 
     viewgetIPPayemntPdf(paymentId) { 
         this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
     } 
@@ -291,12 +259,9 @@ export class IPSettlementComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
-    getSelectedObjIP(obj) {
- 
+    getSelectedObjIP(obj) { 
         if ((obj.regID ?? 0) > 0) {
-          console.log("Admitted patient:", obj)
-       
+          console.log("Admitted patient:", obj) 
         }
-      }
- 
+      } 
 }

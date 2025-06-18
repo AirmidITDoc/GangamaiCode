@@ -7,42 +7,13 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class IpSalesReturnService {
-
-  userFormGroup: FormGroup;
-  IPFinalform :FormGroup;
-
-
+export class IpSalesReturnService { 
   constructor(
     public _httpClient: HttpClient,
      public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService :FormvalidationserviceService
-  ) { 
-    this.userFormGroup = this.CreateusefromGroup();
-    this.IPFinalform= this.CreateaIpFinalform();
-  }
-
-  CreateaIpFinalform() {
-    return this._formBuilder.group({
-      FinalNetAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
-      FinalTotalAmt:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
-      FinalGSTAmt:'',
-      FinalDiscAmount:''
-    });
-  }
-  
-  CreateusefromGroup() {
-    return this._formBuilder.group({
-      Op_ip_id: ['1'],
-      PaymentType:['CashPay'],
-      ItemName:['',[Validators.required]] ,
-      ReturnQty:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
-      TotalQty:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] , 
-      PatientName: ['',[Validators.required]]
-    });
-  }
-
+  ) {} 
     public getSalesReturnitemlist(param){
     return this._httpClient1.PostData("Common",param)
   }

@@ -38,15 +38,14 @@ import { MatCardModule } from '@angular/material/card';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
-import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
-import { NRefundComponent } from './nrefund/nrefund.component';
+import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component'; 
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
-  declarations: [IPDSearcPatienthComponent, NRefundComponent,],
+  declarations: [IPDSearcPatienthComponent,],
   imports: [
     CommonModule,
     MatButtonModule,
