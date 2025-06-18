@@ -60,6 +60,7 @@ export class AirmidTimePickerComponent implements ControlValueAccessor {
   @Input() appearance: string = 'outline';
   @Input() width: number;
   @Input() readonly: boolean = false;
+  @Input() placeholder: string = '';
   /* Minimum time to pick from */
   @Input() minDate: Date;
 
