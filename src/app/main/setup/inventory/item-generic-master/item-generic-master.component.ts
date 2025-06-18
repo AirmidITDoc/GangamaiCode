@@ -59,10 +59,10 @@ export class ItemGenericMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    onClear(val: boolean) {
-        this.genericForm.reset();
-        this.dialogRef.close(val);
-    }
+    // onClear(val: boolean) {
+    //     this.genericForm.reset();
+    //     this.dialogRef.close(val);
+    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

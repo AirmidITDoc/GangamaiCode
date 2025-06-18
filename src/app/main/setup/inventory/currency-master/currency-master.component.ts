@@ -58,43 +58,43 @@ export class CurrencyMasterComponent implements OnInit {
 
     ngOnInit(): void { }
      //filters addedby avdhoot vedpathak date-28/05/2025
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'CurrencyNameSearch')
-            this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'CurrencyNameSearch')
+    //         this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.currencyName = this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.currencyName = this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        let isActive = this._CurrencymasterService.myformSearch.get("IsDeletedSearch").value || "";
-        this.gridConfig = {
-            apiUrl: "CurrencyMaster/List",
-            columnsList: this.allcolumns,
-            sortField: "currencyId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "currencyName", fieldValue: this.currencyName, opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-            ]
-        }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-        console.log("GridConfig:", this.gridConfig);
+    // getfilterdata() {
+    //     debugger
+    //     let isActive = this._CurrencymasterService.myformSearch.get("IsDeletedSearch").value || "";
+    //     this.gridConfig = {
+    //         apiUrl: "CurrencyMaster/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "currencyId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "currencyName", fieldValue: this.currencyName, opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     // this.grid.gridConfig = this.gridConfig;
+    //     // this.grid.bindGridData();
+    //     console.log("GridConfig:", this.gridConfig);
 
-    if (this.grid) {
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    } else {
-        console.error("Grid is undefined!");
-    }
-    }
+    // if (this.grid) {
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // } else {
+    //     console.error("Grid is undefined!");
+    // }
+    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
