@@ -7,8 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IpPaymentInsert } from 'app/main/ipd/ip-settlement/ippayment-withadvance/ippayment-withadvance.component';
+import { AuthenticationService } from 'app/core/services/authentication.service'; 
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { ToastrService } from 'ngx-toastr';
@@ -462,7 +461,7 @@ autocompleteModedeptdoc: string = "ConDoctor";
         updateBillobj['balanceAmount'] = result.BalAmt || 0;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
 
 
-        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+        let UpdateAdvanceDetailarr1 = [];
 
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 

@@ -21,8 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../../advance';
-import { InterimBillComponent } from '../interim-bill/interim-bill.component';
-import { IpPaymentInsert } from '../ip-advance-payment/ip-advance-payment.component';
+import { InterimBillComponent } from '../interim-bill/interim-bill.component'; 
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { IPPackageDetComponent } from '../ippackage-det/ippackage-det.component';
@@ -1147,6 +1146,8 @@ checkAdvBalAmt:any=0;
         this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
         this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
         this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+        this.IPBillMyForm.get('payment.paymentDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.IPBillMyForm.get('payment.paymentTime').setValue(this.dateTimeObj.time)
 
         this.BillDetailsArray.clear();
         this.dataSource.data.forEach(item => {

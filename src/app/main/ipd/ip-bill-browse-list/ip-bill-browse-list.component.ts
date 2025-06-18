@@ -4,8 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { IpPaymentInsert } from '../ip-search-list/ip-advance-payment/ip-advance-payment.component';
+import { AuthenticationService } from 'app/core/services/authentication.service'; 
 import { IPBrowseBillService } from './ip-browse-bill.service';
 
 
@@ -15,7 +14,7 @@ import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { IPAdvanceComponent } from '../ip-search-list/ip-advance/ip-advance.component';
+import { IPAdvanceComponent, IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
 
 @Component({
     selector: 'app-ip-bill-browse-list',

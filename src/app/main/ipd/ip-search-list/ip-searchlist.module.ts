@@ -41,8 +41,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SharedModule } from 'app/main/shared/shared.module';
-import { IPAdvancePaymentComponent } from './ip-advance-payment/ip-advance-payment.component';
+import { SharedModule } from 'app/main/shared/shared.module'; 
 import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
 import { IPSearchListComponent } from './ip-search-list.component';
 import { IPSearchListService } from './ip-search-list.service';
@@ -59,7 +58,6 @@ import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/dis
 import { InterimBillComponent } from './interim-bill/interim-bill.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
-import { IpPaymentwithAdvanceComponent } from './ip-paymentwith-advance/ip-paymentwith-advance.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { IPPackageDetComponent } from './ippackage-det/ippackage-det.component';
 
@@ -78,14 +76,12 @@ const routes: Routes = [
         IPSearchListComponent,
         BedTransferComponent,
         DischargeComponent,
-        IPAdvanceComponent,
-        IPAdvancePaymentComponent,
+        IPAdvanceComponent, 
         //IPRefundofAdvanceComponent,
         IPRefundofBillComponent,
         IPBillingComponent,
         InterimBillComponent,
         DischargeSummaryComponent,
-        IpPaymentwithAdvanceComponent,
         PrebillDetailsComponent,
         DiscountAfterFinalBillComponent,
         // OPIPFeedbackComponent,

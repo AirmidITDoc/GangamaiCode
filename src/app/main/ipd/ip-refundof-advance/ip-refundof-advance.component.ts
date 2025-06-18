@@ -77,14 +77,13 @@ export class IPRefundofAdvanceComponent implements OnInit {
       CashCounterID: ['8', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
       this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
-      balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
-      this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
+      balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator, Validators.min(0)]],
       remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
 
       // refund header
       refundHeader: this.formBuilder.group({
-        refundDate: ['', [this._FormvalidationserviceService.validDateValidator]],
-        refundTime: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        refundDate: ['', [this._FormvalidationserviceService.validDateValidator()]],
+        refundTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -107,8 +106,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
-        this._FormvalidationserviceService.onlyNumberValidator(), Validators.min(1)]],
+        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
       }),  
       // ✅ Fixed: should be FormArray
       AdvDetailsnew: this.formBuilder.array([]),
@@ -132,8 +130,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
       refundAmount: [item?.refundAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.balanceAmount, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
-      this._FormvalidationserviceService.onlyNumberValidator()]]
+      balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters

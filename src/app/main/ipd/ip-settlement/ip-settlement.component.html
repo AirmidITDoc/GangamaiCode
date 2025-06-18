@@ -69,9 +69,8 @@
                     </div>
                 </form>
             </mat-card> 
-        </div>
+        </div> 
 
-      
         <ng-template #actionsTemplate let-element>
             <div>
                 <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
@@ -80,50 +79,22 @@
                 <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
                 </mat-icon>
             </div>
-        </ng-template>
-
-
+        </ng-template> 
 
         <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-
+            <div fxLayout="row" fxLayoutAlign="center center"> 
                 <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                     *ngIf="element.balanceAmt!='0'">
                     <mat-icon title="Settlement">payment</mat-icon>
-                </button>
-                <!-- <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
-                    <mat-icon title="Settlement">payment</mat-icon>
-                </button> -->
-
+                </button> 
                 <!-- <button mat-icon-button matTooltip="Print" (click)="viewgetOPPayemntPdf(element)">
                     <mat-icon>print</mat-icon>
-                </button> -->
-
+                </button> --> 
             </div>
         </ng-template>
 
         
-        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-            <ng-container filters>
-                <form [formGroup]="myFormGroup">
-                    <mat-form-field appearance="outline">
-                        <mat-label>RegId</mat-label>
-                        <input matInput placeholder="Search RegId" autocomplete="off" [formGroup]="myFormGroup"
-                            formControlName="RegId" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <!-- <airmid-autocomplete lbl="RgId" [formGroup]="myFormGroup" formControlName="RegId" placeholderText="Enter regID"
-                 ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
-                 [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-autocomplete> -->
-
-                </form>
-
-            </ng-container>
+        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"> 
         </airmid-table>
     </div>
 </div>

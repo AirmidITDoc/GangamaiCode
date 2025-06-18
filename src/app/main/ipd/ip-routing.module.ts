@@ -32,10 +32,10 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
-    {
-        path: "refund",
-        loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),
-    },
+    // {
+    //     path: "refund",
+    //     loadChildren: () =>import("./Refund/ip-refund/ip-refund.module").then((m) => m.IPRefundModule),
+    // },
     {
         path: "ipd-bill-browse-list",
         loadChildren: () =>
@@ -70,18 +70,18 @@ const appRoutes: Routes = [
          loadChildren: () =>
          import("./ip-settlement/ip-settlement.module").then((m) => m.IPSettlementModule),
         },
-        {
-            path: "browserefundofbill",
-            loadChildren: () =>
-            import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
+        // {
+        //     path: "browserefundofbill",
+        //     loadChildren: () =>
+        //     import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
                
-        },
-        {
-            path: "browserefundofadvance",
-            loadChildren: () =>
-            import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
+        // },
+        // {
+        //     path: "browserefundofadvance",
+        //     loadChildren: () =>
+        //     import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
                
-        },
+       // },
         {
             path: "companylist",
             loadChildren: () =>
