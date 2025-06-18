@@ -24,8 +24,8 @@ export class NewConfigurationComponent implements OnInit {
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModeDepartment: String = "Department";
     autocompleteModedoctorty: string = "ConDoctor";
-    screenFromString = 'discharge-summary';
-
+    screenFromString = 'Common-form';
+    autocompleteModeClass: string = "Class";
     autocompleteModeOpbillCashcounter: string = "CashCounter";
     autocompleteModeopreceiptCashcounter: string = "CashCounter";
     autocompleteModeoprefundCashcounter: string = "CashCounter";
@@ -51,7 +51,7 @@ export class NewConfigurationComponent implements OnInit {
 
     ngOnInit(): void {
         this.myform = this._ConfigurationService.createConfigForm();
-        if ((this.data?.currencyId ?? 0) > 0) {
+        if ((this.data?.configId ?? 0) > 0) {
             this.isActive = this.data.isActive
             this.myform.patchValue(this.data);
         }
@@ -87,9 +87,21 @@ export class NewConfigurationComponent implements OnInit {
             IPPaperName: [],
 
             OPSalesdisc: [],
-            IPSalesdisc: []
+            IPSalesdisc: [],
+            ChargeClass: []
 
         };
+    }
+    classstatus = false
+    onChangeClassEdit(event) {
+        if (event.checked)
+            this.classstatus = true
+       else
+            this.classstatus = false
+    }
+    ApiURL: any;
+    getSelectedClassObj(event) {
+        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
     }
 
     selectChangeItem(obj: any) {

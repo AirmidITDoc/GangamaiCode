@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { HospitalMaster } from '../hospital-master.component';
 import { HospitalService } from '../hospital.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-hospital',
@@ -20,35 +21,34 @@ import { HospitalService } from '../hospital.service';
 })
 export class NewHospitalComponent implements OnInit {
   Header: string;
-  vTemplateDesc:''
- 
-    editorConfig: AngularEditorConfig = {
-           editable: true,
-           spellcheck: true,
-           height: '20rem',
-           minHeight: '20rem',
-           translate: 'yes',
-           placeholder: 'Enter text here...',
-           enableToolbar: true,
-           showToolbar: true,
-       
-         };
-                   
-    onBlur(e: any) {
+  HospitalForm: FormGroup;
+  vTemplateDesc: ''
+  registerObj = new HospitalMaster({});
+  optionsCity: any[] = [];
+  cityList: any = [];
+  filteredOptionsCity: Observable<string[]>;
+  isCitySelected: boolean = false;
+  vCityId: any;
+  HospitalId = 0;
+  HospitalHeader: any = '';
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+
+  onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
     throw new Error('Method not implemented.');
-    }
+  }
 
-  
-    registerObj= new HospitalMaster({});
-    optionsCity: any[] = [];
-    cityList:any=[];
-    filteredOptionsCity: Observable<string[]>;
-    isCitySelected: boolean = false;
-    vCityId:any;
-    HospitalId=0;
-    HospitalHeader:any='';
-  constructor( public _HospitalService: HospitalService,
+  constructor(public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
     private reportDownloadService: ExcelDownloadService,
     public toastr: ToastrService,
@@ -57,204 +57,86 @@ export class NewHospitalComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,) { }
 
   ngOnInit(): void {
-    
-    this.getcityList() 
-    if(this.data){
-      this.registerObj=this.data.registerObj;
-     this.HospitalId=this.registerObj.HospitalId
-     console.log(this.registerObj)
-     this.getCitylist();
-    }
-         
-    this.filteredOptionsCity = this._HospitalService.HospitalForm.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => this._filtercity(value)),
+    this.HospitalForm = this._HospitalService.createHospitalForm();
+  this.HospitalForm.markAllAsTouched();
   
-      );
+    if (this.data) {
+      this.registerObj = this.data;
+      this.HospitalId = this.registerObj.hospitalId
+      console.log(this.registerObj)
+
+    }
+
   }
 
-  onSubmit(){
+  onSubmit() {
     let hospitalarr = [];
-   if(this.HospitalId==0){
-    // let hospitaldata = {};
-    
-    // hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
-    // hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
-    // hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
-    // hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
-    // hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
-    // hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
-    // hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
-    // hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
-   
-    // let submitData = {
-    //   hospitalMasterInsert:hospitaldata
-    // };
-    
-    console.log(this._HospitalService.HospitalForm.value)
-    this._HospitalService.HospitalInsert(this._HospitalService.HospitalForm.value).subscribe(response => {
-        if (response) {
-          Swal.fire('Congratulations !', 'Hospital  Saved Successfully  !', 'success').then((result) => {
-         
-          });
-        } else {
-          Swal.fire('Error !');
-        }
-        
+    debugger
+    if (this.HospitalForm.valid) {
+       console.log(this.HospitalForm.valid)
+      console.log(this.HospitalForm.value)
+      this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
+         this.onClear(true);
+
       });
-    }
-    
-    // else{
-    //   let hospitaldata = {};
-    //   hospitaldata['HospitalId'] = this.HospitalId;
-    //   hospitaldata['HospitalName'] =  this._HospitalService.HospitalForm.get('HospitalName').value || '';
-    //   hospitaldata['HospitalAddress'] =this._HospitalService.HospitalForm.get('HospitalAddress').value || '';
-    //   hospitaldata['City'] =this._HospitalService.HospitalForm.get('CityId').value.CityName;
-    //   hospitaldata['Pin'] = this._HospitalService.HospitalForm.get('Pin').value || '';
-    //   hospitaldata['Phone'] = this._HospitalService.HospitalForm.get('Phone').value || '';
-    //   hospitaldata['Email'] =this._HospitalService.HospitalForm.get('Email').value  || '';
-    //   hospitaldata['Website'] = this._HospitalService.HospitalForm.get('website').value  || '';
-    //   hospitaldata['HospitalHeader'] = this._HospitalService.HospitalForm.get('HospitalHeader').value  || '';
+    } else {
+      let invalidFields = [];
 
-  
-     
-    //   let submitData = {
-    //     hospitalMasterUpdate:hospitaldata
-    //   };
-      
-    //   console.log(submitData)
-    //   this._HospitalService.HospitalUpdate(submitData).subscribe(response => {
-    //       if (response) {
-    //         Swal.fire('Congratulations !', 'Hospital Updated Successfully  !', 'success').then((result) => {
-           
-    //         });
-    //       } else {
-    //         Swal.fire('Error !');
-    //       }
-          
-    //     });
-    // }
-    this._matDialog.closeAll();
-  }
-  
-
-  @ViewChild('hname') hname: ElementRef;
-  @ViewChild('address') address: ElementRef;
-  @ViewChild('city') city: ElementRef;
-  @ViewChild('pin') pin: ElementRef;
-  @ViewChild('phone') phone: ElementRef;
-  @ViewChild('email') email: ElementRef;
-  @ViewChild('website') website: ElementRef;
-
-  public onEnterhname(event): void {
-    if (event.which === 13) {
-        // this.lname.nativeElement.focus();
-    }
-}
-
-  public   onEntercity(event): void {
-
-      if (event.which === 13) {
-  
-              // this.fname.nativeElement.focus();
+      if (this.HospitalForm.invalid) {
+        for (const controlName in this.HospitalForm.controls) {
+          if (this.HospitalForm.controls[controlName].invalid) {
+            invalidFields.push(`Hospital Form: ${controlName}`);
           }
+        }
       }
-  
-  
-  
-  public onEnteraddress(event): void {
-      if (event.which === 13) {
-          // this.mname.nativeElement.focus();
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
       }
-  }
-  public onEnterpin(event): void {
-      if (event.which === 13) {
-          // this.lname.nativeElement.focus();
-      }
-  }
-  public onEntermobile(event): void {
-      if (event.which === 13) {
-          // this.agey.nativeElement.focus();
-          
-      }
-  }
-  public onEnterEmail(event): void {
-    if (event.which === 13) {
-        // this.agey.nativeElement.focus();
-        
-    }
-}
 
-
-public onEnterwebsite(event): void {
-  if (event.which === 13) {
-      // this.agey.nativeElement.focus();
-      
-  }
-}
-
-getcityList() {
-
-    this._HospitalService.getCityList().subscribe(data => {
-      this.cityList = data;
-      this.optionsCity = this.cityList.slice();
-      this.filteredOptionsCity = this._HospitalService.HospitalForm.get('CityId').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterCity(value) : this.cityList.slice()),
-      );
-console.log(this.cityList)
-    });
-
-  }
-
-getCitylist() {
-    
-    this._HospitalService.getCityList().subscribe(data => {
-      this.cityList = data;
-      if (this.data) {
-        const ddValue = this.cityList.filter(c => c.CityId == this.registerObj.City);
-        this._HospitalService.HospitalForm.get('CityId').setValue(ddValue[0]);
-        this._HospitalService.HospitalForm.updateValueAndValidity();
-        return;
-      }
-    });
-   
-  }
-
-
-  getOptionTextCity(option) {
-    return option && option.CityName ? option.CityName : '';
-
-  }
-
-
-  private _filterCity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-
-      return this.optionsCity.filter(option => option.CityName.toLowerCase().includes(filterValue));
     }
 
-  }
-
-  private _filtercity(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.CityName ? value.CityName.toLowerCase() : value.toLowerCase();
-      return this.cityList.filter(option => option.CityName.toLowerCase().includes(filterValue));
-    }
-  }
-
-  get f() {
-    return this._HospitalService.HospitalForm.controls;
-}
-  onClose(){
-    this._HospitalService.HospitalForm.reset();
     this._matDialog.closeAll();
   }
 
-  onClear(){
-    this._matDialog.closeAll();
+  getValidationMessages() {
+    return {
+      cityId: [
+        { name: "required", Message: "CityName  is required" },
+        { name: "maxlength", Message: "CityName  should not be greater than 50 char." },
+        { name: "pattern", Message: "Only Characters Allowed." }
+      ],
+      HospitalName: [
+        { name: "required", Message: "HospitalName is required" },
+        { name: "maxlength", Message: "HospitalName should not be greater than 50 char." },
+        { name: "pattern", Message: "Only Characters Allowed." }
+      ],
+      HospitalAddress: [
+        { name: "required", Message: "HospitalAddress is required" },
+        { name: "maxlength", Message: "HospitalAddress should not be greater than 250 char." },
+        { name: "pattern", Message: "Only Characters Allowed." }
+      ],
+      Email: [
+        // { name: "required", Message: "Email is required" },
+        { name: "maxlength", Message: "Email should not be greater than 250 char." },
+        // { name: "pattern", Message: "Only Characters Allowed." }
+      ],
+      website: [],
+      Phone: [],
+      Pin: []
+    };
   }
+
+  onClose() {
+      this._matDialog.closeAll();
+  }
+
+    onClear(val: boolean) {
+        this.HospitalForm.reset();
+        this.dialogRef.close(val);
+    }
 }
-  
+
 
