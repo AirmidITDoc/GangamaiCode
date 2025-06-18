@@ -761,7 +761,7 @@ export class NewCasepaperComponent implements OnInit {
           //   )
           // })
           this.addCheiflist = ChiefComplaint.map(element => ({
-            // complaintId: element.id,
+            complaintId: element.id,
             complaintDescr: element.descriptionName
           }));
 

@@ -191,40 +191,109 @@ export class NewAppointmentComponent implements OnInit {
             UnitId: [this.accountService.currentUserValue.user.unitId]
         });
     }
+    // onChangeReg(event) {
+    //     //
+    //     if (event.value == 'registration') {
+    //         this.personalFormGroup.reset();
+    //         this.personalFormGroup.get('RegId').reset();
+    //         this.searchFormGroup.get('RegId').disable();
+    //         this.isRegSearchDisabled = false;
+    //         this.Patientnewold = 1;
+
+    //         this.personalFormGroup = this.createPesonalForm();
+    //         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+    //         this.Regflag = false;
+    //         this.IsPhoneAppflag = true;
+
+    //     } else if (event.value == 'registrered') {
+
+    //         this.personalFormGroup.get('RegId').enable();
+    //         this.searchFormGroup.get('RegId').enable();
+    //         this.searchFormGroup.get('RegId').reset();
+    //         this.personalFormGroup.reset();
+    //         this.Patientnewold = 2;
+
+    //         this.personalFormGroup = this.createPesonalForm();
+    //         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+
+    //         this.Regflag = true;
+    //         this.IsPhoneAppflag = false;
+    //         this.isRegSearchDisabled = true;
+    //     }
+
+    //     this.personalFormGroup.markAllAsTouched();
+    //     this.VisitFormGroup.markAllAsTouched();
+
+    // }
+
     onChangeReg(event) {
-        //
-        if (event.value == 'registration') {
-            this.personalFormGroup.reset();
-            this.personalFormGroup.get('RegId').reset();
-            this.searchFormGroup.get('RegId').disable();
-            this.isRegSearchDisabled = false;
-            this.Patientnewold = 1;
+    if (event.value === 'registration') {
+        this.personalFormGroup.reset();
+        this.personalFormGroup.get('RegId').reset();
+        this.searchFormGroup.get('RegId').disable();
+        this.isRegSearchDisabled = false;
+        this.Patientnewold = 1;
 
-            this.personalFormGroup = this.createPesonalForm();
-            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
-            this.Regflag = false;
-            this.IsPhoneAppflag = true;
+        // Instead of reassigning, update controls one by one
+        const newPersonalForm = this.createPesonalForm();
+        Object.keys(newPersonalForm.controls).forEach(key => {
+            if (this.personalFormGroup.contains(key)) {
+                this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+            } else {
+                this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+            }
+        });
 
-        } else if (event.value == 'registrered') {
-
-            this.personalFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').reset();
-            this.personalFormGroup.reset();
-            this.Patientnewold = 2;
-
-            this.personalFormGroup = this.createPesonalForm();
-            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
-
-            this.Regflag = true;
-            this.IsPhoneAppflag = false;
-            this.isRegSearchDisabled = true;
-        }
+        const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+        Object.keys(newVisitForm.controls).forEach(key => {
+            if (this.VisitFormGroup.contains(key)) {
+                this.VisitFormGroup.setControl(key, newVisitForm.get(key));
+            } else {
+                this.VisitFormGroup.addControl(key, newVisitForm.get(key));
+            }
+        });
 
         this.personalFormGroup.markAllAsTouched();
         this.VisitFormGroup.markAllAsTouched();
 
+        this.Regflag = false;
+        this.IsPhoneAppflag = true;
+
+    } else if (event.value === 'registrered') {
+
+        this.personalFormGroup.get('RegId').enable();
+        this.searchFormGroup.get('RegId').enable();
+        this.searchFormGroup.get('RegId').reset();
+        this.personalFormGroup.reset();
+        this.Patientnewold = 2;
+
+        const newPersonalForm = this.createPesonalForm();
+        Object.keys(newPersonalForm.controls).forEach(key => {
+            if (this.personalFormGroup.contains(key)) {
+                this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+            } else {
+                this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+            }
+        });
+
+        const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+        Object.keys(newVisitForm.controls).forEach(key => {
+            if (this.VisitFormGroup.contains(key)) {
+                this.VisitFormGroup.setControl(key, newVisitForm.get(key));
+            } else {
+                this.VisitFormGroup.addControl(key, newVisitForm.get(key));
+            }
+        });
+
+        this.personalFormGroup.markAllAsTouched();
+        this.VisitFormGroup.markAllAsTouched();
+
+        this.Regflag = true;
+        this.IsPhoneAppflag = false;
+        this.isRegSearchDisabled = true;
     }
+}
+
     OnViewReportPdf(element) {
         this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
@@ -332,7 +401,11 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                        this.getLastDepartmetnNameList(this.registerObj)
-                       this.selectChangedepartment(this.registerObj)
+                       this.personalFormGroup.patchValue({
+                        FirstName: this.registerObj.firstName,
+                        LastName: this.registerObj.lastName,
+                        MobileNo: this.registerObj.mobileNo
+                        });
                     console.log(this.registerObj)
                 });
 
@@ -348,7 +421,11 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                        this.getLastDepartmetnNameList(this.registerObj)
-                       this.selectChangedepartment(this.registerObj)
+                       this.personalFormGroup.patchValue({
+                        FirstName: this.registerObj.firstName,
+                        LastName: this.registerObj.lastName,
+                        MobileNo: this.registerObj.mobileNo
+                        });
                     console.log(this.registerObj)
                 });
 
@@ -389,21 +466,19 @@ export class NewAppointmentComponent implements OnInit {
             setTimeout(() => {
                 this.searchFormGroup.get('regRadio')?.setValue('registrered');
                 this.onChangeReg({ value: 'registrered' });
-                this._AppointmentlistService.getPhoneappById(this.vPhoneAppId).subscribe((response) => {
+                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
+                       this.getLastDepartmetnNameList(this.registerObj)
+                       this.personalFormGroup.patchValue({
+                        FirstName: this.registerObj.firstName,
+                        MiddleName: this.registerObj.middleName,
+                        LastName: this.registerObj.lastName,
+                        MobileNo: this.registerObj.mobileNo
+                        });
                     console.log(this.registerObj)
-                    this.registerObj.religionId = 0;
-                    this.VisitFormGroup.get('DepartmentId').setValue(this.registerObj.departmentId)
-                    this.selectChangedepartment(this.registerObj)
-                    this.registerObj.maritalStatusId = 0;
-                    this.registerObj.areaId = 0
-                    this.registerObj.regId = 0
-                    this.registerObj.phoneNo = ''
-                    this.registerObj.aadharCardNo = ''
-                    this.registerObj.dateOfBirth = new Date();
-                    this.registerObj.mobileNo = this.registerObj.mobileNo.trim()
                 });
-            }, 500);
+
+            }, 100);
         }else{
             setTimeout(() => {
                 this._AppointmentlistService.getPhoneappById(this.vPhoneAppId).subscribe((response) => {
@@ -412,6 +487,12 @@ export class NewAppointmentComponent implements OnInit {
                     this.registerObj.religionId = 0;
                     this.VisitFormGroup.get('DepartmentId').setValue(this.registerObj.departmentId)
                     this.selectChangedepartment(this.registerObj) //to set doctorid
+                       this.personalFormGroup.patchValue({
+                        FirstName: this.registerObj.firstName,
+                        MiddleName: this.registerObj.middleName,
+                        LastName: this.registerObj.lastName,
+                        MobileNo: this.registerObj.mobileNo
+                        });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
                     this.registerObj.regId = 0
@@ -534,6 +615,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
+        this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -552,6 +634,7 @@ export class NewAppointmentComponent implements OnInit {
             "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
+        console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
             this.onClear(true);
