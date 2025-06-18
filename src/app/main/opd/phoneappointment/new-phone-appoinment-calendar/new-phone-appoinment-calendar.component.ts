@@ -1,10 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PhoneAppointListService } from '../phone-appoint-list.service';
+import { calendarFormat } from 'moment';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -40,10 +42,83 @@ export class NewPhoneAppoinmentCalendarComponent {
         action: string;
         event: CalendarEvent;
     };
-    selectChangedeptdoc(obj: any) {
-        debugger
-        //this.gridConfig.filters[2].fieldValue = obj.value
+    getWeekRange(date = new Date()) {
+        // Clone the date to avoid modifying the original
+        const d = new Date(date);
 
+        // Get day of week (0 = Sunday, 6 = Saturday)
+        const day = d.getDay();
+
+        // Calculate Sunday (start of week)
+        const sunday = new Date(d);
+        sunday.setDate(d.getDate() - day);
+
+        // Calculate Saturday (end of week)
+        const saturday = new Date(d);
+        saturday.setDate(d.getDate() + (6 - day));
+
+        return { sunday, saturday };
+    }
+    @ViewChild('dateDisplay', { read: ElementRef }) dateDisplay: ElementRef;
+    months = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+    selectChangedeptdoc(obj: any) {
+        this.DoctorId = obj.value;
+        this.bindData();
+        // var dates=this.dateDisplay.nativeElement.textContent.split('-');
+
+        // let fromDate=new Date(dates[0].split(',').length>1?dates[0].split(',')[1]:dates[1].split(',')[1],this.months[dates[0].split(' ')[0]],dates[0].split(' ')[1]);
+        // let  toDate=new Date(dates[1].split(',')[1],this.months[dates[1].split(' ')[0]],dates[1].split(' ')[1]);
+        // if (this.view == CalendarView.Week) {
+        //     var d = this.getWeekRange();
+        //     fromDate = d.sunday;
+        //     toDate = d.saturday;
+        // }
+        // else if (this.view == CalendarView.Day) {
+        //     fromDate = new Date(); toDate = new Date();
+        // }
+        // else {
+        //     const now = new Date();
+        //     fromDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        //     toDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        // }
+        // this._service.getAppoinments(obj.value, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
+        //     this.events = data;
+        //     this.events = this.events.map(obj => ({
+        //         ...obj,
+        //         start: new Date(obj.start),
+        //         end: new Date(obj.end),
+        //         actions: this.actions,
+        //     }));
+
+        // });
+    }
+    bindData() {
+        var dates = this.dateDisplay.nativeElement.textContent.split('-');
+        let fromDate, toDate;
+        if (this.view == CalendarView.Week) {
+            fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
+            toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
+        }
+        else if (this.view == CalendarView.Day) {
+            fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
+        }
+        else {
+            fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
+            toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
+        }
+        this._service.getAppoinments(this.DoctorId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
+            this.events = data;
+            this.events = this.events.map(obj => ({
+                ...obj,
+                start: new Date(obj.start),
+                end: new Date(obj.end),
+                actions: this.actions,
+            }));
+
+        });
     }
     actions: CalendarEventAction[] = [
         {
@@ -108,7 +183,7 @@ export class NewPhoneAppoinmentCalendarComponent {
 
     activeDayIsOpen: boolean = true;
 
-    constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService) {
+    constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
@@ -174,9 +249,13 @@ export class NewPhoneAppoinmentCalendarComponent {
 
     setView(view: CalendarView) {
         this.view = view;
+        setTimeout(() => {
+            this.bindData();
+        }, 1000);
     }
 
     closeOpenMonthViewDay() {
         this.activeDayIsOpen = false;
+        this.bindData();
     }
 }

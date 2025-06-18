@@ -103,4 +103,7 @@ export class PhoneAppointListService {
     public getRegistraionById(Id) {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
+    public getAppoinments(Id:number,fromDate:string,toDate:string) {
+        return this._httpClient.GetData("PhoneAppointment2/get-appoinments?DocId=" + Id+"&FromDate="+fromDate+"&ToDate="+toDate);
+    }
 }
