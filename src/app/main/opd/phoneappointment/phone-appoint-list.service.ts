@@ -70,6 +70,8 @@ export class PhoneAppointListService {
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             regNo: [""],
+            startTime: [''],
+            endTime: ['']
         });
     }
 
@@ -83,7 +85,7 @@ export class PhoneAppointListService {
 
     // new Api
     public phoneMasterSave(Param: any) {
-        return this._httpClient.PostData("PhoneAppointment2/InsertSP", Param);
+        return this._httpClient.PostData("PhoneAppointment2/Insert", Param);
 
     }
 
@@ -105,5 +107,8 @@ export class PhoneAppointListService {
     }
     public getAppoinments(Id:number,fromDate:string,toDate:string) {
         return this._httpClient.GetData("PhoneAppointment2/get-appoinments?DocId=" + Id+"&FromDate="+fromDate+"&ToDate="+toDate);
+    }
+    public getDateTimeChange(m_data) {
+        return this._httpClient.PutData("PhoneAppointment2/ReschedulePhoneAppointment",m_data);
     }
 }

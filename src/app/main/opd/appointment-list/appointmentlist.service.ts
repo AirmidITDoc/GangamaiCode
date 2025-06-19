@@ -322,4 +322,12 @@ public InsertOPBillingpayment(employee) {
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
+
+    public updateStartTime(Id) {
+        return this._httpClient1.PutData("VisitDetail/ConsulationStartEndProcess/", Id);
+    }
+
+    public updateEndTime(Id) {
+        return this._httpClient1.PutData("VisitDetail/CheckOutProcess/", Id);
+    }
 }

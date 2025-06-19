@@ -1,4 +1,6 @@
-<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
     <div class="top-header header accent p-16">
         <div class="top-header-info">
             <div class="top-header-title">
@@ -22,6 +24,14 @@
                     <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                     <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
                 </div>
+                <div style="color: red;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                    <span class="red-600-fg">Appointment : {{Vtotalcount}}</span>
+                </div>
+                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                    <span class="blue-600-fg">Registration : {{Vtotalcount}}</span>
+                </div>
                 <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill green-600 s-16">circle</mat-icon>
                     <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
@@ -34,12 +44,23 @@
                     <mat-icon class="pill red-600 s-16">circle</mat-icon>
                     <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
                 </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                     <span class="blue-600-fg">Cross Consultant Count :
                         {{VCrossConscount}}</span>
                 </div>
-
+                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span class="green-600-fg">EMR Ready : {{VBillcount}}</span>
+                </div>
+                <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                    <span class="blue-600-fg">Check Out : {{VBillcount}}</span>
+                </div>
+                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span class="red-orange-fg">Waiting : {{VBillcount}}</span>
+                </div>
             </div>
         </div>
         <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
@@ -49,11 +70,10 @@
             ApiUrl="OutPatient/auto-complete?Keyword=" 
             (selectionChange)="getSelectedObj($event)" ValueField="regId"></airmid-autocomplete> -->
 
-            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
-            [formGroup]="searchFormGroup" formControlName="RegId" fxFlex
-            placeholderText="Search UHID / Patient Name / Mobile No" 
-            ApiUrl="OutPatient/auto-complete?Keyword="
-            (selectionChange)="getSelectedObj($event)" ValueField="regId"></airmid-autocomplete>
+            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
+                formControlName="RegId" fxFlex placeholderText="Search UHID / Patient Name / Mobile No"
+                ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
+                ValueField="regId"></airmid-autocomplete>
 
             <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="regId"  placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)"
             TextField="formattedText" ValueField="regId"></airmid-autocomplete> -->
@@ -67,7 +87,8 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
 
-                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
+                    class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld" class="pill orange-600 s-16">circle
                 </mat-icon>
 
@@ -76,8 +97,10 @@
         <ng-template #actionsTemplate1 let-element>
             <div>
 
-                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
-                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' " matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' "
+                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
                     circle
                 </mat-icon>
             </div>
@@ -91,7 +114,8 @@
         </ng-template>
         <ng-template #actionsTemplate3 let-element>
             <div>
-                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1" class="active-icon green-600 s-16">cached
+                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1"
+                    class="active-icon green-600 s-16">cached
                     icon</mat-icon>
             </div>
         </ng-template>
@@ -135,20 +159,35 @@
                 </button>
 
                 <!-- Button 8: Patient i card Print  -->
-                <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="OnWhatsAppAppointmentSend(element)">
+                <button mat-icon-button matTooltip="Send message On WhatsApp"
+                    (click)="OnWhatsAppAppointmentSend(element)">
                     <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                 </button>
+                
+                 <div fxLayout="row" fxLayoutGap="5px">
+                    <button mat-raised-button matTooltip="Consultant start / Check-In" style="padding: 0 8px; min-width: unset;"
+                            (click)="onCheckIn(element.visitId)" [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">Check-In
+                    </button>
 
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
+                    <button mat-raised-button matTooltip="Consultant End / Check Out" style="padding: 0 8px; min-width: unset;"
+                            (click)="onCheckOut(element.visitId)" [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">Check-Out
+                    </button>
+                </div>
+
+                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                    (click)="$event.stopPropagation();">
                     <mat-icon class="secondary-text">more_vert</mat-icon>
                 </button>
+                
                 <mat-menu #moreMenu="matMenu">
-                    <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                            <span>{{m}}</span>
+                    <ng-container *ngFor="let m of menuActions">
+                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element, m)" 
+                        [disabled]="shouldDisableMenuItem(m, element)">
+                        <span>{{ m }}</span>
                         </button>
                     </ng-container>
                 </mat-menu>
+
             </div>
         </ng-template>
 
@@ -156,11 +195,14 @@
             <ng-container filters>
                 <form [formGroup]="myformSearch">
 
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID NO</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst1($event)" />
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="RegNo" (input)="onChangeFirst1($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -168,7 +210,8 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst1($event)"/>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="FirstName" (input)="onChangeFirst1($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -176,16 +219,17 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" (input)="onChangeFirst1($event)" />
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="LastName" (input)="onChangeFirst1($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
 
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
-                     [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().DoctorId"
-                      [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
-                      (keyup)="ListView($event)">
+                        [(ngModel)]="gridConfig.filters[3].fieldValue"
+                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
+                        (selectionChange)="ListView($event)" (keyup)="ListView($event)">
                     </airmid-dropdown>
 
                 </form>

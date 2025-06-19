@@ -901,7 +901,8 @@ export class NewAppointmentComponent implements OnInit {
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
-            PinNo: ['']
+            PinNo: [''],
+            // CourtesyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 

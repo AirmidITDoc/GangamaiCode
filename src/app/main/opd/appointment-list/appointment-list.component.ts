@@ -52,14 +52,17 @@ export class AppointmentListComponent implements OnInit {
     VFollowupcount = 0;
     VBillcount = 0;
     VCrossConscount = 0;
+    VEMRcount = 0;
+    VCheckoutCount = 0;
+    VWaitingCount = 0;
     patientDetail = new RegInsert({});
     patientDetail1 = new VisitMaster1({});
     RegId = 0
 
     vOPIPId = 0;
-    f_name:any = "" 
-    regNo:any="0"
-    l_name:any="" 
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -73,12 +76,10 @@ export class AppointmentListComponent implements OnInit {
         // menu Button List
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
-        this.menuActions.push("Medical Record");
         // this.menuActions.push("Report Record");
         this.Appointdetail(this.gridConfig)
 
     }
-   
 
     allfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -107,30 +108,30 @@ export class AppointmentListComponent implements OnInit {
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-    allcolumns=[
+    allcolumns = [
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA'},
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 400, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
-        } 
+        }
     ]
     gridConfig: gridModel = {
         apiUrl: "VisitDetail/AppVisitList",
-        columnsList: this.allcolumns, 
+        columnsList: this.allcolumns,
         sortField: "VisitId",
         sortOrder: 0,
         filters: this.allfilters
@@ -143,75 +144,75 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
-    OnClearValues(){
+    OnClearValues() {
         this.myformSearch.reset();
     }
     onChangeFirst() {
-      
+
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value 
+        this.regNo = this.myformSearch.get('RegNo').value
         this.getfilterdata();
-       
+
     }
-        onChangeFirst1(event) {
-            debugger
+    onChangeFirst1(event) {
+        debugger
         console.log(event)
-        if(event.key==13){
-        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-        this.f_name = this.myformSearch.get('FirstName').value + "%"
-        this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value 
-        this.getfilterdata();
+        if (event.key == 13) {
+            this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+            this.f_name = this.myformSearch.get('FirstName').value + "%"
+            this.l_name = this.myformSearch.get('LastName').value + "%"
+            this.regNo = this.myformSearch.get('RegNo').value
+            this.getfilterdata();
         }
     }
 
-getfilterdata(){
-    
-    this.gridConfig = {
-        apiUrl: "VisitDetail/AppVisitList",
-        columnsList:this.allcolumns , 
-        sortField: "VisitId",
-        sortOrder: 0,
-        filters:  [
-            { fieldName: "F_Name", fieldValue: this.f_name , opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-            { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
-    
-        ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData(); 
-}
-  
+    getfilterdata() {
 
-Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-        this.myformSearch.get('FirstName').setValue("")
-    else
-        if (event == 'LastName')
-            this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-        this.myformSearch.get('RegNo').setValue("")
-   
-    this.onChangeFirst();
-  }
+        this.gridConfig = {
+            apiUrl: "VisitDetail/AppVisitList",
+            columnsList: this.allcolumns,
+            sortField: "VisitId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myformSearch.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myformSearch.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myformSearch.get('RegNo').setValue("")
+
+        this.onChangeFirst();
+    }
 
     ListView(value) {
-        
+
         console.log(value)
-         if(value.value!==0)
-            this.DoctorId=value.value
+        if (value.value !== 0)
+            this.DoctorId = value.value
         else
-        this.DoctorId="0"
+            this.DoctorId = "0"
 
         this.onChangeFirst();
     }
@@ -265,6 +266,33 @@ Clearfilter(event) {
         });
     }
 
+    // raksha date:19/6/25
+    // if patient date & system date is diff then hide field
+    isTodayAppointment(appointmentDate: string): boolean {
+        const today = new Date();
+        const todayDay = today.getDate().toString().padStart(2, '0');
+        const todayMonth = (today.getMonth() + 1).toString().padStart(2, '0');
+        const todayYear = today.getFullYear().toString();
+
+        const [visitDay, visitMonth, visitYear] = appointmentDate.split('/');
+
+        return (
+            visitDay === todayDay &&
+            visitMonth === todayMonth &&
+            visitYear === todayYear
+        );
+    }
+    shouldDisableMenuItem(action: string, element: any): boolean {
+        if (action === 'Update Referred Doctor') {
+            return !this.isTodayAppointment(element.dVisitDate);
+        }
+        if (action === 'Update Consultant Doctor') {
+            return element.mPbillNo !== '0';
+        }
+        return false; // show all other menu items
+    }
+
+    // 
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
         if (m == "Update Consultant Doctor") {
@@ -303,24 +331,6 @@ Clearfilter(event) {
                 }
             });
         }
-        else if (m == "Medical Record") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-
-            let that = this;
-            const dialogRef = this._matDialog.open(NewCasepaperComponent,
-                {
-                    maxWidth: "90vw",
-                    height: "890px",
-                    width: "100%",
-                    data: element
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
-        }
         else if (m == "Report Record") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
@@ -339,7 +349,7 @@ Clearfilter(event) {
                 }
             });
         }
-       
+
     }
 
     OnViewReportPdf(element) {
@@ -351,18 +361,16 @@ Clearfilter(event) {
         buttonElement.blur(); // Remove focus from the button
         this.advanceDataStored.storage = new SearchInforObj1(row);
         let that = this;
-        console.log( "Row Selected Appointment Page : ", this.advanceDataStored.storage)
+        console.log("Row Selected Appointment Page : ", this.advanceDataStored.storage)
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
             height: "98vh",
             width: "100%",
-            data:row
+            data: row
 
         });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            this.grid.bindGridData();
         });
     }
 
@@ -376,8 +384,8 @@ Clearfilter(event) {
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
                 maxWidth: "90vw",
-                    height: "430px",
-                    width: "80%",
+                height: "430px",
+                width: "80%",
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -414,6 +422,9 @@ Clearfilter(event) {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
+        this.VEMRcount = 0;
+        this.VCheckoutCount = 0;
+        this.VWaitingCount = 0;
         console.log(data)
         this.Vtotalcount;
         console.log(data)
@@ -435,7 +446,7 @@ Clearfilter(event) {
         }
 
     }
- 
+
     AppointmentCancle(contact) {
         Swal.fire({
             title: 'Do you want to Cancle Appointment',
@@ -485,25 +496,25 @@ Clearfilter(event) {
         this.updateRegisteredPatientInfo(obj);
     }
 
-    getSelectedRow(row:any):void{
+    getSelectedRow(row: any): void {
         console.log("Selected row : ", row);
     }
     updateRegisteredPatientInfo(obj) {
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
-                        height: '95%',
-                        width: '90%',
-                        data: {
-                           Obj:obj,
-                           FormName:"Registration-Dropdown"  
-                        },
+                height: '95%',
+                width: '90%',
+                data: {
+                    Obj: obj,
+                    FormName: "Registration-Dropdown"
+                },
             });
         dialogRef.afterClosed().subscribe(result => {
             this.searchFormGroup.get('RegId').setValue('');
-              this.grid.bindGridData();
-        }); 
-    } 
+            this.grid.bindGridData();
+        });
+    }
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
     }
@@ -513,6 +524,74 @@ Clearfilter(event) {
                 { name: "required", Message: "Doctor Name is required" }
             ]
         };
+    }
+
+    checkIn: Date | null = null;
+    checkOut: Date | null = null;
+    isCheckedIn = false;
+    isCheckedOut = false;
+    startTime: number = 0;
+    elapsedTime: number = 0;
+    timers: { [patientId: number]: any } = {}; //it will store timer entry of each patient using there id
+
+    onCheckIn(patientId: number) {
+        const checkInTime = new Date(); //Store current time
+        const startTime = Date.now();
+
+        // Save this data in timers[patientId]
+        this.timers[patientId] = {
+            isCheckedIn: true,
+            isCheckedOut:false,
+            checkIn: checkInTime,
+            startTime: startTime,
+            elapsedTime: 0,
+
+            // Start a timer that updates elapsedTime every second
+            timerInterval: setInterval(() => {
+                this.timers[patientId].elapsedTime = Date.now() - startTime;
+            }, 1000)
+        };
+        const patientTimer = this.timers[patientId];
+        //  const formattedTime = patientTimer.checkIn.toLocaleTimeString('en-GB', {
+        //     hour: '2-digit',
+        //     minute: '2-digit',
+        //     second: '2-digit',
+        //     hour12: false
+        // });
+        var data = {
+            "visitId": patientId,
+            "conStartTime": patientTimer.checkIn?.toLocaleTimeString() //"10:00:00AM"
+        }
+        console.log("CheckIn:",data)
+        this._AppointmentlistService.updateStartTime(data).subscribe(response => {
+        });
+    }
+
+    onCheckOut(patientId: number) {
+        const patientTimer = this.timers[patientId];
+        if (!patientTimer) return;
+
+        clearInterval(patientTimer.timerInterval); //Stop the timer
+
+        patientTimer.isCheckedIn = false; // Mark as checked out
+        patientTimer.isCheckedOut = true; // Mark as checked out
+        patientTimer.checkOut = new Date(); //Capture the check-out time
+
+        const totalTime = patientTimer.elapsedTime; //it tells total time taken by patient
+
+         var data = {
+            "visitId": patientId,
+            "conEndTime": patientTimer.checkOut?.toLocaleTimeString(),
+            "checkOutTime": patientTimer.checkOut?.toLocaleTimeString()
+        }
+        console.log("CheckOut:",data)
+        this._AppointmentlistService.updateEndTime(data).subscribe(response => {
+        });
+
+        console.log('Patient ID:', patientId);
+        console.log('Check In:', patientTimer.checkIn?.toLocaleTimeString());
+        console.log('Check Out:', patientTimer.checkOut?.toLocaleTimeString());
+        console.log('Total Time:', new Date(totalTime).toISOString().substr(11, 8));
     }
 
 
