@@ -41,6 +41,7 @@ import { PhoneappointmentComponent } from './phoneappointment.component';
 import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ReScheduleComponent } from './re-schedule/re-schedule.component';
 
 const routes: Routes = [
     {
@@ -53,6 +54,7 @@ const routes: Routes = [
         PhoneappointmentComponent,
         NewPhoneAppointmentComponent,
         NewPhoneAppoinmentCalendarComponent,
+        ReScheduleComponent,
     ],
     imports: [
         RouterModule.forChild(routes),

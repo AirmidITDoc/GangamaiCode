@@ -122,9 +122,12 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
 
   OnSubmit() {
-     console.log(this.phoneappForm.value);
+    debugger
     this.phoneappForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.now,'HH:mm'));
+    this.phoneappForm.get('startTime').setValue(this.datePipe.transform(this.now,'HH:mm'));
+    this.phoneappForm.get('endTime').setValue(this.datePipe.transform(this.now,'HH:mm'));
+     console.log(this.phoneappForm.value);
 
     if (!this.phoneappForm.invalid) {
       this._phoneAppointListService.phoneMasterSave(this.phoneappForm.value).subscribe((response) => {

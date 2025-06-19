@@ -67,6 +67,11 @@
                 *ngIf="element.isCancelled == '0' && element.flagAppDone != '1'">
                 <mat-icon title="Cancel Appointment">cancel</mat-icon>
             </button>
+
+            <button mat-icon-button (click)="Reschedule(element)" matTooltip="Re-schedule"
+            *ngIf="element.isCancelled == '0' && element.flagAppDone != '1'">
+                <mat-icon title="Reschedule">event</mat-icon>
+            </button>
         </div>
     </ng-template>
 

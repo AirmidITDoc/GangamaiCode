@@ -46,6 +46,9 @@ export class MedicalrecordComponent implements OnInit {
   VFollowupcount = 0;
   VBillcount = 0;
   VCrossConscount = 0;
+  VEMRcount = 0;
+  VCheckoutCount = 0;
+  VWaitingCount = 0;
 
   screenFromString = 'OP-billing';
   patientDetail = new RegInsert({});
@@ -318,13 +321,15 @@ export class MedicalrecordComponent implements OnInit {
     });
   }
 
-
   Appointdetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
     this.VFollowupcount = 0;
     this.VBillcount = 0;
     this.VCrossConscount = 0;
+    this.VEMRcount = 0;
+    this.VCheckoutCount = 0;
+    this.VWaitingCount = 0;
     console.log(data)
     this.Vtotalcount;
     console.log(data)
