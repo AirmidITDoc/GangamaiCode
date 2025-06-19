@@ -3,12 +3,13 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Ref Doctor Name Changes</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Reference Doctor Name Changes</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -18,7 +19,7 @@
     </div>
 
     <!-- Modal body -->
-    <div class="modal-body" >
+    <div class="modal-body">
         <div class="modal-body-container">
             <form [formGroup]="ReferdrForm">
                 <div fxLayout="column" class="gap-12">
@@ -65,8 +66,7 @@
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{data.departmentName}}</span>
+                                                <span class="patient-col-value">{{data.departmentName}}</span>
                                             </div>
 
 
@@ -97,9 +97,9 @@
                                 </div>
                             </div>
                         </mat-card>
-                    
-                    
-                    <!-- <app-patient-info label="{{data}}"></app-patient-info> -->
+
+
+                        <!-- <app-patient-info label="{{data}}"></app-patient-info> -->
                     </div>
                     <div class="modal-card-container">
                         <mat-card>
@@ -110,30 +110,20 @@
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
 
-                                        <input type="hidden" name="visitId" formControlName="visitId" [(ngModel)]="data.visitId">
+                                        <input type="hidden" name="visitId" formControlName="visitId"
+                                            [(ngModel)]="data.visitId">
 
                                         <airmid-dropdown label="Doctor Name" formControlName="refDocId" fxFlex="60%"
                                             [formGroup]="ReferdrForm" [value]="data?.refDocId"
-                                            [validations]="getValidationMessages().refDocId" 
+                                            [validations]="getValidationMessages().refDocId"
                                             [mode]="autocompleteModerefdoc">
                                         </airmid-dropdown>
 
-                                      
+
                                     </div>
                                 </div>
                             </div>
-                          
-
-                          
                         </mat-card>
-                        <div fxLayoutAlign="end">
-                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"  style="margin: 10px 20px 0px 20px;">
-                                <button class="btn btn-primary" (click)="onCancleRefDoc()">Cancel</button>
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                              
-                            </div>
-                        </div> 
                     </div>
                 </div>
             </form>
@@ -141,5 +131,13 @@
     </div>
 
     <!-- Modal footer -->
-
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-primary" (click)="onCancleRefDoc()">Cancel Ref Doctor</button>
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
