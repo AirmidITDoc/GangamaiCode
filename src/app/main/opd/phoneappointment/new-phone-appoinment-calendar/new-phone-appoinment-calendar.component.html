@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" fusePerfectScrollbar>
     <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Modal body -->
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body">
         <div class="modal-body-container">
             <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <br />
-            <div [ngSwitch]="view">
+            <div class="calendar-scroll-container" [ngSwitch]="view">
                 <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
                     [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
                     (eventClicked)="handleEvent('Clicked', $event.event)"
