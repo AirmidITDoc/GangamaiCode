@@ -1,32 +1,14 @@
-<div fxLayout="row" fxLayoutGap="16px">
+<div fxLayout="column">
   <mat-form-field appearance="outline" fxFlex>
-    <mat-label>From Date <span style="color:red">*</span></mat-label>
-    <input matInput [matDatepicker]="pickerFrom" placeholder="MM/DD/YYYY" name="fromDate" [formControl]="formGroup.controls[formStartControlName]" (dateChange)="onStartDateChange($event)">
+    <mat-label>{{label}}</mat-label>
+    <input matInput [matDatepicker]="pickerFrom" placeholder="MM/DD/YYYY" [name]="formControlName" [formControl]="formGroup.controls[formControlName]" (dateChange)="onDateChange($event)">
     <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
     <mat-datepicker #pickerFrom></mat-datepicker>
-    <mat-error *ngIf="formGroup.controls[formStartControlName].hasError('required')">
-      From Date is required
+    <mat-error *ngIf="formGroup.controls[formControlName].touched && formGroup.controls[formControlName]?.hasError('required') && !formGroup.controls[formControlName]?.hasError('matDatepickerParse')">
+      Date is required
     </mat-error>
-    <mat-error *ngIf="formGroup.controls[formStartControlName].hasError('matDatepickerParse')">
-      Invalid From Date format
-    </mat-error>
-    <mat-error *ngIf="formGroup.hasError('dateOrder')">
-      From Date cannot be after To Date
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline" fxFlex>
-    <mat-label>To Date <span style="color:red">*</span></mat-label>
-    <input matInput [matDatepicker]="pickerTo" placeholder="MM/DD/YYYY" name="toDate" [formControl]="formGroup.controls[formEndControlName]" (dateChange)="onEndDateChange($event)">
-    <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-    <mat-datepicker #pickerTo></mat-datepicker>
-    <mat-error *ngIf="formGroup.controls[formEndControlName].hasError('required')">
-      To Date is required
-    </mat-error>
-    <mat-error *ngIf="formGroup.controls[formEndControlName].hasError('matDatepickerParse')">
-      Invalid To Date format
-    </mat-error>    
-    <mat-error *ngIf="formGroup.hasError('dateOrder')">
-      To Date cannot be before From Date
+    <mat-error *ngIf="formGroup.controls[formControlName]?.hasError('matDatepickerParse')">
+      Enter valid date
     </mat-error>
   </mat-form-field>
 </div>

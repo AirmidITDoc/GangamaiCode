@@ -4,7 +4,8 @@ import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optiona
 import {
     FormControl,
     FormGroup,
-    NgControl
+    NgControl,
+    Validators
 } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -34,8 +35,6 @@ export class AirmidFullDatepickerComponent implements
     stateChanges: Subject<void> = new Subject();
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
-    @Input() formStartControlName: string;
-    @Input() formEndControlName: string;
     @Input() maxLength: number = 50;
     @Input() validations: [] = [];
     @Input() label: string = "";
@@ -45,10 +44,8 @@ export class AirmidFullDatepickerComponent implements
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
     @Input() isRangePicker: boolean = false;
-    @Input() format: string = "yyyy-MM-dd"
+    @Input() format: string = "MM/dd/yyyy"
     @Output() dateChange = new EventEmitter<any>();
-    @Output() fromValueChange = new EventEmitter<string>();
-    @Output() toValueChange = new EventEmitter<string>();
     date = new Date();
 
     minDate = new Date();
@@ -172,20 +169,12 @@ export class AirmidFullDatepickerComponent implements
     }
 
     public onDateChange($event) {
-        
-        //this.formGroup.controls[this.formControlName].setValue($event.value);
-        this.formGroup.controls[this.formControlName].setValue(this.datePipe.transform($event.value, this.format));
-        this.dateChange.emit(this.datePipe.transform($event.value, this.format));
-    }
-    public onStartDateChange($event) {
-        this.formGroup.controls[this.formStartControlName].setValue($event.value);
-        this.dateChange.emit(this.datePipe.transform($event.value, this.format));
-        this.fromValueChange.emit(this.datePipe.transform($event.value, this.format));
-    }
-    public onEndDateChange($event) {
-        this.formGroup.controls[this.formEndControlName].setValue($event.value);
-        this.dateChange.emit(this.datePipe.transform($event.value, this.format));
-        this.toValueChange.emit(this.datePipe.transform($event.value, this.format));
+
+        const isValid = this.formGroup.controls[this.formControlName].valid;
+        if(isValid){
+            this.formGroup.controls[this.formControlName].setValue($event.value);
+            this.dateChange.emit(this.datePipe.transform($event.value, this.format));
+        }
     }
 
     writeValue(value: string | null): void {
@@ -194,30 +183,11 @@ export class AirmidFullDatepickerComponent implements
 
 
     ngOnInit() {
-        if (!this.isRangePicker) {
-            let date = this.datePipe.transform(this.formGroup.controls[this.formControlName].value, this.format);
-            this.formGroup.controls[this.formControlName].setValue(date);
-        } else {
-            // Listen for changes to both date controls
-            this.formGroup.controls[this.formStartControlName].valueChanges
-                .pipe(takeUntil(this.destroy))
-                .subscribe(() => this.validateDateOrder());
-            this.formGroup.controls[this.formEndControlName].valueChanges
-                .pipe(takeUntil(this.destroy))
-                .subscribe(() => this.validateDateOrder());
+        const control = this.formGroup.controls[this.formControlName];
+        if (control) {
+            control.setValidators([Validators.required]);
+            control.updateValueAndValidity();
         }
-    }
 
-    validateDateOrder() {
-        const from = this.formGroup.controls[this.formStartControlName].value;
-        const to = this.formGroup.controls[this.formEndControlName].value;
-        if (from && to && new Date(from) > new Date(to)) {
-            this.formGroup.setErrors({ dateOrder: true });
-        } else {
-            // Only clear the error if it's the dateOrder error
-            if (this.formGroup.hasError('dateOrder')) {
-                this.formGroup.setErrors(null);
-            }
-        }
     }
 }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 
 /**
  * AirmidTimePickerComponent
@@ -51,7 +51,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-export class AirmidTimePickerComponent implements ControlValueAccessor {
+export class AirmidTimePickerComponent implements ControlValueAccessor, OnInit {
+
   @Input() label: string = 'Select Time'; // Label for the field
   @Input() mode: '12h' | '24h' = '12h'; // Time format mode
   @Input() isDisabled: boolean = false; // Disable picker
@@ -66,7 +67,8 @@ export class AirmidTimePickerComponent implements ControlValueAccessor {
 
   /* Maximum time to pick from */
   @Input() maxDate: Date;
-
+  @Input() formGroup: FormGroup;
+  @Input() formControlName: string;
   @Output() timeChange = new EventEmitter<string>();
   @Output() change = new EventEmitter<any>();
   @Output() valueChange = new EventEmitter<string>();
@@ -80,6 +82,18 @@ export class AirmidTimePickerComponent implements ControlValueAccessor {
   timeValue: string = '';
 
   private onTouched = () => { };
+
+  ngOnInit(): void {
+    if (this.formGroup && this.formControlName) {
+      const control = this.formGroup.controls[this.formControlName];
+      if (control) {
+        control.setValidators([
+          Validators.required,
+        ]);
+        control.updateValueAndValidity();
+      }
+    }
+  }
 
   writeValue(value: string): void {
     this.timeValue = value;

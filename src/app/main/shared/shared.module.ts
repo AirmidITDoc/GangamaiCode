@@ -61,12 +61,11 @@ import { ToasterService } from './services/toaster.service';
 import { AirmidChipautocompleteComponent } from './componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicker/airmid-full-datepicker.component';
-import { AirmidFullTimepickerComponent } from './componets/airmid-full-timepicker/airmid-full-timepicker.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFullTimepickerComponent],
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -128,7 +127,6 @@ import { AirmidFullTimepickerComponent } from './componets/airmid-full-timepicke
         TableKeyboardNavigationDirective,
         AirmidChipautocompleteComponent,
         AirmidFullDatepickerComponent,
-        AirmidFullTimepickerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
