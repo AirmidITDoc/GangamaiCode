@@ -67,47 +67,26 @@ export class NewPhoneAppoinmentCalendarComponent {
     selectChangedeptdoc(obj: any) {
         this.DoctorId = obj.value;
         this.bindData();
-        // var dates=this.dateDisplay.nativeElement.textContent.split('-');
-
-        // let fromDate=new Date(dates[0].split(',').length>1?dates[0].split(',')[1]:dates[1].split(',')[1],this.months[dates[0].split(' ')[0]],dates[0].split(' ')[1]);
-        // let  toDate=new Date(dates[1].split(',')[1],this.months[dates[1].split(' ')[0]],dates[1].split(' ')[1]);
-        // if (this.view == CalendarView.Week) {
-        //     var d = this.getWeekRange();
-        //     fromDate = d.sunday;
-        //     toDate = d.saturday;
-        // }
-        // else if (this.view == CalendarView.Day) {
-        //     fromDate = new Date(); toDate = new Date();
-        // }
-        // else {
-        //     const now = new Date();
-        //     fromDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        //     toDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        // }
-        // this._service.getAppoinments(obj.value, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
-        //     this.events = data;
-        //     this.events = this.events.map(obj => ({
-        //         ...obj,
-        //         start: new Date(obj.start),
-        //         end: new Date(obj.end),
-        //         actions: this.actions,
-        //     }));
-
-        // });
     }
     bindData() {
-        var dates = this.dateDisplay.nativeElement.textContent.split('-');
         let fromDate, toDate;
-        if (this.view == CalendarView.Week) {
-            fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
-            toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
-        }
-        else if (this.view == CalendarView.Day) {
-            fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
+        if (this.dateDisplay) {
+            var dates = this.dateDisplay.nativeElement.textContent.split('-');
+            if (this.view == CalendarView.Week) {
+                fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
+                toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
+            }
+            else if (this.view == CalendarView.Day) {
+                fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
+            }
+            else {
+                fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
+                toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
+            }
         }
         else {
-            fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
-            toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
+            var d = this.getWeekRange();
+            fromDate = d.sunday; toDate = d.saturday;
         }
         this._service.getAppoinments(this.DoctorId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
             this.events = data;
@@ -141,44 +120,44 @@ export class NewPhoneAppoinmentCalendarComponent {
     refresh = new Subject<void>();
 
     events: CalendarEvent[] = [
-        {
-            start: subDays(startOfDay(new Date()), 1),
-            end: addDays(new Date(), 1),
-            title: 'A 3 day event',
-            color: { ...colors.red },
-            actions: this.actions,
-            allDay: true,
-            resizable: {
-                beforeStart: true,
-                afterEnd: true,
-            },
-            draggable: true,
-        },
-        {
-            start: startOfDay(new Date()),
-            title: 'An event with no end date',
-            color: { ...colors.yellow },
-            actions: this.actions,
-        },
-        {
-            start: subDays(endOfMonth(new Date()), 3),
-            end: addDays(endOfMonth(new Date()), 3),
-            title: 'A long event that spans 2 months',
-            color: { ...colors.blue },
-            allDay: true,
-        },
-        {
-            start: addHours(startOfDay(new Date()), 2),
-            end: addHours(new Date(), 2),
-            title: 'A draggable and resizable event',
-            color: { ...colors.yellow },
-            actions: this.actions,
-            resizable: {
-                beforeStart: true,
-                afterEnd: true,
-            },
-            draggable: true,
-        },
+        // {
+        //     start: subDays(startOfDay(new Date()), 1),
+        //     end: addDays(new Date(), 1),
+        //     title: 'A 3 day event',
+        //     color: { ...colors.red },
+        //     actions: this.actions,
+        //     allDay: true,
+        //     resizable: {
+        //         beforeStart: true,
+        //         afterEnd: true,
+        //     },
+        //     draggable: true,
+        // },
+        // {
+        //     start: startOfDay(new Date()),
+        //     title: 'An event with no end date',
+        //     color: { ...colors.yellow },
+        //     actions: this.actions,
+        // },
+        // {
+        //     start: subDays(endOfMonth(new Date()), 3),
+        //     end: addDays(endOfMonth(new Date()), 3),
+        //     title: 'A long event that spans 2 months',
+        //     color: { ...colors.blue },
+        //     allDay: true,
+        // },
+        // {
+        //     start: addHours(startOfDay(new Date()), 2),
+        //     end: addHours(new Date(), 2),
+        //     title: 'A draggable and resizable event',
+        //     color: { ...colors.yellow },
+        //     actions: this.actions,
+        //     resizable: {
+        //         beforeStart: true,
+        //         afterEnd: true,
+        //     },
+        //     draggable: true,
+        // },
     ];
 
     activeDayIsOpen: boolean = true;
@@ -251,11 +230,13 @@ export class NewPhoneAppoinmentCalendarComponent {
         this.view = view;
         setTimeout(() => {
             this.bindData();
-        }, 1000);
+        }, 100);
     }
 
     closeOpenMonthViewDay() {
         this.activeDayIsOpen = false;
-        this.bindData();
+        setTimeout(() => {
+            this.bindData();
+        }, 100);
     }
 }

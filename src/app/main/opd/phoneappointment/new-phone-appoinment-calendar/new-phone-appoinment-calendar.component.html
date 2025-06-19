@@ -27,12 +27,13 @@
                         </airmid-dropdown>
                     </form>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
                     <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
                         (viewDateChange)="closeOpenMonthViewDay()">
                         Previous
                     </button>
-                    <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate">
+                    <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">
                         Today
                     </button>
                     <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
@@ -40,10 +41,10 @@
                         Next
                     </button>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
                     <h3 #dateDisplay>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
                     <div class="btn-group">
                         <button mat-raised-button (click)="setView(CalendarView.Month)"
                             [class.active]="view === CalendarView.Month">
@@ -61,7 +62,7 @@
                 </div>
             </div>
             <br />
-            <div class="calendar-scroll-container" [ngSwitch]="view">
+            <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="DoctorId>0">
                 <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
                     [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
                     (eventClicked)="handleEvent('Clicked', $event.event)"
