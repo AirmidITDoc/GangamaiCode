@@ -110,7 +110,7 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px"> 
                                     <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" #regIdfocus
                                         [formGroup]="searchForm" formControlName="regId"
-                                        placeholderText="Enter Patient Name/RegId.." fxFlex
+                                        placeholderText="Enter Patient Name/RegId.." fxFlex="50%"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                         ValueField="regId"></airmid-autocomplete>
@@ -118,7 +118,12 @@
                                     <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex
                                         [formGroup]="searchForm" [validations]="getValidationMessages().CashCounterID"
                                         [mode]="autocompleteModeCashcounter">
-                                    </airmid-dropdown>   
+                                    </airmid-dropdown>  
+
+                                    <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="searchForm"
+                                     [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff"
+                                       (selectionChange)="getSelectedTariffObj($event)" fxFlex>
+                                    </airmid-dropdown>
                                 </div>
                             </form>
                         </div>
@@ -215,13 +220,14 @@
                             <mat-card-content >
                                 <form [formGroup]="chargeForm">
                                     <div fxLayout="row" fxLayoutGap="5px"> 
-                                        <!-- [disabled]="Regstatus" -->
+                                        <!-- [disabled]="Regstatus"
+                                 [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='" -->
                                         <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" >
                                             <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm" 
                                                 formControlName="serviceName" 
                                                 placeholderText="Enter Service Name"
                                                 fxFlex
-                                                [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='"
+                                                ApiUrl="{{ApiURL}}"
                                                 (selectionChange)="getSelectedserviceObj($event)" 
                                                 TextField="formattedText" 
                                                 ValueField="serviceId"></airmid-autocomplete> 
