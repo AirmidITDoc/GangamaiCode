@@ -43,7 +43,7 @@ export class IpSalesReturnComponent implements OnInit {
 
   ItemFormGroup: FormGroup;
   IPSalesRetFooterform: FormGroup;
-  IpSalesRetForm: FormGroup
+  IpSalesReturnForm: FormGroup;
   sIsLoading: string = '';
   isLoading = true;
   isItemIdSelected: boolean = false;
@@ -78,9 +78,10 @@ export class IpSalesReturnComponent implements OnInit {
   ngOnInit(): void {
     this.ItemFormGroup = this.CreateItemfromGroup();
     this.IPSalesRetFooterform = this.CreateSalesFooterform();
-    this.IpSalesRetForm = this.CreateSalesFooterform();
     this.ItemFormGroup.markAllAsTouched();
     this.IPSalesRetFooterform.markAllAsTouched();
+    
+    this.IpSalesReturnForm = this.CreateSalesReturnForm();
   }
   CreateSalesFooterform() {
     return this.formBuilder.group({
@@ -100,7 +101,7 @@ export class IpSalesReturnComponent implements OnInit {
       TotalQty: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
     });
   }
-  CreateSalesRetForm() {
+  CreateSalesReturnForm() {
     return this.formBuilder.group({
       //sales return header  
       salesReturn: this.formBuilder.group({
@@ -185,7 +186,7 @@ export class IpSalesReturnComponent implements OnInit {
       purTot: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
       salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isCashOrCredit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCashOrCredit: [element.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
       cgstper: [((element.GST) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
       cgstamt: [((element.GSTAmt) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
       sgstper: [((element.GST) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -211,13 +212,13 @@ export class IpSalesReturnComponent implements OnInit {
   }
   // Getters 
   get SaleRetDetailsArray(): FormArray {
-    return this.IpSalesRetForm.get('salesReturnDetails') as FormArray;
+    return this.IpSalesReturnForm.get('salesReturnDetails') as FormArray;
   }
   get currentStockArray(): FormArray {
-    return this.IpSalesRetForm.get('currentStock') as FormArray;
+    return this.IpSalesReturnForm.get('currentStock') as FormArray;
   }
   get SalesDetArray(): FormArray {
-    return this.IpSalesRetForm.get('salesDetail') as FormArray;
+    return this.IpSalesReturnForm.get('salesDetail') as FormArray;
   }
 
   getSelectedObjRegIP(obj) {
@@ -288,7 +289,7 @@ export class IpSalesReturnComponent implements OnInit {
     this.ItemFormGroup.patchValue({
       TotalQty: obj.Qty
     }) 
-    this.IpSalesRetForm = this.CreateSalesFooterform();
+    this.IpSalesReturnForm = this.CreateSalesReturnForm();
   }
   private _filterItemname(value: any): string[] {
     if (value) {
@@ -360,10 +361,13 @@ export class IpSalesReturnComponent implements OnInit {
         PurTotAmt: PurTotAmt || 0,
         NetAmount: netAmt || 0,
         SalesDetId: this.selcteditemObj.SalesDetId || 0,
-        StkID: this.selcteditemObj.StkID || 0
+        StkID: this.selcteditemObj.StkID || 0,
+        isCashOrCredit:this.selcteditemObj.isCashOrCredit || 0,
       });
     console.log(this.chargeslist)
-    this.dsIpSaleItemList.data = this.chargeslist;
+    this.dsIpSaleItemList.data = this.chargeslist; 
+    this.dsIpSaleItemList.sort = this.sort; 
+    this.dsIpSaleItemList.paginator = this.paginator; 
     this.getUpdateTotalAmt();
     this.ItemReset();
     this.ItemName.nativeElement.focus();
@@ -449,8 +453,7 @@ export class IpSalesReturnComponent implements OnInit {
     });
   }
   //Save code 
-  onSave() {
-    debugger
+  onSave() { 
     const formValues = this.ItemFormGroup.value
     if (!(formValues.PatientName.admissionID > 0)) {
       this.toastr.warning('Please select Patient Name', 'Warning !', {
@@ -486,10 +489,8 @@ export class IpSalesReturnComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Save !"
-
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
+      confirmButtonText: "Yes, Save !" 
+    }).then((result) => { 
       if (result.isConfirmed) {
         this.onSavePayment();
       }
@@ -499,17 +500,16 @@ export class IpSalesReturnComponent implements OnInit {
      const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
+    this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
+    this.IpSalesReturnForm.get('salesReturn.time').setValue(formattedTime)
+    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalTotalAmt').value)))
+    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalGSTAmt').value)))
+    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalDiscAmount').value)))
+    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
-    this.IpSalesRetForm.get('salesReturn.date').setValue(formattedDate)
-    this.IpSalesRetForm.get('salesReturn.time').setValue(formattedTime)
-    this.IpSalesRetForm.get('salesReturn.totalAmount').setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
-    this.IpSalesRetForm.get('salesReturn.vatAmount').setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
-    this.IpSalesRetForm.get('salesReturn.discAmount').setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
-    this.IpSalesRetForm.get('salesReturn.netAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
-
-    if (this.IpSalesRetForm.valid) {
+    if (this.IpSalesReturnForm.valid) {
       this.SaleRetDetailsArray.clear()
       this.currentStockArray.clear()
       this.SalesDetArray.clear()
@@ -519,33 +519,33 @@ export class IpSalesReturnComponent implements OnInit {
         this.SalesDetArray.push(this.createSalesDetails(element));
       });
       if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-        this.IpSalesRetForm.get('salesReturn.paidAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
-        this.IpSalesRetForm.get('salesReturn.balanceAmount').setValue(0)
-        this.IpSalesRetForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesRetForm.get('payment.paymentTime').setValue(formattedTime)
-        this.IpSalesRetForm.get('payment.cashPayAmount').setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(0)
+        this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
-        console.log(this.IpSalesRetForm.value);
-        this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesRetForm.value).subscribe(response => {
+        console.log(this.IpSalesReturnForm.value);
+        this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
           this.OnReset();
         });
       }
       else {
-        this.IpSalesRetForm.get('salesReturn.paidAmount').setValue(0)
-        this.IpSalesRetForm.get('salesReturn.balanceAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
-        this.IpSalesRetForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesRetForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
 
-        console.log(this.IpSalesRetForm.value);
-        this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesRetForm.value).subscribe(response => {
+        console.log(this.IpSalesReturnForm.value);
+        this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
           this.OnReset();
         });
       }
     } else {
       let invalidFields = [];
-      if (this.IpSalesRetForm.invalid) {
-        for (const controlName in this.IpSalesRetForm.controls) {
-          const control = this.IpSalesRetForm.get(controlName);
+      if (this.IpSalesReturnForm.invalid) {
+        for (const controlName in this.IpSalesReturnForm.controls) {
+          const control = this.IpSalesReturnForm.get(controlName);
           if (control instanceof FormGroup || control instanceof FormArray) {
             for (const nestedKey in control.controls) {
               if (control.get(nestedKey)?.invalid) {
@@ -565,172 +565,7 @@ export class IpSalesReturnComponent implements OnInit {
         return
       }
     }
-  }
-  // onSavePaymentold() {
-  //   const currentDate = new Date();
-  //   const datePipe = new DatePipe('en-US');
-  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
-  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-  //   let salesReturnHeader = {};
-  //   salesReturnHeader['date'] = formattedDate;
-  //   salesReturnHeader['time'] = formattedTime;
-  //   salesReturnHeader['salesId'] = this.selcteditemObj.SalesId || 0;
-  //   salesReturnHeader['opIpId'] =  this.selcteditemObj.OP_IP_ID || 0;
-  //   salesReturnHeader['opIpType'] = 1;
-  //   salesReturnHeader['totalAmount'] = this.IPSalesRetFooterform.get('FinalTotalAmt').value || 0;
-  //   salesReturnHeader['vatAmount'] = this.IPSalesRetFooterform.get('FinalGSTAmt').value || 0;
-  //   salesReturnHeader['discAmount'] = this.IPSalesRetFooterform.get('FinalDiscAmount').value || 0;
-  //   salesReturnHeader['netAmount'] = Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value) || 0;
-  //   if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-  //     salesReturnHeader['paidAmount'] = Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value) || 0;
-  //     salesReturnHeader['balanceAmount'] = 0;
-  //   } else {
-  //     salesReturnHeader['paidAmount'] = 0;
-  //     salesReturnHeader['balanceAmount'] = Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value) || 0;
-  //   }
-  //   salesReturnHeader['isSellted'] = false;
-  //   salesReturnHeader['isPrint'] = true,
-  //   salesReturnHeader['isFree'] = false;
-  //   salesReturnHeader['unitId'] = 1;
-  //   salesReturnHeader['addedBy'] = this.accountService.currentUserValue.userId;
-  //   salesReturnHeader['storeId'] = this.accountService.currentUserValue.user.storeId,
-  //   salesReturnHeader['narration'] = "";
-  //   salesReturnHeader['salesReturnId'] = 0
-
-  //   let salesReturnDetailInsertCreditarr = [];
-  //   this.dsIpSaleItemList.data.forEach((element) => {
-  //     let salesReturnDetailCredit = {};
-
-  //     salesReturnDetailCredit['salesReturnID'] = 0;
-  //     salesReturnDetailCredit['itemId'] = element.ItemId || 0;
-  //     salesReturnDetailCredit['batchNo'] = element.BatchNo || '';
-  //     salesReturnDetailCredit['batchExpDate'] =this.datePipe.transform(element.ExpDate , "yyyy-MM-dd") || '1900-01-01'; 
-  //     salesReturnDetailCredit['unitMRP'] = element.MRP || 0;
-  //     salesReturnDetailCredit['qty'] = element.ReturnQty || 0;
-  //     salesReturnDetailCredit['totalAmount'] = element.TotalAmt || 0;
-  //     salesReturnDetailCredit['vatPer'] = element.GST || 0;
-  //     salesReturnDetailCredit['vatAmount'] = element.GSTAmt || 0;
-  //     salesReturnDetailCredit['discPer'] = element.Disc || 0;
-  //     salesReturnDetailCredit['discAmount'] = element.DiscAmt || 0;
-  //     salesReturnDetailCredit['grossAmount'] = element.NetAmount || 0;
-  //     salesReturnDetailCredit['landedPrice'] = element.LandedPrice || 0;
-  //     salesReturnDetailCredit['totalLandedAmount'] = element.TotalLandedAmount || 0;
-  //     salesReturnDetailCredit['purRate'] = element.PurRateWf || 0;
-  //     salesReturnDetailCredit['purTot'] = element.PurTotAmt || 0;
-  //     salesReturnDetailCredit['salesId'] =  this.selcteditemObj.SalesId || 0;
-  //     salesReturnDetailCredit['salesDetId'] = element.SalesDetId || 0;
-  //     let isCashOrCredit
-  //     if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-  //       isCashOrCredit = 0;
-  //     } else {
-  //       isCashOrCredit = 1;
-  //     }
-  //     salesReturnDetailCredit['isCashOrCredit'] = isCashOrCredit;
-  //     salesReturnDetailCredit['cgstPer'] = ((element.GST) / 2) || 0;
-  //     salesReturnDetailCredit['cgstAmt'] = ((element.GSTAmt) / 2) || 0;
-  //     salesReturnDetailCredit['sgstPer'] = ((element.GST) / 2) || 0;
-  //     salesReturnDetailCredit['sgstAmt'] = ((element.GSTAmt) / 2) || 0;
-  //     salesReturnDetailCredit['igstPer'] = 0;
-  //     salesReturnDetailCredit['igstAmt'] = 0;
-  //     salesReturnDetailCredit['stkId'] = element.StkID || 0;
-  //     salesReturnDetailInsertCreditarr.push(salesReturnDetailCredit);
-  //   });
-
-  //   console.log(salesReturnDetailInsertCreditarr);
-  //   let updateCurrStkSales = [];
-  //   this.dsIpSaleItemList.data.forEach((element) => {
-  //     let updateCurStkSalesObj = {};
-  //     updateCurStkSalesObj['itemId'] = element.ItemId;
-  //     updateCurStkSalesObj['issueQty'] = element.ReturnQty;
-  //     updateCurStkSalesObj['storeId'] = this.accountService.currentUserValue.storeId,
-  //     updateCurStkSalesObj['istkId'] = element.StkID;
-  //     updateCurrStkSales.push(updateCurStkSalesObj);
-  //   });
-
-  //   let Update_SalesReturnQtySalesTblarray = [];
-  //   this.dsIpSaleItemList.data.forEach((element) => {
-  //     let Update_SalesReturnQtySalesTbl = {};
-  //     Update_SalesReturnQtySalesTbl['salesDetId'] = element.SalesDetId;
-  //     Update_SalesReturnQtySalesTbl['returnQty'] = element.ReturnQty;
-  //     Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
-  //   });
-
-  //   let Update_SalesRefundAmt_SalesHeader = {};
-  //   Update_SalesRefundAmt_SalesHeader['salesReturnId'] = 0;
-
-  //   let Cal_GSTAmount_SalesReturn = {};
-  //   Cal_GSTAmount_SalesReturn['salesReturnId'] = 0;
-
-  //   let Insert_ItemMovementReport_Cursor = {};
-  //   Insert_ItemMovementReport_Cursor['id'] = 0;
-  //   Insert_ItemMovementReport_Cursor['typeId'] = 2;
-
-  //   let PaymentInsertobj = {};
-  //   PaymentInsertobj['paymentId'] = 0
-  //   PaymentInsertobj['billNo'] = this.selcteditemObj.SalesId || 0,
-  //   PaymentInsertobj['paymentDate'] = formattedDate;
-  //   PaymentInsertobj['paymentTime'] = formattedTime;
-  //   PaymentInsertobj['cashPayAmount'] = this.IPSalesRetFooterform.get('FinalNetAmount').value || 0;
-  //   PaymentInsertobj['chequePayAmount'] = 0,
-  //   PaymentInsertobj['chequeNo'] = '0',
-  //   PaymentInsertobj['bankName'] = '',
-  //   PaymentInsertobj['chequeDate'] = '1900-01-01',
-  //   PaymentInsertobj['cardPayAmount'] = 0,
-  //   PaymentInsertobj['cardNo'] = '0',
-  //   PaymentInsertobj['cardBankName'] = '',
-  //   PaymentInsertobj['cardDate'] ='1900-01-01',
-  //   PaymentInsertobj['advanceUsedAmount'] = 0;
-  //   PaymentInsertobj['advanceId'] = 0;
-  //   PaymentInsertobj['refundId'] = 0;
-  //   PaymentInsertobj['transactionType'] = 5;
-  //   PaymentInsertobj['remark'] = '',
-  //   PaymentInsertobj['addBy'] = this.accountService.currentUserValue.userId,
-  //   PaymentInsertobj['isCancelled'] = false;
-  //   PaymentInsertobj['isCancelledBy'] = 0;
-  //   PaymentInsertobj['isCancelledDate'] = '1900-01-01',
-  //   PaymentInsertobj['opdipdType'] = 3;
-  //   PaymentInsertobj['neftpayAmount'] = 0,
-  //   PaymentInsertobj['neftno'] = '0',
-  //   PaymentInsertobj['neftbankMaster'] = '',
-  //   PaymentInsertobj['neftdate'] = '1900-01-01',
-  //   PaymentInsertobj['payTmamount'] = 0,
-  //   PaymentInsertobj['payTmtranNo'] = '0',
-  //   PaymentInsertobj['payTmdate'] = '1900-01-01'
-
-  //   if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-  //     let submitData = {
-  //       "salesReturn": salesReturnHeader,
-  //       "salesReturnDetails": salesReturnDetailInsertCreditarr,
-  //       "currentStock": updateCurrStkSales,
-  //       "salesDetail": Update_SalesReturnQtySalesTblarray,
-  //       "tSalesReturn": Update_SalesRefundAmt_SalesHeader,
-  //       "tSalesReturns": Cal_GSTAmount_SalesReturn,
-  //       "salesHeader": Insert_ItemMovementReport_Cursor,
-  //       "payment": PaymentInsertobj
-  //     };
-  //     console.log(submitData);
-  //     this._IpSalesRetService.InsertCashSalesReturn(submitData).subscribe(response => { 
-  //         this.OnReset();  
-  //     });
-  //   }
-  //   else {
-  //     let submitData = {
-  //       "salesReturn": salesReturnHeader,
-  //       "salesReturnDetails": salesReturnDetailInsertCreditarr,
-  //       "currentStock": updateCurrStkSales,
-  //       "salesDetail": Update_SalesReturnQtySalesTblarray,
-  //       "tSalesReturn": Update_SalesRefundAmt_SalesHeader,
-  //       "tSalesReturns": Cal_GSTAmount_SalesReturn,
-  //       "salesHeader": Insert_ItemMovementReport_Cursor
-  //     };
-  //     console.log(submitData);
-  //     this._IpSalesRetService.InsertCreditSalesReturn(submitData).subscribe(response => { 
-  //         this.OnReset(); 
-  //     });
-  //   }
-  // }
-
+  } 
   OnReset() {
     this.ItemFormGroup.reset();
     this.IPSalesRetFooterform.reset();

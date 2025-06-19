@@ -1,23 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, HostListener, Injector, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service'; 
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { parseInt } from 'lodash';
-import * as converter from 'number-to-words';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-// import { ItemNameList } from 'app/main/inventory/issue-to-department/issue-to-department.component';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
-
 import { MatDrawer } from '@angular/material/sidenav';
-import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ToastrService } from 'ngx-toastr';
@@ -38,6 +32,13 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
   animations: fuseAnimations,
 })
 export class SalesHospitalNewComponent implements OnInit {
+  // Display Columns
+  patientDisplayedColumns: string[] = ['UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName'];
+  displayedColumns = ['FromStoreId', 'IndentNo', 'IndentDate', 'FromStoreName', 'ToStoreName', 'Addedby', 'IsInchargeVerify', 'action'];
+  displayedColumns1 = ['ItemName', 'Qty', 'IssQty', 'Bal'];
+  selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'MarginAmt', 'buttons'];
+  DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
+  DraftSaleDisplayedCol = ['ExtMobileNo', 'buttons'];
   // View Children
   @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
   @ViewChild('discAmount') discAmount: ElementRef;
@@ -70,13 +71,7 @@ export class SalesHospitalNewComponent implements OnInit {
   dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
   dsItemNameList1 = new MatTableDataSource<IndentList>();
 
-  // Display Columns
-  patientDisplayedColumns: string[] = ['UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName'];
-  displayedColumns = ['FromStoreId', 'IndentNo', 'IndentDate', 'FromStoreName', 'ToStoreName', 'Addedby', 'IsInchargeVerify', 'action'];
-  displayedColumns1 = ['ItemName', 'Qty', 'IssQty', 'Bal'];
-  selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'MarginAmt', 'buttons'];
-  DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
-  DraftSaleDisplayedCol = ['ExtMobileNo', 'buttons'];
+
 
   // Patient Related
   PatientType = PatientType;
@@ -170,7 +165,9 @@ export class SalesHospitalNewComponent implements OnInit {
   externalflag: Boolean = false;
   barcodeflag: boolean = false;
   add: Boolean = false;
-
+  loadingarry: any = [];
+  isLoading123 = false;
+  chargeslist1: any = [];
   // Other Properties
   sIsLoading: string = '';
   isLoading = true;
@@ -260,34 +257,35 @@ export class SalesHospitalNewComponent implements OnInit {
   selectedItem: SalesBatchItemModel;
   selectedTableRowItem: IndentList;
 
+  RegNo: any;
+  WardName: any;
+  BedName: any;
+  DoctorNamecheck: boolean = false;
+  IPDNocheck: boolean = false;
+  OPDNoCheck: boolean = false;
+  autocompletestore: string = 'Store';
+
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
     public _salesService: SalesHospitalService,
     public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
-    private renderer: Renderer2,
     private _loggedService: AuthenticationService,
-    private injector: Injector,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private applicationRef: ApplicationRef,
-    private opService: OPSearhlistService,
     public _RequestforlabtestService: RequestforlabtestService,
     public toastr: ToastrService,
     private onlinePaymentService: OnlinePaymentService,
-    private _FormvalidationserviceService : FormvalidationserviceService
+    private _FormvalidationserviceService: FormvalidationserviceService
   ) {
-    this.PatientHeaderObj = this.data;
-     this.getPaymentForm();
+    this.PatientHeaderObj = this.data; 
   }
 
   ngOnInit(): void {
     this.getItemSubform();
-    this.getConcessionReasonList();
     this.getStoredet();
     this.getDraftorderList();
-   
+
+      this.PharmaSalesForm = this.CreatePharmasalesform()
     if (this.vPharExtOpt == true) {
       this.paymethod = false;
       this.vSelectedOption = '2';
@@ -312,16 +310,6 @@ export class SalesHospitalNewComponent implements OnInit {
       this.vCondition = true;
     }
   }
-
-  RegNo: any;
-  WardName: any;
-  BedName: any;
-  DoctorNamecheck: boolean = false;
-  IPDNocheck: boolean = false;
-  OPDNoCheck: boolean = false;
-  autocompletestore: string = 'Store';
-  //New code
-
   onChangePatientType(event) {
     if (event.value == '0') {
       this.OP_IPType = 0;
@@ -351,7 +339,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.OP_IPType = 2;
     }
   }
-
+  Patientdetails:any;
   getSelectedObjRegIP(obj) {
     console.log(obj);
     let IsDischarged = 0;
@@ -378,16 +366,17 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     this.ItemSubform.patchValue({
       opIpId: obj.admissionID,
-      regId:obj.regID,
-      wardId:obj.wardId,
-      bedId:obj.bedId,
-      unitId:obj.hospitalID,
+      regId: obj.regID,
+      wardId: obj.wardId,
+      bedId: obj.bedId,
+      unitId: obj.hospitalID,
     })
     this.getBillSummary();
+    this.getItemSubform();
   }
-
   getSelectedObjOP(obj) {
     console.log(obj);
+    this.Patientdetails = obj;
     this.OPDNoCheck = true;
     this.DoctorNamecheck = false;
     this.IPDNocheck = false;
@@ -402,13 +391,12 @@ export class SalesHospitalNewComponent implements OnInit {
     this.Age = obj.age;
     this.WardName = obj.roomName;
     this.BedName = obj.bedName;
-
     this.getBillSummary();
+   this.getItemSubform();
   }
   onPatientChange(event: any): void {
     console.log(event);
   }
-
   onItemChange(event: SalesItemModel): void {
     console.log('Event: ', event);
     this.ItemName = event.itemName;
@@ -416,9 +404,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.StoreId = event.storeId;
     this.getBatch(event.itemId, event.storeId);
   }
-
-  // NOTE: If `isEditable` true then it means this popup will open for table row data
-
+  // NOTE: If `isEditable` true then it means this popup will open for table row data 
   getBatch(itemId: number, storeId: number, isEditable = false) {
     const dialogRef = this._matDialog.open(SalePopupComponent, {
       maxWidth: '800px',
@@ -516,7 +502,7 @@ export class SalesHospitalNewComponent implements OnInit {
   //////////////////////////////////calculation part 
   calculateTotalAmt() {
     let qty = +this._salesService.ItemSearchGroup.get('Qty').value;
-    if (qty > this.BalanceQty) { 
+    if (qty > this.BalanceQty) {
       Swal.fire({
         icon: "warning",
         title: "Enter Qty less than Balance Qty",
@@ -539,19 +525,19 @@ export class SalesHospitalNewComponent implements OnInit {
 
       this.getDiscPer();
     }
-  } 
+  }
   getDiscPer() {
     let DiscPer = this._salesService.ItemSearchGroup.get('DiscPer').value;
-    if (this.DiscPer > 0) { 
+    if (this.DiscPer > 0) {
       this.chkdiscper = true;
-      this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2); 
+      this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2);
     } else {
       this.chkdiscper = false;
-      this.DiscAmt = 0; 
+      this.DiscAmt = 0;
     }
     this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
   }
-   public discperCal(): void {
+  public discperCal(): void {
     const formValue = this._salesService.ItemSearchGroup.value;
     const discPer = Number(formValue.DiscPer);
 
@@ -608,8 +594,6 @@ export class SalesHospitalNewComponent implements OnInit {
       this.calculateNetAmount();
     }
   }
-
-
   getFinalDiscperAmt() {
     let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
     let DiscAmt = this.ItemSubform.get('discAmount').value || 0;
@@ -634,7 +618,6 @@ export class SalesHospitalNewComponent implements OnInit {
 
     this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
   }
-
   getFinalDiscAmount() {
     // console.log("total disc");
     let totDiscAmt = this.ItemSubform.get('discAmount').value;
@@ -655,7 +638,6 @@ export class SalesHospitalNewComponent implements OnInit {
       //this.ConseId.nativeElement.focus();
     }
   }
- 
   //Add Item list
   OnAddUpdate() {
     debugger;
@@ -722,7 +704,6 @@ export class SalesHospitalNewComponent implements OnInit {
       this.add = false;
     }
   }
-
   ItemFormreset() {
     this.BatchNo = '';
     this.BatchExpDate = '01/01/1900';
@@ -739,7 +720,6 @@ export class SalesHospitalNewComponent implements OnInit {
     this.filteredOptions = [];
     this.dsBalAvaListStore.data = [];
   }
-
   Formreset() {
     this.FinalTotalAmt = 0;
     this.FinalDiscPer = 0;
@@ -818,151 +798,167 @@ export class SalesHospitalNewComponent implements OnInit {
   //     roundoffAmt: '0',
   //     StoreId: [this._loggedService.currentUserValue.user.storeId],
   //   });
-  // }
-
-
+  // } 
   getItemSubform() {
     this.ItemSubform = this.formBuilder.group({
-      //PatientName: '',
-      //DoctorName: '',
-      // extAddress: '',
-      //  MobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10)]],
-      // PatientType: ['OP'],  
-      // ConcessionId: [0, [Validators.required]], 
-      FinalDiscPer: 0,
-      // FinalDiscAmt: 0,
-      //  FinalTotalAmt: 0,
-      // FinalNetAmount: 0, 
-      // BalanceAmt: 0,
-      // Darft save 
-      dsalesId:0,
-      //sales save 
+      FinalDiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       CashPay: ['CashPay'],
-      referanceNo: '',
-      PaidbyPatient: '',
-      PaidbacktoPatient: '',
-      roundoffAmt: '0',
-      salesId: 0,
-      date: [''],
-      time:  [''],
-      opIpId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
-       this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      opIpType: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
-       this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      totalAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
-       this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-      netAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
-       this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      paidAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator]],
-      balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator]],
-      concessionReasonId: [0],
-      concessionAuthorizationId: 0,
-      isSellted: [true],
-      isPrint: [true],
-      isFree: [true],
-      unitId: [1],
-       addedBy: [this._loggedService.currentUserValue.userId],
-      externalPatientName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      doctorName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      storeId: [this._loggedService.currentUserValue.user.storeId], 
-      creditReason: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      creditReasonId: 0, 
-      isClosed:[true],
-       isPrescription: 0,
-      wardId: 0,
-      bedId: 0,
-      discperH: 0,
-      isPurBill: [false],
-      isBillCheck: [true],
-      salesHeadName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      salesTypeId: 0,
-      regId:[0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator,
-      this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      extMobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10),
-      this._FormvalidationserviceService.onlyNumberValidator,
-      ]],
-      extAddress: ["", [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      tSalesDetails:[
-        {
-        salesId: 0,
-        itemId: 0,
-        batchNo: "",
-        batchExpDate: "",
-        unitMrp: 0,
-        qty: 0,
-        totalAmount: 0,
-        vatPer: 0,
-        vatAmount: 0,
-        discPer: 0,
-        discAmount: 0,
-        grossAmount: 0,
-        landedPrice: 0,
-        totalLandedAmount: 0,
-        returnQty: 0,
-        purRateWf: 0,
-        purTotAmt: 0,
-        cgstper: 0,
-        cgstamt: 0,
-        sgstper: 0,
-        sgstamt: 0,
-        igstper: 0,
-        igstamt: 0,
-        isPurRate: true,
-        stkId: 0,
-        mrp: 0,
-        mrpTotal: 0
-        } 
-      ]
+      referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      roundoffAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      concessionReasonId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      extMobileNo: [0,[Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10),this._FormvalidationserviceService.onlyNumberValidator()]],
+      extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     });
+  } 
+  PharmaSalesForm: FormGroup;
+  CreatePharmasalesform() {
+    return this.formBuilder.group({
+      //Sales header
+      sales: this.formBuilder.group({
+        salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.validDateValidator()]],
+        time: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        opIpId:[this.Patientdetails?.admissionID,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        opIpType: [1, [ this._FormvalidationserviceService.onlyNumberValidator,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAuthorizationId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSellted: [true],
+        isPrint: [true],
+        isFree: [true],
+        unitId: [this.Patientdetails?.hospitalID,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        addedBy: [this._loggedService.currentUserValue.userId],
+        externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        storeId: [this._loggedService.currentUserValue.storeId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        creditReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isClosed: [false],
+        isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wardId:[this.Patientdetails?.wardId,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        bedId:[this.Patientdetails?.bedId,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        discperH:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isPurBill: [false],
+        isBillCheck: [true],
+        salesHeadName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        salesTypeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        extMobileNo: [0, [Validators.minLength(10), Validators.maxLength(10),this._FormvalidationserviceService.onlyNumberValidator()]],
+        extAddress: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        tSalesDetails: []
+      }),
+      //sales payment
+      payment: this.formBuilder.group({
+        paymentId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        paymentTime:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequePayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequeNo:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        chequeDate: "1999-01-01",
+        cardPayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cardDate: "1999-01-01",
+        advanceUsedAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        addBy:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelled: false,
+        isCancelledBy:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: "1999-01-01",
+        opdipdType:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        neftdate: "1999-01-01",
+        payTmamount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        payTmdate: "1999-01-01"
+      }),
+      //Sales current stock
+      tCurrentStock: this.formBuilder.array([]),
+      prescription: this.formBuilder.group({
+        opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isclosed: [true]
+      }),
+      //Sales draft
+      salesDraft: this.formBuilder.group({
+        dSalesId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isclosed: [true]
+      }) 
+    })
+  }  
+  CreateSalesDetailsform(item: any) {
+    return this.formBuilder.group({
+      salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'),[this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      returnQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: [item?.CgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstamt: [item?.sgstper ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [item?.SgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstamt: [item?.SGSTAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstper: [item?.IgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstamt: [item?.IGSTAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isPurRate: [true],
+      stkId:[item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mrp: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrpTotal:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    })
   }
-paymentForm:FormGroup
-getPaymentForm(){
-  this.paymentForm = this.formBuilder.group({ 
-    paymentId: 0,
-    billNo: 0,
-    paymentDate: [''],
-    paymentTime: [''],
-    cashPayAmount: [0],
-    chequePayAmount: 0,
-    chequeNo: "",
-    bankName: "",
-    chequeDate:  "1999-01-01",
-    cardPayAmount: 0,
-    cardNo: "",
-    cardBankName: "",
-    cardDate:  "1999-01-01",
-    advanceUsedAmount: 0,
-    advanceId: 0,
-    refundId: 0,
-    transactionType: 0,
-    remark: "",
-    addBy: 0,
-    isCancelled: false,
-    isCancelledBy: 0,
-    isCancelledDate: "1999-01-01",
-    opdipdType: 0,
-    neftpayAmount: 0,
-    neftno: "",
-    neftbankMaster: "",
-    neftdate: "1999-01-01",
-    payTmamount: 0,
-    payTmtranNo: "",
-    payTmdate: "1999-01-01"
-  })
-}
-  getConcessionReasonList() {
-    this._salesService.getConcessionCombo().subscribe((data) => {
-      this.ConcessionReasonList = data;
-    });
+  CreateCurrentStockForm(item: any) {
+    return this.formBuilder.group({
+      itemId:  [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      issueQty:[item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      iStkId:[item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeID:[this._loggedService.currentUserValue.storeId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+    })
   }
-
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
+  // Getters 
+  get SalesDetailsAarry(): FormArray {
+    return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
   }
-
+  get CurrentStockArray(): FormArray {
+    return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
+  }
   salesIdWiseObj: any;
+  dummySalesIdNameArr = [];
+  SalesIdWiseObj: any = {};
   getTopSalesDetailsList(MobileNo) {
     var vdata = {
       ExtMobileNo: MobileNo,
@@ -990,10 +986,6 @@ getPaymentForm(){
     });
     this.getTopSalesDetailsprint();
   }
-
-  dummySalesIdNameArr = [];
-  SalesIdWiseObj: any = {};
-
   getTopSalesDetailsprint() {
     var strrowslist = '';
     let onlySalesId = [];
@@ -1026,7 +1018,6 @@ getPaymentForm(){
       strrowslist += strabc;
     }
   }
-
   getSalesIdName(SalesId: String) {
     let groupDiv;
     for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
@@ -1047,58 +1038,8 @@ getPaymentForm(){
     return groupDiv;
   }
 
-  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 119) {
-      this.onsubstitutes();
-    }
-    if (event.keyCode === 120) {
-      this.onSave(event);
-    }
-  }
 
-  loadingarry: any = [];
-  getWhatsappshare() {
-    var m_data = {
-      insertWhatsappsmsInfo: {
-        mobileNumber: this.MobileNo,
-        isSent: 0,
-        smsType: 'bulk',
-        smsFlag: 0,
-        smsDate: this.currentDate,
-        tranNo: this.GSalesNo,
-        templateId: 0,
-        smSurl: 'info@gmail.com',
-        filePath: this.Filepath || '',
-        smsOutGoingID: 0,
-      },
-    };
-    console.log(m_data);
-    this._salesService.InsertWhatsappSms(m_data).subscribe((response) => {
-      if (response) {
-        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-      }
-    });
-    this.IsLoading = false;
-  }
 
-  onsubstitutes() {
-    const dialogRef = this._matDialog.open(SubstitutesComponent, {
-      maxWidth: '65vw',
-      height: '650px',
-      width: '60%',
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
-
-  onClear() {}
 
   Addrepeat(row) {
     console.log(row);
@@ -1152,7 +1093,6 @@ getPaymentForm(){
     this.FinalGSTAmt = element.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
     return this.FinalGSTAmt;
   }
-
   getNetAmtSum(element) {
     this.FinalNetAmount = element.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
     this.FinalTotalAmt = element.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
@@ -1208,49 +1148,6 @@ getPaymentForm(){
       // this.addbutton.focus();
     }
   }
-  convertToWord(e) {
-    return converter.toWords(e);
-  }
-  transform2(value: string) {
-    var datePipe = new DatePipe('en-US');
-    value = datePipe.transform(new Date(), 'dd/MM/yyyy h:mm a');
-    return value;
-  }
-  transform1(value: string) {
-    var datePipe = new DatePipe('en-US');
-    value = datePipe.transform(new Date(), 'dd/MM/yyyy');
-    return value;
-  }
-
-  // PRINT
-  print1() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    if (this.reportPrintObjList.length > 0) {
-      // if(this.reportPrintObjList[0].BalanceAmt === 0) {
-      //   popupWin.document.getElementById('trAmountBalance').style.display = 'none';
-      // }
-      // if (this.reportPrintObjList[0].ConcessionAmt === 0) {
-      //   popupWin.document.getElementById('trAmountconcession').style.display = 'none';
-      // }
-      // if (this.reportPrintObjList[0].BalanceAmt === 0) {
-      //   popupWin.document.getElementById('idBalAmt').style.display = 'none';
-      // }
-    }
-    popupWin.document.close();
-  }
-  chargeslist1: any = [];
 
   DeleteDraft() {
     let Query = 'delete T_SalesDraftHeader where DSalesId=' + this.DraftID + '';
@@ -1294,12 +1191,12 @@ getPaymentForm(){
       return;
     }
     if (this.ItemSubform.get('CashPay').value == 'CashPay' || this.ItemSubform.get('CashPay').value == 'Online') {
-     // this.onCashOnlinePaySave();
+      // this.onCashOnlinePaySave();
       this.onCashSave();
-    } 
+    }
     else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-    //  this.onCreditpaySave();
-       this.onCashSave();
+      //  this.onCreditpaySave();
+      this.onCashSave();
     }
     //  else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
     //   this.onSavePayOption();
@@ -1311,156 +1208,144 @@ getPaymentForm(){
     this.DoctorName = '';
     this.ItemSubform.get('FinalDiscPer').enable();
   }
-fromEntries(entries: [string, any][]): { [key: string]: any } {
-  const result: { [key: string]: any } = {};
-  for (const [key, value] of entries) {
-    result[key] = value;
-  }
-  return result;
-}
+
   onCashSave() {
     debugger
-    const fomrvalue = this.ItemSubform.value
-    console.log(fomrvalue)
-    this.ItemSubform.get('date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-    this.ItemSubform.get('time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+    const formValue = this.ItemSubform.value 
+    this.PharmaSalesForm.get('sales.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.PharmaSalesForm.get('sales.time').setValue(this.datePipe.transform(new Date(), 'hh:mm')) 
+    this.PharmaSalesForm.get('sales.opIpType').setValue(formValue.opIpType)
+    this.PharmaSalesForm.get('sales.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
+    this.PharmaSalesForm.get('sales.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
+    this.PharmaSalesForm.get('sales.discAmount').setValue(Number(Math.round(formValue.discAmount)))
+    this.PharmaSalesForm.get('sales.netAmount').setValue(Number(Math.round(formValue.netAmount))) 
+    this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue.concessionReasonId) 
+      if(formValue.opIpType == 2){
+    this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue.externalPatientName)
+    this.PharmaSalesForm.get('sales.doctorName').setValue(formValue.doctorName)
+    this.PharmaSalesForm.get('sales.extAddress').setValue(formValue.extAddress)
+    this.PharmaSalesForm.get('sales.extMobileNo').setValue(formValue.extMobileNo) 
+          } 
 
-    let invalidFields = [];
-    if (this.ItemSubform.invalid) {
-      for (const controlName in this.ItemSubform.controls) {
-        if (this.ItemSubform.controls[controlName].invalid) {
-          invalidFields.push(`${controlName}`);
+    if (this.PharmaSalesForm.valid) { 
+      this.SalesDetailsAarry.clear();
+      this.CurrentStockArray.clear()
+      this.saleSelectedDatasource.data.forEach((element) => {
+        this.SalesDetailsAarry.push(this.CreateSalesDetailsform(element))
+        this.CurrentStockArray.push(this.CreateCurrentStockForm(element))
+      }); 
+      console.log(this.ItemSubform.value)
+
+         if (this.ItemSubform.get('CashPay').value == 'CashPay') {
+      this.PharmaSalesForm.get('sales.paidAmount').setValue(Number(Math.round(formValue.netAmount)))
+      this.PharmaSalesForm.get('sales.balanceAmount').setValue(0) 
+      this.PharmaSalesForm.get('payment.paymentDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+      this.PharmaSalesForm.get('payment.paymentTime').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+      this.PharmaSalesForm.get('payment.cashPayAmount').setValue(Number(Math.round(formValue.netAmount))) 
+      console.log(this.ItemSubform.value)
+      this._salesService.InsertCashSales(this.ItemSubform.value).subscribe((response) => {
+        if (response) { 
+          this.Itemchargeslist = [];
+          this.ItemFormreset();
+          this.ItemSubform.reset();
+          this.Formreset();
+          this.ItemSubform.get('concessionReasonId').reset();
+          this.saleSelectedDatasource.data = [];
+        }
+      });
+    } else if (this.ItemSubform.get('CashPay').value == 'Credit') { 
+    this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
+    this.PharmaSalesForm.get('sales.balanceAmount').setValue(Number(Math.round(formValue.netAmount))) 
+      console.log(this.ItemSubform.value) 
+      this._salesService.InsertCreditSales(this.ItemSubform.value).subscribe((response) => {
+        if (response) { 
+          this.Itemchargeslist = [];
+          this.ItemFormreset();
+          this.ItemSubform.reset();
+          this.Formreset();
+          this.ItemSubform.get('concessionReasonId').reset();
+          this.saleSelectedDatasource.data = [];
+        }
+      });
+    } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {  
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.dateTimeObj.date;
+    PatientHeaderObj['RegNo'] = this.RegNo;
+    PatientHeaderObj['PatientName'] = this.PatientName;
+    if (this.vPatientType == '1') {
+      PatientHeaderObj['OPD_IPD_Id'] = this.IPDNo;
+    } else {
+      PatientHeaderObj['OPD_IPD_Id'] = this.OPDNo;
+    }
+    PatientHeaderObj['Age'] = this.Age;
+    PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value;
+
+    const dialogRef = this._matDialog.open(OpPaymentComponent, {
+      maxWidth: '80vw',
+      height: '650px',
+      width: '80%',
+      data: {
+        vPatientHeaderObj: PatientHeaderObj,
+        FromName: 'Phar-SalesPay',
+      },
+    }); 
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result); 
+      //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate) 
+      if (result?.IsSubmitFlag == true) {
+        let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
+        let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
+        let cardpay = result.submitDataPay.ipPaymentInsert.CardPayAmount;
+        let Neftpay = result.submitDataPay.ipPaymentInsert.NEFTPayAmount;
+        let onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
+
+        if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) { 
+          let submitData = {
+            // salesInsert: SalesInsert,
+            // salesDetailInsert: salesDetailInsertarr,
+            // updateCurStkSales: updateCurStkSalestarr,
+            // cal_DiscAmount_Sales: cal_DiscAmount_Sales,
+            // cal_GSTAmount_Sales: cal_GSTAmount_Sales,
+            // salesDraftStatusUpdate: salesDraftStatusUpdate,
+            // salesPayment: result.submitDataPay.ipPaymentInsert,
+          }; 
+          console.log(submitData);
+          this._salesService.InsertCashSales(submitData).subscribe((response) => {
+              if (response) { 
+                  this.getPrint3(response);
+                  this.getWhatsappshareSales(response, this.MobileNo);
+                  this.Itemchargeslist = [];
+                  this._matDialog.closeAll();
+                  this.ItemFormreset();
+                  this.Formreset(); 
+                    this.ItemSubform.get('concessionReasonId').reset();
+          this.saleSelectedDatasource.data = [];
+                } 
+            });  
+        }  
+      } 
+    });
+    
+  }
+    } else {
+      let invalidFields = [];
+      if (this.ItemSubform.invalid) {
+        for (const controlName in this.ItemSubform.controls) {
+          if (this.ItemSubform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
         }
       }
-    }
-    if (invalidFields.length > 0) {
-      invalidFields.forEach(field => {
-        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-        );
-      });
-      return
-    }
-    //Sales details
-    let itemdetails = []
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let salesDetailInsert = {
-        salesId: 0,
-        itemId: element.ItemId,
-        batchNo: element.BatchNo,
-        batchExpDate: this.datePipe.transform(element.BatchExpDate, 'yyyy-MM-dd'),
-        unitMrp: element.UnitMRP,
-        qty: element.Qty,
-        totalAmount: element.TotalMRP,
-        vatPer: element.VatPer,
-        vatAmount: element.VatAmount,
-        discPer: element.DiscPer,
-        discAmount: element.DiscAmt,
-        grossAmount: element.NetAmt,
-        landedPrice: element.LandedRate,
-        totalLandedAmount: element.LandedRateandedTotal,
-        returnQty: 0,
-        purRateWf: element.PurchaseRate,
-        purTotAmt: element.PurTotAmt,
-        cgstper: element.CgstPer,
-        cgstamt: element.CGSTAmt,
-        sgstper: element.SgstPer,
-        sgstamt: element.SGSTAmt,
-        igstper: element.IgstPer,
-        igstamt: element.IGSTAmt,
-        isPurRate: true,
-        stkId: element.StockId,
-        mrp: 0,
-        mrpTotal: 0
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
       }
-      itemdetails.push(salesDetailInsert)
-    });
-    this.ItemSubform.get('tSalesDetails').setValue(itemdetails)
-    const dvalue = this.ItemSubform.value
-    console.log(dvalue)
-
-    let updateCurStkSalestarr = [];
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let updateCurStkSales = {};
-      updateCurStkSales['itemId'] = element.ItemId;
-      updateCurStkSales['issueQty'] = element.Qty;
-      updateCurStkSales['iStkId'] = element.StockId;
-      updateCurStkSales['storeID'] = this._loggedService.currentUserValue.user.storeId,
-        updateCurStkSalestarr.push(updateCurStkSales);
-    });
-
-    let salesDraftStatusUpdate = {};
-    salesDraftStatusUpdate['dSalesId'] = this.DraftID || 0;
-    salesDraftStatusUpdate['isclosed'] = false
-
-    let salesPrescriptionStatusUpdate = {};
-    salesPrescriptionStatusUpdate['opipid'] = this.IPMedID || 0;
-    salesPrescriptionStatusUpdate['isclosed'] = false
-
- 
-    // Fields to not allowed
-    const NotallowedFields = ['FinalDiscPer', 'CashPay', 'referanceNo', 'PaidbyPatient', 'PaidbacktoPatient', 'roundoffAmt','dsalesId','isClosed'];
-    // Get all form values
-    const allValues = this.ItemSubform.value;
-    // Filter out only the fields you want to save
-    const ItemfilteredValues = this.fromEntries(
-      Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
-    );
-    console.log('Saving only selected values:', ItemfilteredValues);
-
-
-    if(this.ItemSubform.get('CashPay').value == 'CashPay'){
-    this.paymentForm.get('paymentDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-    this.paymentForm.get('paymentTime').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
-    this.paymentForm.get('cashPayAmount').setValue(this.ItemSubform.get('netAmount').value)
-
-      let submitData = {
-      sales: ItemfilteredValues,
-      tCurrentStock: updateCurStkSalestarr,
-      payment: this.paymentForm.value,
-      prescription: salesPrescriptionStatusUpdate,
-      salesDraft: salesDraftStatusUpdate
-    };
-    console.log(submitData);
-    let vMobileNo = this.MobileNo;
-    this._salesService.InsertCashSales(submitData).subscribe((response) => {
-      if (response) {
-        // this.getPrint3(response);
-        // this.getWhatsappshareSales(response, vMobileNo);
-        this.Itemchargeslist = [];
-        this.ItemFormreset();
-        this.ItemSubform.reset();
-        this.Formreset();
-        this.ItemSubform.get('concessionReasonId').reset();
-        this.saleSelectedDatasource.data = [];
-      }
-    });
-    }else if(this.ItemSubform.get('CashPay').value == 'Credit'){
-      let submitData = {
-      sales: ItemfilteredValues,
-      tCurrentStock: updateCurStkSalestarr, 
-      prescription: salesPrescriptionStatusUpdate,
-      salesDraft: salesDraftStatusUpdate
-    };
-    console.log(submitData);
-    let vMobileNo = this.MobileNo;
-    this._salesService.InsertCreditSales(submitData).subscribe((response) => {
-      if (response) {
-        // this.getPrint3(response);
-        // this.getWhatsappshareSales(response, vMobileNo);
-        this.Itemchargeslist = [];
-        this.ItemFormreset();
-        this.ItemSubform.reset();
-        this.Formreset();
-        this.ItemSubform.get('concessionReasonId').reset();
-        this.saleSelectedDatasource.data = [];
-      }
-    });
-    }else if(this.ItemSubform.get('CashPay').value == 'PayOption'){
-
-    }
+    } 
   }
-
-    onSaveDraftBill() {
+  onSaveDraftBill() {
     debugger
     const fomrvalue = this.ItemSubform.value
     console.log(fomrvalue)
@@ -1484,7 +1369,7 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     }
     //Sales details
     let itemdetails = []
-    this.saleSelectedDatasource.data.forEach((element) => { 
+    this.saleSelectedDatasource.data.forEach((element) => {
       let salesDetailInsert = {
         dsalesId: 0,
         itemId: element.ItemId,
@@ -1499,40 +1384,28 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
         discAmount: element.DiscAmt,
         grossAmount: element.NetAmt,
         landedPrice: element.LandedRate,
-        totalLandedAmount: element.LandedRateandedTotal, 
+        totalLandedAmount: element.LandedRateandedTotal,
         purRateWf: element.PurchaseRate,
-        purTotAmt: element.PurTotAmt,  
+        purTotAmt: element.PurTotAmt,
       }
       itemdetails.push(salesDetailInsert)
-    });   
-    // Fields to not allowed
-    const NotallowedFields = ['discperH"','FinalDiscPer', 'CashPay', 'referanceNo', 'PaidbyPatient', 'PaidbacktoPatient', 
-      'roundoffAmt','salesId','isPurBill','isBillCheck','salesHeadName','salesTypeId','regId','tSalesDetails','discperH','isFree'];
-    // Get all form values
-    const allValues = this.ItemSubform.value;
-    // Filter out only the fields you want to save
-    const ItemfilteredValues = this.fromEntries(
-      Object.entries(allValues).filter(([key]) => !NotallowedFields.includes(key))
-    );
-    console.log('Saving only selected values:', ItemfilteredValues); 
-
-      let submitData = {
-      salesDraft: ItemfilteredValues, 
-      salesDraftDet:itemdetails,  
+    });
+    let ItemfilteredValues = {}
+    let submitData = {
+      salesDraft: ItemfilteredValues,
+      salesDraftDet: itemdetails,
     };
     console.log(submitData);
     let vMobileNo = this.MobileNo;
     this._salesService.InsertSalesDraftBill(submitData).subscribe((response) => {
-      if (response) { 
-          this.Itemchargeslist = [];
-          this._matDialog.closeAll(); 
-          this.getDraftorderList();
+      if (response) {
+        this.Itemchargeslist = [];
+        this._matDialog.closeAll();
+        this.getDraftorderList();
       }
-    }); 
+    });
   }
- 
 
-  isLoading123 = false;
   onCashOnlinePaySave() {
     this.isLoading123 = true;
     let nowDate = new Date();
@@ -2074,13 +1947,10 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     this.ItemFormreset();
     this.Formreset();
     this.ItemSubform.get('concessionReasonId').reset();
-    this.getConcessionReasonList();
-    //this.PatientName = '';
-    // this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.saleSelectedDatasource.data = [];
   }
-   onSaveDraftBill1() {
+  onSaveDraftBill1() {
     let NetAmt = this.ItemSubform.get('netAmount').value;
     let ConcessionId = 0;
     if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
@@ -2185,185 +2055,16 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
   }
-  getPrint3(el) {
-    if (this.vPaymode == 'Credit') {
-      this.type = 'Credit';
-      this.Creditflag = true;
-    } else if (!(this.vPaymode == 'Credit')) {
-      this.type = ' ';
-      this.Creditflag = false;
-    }
-
-    var D_data = {
-      SalesID: el, //
-      OP_IP_Type: this.OP_IPType,
-    };
-    let printContents;
-    this.subscriptionArr.push(
-      this._salesService.getSalesPrint(D_data).subscribe((res) => {
-        this.reportPrintObjList = res as Printsal[];
-        this.reportPrintObj = res[0] as Printsal;
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      })
-    );
+  onClose() {
+    this.Itemchargeslist = [];
+    this.ItemFormreset();
+    this.ItemSubform.reset();
+    this.Formreset();
+    this.ItemSubform.get('concessionReasonId').reset();
+    this.PatientName = '';
+    this.MobileNo = '';
+    this.saleSelectedDatasource.data = [];
   }
-
-  getWhatsappshareSales(el, vmono) {
-    var m_data = {
-      insertWhatsappsmsInfo: {
-        mobileNumber: vmono || 0,
-        smsString:
-          'Dear' +
-            vmono +
-            ',Your Sales Bill has been successfully completed. UHID is ' +
-            el +
-            ' For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur ' || '',
-        isSent: 0,
-        smsType: 'Sales',
-        smsFlag: 0,
-        smsDate: this.currentDate,
-        tranNo: el,
-        PatientType: 2, //el.PatientType,
-        templateId: 0,
-        smSurl: 'info@gmail.com',
-        filePath: this.Filepath || '',
-        smsOutGoingID: 0,
-      },
-    };
-    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe((response) => {
-      if (response) {
-        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-      } else {
-        this.toastr.error('API Error!', 'Error WhatsApp!', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    });
-    this.IsLoading = false;
-  }
-
-  print3() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-    popupWin.document.write(`
-    </style>
-    <style type="text/css" media="print">
-  @page { size: portrait; }
-</style>
-        <title></title>
-    </head>
-  `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
-  <script>
-    var css = '@page { size: portrait; }',
-    head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style');
-    style.type = 'text/css';
-    style.media = 'print';
-
-    if (style.styleSheet){
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-    head.appendChild(style);
-  </script>
-  </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    popupWin.document.close();
-  }
-
-  // getCellCalculation(contact, Qty) {
-  //   //
-  //   let Qtyfinal = this.Qty;
-  //   console.log(contact);
-  //   this.StockId = contact.StockId;
-  //   this.Qty = Qty;
-  //   if (contact.Qty != 0 && contact.Qty != null) {
-  //     // console.log(contact.Qty);
-  //     this.BalChkList = [];
-  //     this.StoreId = this._loggedService.currentUserValue.storeId;
-
-  //     // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-  //     let SelectQuery = 'select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = ' + this.StoreId + ' AND ItemId = ' + contact.ItemId + '';
-
-  //     console.log(SelectQuery);
-  //     this._salesService.getchargesList(SelectQuery).subscribe(
-  //       (data) => {
-  //         this.BalChkList = data;
-  //         console.log(this.BalChkList);
-
-  //         // if (this.BalChkList.length > 0) {
-
-  //         //   if (this.BalChkList[0].BalanceQty >= contact.Qty) {
-  //         //     this.QtyBalchk = 1;
-
-  //         //     this.tblCalucation(contact,contact.Qty)
-  //         //   }
-  //         //   else {
-  //         //     this.QtyBalchk = 1;
-  //         //     Swal.fire("Please Enter Qty Less than Balance Qty :" + contact.ItemName + " . Available Balance Qty :" + this.BalChkList[0].BalanceQty)
-  //         //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-  //         //     contact.Qty=this.Qty;
-  //         //     this.tblCalucation(contact,contact.Qty)
-  //         //   }
-  //         // }
-
-  //         //
-  //         if (this.BalChkList.length > 0) {
-  //           let AllQty = 0;
-  //           this.BalChkList.forEach((element) => {
-  //             AllQty += element.BalanceQty;
-  //             console.log(AllQty);
-  //           });
-
-  //           if (AllQty >= contact.Qty) {
-  //             this.QtyBalchk = 1;
-
-  //             this.tblCalucation(contact, contact.Qty);
-  //             this.getDiscountCellCal(contact, contact.DiscPer);
-  //           } else {
-  //             // this.QtyBalchk = 1;
-  //             Swal.fire('Please Enter Qty Less than Balance Qty :' + contact.ItemName + ' . Available Balance Qty :' + this.BalChkList[0].BalanceQty);
-  //             //     contact.Qty = parseInt(this.BalChkList[0].BalanceQty);
-  //             //     contact.Qty=this.Qty;
-  //             //     this.tblCalucation(contact,contact.Qty)
-  //             contact.Qty = 1;
-  //           }
-  //         }
-  //       },
-  //       (error) => {
-  //         Swal.fire('No Item Found!!');
-  //       }
-  //     );
-  //   } else {
-  //     Swal.fire('Please enter Qty!!');
-
-  //     contact.GSTAmount = 0;
-  //     contact.TotalMRP = 0;
-  //     (contact.DiscAmt = 0), (contact.NetAmt = 0);
-  //     contact.RoundNetAmt = 0;
-  //     (contact.StockId = this.StockId), (contact.VatAmount = 0);
-  //     contact.LandedRateandedTotal = 0;
-  //     contact.CGSTAmt = 0;
-  //     contact.SGSTAmt = 0;
-  //     contact.IGSTAmt = 0;
-  //     (contact.PurchaseRate = this.PurchaseRate), (contact.PurTotAmt = this.PurTotAmt), (contact.MarginAmt = 0);
-  //   }
-
-  //   // this.DiscOld=contact.DiscPer;
-  //   this.ItemFormreset();
-  // }
 
   tblCalucation(contact, Qty) {
     let TotalMRP;
@@ -2404,7 +2105,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     }
     this.ItemFormreset();
   }
-
   OnEnableDraftAdd() {
     if (this.drafttable == false) {
       this.drafttable = true;
@@ -2413,7 +2113,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       this.drafttable = false;
     }
   }
-
   getDraftorderList() {
     this.chargeslist1 = [];
     this.dsDraftList.data = [];
@@ -2430,7 +2129,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     //   (error) => {}
     // );
   }
-
   m_getBalAvaListStore(Param) {
     this.dsDraftList.data = [];
     var m = {
@@ -2440,10 +2138,9 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       (data) => {
         this.dsBalAvaListStore.data = data as BalAvaListStore[];
       },
-      (error) => {}
+      (error) => { }
     );
   }
-
   onAddRepeat(contact) {
     this.tempDatasource.data = [];
     this.saleSelectedDatasource.data = [];
@@ -2484,7 +2181,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       }
     });
   }
-
   onAddDraftListTosale(contact, DraftQty) {
     // console.log(contact)
     this.Itemchargeslist1 = [];
@@ -2521,7 +2217,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       }
     });
   }
-
   getFinalCalculation(contact, DraftQty) {
     console.log(contact);
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
@@ -2588,98 +2283,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
 
     // this.Itemchargeslist=[];
   }
-
-
-
-  public onEnterpatientname(event): void {
-    if (event.which === 13) {
-      // this.itemid.nativeElement.focus();
-      this.doctorname.nativeElement.focus();
-    }
-  }
-  public onEntermobileno(event): void {
-    if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
-      this.getTopSalesDetailsList(this.MobileNo);
-      this.patientname.nativeElement.focus();
-    }
-  }
-
-  public onEnterDoctorname(event): void {
-    if (event.which === 13) {
-      this.address.nativeElement.focus();
-    }
-  }
-  public onEnterAddress(event): void {
-    if (event.which === 13) {
-      this.itemid.nativeElement.focus();
-    }
-  }
-
-  public onF6Reset(event): void {
-    if (event.which === 117) {
-      this.onClose();
-    }
-  }
-
-  getPrint(el) {
-    var D_data = {
-      SalesID: el,
-      OP_IP_Type: 2,
-    };
-    let printContents;
-    this.subscriptionArr.push(
-      this._salesService.getSalesPrint(D_data).subscribe((res) => {
-        this.reportPrintObjList = res as Printsal[];
-        // console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as Printsal;
-
-        if (this.reportPrintObj.ChequePayAmount != 0) {
-          this.UTRNO = this.reportPrintObj.ChequeNo;
-        } else if (this.reportPrintObj.CardPayAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.ChequeNo;
-        } else if (this.reportPrintObj.NEFTPayAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.NEFTNo;
-        } else if (this.reportPrintObj.PayTMAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.PayTMTranNo;
-        }
-      })
-    );
-  }
-
-  print() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-
-    popupWin.document.close();
-  }
-
-  onClose() {
-    this.Itemchargeslist = [];
-    this.ItemFormreset();
-    this.ItemSubform.reset();
-    this.Formreset();
-    this.ItemSubform.get('concessionReasonId').reset();
-    this.PatientName = '';
-    this.MobileNo = '';
-    this.saleSelectedDatasource.data = [];
-  }
-
-  getOptionTextReg(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
-
   PatientInformRest() {
     this.PatientName = '';
     this.IPDNo = '';
@@ -2692,7 +2295,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
   }
-
   payOnline() {
     const matDialog = this._matDialog.open(PaymentModeComponent, {
       data: { finalAmount: this.FinalNetAmount },
@@ -2708,7 +2310,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       }
     });
   }
-
   chkbarcode(event) {
     if (event.checked == true) {
       this.barcodeflag = true;
@@ -2716,7 +2317,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       this.barcodeflag = false;
     }
   }
-
   barcodeItemfetch() {
     var d = {
       StockId: this._salesService.ItemSearchGroup.get('Barcode').value || 0,
@@ -2738,7 +2338,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     this.vBarcode = '';
     this.Addflag = false;
   }
-
   onAddBarcodeItemList(contact, DraftQty) {
     console.log(contact);
     //
@@ -2891,7 +2490,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     this.vBarcode = 0;
     this.vBarcodeflag = false;
   }
-
   getPRESCRIPTION() {
     if (this.ItemSubform.get('opIpType').value == '1') {
       const dialogRef = this._matDialog.open(PrescriptionComponent, {
@@ -2973,10 +2571,8 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       });
     }
   }
-
   getBillSummary() {
     let query;
-
     query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
     this._salesService.getBillSummaryQuery(query).subscribe((data) => {
       console.log(data);
@@ -2990,24 +2586,6 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
       this.TotalBalanceAmt = data[0].BalanceAmount;
     });
   }
-
-  // NEW BHAVDIP CODE
-  getValidationMessages() {
-    return {
-      mobileNo: [
-        { name: 'required', Message: 'Mobile no required' },
-        { name: 'pattern', Message: 'only Number allowed.' },
-      ],
-      StoreId: [
-        // { name: "required", Message: "Invoice No is required" }
-      ],
-    };
-  }
-
-  keyPressAlphanumeric(event) {
-    // ... existing code ...
-  }
-
   updateCellDiscount(item: IndentList): void {
     let discPer = +item.DiscPer;
     let totalMrp = +item.TotalMRP;
@@ -3031,6 +2609,101 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
     const netAmount = (totalMrp - discAmt).toFixed(2);
     item.NetAmt = netAmount;
     this.updateItemSubForm();
+  }
+  getPrint3(el) {
+    if (this.vPaymode == 'Credit') {
+      this.type = 'Credit';
+      this.Creditflag = true;
+    } else if (!(this.vPaymode == 'Credit')) {
+      this.type = ' ';
+      this.Creditflag = false;
+    }
+
+    var D_data = {
+      SalesID: el, //
+      OP_IP_Type: this.OP_IPType,
+    };
+    let printContents;
+    this.subscriptionArr.push(
+      this._salesService.getSalesPrint(D_data).subscribe((res) => {
+        this.reportPrintObjList = res as Printsal[];
+        this.reportPrintObj = res[0] as Printsal;
+        setTimeout(() => {
+          this.print3();
+        }, 1000);
+      })
+    );
+  }
+  getWhatsappshareSales(el, vmono) {
+    var m_data = {
+      insertWhatsappsmsInfo: {
+        mobileNumber: vmono || 0,
+        smsString:
+          'Dear' +
+          vmono +
+          ',Your Sales Bill has been successfully completed. UHID is ' +
+          el +
+          ' For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur ' || '',
+        isSent: 0,
+        smsType: 'Sales',
+        smsFlag: 0,
+        smsDate: this.currentDate,
+        tranNo: el,
+        PatientType: 2, //el.PatientType,
+        templateId: 0,
+        smSurl: 'info@gmail.com',
+        filePath: this.Filepath || '',
+        smsOutGoingID: 0,
+      },
+    };
+    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe((response) => {
+      if (response) {
+        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
+    this.IsLoading = false;
+  }
+  print3() {
+    let popupWin, printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+    popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+    popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+
+    popupWin.document.close();
   }
 
   updateItemSubForm(): void {
@@ -3080,4 +2753,133 @@ fromEntries(entries: [string, any][]): { [key: string]: any } {
   getElementByName(name: string): HTMLElement {
     return document.querySelector(`[name=${name}]`) as HTMLElement;
   }
+  // NEW BHAVDIP CODE
+  getValidationMessages() {
+    return {
+      mobileNo: [
+        { name: 'required', Message: 'Mobile no required' },
+        { name: 'pattern', Message: 'only Number allowed.' },
+      ],
+      StoreId: [
+        // { name: "required", Message: "Invoice No is required" }
+      ],
+    };
+  }
+  public onEnterpatientname(event): void {
+    if (event.which === 13) {
+      // this.itemid.nativeElement.focus();
+      this.doctorname.nativeElement.focus();
+    }
+  }
+  public onEntermobileno(event): void {
+    if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
+      this.getTopSalesDetailsList(this.MobileNo);
+      this.patientname.nativeElement.focus();
+    }
+  }
+  public onEnterDoctorname(event): void {
+    if (event.which === 13) {
+      this.address.nativeElement.focus();
+    }
+  }
+  public onEnterAddress(event): void {
+    if (event.which === 13) {
+      this.itemid.nativeElement.focus();
+    }
+  }
+  public onF6Reset(event): void {
+    if (event.which === 117) {
+      this.onClose();
+    }
+  }
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.keyCode === 119) {
+      this.onsubstitutes();
+    }
+    if (event.keyCode === 120) {
+      this.onSave(event);
+    }
+  }
+  onsubstitutes() {
+    const dialogRef = this._matDialog.open(SubstitutesComponent, {
+      maxWidth: '65vw',
+      height: '650px',
+      width: '60%',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  } T
+  print1() {
+    let popupWin, printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    // popupWin.document.open();
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+    </html>`);
+    if (this.reportPrintObjList.length > 0) {
+      // if(this.reportPrintObjList[0].BalanceAmt === 0) {
+      //   popupWin.document.getElementById('trAmountBalance').style.display = 'none';
+      // }
+      // if (this.reportPrintObjList[0].ConcessionAmt === 0) {
+      //   popupWin.document.getElementById('trAmountconcession').style.display = 'none';
+      // }
+      // if (this.reportPrintObjList[0].BalanceAmt === 0) {
+      //   popupWin.document.getElementById('idBalAmt').style.display = 'none';
+      // }
+    }
+    popupWin.document.close();
+  }
+  getPrint(el) {
+    var D_data = {
+      SalesID: el,
+      OP_IP_Type: 2,
+    };
+    let printContents;
+    this.subscriptionArr.push(
+      this._salesService.getSalesPrint(D_data).subscribe((res) => {
+        this.reportPrintObjList = res as Printsal[];
+        // console.log(this.reportPrintObjList);
+        this.reportPrintObj = res[0] as Printsal;
+
+        if (this.reportPrintObj.ChequePayAmount != 0) {
+          this.UTRNO = this.reportPrintObj.ChequeNo;
+        } else if (this.reportPrintObj.CardPayAmount != 0) {
+          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.ChequeNo;
+        } else if (this.reportPrintObj.NEFTPayAmount != 0) {
+          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.NEFTNo;
+        } else if (this.reportPrintObj.PayTMAmount != 0) {
+          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.PayTMTranNo;
+        }
+      })
+    );
+  }
+  print() {
+    let popupWin, printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+    popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+    popupWin.document.write(`
+      </style>
+          <title></title>
+      </head>
+    `);
+    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
+    </html>`);
+
+    popupWin.document.close();
+  }
+
 }

@@ -41,7 +41,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   DepartmentName: any;
   vPrice = '0';
   vQty: any;  
-    ApiURL: any;
+    ApiURL: any='';
   SrvcName1: any = "" 
   serviceId: any;    
   patientDetail: any = new RegInsert({});  
@@ -61,6 +61,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   Consessionres: boolean = false;
 
   autocompleteModeCashcounter: string = "CashCounter";
+  autocompleteModetariff: string = "Tariff";
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModeService: string = "Service";
   autocompleteModeConcession: string = "Concession";
@@ -102,11 +103,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
   @ViewChild('regIdfocus') regIdfocus: ElementRef;
   ngOnInit() {
-    this.isModal = !!this.dialogRef;
-    console.log("DATA Billing Page : ", this.advanceDataStored.storage); 
-    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+    this.isModal = !!this.dialogRef; 
+    this.searchForm = this.createSearchForm();
+    this.chargeForm = this.createChargeForm();
+    this.OpBillForm = this.createTotalChargeForm();
+    this.OPFooterForm = this.CreateOPFooter(); 
+    this.OPFooterForm.markAllAsTouched();
     if (this.data) { 
       this.patientDetail = this.advanceDataStored.storage;
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
       console.log("Data",this.patientDetail)
       this.patientDetail.formattedText = this.patientDetail.patientName
       this.patientDetail.doctorName = this.patientDetail.doctorname 
@@ -118,12 +123,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.vTariffId = this.patientDetail.tariffId;
       this.vhospitalId = this.patientDetail.hospitalId;
       this.savebtn = false 
+      this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)  
     } 
-    this.searchForm = this.createSearchForm();
-    this.chargeForm = this.createChargeForm();
-    this.OpBillForm = this.createTotalChargeForm();
-    this.OPFooterForm = this.CreateOPFooter(); 
-     this.OPFooterForm.markAllAsTouched();
+
 
     this.dsChargeList = new MatTableDataSource(this.chargeList);
     this.dsPackageList = new MatTableDataSource(this.packageList);
@@ -227,7 +229,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   createSearchForm() {
     return this.formBuilder.group({
       regId: [''],
-      CashCounterID: [1]
+      CashCounterID: [1],
+      TariffId:[this.patientDetail.tariffId]
     });
   }  
   createChargeForm() {
@@ -640,12 +643,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.RegNo = this.patientDetail.regNo 
     this.vOPIPId = this.patientDetail.visitId 
     this.vTariffId = this.patientDetail.tariffId;
-    this.vhospitalId = this.patientDetail.hospitalId;   
+    this.vhospitalId = this.patientDetail.hospitalId;  
+    this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId) 
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+
     if (this.vOPIPId > 0)
       this.savebtn = false
-    this.Regstatus = false
+    this.Regstatus = false 
   } 
-
+getSelectedTariffObj(event){
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+}
   BillSave() {
     if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
       if (!this.OPFooterForm.get('concessionReasonId').value) {
@@ -1107,9 +1115,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   } 
     getValidationMessages() {
     return {
-      CashCounterID: [
-        { name: "required", Message: "First Name is required" },
-
+      CashCounterID: [ 
         { name: "pattern", Message: "only Number allowed." }
       ],
       price: [
@@ -1139,7 +1145,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       ],
       discountAmount: [{ name: "pattern", Message: "only Number allowed." }],
       netAmount: [{ name: "pattern", Message: "only Number allowed." }],
-
+    tariffId: [
+        { name: "pattern", Message: "only Char allowed." }
+      ],
     }
   }
 }
