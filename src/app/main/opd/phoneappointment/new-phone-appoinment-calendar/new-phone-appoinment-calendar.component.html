@@ -23,7 +23,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <form [formGroup]="myFilterform">
                         <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
-                            [(ngModel)]="DoctorId" mode="ConDoctor" (selectionChange)="selectChangedeptdoc($event)">
+                            [(ngModel)]="DoctorId" ApiUrl="Doctor/get-Doctor-depts" [ReqFullObj]="true" (selectionChange)="selectChangedeptdoc($event)">
                         </airmid-dropdown>
                     </form>
                 </div>
@@ -70,7 +70,8 @@
                 </mwl-calendar-month-view>
                 <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
                     [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
-                    (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="6" [dayStartHour]="8">
+                    (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="6" [dayStartHour]="8"
+                    (hourSegmentClicked)="handleEvent('CellClicked', $event)">
                     <ng-template #weekViewHourSegment let-segment="segment">
                         <div class="cal-hour-segment-label">
                             {{ segment.date | date:'h:mm a' }}

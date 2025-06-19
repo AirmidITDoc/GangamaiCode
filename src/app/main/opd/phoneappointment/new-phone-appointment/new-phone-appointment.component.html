@@ -19,28 +19,18 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="searchFormGroup">
-                <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                   <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
-                   [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
-                    placeholderText="Search UHID / Patient Name / Mobile No"  ApiUrl="OutPatient/auto-complete?Keyword="
-                    (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                </div>
-            </form>
             <form [formGroup]="phoneappForm">
-                <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
-
                 <div fxLayout="column" fxLayoutGap="8px grid">
                     <div class="card-header-container border-bottom pb-4">
-                        <span class="card-title">Personal Details</span>
+                        <span class="card-title">Doctor Details</span>
                     </div>
-                    <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="4px grid">
+                    <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" class="dateField">
                                 <mat-label>Phone App Date</mat-label>
                                 <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="phAppDate"
-                                    (dateChange)="onChangeDate($event.value)">
+                                    (dateChange)="onChangeDate($event.value)" [disabled]="true">
                                 <mat-datepicker-toggle matSuffix [for]="picker1"
                                     [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
@@ -49,14 +39,47 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" class="timeField">
                                 <mat-label>Phone App Time</mat-label>
-                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppTime"
+                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppFromTime"
                                     (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
                                 <mat-icon matSuffix
                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
                             </mat-form-field>
-
+                            <mat-form-field appearance="outline" class="timeField">
+                                <mat-label>Phone App Time</mat-label>
+                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppToTime"
+                                    (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                <mat-icon matSuffix
+                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Department Name" [value]="deptNames" [disabled]="true">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="Doctor Name" [value]="doctorName" [disabled]="true">
+                            </airmid-textbox>
                         </div>
                     </div>
+                </div>
+
+
+                <input type="hidden" name="phoneAppId" formControlName="phoneAppId" [(ngModel)]="phoneAppId">
+
+                <div fxLayout="column" fxLayoutGap="8px grid">
+                    <div class="card-header-container border-bottom pb-4">
+                        <span class="card-title">Personal Details</span>
+                    </div>
+                    <form [formGroup]="searchFormGroup">
+                        <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+                            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No"
+                                [formGroup]="searchFormGroup" formControlName="RegId" fxFlex="50%"
+                                placeholderText="Search UHID / Patient Name / Mobile No"
+                                ApiUrl="OutPatient/auto-complete?Keyword="
+                                (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+
+                        </div>
+                    </form>
                     <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="First Name" formControlName="firstName"
@@ -79,29 +102,17 @@
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm" [value]="registerObj.address"
-                                [validations]="getValidationMessages().address" [maxLength]="100">
+                            <airmid-textbox label="Address" formControlName="address" [formGroup]="phoneappForm"
+                                [value]="registerObj.address" [validations]="getValidationMessages().address"
+                                [maxLength]="100">
                             </airmid-textbox>
                         </div>
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="MobileNo" formControlName="mobileNo" [value]="registerObj.mobileNo"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo" (keypress)="keyPressAlphanumeric($event)"
-                                [maxLength]="10">
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().mobileNo"
+                                (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                [value]="data?.departmentId" [formGroup]="phoneappForm"
-                                [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
-                                (selectionChange)="selectChangedepartment($event)">
-                            </airmid-dropdown>
-                        </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
-                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor>
-                            </airmid-dropdown>
-                        </div>
-                       
                     </div>
                 </div>
             </form>
@@ -113,9 +124,9 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-               
+
                 <button type="button" class="btn btn-primary" (click)="OnSubmit()">Save</button>
-                
+
             </div>
         </div>
     </div>

@@ -7,6 +7,8 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
 import { calendarFormat } from 'moment';
+import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -31,7 +33,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     myFilterform: FormGroup;
     DoctorId: number = 0;
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-
+    objDoctor: any;
     view: CalendarView = CalendarView.Week;
 
     CalendarView = CalendarView;
@@ -65,7 +67,9 @@ export class NewPhoneAppoinmentCalendarComponent {
         Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
     };
     selectChangedeptdoc(obj: any) {
+        debugger
         this.DoctorId = obj.value;
+        this.objDoctor = obj;
         this.bindData();
     }
     bindData() {
@@ -118,7 +122,9 @@ export class NewPhoneAppoinmentCalendarComponent {
     ];
 
     refresh = new Subject<void>();
-
+    CellClick($event) {
+        debugger
+    }
     events: CalendarEvent[] = [
         // {
         //     start: subDays(startOfDay(new Date()), 1),
@@ -162,12 +168,13 @@ export class NewPhoneAppoinmentCalendarComponent {
 
     activeDayIsOpen: boolean = true;
 
-    constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService) {
+    constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
+        public _matDialog: MatDialog
+    ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
-
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
         if (isSameMonth(date, this.viewDate)) {
             if (
@@ -201,6 +208,24 @@ export class NewPhoneAppoinmentCalendarComponent {
     }
 
     handleEvent(action: string, event: CalendarEvent): void {
+        if (action == "CellClicked") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+                {
+                    maxWidth: "95vw",
+                    maxHeight: '80%',
+                    width: '90%',
+                    data: { fromDate: event["date"], toDate: event["date"], deptNames: this.objDoctor.deptNames, doctorName: this.objDoctor.text }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    // that.grid.bindGridData();
+                }
+            });
+        }
         //this.modalData = { event, action };
         //this.modal.open(this.modalContent, { size: 'lg' });
     }
