@@ -220,7 +220,7 @@
                                                 </div>
 
                                                 <div fxLayout="column">
-                                                        <!-- <div class="investigation-title">
+                                                    <!-- <div class="investigation-title">
                                                             <span style="font-weight: 700;">
                                                                 Chief Complaint
                                                             </span>
@@ -247,53 +247,45 @@
                                                                 </mat-chip>
                                                             </mat-chip-listbox>
                                                         </div> -->
-                                                        <div class="investigation-title">
-                                                            <span style="font-weight: 700;">
-                                                                Chief Complaint
-                                                            </span>
-                                                        </div>
-                                                        <hr>
-                                                        <app-airmid-chipautocomplete 
+                                                    <div class="investigation-title">
+                                                        <span style="font-weight: 700;">
+                                                            Chief Complaint
+                                                        </span>
+                                                    </div>
+                                                    <hr>
+                                                    <!-- <app-airmid-chipautocomplete 
                                                             [formGroup]="caseFormGroup"
                                                             [controlName]="'mAssignChiefComplaint'"
-                                                            [apiUrl]="'OPDPrescriptionMedical/get-ChiefComplaint'"
+                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
                                                             [label]="'Chief Complaint'"
                                                             [placeholder]="'New Chief Complaint...'"
-                                                            [displayWith]="'complaintDescr'"
+                                                            [displayWith]="'descriptionName'"
                                                             [allowFreeText]="true"
                                                             (selectedItemsChange)="selectChangeChiefComplaint($event)">
-                                                        </app-airmid-chipautocomplete>
-                                                    <!-- demo check -->
-                                                    <!-- <form [formGroup]="caseFormGroup">
-                                                         <mat-form-field appearance="outline" class="example-chip-list" fxFlex>
-                                                        <mat-label>ChiefComplaint</mat-label>
-                                                        <mat-chip-list #chipList aria-label="ChiefComplaint selection">
-                                                            <mat-chip *ngFor="let item of addCheiflist1"
-                                                                [selectable]="selectable" [removable]="removable"
-                                                                (removed)="removeCheif1(item)">
-                                                                {{item}}
-                                                                <mat-icon *ngIf="removable"
-                                                                    (click)="removeCheif1(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                            <input style="height: 30px;"
-                                                                placeholder="New ChiefComplaint..."
+                                                        </app-airmid-chipautocomplete> -->
+                                                    <div fxLayout="row">
+                                                        <div fxFlex="40%">
+                                                            <!-- new method -->
+                                                            <app-airmid-chipautocomplete #ddlChiefComplaint
+                                                                label="Chief Complaint"
                                                                 formControlName="mAssignChiefComplaint"
-                                                                [matAutocomplete]="autoChips"
-                                                                [matChipInputFor]="chipList"
-                                                                (matChipInputTokenEnd)="addCheif1($event)" />
-                                                        </mat-chip-list>
-                                                        <mat-autocomplete #autoChips="matAutocomplete"
-                                                            (optionSelected)="selectedobjCheif1($event.option.value)">
-                                                            <mat-option
-                                                                *ngFor="let option of filteredCheifComplaint | async"
-                                                                [value]="option">
-                                                                {{option.complaintDescr}}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                        </form> -->
+                                                                [formGroup]="caseFormGroup"
+                                                                ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint"
+                                                                ValueField="id" TextField="descriptionName"
+                                                                [IsMultiPle]="true" [ReqFullObj]="true"
+                                                                appearance="outline"
+                                                                (selectionChange)="selectChangeChiefComplaint($event)">
+                                                            </app-airmid-chipautocomplete>
+                                                        </div>
+                                                        <mat-chip-listbox #chipList>
+                                                            <mat-chip
+                                                                *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
+                                                                {{ item.descriptionName }} <mat-icon
+                                                                    (click)="removeChiefComplaint(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-listbox>
+                                                    </div>
 
-                                                    <!-- demo check -->
 
                                                     <form [formGroup]="caseFormGroup">
                                                         <div class="investigation-title">
@@ -309,7 +301,7 @@
                                                                     [formGroup]="caseFormGroup" #ddlDiagnosis
                                                                     [IsMultiPle]="true" ValueField="id"
                                                                     TextField="descriptionName"
-                                                                    ApiUrl="OPDPrescriptionMedical/get-Dignosis"
+                                                                    ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis"
                                                                     [ReqFullObj]="true"
                                                                     (selectionChange)="selectChangeDiagnosis($event)">
                                                                 </airmid-dropdown>
@@ -338,10 +330,9 @@
                                                                     formControlName="mAssignExamination"
                                                                     [formGroup]="caseFormGroup" #ddlExamination
                                                                     [IsMultiPle]="true"
-                                                                    [value]="regObj.mAssignExamination"
-                                                                    ValueField="examinationId"
-                                                                    TextField="examinationDescr"
-                                                                    ApiUrl="OPDPrescriptionMedical/get-Examination"
+                                                                    [value]="regObj.mAssignExamination" ValueField="id"
+                                                                    TextField="descriptionName"
+                                                                    ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination"
                                                                     [ReqFullObj]="true"
                                                                     (selectionChange)="selectChangeExamination($event)">
                                                                 </airmid-dropdown>
@@ -349,7 +340,7 @@
                                                             <mat-chip-listbox #chipList>
                                                                 <mat-chip
                                                                     *ngFor="let item of caseFormGroup.value.mAssignExamination">
-                                                                    {{ item.examinationDescr }} <mat-icon
+                                                                    {{ item.descriptionName }} <mat-icon
                                                                         (click)="removeExamination(item)">close</mat-icon>
                                                                 </mat-chip>
                                                             </mat-chip-listbox>
@@ -703,7 +694,7 @@
                                                     <mat-label>Follow Up Date</mat-label>
                                                     <input matInput [matDatepicker]="picker1"
                                                         placeholder="Choose a date" formControlName="start">
-                                                        <!-- [(ngModel)]="specificDate" -->
+                                                    <!-- [(ngModel)]="specificDate" -->
                                                     <mat-datepicker-toggle matSuffix
                                                         [for]="picker1"></mat-datepicker-toggle>
                                                     <mat-datepicker #picker1></mat-datepicker>

@@ -79,6 +79,22 @@ export class AppointmentListComponent implements OnInit {
         // this.menuActions.push("Report Record");
         this.Appointdetail(this.gridConfig)
 
+        // to disable checkin button after refresh the page 
+        const savedTimers = localStorage.getItem('consultTimers');
+        if (savedTimers) {
+            this.timers = JSON.parse(savedTimers); //Restore saved check-in/out data
+
+            Object.keys(this.timers).forEach(patientId => {
+                const timer = this.timers[patientId];
+
+                if (timer.isCheckedIn && !timer.isCheckedOut) {
+                    const startTime = timer.startTime;
+                    timer.timerInterval = setInterval(() => {
+                        this.timers[patientId].elapsedTime = Date.now() - startTime;
+                    }, 1000);
+                }
+            });
+        }
     }
 
     allfilters = [
@@ -127,7 +143,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
         {
-            heading: "Action", key: "action", align: "right", width: 400, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 280, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -218,8 +234,6 @@ export class AppointmentListComponent implements OnInit {
 
         this.onChangeFirst();
     }
-
-
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -528,13 +542,25 @@ export class AppointmentListComponent implements OnInit {
         };
     }
 
-    checkIn: Date | null = null;
+   
+	
+	checkIn: Date | null = null;
     checkOut: Date | null = null;
     isCheckedIn = false;
     isCheckedOut = false;
     startTime: number = 0;
     elapsedTime: number = 0;
     timers: { [patientId: number]: any } = {}; //it will store timer entry of each patient using there id
+
+    saveTimersToLocalStorage() {
+        const toSave = { ...this.timers };
+        Object.keys(toSave).forEach(id => {
+            if (toSave[id].timerInterval) {
+                delete toSave[id].timerInterval;
+            }
+        });
+        localStorage.setItem('consultTimers', JSON.stringify(toSave));
+    }
 
     onCheckIn(patientId: number) {
         const checkInTime = new Date(); //Store current time
@@ -543,7 +569,7 @@ export class AppointmentListComponent implements OnInit {
         // Save this data in timers[patientId]
         this.timers[patientId] = {
             isCheckedIn: true,
-            isCheckedOut:false,
+            isCheckedOut: false,
             checkIn: checkInTime,
             startTime: startTime,
             elapsedTime: 0,
@@ -553,6 +579,8 @@ export class AppointmentListComponent implements OnInit {
                 this.timers[patientId].elapsedTime = Date.now() - startTime;
             }, 1000)
         };
+        // Save to localStorage
+        this.saveTimersToLocalStorage();
         const patientTimer = this.timers[patientId];
         //  const formattedTime = patientTimer.checkIn.toLocaleTimeString('en-GB', {
         //     hour: '2-digit',
@@ -564,8 +592,9 @@ export class AppointmentListComponent implements OnInit {
             "visitId": patientId,
             "conStartTime": patientTimer.checkIn?.toLocaleTimeString() //"10:00:00AM"
         }
-        console.log("CheckIn:",data)
+        console.log("CheckIn:", data)
         this._AppointmentlistService.updateStartTime(data).subscribe(response => {
+            this.grid.bindGridData();
         });
     }
 
@@ -581,13 +610,16 @@ export class AppointmentListComponent implements OnInit {
 
         const totalTime = patientTimer.elapsedTime; //it tells total time taken by patient
 
-         var data = {
+        //Save updated timer state to localStorage
+        this.saveTimersToLocalStorage();
+        var data = {
             "visitId": patientId,
             "conEndTime": patientTimer.checkOut?.toLocaleTimeString(),
             "checkOutTime": patientTimer.checkOut?.toLocaleTimeString()
         }
-        console.log("CheckOut:",data)
+        console.log("CheckOut:", data)
         this._AppointmentlistService.updateEndTime(data).subscribe(response => {
+            this.grid.bindGridData();
         });
 
         console.log('Patient ID:', patientId);
@@ -595,7 +627,6 @@ export class AppointmentListComponent implements OnInit {
         console.log('Check Out:', patientTimer.checkOut?.toLocaleTimeString());
         console.log('Total Time:', new Date(totalTime).toISOString().substr(11, 8));
     }
-
 
 }
 

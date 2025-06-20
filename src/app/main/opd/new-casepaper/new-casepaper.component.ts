@@ -285,16 +285,16 @@ export class NewCasepaperComponent implements OnInit {
 
   removeChiefComplaint(item) {
 
-    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.complaintId === item.complaintId);
+    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.id === item.id);
 
     if (removedIndex !== -1) {
       this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
 
-      this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.complaintId));
+      this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.id));
 
       this.addCheiflist = this.caseFormGroup.value.mAssignChiefComplaint.map(x => ({
-        complaintId: x.complaintId,
-        complaintDescr: x.complaintDescr
+        id: x.id,
+        descriptionName: x.descriptionName
       }));
 
       // console.log("Updated addCheiflist after removal:", this.addCheiflist);
@@ -303,16 +303,16 @@ export class NewCasepaperComponent implements OnInit {
 
   removeExamination(item) {
 
-    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.examinationId === item.examinationId);
+    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.id === item.id);
 
     if (removedIndex !== -1) {
       this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
 
-      this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.examinationId));
+      this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.id));
 
       this.addExaminlist = this.caseFormGroup.value.mAssignExamination.map(x => ({
-        examinationId: x.examinationId,
-        examinationDescr: x.examinationDescr
+        id: x.id,
+        descriptionName: x.descriptionName
       }));
 
       // console.log("Updated addExaminlist after removal:", this.addExaminlist);
@@ -498,11 +498,11 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   onSave() {
-
+debugger
     if (this.addCheiflist.length > 0) {
       this.addCheiflist.forEach(element => {
         this.AllTypeDescription.push({
-          descriptionName: element.complaintDescr,
+          descriptionName: element.descriptionName,
           descriptionType: "Complaint"
         });
       });
@@ -520,7 +520,7 @@ export class NewCasepaperComponent implements OnInit {
     if (this.addExaminlist.length > 0) {
       this.addExaminlist.forEach(element => {
         this.AllTypeDescription.push({
-          descriptionName: element.examinationDescr,
+          descriptionName: element.descriptionName,
           descriptionType: "Examination"
         });
       });
@@ -747,30 +747,25 @@ export class NewCasepaperComponent implements OnInit {
       console.log("three response:", response);
 
       if (response && Array.isArray(response.data)) {
-        debugger
+        // debugger
         this.RtrvDescriptionList = response.data;
         let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
         this.addCheiflist = [];
         if (ChiefComplaint.length > 0) {
-          // ChiefComplaint.forEach(element => {
-          //   this.addCheiflist.push(
-          //     {
-          //       complaintId: element.id,
-          //       complaintDescr: element.descriptionName,
-          //     }
-          //   )
-          // })
-          this.addCheiflist = ChiefComplaint.map(element => ({
-            complaintId: element.id,
-            complaintDescr: element.descriptionName
-          }));
-
-          console.log('About to set addCheiflist:', this.addCheiflist);
+          ChiefComplaint.forEach(element => {
+            this.addCheiflist.push(
+              {
+                id: element.id,
+                descriptionName: element.descriptionName,
+              }
+            )
+          })
+          setTimeout(() => {
             this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+          },100)
+           this.selectChangeChiefComplaint(this.addCheiflist);
           console.log('addCheiflist:', this.caseFormGroup.get('mAssignChiefComplaint').value);
-
         }
-        // console.log("demommmm:", this.caseFormGroup.get('mAssignChiefComplaint').value)
         // Process Diagnosis
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
@@ -793,8 +788,8 @@ export class NewCasepaperComponent implements OnInit {
           Examination.forEach(element => {
             this.addExaminlist.push(
               {
-                examinationId: element.id,
-                examinationDescr: element.descriptionName
+                id: element.id,
+                descriptionName: element.descriptionName
               }
             )
           });
@@ -1058,14 +1053,51 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeDoctorName(row) {
   }
 // 
-  selectChangeChiefComplaint(row) {
-    const selectedData = Array.isArray(row) ? row : [row];
-    this.addCheiflist = selectedData.map(item => ({
-      complaintId: item.complaintId,
-      complaintDescr: item.complaintDescr
-    }));
-    console.log("Updated selectedItems:", this.addCheiflist);
-  }
+  // selectChangeChiefComplaint(row) {
+  //   const selectedData = Array.isArray(row) ? row : [row];
+  //   this.addCheiflist = selectedData.map(item => ({
+  //     id: item.id ||'',
+  //     descriptionName: item.descriptionName
+  //   }));
+  //   this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
+  //   console.log("FormControl Value:", this.caseFormGroup.get('mAssignChiefComplaint')?.value);
+  // }
+
+selectChangeChiefComplaint(row: any) {
+  debugger
+  console.log("Raw Row:", row);
+
+  const flatten = (input: any): any[] =>
+    Array.isArray(input)
+      ? input.reduce((acc: any[], val: any) => acc.concat(flatten(val)), [])
+      : [input];
+
+  const selectedData = flatten(row || []).filter(x => x?.descriptionName);
+
+  // ✅ Always use the existing chip list to preserve previous data
+  const currentList = this.addCheiflist || [];
+
+  const newItems = selectedData.map(item => ({
+    id: item.id === item.descriptionName ? '' : item.id,
+    descriptionName: item.descriptionName
+  }));
+
+  const combined = [...currentList, ...newItems];
+
+  const uniqueList = combined.filter(
+    (item, index, self) =>
+      index === self.findIndex(t =>
+        t.descriptionName?.toLowerCase?.() === item.descriptionName?.toLowerCase?.()
+      )
+  );
+
+  this.addCheiflist = uniqueList;
+
+  // ✅ Update formControl with the merged, deduplicated list
+  this.caseFormGroup.patchValue({ mAssignChiefComplaint: this.addCheiflist });
+
+  console.log("✅ Updated Chief Complaint List:", this.addCheiflist);
+}
 
   selectChangeDiagnosis(row) {
     const selectedData = Array.isArray(row) ? row : [row];
@@ -1079,8 +1111,8 @@ export class NewCasepaperComponent implements OnInit {
   selectChangeExamination(row) {
     const selectedData = Array.isArray(row) ? row : [row];
     this.addExaminlist = selectedData.map(item => ({
-      examinationId: item.examinationId,
-      examinationDescr: item.examinationDescr
+      id: item.id,
+      descriptionName: item.descriptionName
     }));
     // console.log("Updated selectedItems:", this.addExaminlist);
   }

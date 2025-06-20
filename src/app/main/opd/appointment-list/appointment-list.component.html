@@ -166,11 +166,15 @@
                 
                  <div fxLayout="row" fxLayoutGap="5px">
                     <button mat-raised-button matTooltip="Consultant start / Check-In" style="padding: 0 8px; min-width: unset;"
-                            (click)="onCheckIn(element.visitId)" [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">Check-In
+                            (click)="onCheckIn(element.visitId)" [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                             <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" />
+                             <!-- Check-In -->
                     </button>
 
                     <button mat-raised-button matTooltip="Consultant End / Check Out" style="padding: 0 8px; min-width: unset;"
-                            (click)="onCheckOut(element.visitId)" [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">Check-Out
+                            (click)="onCheckOut(element.visitId)" [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                             <img src="assets/images/logos/checkOut.png" alt="Check-Out" width="24" height="24" />
+                             <!-- Check-Out -->
                     </button>
                 </div>
 
