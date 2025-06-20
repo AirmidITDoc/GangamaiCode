@@ -21,12 +21,12 @@
         <div class="modal-body-container">
 
             <form [formGroup]="phoneappForm">
-                <div fxLayout="column" fxLayoutGap="8px grid">
+                <div fxLayout="column">
                     <div class="card-header-container border-bottom pb-4">
                         <span class="card-title">Doctor Details</span>
                     </div>
                     <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" class="dateField">
                                 <mat-label>Phone App Date</mat-label>
                                 <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="phAppDate"
@@ -36,27 +36,46 @@
                                 <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" class="timeField">
                                 <mat-label>Phone App Time</mat-label>
-                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppFromTime"
-                                    (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                <mat-icon matSuffix
-                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" class="timeField">
-                                <mat-label>Phone App Time</mat-label>
-                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppToTime"
+                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="phAppTime"
                                     (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
                                 <mat-icon matSuffix
                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
                             </mat-form-field>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" class="timeField">
+                                <mat-label>Phone App Time</mat-label>
+                                <input matTimepicker #t="matTimepicker" mode="12h" formControlName="endTime"
+                                    (timeChange)="onChangeTime1($event)" [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                <mat-icon matSuffix
+                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="!isEditMode">
+                            <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                [value]="data?.departmentId" [formGroup]="phoneappForm"
+                                [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
+                                (selectionChange)="selectChangedepartment($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="!isEditMode">
+                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="data?.doctorId"
+                                [formGroup]="phoneappForm" [validations]="getValidationMessages().doctorId" #ddlDoctor>
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isEditMode">
                             <airmid-textbox label="Department Name" [value]="deptNames" [disabled]="true">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isEditMode">
                             <airmid-textbox label="Doctor Name" [value]="doctorName" [disabled]="true">
                             </airmid-textbox>
                         </div>

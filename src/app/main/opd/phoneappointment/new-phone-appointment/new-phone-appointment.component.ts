@@ -44,7 +44,9 @@ export class NewPhoneAppointmentComponent implements OnInit {
     toDate: Date;
     deptNames:string;
     doctorName:string;
-
+    depId:any;
+    docId:any;
+isEditMode: boolean = false;
 
     public now: Date = new Date();
     constructor(private _fuseSidebarService: FuseSidebarService,
@@ -76,13 +78,24 @@ export class NewPhoneAppointmentComponent implements OnInit {
         this.phoneappForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
         if (this.data) {
+            this.isEditMode = true;
+            console.log(this.data)
             this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
-            this.phoneappForm.get('phAppFromTime').setValue(this.data.fromDate);
-            this.phoneappForm.get('phAppToTime').setValue(this.data.fromDate);
+            this.phoneappForm.get('phAppTime').setValue(this.data.fromDate);
+            this.phoneappForm.get('startTime').setValue(this.data.fromDate);
+            this.phoneappForm.get('endTime').setValue(this.data.toDate);
+            this.phoneappForm.get('doctorId').setValue(this.data.doctorId);
+            this.phoneappForm.get('departmentId').setValue(this.data.departmentId);
             this.fromDate = this.data.fromDate;
             this.toDate = this.data.toDate;
-            this.deptNames=this.data.deptNames;
-            this.doctorName=this.data.doctorName;
+            this.deptNames = this.data.deptNames;
+            this.doctorName = this.data.doctorName;
+        } else {
+            this.isEditMode = false;
+            const currentDateTime = new Date();
+            this.phoneappForm.get('phAppTime')?.setValue(currentDateTime);
+            this.phoneappForm.get('endTime')?.setValue(currentDateTime);
+            this.phoneappForm.get('startTime').setValue(currentDateTime);
         }
     }
 
@@ -105,27 +118,57 @@ export class NewPhoneAppointmentComponent implements OnInit {
         }
     }
 
-    onChangeDate(value) {
+    onChangeDate(value: any) {
         if (value) {
             const dateOfReg = new Date(value);
-            let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            let splitTime = this.phoneappForm.get('phAppDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            this.eventEmitForParent(splitDate[0], splitTime[1]);
+
+            const [datePart, timePart] = dateOfReg
+            .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+            .split(',')
+            .map(part => part.trim());
+
+            this.eventEmitForParent(datePart, timePart);
+
+            this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(dateOfReg, 'yyyy-MM-dd'));
         }
     }
 
-    onChangeTime(event) {
-        this.timeflag = 1
+    onChangeTime(event: any) {
+        this.timeflag = 1;
+
         if (event) {
-            let selectedDate = new Date(this.phoneappForm.get('phAppTime').value);
-            let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            let splitTime = this.phoneappForm.get('phAppTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            const selectedTime = new Date(event);
+
+            const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
             this.isTimeChanged = true;
-            this.phdatetime = splitTime[1]
-            console.log(this.phdatetime)
-            this.eventEmitForParent(splitDate[0], splitTime[1]);
+            this.phdatetime = timePart;
+            console.log(this.phdatetime);
+
+            this.phoneappForm.get('phAppTime').setValue(selectedTime);
+            this.phoneappForm.get('startTime').setValue(selectedTime);
+
+            this.eventEmitForParent(datePart, timePart);
         }
-    }
+        }
+
+        onChangeTime1(event: any) {
+            this.timeflag = 1;
+
+            if (event) {
+                const selectedTime = new Date(event);
+
+                const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+                const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
+                this.isTimeChanged = true;
+                this.phdatetime = timePart;
+                console.log(this.phdatetime);
+                this.phoneappForm.get('endTime').setValue(selectedTime);
+                this.eventEmitForParent(datePart, timePart);
+            }
+            }
 
     eventEmitForParent(actualDate, actualTime) {
         let localaDateValues = actualDate.split('/');
@@ -138,8 +181,6 @@ export class NewPhoneAppointmentComponent implements OnInit {
         debugger
         this.phoneappForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
         this.phoneappForm.get('appTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
-        this.phoneappForm.get('startTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
-        this.phoneappForm.get('endTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
         console.log(this.phoneappForm.value);
 
         if (!this.phoneappForm.invalid) {
@@ -178,15 +219,14 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
     onClose() { this.dialogRef.close(); }
 
-    depId = 0 //changed by raksha
     selectChangedepartment(obj: any) {
         this.depId = obj.value
         this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;
+            this.docId=data.value
             this.ddlDoctor.bindGridAutoComplete();
         });
     }
-
 
     getValidationMessages() {
 

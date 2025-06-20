@@ -63,16 +63,16 @@ export class PhoneAppointListService {
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
                 this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-            phAppDate: ['', [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
-            phAppFromTime: ['',[Validators.required]],
-            phAppToTime: ['',[Validators.required]],
+            phAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
+            phAppTime: ['',[Validators.required]], //use as start time
+            // phAppToTime: ['',[Validators.required]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             regNo: [""],
-            startTime: [''],
-            endTime: ['']
+            startTime: ['',[Validators.required]],
+            endTime: ['',[Validators.required]] //use as end time
         });
     }
 

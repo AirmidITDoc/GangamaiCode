@@ -19,15 +19,29 @@
     <!-- Modal body -->
     <div class="modal-body">
         <div class="modal-body-container">
-            <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
+            <!-- <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <form [formGroup]="myFilterform">
-                        <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
-                            [(ngModel)]="DoctorId" ApiUrl="Doctor/get-Doctor-depts" [ReqFullObj]="true" (selectionChange)="selectChangedeptdoc($event)">
-                        </airmid-dropdown>
+                        
+                        <div fxLayout="row" fxLayoutGap="8px">
+                            <div fxFlex="55%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                                    [formGroup]="myFilterform" [mode]="autocompletedepartment"
+                                    [(ngModel)]="DepartmentId" (selectionChange)="selectChangedepartment($event)">
+                                </airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="55%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Doctor Name" formControlName="DoctorId"
+                                    [formGroup]="myFilterform" #ddlDoctor
+                                    (selectionChange)="selectChangedeptdoc($event)">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
                     </form>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
+
+                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0" style="border: 1px solid red;">
                     <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
                         (viewDateChange)="closeOpenMonthViewDay()">
                         Previous
@@ -41,9 +55,11 @@
                         Next
                     </button>
                 </div>
+
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
                     <h3 #dateDisplay>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                 </div>
+                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
                     <div class="btn-group">
                         <button mat-raised-button (click)="setView(CalendarView.Month)"
@@ -60,7 +76,51 @@
                         </button>
                     </div>
                 </div>
+            </div> -->
+
+            <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+
+                <!-- Department Dropdown -->
+                <div fxFlex="20%" fxFlex.xs="100%">
+                    <airmid-dropdown label="Department Name" formControlName="DepartmentId" [formGroup]="myFilterform"
+                        [mode]="autocompletedepartment" [(ngModel)]="DepartmentId"
+                        (selectionChange)="selectChangedepartment($event)">
+                    </airmid-dropdown>
+                </div>
+
+                <!-- Doctor Dropdown -->
+                <div fxFlex="20%" fxFlex.xs="100%">
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
+                        #ddlDoctor (selectionChange)="selectChangedeptdoc($event)">
+                    </airmid-dropdown>
+                </div>
+
+                <div fxFlex="20%" *ngIf="DoctorId > 0">
+                    <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+                    <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">Today</button>
+                    <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+                </div>
+
+                <div fxFlex="20%" *ngIf="DoctorId > 0">
+                    <h3 #dateDisplay>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                </div>
+
+                <div fxFlex="20%" *ngIf="DoctorId > 0">
+                    <div class="btn-group">
+                        <button mat-raised-button (click)="setView(CalendarView.Month)"
+                            [class.active]="view === CalendarView.Month">Month</button>
+                        <button mat-raised-button (click)="setView(CalendarView.Week)"
+                            [class.active]="view === CalendarView.Week">Week</button>
+                        <button mat-raised-button (click)="setView(CalendarView.Day)"
+                            [class.active]="view === CalendarView.Day">Day</button>
+                    </div>
+                </div>
+
             </div>
+
             <br />
             <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="DoctorId>0">
                 <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"

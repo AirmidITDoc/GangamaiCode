@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
@@ -9,6 +9,8 @@ import { PhoneAppointListService } from '../phone-appoint-list.service';
 import { calendarFormat } from 'moment';
 import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { fuseAnimations } from '@fuse/animations';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -27,11 +29,14 @@ const colors: Record<string, EventColor> = {
 @Component({
     selector: 'app-new-phone-appoinment-calendar',
     templateUrl: './new-phone-appoinment-calendar.component.html',
-    styleUrls: ['./new-phone-appoinment-calendar.component.scss']
+    styleUrls: ['./new-phone-appoinment-calendar.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class NewPhoneAppoinmentCalendarComponent {
     myFilterform: FormGroup;
     DoctorId: number = 0;
+    DepartmentId: number = 0;
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
     objDoctor: any;
     view: CalendarView = CalendarView.Week;
@@ -40,6 +45,10 @@ export class NewPhoneAppoinmentCalendarComponent {
 
     viewDate: Date = new Date();
 
+    // raksha date:20/6/25    
+    autocompletedepartment: string = "Department";
+    autocompleteModedoctor: string = "ConDoctor";
+    // 
     modalData: {
         action: string;
         event: CalendarEvent;
@@ -66,8 +75,22 @@ export class NewPhoneAppoinmentCalendarComponent {
         Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
         Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
     };
+
+    // raksha date:20/6/25
+     depId = 0
+     depName:any;
+     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+    selectChangedepartment(obj: any) {
+        this.depId = obj.value
+        this.depName = obj.text
+        this._service.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+            this.ddlDoctor.options = data;
+            console.log(data)
+            this.ddlDoctor.bindGridAutoComplete();
+        });
+    }
+    // 
     selectChangedeptdoc(obj: any) {
-        debugger
         this.DoctorId = obj.value;
         this.objDoctor = obj;
         this.bindData();
@@ -173,6 +196,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            DepartmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -218,7 +242,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                     maxWidth: "95vw",
                     maxHeight: '80%',
                     width: '90%',
-                    data: { fromDate: event["date"], toDate: event["date"], deptNames: this.objDoctor.deptNames, doctorName: this.objDoctor.text }
+                    data: { fromDate: event["date"], toDate: event["date"], deptNames: this.depName,departmentId:this.depId, doctorName: this.objDoctor.text, doctorId:this.objDoctor.value }
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
