@@ -244,8 +244,7 @@
                                 fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)"
-                                TextField="formattedText"
-                                ValueField="itemId"
+                                TextField="formattedText" 
                                 (keydown)="onEnterpatientname($event)"
                               ></airmid-autocomplete>
                             </div>
@@ -260,8 +259,7 @@
                                 fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)"
-                                TextField="formattedText"
-                                ValueField="itemId"
+                                TextField="formattedText"  
                               ></airmid-autocomplete>
                             </div>
 
@@ -297,7 +295,7 @@
                                           <div class="patient-col">
                                             <span class="patient-col-key">Patient Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{ RegNo }}-{{ PatientName }}</span>
+                                            <span class="patient-col-value">{{ Patientdetails?.regNo }}-{{ PatientName }}</span>
                                           </div>
                                           <div class="patient-col" *ngIf="IPDNocheck">
                                             <span class="patient-col-key">IPDNo</span>
@@ -318,18 +316,18 @@
                                           <div class="patient-col">
                                             <span class="patient-col-key">Ward | Bed Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{ WardName }} | {{BedName}}</span>
+                                            <span class="patient-col-value">{{ Patientdetails?.roomName }} | {{Patientdetails?.bedName}}</span>
                                           </div>
 
                                           <div class="patient-col">
                                             <span class="patient-col-key">Tariff Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{ TariffName }}</span>
+                                            <span class="patient-col-value">{{ Patientdetails?.tariffName }}</span>
                                           </div>
                                           <!-- <div class="patient-col">
                                             <span class="patient-col-key">Company Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value" style="color: #e26d14">{{ CompanyName }}</span>
+                                            <span class="patient-col-value" style="color: #e26d14">{{ Patientdetails?.CompanyName }}</span>
                                           </div> -->
                                         </div>
                                       </div>
@@ -857,7 +855,7 @@
                       <div class="sale-info" *ngFor="let ele of item.value">{{ ele.ItemShortName }} | {{ ele.Qty }} | {{ ele.UnitMRP }}</div>
                     </div>
                     <div class="repeat-button">
-                      <button class="btn btn-primary btn-xs" (click)="Addrepeat(item)">repeat</button>
+                      <button class="btn btn-primary btn-xs" (click)="AddItem(item)">repeat</button>
                     </div>
                   </div>
                 </div>

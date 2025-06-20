@@ -215,13 +215,7 @@ console.log(this.data)
       this.netPayAmt = parseInt(this.advanceData.NetAmount);
       this.PatientName = this.advanceData.PatientName;
       this.Paymentobj['TransactionType'] = 2;
-    } else if (this.data.FromName == "Phar-SalesPay") {
-      this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
-      this.PatientName = this.advanceData.PatientName;
-      this.selectedPaymnet1 = 'cash';
-      this.Paymentobj['TransactionType'] = 2;
-    }
+    } 
     else if (this.data.FromName == "Advance-Refund") {
       this.netPayAmt = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
       this.amount1 = this.advanceData.NetPayAmount; // parseInt(this.advanceData.NetPayAmount);
@@ -254,9 +248,8 @@ console.log(this.data)
       this.Date = this.advanceData.Date;
       this.Age = this.advanceData.Age;
       this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-      this.DepartmentName = this.advanceData.DepartmentName;
-      // this.Paymentobj['TransactionType'] = 0;
-      this.selectedPaymnet1 = 'cash';
+      this.DepartmentName = this.advanceData.DepartmentName; 
+      this.selectedPaymnet1 = 'cash'; 
     }else if (this.data.FromName == "OP-Bill" ) { 
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
       this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
@@ -298,6 +291,16 @@ console.log(this.data)
       this.DepartmentName = this.advanceData.DepartmentName;
       this.Paymentobj['TransactionType'] = 2;
       this.selectedPaymnet1 = 'cash';
+    }
+    else if (this.data.FromName == "Phar-SalesPay") {
+      this.netPayAmt = this.advanceData.NetPayAmount; 
+      this.amount1 = this.advanceData.NetPayAmount; 
+      this.PatientName = this.advanceData.PatientName;
+      this.RegNo = this.advanceData.RegNo;
+      this.DoctorName = this.advanceData.Doctorname;
+      this.Date = this.advanceData.Date;
+      this.Age = this.advanceData.Age;
+      this.selectedPaymnet1 = 'cash'; 
     }
   }
 
@@ -667,6 +670,39 @@ console.log(this.data)
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = 0;
+    }
+      //new changes done by Ambadas sales pay 20/6/2025
+ else if (this.data.FromName == "Phar-SalesPay") {  
+      this.Paymentobj['paymentId'] = 0;
+      this.Paymentobj['billNo'] = 0; 
+      this.Paymentobj['paymentDate'] = formattedDate
+      this.Paymentobj['paymentTime'] = formattedTime
+      this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
+      this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
+      this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
+      this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+      this.Paymentobj['chequeDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
+      this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
+      this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+      this.Paymentobj['cardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['advanceUsedAmount'] = 0;
+      this.Paymentobj['advanceId'] = 0;
+      this.Paymentobj['refundId'] = 0; 
+      this.Paymentobj['transactionType'] = 4;
+      this.Paymentobj['remark'] = " ";
+      this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
+      this.Paymentobj['isCancelled'] = false;
+      this.Paymentobj['isCancelledBy'] = 0;
+      this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['opdipdType'] = 3;
+      this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
+      this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
+      this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+      this.Paymentobj['neftdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
+      this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
+      this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
     }
 
 

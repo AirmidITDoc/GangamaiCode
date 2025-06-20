@@ -37,7 +37,17 @@ export class FormvalidationserviceService {
       return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
     };
   }
+// decimal number is allowed
+  AllowDecimalNumberValidator(): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (value === null || value === '') return null;
 
+    // Allow positive decimal numbers (e.g., 123, 123.45)
+    const isValid = /^[0-9]+(\.[0-9]+)?$/.test(value);
+    return isValid ? null : { invalidNumber: true };
+  };
+}
   // only string is allowed when it is required
   allowEmptyStringValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {

@@ -41,7 +41,7 @@ export class NewAdvanceComponent implements OnInit {
   isRegIdSelected:boolean=false;
   PatientListfilteredOptions: any;
   noOptionFound:any;
-  filteredOptions:any;
+  // filteredOptions:any;
   screenFromString = 'pharma-advance';
   vRegNo:any;
   vPatienName:any;
@@ -89,16 +89,16 @@ export class NewAdvanceComponent implements OnInit {
       "Keyword": `${this._PharAdvanceService.NewAdvanceForm.get('RegID').value}%`
     }
     if (this._PharAdvanceService.NewAdvanceForm.get('RegID').value.length >= 1) {
-      this._PharAdvanceService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        } 
-      });
+      // this._PharAdvanceService.getAdmittedpatientlist(m_data).subscribe(resData => {
+      //   this.filteredOptions = resData;
+      //   console.log(resData)
+      //   this.PatientListfilteredOptions = resData;
+      //   if (this.filteredOptions.length == 0) {
+      //     this.noOptionFound = true;
+      //   } else {
+      //     this.noOptionFound = false;
+      //   } 
+      // });
     } 
   } 
   getOptionText(option) {
@@ -416,6 +416,49 @@ viewgetIPAdvanceReportPdf(contact) {
     this._PharAdvanceService.NewAdvanceForm.reset();
     this._PharAdvanceService.NewAdvanceForm.get('Op_ip_id').setValue('1');
     this.dsIpItemList.data =[];
+  }
+  
+ inputValue = '';
+  chips: string[] = [];
+
+  allOptions: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+  filteredOptions: string[] = [...this.allOptions];
+
+  handleEnter() {
+    this.addChip(this.inputValue.trim());
+  }
+
+  handleChange() {
+    // Called when selecting from datalist
+    this.addChip(this.inputValue.trim());
+  }
+
+ 
+
+  addChip(value: string) {
+  value = value.trim();
+  if (!value) return;
+
+  const isDuplicate = this.chips.includes(value);
+
+  if (!isDuplicate) {
+    this.chips.push(value);
+  }
+
+  this.inputValue = '';
+  this.filteredOptions = [...this.allOptions];
+}
+
+
+  removeChip(value: string) {
+    this.chips = this.chips.filter(chip => chip !== value);
+  }
+
+  filterOptions() {
+    const filter = this.inputValue.toLowerCase();
+    this.filteredOptions = this.allOptions.filter(option =>
+      option.toLowerCase().includes(filter)
+    );
   }
 }
 export class IpItemList {

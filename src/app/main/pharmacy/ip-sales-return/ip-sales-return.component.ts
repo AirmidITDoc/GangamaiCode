@@ -549,7 +549,7 @@ export class IpSalesReturnComponent implements OnInit {
           if (control instanceof FormGroup || control instanceof FormArray) {
             for (const nestedKey in control.controls) {
               if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`Sales Return Date : ${controlName}.${nestedKey}`);
+                invalidFields.push(`Sales Return Data : ${controlName}.${nestedKey}`);
               }
             }
           } else if (control?.invalid) {

@@ -29,7 +29,7 @@
                 <div class="nav material2">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="9px">
 
-                        <form [formGroup]="_PharAdvanceService.NewAdvanceForm" style="padding: 6px 6px 5px 5px;">
+                        <!-- <form [formGroup]="_PharAdvanceService.NewAdvanceForm" style="padding: 6px 6px 5px 5px;">
                             <div fxLayout="column" fxLayoutGap="10px">
 
                                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -339,11 +339,27 @@
 
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
 
 
 
 
+      <div class="chip-wrapper">
+        <!-- Display selected chips -->
+        <div class="chip" *ngFor="let chip of chips">
+          {{ chip }}
+          <button type="button" (click)="removeChip(chip)">×</button>
+        </div>
+
+        <!-- Input + native autocomplete -->
+        <input [(ngModel)]="inputValue" (keydown.enter)="handleEnter()" (change)="handleChange()"
+          (input)="filterOptions()" list="autocompleteList" placeholder="Type or select an item" />
+
+        <!-- Autocomplete options -->
+        <datalist id="autocompleteList">
+          <option *ngFor="let option of filteredOptions" [value]="option"></option>
+        </datalist>
+      </div>
 
 
 
