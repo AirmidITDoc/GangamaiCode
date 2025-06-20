@@ -124,6 +124,8 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230},
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
+        { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
         {
             heading: "Action", key: "action", align: "right", width: 400, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column

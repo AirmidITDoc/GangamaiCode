@@ -76,7 +76,7 @@ export class NewAppointmentComponent implements OnInit {
     CityName = ""
     RegOrPhoneflag = '';
     vPhoneFlage = 0;
-    vPhoneAppId: any;
+    vPhoneAppId: any =0;
     RegNo = 0;
     departmentId: any;
     DosctorId: any;
@@ -162,7 +162,7 @@ export class NewAppointmentComponent implements OnInit {
 
         if(this.data){
             this.FromRegistration = this.data?.Obj
-            console.log(this.FromRegistration) 
+            // console.log(this.FromRegistration) 
             if(this.data?.FormName == 'Registration-Page' || this.data?.FormName == 'Registration-Dropdown'){
             this.chkregisterd = true
             this.searchFormGroup.get('regRadio').setValue('registrered')
@@ -322,7 +322,7 @@ export class NewAppointmentComponent implements OnInit {
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(RegId).subscribe((response) => {
                     this.registerObj = response;
-                    console.log(this.registerObj)
+                    // console.log(this.registerObj)
                 });
             }, 500);
         }
@@ -396,7 +396,7 @@ export class NewAppointmentComponent implements OnInit {
         this.RegId = obj.regId;
         this.VisitFlagDisp = true; 
           if ((this.RegId ?? 0) > 0) {
-            console.log(this.data)
+            // console.log(this.data)
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
@@ -406,7 +406,7 @@ export class NewAppointmentComponent implements OnInit {
                         LastName: this.registerObj.lastName,
                         MobileNo: this.registerObj.mobileNo
                         });
-                    console.log(this.registerObj)
+                    // console.log(this.registerObj)
                 });
 
             }, 100);
@@ -416,7 +416,7 @@ export class NewAppointmentComponent implements OnInit {
         this.RegId = obj.value;
         this.VisitFlagDisp = true; 
           if ((this.RegId ?? 0) > 0) {
-            console.log(this.data)
+            // console.log(this.data)
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
@@ -426,7 +426,7 @@ export class NewAppointmentComponent implements OnInit {
                         LastName: this.registerObj.lastName,
                         MobileNo: this.registerObj.mobileNo
                         });
-                    console.log(this.registerObj)
+                    // console.log(this.registerObj)
                 });
 
             }, 100);
@@ -435,7 +435,7 @@ export class NewAppointmentComponent implements OnInit {
     }
       PrevregisterObj: any;
       getLastDepartmetnNameList(row) {
-        console.log(row)
+        // console.log(row)
         const dialogRef = this._matDialog.open(PreviousDeptListComponent,
           {
             maxWidth: "45vw",
@@ -446,7 +446,7 @@ export class NewAppointmentComponent implements OnInit {
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed - Insert Action', result);
+        //   console.log('The dialog was closed - Insert Action', result);
           this.PrevregisterObj = result  
          this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId) 
         this.selectChangedepartment(this.PrevregisterObj)
@@ -459,40 +459,41 @@ export class NewAppointmentComponent implements OnInit {
         this.PatientName = obj.text;
         this.RegId = obj.regId;
         this.vPhoneAppId = obj.value;
+        this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId);
         this.VisitFlagDisp = false;
         this.registerObj = obj;
-        console.log(obj)
+        // console.log(obj)
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
                 this.searchFormGroup.get('regRadio')?.setValue('registrered');
                 this.onChangeReg({ value: 'registrered' });
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
-                       this.getLastDepartmetnNameList(this.registerObj)
-                       this.personalFormGroup.patchValue({
+                    this.getLastDepartmetnNameList(this.registerObj)
+                    this.personalFormGroup.patchValue({
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
                         MobileNo: this.registerObj.mobileNo
-                        });
-                    console.log(this.registerObj)
+                    });
+                    // console.log(this.registerObj)
                 });
 
             }, 100);
-        }else{
+        } else {
             setTimeout(() => {
                 this._AppointmentlistService.getPhoneappById(this.vPhoneAppId).subscribe((response) => {
                     this.registerObj = response;
-                    console.log(this.registerObj)
+                    // console.log(this.registerObj)
                     this.registerObj.religionId = 0;
                     this.VisitFormGroup.get('DepartmentId').setValue(this.registerObj.departmentId)
                     this.selectChangedepartment(this.registerObj) //to set doctorid
-                       this.personalFormGroup.patchValue({
+                    this.personalFormGroup.patchValue({
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
                         MobileNo: this.registerObj.mobileNo
-                        });
+                    });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
                     this.registerObj.regId = 0
@@ -552,8 +553,8 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
 
-        console.log('Personal Form : ',this.personalFormGroup.value)
-        console.log('Visit Form : ',this.VisitFormGroup.value)
+        // console.log('Personal Form : ',this.personalFormGroup.value)
+        // console.log('Visit Form : ',this.VisitFormGroup.value)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -590,8 +591,6 @@ export class NewAppointmentComponent implements OnInit {
     OnsaveNewRegister() {
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
-        if (this.vPhoneAppId)
-            this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
         this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
         this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
         this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
@@ -600,13 +599,12 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
-
+        this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         }
-        console.log(submitData);
-
+        // console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
             this.onClear(true);
@@ -615,7 +613,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
-        this.VisitFormGroup.get("phoneAppId").setValue(this.vPhoneAppId)
+      
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -629,12 +627,13 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
+        this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
 
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
-        console.log(submitData)
+        // console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
             this.onClear(true);
@@ -643,7 +642,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
      onChangeDate(value) {
-        console.log(value)
+        // console.log(value)
     }
 
     onChangePrefix(e) {
@@ -654,7 +653,7 @@ export class NewAppointmentComponent implements OnInit {
         this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
-            console.log(Response)
+            // console.log(Response)
             this.ddlCountry.SetSelection(Response.countryId);
         });
     }
@@ -675,7 +674,7 @@ export class NewAppointmentComponent implements OnInit {
         });
         }else{
         this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-            console.log(data)
+            // console.log(data)
             this.ddlDoctor.options = data;
             this.ddlDoctor.bindGridAutoComplete();
             const incomingDoctorId = obj.consultantDocId || obj.doctorId;
