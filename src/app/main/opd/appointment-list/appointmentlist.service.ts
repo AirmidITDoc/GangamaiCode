@@ -165,7 +165,7 @@ export class AppointmentlistService {
             NationalityIdNo: ['', [ Validators.required,Validators.maxLength(20), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
             CountryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             PortEntry:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
-            EntryDate:[new Date(),[this._FormvalidationserviceService.validDateValidator()]],
+            EntryDate:[null, Validators.required,[this._FormvalidationserviceService.validDateValidator()]],
             ResidentAddress:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
             workAddress:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(150)]],
         });

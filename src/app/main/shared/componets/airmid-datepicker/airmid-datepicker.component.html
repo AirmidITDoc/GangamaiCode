@@ -3,7 +3,7 @@
 <mat-form-field appearance="outline" fxFlex *ngIf="!isRangePicker">
     <mat-label>{{ label }}</mat-label>
     <input matInput [matDatepicker]="picker1" (dateChange)="onDateChange($event)"
-        placeholder="Choose a Date" name="Date" [formControl]="control" [value]="date">
+        placeholder="MM/DD/YYYY" name="Date" [formControl]="control" [value]="date">
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
     <mat-datepicker #picker1></mat-datepicker>
 </mat-form-field>
