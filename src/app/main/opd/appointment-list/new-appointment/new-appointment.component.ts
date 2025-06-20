@@ -33,7 +33,7 @@ export class NewAppointmentComponent implements OnInit {
     dateStyle?: string = 'Date';
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
-    searchFormGroup: FormGroup;    
+    searchFormGroup: FormGroup;
     EmergencyFormGroup:FormGroup;
     MedicalFormGroup:FormGroup;
     abhaForm:FormGroup;
@@ -122,9 +122,13 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModepurpose: string = "Purpose";
     autocompleteModeClass: string = "Class";
-  autocompleteModerelationship: string = "Relationship";
+    autocompleteModerelationship: string = "Relationship";
     selectedTabIndex = 0;
-    public imagePreview!: string;
+    imagePreview!: string;
+    sidebarName = 'patient-sidebar';
+    prevResults: any[] = [];
+    filteredOptions: any[] = [];
+    debounceTimers: { [key: string]: any } = {};
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -164,20 +168,20 @@ export class NewAppointmentComponent implements OnInit {
             this.FromRegistration = this.data?.Obj
             // console.log(this.FromRegistration) 
             if(this.data?.FormName == 'Registration-Page' || this.data?.FormName == 'Registration-Dropdown'){
-            this.chkregisterd = true
-            this.searchFormGroup.get('regRadio').setValue('registrered')
-             this.personalFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').reset();
-            this.personalFormGroup.reset();
-            this.Patientnewold = 2; 
-            this.personalFormGroup = this.createPesonalForm();
-            this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm(); 
-            this.Regflag = true;
-            this.IsPhoneAppflag = false;
-            this.isRegSearchDisabled = true; 
-            //this.registerObj = this.FromRegistration;
-            this.getSelectedObj(this.FromRegistration) 
+                this.chkregisterd = true
+                this.searchFormGroup.get('regRadio').setValue('registrered')
+                this.personalFormGroup.get('RegId').enable();
+                this.searchFormGroup.get('RegId').enable();
+                this.searchFormGroup.get('RegId').reset();
+                this.personalFormGroup.reset();
+                this.Patientnewold = 2;
+                this.personalFormGroup = this.createPesonalForm();
+                this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+                this.Regflag = true;
+                this.IsPhoneAppflag = false;
+                this.isRegSearchDisabled = true;
+                //this.registerObj = this.FromRegistration;
+                this.getSelectedObj(this.FromRegistration)
             }
         }
 
@@ -227,72 +231,74 @@ export class NewAppointmentComponent implements OnInit {
     // }
 
     onChangeReg(event) {
-    if (event.value === 'registration') {
-        this.personalFormGroup.reset();
-        this.personalFormGroup.get('RegId').reset();
-        this.searchFormGroup.get('RegId').disable();
-        this.isRegSearchDisabled = false;
-        this.Patientnewold = 1;
+        if (event.value === 'registration') {
+            this.personalFormGroup.reset();
+            this.personalFormGroup.get('RegId').reset();
+            this.searchFormGroup.get('RegId').disable();
+            this.isRegSearchDisabled = false;
+            this.Patientnewold = 1;
 
-        // Instead of reassigning, update controls one by one
-        const newPersonalForm = this.createPesonalForm();
-        Object.keys(newPersonalForm.controls).forEach(key => {
-            if (this.personalFormGroup.contains(key)) {
-                this.personalFormGroup.setControl(key, newPersonalForm.get(key));
-            } else {
-                this.personalFormGroup.addControl(key, newPersonalForm.get(key));
-            }
-        });
+            // Instead of reassigning, update controls one by one
+            const newPersonalForm = this.createPesonalForm();
+            this.resetFilteredOptions();
+            Object.keys(newPersonalForm.controls).forEach(key => {
+                if (this.personalFormGroup.contains(key)) {
+                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+                } else {
+                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+                }
+            });
 
-        const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-        Object.keys(newVisitForm.controls).forEach(key => {
-            if (this.VisitFormGroup.contains(key)) {
-                this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-            } else {
-                this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-            }
-        });
+            const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+            Object.keys(newVisitForm.controls).forEach(key => {
+                if (this.VisitFormGroup.contains(key)) {
+                    this.VisitFormGroup.setControl(key, newVisitForm.get(key));
+                } else {
+                    this.VisitFormGroup.addControl(key, newVisitForm.get(key));
+                }
+            });
 
-        this.personalFormGroup.markAllAsTouched();
-        this.VisitFormGroup.markAllAsTouched();
+            this.personalFormGroup.markAllAsTouched();
+            this.VisitFormGroup.markAllAsTouched();
 
-        this.Regflag = false;
-        this.IsPhoneAppflag = true;
+            this.Regflag = false;
+            this.IsPhoneAppflag = true;
 
-    } else if (event.value === 'registrered') {
+        } else if (event.value === 'registrered') {
 
-        this.personalFormGroup.get('RegId').enable();
-        this.searchFormGroup.get('RegId').enable();
-        this.searchFormGroup.get('RegId').reset();
-        this.personalFormGroup.reset();
-        this.Patientnewold = 2;
+            this.personalFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').reset();
+            this.personalFormGroup.reset();
+            this.Patientnewold = 2;
 
-        const newPersonalForm = this.createPesonalForm();
-        Object.keys(newPersonalForm.controls).forEach(key => {
-            if (this.personalFormGroup.contains(key)) {
-                this.personalFormGroup.setControl(key, newPersonalForm.get(key));
-            } else {
-                this.personalFormGroup.addControl(key, newPersonalForm.get(key));
-            }
-        });
+            const newPersonalForm = this.createPesonalForm();
+            this.resetFilteredOptions();
+            Object.keys(newPersonalForm.controls).forEach(key => {
+                if (this.personalFormGroup.contains(key)) {
+                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+                } else {
+                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+                }
+            });
 
-        const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-        Object.keys(newVisitForm.controls).forEach(key => {
-            if (this.VisitFormGroup.contains(key)) {
-                this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-            } else {
-                this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-            }
-        });
+            const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+            Object.keys(newVisitForm.controls).forEach(key => {
+                if (this.VisitFormGroup.contains(key)) {
+                    this.VisitFormGroup.setControl(key, newVisitForm.get(key));
+                } else {
+                    this.VisitFormGroup.addControl(key, newVisitForm.get(key));
+                }
+            });
 
-        this.personalFormGroup.markAllAsTouched();
-        this.VisitFormGroup.markAllAsTouched();
+            this.personalFormGroup.markAllAsTouched();
+            this.VisitFormGroup.markAllAsTouched();
 
-        this.Regflag = true;
-        this.IsPhoneAppflag = false;
-        this.isRegSearchDisabled = true;
+            this.Regflag = true;
+            this.IsPhoneAppflag = false;
+            this.isRegSearchDisabled = true;
+        }
     }
-}
 
     OnViewReportPdf(element) {
         this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
@@ -390,69 +396,69 @@ export class NewAppointmentComponent implements OnInit {
         });
 
     }
-    getSelectedObj(obj) {  
+    getSelectedObj(obj) {
         if(this.data?.FormName == 'Registration-Page'){
-        this.PatientName = obj.firstName + ' ' + obj.lastName;
-        this.RegId = obj.regId;
-        this.VisitFlagDisp = true; 
-          if ((this.RegId ?? 0) > 0) {
-            // console.log(this.data)
-            setTimeout(() => {
-                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
-                    this.registerObj = response;
-                       this.getLastDepartmetnNameList(this.registerObj)
-                       this.personalFormGroup.patchValue({
-                        FirstName: this.registerObj.firstName,
-                        LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo
+            this.PatientName = obj.firstName + ' ' + obj.lastName;
+            this.RegId = obj.regId;
+            this.VisitFlagDisp = true;
+            if ((this.RegId ?? 0) > 0) {
+                // console.log(this.data)
+                setTimeout(() => {
+                    this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                        this.registerObj = response;
+                        this.getLastDepartmetnNameList(this.registerObj)
+                        this.personalFormGroup.patchValue({
+                            FirstName: this.registerObj.firstName,
+                            LastName: this.registerObj.lastName,
+                            MobileNo: this.registerObj.mobileNo
                         });
-                    // console.log(this.registerObj)
-                });
+                        // console.log(this.registerObj)
+                    });
 
-            }, 100);
-        }  
+                }, 100);
+            }
         }else{
-         this.PatientName = obj.PatientName;
-        this.RegId = obj.value;
-        this.VisitFlagDisp = true; 
-          if ((this.RegId ?? 0) > 0) {
-            // console.log(this.data)
-            setTimeout(() => {
-                this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
-                    this.registerObj = response;
-                       this.getLastDepartmetnNameList(this.registerObj)
-                       this.personalFormGroup.patchValue({
-                        FirstName: this.registerObj.firstName,
-                        LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo
+            this.PatientName = obj.PatientName;
+            this.RegId = obj.value;
+            this.VisitFlagDisp = true;
+            if ((this.RegId ?? 0) > 0) {
+                // console.log(this.data)
+                setTimeout(() => {
+                    this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
+                        this.registerObj = response;
+                        this.getLastDepartmetnNameList(this.registerObj)
+                        this.personalFormGroup.patchValue({
+                            FirstName: this.registerObj.firstName,
+                            LastName: this.registerObj.lastName,
+                            MobileNo: this.registerObj.mobileNo
                         });
-                    // console.log(this.registerObj)
-                });
+                        // console.log(this.registerObj)
+                    });
 
-            }, 100);
-        }  
-        } 
+                }, 100);
+            }
+        }
     }
-      PrevregisterObj: any;
-      getLastDepartmetnNameList(row) {
+    PrevregisterObj: any;
+    getLastDepartmetnNameList(row) {
         // console.log(row)
         const dialogRef = this._matDialog.open(PreviousDeptListComponent,
-          {
-            maxWidth: "45vw",
-            height: '45%',
-            width: '100%',
-            data: {
-              Obj: row,
-            }
-          });
+            {
+                maxWidth: "45vw",
+                height: '45%',
+                width: '100%',
+                data: {
+                    Obj: row,
+                }
+            });
         dialogRef.afterClosed().subscribe(result => {
-        //   console.log('The dialog was closed - Insert Action', result);
-          this.PrevregisterObj = result  
-         this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId) 
-        this.selectChangedepartment(this.PrevregisterObj)
+            //   console.log('The dialog was closed - Insert Action', result);
+            this.PrevregisterObj = result
+            this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+            this.selectChangedepartment(this.PrevregisterObj)
 
         });
-      }
+    }
 
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
@@ -613,7 +619,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
-      
+
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -641,7 +647,7 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
-     onChangeDate(value) {
+    onChangeDate(value) {
         // console.log(value)
     }
 
@@ -668,23 +674,23 @@ export class NewAppointmentComponent implements OnInit {
 
     selectChangedepartment(obj: any) {
         if(obj.value){
-        this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-            this.ddlDoctor.options = data;
-            this.ddlDoctor.bindGridAutoComplete();
-        });
+            this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+            });
         }else{
-        this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-            // console.log(data)
-            this.ddlDoctor.options = data;
-            this.ddlDoctor.bindGridAutoComplete();
-            const incomingDoctorId = obj.consultantDocId || obj.doctorId;
-            if (incomingDoctorId) {
-                const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                if (matchedDoctor) {
-                this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+            this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+                // console.log(data)
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+                const incomingDoctorId = obj.consultantDocId || obj.doctorId;
+                if (incomingDoctorId) {
+                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                    if (matchedDoctor) {
+                        this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                    }
                 }
-            }
-        });
+            });
         }
     }
 
@@ -728,7 +734,7 @@ export class NewAppointmentComponent implements OnInit {
             countryId: [
                 { name: "required", Message: "Country Name is required" }
             ],
-           
+
             stateId: [
                 { name: "required", Message: "State Name is required" }
             ],
@@ -790,8 +796,8 @@ export class NewAppointmentComponent implements OnInit {
 
     onTabChange(event: MatTabChangeEvent) {
         this.selectedTabIndex = event.index;
-      }
-    
+    }
+
     onClear(val: boolean) {
         this.personalFormGroup.reset();
         this.dialogRef.close(val);
@@ -915,4 +921,85 @@ export class NewAppointmentComponent implements OnInit {
         }
     }
 
+    toggleSidebar(): void {
+        this._fuseSidebarService.getSidebar(this.sidebarName).toggleOpen();
+    }
+
+    handleInputChange(changedField: string): void {
+        // Get all current field values
+        const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
+        const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
+        const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
+
+        // If all fields are empty, clear everything
+        if (!firstName && !lastName && !mobileNo) {
+            this.resetFilteredOptions();
+            return;
+        }
+
+        // Count how many fields are filled
+        const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+        // If only one field is filled, and it's FirstName or MobileNo, call API
+        if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
+            const keyword = firstName || mobileNo;
+            this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                this.prevResults = results || [];
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            });
+            return;
+        }
+
+        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'LastName') {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            return;
+        }
+
+        // If more than one field is filled, filter from prevResults
+        if (this.prevResults.length > 0) {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+        } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
+            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+            const keyword = this.personalFormGroup.get(changedField).value?.trim();
+            if (keyword) {
+                this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                    this.prevResults = results || [];
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                });
+            }
+        } else {
+            // If changedField is LastName and prevResults is empty, do nothing
+            this.filteredOptions = [];
+        }
+    }
+
+    // Helper function to filter results by all non-empty fields
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+        const { firstName, lastName, mobileNo } = fields;
+        return results.filter(item => {
+            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+        });
+    }
+    onSelectPatient(row: any) {
+        this.getSelectedObj(row);
+        this.toggleSidebar();
+        this.resetFilteredOptions();
+    }
+    handleInputChangeDebounced(changedField: string): void {
+        // Clear any existing timer for this field
+        if (this.debounceTimers[changedField]) {
+          clearTimeout(this.debounceTimers[changedField]);
+        }
+        // Set a new timer
+        this.debounceTimers[changedField] = setTimeout(() => {
+          this.handleInputChange(changedField);
+        }, 300); // 300ms debounce
+      }
+    resetFilteredOptions(){
+        this.filteredOptions = [];
+        this.prevResults = [];
+    }
 }

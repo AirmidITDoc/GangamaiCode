@@ -5,6 +5,7 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -329,5 +330,8 @@ public InsertOPBillingpayment(employee) {
 
     public updateEndTime(Id) {
         return this._httpClient1.PutData("VisitDetail/CheckOutProcess/", Id);
+    }
+    public getSuggestions(apiUrl:string, inputValue: string): Observable<any[]> {
+        return this._httpClient1.GetData(apiUrl + inputValue);
     }
 }

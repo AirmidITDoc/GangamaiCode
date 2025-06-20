@@ -3,6 +3,9 @@
   <div class="modal-header accent">
     <div class="modal-header-content">
       <div class="modal-header-title">
+        <button mat-icon-button (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
         <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Appointment</span>
       </div>
       <div class="modal-header-right">
@@ -20,8 +23,43 @@
     </div>
   </div>
 
-  <div class="modal-body" fusePerfectScrollbar>
+  <div class="modal-body">
     <div class="modal-body-container">
+      <fuse-sidebar [name]="sidebarName" position="right" lockedOpen="gt-xl" class="fixed" style="min-width:600px; border-radius:4px;
+      margin-left:12px; background-color: white;height:100%;">
+       <div class="airmid-table-container overflow-hidden">
+        <mat-table class="airmid-table" [dataSource]="filteredOptions">
+          <!-- Reg No Column -->
+          <ng-container matColumnDef="regNo">
+            <mat-header-cell *matHeaderCellDef>Reg No</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.regNo }}</mat-cell>
+          </ng-container>
+
+          <!-- Patient Name Column -->
+          <ng-container matColumnDef="patientName">
+            <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.patientName }}</mat-cell>
+          </ng-container>
+
+          <!-- Mobile No Column -->
+          <ng-container matColumnDef="mobileNo">
+            <mat-header-cell *matHeaderCellDef>Mobile No</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.mobileNo }}</mat-cell>
+          </ng-container>
+
+          <!-- No Data Row -->
+          <ng-container matColumnDef="NoData">
+            <mat-footer-cell *matFooterCellDef>
+              <span>No Data Found</span>
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row class="accent" *matHeaderRowDef="['regNo', 'patientName', 'mobileNo']; sticky: true" ></mat-header-row>
+          <mat-row *matRowDef="let row; columns: ['regNo', 'patientName', 'mobileNo']" (click)="onSelectPatient(row)"></mat-row>
+          <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+        </mat-table>
+       </div>
+      </fuse-sidebar>
       <form [formGroup]="searchFormGroup">
         <mat-card>
           <mat-card-content class="py-8">
@@ -112,6 +150,7 @@
                             [formGroup]="personalFormGroup"
                             [validations]="getValidationMessages().firstName"
                             [maxLength]="100"
+                            (valueChange)="handleInputChangeDebounced('FirstName')"
                           ></airmid-textbox>
                         </div>
 
@@ -134,6 +173,7 @@
                             [formGroup]="personalFormGroup"
                             [validations]="getValidationMessages().lastName"
                             [maxLength]="100"
+                            (valueChange)="handleInputChangeDebounced('LastName')"
                           ></airmid-textbox>
                         </div>
 
@@ -271,6 +311,7 @@
                               [formGroup]="personalFormGroup"
                               [validations]="getValidationMessages().mobileNo"
                               [maxLength]="10"
+                              (valueChange)="handleInputChangeDebounced('MobileNo')"
                             ></airmid-textbox>
 
                             <airmid-textbox
@@ -681,7 +722,7 @@
     <div class="footer-navigation-container">
       <div class="modal-footer-buttons">
         <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="filteredOptions.length > 0">Save</button>
       </div>
     </div>
   </div>
