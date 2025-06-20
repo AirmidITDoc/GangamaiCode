@@ -94,7 +94,8 @@ import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicke
         MatButtonToggleModule,
         MatSlideToggleModule,
         // added by raksha date:14/6/25
-        MatChipsModule
+        MatChipsModule,
+        MatInputModule 
     ],
     providers: [
         ExcelDownloadService,

@@ -348,7 +348,7 @@
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo" [formGroup]="EmergencyFormGroup" [maxLength]="12"></airmid-textbox>
+                        <airmid-textbox label="AadharCardNo" formControlName="aadharCardNo" [formGroup]="EmergencyFormGroup" [maxLength]="12"></airmid-textbox>
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -367,21 +367,13 @@
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Visa Issue Date</mat-label>
-                          <input matInput [matDatepicker]="picker1" formControlName="VisaDate" (dateChange)="onChangeDate($event.value)" />
-                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                          <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
+                          <airmid-datepicker [label]="'Visa Issue Date'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaDate"
+                          formEndControlName="VisaDate"></airmid-datepicker>
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Visa Validity</mat-label>
-                          <input matInput [matDatepicker]="picker1" formControlName="VisaValidityDate" (dateChange)="onChangeDate($event.value)" />
-                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                          <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
+                         <airmid-datepicker [label]="'Visa Validity'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaValidityDate"
+                          formEndControlName="VisaValidityDate"></airmid-datepicker>
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -397,12 +389,10 @@
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Date Of Entry</mat-label>
-                          <input matInput [matDatepicker]="picker1" formControlName="EntryDate" (dateChange)="onChangeDate($event.value)" />
-                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                          <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
+                      
+                      <airmid-datepicker [label]="'Date Of Entry'" 
+                        [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="EntryDate"
+                        formEndControlName="EntryDate"></airmid-datepicker>
                       </div>
 
                       <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
