@@ -192,10 +192,12 @@ export class TestmasterService {
         }else return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
-    // public TestMasterUpdate(Param: any) {
-    //     debugger
-        
-    // }
+    public TestMasterUpdate(Param: any) {
+        debugger
+        if (Param.pathTest.testId) {
+         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
+        }
+    }
 
     public deactivateTheStatus(Id:number) {
         return this._httpClient.DeleteData(`PathTestMaster/PathTestDelete?Id=${Id}`);
