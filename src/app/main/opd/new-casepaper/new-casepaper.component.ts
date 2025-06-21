@@ -211,7 +211,6 @@ export class NewCasepaperComponent implements OnInit {
 
     if (this.data) {
       this.regObj = this.data
-      console.log(this.regObj)
       this.RegNo = this.regObj.regNoWithPrefix
       this.vOPIPId = this.regObj.visitId
       this.VisitId = this.regObj.visitId
@@ -238,8 +237,6 @@ export class NewCasepaperComponent implements OnInit {
 
     setTimeout(() => {
       this._CasepaperService.getVisitById(this.VisitId).subscribe(data => {
-        // this.patientDetail1 = data;
-        // console.log(data)
         this.vHeight = data.height
         this.vWeight = data.pweight
         this.vBSL = data.bmi
@@ -252,7 +249,6 @@ export class NewCasepaperComponent implements OnInit {
     }, 500);
   }
   onLangChange() {
-    // console.log(this.selectedLang);
     if (this.speechService.isListening) {
       this.speechService.stopRecognition();
     }
@@ -266,70 +262,14 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-  removedignosis(item) {
-    let removedIndex = this.caseFormGroup.value.mAssignDiagnosis.findIndex(x => x.id === item.id);
-
-    if (removedIndex !== -1) {
-      this.caseFormGroup.value.mAssignDiagnosis.splice(removedIndex, 1);
-
-      this.ddlDiagnosis.SetSelection(this.caseFormGroup.value.mAssignDiagnosis.map(x => x.id));
-
-      this.addDiagnolist = this.caseFormGroup.value.mAssignDiagnosis.map(x => ({
-        id: x.id,
-        descriptionName: x.descriptionName
-      }));
-
-      // console.log("Updated addDiagnolist after removal:", this.addDiagnolist);
-    }
-  }
-
-  removeChiefComplaint(item) {
-
-    let removedIndex = this.caseFormGroup.value.mAssignChiefComplaint.findIndex(x => x.id === item.id);
-
-    if (removedIndex !== -1) {
-      this.caseFormGroup.value.mAssignChiefComplaint.splice(removedIndex, 1);
-
-      this.ddlChiefComplaint.SetSelection(this.caseFormGroup.value.mAssignChiefComplaint.map(x => x.id));
-
-      this.addCheiflist = this.caseFormGroup.value.mAssignChiefComplaint.map(x => ({
-        id: x.id,
-        descriptionName: x.descriptionName
-      }));
-
-      // console.log("Updated addCheiflist after removal:", this.addCheiflist);
-    }
-  }
-
-  removeExamination(item) {
-
-    let removedIndex = this.caseFormGroup.value.mAssignExamination.findIndex(x => x.id === item.id);
-
-    if (removedIndex !== -1) {
-      this.caseFormGroup.value.mAssignExamination.splice(removedIndex, 1);
-
-      this.ddlExamination.SetSelection(this.caseFormGroup.value.mAssignExamination.map(x => x.id));
-
-      this.addExaminlist = this.caseFormGroup.value.mAssignExamination.map(x => ({
-        id: x.id,
-        descriptionName: x.descriptionName
-      }));
-
-      // console.log("Updated addExaminlist after removal:", this.addExaminlist);
-    }
-  }
-
   removeService(item) {
     let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
-
     if (removedIndex !== -1) {
       this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
 
       this.ddlService.SetSelection(this.caseFormGroup.value.mAssignService.map(x => x.serviceId));
 
       this.selectedItems = this.caseFormGroup.value.mAssignService.map(x => ({ serviceId: x.serviceId }));
-
-      // console.log("Updated selectedItems after removal:", this.selectedItems);
     }
   }
 
@@ -382,8 +322,8 @@ export class NewCasepaperComponent implements OnInit {
       DiagnosisControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       CheifComplaintControl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       mAssignChiefComplaint: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignDiagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      mAssignExamination: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
+      mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
     });
   }
@@ -498,7 +438,6 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   onSave() {
-debugger
     if (this.addCheiflist.length > 0) {
       this.addCheiflist.forEach(element => {
         this.AllTypeDescription.push({
@@ -525,7 +464,6 @@ debugger
         });
       });
     }
-    // console.log("Updated AllTypeDescription:", this.AllTypeDescription);
 
     let ReferDocNameID = 0;
     if (this.MedicineItemForm.get('DoctorID').value) {
@@ -586,7 +524,7 @@ debugger
       }
      this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
-      console.log('form:', this.casePaperInsertForm.value);
+      // console.log('form:', this.casePaperInsertForm.value);
 
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
 
@@ -641,7 +579,6 @@ debugger
   getSelectedObj(obj) {
     this.onClear();
     if ((obj.regId ?? 0) > 0) {
-      console.log(obj)
       this.vOPIPId = obj.visitId
       this.RegNo = obj.visitId
       setTimeout(() => {
@@ -666,7 +603,6 @@ debugger
   }
 
   getPrescription(obj) {
-    // debugger
     this.visitIdRefresh = obj.visitId;
     var m_data2 = {
       "first": 0,
@@ -683,12 +619,9 @@ debugger
       "Columns": [],
       "exportType": "JSON"
     }
-    console.log("VisitId:", m_data2)
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
       this.dsItemList.data = Visit?.data as MedicineItemList[];
       if (this.dsItemList.data)
-
-        console.log("bbbbbbbb:", this.dsItemList.data);
       this.Chargelist = this.dsItemList.data;
 
       if (this.dsItemList.data.length > 0) {
@@ -722,10 +655,8 @@ debugger
     });
 
   }
-  
 
    getRtrvCheifComplaintList(obj) {
-    // debugger
     this.addCheiflist = [];
     this.addDiagnolist = [];
     this.addExaminlist = [];
@@ -744,10 +675,8 @@ debugger
     };
 
     this._CasepaperService.getRtrvCheifComplaintList1(vdata).subscribe(response => {
-      console.log("three response:", response);
 
       if (response && Array.isArray(response.data)) {
-        // debugger
         this.RtrvDescriptionList = response.data;
         let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
         this.addCheiflist = [];
@@ -760,11 +689,7 @@ debugger
               }
             )
           })
-          setTimeout(() => {
             this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
-          },100)
-           this.selectChangeChiefComplaint(this.addCheiflist);
-          console.log('addCheiflist:', this.caseFormGroup.get('mAssignChiefComplaint').value);
         }
         // Process Diagnosis
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
@@ -777,10 +702,7 @@ debugger
               }
             )
           })
-          setTimeout(() => {
             this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
-          }, 100)
-          // this.ddlDiagnosis.SetSelection(this.addDiagnolist);
         }
         // Process Examination
         let Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
@@ -793,11 +715,7 @@ debugger
               }
             )
           });
-          // this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
-          setTimeout(() => {
-            this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
-          }, 100)
-          // this.ddlExamination.SetSelection(this.addExaminlist);
+          this.caseFormGroup.get('mAssignExamination').setValue(this.addExaminlist);
         }
       }
     }, error => {
@@ -820,8 +738,6 @@ debugger
   }
 
   selectChangeItemName(row) {
-    // debugger
-    console.log("itemData:", row)
     this.durgId = row.itemId
     this.durgName = row.itemName
     this.vdoseName = row.doseName
@@ -833,15 +749,12 @@ debugger
         value: this.vdoseName,   // assuming doseName is used as ID
         text: this.vdoseName     // or whatever label you're using
       };
-
       this.selectChangeDoseName(doseRow);
     }
-
     if ((this.durgId ?? 0) > 0) {
       setTimeout(() => {
         this._CasepaperService.getItemMasterById(this.durgId).subscribe((response) => {
           this.itemObjects = response;
-          console.log("all data:", this.itemObjects)
           this.vItemGenericNameId = this.itemObjects.itemGenericNameId
 
           if ((this.vItemGenericNameId ?? 0) > 0) {
@@ -858,7 +771,6 @@ debugger
   }
 
   selectChangeItemGenericName(row) {
-    console.log("GenericName:", row)
     this.vItemGenericNameId = row.value
     this.vItemGenericName = row.text
   }
@@ -909,9 +821,8 @@ debugger
       "Columns": [],
       "exportType": "JSON"
     }
-    console.log("VisitId:", m_data2)
+    
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
-      // debugger
       this.FetchList = Visit.data as MedicineItemList[];
       this.Chargelist = this.dsItemList.data.filter(item => item.OPD_IPD_IP != contact.OPD_IPD_IP)
       this.FetchList.forEach(element => {
@@ -937,7 +848,6 @@ debugger
           });
       })
       this.dsItemList.data = this.Chargelist
-      console.log(this.dsItemList.data)
     });
 
   }
@@ -1009,11 +919,8 @@ debugger
 
   selectedItems = [];
   selectChangeServiceName(row) {
-    const selectedData = Array.isArray(row) ? row : [row]; // Convert single data to array
-
+    const selectedData = Array.isArray(row) ? row : [row];
     this.selectedItems = selectedData.map(item => ({ serviceId: item.serviceId }));
-
-    // console.log("Updated selectedItems:", this.selectedItems);
   }
 
   RtrvTestServiceList: any = [];
@@ -1036,7 +943,6 @@ debugger
     }
     this._CasepaperService.getRtrvTestService(m_data2).subscribe(response => {
       this.RtrvTestServiceList = response.data
-      console.log("Extracted data array::", this.RtrvTestServiceList)
       if (Array.isArray(this.RtrvTestServiceList) && this.RtrvTestServiceList.length > 0) {
         this.RtrvTestServiceList.forEach(element => {
           this.selectedItems.push({
@@ -1045,76 +951,26 @@ debugger
           });
         });
         this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
-        // console.log("sdsdssd:", this.selectedItems);
       }
     })
   }
 
   selectChangeDoctorName(row) {
   }
-// 
-  // selectChangeChiefComplaint(row) {
-  //   const selectedData = Array.isArray(row) ? row : [row];
-  //   this.addCheiflist = selectedData.map(item => ({
-  //     id: item.id ||'',
-  //     descriptionName: item.descriptionName
-  //   }));
-  //   this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
-  //   console.log("FormControl Value:", this.caseFormGroup.get('mAssignChiefComplaint')?.value);
-  // }
 
-selectChangeChiefComplaint(row: any) {
-  debugger
-  console.log("Raw Row:", row);
-
-  const flatten = (input: any): any[] =>
-    Array.isArray(input)
-      ? input.reduce((acc: any[], val: any) => acc.concat(flatten(val)), [])
-      : [input];
-
-  const selectedData = flatten(row || []).filter(x => x?.descriptionName);
-
-  // ✅ Always use the existing chip list to preserve previous data
-  const currentList = this.addCheiflist || [];
-
-  const newItems = selectedData.map(item => ({
-    id: item.id === item.descriptionName ? '' : item.id,
-    descriptionName: item.descriptionName
-  }));
-
-  const combined = [...currentList, ...newItems];
-
-  const uniqueList = combined.filter(
-    (item, index, self) =>
-      index === self.findIndex(t =>
-        t.descriptionName?.toLowerCase?.() === item.descriptionName?.toLowerCase?.()
-      )
-  );
-
-  this.addCheiflist = uniqueList;
-
-  // ✅ Update formControl with the merged, deduplicated list
-  this.caseFormGroup.patchValue({ mAssignChiefComplaint: this.addCheiflist });
-
-  console.log("✅ Updated Chief Complaint List:", this.addCheiflist);
+selectChangeChiefComplaint(selectedChips: string[]) {
+  this.addCheiflist = selectedChips;
+  this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
 }
 
-  selectChangeDiagnosis(row) {
-    const selectedData = Array.isArray(row) ? row : [row];
-    this.addDiagnolist = selectedData.map(item => ({
-      id: item.id,
-      descriptionName: item.descriptionName
-    }));
-    // console.log("Updated selectedItems:", this.addDiagnolist);
+  selectChangeDiagnosis(selectedChips: string[]) {
+    this.addDiagnolist = selectedChips;
+    this.caseFormGroup.get('mAssignDiagnosis')?.setValue(this.addDiagnolist);
   }
 
-  selectChangeExamination(row) {
-    const selectedData = Array.isArray(row) ? row : [row];
-    this.addExaminlist = selectedData.map(item => ({
-      id: item.id,
-      descriptionName: item.descriptionName
-    }));
-    // console.log("Updated selectedItems:", this.addExaminlist);
+  selectChangeExamination(selectedChips: string[]) {
+    this.addExaminlist = selectedChips;
+    this.caseFormGroup.get('mAssignExamination')?.setValue(this.addExaminlist);
   }
 
   getValidationMessages() {
@@ -1171,9 +1027,6 @@ selectChangeChiefComplaint(row: any) {
       return;
     }
 
-    // console.log('Before push, Chargelist:', this.Chargelist);
-    // console.log('Is Chargelist an array?', Array.isArray(this.Chargelist));
-
     if (!Array.isArray(this.Chargelist)) {
       console.warn("Chargelist was not an array. Resetting...");
       this.Chargelist = [...this.dsItemList.data];
@@ -1204,8 +1057,6 @@ selectChangeChiefComplaint(row: any) {
       };
       this.Chargelist.push(newEntry);
       this.dsItemList.data = [...this.Chargelist];
-
-      console.log(this.dsItemList.data);
     } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1240,7 +1091,6 @@ selectChangeChiefComplaint(row: any) {
   itemObjects1: any[] = [];
 
   onTemplDetAdd() {
-    // debugger
     if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -1271,11 +1121,10 @@ selectChangeChiefComplaint(row: any) {
         "Columns": [],
         "exportType": "JSON"
       }
-      console.log(vdata)
+      
       this._CasepaperService.getTempPrescriptionList(vdata).subscribe(data => {
         this.dsItemList.data = data.data as MedicineItemList[];
         this.Chargelist = data.data as MedicineItemList[];
-        // console.log(this.dsItemList.data)
       });
     }
     else {
@@ -1563,11 +1412,10 @@ selectChangeChiefComplaint(row: any) {
       "Columns": [],
       "exportType": "JSON"
     }
-    console.log(D_data);
+    
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
       this.patients = Visit?.data as MedicineItemList[];
       this.extractUniqueDates();
-      // console.log("visitPatient info:", this.patients)
     });
   }
 
@@ -1622,8 +1470,6 @@ selectChangeChiefComplaint(row: any) {
       if (result) {
         ;
         this.dsCopyItemList.data = result;
-        // console.log("this.dsCopyItemList.data:", this.dsCopyItemList.data);
-
         if (!this.dsItemList.data) {
           this.dsItemList.data = [];
         }
@@ -1635,9 +1481,6 @@ selectChangeChiefComplaint(row: any) {
           const chkitem = this.dsItemList.data.find(item =>
             item.DrugId === element.drugId || item.drugId === element.drugId
           );
-
-          // console.log("this.dsItemList.data before insert:", this.dsItemList.data);
-
           if (!chkitem) {
             const newItem = {
               PrecriptionId: element.precriptionId || 0,
@@ -1678,10 +1521,7 @@ selectChangeChiefComplaint(row: any) {
             });
           }
         });
-
-        // console.log("Final dsItemList.data:", this.dsItemList.data);
       }
-
     });
   }
 

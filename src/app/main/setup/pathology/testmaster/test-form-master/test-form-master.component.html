@@ -65,7 +65,6 @@
               (selectionChange)="selectChangeServiceID($event)"
               *ngIf="serviceflag"
             ></airmid-dropdown>
-            <!-- [validations]="_TestmasterService.getValidationMessages().ServiceId" -->
           </div>
         </div>
 
@@ -294,7 +293,6 @@
               formControlName="TechniqueName"
               [value]="registerObj?.techniqueName"
               [formGroup]="testForm"
-              [validations]="_TestmasterService.getValidationMessages().TechniqueName"
               [maxLength]="50"
             ></airmid-textbox>
           </div>
@@ -304,7 +302,6 @@
               formControlName="MachineName"
               [value]="registerObj?.machineName"
               [formGroup]="testForm"
-              [validations]="_TestmasterService.getValidationMessages().MachineName"
               [maxLength]="50"
             ></airmid-textbox>
           </div>
@@ -314,7 +311,6 @@
               formControlName="FootNote"
               [value]="registerObj?.footNote"
               [formGroup]="testForm"
-              [validations]="_TestmasterService.getValidationMessages().FootNote"
               [maxLength]="50"
             ></airmid-textbox>
           </div>
@@ -325,7 +321,6 @@
               formControlName="SuggestionNote"
               [value]="registerObj?.suggestionNote"
               [formGroup]="testForm"
-              [validations]="_TestmasterService.getValidationMessages().SuggestionNote"
               [maxLength]="50"
             ></airmid-textbox>
           </div>

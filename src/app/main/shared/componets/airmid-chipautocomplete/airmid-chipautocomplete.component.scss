@@ -1,0 +1,68 @@
+.relative-container {
+  position: relative;
+  width: 100%;
+}
+
+.chip-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.chip-wrapper input {
+  flex: 1 1 auto;
+  min-width: 150px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: none;
+  outline: none;
+}
+
+.chip {
+  background-color: #d1eaff;
+  border-radius: 16px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.chip button {
+  margin-left: 6px;
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  color: #444;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.autocomplete-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+

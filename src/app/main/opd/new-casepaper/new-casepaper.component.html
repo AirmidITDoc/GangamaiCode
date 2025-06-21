@@ -220,132 +220,44 @@
                                                 </div>
 
                                                 <div fxLayout="column">
-                                                    <!-- <div class="investigation-title">
-                                                            <span style="font-weight: 700;">
-                                                                Chief Complaint
-                                                            </span>
-                                                        </div>
-                                                        <hr>
-                                                        <div fxLayout="row">
-                                                            <div fxFlex="40%">
-                                                                <airmid-dropdown label="ChiefComplaint"
-                                                                    formControlName="mAssignChiefComplaint"
-                                                                    [formGroup]="caseFormGroup" #ddlChiefComplaint
-                                                                    [IsMultiPle]="true" ValueField="complaintId"
-                                                                    TextField="complaintDescr"
-                                                                    ApiUrl="OPDPrescriptionMedical/get-ChiefComplaint"
-                                                                    [ReqFullObj]="true"
-                                                                    [value]="regObj.mAssignChiefComplaint"
-                                                                    (selectionChange)="selectChangeCheifComplaint($event)">
-                                                                </airmid-dropdown>
-                                                            </div>
-                                                            <mat-chip-listbox #chipList>
-                                                                <mat-chip
-                                                                    *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
-                                                                    {{ item.complaintDescr }} <mat-icon
-                                                                        (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                                </mat-chip>
-                                                            </mat-chip-listbox>
-                                                        </div> -->
-                                                    <div class="investigation-title">
+                                                    <div style="margin-bottom: 16px;">
                                                         <span style="font-weight: 700;">
                                                             Chief Complaint
                                                         </span>
-                                                    </div>
-                                                    <hr>
-                                                    <!-- <app-airmid-chipautocomplete 
-                                                            [formGroup]="caseFormGroup"
-                                                            [controlName]="'mAssignChiefComplaint'"
+                                                        <hr>
+                                                        <app-airmid-chipautocomplete
+                                                            [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
-                                                            [label]="'Chief Complaint'"
-                                                            [placeholder]="'New Chief Complaint...'"
-                                                            [displayWith]="'descriptionName'"
-                                                            [allowFreeText]="true"
-                                                            (selectedItemsChange)="selectChangeChiefComplaint($event)">
-                                                        </app-airmid-chipautocomplete> -->
-                                                    <div fxLayout="row">
-                                                        <div fxFlex="40%">
-                                                            <!-- new method -->
-                                                            <app-airmid-chipautocomplete #ddlChiefComplaint
-                                                                label="Chief Complaint"
-                                                                formControlName="mAssignChiefComplaint"
-                                                                [formGroup]="caseFormGroup"
-                                                                ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint"
-                                                                ValueField="id" TextField="descriptionName"
-                                                                [IsMultiPle]="true" [ReqFullObj]="true"
-                                                                appearance="outline"
-                                                                (selectionChange)="selectChangeChiefComplaint($event)">
-                                                            </app-airmid-chipautocomplete>
-                                                        </div>
-                                                        <mat-chip-listbox #chipList>
-                                                            <mat-chip
-                                                                *ngFor="let item of caseFormGroup.value.mAssignChiefComplaint">
-                                                                {{ item.descriptionName }} <mat-icon
-                                                                    (click)="removeChiefComplaint(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                        </mat-chip-listbox>
+                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                            (chipsChange)="selectChangeChiefComplaint($event)">
+                                                        </app-airmid-chipautocomplete>
                                                     </div>
 
-
-                                                    <form [formGroup]="caseFormGroup">
-                                                        <div class="investigation-title">
-                                                            <span style="font-weight: 700;">
-                                                                Diagnosis
-                                                            </span>
-                                                        </div>
+                                                    <div style="margin-bottom: 16px;">
+                                                        <span style="font-weight: 700;">
+                                                            Diagnosis
+                                                        </span>
                                                         <hr>
-                                                        <div fxLayout="row">
-                                                            <div fxFlex="40%">
-                                                                <airmid-dropdown label="Diagnosis"
-                                                                    formControlName="mAssignDiagnosis"
-                                                                    [formGroup]="caseFormGroup" #ddlDiagnosis
-                                                                    [IsMultiPle]="true" ValueField="id"
-                                                                    TextField="descriptionName"
-                                                                    ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis"
-                                                                    [ReqFullObj]="true"
-                                                                    (selectionChange)="selectChangeDiagnosis($event)">
-                                                                </airmid-dropdown>
+                                                        <app-airmid-chipautocomplete
+                                                            [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
+                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                            (chipsChange)="selectChangeDiagnosis($event)">
+                                                        </app-airmid-chipautocomplete>
+                                                    </div>
 
-                                                            </div>
-                                                            <mat-chip-listbox #chipList>
-                                                                <mat-chip
-                                                                    *ngFor="let item of caseFormGroup.value.mAssignDiagnosis">
-                                                                    {{ item.descriptionName }} <mat-icon
-                                                                        (click)="removedignosis(item)">close</mat-icon>
-                                                                </mat-chip>
-                                                            </mat-chip-listbox>
-                                                        </div>
-                                                    </form>
-
-                                                    <form [formGroup]="caseFormGroup">
-                                                        <div class="investigation-title">
-                                                            <span style="font-weight: 700;">
-                                                                Examination
-                                                            </span>
-                                                        </div>
+                                                    <div style="margin-bottom: 16px;">
+                                                        <span style="font-weight: 700;">
+                                                            Examination
+                                                        </span>
                                                         <hr>
-                                                        <div fxLayout="row">
-                                                            <div fxFlex="40%">
-                                                                <airmid-dropdown label="Examination"
-                                                                    formControlName="mAssignExamination"
-                                                                    [formGroup]="caseFormGroup" #ddlExamination
-                                                                    [IsMultiPle]="true"
-                                                                    [value]="regObj.mAssignExamination" ValueField="id"
-                                                                    TextField="descriptionName"
-                                                                    ApiUrl="OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination"
-                                                                    [ReqFullObj]="true"
-                                                                    (selectionChange)="selectChangeExamination($event)">
-                                                                </airmid-dropdown>
-                                                            </div>
-                                                            <mat-chip-listbox #chipList>
-                                                                <mat-chip
-                                                                    *ngFor="let item of caseFormGroup.value.mAssignExamination">
-                                                                    {{ item.descriptionName }} <mat-icon
-                                                                        (click)="removeExamination(item)">close</mat-icon>
-                                                                </mat-chip>
-                                                            </mat-chip-listbox>
-                                                        </div>
-                                                    </form>
+                                                        <app-airmid-chipautocomplete
+                                                            [chips]="caseFormGroup.get('mAssignExamination')?.value"
+                                                            [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
+                                                            [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                            (chipsChange)="selectChangeExamination($event)">
+                                                        </app-airmid-chipautocomplete>
+                                                    </div>
 
                                                 </div>
                                             </div>

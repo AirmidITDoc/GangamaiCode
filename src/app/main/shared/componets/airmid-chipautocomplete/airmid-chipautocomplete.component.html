@@ -1,89 +1,30 @@
-<!-- <mat-form-field appearance="outline" class="example-chip-list" fxFlex floatLabel="always">
-  <mat-label>{{ label }}</mat-label>
+<div class="relative-container">
+  <div class="chip-wrapper">
+    <!-- Display selected chips -->
+    <div class="chip" *ngFor="let chip of chips">
+      {{ chip[displayKey] }}
+      <button type="button" (click)="removeChip(chip)">×</button>
+    </div>
 
-  <mat-chip-list #chipList aria-label="{{ label }} selection">
-    <mat-chip *ngFor="let item of selectedItems"
-              [selectable]="selectable"
-              [removable]="removable"
-              (removed)="remove(item)">
-        {{ item[displayWith] || item }}
-      <mat-icon *ngIf="removable" (click)="remove(item)">close</mat-icon>
-    </mat-chip>
-
+    <!-- Input field -->
     <input
-      matInput
-      [formControl]="control"
-      [placeholder]="placeholder"
-      [matAutocomplete]="auto"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="[13,188]"
-      (matChipInputTokenEnd)="addFromInput($event)">
-  </mat-chip-list>
+      [(ngModel)]="inputValue"
+      (keydown.enter)="handleEnter()"
+      (input)="filterOptions()"
+      (focus)="showDropdown = true"
+      (blur)="hideDropdownWithDelay()"
+      placeholder="Type or select an item"
+    />
+  </div>
 
-  <mat-autocomplete #auto="matAutocomplete"
-                    (optionSelected)="selectOption($event.option.value)">
-    <mat-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-      {{ displayFn(option) }}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
-
- -->
- 
-<mat-form-field [appearance]="appearance" fxFlex class="airmid-dropdown">
-  <mat-label>{{ label }}</mat-label>
-
-  <mat-select
-    [formControl]="formGroup.controls[formControlName]"
-    placeholder="Search..."
-    #singleSelect
-    [disabled]="disabled"
-    [(ngModel)]="value"
-    ariaDescribedby="ValueField"
-    aria-label="{{ ValueField }}"
-    [compareWith]="comparer"
-    [multiple]="IsMultiPle"
-    [disableRipple]="readonly"
-    [panelClass]="readonly ? 'readonly-panel' : ''"
-    (selectionChange)="onDdlChange($event)"
-    (click)="onClick($event)"
-    (keydown)="readonly ? $event.preventDefault() : null"
-  >
-    <!-- Search Box -->
-    <mat-option>
-      <ngx-mat-select-search
-        [formControl]="ddlFilterCtrl"
-        placeholderLabel="Search or type and press Enter..."
-        noEntriesFoundLabel="No results found"
-        (keydown.enter)="onEnterTyped($event)"
-        *ngIf="!readonly"
-      >
-      </ngx-mat-select-search>
-    </mat-option>
-
-    <!-- Dropdown Options -->
-    <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
-      {{ ddl[TextField] }}
-    </mat-option>
-  </mat-select>
-
-  <!-- Clear Button -->
-  <span
-    mat-icon-button
-    aria-label="Clear"
-    class="dropdown-close-icon"
-    (click)="clearSelection($event)"
-    *ngIf="+value && !readonly"
-  >
-    <mat-icon>close</mat-icon>
-  </span>
-
-  <!-- Error Messages -->
-  <mat-error>
-    <ng-container *ngFor="let error of activeErrors">
-      {{ error }}
-    </ng-container>
-  </mat-error>
-</mat-form-field>
+  <!-- Scrollable suggestions -->
+  <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
+    <div class="autocomplete-item"
+         *ngFor="let option of filteredOptions"
+         (mousedown)="selectOption(option)">
+      {{ option[displayKey] }}
+    </div>
+  </div>
+</div>
 
 
