@@ -363,50 +363,51 @@
                         </div>
                     
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Batch No" [(ngModel)]="BatchNo" formControlName="BatchNo" [readonly]="true"
+                          <airmid-textbox label="Batch No"  formControlName="BatchNo" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Qty" [(ngModel)]="Qty" formControlName="Qty" #qtyInputRef type="number" min="0"
-                            (valueChange)="calculateTotalAmt()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                          <airmid-textbox label="Qty"  formControlName="Qty" #qtyInputRef [type]="'number'"  min="0"
+                            (valueChange)="calculateTotalAmt()" [formGroup]="_salesService.ItemSearchGroup"
+                            ></airmid-textbox>
                         </div> 
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="MRP" [(ngModel)]="MRP" formControlName="MRP" type="number" [readonly]="true"
+                          <airmid-textbox label="MRP"  formControlName="MRP" type="number" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Total MRP" [(ngModel)]="TotalMRP" formControlName="TotalMrp" [readonly]="true"
+                          <airmid-textbox label="Total MRP"   formControlName="TotalMrp" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
                     
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Disc %" [(ngModel)]="DiscPer" formControlName="DiscPer" type="number"
+                          <airmid-textbox label="Disc %"   formControlName="DiscPer" type="number"
                             (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
                     
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Disc Amt" [(ngModel)]="DiscAmt" formControlName="DiscAmt" type="number"
+                          <airmid-textbox label="Disc Amt"   formControlName="DiscAmt" type="number"
                             (valueChange)="CaldiscAmount()"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
                     
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Net Amount" [(ngModel)]="NetAmt" formControlName="NetAmt" [readonly]="true"
+                          <airmid-textbox label="Net Amount"   formControlName="NetAmt" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Margin Amount" [(ngModel)]="v_marginamt" formControlName="MarginAmt" [readonly]="true"
+                          <airmid-textbox label="Margin Amount"  formControlName="MarginAmt" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
                     
                         <!-- [disabled]="!add" -->
                         <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!_salesService.ItemSearchGroup.invalid"
                           [matTooltipPosition]="'above'">
-                          <button (click)="OnAddUpdate()" class="btn btn-primary btn-with-icon py-8"
+                          <button (click)="OnAddItem()" class="btn btn-primary btn-with-icon py-8"
                             [disabled]="!this._salesService.ItemSearchGroup.valid" #addbutton> <!-- [disabled]="!add" -->
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
@@ -561,19 +562,19 @@
                                 <div class="net-amt-group total-amt">
                                   <span class="net-amt-label fw-600">Total:</span>
                                   <span class="net-amt-value">
-                                    {{ getMarginSum(saleSelectedDatasource.data) | currency : 'INR' }}
+                                    {{ItemSubform.get('totalAmount')?.value | currency : 'INR' }}
                                   </span>
                                 </div>
                                 <div class="net-amt-group total-gst">
                                   <span class="net-amt-label fw-600">Total GST:</span>
                                   <span class="net-amt-value">
-                                    {{ getGSTAmtSum(saleSelectedDatasource.data) | currency : 'INR' }}
+                                    {{ItemSubform.get('vatAmount')?.value | currency : 'INR' }}
                                   </span>
                                 </div>
                                 <div class="net-amt-group net-amount">
                                   <span class="net-amt-label fw-600" style="background-color: aquamarine">Net Amount:</span>
                                   <span class="net-amt-value" style="background-color: aquamarine">
-                                    {{ getNetAmtSum(saleSelectedDatasource.data) | currency : 'INR' }}
+                                    {{ItemSubform.get('netAmount')?.value| currency : 'INR' }}
                                   </span>
                                 </div>
                               </div>
@@ -582,7 +583,8 @@
                                   <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
                                 </div>
                                 <airmid-textbox fxFlex="8%" label="Total Amount" 
-                                [formGroup]="ItemSubform" formControlName="totalAmount" [(ngModel)]="FinalTotalAmt" [readonly]="true"></airmid-textbox>
+                                [formGroup]="ItemSubform" formControlName="totalAmount" 
+                                [(ngModel)]="FinalTotalAmt" [readonly]="true"></airmid-textbox>
   
                                 <airmid-textbox
                                   fxFlex="7%"
@@ -658,7 +660,7 @@
                                 <mat-radio-group aria-label="Select an option" formControlName="CashPay"  >
                                   <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                   <mat-radio-button value="CashPay">Cash</mat-radio-button>
-                                  <mat-radio-button value="Online">Online</mat-radio-button>
+                                  <!-- <mat-radio-button value="Online">Online</mat-radio-button> -->
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                   <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                 </mat-radio-group>
@@ -676,8 +678,7 @@
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
                                   <button mat-raised-button (click)="getPRESCRIPTION()" class="btn btn-primary-outline">GET PRESCRIPTION</button>
   
-                                  <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button>
-                                  <button class="btn btn-primary-outline" *ngIf="IsOnlineRefNo" (click)="payOnline()">Online</button>
+                                  <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button> 
                                   <button class="btn btn-danger-outline" (click)="onClose()" (keydown.enter)="onF6Reset($event)">Reset</button>
                                 </div>
                                 <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->

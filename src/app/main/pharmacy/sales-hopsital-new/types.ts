@@ -369,6 +369,7 @@ export interface SalesBatchItemModel{
   drugTypeName: string;
   manufactureName: string;
   formattedText: string;
+  vatPercentage:any;
 }
 
 export interface SalesFormModel {

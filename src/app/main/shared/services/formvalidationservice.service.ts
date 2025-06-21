@@ -43,9 +43,8 @@ export class FormvalidationserviceService {
     const value = control.value;
     if (value === null || value === '') return null;
 
-    // Allow positive decimal numbers (e.g., 123, 123.45)
-    const isValid = /^[0-9]+(\.[0-9]+)?$/.test(value);
-    return isValid ? null : { invalidNumber: true };
+    // Allow positive decimal numbers (e.g., 123, 123.45) 
+    return /^[0-9]+(\.[0-9]+)?$/.test(value) ? null : { invalidNumber: true };
   };
 }
   // only string is allowed when it is required

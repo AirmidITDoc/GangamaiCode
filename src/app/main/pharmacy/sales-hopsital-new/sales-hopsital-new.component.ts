@@ -85,7 +85,7 @@ export class SalesHospitalNewComponent implements OnInit {
   RegId: any = '';
   IPMedID: any;
   OPDNo: any;
-  IPDNo: any;  
+  IPDNo: any;
   // Item Related
   ItemName: any;
   ItemId: any;
@@ -166,7 +166,7 @@ export class SalesHospitalNewComponent implements OnInit {
   chargeslist1: any = [];
   // Other Properties
   sIsLoading: string = '';
-  isLoading = true; 
+  isLoading = true;
   noOptionFound: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
   msg: any;
@@ -234,6 +234,8 @@ export class SalesHospitalNewComponent implements OnInit {
   vCondition: boolean = false;
   vConditionExt: boolean = false;
   vConditionIP: boolean = false;
+  PharmaSalesForm: FormGroup;
+  PharmaSalesDraftForm: FormGroup
 
   // Payment Details
   advanceData: any = {};
@@ -252,7 +254,7 @@ export class SalesHospitalNewComponent implements OnInit {
   selectedItem: SalesBatchItemModel;
   selectedTableRowItem: IndentList;
 
- 
+
   WardName: any;
   BedName: any;
   DoctorNamecheck: boolean = false;
@@ -260,7 +262,7 @@ export class SalesHospitalNewComponent implements OnInit {
   OPDNoCheck: boolean = false;
   autocompletestore: string = 'Store';
 
-    Patientdetails:any;
+  Patientdetails: any;
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -274,23 +276,22 @@ export class SalesHospitalNewComponent implements OnInit {
     private onlinePaymentService: OnlinePaymentService,
     private _FormvalidationserviceService: FormvalidationserviceService
   ) {
-    this.PatientHeaderObj = this.data; 
+    this.PatientHeaderObj = this.data;
   }
 
   ngOnInit(): void {
-    this.getItemSubform();
+    this.getSalesFooterform();
     this.getStoredet();
     this.getDraftorderList();
 
-      this.PharmaSalesForm = this.CreatePharmasalesform();
-      this.PharmaSalesDraftForm =  this.CreatePharmasalesDraftform();
+    this.PharmaSalesForm = this.CreatePharmasalesform();
+    this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform();
     if (this.vPharExtOpt == true) {
       this.paymethod = false;
       this.vSelectedOption = '2';
     } else {
       this.vPharOPOpt = true;
     }
-
     if (this.vPharIPOpt == true) {
       if (this.vPharOPOpt == false) {
         this.paymethod = true;
@@ -307,6 +308,226 @@ export class SalesHospitalNewComponent implements OnInit {
     } else {
       this.vCondition = true;
     }
+  }
+    //sales footer form
+  getSalesFooterform() {
+    this.ItemSubform = this.formBuilder.group({
+      FinalDiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      CashPay: ['CashPay'],
+      referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      roundoffAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      extMobileNo: [0, [Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.onlyNumberValidator()]],
+      extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+    });
+  }
+  //sales save form
+  CreatePharmasalesform() {
+    return this.formBuilder.group({
+      //Sales header
+      sales: this.formBuilder.group({
+        salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSellted: [true],
+        isPrint: [true],
+        isFree: [true],
+        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        addedBy: [this._loggedService.currentUserValue.userId],
+        creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        creditReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        discperH: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isPurBill: [false],
+        isBillCheck: [true],
+        salesHeadName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        salesTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        roundOff: [false],
+        extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        tSalesDetails: this.formBuilder.array([]),
+      }),
+      //sales payment
+      payment: this.formBuilder.group({
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        chequeDate: "1999-01-01",
+        cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        cardDate: "1999-01-01",
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        addBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelled: false,
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: "1999-01-01",
+        opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        neftdate: "1999-01-01",
+        payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        payTmdate: "1999-01-01"
+      }),
+      //Sales current stock
+      tCurrentStock: this.formBuilder.array([]),
+      prescription: this.formBuilder.group({
+        opipid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isclosed: [true]
+      }),
+      //Sales draft
+      salesDraft: this.formBuilder.group({
+        dSalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isclosed: [true]
+      })
+    })
+  }
+  CreateSalesDetailsform(item: any) {
+    return this.formBuilder.group({
+      salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
+      unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      returnQty: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstper: [item?.CgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstamt: [item?.sgstper ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      sgstper: [item?.SgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      sgstamt: [item?.SGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstper: [item?.IgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstamt: [item?.IGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      isPurRate: [true],
+      stkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mrp: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      mrpTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    })
+  }
+  CreateCurrentStockForm(item: any) {
+    return this.formBuilder.group({
+      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      issueQty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      iStkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeID: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+    })
+  }
+  // Getters 
+  get SalesDetailsAarry(): FormArray {
+    return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
+  }
+  get CurrentStockArray(): FormArray {
+    return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
+  }
+  // Getters 
+  get SalesDraftDetailsAarry(): FormArray {
+    return this.PharmaSalesDraftForm.get('salesDraftDet') as FormArray;
+  }
+  //sales draft save form
+  CreatePharmasalesDraftform() {
+    return this.formBuilder.group({
+      //Sales Draft header
+      salesDraft: this.formBuilder.group({
+        dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+        time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSellted: [true],
+        isPrint: [true],
+        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        addedBy: [this._loggedService.currentUserValue.userId],
+        externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        creditReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isClosed: [false],
+        isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      }),
+      //Sales draft details
+      salesDraftDet: this.formBuilder.array([]),
+    })
+  }
+  CreateDraftDetails(item: any) {
+    return this.formBuilder.group({
+      dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
+      unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+    })
   }
   onChangePatientType(event) {
     if (event.value == '0') {
@@ -342,7 +563,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.paymethod = false;
       this.OP_IPType = 2;
     }
-  } 
+  }
   getSelectedObjRegIP(obj) {
     console.log(obj);
     let IsDischarged = 0;
@@ -357,12 +578,12 @@ export class SalesHospitalNewComponent implements OnInit {
       this.IPDNocheck = true;
       this.OPDNoCheck = false;
       this.PatientName = obj.firstName + ' ' + obj.lastName;
-      this.RegId = obj.regID; 
+      this.RegId = obj.regID;
       this.OP_IP_Id = obj.admissionID;
-      this.IPDNo = obj.ipdNo; 
-      this.DoctorName = obj.doctorName; 
-    } 
-   // this.getBillSummary(); 
+      this.IPDNo = obj.ipdNo;
+      this.DoctorName = obj.doctorName;
+    }
+    // this.getBillSummary(); 
   }
   getSelectedObjOP(obj) {
     console.log(obj);
@@ -373,17 +594,15 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PatientName = obj.firstName + ' ' + obj.lastName;
     this.RegId = obj.regID;
     this.OP_IP_Id = obj.VisitId;
-    this.OPDNo = obj.OPDNo; 
-    this.DoctorName = obj.doctorName;  
+    this.OPDNo = obj.OPDNo;
+    this.DoctorName = obj.doctorName;
     //this.getBillSummary(); 
   }
   onPatientChange(event: any): void {
     console.log(event);
   }
-  onItemChange(event: SalesItemModel): void { 
-        this.ItemName = event.itemName;
+  onItemChange(event: SalesItemModel): void {
     this.ItemId = event.itemId;
-    this.StoreId = event.storeId;
     this.getBatch(event.itemId, event.storeId);
   }
   // NOTE: If `isEditable` true then it means this popup will open for table row data 
@@ -400,31 +619,30 @@ export class SalesHospitalNewComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result1) => {
-      debugger
-      let isEscaped = result1.vEscflag; 
+      let isEscaped = result1.vEscflag;
       if (isEscaped && !isEditable) {
         this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
-        return; 
+        return;
       }
       let result = result1.selectedData as SalesBatchItemModel;
       const isAlreadyExists = this.Itemchargeslist.find((i) => i.StockId === result.stockId && i.ItemId === result.itemId);
       if (isAlreadyExists) {
         this.toastr.warning('Selected Item already added in the list', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
-        }); 
+        });
         if (!isEditable) {
           const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
           if (ItemIdElement) {
             ItemIdElement.focus();
           }
           this.ItemFormreset();
-        }  
+        }
         return;
-      } 
+      }
       const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
       if (QtyElement) {
         QtyElement.focus();
-      } 
+      }
 
       this.selectedItem = result;
       if (isEditable) {
@@ -449,36 +667,23 @@ export class SalesHospitalNewComponent implements OnInit {
         this.selectedTableRowItem = null;
         return;
       }
-      this.BatchNo = result.batchNo;
-      this.BatchExpDate = this.datePipe.transform(result.batchExpDate, 'MM-dd-yyyy');
-      this.MRP = result.unitMRP;
-      this.Qty = 0;
-      // this.Bal = result.BalanceAmt;
-      this.GSTPer = result.sgstPer + result.cgstPer + result.igstPer;
-
-      this.TotalMRP = this.Qty * this.MRP;
-      this.DiscPer = 0;
-      this.DiscAmt = 0;
-      this.NetAmt = this.TotalMRP;
-      this.BalanceQty = result.balanceQty;
-
-      // this.VatPer = result.VatPercentage;
-      this.CgstPer = result.cgstPer;
-      this.SgstPer = result.sgstPer;
-      this.IgstPer = result.igstPer;
-
-      // this.VatAmount = result.VatPercentage;
-      this.StockId = result.stockId;
-      this.StoreId = result.storeId;
-      this.LandedRate = result.landedRate;
-      this.PurchaseRate = result.purchaseRate;
-      this.UnitMRP = result.unitMRP;
+      console.log(this.selectedItem)
+      this.ItemAddForm = this.createItemAddTable()
+      this._salesService.ItemSearchGroup.patchValue({
+        BatchNo: result.batchNo,
+        BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
+        BalanceQty: result.balanceQty,
+        Qty: 0,
+        DiscAmt: 0,
+        GSTPer: result.vatPercentage,
+        MRP: result.unitMRP,
+      })
     });
   }
-  //////////////////////////////////calculation part 
   calculateTotalAmt() {
-    let qty = +this._salesService.ItemSearchGroup.get('Qty').value;
-    if (qty > this.BalanceQty) {
+    const formvalues = this._salesService.ItemSearchGroup.value;
+    let qty = +formvalues.Qty;
+    if (qty > formvalues.BalanceQty) {
       Swal.fire({
         icon: "warning",
         title: "Enter Qty less than Balance Qty",
@@ -487,31 +692,28 @@ export class SalesHospitalNewComponent implements OnInit {
       });
       this.ItemFormreset();
     }
+    if (qty && formvalues.MRP) {
+      let TotalMRP = (qty * formvalues.MRP).toFixed(2);
+      let LandedRateandedTotal = (qty * this.selectedItem?.landedRate).toFixed(2);
+      let marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+      let PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
+      let GSTAmount = (((parseFloat(TotalMRP) * formvalues.GSTPer) / 100) * qty).toFixed(2);
+      let CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
+      let SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
+      let IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2);
 
-    if (qty && this.MRP) {
-      this.TotalMRP = (qty * this._salesService.ItemSearchGroup.get('MRP').value).toFixed(2);
-      this.LandedRateandedTotal = (qty * this.LandedRate).toFixed(2);
-      this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
-      this.PurTotAmt = (qty * this.PurchaseRate).toFixed(2);
-
-      this.GSTAmount = (((this.UnitMRP * this.GSTPer) / 100) * qty).toFixed(2);
-      this.CGSTAmt = (((this.UnitMRP * this.CgstPer) / 100) * qty).toFixed(2);
-      this.SGSTAmt = (((this.UnitMRP * this.SgstPer) / 100) * qty).toFixed(2);
-      this.IGSTAmt = (((this.UnitMRP * this.IgstPer) / 100) * qty).toFixed(2);
-
-      this.getDiscPer();
+      this._salesService.ItemSearchGroup.patchValue({
+        TotalMrp: TotalMRP,
+        NetAmt: TotalMRP,
+        MarginAmt: marginamt,
+        GSTAmount: GSTAmount,
+        LandedRateandedTotal: LandedRateandedTotal,
+        CGSTAmt: CGSTAmt,
+        SGSTAmt: SGSTAmt,
+        IGSTAmt: IGSTAmt,
+        PurTotAmt: PurTotAmt,
+      })
     }
-  }
-  getDiscPer() {
-    let DiscPer = this._salesService.ItemSearchGroup.get('DiscPer').value;
-    if (this.DiscPer > 0) {
-      this.chkdiscper = true;
-      this.DiscAmt = ((this.TotalMRP * this.DiscPer) / 100).toFixed(2);
-    } else {
-      this.chkdiscper = false;
-      this.DiscAmt = 0;
-    }
-    this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
   }
   public discperCal(): void {
     const formValue = this._salesService.ItemSearchGroup.value;
@@ -521,6 +723,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.toastr.error('Enter discount between 0 - 100', 'Error !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      this.chkdiscper = false;
       this._salesService.ItemSearchGroup.patchValue({
         DiscAmt: 0,
         DiscPer: 0,
@@ -529,20 +732,20 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     if (formValue.TotalMrp) {
       // Calculate discount amount from percentage
-      this.DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+      let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+      this.chkdiscper = true;
       this._salesService.ItemSearchGroup.patchValue({
-        DiscAmt: this.DiscAmt,
+        DiscAmt: DiscAmt,
       });
       this.calculateNetAmount();
-      // this.discamount.nativeElement.focus();
     }
   }
   private calculateNetAmount(): void {
     const formValue = this._salesService.ItemSearchGroup.value;
     if (formValue.TotalMrp) {
-      this.NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
+      let NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
       this._salesService.ItemSearchGroup.patchValue({
-        NetAmt: this.NetAmt,
+        NetAmt: NetAmt,
       });
     }
   }
@@ -560,99 +763,52 @@ export class SalesHospitalNewComponent implements OnInit {
       });
       return;
     }
-
     if (formValue.TotalMrp && discAmt) {
       // Calculate discount percentage from amount
-      this.DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
+      let DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
       this._salesService.ItemSearchGroup.patchValue({
-        DiscPer: this.DiscPer,
+        DiscPer: DiscPer,
       });
       this.calculateNetAmount();
     }
-  }
-  getFinalDiscperAmt() {
-    let Disc = this.ItemSubform.get('FinalDiscPer').value || 0;
-    let DiscAmt = this.ItemSubform.get('discAmount').value || 0;
-
-    if (Disc > 0 || Disc < 100) {
-      this.ConShow = true;
-      this.FinalDiscAmt = ((this.FinalTotalAmt * Disc) / 100).toFixed(2);
-      this.ItemSubform.get('discAmount').setValue(this.FinalDiscAmt);
-      this.FinalNetAmount = (this.FinalTotalAmt - this.FinalDiscAmt).toFixed(2);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
-      this.ItemSubform.get('concessionReasonId').enable();
-      this.ItemSubform.updateValueAndValidity();
-    } else {
-      this.ConShow = false;
-      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').clearValidators();
-      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      // this.ConseId.nativeElement.focus();
-    }
-
-    this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-  }
-  getFinalDiscAmount() {
-    // console.log("total disc");
-    let totDiscAmt = this.ItemSubform.get('discAmount').value;
-    // console.log(totDiscAmt);
-    // console.log(this.FinalDiscAmt);
-    if (totDiscAmt > 0) {
-      this.FinalNetAmount = (this.FinalNetAmount - this.FinalDiscAmt).toFixed(2);
-      this.ConShow = true;
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
-      this.ItemSubform.get('concessionReasonId').enable();
-    } else {
-      this.ConShow = false;
-      this.ItemSubform.get('netAmount').setValue(this.FinalNetAmount);
-      this.ItemSubform.get('concessionReasonId').reset();
-      this.ItemSubform.get('concessionReasonId').clearValidators();
-      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      //this.ConseId.nativeElement.focus();
-    }
-  }
-
-    //Add Item list
-  // ItemAddForm:FormGroup;
-  // createItemAddTable() {
-  //   return this.formBuilder.group({  
-  //     ItemId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     ItemName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     BatchNo: [this.selectedItem?.batchNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     BatchExpDate: [this.datePipe.transform(this.selectedItem?.batchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     Qty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     UnitMRP: [this.selectedItem?.unitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     GSTPer: [this.selectedItem?.batchNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     GSTAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     TotalMRP: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     DiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     DiscAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     NetAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     RoundNetAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     StockId: [this.selectedItem?.stockId,  [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     VatPer: [this.selectedItem?.batchNo,  [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     VatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     LandedRate: [this.selectedItem?.landedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     LandedRateandedTotal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     CgstPer: [this.selectedItem?.cgstPer,[this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     CGSTAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     SgstPer: [this.selectedItem?.sgstPer,  [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     SGSTAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     IgstPer: [this.selectedItem?.igstPer,  [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     IGSTAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     PurchaseRate: [this.selectedItem?.purchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     PurTotAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     MarginAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     BalanceQty: [this.selectedItem?.balanceQty,[this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     SalesDraftId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //     StoreId: [this.selectedItem?.storeId,  [this._FormvalidationserviceService.onlyNumberValidator()]],
-  //   })
-  // }
+  }  
   //Add Item list
-  OnAddUpdate() {
+  ItemAddForm: FormGroup;
+  createItemAddTable() {
+    return this.formBuilder.group({
+      ItemId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ItemName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      BatchNo: [this.selectedItem?.batchNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      BatchExpDate: [this.datePipe.transform(this.selectedItem?.batchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
+      Qty: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      UnitMRP: [this.selectedItem?.unitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GSTPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      TotalMRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      DiscAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      NetAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      RoundNetAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      StockId: [this.selectedItem?.stockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      VatPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      VatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      LandedRate: [this.selectedItem?.landedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      LandedRateandedTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      CgstPer: [this.selectedItem?.cgstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      CGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      SgstPer: [this.selectedItem?.sgstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      SGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      IgstPer: [this.selectedItem?.igstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      IGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      PurchaseRate: [this.selectedItem?.purchaseRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      PurTotAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      MarginAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      BalanceQty: [this.selectedItem?.balanceQty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      SalesDraftId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      StoreId: [this.selectedItem?.storeId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    })
+  } 
+  OnAddItem() {
     debugger;
     if (this.saleSelectedDatasource.data.length > 0) {
       this.saleSelectedDatasource.data.forEach((element) => {
@@ -673,64 +829,80 @@ export class SalesHospitalNewComponent implements OnInit {
         return;
       }
     }
+    const formValue = this._salesService.ItemSearchGroup.value;
+    this.ItemAddForm.patchValue({
+      ItemId: formValue.ItemId.itemId,
+      ItemName: formValue.ItemId.itemName,
+      Qty: formValue.Qty,
+      UnitMRP: formValue.MRP,
+      GSTAmount: formValue.GSTAmount,
+      TotalMRP: formValue.TotalMrp,
+      DiscPer: formValue.DiscPer,
+      DiscAmt: formValue.DiscAmt,
+      NetAmt: formValue.NetAmt,
+      GSTPer: formValue.GSTPer,
+      VatPer: formValue.GSTPer,
+      RoundNetAmt: Math.round(formValue.NetAmt),
+      VatAmount: formValue.GSTAmount,
+      LandedRateandedTotal: formValue.LandedRateandedTotal,
+      CGSTAmt: formValue.CGSTAmt,
+      SGSTAmt: formValue.SGSTAmt,
+      IGSTAmt: formValue.IGSTAmt,
+      PurTotAmt: formValue.PurTotAmt,
+      MarginAmt: formValue.MarginAmt,
+    })
+    console.log(this.ItemAddForm.value)
     if (!this.vBarcodeflag) {
-      let Qty = this._salesService.ItemSearchGroup.get('Qty').value;
-      this.Qty = parseInt(Qty);
-      if (this.ItemName && parseInt(Qty) != 0 && this.MRP > 0 && this.NetAmt > 0) {
-        this.Itemchargeslist = this.saleSelectedDatasource.data;
-        this.Itemchargeslist.push({
-          ItemId: this.ItemId,
-          ItemName: this.ItemName,
-          BatchNo: this.BatchNo,
-          BatchExpDate: this.BatchExpDate || '01/01/1900',
-          Qty: this.Qty,
-          UnitMRP: this.MRP,
-          GSTPer: this.GSTPer || 0,
-          GSTAmount: this.GSTAmount || 0,
-          TotalMRP: this.TotalMRP,
-          DiscPer: this._salesService.ItemSearchGroup.get('DiscPer').value || 0,
-          DiscAmt: this._salesService.ItemSearchGroup.get('DiscAmt').value || 0,
-          NetAmt: this.NetAmt,
-          RoundNetAmt: Math.round(this.NetAmt),
-          StockId: this.StockId,
-          VatPer: this.GSTPer,
-          VatAmount: this.GSTAmount,
-          LandedRate: this.LandedRate,
-          LandedRateandedTotal: this.LandedRateandedTotal,
-          CgstPer: this.CgstPer,
-          CGSTAmt: this.CGSTAmt,
-          SgstPer: this.SgstPer,
-          SGSTAmt: this.SGSTAmt,
-          IgstPer: this.IgstPer,
-          IGSTAmt: this.IGSTAmt,
-          PurchaseRate: this.PurchaseRate,
-          PurTotAmt: this.PurTotAmt,
-          MarginAmt: this.v_marginamt,
-          BalanceQty: this.BalQty,
-          SalesDraftId: 1,
-          StoreId: this.StoreId,
-        });
-        this.sIsLoading = '';
+      if (this.ItemAddForm.valid) {
+        this.Itemchargeslist.push(this.ItemAddForm.value)
         this.saleSelectedDatasource.data = this.Itemchargeslist;
-        this.ItemFormreset();
+      } else {
+        let invalidFields = [];
+        if (this.ItemAddForm.invalid) {
+          for (const controlName in this.ItemAddForm.controls) {
+            if (this.ItemAddForm.controls[controlName].invalid) {
+              invalidFields.push(`${controlName}`);
+            }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => {
+            this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+            );
+          });
+          return
+        }
       }
       this.add = false;
+      this.ItemFormreset();
+      this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
     }
   }
   ItemFormreset() {
-    this.BatchNo = '';
-    this.BatchExpDate = '01/01/1900';
-    this.MRP = 0;
-    this.Qty = '';
-    this.Bal = 0;
-    this.GSTPer = 0;
-    this.DiscPer = 0;
-    this.DiscAmt = 0;
-    this.TotalMRP = 0;
-    this.NetAmt = 0;
-    this.v_marginamt = 0;
-    this._salesService.ItemSearchGroup.get('ItemId').reset('a'); 
+    this._salesService.ItemSearchGroup.patchValue({
+      ItemId: ['a'],
+      ItemName: '',
+      BatchNo: '',
+      BatchExpDate: '01/01/1900',
+      BalanceQty: '',
+      Qty: [1],
+      GSTPer: '',
+      MRP: '',
+      TotalMrp: '',
+      DiscAmt: ' ',
+      NetAmt: '',
+      DiscPer: '',
+      MarginAmt: '0',
+      GSTAmount: '0',
+      LandedRateandedTotal: '0',
+      CGSTAmt: '0',
+      SGSTAmt: '0',
+      IGSTAmt: '0',
+      PurTotAmt: '0',
+    })
+    this._salesService.ItemSearchGroup.get('ItemId').reset('a');
     this.dsBalAvaListStore.data = [];
+
   }
   Formreset() {
     this.FinalTotalAmt = 0;
@@ -744,7 +916,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PatientName = '';
     this.DoctorName = '';
     this.ItemSubform.get('opIpType').setValue('2');
-    this.ItemSubform.get('CashPay').setValue('CashPay'); 
+    this.ItemSubform.get('CashPay').setValue('CashPay');
     this.IsOnlineRefNo = false;
     this.ItemSubform.get('referanceNo').reset('');
     this.ItemSubform.get('extMobileNo').reset('');
@@ -754,7 +926,6 @@ export class SalesHospitalNewComponent implements OnInit {
     this.ItemSubform.get('concessionReasonId').clearValidators();
     this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
     this.ItemSubform.get('concessionReasonId').disable();
-
     this.saleSelectedDatasource.data = [];
     this.getDraftorderList();
     this.TotalAdvanceAmt = 0;
@@ -762,7 +933,6 @@ export class SalesHospitalNewComponent implements OnInit {
     this.TotalCreditAmt = 0;
   }
   deleteTableRow(event, element) {
-    // if (this.key == "Delete") {
     let index = this.Itemchargeslist.indexOf(element);
     if (index >= 0) {
       this.Itemchargeslist.splice(index, 1);
@@ -770,7 +940,23 @@ export class SalesHospitalNewComponent implements OnInit {
       this.saleSelectedDatasource.data = this.Itemchargeslist;
     }
     Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
+    this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
   }
+    getUpdateNetAmtSum(data) {
+      const itemData = data
+    let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
+    let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
+    let FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
+    let FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
+    let roundoffAmt = Math.round(FinalNetAmt);
+    this.ItemSubform.patchValue({
+      roundoffAmt: roundoffAmt,
+      totalAmount: FinalTotalAmt,
+      vatAmount: FinalGSTAmt,
+      discAmount: FinalDiscAmt,
+      netAmount: FinalNetAmt,
+    })
+  }  
   getStoredet() {
     this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
       const storename = data;
@@ -778,457 +964,53 @@ export class SalesHospitalNewComponent implements OnInit {
       console.log(this.StoreName);
     });
   }
-
-  // getItemSubform() {
-  //   this.ItemSubform = this.formBuilder.group({
-  //     PatientName: '',
-  //     DoctorName: '',
-  //     extAddress: '',
-  //     MobileNo: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10)]],
-  //     PatientType: ['OP'],
-  //     TotalAmt: '',
-  //     GSTPer: '',
-  //     DiscAmt: '',
-  //     concessionAmt: [0],
-  //     ConcessionId: [0, [Validators.required]],
-  //     Remark: [''],
-  //     FinalAmount: '',
-  //     BalAmount: '',
-  //     FinalDiscPer: 0,
-  //     FinalDiscAmt: 0,
-  //     FinalTotalAmt: 0,
-  //     FinalNetAmount: 0,
-  //     FinalGSTAmt: 0,
-  //     BalanceAmt: 0,
-  //     CashPay: ['CashPay'],
-  //     referanceNo: '',
-  //     RegID: '',
-  //     RegID1: '',
-  //     PaidbyPatient: '',
-  //     PaidbacktoPatient: '',
-  //     roundoffAmt: '0',
-  //     StoreId: [this._loggedService.currentUserValue.user.storeId],
-  //   });
-  // } 
-  getItemSubform() {
-    this.ItemSubform = this.formBuilder.group({
-      FinalDiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      CashPay: ['CashPay'],
-      referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      roundoffAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionReasonId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      extMobileNo: [0,[Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10),this._FormvalidationserviceService.onlyNumberValidator()]],
-      extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-    });
-  } 
-  PharmaSalesForm: FormGroup;
-  CreatePharmasalesform() {
-    return this.formBuilder.group({
-      //Sales header
-      sales: this.formBuilder.group({
-        salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        date: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.validDateValidator()]],
-        time: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        opIpType: [1, [ this._FormvalidationserviceService.onlyNumberValidator,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        totalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAuthorizationId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isSellted: [true],
-        isPrint: [true],
-        isFree: [true],  
-        unitId: [0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        storeId: [this._loggedService.currentUserValue.user.storeId ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        addedBy: [this._loggedService.currentUserValue.userId],
-        creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        creditReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        wardId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        bedId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        discperH:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isPurBill: [false],
-        isBillCheck: [true],
-        salesHeadName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        salesTypeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        roundOff: [false],     
-        extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        tSalesDetails:this.formBuilder.array([]),
-      }),
-      //sales payment
-      payment: this.formBuilder.group({
-        paymentId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        paymentDate:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        paymentTime:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chequePayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chequeNo:  ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        chequeDate: "1999-01-01",
-        cardPayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        cardDate: "1999-01-01",
-        advanceUsedAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        advanceId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        refundId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        transactionType:[4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        addBy:[this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelled: false,
-        isCancelledBy:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: "1999-01-01",
-        opdipdType:[3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        neftpayAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        neftdate: "1999-01-01",
-        payTmamount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        payTmdate: "1999-01-01"
-      }),
-      //Sales current stock
-      tCurrentStock: this.formBuilder.array([]),
-      prescription: this.formBuilder.group({
-        opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isclosed: [true]
-      }),
-      //Sales draft
-      salesDraft: this.formBuilder.group({
-        dSalesId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isclosed: [true]
-      }) 
-    })
-  }  
-  CreateSalesDetailsform(item: any) {
-    return this.formBuilder.group({
-      salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'),[this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      returnQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: [item?.CgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstamt: [item?.sgstper ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstper: [item?.SgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstamt: [item?.SGSTAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstper: [item?.IgstPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstamt: [item?.IGSTAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isPurRate: [true],
-      stkId:[item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mrp: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrpTotal:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    })
-  }
-  CreateCurrentStockForm(item: any) {
-    return this.formBuilder.group({
-      itemId:  [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      issueQty:[item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      iStkId:[item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      storeID:[this._loggedService.currentUserValue.user.storeId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
-    })
-  }
-  // Getters 
-  get SalesDetailsAarry(): FormArray {
-    return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
-  }
-  get CurrentStockArray(): FormArray {
-    return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
-  }
-PharmaSalesDraftForm:FormGroup
- CreatePharmasalesDraftform() {
-    return this.formBuilder.group({
-      //Sales Draft header
-      salesDraft: this.formBuilder.group({
-        dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        date: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.validDateValidator()]],
-        time: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        opIpType: [1, [ this._FormvalidationserviceService.onlyNumberValidator,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        totalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAuthorizationId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isSellted: [true],
-        isPrint: [true],
-        unitId: [0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        addedBy: [this._loggedService.currentUserValue.userId],
-        externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        storeId: [this._loggedService.currentUserValue.user.storeId ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        creditReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isClosed: [false],
-        isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        wardId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        bedId:[0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-         extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-         extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-       }), 
-      //Sales draft details
-      salesDraftDet: this.formBuilder.array([]), 
-    })
-  }  
-CreateDraftDetails(item:any){ 
-    return this.formBuilder.group({
-      dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'),[this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
-    })
-  } 
-  // Getters 
-  get SalesDraftDetailsAarry(): FormArray {
-    return this.PharmaSalesDraftForm.get('salesDraftDet') as FormArray;
-  }
- 
-  salesIdWiseObj: any;
-  dummySalesIdNameArr = [];
-  SalesIdWiseObj: any = {};
-  getTopSalesDetailsList(MobileNo) {
-    var vdata = {
-      ExtMobileNo: MobileNo,
-    };
-    this.sIsLoading = 'get-sales-data';
-    this._salesService.getTopSalesDetails(vdata).subscribe((data: any) => {
-      if (data && data.length > 0) {
-        this.reportPrintObjItemList = data as Printsal[];
-        this.repeatItemList = data;
-        this.reportItemPrintObj = data[0] as Printsal;
-        this.PatientName = data[0].ExternalPatientName;
-        this.DoctorName = data[0].DoctorName;
-        this.salesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
-          if (!acc[item.SalesId]) {
-            acc[item.SalesId] = [];
-          }
-          acc[item.SalesId].push(item);
-          return acc;
-        }, {});
-        this.sIsLoading = '';
-        this.patientname.nativeElement.focus();
-      } else {
-        this.sIsLoading = '';
-      }
-    });
-    this.getTopSalesDetailsprint();
-  }
-  getTopSalesDetailsprint() {
-    var strrowslist = '';
-    let onlySalesId = [];
-    this.reportPrintObjItemList.forEach((ele) => onlySalesId.push(ele.SalesId));
-
-    let SalesidNamesArr = [...new Set(onlySalesId)];
-    SalesidNamesArr.forEach((ele) => this.dummySalesIdNameArr.push({ SalesId: ele, isHidden: false }));
-
-    this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
-      if (!acc[item.SalesId]) {
-        acc[item.SalesId] = [];
-      }
-      acc[item.SalesId].push(item);
-      return acc;
-    }, {});
-
-    for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
-      var objreportPrint = this.reportPrintObjItemList[i - 1];
-
-      var strabc =
-        this.getSalesIdName(objreportPrint.SalesId) +
-        `
-  <div style="display:flex;margin:8px 0">
-  <div style="display:flex;width:80px;margin-left:20px;">
-      <div>` +
-        objreportPrint.ItemShortName +
-        `</div>
-  </div>
-  </div>`;
-      strrowslist += strabc;
+  getFinalDiscperAmt() {
+    const formValues = this.ItemSubform.value;
+    let Disc = formValues.FinalDiscPer || 0;
+    let DiscAmt = formValues.discAmount || 0;
+    let NetAmount = formValues.netAmount;
+    let FinalDiscAmt = '';
+    if (Disc > 0 || Disc < 100) {
+      this.ConShow = true;
+      FinalDiscAmt = ((formValues.totalAmount * Disc) / 100).toFixed(2);
+      NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
+      this.ItemSubform.updateValueAndValidity();
+    } else {
+      this.ConShow = false;
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
     }
+    this.ItemSubform.patchValue({
+      discAmount: FinalDiscAmt,
+      netAmount: NetAmount,
+    })
   }
-  getSalesIdName(SalesId: String) {
-    let groupDiv;
-    for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
-      if (this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
-        let groupHeader =
-          `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
-          <div> <h3>` +
-          SalesId +
-          `</h3></div>
-           </div>`;
-        this.dummySalesIdNameArr[i].isHidden = true;
-        groupDiv = groupHeader;
-        break;
-      } else {
-        groupDiv = ``;
-      }
-    }
-    return groupDiv;
-  }  
-  AddItem(row) {
-    console.log(row);
-    this.repeatItemList = row.value;
-    this.Itemchargeslist = [];
-    this.repeatItemList.forEach((element) => {
-      let Qty = parseInt(element.Qty.toString());
-      let UnitMrp = element.UnitMRP.split('|')[0];
-      let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
-      let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
-      let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
-      let IGSTAmt = (((element.UnitMRP * this.IgstPer) / 100) * Qty).toFixed(2);
-
-      this.NetAmt = (UnitMrp * element.Qty).toFixed(2);
-      this.Itemchargeslist.push({
-        ItemId: element.ItemId,
-        ItemName: element.ItemShortName,
-        BatchNo: element.BatchNo,
-        BatchExpDate: this.datePipe.transform(element.BatchExpDate, 'dd/MM/YYYY'),
-        Qty: element.Qty,
-        UnitMRP: UnitMrp || element.UnitMRP,
-        TotalMRP: element.TotalAmount,
-        GSTPer: element.VatPer || 0,
-        GSTAmount: element.VatAmount || 0,
-        DiscPer: element.DiscPer,
-        DiscAmt: element.DiscAmount,
-        NetAmt: this.NetAmt,
-        RoundNetAmt: Math.round(this.NetAmt),
-        StockId: this.StockId,
-        VatPer: this.VatPer,
-        VatAmount: this.GSTAmount,
-        LandedRate: this.LandedRate,
-        LandedRateandedTotal: this.LandedRateandedTotal,
-        CgstPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
-        SgstPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IgstPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        PurchaseRate: this.PurchaseRate,
-        PurTotAmt: this.PurTotAmt,
-        MarginAmt: this.v_marginamt,
-        BalanceQty: this.BalQty,
-        SalesDraftId: 1,
-      });
-    });
-    this.sIsLoading = '';
-    this.saleSelectedDatasource.data = this.Itemchargeslist;
-  }
-  getGSTAmtSum(element) {
-    this.FinalGSTAmt = element.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-    return this.FinalGSTAmt;
-  }
-  getNetAmtSum(element) {
-    this.FinalNetAmount = element.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
-    this.FinalTotalAmt = element.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
-    this.FinalDiscAmt = element.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
-    this.FinalGSTAmt = element.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-    this.roundoffAmt = Math.round(this.ItemSubform.get('netAmount').value);
-    this.ItemSubform.get('vatAmount').setValue(this.FinalGSTAmt)
-
-    this.DiffNetRoundAmt = (parseFloat(this.roundoffAmt) - parseFloat(this.FinalNetAmount)).toFixed(2);
-    return this.FinalNetAmount;
-  }
-  getMarginSum(element) {
-    this.TotalMarginAmt = element.reduce((sum, { MarginAmt }) => (sum += +(MarginAmt || 0)), 0).toFixed(2);
-    return this.TotalMarginAmt;
-  }
-
-  calculateDiscAmt() {
-    let ItemDiscAmount = this._salesService.ItemSearchGroup.get('DiscAmt').value;
-    // let PurTotalAmount = this.PurTotAmt;
-    let LandedTotalAmount = this.LandedRateandedTotal;
-    let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
-    this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount) - parseFloat(LandedTotalAmount)).toFixed(2);
-
-    if (parseFloat(this.DiscAmt) > 0 && parseFloat(this.DiscAmt) < parseFloat(this.TotalMRP)) {
-      // this.DiscId=1;
+  getFinalDiscAmount() {
+    const formValues = this.ItemSubform.value;
+    let totDiscAmt = formValues.discAmount || 0;
+    let NetAmount = formValues.netAmount;
+    if (totDiscAmt > 0) {
+      NetAmount = (formValues.netAmount - totDiscAmt).toFixed(2);
       this.ConShow = true;
       this.ItemSubform.get('concessionReasonId').reset();
       this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
       this.ItemSubform.get('concessionReasonId').enable();
-      if (parseFloat(m_marginamt) <= parseFloat(LandedTotalAmount)) {
-        Swal.fire('Discount amount greater than Purchase amount, Please check !');
-        this.ItemFormreset();
-        this.itemid.nativeElement.focus();
-        this.ConShow = false;
-        this.ItemSubform.get('concessionReasonId').clearValidators();
-        this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      } else {
-        this.NetAmt = (this.TotalMRP - this._salesService.ItemSearchGroup.get('DiscAmt').value).toFixed(2);
-        this.add = true;
-        // this.addbutton.focus();
-      }
-    } else if (parseFloat(this.DiscAmt) > parseFloat(this.NetAmt)) {
-      Swal.fire('Check Discount Amount !');
+    } else {
       this.ConShow = false;
+      this.ItemSubform.get('concessionReasonId').reset();
       this.ItemSubform.get('concessionReasonId').clearValidators();
       this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+      //this.ConseId.nativeElement.focus();
     }
-    if (parseFloat(this._salesService.ItemSearchGroup.get('DiscAmt').value) == 0) {
-      this.add = true;
-      this.ConShow = false;
-      this.ItemSubform.get('concessionReasonId').clearValidators();
-      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
-      // this.addbutton.focus();
-    }
-  }
+    this.ItemSubform.patchValue({
+      netAmount: NetAmount,
+    })
 
-  DeleteDraft() {
-    let Query = 'delete T_SalesDraftHeader where DSalesId=' + this.DraftID + '';
-    this._salesService.getDelDrat(Query).subscribe((data) => {
-      if (data) {
-        this.getDraftorderList();
-      }
-    });
   }
-
- 
   onSave(event) {
     const formValue = this.ItemSubform.value
     if (!this.isValidForm()) {
@@ -1368,7 +1150,81 @@ CreateDraftDetails(item:any){
     this.saleSelectedDatasource.data = [];
     this.ItemSubform.get('FinalDiscPer').enable();
   }
- onSaveDraftBill() { 
+
+ ///////////////// //Darft part ---------------------------------------------------------------------------------------////////////////////////////
+  getDraftorderList() {
+    this.chargeslist1 = [];
+    this.dsDraftList.data = [];
+    let currentDate = new Date();
+    var m = {
+      FromDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
+      ToDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
+    };
+    // this._salesService.getDraftList(m).subscribe(
+    //   (data) => {
+    //     this.chargeslist1 = data as ChargesList[];
+    //     this.dsDraftList.data = this.chargeslist1;
+    //   },
+    //   (error) => {}
+    // );
+  }
+  AddItem(row) {
+    console.log(row);
+    this.repeatItemList = row.value;
+    this.Itemchargeslist = [];
+    this.repeatItemList.forEach((element) => {
+      let Qty = parseInt(element.Qty.toString());
+      let UnitMrp = element.UnitMRP.split('|')[0];
+      let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
+      let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
+      let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
+      let IGSTAmt = (((element.UnitMRP * this.IgstPer) / 100) * Qty).toFixed(2);
+
+      this.NetAmt = (UnitMrp * element.Qty).toFixed(2);
+      this.Itemchargeslist.push({
+        ItemId: element.ItemId,
+        ItemName: element.ItemShortName,
+        BatchNo: element.BatchNo,
+        BatchExpDate: this.datePipe.transform(element.BatchExpDate, 'dd/MM/YYYY'),
+        Qty: element.Qty,
+        UnitMRP: UnitMrp || element.UnitMRP,
+        TotalMRP: element.TotalAmount,
+        GSTPer: element.VatPer || 0,
+        GSTAmount: element.VatAmount || 0,
+        DiscPer: element.DiscPer,
+        DiscAmt: element.DiscAmount,
+        NetAmt: this.NetAmt,
+        RoundNetAmt: Math.round(this.NetAmt),
+        StockId: this.StockId,
+        VatPer: this.VatPer,
+        VatAmount: this.GSTAmount,
+        LandedRate: this.LandedRate,
+        LandedRateandedTotal: this.LandedRateandedTotal,
+        CgstPer: this.CgstPer,
+        CGSTAmt: this.CGSTAmt,
+        SgstPer: this.SgstPer,
+        SGSTAmt: this.SGSTAmt,
+        IgstPer: this.IgstPer,
+        IGSTAmt: this.IGSTAmt,
+        PurchaseRate: this.PurchaseRate,
+        PurTotAmt: this.PurTotAmt,
+        MarginAmt: this.v_marginamt,
+        BalanceQty: this.BalQty,
+        SalesDraftId: 1,
+      });
+    });
+    this.sIsLoading = '';
+    this.saleSelectedDatasource.data = this.Itemchargeslist;
+  }
+    DeleteDraft() {
+    let Query = 'delete T_SalesDraftHeader where DSalesId=' + this.DraftID + '';
+    this._salesService.getDelDrat(Query).subscribe((data) => {
+      if (data) {
+        this.getDraftorderList();
+      }
+    });
+  } 
+  onSaveDraftBill() {
     const formValue = this.ItemSubform.value
     if (!this.isValidForm()) {
       Swal.fire('Please enter valid table data.');
@@ -1382,10 +1238,10 @@ CreateDraftDetails(item:any){
         return;
       }
     }
-    debugger 
+    debugger
     this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
-    this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.Patientdetails?.admissionID) 
+    this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.Patientdetails?.admissionID)
     this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue.opIpType)
     this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
     this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
@@ -1394,30 +1250,30 @@ CreateDraftDetails(item:any){
     this.PharmaSalesDraftForm.get('salesDraft.unitId').setValue(this.Patientdetails?.hospitalID)
     this.PharmaSalesDraftForm.get('salesDraft.wardId').setValue(this.Patientdetails?.wardId)
     this.PharmaSalesDraftForm.get('salesDraft.bedId').setValue(this.Patientdetails?.bedId)
-  this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue.concessionReasonId)  
-  this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue.netAmount))) 
-  
+    this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue.concessionReasonId)
+    this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue.netAmount)))
+
     if (formValue.opIpType == 2) {
       this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(formValue.externalPatientName)
       this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(formValue.doctorName)
       this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue.extAddress)
       this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue(formValue.extMobileNo)
-    }else{
-       this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
+    } else {
+      this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
       this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails.doctorName)
-    } 
-    if (this.PharmaSalesDraftForm.valid) {
-      this.SalesDraftDetailsAarry.clear(); 
-      this.saleSelectedDatasource.data.forEach((element) => {
-        this.SalesDraftDetailsAarry.push(this.CreateDraftDetails(element)) 
-      });
-      console.log(this.PharmaSalesDraftForm.value) 
-       this._salesService.InsertSalesDraftBill(this.PharmaSalesDraftForm.value).subscribe((response) => {
-          this.onClose()
-            this.getDraftorderList();
-        }); 
     }
-     else {
+    if (this.PharmaSalesDraftForm.valid) {
+      this.SalesDraftDetailsAarry.clear();
+      this.saleSelectedDatasource.data.forEach((element) => {
+        this.SalesDraftDetailsAarry.push(this.CreateDraftDetails(element))
+      });
+      console.log(this.PharmaSalesDraftForm.value)
+      this._salesService.InsertSalesDraftBill(this.PharmaSalesDraftForm.value).subscribe((response) => {
+        this.onClose()
+        this.getDraftorderList();
+      });
+    }
+    else {
       let invalidFields = [];
       if (this.PharmaSalesDraftForm.invalid) {
         for (const controlName in this.PharmaSalesDraftForm.controls) {
@@ -1440,180 +1296,9 @@ CreateDraftDetails(item:any){
         });
         return
       }
-    }   
- }
- 
- 
-  onSaveDraftBill1() {
-    let NetAmt = this.ItemSubform.get('netAmount').value;
-    let ConcessionId = 0;
-    if (this.ItemSubform.get('concessionReasonId').value) ConcessionId = this.ItemSubform.get('concessionReasonId').value.ConcessionId;
-
-    let SalesInsert = {};
-    SalesInsert['Date'] = this.dateTimeObj.date;
-    SalesInsert['time'] = this.dateTimeObj.time;
-
-    if (this.ItemSubform.get('opIpType').value == '2') {
-      SalesInsert['oP_IP_Type'] = 2;
-      SalesInsert['oP_IP_ID'] = 0;
-    } else if (this.ItemSubform.get('opIpType').value == '0') {
-      SalesInsert['oP_IP_Type'] = 0;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    } else if (this.ItemSubform.get('opIpType').value == '1') {
-      SalesInsert['oP_IP_Type'] = 1;
-      SalesInsert['oP_IP_ID'] = this.OP_IP_Id;
-    }
-    SalesInsert['totalAmount'] = this.FinalTotalAmt;
-    SalesInsert['vatAmount'] = this.FinalGSTAmt || 0; //this.ItemSubform.get('FinalGSTAmt').value;
-    SalesInsert['discAmount'] = this.FinalDiscAmt;
-    SalesInsert['netAmount'] = NetAmt;
-    SalesInsert['paidAmount'] = NetAmt;
-    SalesInsert['balanceAmount'] = 0;
-    SalesInsert['concessionReasonID'] = ConcessionId || 0;
-    SalesInsert['concessionAuthorizationId'] = 0;
-    SalesInsert['isSellted'] = 0;
-    SalesInsert['isPrint'] = 0;
-    SalesInsert['unitID'] = 1;
-    (SalesInsert['addedBy'] = this._loggedService.currentUserValue.userId), (SalesInsert['externalPatientName'] = this.PatientName || '');
-    SalesInsert['doctorName'] = this.DoctorName || '';
-    SalesInsert['storeId'] = this._salesService.ItemSearchGroup.get('StoreId').value.storeid;
-    SalesInsert['isPrescription'] = this.IPMedID || 0;
-    SalesInsert['creditReason'] = '';
-    SalesInsert['creditReasonID'] = 0;
-    SalesInsert['wardId'] = 0;
-    SalesInsert['bedId'] = 0;
-    SalesInsert['extMobileNo'] = this.MobileNo;
-    SalesInsert['extAddress'] = this.vextAddress;
-
-    SalesInsert['DsalesId'] = 0;
-
-    let salesDetailInsertarr = [];
-    this.saleSelectedDatasource.data.forEach((element) => {
-      let salesDetailInsert = {};
-      salesDetailInsert['DsalesID'] = 0;
-      salesDetailInsert['itemId'] = element.ItemId;
-      salesDetailInsert['batchNo'] = element.BatchNo;
-      salesDetailInsert['batchExpDate'] = element.BatchExpDate;
-      salesDetailInsert['unitMRP'] = element.UnitMRP;
-      salesDetailInsert['qty'] = element.Qty;
-      salesDetailInsert['totalAmount'] = element.TotalMRP;
-      salesDetailInsert['vatPer'] = element.VatPer;
-      salesDetailInsert['vatAmount'] = element.VatAmount;
-      salesDetailInsert['discPer'] = element.DiscPer;
-      salesDetailInsert['discAmount'] = element.DiscAmt;
-      salesDetailInsert['grossAmount'] = element.NetAmt;
-      salesDetailInsert['landedPrice'] = element.LandedRate;
-      salesDetailInsert['totalLandedAmount'] = element.LandedRateandedTotal;
-      salesDetailInsert['purRateWf'] = element.PurchaseRate;
-      salesDetailInsert['purTotAmt'] = element.PurTotAmt;
-
-      salesDetailInsertarr.push(salesDetailInsert);
-    });
-
-    let submitData = {
-      salesDraftbillInsert: SalesInsert,
-      salesDraftbillDetailInsert: salesDetailInsertarr,
-    };
-    // console.log(submitData);
-    this._salesService.InsertSalesDraftBill(submitData).subscribe(
-      (response) => {
-        if (response) {
-          this.toastr.success('Record Saved Successfully.', 'Save !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          }); 
-          this.Itemchargeslist = [];
-          this._matDialog.closeAll(); 
-          //  this.onAddDraftList(response);
-          this.getDraftorderList();
-        }  
-      }  
-    );
-
-    this.ItemFormreset();
-    this.Formreset();
-    this.ItemSubform.get('concessionReasonId').reset();
-    this.PatientName = '';
-    this.MobileNo = '';
-    this.saleSelectedDatasource.data = [];
-  }
- 
-
-  tblCalucation(contact, Qty) {
-    let TotalMRP;
-    this.RQty = parseInt(contact.Qty) || 1;
-    if (this.RQty && contact.UnitMRP) {
-      TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2);
-      let LandedRateandedTotal = (parseInt(this.RQty) * contact.LandedRate).toFixed(2);
-      let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      //
-      this.PurTotAmt = (parseInt(this.RQty) * contact.PurchaseRate).toFixed(2);
-      let NetAmt;
-      let DiscAmt;
-      this.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      NetAmt = (parseFloat(TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
-
-      if (contact.DiscPer > 0) {
-        DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
-        NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
-      }
-
-      contact.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
-      contact.TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2); //this.TotalMRP || 0,
-      (contact.DiscAmt = DiscAmt || 0),
-        (contact.NetAmt = NetAmt), // (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
-        (contact.RoundNetAmt = Math.round(NetAmt)),
-        (contact.StockId = this.StockId),
-        (contact.VatAmount = 0), // this.GSTAmount || 0,
-        (contact.LandedRateandedTotal = LandedRateandedTotal),
-        (contact.CGSTAmt = contact.CGSTAmt || 0),
-        (contact.SGSTAmt = contact.SGSTAmt || 0),
-        (contact.IGSTAmt = contact.IGSTAmt || 0),
-        (contact.PurchaseRate = contact.PurchaseRate || 0),
-        (contact.PurTotAmt = 0), //this.PurTotAmt || 0,
-        (contact.MarginAmt = v_marginamt || 0);
-    }
-    this.ItemFormreset();
-  }
-  OnEnableDraftAdd() {
-    if (this.drafttable == false) {
-      this.drafttable = true;
-      this.saleSelectedDatasource.data = [];
-    } else {
-      this.drafttable = false;
     }
   }
-  getDraftorderList() {
-    this.chargeslist1 = [];
-    this.dsDraftList.data = [];
-    let currentDate = new Date();
-    var m = {
-      FromDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
-      ToDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
-    };
-    // this._salesService.getDraftList(m).subscribe(
-    //   (data) => {
-    //     this.chargeslist1 = data as ChargesList[];
-    //     this.dsDraftList.data = this.chargeslist1;
-    //   },
-    //   (error) => {}
-    // );
-  }
-  m_getBalAvaListStore(Param) {
-    this.dsDraftList.data = [];
-    var m = {
-      ItemId: Param,
-    };
-    this._salesService.getBalAvaListStore(m).subscribe(
-      (data) => {
-        this.dsBalAvaListStore.data = data as BalAvaListStore[];
-      },
-      (error) => { }
-    );
-  }
-  onAddRepeat(contact) {
+    onAddRepeat(contact) {
     this.tempDatasource.data = [];
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1 = [];
@@ -1689,7 +1374,7 @@ CreateDraftDetails(item:any){
       }
     });
   }
-  getFinalCalculation(contact, DraftQty) {
+    getFinalCalculation(contact, DraftQty) {
     console.log(contact);
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
 
@@ -1755,29 +1440,221 @@ CreateDraftDetails(item:any){
 
     // this.Itemchargeslist=[];
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  updateCellDiscount(item: IndentList): void {
+    let discPer = +item.DiscPer;
+    let totalMrp = +item.TotalMRP;
+
+    if (discPer < 0 || discPer > 100) {
+      this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      item.DiscPer = 0;
+      item.DiscAmt = 0;
+      this.calculateCellNetAmount(item);
+      return;
+    }
+    item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
+    this.calculateCellNetAmount(item);
+  } 
+  getCellCalculation(item: IndentList) {
+    let qty = +item.Qty;
+    if (!qty) {
+      qty = 0;
+    }
+    const gstPer = +item.GSTPer;
+    const unitMrp = +item.UnitMRP;
+    const totalMrp = qty * unitMrp;
+    const gstAmount = (totalMrp * gstPer) / 100;
+    const landedRateandedTotal = qty * item.LandedRate;
+    const marginAmt = totalMrp - landedRateandedTotal;
+
+    const updatedItem = {
+      GSTAmount: gstAmount.toFixed(2),
+      TotalMRP: totalMrp.toFixed(2),
+      MarginAmt: marginAmt.toFixed(2),
+      Qty: qty,
+    } as IndentList;
+
+    Object.assign(item, updatedItem);
+    this.calculateCellNetAmount(item);
+  }
+  calculateCellNetAmount(item: IndentList): void {
+    const formValue = this.ItemSubform.value;
+    const discAmt = +item.DiscAmt;
+    const totalMrp = +item.TotalMRP;
+
+    const netAmount = (totalMrp - discAmt).toFixed(2);
+    item.NetAmt = netAmount; 
+        let DiscPer = ((formValue.discAmount * 100) / formValue.totalAmount).toFixed(2); 
+      this.ItemSubform.patchValue({
+      FinalDiscPer: DiscPer,
+    }) 
+  }
+ 
+
+  tblCalucation(contact, Qty) {
+    let TotalMRP;
+    this.RQty = parseInt(contact.Qty) || 1;
+    if (this.RQty && contact.UnitMRP) {
+      TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2);
+      let LandedRateandedTotal = (parseInt(this.RQty) * contact.LandedRate).toFixed(2);
+      let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+      //
+      this.PurTotAmt = (parseInt(this.RQty) * contact.PurchaseRate).toFixed(2);
+      let NetAmt;
+      let DiscAmt;
+      this.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      this.IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      NetAmt = (parseFloat(TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
+
+      if (contact.DiscPer > 0) {
+        DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
+        NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+      }
+
+      contact.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
+      contact.TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2); //this.TotalMRP || 0,
+      (contact.DiscAmt = DiscAmt || 0),
+        (contact.NetAmt = NetAmt), // (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
+        (contact.RoundNetAmt = Math.round(NetAmt)),
+        (contact.StockId = this.StockId),
+        (contact.VatAmount = 0), // this.GSTAmount || 0,
+        (contact.LandedRateandedTotal = LandedRateandedTotal),
+        (contact.CGSTAmt = contact.CGSTAmt || 0),
+        (contact.SGSTAmt = contact.SGSTAmt || 0),
+        (contact.IGSTAmt = contact.IGSTAmt || 0),
+        (contact.PurchaseRate = contact.PurchaseRate || 0),
+        (contact.PurTotAmt = 0), //this.PurTotAmt || 0,
+        (contact.MarginAmt = v_marginamt || 0);
+    }
+    this.ItemFormreset();
+  }
+
+
+  m_getBalAvaListStore(Param) {
+    this.dsDraftList.data = [];
+    var m = {
+      ItemId: Param,
+    };
+    this._salesService.getBalAvaListStore(m).subscribe(
+      (data) => {
+        this.dsBalAvaListStore.data = data as BalAvaListStore[];
+      },
+      (error) => { }
+    );
+  }
+  
+  salesIdWiseObj: any;
+  dummySalesIdNameArr = [];
+  SalesIdWiseObj: any = {};
+  getTopSalesDetailsList(MobileNo) {
+    var vdata = {
+      ExtMobileNo: MobileNo,
+    };
+    this.sIsLoading = 'get-sales-data';
+    this._salesService.getTopSalesDetails(vdata).subscribe((data: any) => {
+      if (data && data.length > 0) {
+        this.reportPrintObjItemList = data as Printsal[];
+        this.repeatItemList = data;
+        this.reportItemPrintObj = data[0] as Printsal;
+        this.PatientName = data[0].ExternalPatientName;
+        this.DoctorName = data[0].DoctorName;
+        this.salesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
+          if (!acc[item.SalesId]) {
+            acc[item.SalesId] = [];
+          }
+          acc[item.SalesId].push(item);
+          return acc;
+        }, {});
+        this.sIsLoading = '';
+        this.patientname.nativeElement.focus();
+      } else {
+        this.sIsLoading = '';
+      }
+    });
+    this.getTopSalesDetailsprint();
+  }
+  getTopSalesDetailsprint() {
+    var strrowslist = '';
+    let onlySalesId = [];
+    this.reportPrintObjItemList.forEach((ele) => onlySalesId.push(ele.SalesId));
+
+    let SalesidNamesArr = [...new Set(onlySalesId)];
+    SalesidNamesArr.forEach((ele) => this.dummySalesIdNameArr.push({ SalesId: ele, isHidden: false }));
+
+    this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
+      if (!acc[item.SalesId]) {
+        acc[item.SalesId] = [];
+      }
+      acc[item.SalesId].push(item);
+      return acc;
+    }, {});
+
+    for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
+      var objreportPrint = this.reportPrintObjItemList[i - 1];
+
+      var strabc =
+        this.getSalesIdName(objreportPrint.SalesId) +
+        `
+  <div style="display:flex;margin:8px 0">
+  <div style="display:flex;width:80px;margin-left:20px;">
+      <div>` +
+        objreportPrint.ItemShortName +
+        `</div>
+  </div>
+  </div>`;
+      strrowslist += strabc;
+    }
+  }
+  getSalesIdName(SalesId: String) {
+    let groupDiv;
+    for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
+      if (this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
+        let groupHeader =
+          `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
+          <div> <h3>` +
+          SalesId +
+          `</h3></div>
+           </div>`;
+        this.dummySalesIdNameArr[i].isHidden = true;
+        groupDiv = groupHeader;
+        break;
+      } else {
+        groupDiv = ``;
+      }
+    }
+    return groupDiv;
+  }
   PatientInformRest() {
     this.PatientName = '';
-    this.IPDNo = ''; 
-    this.DoctorName = '';  
+    this.IPDNo = '';
+    this.DoctorName = '';
     this.OPDNo = '';
   }
   CalPaidbackAmt() {
     this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
-  }
-  payOnline() {
-    const matDialog = this._matDialog.open(PaymentModeComponent, {
-      data: { finalAmount: this.FinalNetAmount },
-      // height: '380px',
-      disableClose: true,
-      panelClass: 'payment-dialog',
-      // panelClass: ['animate__animated','animate__slideInRight']
-    });
-    matDialog.afterClosed().subscribe((result) => {
-      if (result) {
-        this.isPaymentSuccess = true;
-        this.ItemSubform.get('referanceNo').setValue(this.onlinePaymentService.PlutusTransactionReferenceID);
-      }
-    });
   }
   chkbarcode(event) {
     if (event.checked == true) {
@@ -2055,154 +1932,6 @@ CreateDraftDetails(item:any){
       this.TotalBalanceAmt = data[0].BalanceAmount;
     });
   }
-  updateCellDiscount(item: IndentList): void {
-    let discPer = +item.DiscPer;
-    let totalMrp = +item.TotalMRP;
-
-    if (discPer < 0 || discPer > 100) {
-      this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      item.DiscPer = 0;
-      item.DiscAmt = 0;
-      this.calculateCellNetAmount(item);
-      return;
-    }
-    item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
-    this.calculateCellNetAmount(item);
-  }
-  calculateCellNetAmount(item: IndentList): void {
-    const discAmt = +item.DiscAmt;
-    const totalMrp = +item.TotalMRP;
-
-    const netAmount = (totalMrp - discAmt).toFixed(2);
-    item.NetAmt = netAmount;
-    this.updateItemSubForm();
-  }
-  getPrint3(el) {
-    if (this.vPaymode == 'Credit') {
-      this.type = 'Credit';
-      this.Creditflag = true;
-    } else if (!(this.vPaymode == 'Credit')) {
-      this.type = ' ';
-      this.Creditflag = false;
-    }
-
-    var D_data = {
-      SalesID: el, //
-      OP_IP_Type: this.OP_IPType,
-    };
-    let printContents;
-    this.subscriptionArr.push(
-      this._salesService.getSalesPrint(D_data).subscribe((res) => {
-        this.reportPrintObjList = res as Printsal[];
-        this.reportPrintObj = res[0] as Printsal;
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      })
-    );
-  }
-  getWhatsappshareSales(el, vmono) {
-    var m_data = {
-      insertWhatsappsmsInfo: {
-        mobileNumber: vmono || 0,
-        smsString:
-          'Dear' +
-          vmono +
-          ',Your Sales Bill has been successfully completed. UHID is ' +
-          el +
-          ' For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur ' || '',
-        isSent: 0,
-        smsType: 'Sales',
-        smsFlag: 0,
-        smsDate: this.currentDate,
-        tranNo: el,
-        PatientType: 2, //el.PatientType,
-        templateId: 0,
-        smSurl: 'info@gmail.com',
-        filePath: this.Filepath || '',
-        smsOutGoingID: 0,
-      },
-    };
-    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe((response) => {
-      if (response) {
-        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-      } else {
-        this.toastr.error('API Error!', 'Error WhatsApp!', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    });
-    this.IsLoading = false;
-  }
-  print3() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-    popupWin.document.write(`
-    </style>
-    <style type="text/css" media="print">
-  @page { size: portrait; }
-</style>
-        <title></title>
-    </head>
-  `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
-  <script>
-    var css = '@page { size: portrait; }',
-    head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style');
-    style.type = 'text/css';
-    style.media = 'print';
-
-    if (style.styleSheet){
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
-    }
-    head.appendChild(style);
-  </script>
-  </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    popupWin.document.close();
-  }
-
-  updateItemSubForm(): void {
-    // this.FinalDiscPer = this.Itemchargeslist.reduce((sum, item) => sum + (+item.TotalAmt), 0);
-    this.FinalDiscPer = ((this.FinalDiscAmt * 100) / this.FinalTotalAmt).toFixed(2);
-  }
-  getCellCalculation(item: IndentList) {
-    // Check validation of quantity
-    let qty = +item.Qty;
-    if (this.isNagative(qty)) {
-      qty = 0;
-    }
-    const gstPer = +item.GSTPer;
-    const unitMrp = +item.UnitMRP;
-    const totalMrp = qty * unitMrp;
-    const gstAmount = (totalMrp * gstPer) / 100;
-
-    const landedRateandedTotal = qty * item.LandedRate;
-    const marginAmt = totalMrp - landedRateandedTotal;
-
-    const updatedItem = {
-      GSTAmount: gstAmount.toFixed(2),
-      TotalMRP: totalMrp.toFixed(2),
-      MarginAmt: marginAmt.toFixed(2),
-      Qty: qty,
-    } as IndentList;
-
-    Object.assign(item, updatedItem);
-    this.calculateCellNetAmount(item);
-  }
   onEnterItemName(item: IndentList): void {
     const itemId = item.ItemId;
     const storeId = item.StoreId;
@@ -2212,9 +1941,6 @@ CreateDraftDetails(item:any){
 
   focusNext(ref: ElementRef): void {
     ((ref as any).el?.nativeElement as HTMLElement)?.querySelector('input')?.focus();
-  }
-  isNagative(value: number) {
-    return value < 0;
   }
   isValidForm(): boolean {
     return this.saleSelectedDatasource.data.every((i) => i.Qty > 0 && i.UnitMRP > 0);
@@ -2235,7 +1961,7 @@ CreateDraftDetails(item:any){
     };
   }
   public onEnterpatientname(event): void {
-    if (event.which === 13) { 
+    if (event.which === 13) {
       this.doctorname.nativeElement.focus();
     }
   }
@@ -2280,74 +2006,40 @@ CreateDraftDetails(item:any){
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } T
-  print1() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-    // popupWin.document.open();
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-    if (this.reportPrintObjList.length > 0) {
-      // if(this.reportPrintObjList[0].BalanceAmt === 0) {
-      //   popupWin.document.getElementById('trAmountBalance').style.display = 'none';
-      // }
-      // if (this.reportPrintObjList[0].ConcessionAmt === 0) {
-      //   popupWin.document.getElementById('trAmountconcession').style.display = 'none';
-      // }
-      // if (this.reportPrintObjList[0].BalanceAmt === 0) {
-      //   popupWin.document.getElementById('idBalAmt').style.display = 'none';
-      // }
-    }
-    popupWin.document.close();
   }
-  getPrint(el) {
-    var D_data = {
-      SalesID: el,
-      OP_IP_Type: 2,
+  getWhatsappshareSales(el, vmono) {
+    var m_data = {
+      insertWhatsappsmsInfo: {
+        mobileNumber: vmono || 0,
+        smsString:
+          'Dear' +
+          vmono +
+          ',Your Sales Bill has been successfully completed. UHID is ' +
+          el +
+          ' For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur ' || '',
+        isSent: 0,
+        smsType: 'Sales',
+        smsFlag: 0,
+        smsDate: this.currentDate,
+        tranNo: el,
+        PatientType: 2, //el.PatientType,
+        templateId: 0,
+        smSurl: 'info@gmail.com',
+        filePath: this.Filepath || '',
+        smsOutGoingID: 0,
+      },
     };
-    let printContents;
-    this.subscriptionArr.push(
-      this._salesService.getSalesPrint(D_data).subscribe((res) => {
-        this.reportPrintObjList = res as Printsal[];
-        // console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as Printsal;
-
-        if (this.reportPrintObj.ChequePayAmount != 0) {
-          this.UTRNO = this.reportPrintObj.ChequeNo;
-        } else if (this.reportPrintObj.CardPayAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.ChequeNo;
-        } else if (this.reportPrintObj.NEFTPayAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.NEFTNo;
-        } else if (this.reportPrintObj.PayTMAmount != 0) {
-          this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.PayTMTranNo;
-        }
-      })
-    );
+    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe((response) => {
+      if (response) {
+        this.toastr.success('Bill Sent on WhatsApp Successfully.', 'Save !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+      } else {
+        this.toastr.error('API Error!', 'Error WhatsApp!', {
+          toastClass: 'tostr-tost custom-toast-error',
+        });
+      }
+    });
   }
-  print() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()">${this.printTemplate}</body>
-    </html>`);
-
-    popupWin.document.close();
-  }
-
+  T
 }
