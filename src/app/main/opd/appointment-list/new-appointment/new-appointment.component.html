@@ -2,10 +2,7 @@
   <!-- Modal header -->
   <div class="modal-header accent">
     <div class="modal-header-content">
-      <div class="modal-header-title">
-        <button mat-icon-button (click)="toggleSidebar()">
-          <mat-icon>menu</mat-icon>
-        </button>
+      <div class="modal-header-title">  
         <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Appointment</span>
       </div>
       <div class="modal-header-right">
@@ -25,696 +22,395 @@
 
   <div class="modal-body">
     <div class="modal-body-container">
-      <fuse-sidebar [name]="sidebarName" position="right" lockedOpen="gt-xl" class="fixed" style="min-width:600px; border-radius:4px;
-      margin-left:12px; background-color: white;height:100%;">
-       <div class="airmid-table-container overflow-hidden">
-        <mat-table class="airmid-table" [dataSource]="filteredOptions">
-          <!-- Reg No Column -->
-          <ng-container matColumnDef="regNo">
-            <mat-header-cell *matHeaderCellDef>Reg No</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.regNo }}</mat-cell>
-          </ng-container>
+      <mat-drawer-container class="main-container h-100-p">
+        <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
+          <div class="main-content h-100-p overflow-auto ml-8">
+            <div>
+              <form [formGroup]="searchFormGroup">
+                <mat-card>
+                  <mat-card-content class="py-8">
+                    <!-- class="appointment-header gap-12"  fxLayoutAlign.gt-sm="space-between center" -->
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center" class="input-error-hidden">
+                      <div class="radio-container">
+                        <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio" (change)="onChangeReg($event)">
+                          <mat-radio-button value="registration" [disabled]="chkregisterd">New Registration</mat-radio-button>
+                          <mat-radio-button value="registrered">Registered</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
 
-          <!-- Patient Name Column -->
-          <ng-container matColumnDef="patientName">
-            <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.patientName }}</mat-cell>
-          </ng-container>
+                      <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+                        <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
 
-          <!-- Mobile No Column -->
-          <ng-container matColumnDef="mobileNo">
-            <mat-header-cell *matHeaderCellDef>Mobile No</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.mobileNo }}</mat-cell>
-          </ng-container>
+                        <airmid-autocomplete class="w-450" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-          <!-- No Data Row -->
-          <ng-container matColumnDef="NoData">
-            <mat-footer-cell *matFooterCellDef>
-              <span>No Data Found</span>
-            </mat-footer-cell>
-          </ng-container>
+                        <airmid-autocomplete class="w-450" label="Phone Appointment" [formGroup]="searchFormGroup" formControlName="PhoneRegId" *ngIf="IsPhoneAppflag" placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="PhoneAppointment2/auto-complete?Keyword=" (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </form>
+              <div class="personal-panel">
+                <mat-accordion multi>
+                  <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                      <!-- <mat-panel-title>
+                                        Visit Details
+                                    </mat-panel-title> -->
+                      <div (click)="$event.stopPropagation()">
+                        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header" (selectedTabChange)="onTabChange($event)">
+                          <mat-tab label="Personal Detail"></mat-tab>
+                          <mat-tab label="Emergency Details"></mat-tab>
+                          <mat-tab label="Medical Tourism"></mat-tab>
+                        </mat-tab-group>
+                      </div>
+                    </mat-expansion-panel-header>
+                    <ng-container [ngSwitch]="selectedTabIndex">
+                      <div *ngSwitchCase="0">
+                        <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                          <form [formGroup]="personalFormGroup" class="mat-form-field-100">
+                            <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId" />
 
-          <mat-header-row class="accent" *matHeaderRowDef="['regNo', 'patientName', 'mobileNo']; sticky: true" ></mat-header-row>
-          <mat-row *matRowDef="let row; columns: ['regNo', 'patientName', 'mobileNo']" (click)="onSelectPatient(row)"></mat-row>
-          <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
-        </mat-table>
-       </div>
-      </fuse-sidebar>
-      <form [formGroup]="searchFormGroup">
-        <mat-card>
-          <mat-card-content class="py-8">
-            <!-- class="appointment-header gap-12"  fxLayoutAlign.gt-sm="space-between center" -->
-            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center" class="input-error-hidden">
-              <div class="radio-container">
-                <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio" (change)="onChangeReg($event)">
-                  <mat-radio-button value="registration" [disabled]="chkregisterd">New Registration</mat-radio-button>
-                  <mat-radio-button value="registrered">Registered</mat-radio-button>
-                </mat-radio-group>
-              </div>
+                            <input type="hidden" name="AgeYear" formControlName="AgeYear" [(ngModel)]="ageYear" />
+                            <input type="hidden" name="AgeMonth" formControlName="AgeMonth" [(ngModel)]="ageMonth" />
+                            <input type="hidden" name="AgeDay" formControlName="AgeDay" [(ngModel)]="ageDay" />
 
-              <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
-                <!-- <div class="form-right-container input-error-hidden" *ngIf="Regflag" style="border: 1px solid red;"> -->
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
+                              <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="Prefix" formControlName="PrefixId" [formGroup]="personalFormGroup" [value]="registerObj?.prefixId" [validations]="getValidationMessages().prefixId" ValueField="prefixId" TextField="prefixName" (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
+                                </div>
 
-                <airmid-autocomplete
-                  class="w-450"
-                  label="Search Reg No / Patient Name / Mobile No"
-                  [formGroup]="searchFormGroup"
-                  formControlName="RegId"
-                  *ngIf="Regflag"
-                  placeholderText="Search Reg No / Patient Name / Mobile No"
-                  ApiUrl="OutPatient/auto-complete?Keyword="
-                  (selectionChange)="getSelectedObj($event)"
-                ></airmid-autocomplete>
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-textbox label="First Name" formControlName="FirstName" [value]="registerObj.firstName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().firstName" [maxLength]="100" (valueChange)="handleInputChangeDebounced('FirstName')"></airmid-textbox>
+                                </div>
 
-                <airmid-autocomplete
-                  class="w-450"
-                  label="Phone Appointment"
-                  [formGroup]="searchFormGroup"
-                  formControlName="PhoneRegId"
-                  *ngIf="IsPhoneAppflag"
-                  placeholderText="Search Reg No / Patient Name / Mobile No"
-                  ApiUrl="PhoneAppointment2/auto-complete?Keyword="
-                  (selectionChange)="getSelectedObjphone($event)"
-                ></airmid-autocomplete>
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-textbox label="Middle Name" formControlName="MiddleName" [value]="registerObj.middleName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().middleName" [maxLength]="100"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-textbox label="Last Name" formControlName="LastName" [value]="registerObj.lastName" [formGroup]="personalFormGroup" [validations]="getValidationMessages().lastName" [maxLength]="100" (valueChange)="handleInputChangeDebounced('LastName')"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="personalFormGroup" [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId" #ddlGender [readonly]="true" [mode]="autocompleteModegender"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo" [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup" (keypress)="keyPressAlphanumeric($event)" [maxLength]="12" [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-textbox label="Address" formControlName="Address" [maxLength]="200" [value]="registerObj.address" [formGroup]="personalFormGroup" [validations]="getValidationMessages().address"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().areaId" [mode]="autocompleteModearea"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup" [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId" ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true" [validations]="getValidationMessages().stateId" ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)" ApiUrl="StateMaster/get-state"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <airmid-dropdown label="Country" formControlName="CountryId" [readonly]="true" [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId" #ddlCountry [mode]="autocompleteModecountry"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <div fxLayout="row" class="gap-8">
+                                    <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().MaritalStatusId" [mode]="autocompleteModemstatus"></airmid-dropdown>
+                                    <airmid-dropdown label="Religion Name" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" formControlName="ReligionId" [value]="registerObj?.religionId" [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId" [mode]="autocompleteModereligion"></airmid-dropdown>
+                                  </div>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                  <div fxLayout="row" class="gap-8">
+                                    <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo" formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)" [value]="registerObj.mobileNo" [formGroup]="personalFormGroup" [validations]="getValidationMessages().mobileNo" [maxLength]="10" (valueChange)="handleInputChangeDebounced('MobileNo')"></airmid-textbox>
+
+                                    <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="PhoneNo" formControlName="PhoneNo" (keypress)="keyPressAlphanumeric($event)" [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo" [formGroup]="personalFormGroup" [maxLength]="10"></airmid-textbox>
+
+                                  </div>
+                                </div>
+
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">   
+                                     <airmid-dropdown
+                                      label="Special Courtesy"
+                                      formControlName="CourtesyId"
+                                      [formGroup]="personalFormGroup"
+                                      [mode]="autocompleteModecountry">
+                                    </airmid-dropdown>
+                                </div> -->
+                              </div>
+
+                              <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
+                                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                                  <div class="photp-capture-image">
+                                    <img class="h-100-p w-100-p border-radius-4" [src]="imagePreview ? imagePreview : '/assets/images/default.jpg'" />
+                                  </div>
+                                  <div class="photo-capture-button">
+                                    <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0" (click)="openCamera('camera', 'photo')">
+                                      <span class="btn-icon">
+                                        <mat-icon>camera_enhance</mat-icon>
+                                      </span>
+                                      <span>Capture image</span>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <mat-form-field appearance="outline" fxFlex style="visibility: hidden">
+                              <input matInput [matDatepicker]="picker1" placeholder="Choose a Date" name="Date" formControlName="RegDate" />
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                          </form>
+                        </div>
+                      </div>
+                      <div *ngSwitchCase="1">
+                        <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                          <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
+                            <div fxLayout="row wrap" fxLayoutGap="10px grid">
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName" [formGroup]="EmergencyFormGroup" [maxLength]="50"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Relationship" formControlName="RelationshipId" [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship"></airmid-dropdown>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="MobileNo" formControlName="MobileNo" [formGroup]="EmergencyFormGroup" [maxLength]="10"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Landline" formControlName="landlineNo" [formGroup]="EmergencyFormGroup" [maxLength]="10"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Address" formControlName="Address" [formGroup]="EmergencyFormGroup" [maxLength]="100"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="AadharCardNo" formControlName="aadharCardNo" [formGroup]="EmergencyFormGroup" [maxLength]="12"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Driving Licence No." formControlName="drivingNo" [formGroup]="EmergencyFormGroup" [maxLength]="16"></airmid-textbox>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div *ngSwitchCase="2">
+                        <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                          <form [formGroup]="MedicalFormGroup" class="mat-form-field-100">
+                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Passport Number" formControlName="PassportNo" [formGroup]="MedicalFormGroup" [maxLength]="20"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-datepicker [label]="'Visa Issue Date'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaDate" formEndControlName="VisaDate"></airmid-datepicker>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-datepicker [label]="'Visa Validity'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaValidityDate" formEndControlName="VisaValidityDate"></airmid-datepicker>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Nationality ID Number" formControlName="NationalityIdNo" [formGroup]="MedicalFormGroup" [maxLength]="20"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="CitizenShip" formControlName="CountryId" [formGroup]="MedicalFormGroup" [mode]="autocompleteModecountry"></airmid-dropdown>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Port Of Entry" formControlName="PortEntry" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-full-datepicker [label]="'Date Of Entry'" [formGroup]="MedicalFormGroup" formControlName="EntryDate"></airmid-full-datepicker>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Residential Address" formControlName="ResidentAddress" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Office/Work Address" formControlName="workAddress" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Visit Details</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
+                      <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                        <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj.regId" />
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="UnitId" [formGroup]="VisitFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
+                        </div>
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="ClassId" [formGroup]="VisitFormGroup" [mode]="autocompleteModeClass"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="patientType" formControlName="PatientTypeId" [value]="data?.patientTypeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().patientTypeId" [mode]="autocompleteModepatienttype" (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="VisitFormGroup" [value]="data?.tariffId" [validations]="getValidationMessages().tariffId" [mode]="autocompleteModetariff"></airmid-dropdown>
+                        </div>
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Department Name" formControlName="DepartmentId" [value]="registerObj?.departmentId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId" [value]="registerObj?.doctorId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().DoctorID" #ddlDoctor></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId" [formGroup]="VisitFormGroup" [value]="data?.refDocId" [validations]="getValidationMessages().refDocId" [mode]="autocompleteModerefdoc"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Purpose" formControlName="AppPurposeId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId" [mode]="autocompleteModepurpose"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup" [value]="data?.companyId" [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId" [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId" [mode]="autocompleteModesubcompany"></airmid-dropdown>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Health Card Details</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
+                      <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Follow Up Date</mat-label>
+                            <input matInput [matDatepicker]="pickerHealthcard" placeholder="Choose a date" formControlName="HealthcardDate" [(ngModel)]="HealthCardExpDate" />
+                            <mat-datepicker-toggle matSuffix [for]="pickerHealthcard"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerHealthcard></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Health Card No.</mat-label>
+                            <input type="text" placeholder="Enter Health Card No" matInput #healthcard [(ngModel)]="vhealthCardNo" formControlName="HealthCardNo" (keypress)="keyPressAlphanumeric($event)" />
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>ABHA</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="abhaForm" class="mat-form-field-100">
+                      <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="HIP Code" formControlName="hipCode" [formGroup]="abhaForm"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="Abha Address" formControlName="abhaAddress" [formGroup]="abhaForm"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="Abha Number" formControlName="abhaNumber" [formGroup]="abhaForm"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="Full Name" formControlName="fullName" [formGroup]="abhaForm"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="Token #" formControlName="token" [formGroup]="abhaForm"></airmid-textbox>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                          <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
+                            <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
+                            <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                          <button type="button" class="btn btn-primary">Create ABHA</button>
+                          <button type="button" class="btn btn-primary">Verify ABHA</button>
+                          <button type="button" class="btn btn-primary">HIP QR Q</button>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-expansion-panel>
+                </mat-accordion>
               </div>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </form>
-      <div class="personal-panel">
-        <mat-accordion multi>
-          <mat-expansion-panel expanded class="mt-12">
-            <mat-expansion-panel-header>
-              <!-- <mat-panel-title>
-                                Visit Details
-                            </mat-panel-title> -->
-              <div (click)="$event.stopPropagation()">
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header" (selectedTabChange)="onTabChange($event)">
-                  <mat-tab label="Personal Detail"></mat-tab>
-                  <mat-tab label="Emergency Details"></mat-tab>
-                  <mat-tab label="Medical Tourism"></mat-tab>
-                </mat-tab-group>
-              </div>
-            </mat-expansion-panel-header>
-            <ng-container [ngSwitch]="selectedTabIndex">
-              <div *ngSwitchCase="0">
-                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
-                  <form [formGroup]="personalFormGroup" class="mat-form-field-100">
-                    <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId" />
-
-                    <input type="hidden" name="AgeYear" formControlName="AgeYear" [(ngModel)]="ageYear" />
-                    <input type="hidden" name="AgeMonth" formControlName="AgeMonth" [(ngModel)]="ageMonth" />
-                    <input type="hidden" name="AgeDay" formControlName="AgeDay" [(ngModel)]="ageDay" />
-
-                    <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
-                      <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="Prefix"
-                            formControlName="PrefixId"
-                            [formGroup]="personalFormGroup"
-                            [value]="registerObj?.prefixId"
-                            [validations]="getValidationMessages().prefixId"
-                            ValueField="prefixId"
-                            TextField="prefixName"
-                            (selectionChange)="onChangePrefix($event)"
-                            ApiUrl="Prefix/get-prefixs"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox
-                            label="First Name"
-                            formControlName="FirstName"
-                            [value]="registerObj.firstName"
-                            [formGroup]="personalFormGroup"
-                            [validations]="getValidationMessages().firstName"
-                            [maxLength]="100"
-                            (valueChange)="handleInputChangeDebounced('FirstName')"
-                          ></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox
-                            label="Middle Name"
-                            formControlName="MiddleName"
-                            [value]="registerObj.middleName"
-                            [formGroup]="personalFormGroup"
-                            [validations]="getValidationMessages().middleName"
-                            [maxLength]="100"
-                          ></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox
-                            label="Last Name"
-                            formControlName="LastName"
-                            [value]="registerObj.lastName"
-                            [formGroup]="personalFormGroup"
-                            [validations]="getValidationMessages().lastName"
-                            [maxLength]="100"
-                            (valueChange)="handleInputChangeDebounced('LastName')"
-                          ></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="Gender"
-                            formControlName="GenderId"
-                            [formGroup]="personalFormGroup"
-                            [value]="registerObj?.genderId"
-                            [validations]="getValidationMessages().genderId"
-                            #ddlGender
-                            [readonly]="true"
-                            [mode]="autocompleteModegender"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox
-                            label="Aadharcardno"
-                            formControlName="aadharCardNo"
-                            [value]="registerObj.aadharCardNo"
-                            [formGroup]="personalFormGroup"
-                            (keypress)="keyPressAlphanumeric($event)"
-                            [maxLength]="12"
-                            [validations]="getValidationMessages().aadharCardNo"
-                          ></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-textbox
-                            label="Address"
-                            formControlName="Address"
-                            [maxLength]="200"
-                            [value]="registerObj.address"
-                            [formGroup]="personalFormGroup"
-                            [validations]="getValidationMessages().address"
-                          ></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="Area"
-                            formControlName="AreaId"
-                            [value]="registerObj?.areaId"
-                            [formGroup]="personalFormGroup"
-                            [validations]="getValidationMessages().areaId"
-                            [mode]="autocompleteModearea"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="City"
-                            formControlName="CityId"
-                            [formGroup]="personalFormGroup"
-                            [value]="registerObj?.cityId"
-                            [validations]="getValidationMessages().cityId"
-                            ValueField="cityId"
-                            TextField="cityName"
-                            (selectionChange)="onChangecity($event)"
-                            ApiUrl="CityMaster/get-cities"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="StateId"
-                            formControlName="StateId"
-                            [formGroup]="personalFormGroup"
-                            [value]="registerObj?.stateId"
-                            [readonly]="true"
-                            [validations]="getValidationMessages().stateId"
-                            ValueField="stateId"
-                            TextField="stateName"
-                            (selectionChange)="onChangestate($event)"
-                            ApiUrl="StateMaster/get-state"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown
-                            label="Country"
-                            formControlName="CountryId"
-                            [readonly]="true"
-                            [value]="registerObj?.countryId"
-                            [formGroup]="personalFormGroup"
-                            [disabled]="true"
-                            [validations]="getValidationMessages().countryId"
-                            #ddlCountry
-                            [mode]="autocompleteModecountry"
-                          ></airmid-dropdown>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <div fxLayout="row" class="gap-8">
-                            <airmid-dropdown
-                              label="MaritalStatus"
-                              fxFlex="50%"
-                              fxFlex.xs="100%"
-                              fxFlex.sm="50%"
-                              formControlName="MaritalStatusId"
-                              [value]="registerObj?.maritalStatusId"
-                              [formGroup]="personalFormGroup"
-                              [validations]="getValidationMessages().MaritalStatusId"
-                              [mode]="autocompleteModemstatus"
-                            ></airmid-dropdown>
-                            <airmid-dropdown
-                              label="Religion Name"
-                              fxFlex="50%"
-                              fxFlex.xs="100%"
-                              fxFlex.sm="50%"
-                              formControlName="ReligionId"
-                              [value]="registerObj?.religionId"
-                              [formGroup]="personalFormGroup"
-                              [validations]="getValidationMessages().religionId"
-                              [mode]="autocompleteModereligion"
-                            ></airmid-dropdown>
-                          </div>
-                        </div>
-
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <div fxLayout="row" class="gap-8">
-                            <airmid-textbox
-                              fxFlex="50%"
-                              fxFlex.xs="100%"
-                              fxFlex.sm="50%"
-                              label="MobileNo"
-                              formControlName="MobileNo"
-                              (keypress)="keyPressAlphanumeric($event)"
-                              [value]="registerObj.mobileNo"
-                              [formGroup]="personalFormGroup"
-                              [validations]="getValidationMessages().mobileNo"
-                              [maxLength]="10"
-                              (valueChange)="handleInputChangeDebounced('MobileNo')"
-                            ></airmid-textbox>
-
-                            <airmid-textbox
-                              fxFlex="50%"
-                              fxFlex.xs="100%"
-                              fxFlex.sm="50%"
-                              label="PhoneNo"
-                              formControlName="PhoneNo"
-                              (keypress)="keyPressAlphanumeric($event)"
-                              [validations]="getValidationMessages().phoneNo"
-                              [value]="registerObj.phoneNo"
-                              [formGroup]="personalFormGroup"
-                              [maxLength]="10"
-                            ></airmid-textbox>
-
-                          </div>
-                        </div>
-
-                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">   
-                             <airmid-dropdown
-                              label="Special Courtesy"
-                              formControlName="CourtesyId"
-                              [formGroup]="personalFormGroup"
-                              [mode]="autocompleteModecountry">
-                            </airmid-dropdown>
-                        </div> -->
-                      </div>
-
-                      <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
-                        <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
-                          <div class="photp-capture-image">
-                            <img class="h-100-p w-100-p border-radius-4" [src]="imagePreview ? imagePreview : '/assets/images/default.jpg'" />
-                          </div>
-                          <div class="photo-capture-button">
-                            <label class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0" (click)="openCamera('camera', 'photo')">
-                              <span class="btn-icon">
-                                <mat-icon>camera_enhance</mat-icon>
-                              </span>
-                              <span>Capture image</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <mat-form-field appearance="outline" fxFlex style="visibility: hidden">
-                      <input matInput [matDatepicker]="picker1" placeholder="Choose a Date" name="Date" formControlName="RegDate" />
-                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-                  </form>
-                </div>
-              </div>
-              <div *ngSwitchCase="1">
-                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
-                  <form [formGroup]="EmergencyFormGroup" class="mat-form-field-100">
-                    <div fxLayout="row wrap" fxLayoutGap="10px grid">
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Emergency Contact Person Name" formControlName="PersonName" [formGroup]="EmergencyFormGroup" [maxLength]="50"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Relationship" formControlName="RelationshipId" [formGroup]="EmergencyFormGroup" [mode]="autocompleteModerelationship"></airmid-dropdown>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="MobileNo" formControlName="MobileNo" [formGroup]="EmergencyFormGroup" [maxLength]="10"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Landline" formControlName="landlineNo" [formGroup]="EmergencyFormGroup" [maxLength]="10"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Address" formControlName="Address" [formGroup]="EmergencyFormGroup" [maxLength]="100"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="AadharCardNo" formControlName="aadharCardNo" [formGroup]="EmergencyFormGroup" [maxLength]="12"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Driving Licence No." formControlName="drivingNo" [formGroup]="EmergencyFormGroup" [maxLength]="16"></airmid-textbox>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div *ngSwitchCase="2">
-                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
-                  <form [formGroup]="MedicalFormGroup" class="mat-form-field-100">
-                    <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Passport Number" formControlName="PassportNo" [formGroup]="MedicalFormGroup" [maxLength]="20"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-datepicker [label]="'Visa Issue Date'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaDate"
-                          formEndControlName="VisaDate"></airmid-datepicker>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                         <airmid-datepicker [label]="'Visa Validity'" [formGroup]="MedicalFormGroup" [isRangePicker]="false" formStartControlName="VisaValidityDate"
-                          formEndControlName="VisaValidityDate"></airmid-datepicker>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Nationality ID Number" formControlName="NationalityIdNo" [formGroup]="MedicalFormGroup" [maxLength]="20"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="CitizenShip" formControlName="CountryId" [formGroup]="MedicalFormGroup" [mode]="autocompleteModecountry"></airmid-dropdown>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Port Of Entry" formControlName="PortEntry" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-full-datepicker [label]="'Date Of Entry'" [formGroup]="MedicalFormGroup" formControlName="EntryDate"></airmid-full-datepicker> 
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Residential Address" formControlName="ResidentAddress" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
-                      </div>
-
-                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Office/Work Address" formControlName="workAddress" [formGroup]="MedicalFormGroup" [maxLength]="100"></airmid-textbox>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </ng-container>
-          </mat-expansion-panel>
-
-          <mat-expansion-panel expanded class="mt-12">
-            <mat-expansion-panel-header>
-              <mat-panel-title>Visit Details</mat-panel-title>
-            </mat-expansion-panel-header>
-            <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
-              <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj.regId" />
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="UnitId" [formGroup]="VisitFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
-                </div>
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="ClassId" [formGroup]="VisitFormGroup" [mode]="autocompleteModeClass"></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="patientType"
-                    formControlName="PatientTypeId"
-                    [value]="data?.patientTypeId"
-                    [formGroup]="VisitFormGroup"
-                    [validations]="getValidationMessages().patientTypeId"
-                    [mode]="autocompleteModepatienttype"
-                    (selectionChange)="onChangePatient($event)"
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="Tariff Name"
-                    formControlName="TariffId"
-                    [formGroup]="VisitFormGroup"
-                    [value]="data?.tariffId"
-                    [validations]="getValidationMessages().tariffId"
-                    [mode]="autocompleteModetariff"
-                  ></airmid-dropdown>
-                </div>
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="Department Name"
-                    formControlName="DepartmentId"
-                    [value]="registerObj?.departmentId"
-                    [formGroup]="VisitFormGroup"
-                    [validations]="getValidationMessages().departmentId"
-                    [mode]="autocompletedepartment"
-                    (selectionChange)="selectChangedepartment($event)"
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="Doctor Name"
-                    formControlName="ConsultantDocId"
-                    [value]="registerObj?.doctorId"
-                    [formGroup]="VisitFormGroup"
-                    [validations]="getValidationMessages().DoctorID"
-                    #ddlDoctor
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="RefDoctor Name"
-                    formControlName="RefDocId"
-                    [formGroup]="VisitFormGroup"
-                    [value]="data?.refDocId"
-                    [validations]="getValidationMessages().refDocId"
-                    [mode]="autocompleteModerefdoc"
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="Purpose"
-                    formControlName="AppPurposeId"
-                    [formGroup]="VisitFormGroup"
-                    [validations]="getValidationMessages().PurposeId"
-                    [mode]="autocompleteModepurpose"
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                  <airmid-dropdown
-                    label="Company Name"
-                    formControlName="CompanyId"
-                    [formGroup]="VisitFormGroup"
-                    [value]="data?.companyId"
-                    [validations]="getValidationMessages().CompanyId"
-                    [mode]="autocompleteModecompany"
-                  ></airmid-dropdown>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                  <airmid-dropdown
-                    label="SubCompany Name"
-                    formControlName="SubCompanyId"
-                    [formGroup]="VisitFormGroup"
-                    [validations]="getValidationMessages().SubCompanyId"
-                    [mode]="autocompleteModesubcompany"
-                  ></airmid-dropdown>
-                </div>
-              </div>
-            </form>
-          </mat-expansion-panel>
-
-          <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded">
-            <mat-expansion-panel-header>
-              <mat-panel-title>Health Card Details</mat-panel-title>
-            </mat-expansion-panel-header>
-            <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
-              <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Follow Up Date</mat-label>
-                    <input matInput [matDatepicker]="pickerHealthcard" placeholder="Choose a date" formControlName="HealthcardDate" [(ngModel)]="HealthCardExpDate" />
-                    <mat-datepicker-toggle matSuffix [for]="pickerHealthcard"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerHealthcard></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Health Card No.</mat-label>
-                    <input type="text" placeholder="Enter Health Card No" matInput #healthcard [(ngModel)]="vhealthCardNo" formControlName="HealthCardNo" (keypress)="keyPressAlphanumeric($event)" />
-                  </mat-form-field>
-                </div>
-              </div>
-            </form>
-          </mat-expansion-panel>
-
-          <mat-expansion-panel expanded class="mt-12">
-            <mat-expansion-panel-header>
-              <mat-panel-title>ABHA</mat-panel-title>
-            </mat-expansion-panel-header>
-            <form [formGroup]="abhaForm" class="mat-form-field-100">
-              <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="HIP Code" formControlName="hipCode" [formGroup]="abhaForm"></airmid-textbox>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Abha Address" formControlName="abhaAddress" [formGroup]="abhaForm"></airmid-textbox>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Abha Number" formControlName="abhaNumber" [formGroup]="abhaForm"></airmid-textbox>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Full Name" formControlName="fullName" [formGroup]="abhaForm"></airmid-textbox>
-                </div>
-
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Token #" formControlName="token" [formGroup]="abhaForm"></airmid-textbox>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                  <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
-                    <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
-                    <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-                  <button type="button" class="btn btn-primary">Create ABHA</button>
-                  <button type="button" class="btn btn-primary">Verify ABHA</button>
-                  <button type="button" class="btn btn-primary">HIP QR Q</button>
-                </div>
-              </div>
-            </form>
-          </mat-expansion-panel>
-
-          <!-- <mat-expansion-panel expanded class="mt-12">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Visit Details
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
-                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                                <input type="hidden" name="RegId" formControlName="regId"
-                                    [(ngModel)]="registerObj.regId">
-
-                                <airmid-dropdown class="w-250" label="Unit Name" formControlName="UnitId"
-                                    [value]="UnitId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeunit"></airmid-dropdown>
-                                <airmid-dropdown class="w-250" label="Class Name" formControlName="ClassId"
-                                    [value]="ClassId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeClass"></airmid-dropdown>
-                               
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="patientType" formControlName="PatientTypeId"
-                                        [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().patientTypeId"
-                                        [mode]="autocompleteModepatienttype"
-                                        (selectionChange)="onChangePatient($event)">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Tariff Name" formControlName="TariffId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.tariffId"
-                                        [validations]="getValidationMessages().tariffId"
-                                        [mode]="autocompleteModetariff">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="Company Name" formControlName="CompanyId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.companyId"
-                                        [validations]="getValidationMessages().CompanyId"
-                                        [mode]="autocompleteModecompany">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
-                                        [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().SubCompanyId"
-                                        [mode]="autocompleteModesubcompany">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-
-                                    <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                                        [value]="data?.departmentId" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().departmentId"
-                                        [mode]="autocompletedepartment"
-                                        (selectionChange)="selectChangedepartment($event)">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
-                                        [value]="data?.doctorID" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().DoctorID" #ddlDoctor>
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.refDocId"
-                                        [validations]="getValidationMessages().refDocId"
-                                        [mode]="autocompleteModerefdoc">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Purpose" formControlName="AppPurposeId"
-                                        [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId"
-                                        [mode]="autocompleteModepurpose">
-                                    </airmid-dropdown>
-                                </div>
-
-                            </div>
-                        </form>
-                    </mat-expansion-panel> -->
-        </mat-accordion>
-      </div>
+          </div>
+        </mat-drawer-content>
+        <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end" class="service-drawer" style="min-width: 430px;">
+          <mat-card class="sidebar h-100-p">
+            <div class="airmid-table-container overflow-hidden">
+              <mat-table class="airmid-table" [dataSource]="filteredOptions">
+                <!-- Reg No Column -->
+                <ng-container matColumnDef="regNo">
+                  <mat-header-cell *matHeaderCellDef class="w-120">Reg No</mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.regNo }}</span></mat-cell>
+                </ng-container>
+
+                <!-- Patient Name Column -->
+                <ng-container matColumnDef="patientName">
+                  <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+                  <mat-cell *matCellDef="let element"><span>{{ element.patientName }}</span></mat-cell>
+                </ng-container>
+
+                <!-- Mobile No Column -->
+                <ng-container matColumnDef="mobileNo">
+                  <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo }}</span></mat-cell>
+                </ng-container>
+
+                <!-- No Data Row -->
+                <ng-container matColumnDef="NoData">
+                  <mat-footer-cell *matFooterCellDef>
+                    <span>No Data Found</span>
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="['regNo', 'patientName', 'mobileNo']; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['regNo', 'patientName', 'mobileNo']" (click)="onSelectPatient(row)"></mat-row>
+                <mat-footer-row *matFooterRowDef="['NoData']" [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+              </mat-table>
+            </div>
+          </mat-card>
+        </mat-drawer>
+      </mat-drawer-container>
     </div>
   </div>
 
