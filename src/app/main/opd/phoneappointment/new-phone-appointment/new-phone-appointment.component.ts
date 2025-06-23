@@ -93,6 +93,9 @@ isEditMode: boolean = false;
         } else {
             this.isEditMode = false;
             const currentDateTime = new Date();
+            const today = new Date();
+            const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+            this.phoneappForm.get('phAppDate').setValue(utcMidnight.toISOString());
             this.phoneappForm.get('phAppTime')?.setValue(currentDateTime);
             this.phoneappForm.get('endTime')?.setValue(currentDateTime);
             this.phoneappForm.get('startTime').setValue(currentDateTime);
@@ -118,20 +121,47 @@ isEditMode: boolean = false;
         }
     }
 
-    onChangeDate(value: any) {
-        if (value) {
-            const dateOfReg = new Date(value);
+    // onChangeDate(value: any) {
+    //     debugger
+    //     if (value) {
+    //         const dateOfReg = new Date(value);
 
-            const [datePart, timePart] = dateOfReg
+    //         const [datePart, timePart] = dateOfReg
+    //         .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+    //         .split(',')
+    //         .map(part => part.trim());
+
+    //         this.eventEmitForParent(datePart, timePart);
+
+    //         this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(dateOfReg, 'yyyy-MM-dd'));
+    //     }
+    // }
+
+ onChangeDate(value: any) {
+    debugger;
+    if (value) {
+        const inputDate = new Date(value);
+
+        // ✅ Create UTC midnight
+        const dateOfReg = new Date(Date.UTC(
+            inputDate.getFullYear(),
+            inputDate.getMonth(),
+            inputDate.getDate()
+        ));
+
+        // Optional: Emit localized date and time
+        const [datePart, timePart] = dateOfReg
             .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
             .split(',')
             .map(part => part.trim());
 
-            this.eventEmitForParent(datePart, timePart);
+        this.eventEmitForParent(datePart, timePart);
 
-            this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(dateOfReg, 'yyyy-MM-dd'));
-        }
+        // ✅ Set ISO string with midnight UTC
+        const isoDateString = dateOfReg.toISOString();
+        this.phoneappForm.get('phAppDate').setValue(isoDateString);
     }
+}
 
     onChangeTime(event: any) {
         this.timeflag = 1;
