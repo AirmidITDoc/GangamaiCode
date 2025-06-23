@@ -13,6 +13,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { DatePipe } from '@angular/common';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -219,7 +220,8 @@ export class NewPhoneAppoinmentCalendarComponent {
     activeDayIsOpen: boolean = true;
 
     constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
-        public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService
+        public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService,
+        public datePipe: DatePipe
     ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -250,6 +252,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                 beforeStart: true,
                 afterEnd: true,
             },
+            draggable: true,
         };
         this.events = [...this.events, dragToSelectEvent];
         const segmentPosition = segmentElement.getBoundingClientRect();
@@ -310,20 +313,14 @@ export class NewPhoneAppoinmentCalendarComponent {
         newStart,
         newEnd,
     }: CalendarEventTimesChangedEvent): void {
-        this.events = this.events.map((iEvent) => {
-            if (iEvent === event) {
-                return {
-                    ...event,
-                    start: newStart,
-                    end: newEnd,
-                };
-            }
-            return iEvent;
-        });
+        debugger
+        event.start=newStart;
+        event.end=newEnd;
         this.handleEvent('Dropped or resized', event);
     }
 
     handleEvent(action: string, event: CalendarEvent): void {
+        debugger
         if (action == "CellClicked") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
@@ -340,6 +337,16 @@ export class NewPhoneAppoinmentCalendarComponent {
                 if (result) {
                     this.bindData();
                 }
+            });
+        }
+        else if (action == "Dropped or resized") {
+            var data = {
+                "phoneAppId": event.id,
+                "startDate": event.start,
+                "endDate": event.end
+            }
+            this._service.getDateTimeChange(data).subscribe(response => {
+                this._matDialog.closeAll();
             });
         }
         //this.modalData = { event, action };
