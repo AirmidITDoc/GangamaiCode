@@ -19,12 +19,12 @@ export class SiteDescriptionComponent implements OnInit {
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
+        apiUrl: "SiteDescriptionMaster/List",
         columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT SiteDesc Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Surgery Category", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OT SiteDesc Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,8 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._SiteDescriptionService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            debugger
+                            this._SiteDescriptionService.deactivateTheStatus(data.siteDescId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -42,7 +43,7 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "search facility",
+        sortField: "SiteDescId",
         sortOrder: 0,
         filters: [
             { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },

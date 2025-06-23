@@ -25,14 +25,14 @@ myForm: FormGroup;
     
     autocompleteModetaluka: string = "Taluka";
 
-    talukaId = 0;
+    surgeryCategoryId = 0;
     
     ngOnInit(): void {
-        this.myForm = this._SiteDescriptionService.createVillageForm();
+        this.myForm = this._SiteDescriptionService.createSiteDescForm();
          this.myForm.markAllAsTouched();
 
         console.log(this.data)
-        if ((this.data?.villageId??0) > 0) 
+        if ((this.data?.siteDescId??0) > 0) 
         {
             this.isActive=this.data.isActive
             this.myForm.patchValue(this.data);
@@ -63,12 +63,12 @@ myForm: FormGroup;
           
         getValidationMessages() {
             return {
-                talukaName: [
-                    { name: "required", Message: "City Name is required" }
+                surgeryCategoryId: [
+                    { name: "required", Message: "surgeryCategory Name is required" }
                 ],
-                villageName: [
+                siteDescriptionName: [
                     { name: "required", Message: "siteDesc Name is required" },
-                    { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
+                    { name: "maxlength", Message: "siteDesc Name should not be greater than 50 char." },
                     { name: "pattern", Message: "Only char allowed." }
                 ]
             };
@@ -77,7 +77,7 @@ myForm: FormGroup;
     
         selectChangecountry(obj: any){
             console.log(obj);
-            this.talukaId=obj.value
+            this.surgeryCategoryId=obj.value
         }
     
         onClear(val: boolean) {

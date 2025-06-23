@@ -15,21 +15,21 @@ export class SiteDescriptionService {
         private _formBuilder: UntypedFormBuilder,
          private _FormvalidationserviceService: FormvalidationserviceService
     ) {
-        this.myForm = this.createVillageForm();
+        this.myForm = this.createSiteDescForm();
         this.myformSearch = this.createSearchForm();
     }
   
-       createVillageForm(): FormGroup {
+       createSiteDescForm(): FormGroup {
                return this._formBuilder.group({
-                   villageId: [0],
-                   villageName: ["",
+                   siteDescId: [0],
+                   siteDescriptionName: ["",
                       [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
                    ],
-                   talukaName: ["",
+                   surgeryCategoryId: ["",
                      [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
                    ],
                    isActive:[true,[Validators.required,]]
@@ -38,21 +38,23 @@ export class SiteDescriptionService {
          
            createSearchForm(): FormGroup {
                return this._formBuilder.group({
-                   VillageNameSearch: [""],
+                   siteDescNameSearch: [""],
                    IsDeletedSearch: ["2"],
                });
            }
        
            initializeFormGroup() {
-               this.createVillageForm();
+               this.createSiteDescForm();
            }
        
            public stateMasterSave(Param: any) {
-               if (Param.villageId) {
-                   return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-               } else return this._httpClient.PostData("VillageMaster", Param);
+               if (Param.SiteDescId) {
+                   return this._httpClient.PutData("SiteDescriptionMaster/" + Param.SiteDescId, Param);
+               } else return this._httpClient.PostData("SiteDescriptionMaster", Param);
            }
-    public deactivateTheStatus(m_data) {
-     return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+    public deactivateTheStatus(m_data) 
+    {
+     debugger
+     return this._httpClient.DeleteData("SiteDescriptionMaster?Id=" + m_data.toString());
   }
 }

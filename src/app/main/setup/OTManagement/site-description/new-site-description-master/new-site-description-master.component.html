@@ -17,26 +17,26 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="villageId" formControlName="villageId">
+                <input type="hidden" name="siteDescId" formControlName="siteDescId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="siteDesc Name" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                            formControlName="siteDescriptionName" 
+                            [value]="data?.siteDescriptionName"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
+                            [validations]="getValidationMessages().siteDescriptionName" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown 
                             label="Surgery Category" 
-                            [value]="data?.talukaName" 
-                            formControlName="talukaName"
+                            [value]="data?.surgeryCategoryId" 
+                            formControlName="surgeryCategoryId"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().talukaName"
+                            [validations]="getValidationMessages().surgeryCategoryId"
                             [mode]="autocompleteModetaluka">
                         </airmid-dropdown>
                     </div>
