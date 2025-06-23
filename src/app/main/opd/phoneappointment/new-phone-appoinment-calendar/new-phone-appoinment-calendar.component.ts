@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, } from 'date-fns';
-import { Subject } from 'rxjs';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, ChangeDetectorRef, } from '@angular/core';
+import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, addMinutes, endOfWeek, } from 'date-fns';
+import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
-import { EventColor } from 'calendar-utils';
+import { EventColor, WeekViewHourSegment } from 'calendar-utils';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
@@ -40,6 +40,9 @@ export class NewPhoneAppoinmentCalendarComponent {
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
     objDoctor: any;
     view: CalendarView = CalendarView.Week;
+    dragToCreateActive = false;
+
+    weekStartsOn: 0 = 0;
 
     CalendarView = CalendarView;
 
@@ -77,9 +80,9 @@ export class NewPhoneAppoinmentCalendarComponent {
     };
 
     // raksha date:20/6/25
-     depId = 0
-     depName:any;
-     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+    depId = 0
+    depName: any;
+    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
     selectChangedepartment(obj: any) {
         this.depId = obj.value
         this.depName = obj.text
@@ -121,17 +124,26 @@ export class NewPhoneAppoinmentCalendarComponent {
                 ...obj,
                 start: new Date(obj.start),
                 end: new Date(obj.end),
-                actions: this.actions,
+                actions: this.actions.filter(x=>x.a11yLabel=="Edit"||x.a11yLabel=="Delete"),
             }));
 
         });
     }
     actions: CalendarEventAction[] = [
         {
+            label: '<i class="fas fa-fw fa-plus"></i>',
+            a11yLabel: 'Add',
+            onClick: ({ event }: { event: CalendarEvent }): void => {
+                debugger
+                this.handleEvent('CellClicked', event);
+            },
+        },
+        {
             label: '<i class="fas fa-fw fa-pencil-alt"></i>',
             a11yLabel: 'Edit',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.handleEvent('Edited', event);
+                debugger
+                this.handleEvent('CellClicked', event);
             },
         },
         {
@@ -145,9 +157,6 @@ export class NewPhoneAppoinmentCalendarComponent {
     ];
 
     refresh = new Subject<void>();
-    CellClick($event) {
-        debugger
-    }
     events: CalendarEvent[] = [
         // {
         //     start: subDays(startOfDay(new Date()), 1),
@@ -192,12 +201,77 @@ export class NewPhoneAppoinmentCalendarComponent {
     activeDayIsOpen: boolean = true;
 
     constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog, private cdr: ChangeDetectorRef
     ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             DepartmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
+    }
+    floorToNearest(amount: number, precision: number) {
+        return Math.floor(amount / precision) * precision;
+    }
+
+    ceilToNearest(amount: number, precision: number) {
+        return Math.ceil(amount / precision) * precision;
+    }
+    startDragToCreate(
+        segment: WeekViewHourSegment,
+        mouseDownEvent: MouseEvent,
+        segmentElement: HTMLElement
+    ) {
+        const dragToSelectEvent: CalendarEvent = {
+            id: this.events.length,
+            title: 'New event',
+            start: segment.date,
+            actions: this.actions.filter(x=>x.a11yLabel=="Add"),
+            meta: {
+                tmpEvent: true,
+            },
+            resizable: {
+                beforeStart: true,
+                afterEnd: true,
+            },
+        };
+        this.events = [...this.events, dragToSelectEvent];
+        const segmentPosition = segmentElement.getBoundingClientRect();
+        this.dragToCreateActive = true;
+        const endOfView = endOfWeek(this.viewDate, {
+            weekStartsOn: this.weekStartsOn,
+        });
+
+        fromEvent(document, 'mousemove')
+            .pipe(
+                finalize(() => {
+                    delete dragToSelectEvent.meta.tmpEvent;
+                    this.dragToCreateActive = false;
+                    this.refreshData();
+                }),
+                takeUntil(fromEvent(document, 'mouseup'))
+            )
+            .subscribe((mouseMoveEvent: MouseEvent) => {
+                const minutesDiff = this.ceilToNearest(
+                    mouseMoveEvent.clientY - segmentPosition.top,
+                    30
+                );
+
+                const daysDiff =
+                    this.floorToNearest(
+                        mouseMoveEvent.clientX - segmentPosition.left,
+                        segmentPosition.width
+                    ) / segmentPosition.width;
+
+                const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
+                if (newEnd > segment.date && newEnd < endOfView) {
+                    dragToSelectEvent.end = newEnd;
+                }
+                this.refreshData();
+            });
+    }
+
+    refreshData() {
+        this.events = [...this.events];
+        this.cdr.detectChanges();
     }
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
         if (isSameMonth(date, this.viewDate)) {
@@ -242,7 +316,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                     maxWidth: "95vw",
                     maxHeight: '80%',
                     width: '90%',
-                    data: { fromDate: event["date"], toDate: event["date"], deptNames: this.depName,departmentId:this.depId, doctorName: this.objDoctor.text, doctorId:this.objDoctor.value }
+                    data: { fromDate: event["start"], toDate: event["end"], deptNames: this.depName, departmentId: this.depId, doctorName: this.objDoctor.text, doctorId: this.objDoctor.value }
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
