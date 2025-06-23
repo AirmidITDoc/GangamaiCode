@@ -8,9 +8,11 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { PhoneAppointListService } from '../phone-appoint-list.service';
 import { calendarFormat } from 'moment';
 import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -42,6 +44,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     view: CalendarView = CalendarView.Week;
     dragToCreateActive = false;
 
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     weekStartsOn: 0 = 0;
 
     CalendarView = CalendarView;
@@ -124,7 +127,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                 ...obj,
                 start: new Date(obj.start),
                 end: new Date(obj.end),
-                actions: this.actions.filter(x=>x.a11yLabel=="Edit"||x.a11yLabel=="Delete"),
+                actions: this.actions.filter(x => x.a11yLabel == "Delete"),
             }));
 
         });
@@ -150,8 +153,23 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-trash-alt"></i>',
             a11yLabel: 'Delete',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.events = this.events.filter((iEvent) => iEvent !== event);
-                this.handleEvent('Deleted', event);
+                debugger
+                this.confirmDialogRef = this._matDialog.open(
+                    FuseConfirmDialogComponent,
+                    {
+                        disableClose: false,
+                    }
+                );
+                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to cancel this appointment?";
+                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this._service.phoneMasterCancle(event.id).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.bindData();
+                        });
+                    }
+                    this.confirmDialogRef = null;
+                });
             },
         },
     ];
@@ -201,7 +219,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     activeDayIsOpen: boolean = true;
 
     constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
-        public _matDialog: MatDialog, private cdr: ChangeDetectorRef
+        public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService
     ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -224,7 +242,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             id: this.events.length,
             title: 'New event',
             start: segment.date,
-            actions: this.actions.filter(x=>x.a11yLabel=="Add"),
+            actions: this.actions.filter(x => x.a11yLabel == "Add"),
             meta: {
                 tmpEvent: true,
             },
@@ -320,7 +338,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
-                    // that.grid.bindGridData();
+                    this.bindData();
                 }
             });
         }
