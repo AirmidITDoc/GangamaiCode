@@ -42,11 +42,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
     selectedTime: string | null = null;
     fromDate: Date;
     toDate: Date;
-    deptNames:string;
-    doctorName:string;
-    depId:any;
-    docId:any;
-isEditMode: boolean = false;
+    deptNames: string;
+    doctorName: string;
+    depId: any;
+    docId: any;
+    isEditMode: boolean = false;
 
     public now: Date = new Date();
     constructor(private _fuseSidebarService: FuseSidebarService,
@@ -121,47 +121,29 @@ isEditMode: boolean = false;
         }
     }
 
-    // onChangeDate(value: any) {
-    //     debugger
-    //     if (value) {
-    //         const dateOfReg = new Date(value);
+    onChangeDate(value: any) {
+        debugger;
+        if (value) {
+            const inputDate = new Date(value);
 
-    //         const [datePart, timePart] = dateOfReg
-    //         .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-    //         .split(',')
-    //         .map(part => part.trim());
+            const dateOfReg = new Date(Date.UTC(
+                inputDate.getFullYear(),
+                inputDate.getMonth(),
+                inputDate.getDate()
+            ));
 
-    //         this.eventEmitForParent(datePart, timePart);
+            // Optional: Emit localized date and time
+            const [datePart, timePart] = dateOfReg
+                .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+                .split(',')
+                .map(part => part.trim());
 
-    //         this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(dateOfReg, 'yyyy-MM-dd'));
-    //     }
-    // }
+            this.eventEmitForParent(datePart, timePart);
 
- onChangeDate(value: any) {
-    debugger;
-    if (value) {
-        const inputDate = new Date(value);
-
-        // ✅ Create UTC midnight
-        const dateOfReg = new Date(Date.UTC(
-            inputDate.getFullYear(),
-            inputDate.getMonth(),
-            inputDate.getDate()
-        ));
-
-        // Optional: Emit localized date and time
-        const [datePart, timePart] = dateOfReg
-            .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-            .split(',')
-            .map(part => part.trim());
-
-        this.eventEmitForParent(datePart, timePart);
-
-        // ✅ Set ISO string with midnight UTC
-        const isoDateString = dateOfReg.toISOString();
-        this.phoneappForm.get('phAppDate').setValue(isoDateString);
+            const isoDateString = dateOfReg.toISOString();
+            this.phoneappForm.get('phAppDate').setValue(isoDateString);
+        }
     }
-}
 
     onChangeTime(event: any) {
         this.timeflag = 1;
@@ -181,24 +163,24 @@ isEditMode: boolean = false;
 
             this.eventEmitForParent(datePart, timePart);
         }
+    }
+
+    onChangeTime1(event: any) {
+        this.timeflag = 1;
+
+        if (event) {
+            const selectedTime = new Date(event);
+
+            const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
+            this.isTimeChanged = true;
+            this.phdatetime = timePart;
+            console.log(this.phdatetime);
+            this.phoneappForm.get('endTime').setValue(selectedTime);
+            this.eventEmitForParent(datePart, timePart);
         }
-
-        onChangeTime1(event: any) {
-            this.timeflag = 1;
-
-            if (event) {
-                const selectedTime = new Date(event);
-
-                const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
-                const [datePart, timePart] = localeString.split(',').map(part => part.trim());
-
-                this.isTimeChanged = true;
-                this.phdatetime = timePart;
-                console.log(this.phdatetime);
-                this.phoneappForm.get('endTime').setValue(selectedTime);
-                this.eventEmitForParent(datePart, timePart);
-            }
-            }
+    }
 
     eventEmitForParent(actualDate, actualTime) {
         let localaDateValues = actualDate.split('/');
@@ -253,7 +235,7 @@ isEditMode: boolean = false;
         this.depId = obj.value
         this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;
-            this.docId=data.value
+            this.docId = data.value
             this.ddlDoctor.bindGridAutoComplete();
         });
     }
