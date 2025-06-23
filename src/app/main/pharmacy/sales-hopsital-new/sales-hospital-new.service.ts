@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
   
   @Injectable({
     providedIn: 'root'
@@ -16,7 +17,8 @@ import { ApiCaller } from 'app/core/services/apiCaller';
     constructor(
       public _httpClient: HttpClient,
       private _formBuilder: UntypedFormBuilder,
-      public _httpClient1 :ApiCaller
+      public _httpClient1 :ApiCaller,
+      public _FormvalidationserviceService:FormvalidationserviceService
     ) { 
       this.userFormGroup = this.IndentID();
       this.ItemSearchGroup= this.ItemSearchFrom();
@@ -25,27 +27,27 @@ import { ApiCaller } from 'app/core/services/apiCaller';
   
     ItemSearchFrom() {
       return this._formBuilder.group({
-        Barcode:'',
-        StoreId: '',
+        Barcode:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        StoreId:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         ItemId:['', [Validators.required]],
-        ItemName:[''],
-        BatchNo:'',
-        BatchExpDate:'',
-        BalanceQty:'', 
-        Qty: [1, [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$")] ],  
-        GSTPer:'', 
-        MRP:'',
-        TotalMrp:'',
-        DiscAmt: [' ', [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$")] ],
-        NetAmt:'',
-        DiscPer:'',
-        MarginAmt:'0',
-       GSTAmount:'0',
-       LandedRateandedTotal:'0',
-       CGSTAmt:'0',
-       SGSTAmt: '0',
-       IGSTAmt:'0',
-       PurTotAmt:'0',
+        ItemName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        BatchNo:['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        BatchExpDate:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        BalanceQty:['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        Qty: [1, [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$"),this._FormvalidationserviceService.onlyNumberValidator()] ],  
+        GSTPer:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        MRP: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        TotalMrp: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        DiscAmt: [' '],
+        NetAmt: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        DiscPer:['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        MarginAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       GSTAmount:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       LandedRateandedTotal:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       CGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       SGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       IGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       PurTotAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       });
     }
     

@@ -92,6 +92,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'Phone Appointment Time';
             this.isDatePckrDisabled = false;
         }
+         else if (this.screenFromString == 'Pharmacy-form') {
+            this.dateLabel = 'Pharmacy Date';
+            this.timeLabel = 'Pharmacy Time';
+            this.isDatePckrDisabled = false;
+        }
         else if (this.screenFromString == 'Common-form') {
             this.dateLabel = 'Date';
             this.timeLabel = 'Time';

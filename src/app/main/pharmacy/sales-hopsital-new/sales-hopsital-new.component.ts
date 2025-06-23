@@ -20,7 +20,7 @@ import { PrescriptionComponent } from '../sales/prescription/prescription.compon
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
 import { SalesHospitalService } from './sales-hospital-new.service';
-import { BalAvaListStore, DraftSale, IndentList, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
+import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 
@@ -60,9 +60,7 @@ export class SalesHospitalNewComponent implements OnInit {
   // Form Groups
   ItemSubform: FormGroup;
 
-  // Data Sources
-  dsIndentList = new MatTableDataSource<IndentList>();
-  datasource = new MatTableDataSource<IndentList>();
+  // Data Sources  
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
   tempDatasource = new MatTableDataSource<IndentList>();
   chargeslist = new MatTableDataSource<IndentList>();
@@ -73,116 +71,43 @@ export class SalesHospitalNewComponent implements OnInit {
 
 
 
-  // Patient Related
-  PatientType = PatientType;
-  PatientName: any;
-  RegID: any;
+  // Patient Related 
+  type:any;
+  PatientName: any; 
   MobileNo: any;
-  DoctorName: any;
-  vPatientType: any;
-  Patienttype: any;
-  vAdmissionID: any;
+  DoctorName: any;    
   RegId: any = '';
   IPMedID: any;
   OPDNo: any;
-  IPDNo: any;
-  // Item Related
-  ItemName: any;
-  ItemId: any;
-  BalanceQty: any;
+  IPDNo: any; 
   Itemchargeslist: any = [];
-  Itemchargeslist1: any = [];
-  BalChkList: any = [];
-  BatchNo: any;
-  BatchExpDate: any;
-  UnitMRP: any;
-  Qty: any = 0;
-  IssQty: any;
-  Bal: any;
-  StoreName: any;
-  GSTPer: any;
-  MRP: any;
-  DiscPer: any = 0;
-  DiscAmt: any = 0;
-  FinalDiscPer: any = 0;
-  FinalDiscAmt: any = 0;
+  Itemchargeslist1: any = [];   
+  StoreName: any; 
   NetAmt: any = 0;
-  TotalMRP: any = 0;
-  FinalTotalAmt: any;
-  FinalNetAmount: any = 0;
-  FinalGSTAmt: any = 0;
-  BalQty: any = 0;
-  TotalBalQty: any = 0;
+  TotalMRP: any = 0;   
   ItemObj: IndentList;
-  v_marginamt: any = 0;
-  TotalMarginAmt: any = 0;
-
-  // Payment Related
-  balanceamt: number = 0;
-  BalAmount: any = 0;
-  v_PaidbyPatient: any = 0;
-  v_PaidbacktoPatient: any = 0;
-  roundoffAmt: any;
+  v_marginamt: any = 0;  
   TotalCreditAmt: any = 0;
   TotalAdvanceAmt: any = 0;
-  TotalBalanceAmt: any = 0;
-  netPayAmt: number = 0;
-  isPaymentSuccess: boolean = false;
-  nowDate: Date;
-  PatientHeaderObj: any;
-  data: any;
-
-  // Store Related
-  Store1List: any = [];
-  StoreId: any;
-  StockId: any;
-  vStockId: any = 0;
-
-  // Flags
-  isItemIdSelected: boolean = false;
-  paymethod: boolean = false;
-  IsOnlineRefNo: boolean = false;
-  ConShow: Boolean = false;
-  add1: Boolean = false;
-  isPatienttypeDisabled: boolean = true;
-  chkdiscper: boolean = true;
-  stockidflag: boolean = true;
-  deleteflag: boolean = true;
-  Creditflag: boolean = false;
-  IsCreditflag: boolean = false;
-  drafttable: boolean = false;
-  IsLoading: boolean = false;
-  showTable: boolean = false;
+  TotalBalanceAmt: any = 0;   
+  PatientHeaderObj: any;  
+  StockId: any;  
+  paymethod: boolean = false; 
+  ConShow: Boolean = false;  
+  chkdiscper: boolean = true;  
+  Creditflag: boolean = false;  
   Addflag: boolean = false;
   vBarcodeflag: boolean = false;
-  Itemflag: boolean = false;
-  opflag: Boolean = false;
-  ipflag: Boolean = false;
-  externalflag: Boolean = false;
+  Itemflag: boolean = false;  
   barcodeflag: boolean = false;
-  add: Boolean = false;
-  loadingarry: any = [];
-  isLoading123 = false;
-  chargeslist1: any = [];
-  // Other Properties
-  sIsLoading: string = '';
-  isLoading = true;
-  noOptionFound: boolean = false;
-  labelPosition: 'before' | 'after' = 'after';
-  msg: any;
-  currentDate = new Date();
-  DiscId: any;
-  DraftID: any = 0;
-  DiffNetRoundAmt: any = 0;
-  Functionflag = 0;
-  type = ' ';
-  vPaymode = '';
+  add: Boolean = false; 
+  chargeslist1: any = []; 
+  sIsLoading: string = ''; 
+  currentDate = new Date(); 
+  DraftID: any = 0; 
   vBarcode: any;
   chargeslistBarcode: any = [];
-  dateTimeObj: any;
-  newDateTimeObj: any = {};
-  GSalesNo: any = 0;
-  LandedRate: any;
+  dateTimeObj: any;    
   LandedRateandedTotal: any = 0;
   PurchaseRate: any;
   PurTotAmt: any = 0;
@@ -193,26 +118,14 @@ export class SalesHospitalNewComponent implements OnInit {
   VatPer: any;
   CgstPer: any;
   SgstPer: any;
-  IgstPer: any;
-  VatAmount: any;
-  TotDiscAmt: any = 0;
-  gstAmt: any;
-  DiscOld: any = 0.0;
+  IgstPer: any; 
   QtyBalchk: any = 0;
   DraftQty: any = 0;
-  RQty: any = 0;
-  loadingRow: number | null = null;
+  RQty: any = 0; 
   OP_IP_Id: any = 0;
-  OP_IPType: any = 2;
-  BalancechkFlag: any = 0;
-  SalesDraftId: any = 0;
-  OP_IP_Type: any;
-  vSalesDetails: Printsal[] = [];
-  vSalesIdList: any = [];
-  screenFromString = 'payment-form';
-  vextAddress: any = '';
-
-  // Lists
+  OP_IPType: any = 2; 
+  screenFromString = 'Pharmacy-form';
+  vextAddress: any = ''; 
   ConcessionReasonList: any = [];
 
   // Print Related
@@ -225,8 +138,11 @@ export class SalesHospitalNewComponent implements OnInit {
   reportItemPrintObj: Printsal;
   reportPrintObjItemList: Printsal[] = [];
   repeatItemList: IndentList[] = [];
-
+  HospitalId:any=0;
+    wardId:any=0;
+      bedId:any=0;
   // Pharmacy Options
+  Patientdetails: any;
   vPharExtOpt: any;
   vPharOPOpt: any;
   vPharIPOpt: any;
@@ -234,35 +150,16 @@ export class SalesHospitalNewComponent implements OnInit {
   vCondition: boolean = false;
   vConditionExt: boolean = false;
   vConditionIP: boolean = false;
-  PharmaSalesForm: FormGroup;
-  PharmaSalesDraftForm: FormGroup
-
-  // Payment Details
-  advanceData: any = {};
-  billNo: any;
-  chequeNo: any;
-  chequeAmt: any;
-  cashAmt: any;
-  cardNo: any;
-  BillDate: any;
-  paytmTransNo: any;
-  neftAmt: any;
-  cardAmt: any;
-  neftNo: any;
-  paytmAmt: any;
-  UTRNO: any;
-  selectedItem: SalesBatchItemModel;
-  selectedTableRowItem: IndentList;
-
-
-  WardName: any;
-  BedName: any;
   DoctorNamecheck: boolean = false;
   IPDNocheck: boolean = false;
-  OPDNoCheck: boolean = false;
-  autocompletestore: string = 'Store';
+  OPDNoCheck: boolean = false; 
+  PharmaSalesForm: FormGroup;
+  PharmaSalesDraftForm: FormGroup 
+  selectedItem: SalesBatchItemModel;
+  selectedTableRowItem: IndentList;  
+  autocompletestore: string = 'Store'; 
+  autocompleteModeConcession: string = "Concession";
 
-  Patientdetails: any;
 
   constructor(
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -275,9 +172,7 @@ export class SalesHospitalNewComponent implements OnInit {
     public toastr: ToastrService,
     private onlinePaymentService: OnlinePaymentService,
     private _FormvalidationserviceService: FormvalidationserviceService
-  ) {
-    this.PatientHeaderObj = this.data;
-  }
+  ) {  }
 
   ngOnInit(): void {
     this.getSalesFooterform();
@@ -286,6 +181,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     this.PharmaSalesForm = this.CreatePharmasalesform();
     this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform();
+    this._salesService.ItemSearchGroup.markAllAsTouched();
     if (this.vPharExtOpt == true) {
       this.paymethod = false;
       this.vSelectedOption = '2';
@@ -329,7 +225,8 @@ export class SalesHospitalNewComponent implements OnInit {
       externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      extMobileNo: [0, [Validators.pattern('^[0-9]*$'), Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.onlyNumberValidator()]],
+      extMobileNo: ['', [Validators.required,  Validators.minLength(10), Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator() ]], 
       extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     });
   }
@@ -342,7 +239,7 @@ export class SalesHospitalNewComponent implements OnInit {
         date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
         time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator]],
         totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -354,7 +251,7 @@ export class SalesHospitalNewComponent implements OnInit {
         isSellted: [true],
         isPrint: [true],
         isFree: [true],
-        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -362,8 +259,8 @@ export class SalesHospitalNewComponent implements OnInit {
         addedBy: [this._loggedService.currentUserValue.userId],
         creditReason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         creditReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         discperH: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isPurBill: [false],
         isBillCheck: [true],
@@ -421,18 +318,18 @@ export class SalesHospitalNewComponent implements OnInit {
       })
     })
   }
-  CreateSalesDetailsform(item: any) {
+  CreateSalesDetailsform(item: IndentList) {
     return this.formBuilder.group({
       salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       batchExpDate: [this.datePipe.transform(item.BatchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
       unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -441,7 +338,7 @@ export class SalesHospitalNewComponent implements OnInit {
       purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       cgstper: [item?.CgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      cgstamt: [item?.sgstper ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstamt: [item?.CGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       sgstper: [item?.SgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       sgstamt: [item?.SGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       igstper: [item?.IgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -530,8 +427,7 @@ export class SalesHospitalNewComponent implements OnInit {
     })
   }
   onChangePatientType(event) {
-    if (event.value == '0') {
-      this.OP_IPType = 0;
+    if (event.value == '0') { 
       this.RegId = '';
       this.paymethod = true;
       this.ItemSubform.get('extMobileNo').clearValidators();
@@ -540,8 +436,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('externalPatientName').updateValueAndValidity();
       this.ItemSubform.get('regId').setValue('');
       this.saleSelectedDatasource.data = [];
-    } else if (event.value == '1') {
-      this.OP_IPType = 1;
+    } else if (event.value == '1') { 
       this.RegId = '';
       this.paymethod = true;
       this.ItemSubform.get('extMobileNo').clearValidators();
@@ -560,8 +455,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('regId').setValue('');
       this.ItemSubform.updateValueAndValidity();
       this.saleSelectedDatasource.data = [];
-      this.paymethod = false;
-      this.OP_IPType = 2;
+      this.paymethod = false; 
     }
   }
   getSelectedObjRegIP(obj) {
@@ -582,27 +476,30 @@ export class SalesHospitalNewComponent implements OnInit {
       this.OP_IP_Id = obj.admissionID;
       this.IPDNo = obj.ipdNo;
       this.DoctorName = obj.doctorName;
+       this.HospitalId = obj.hospitalID;
+      this.wardId = obj.wardId;
+      this.bedId = obj.bedId;
     }
     // this.getBillSummary(); 
-  }
+  } 
   getSelectedObjOP(obj) {
     console.log(obj);
     this.Patientdetails = obj;
     this.OPDNoCheck = true;
-    this.DoctorNamecheck = false;
+    this.DoctorNamecheck = true;
     this.IPDNocheck = false;
     this.PatientName = obj.firstName + ' ' + obj.lastName;
-    this.RegId = obj.regID;
-    this.OP_IP_Id = obj.VisitId;
-    this.OPDNo = obj.OPDNo;
-    this.DoctorName = obj.doctorName;
+    this.RegId = obj.regId;
+    this.OP_IP_Id = obj.visitId;
+    this.OPDNo = obj.opdNo;
+    this.HospitalId = obj.hospitalId;
+    this.DoctorName = obj.doctorName;  
     //this.getBillSummary(); 
   }
   onPatientChange(event: any): void {
     console.log(event);
   }
-  onItemChange(event: SalesItemModel): void {
-    this.ItemId = event.itemId;
+  onItemChange(event: SalesItemModel): void { 
     this.getBatch(event.itemId, event.storeId);
   }
   // NOTE: If `isEditable` true then it means this popup will open for table row data 
@@ -692,16 +589,33 @@ export class SalesHospitalNewComponent implements OnInit {
       });
       this.ItemFormreset();
     }
+    let TotalMRP = '0';
+    let LandedRateandedTotal = '0';
+    let marginamt = '0';
+    let PurTotAmt = '0';
+    let GSTAmount = '0';
+    let CGSTAmt = '0';
+    let SGSTAmt = '0';
+    let IGSTAmt = '0';
     if (qty && formvalues.MRP) {
-      let TotalMRP = (qty * formvalues.MRP).toFixed(2);
-      let LandedRateandedTotal = (qty * this.selectedItem?.landedRate).toFixed(2);
-      let marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      let PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
-      let GSTAmount = (((parseFloat(TotalMRP) * formvalues.GSTPer) / 100) * qty).toFixed(2);
-      let CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
-      let SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
-      let IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2);
-
+       TotalMRP = (qty * formvalues.MRP).toFixed(2);
+       LandedRateandedTotal = (qty * this.selectedItem?.landedRate).toFixed(2);
+       marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+       PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
+       GSTAmount = (((parseFloat(TotalMRP) * formvalues.GSTPer) / 100) * qty).toFixed(2);
+       CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
+       SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
+       IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2); 
+    }else if(!qty || qty == 0){
+       TotalMRP = '0';
+       LandedRateandedTotal = '0';
+       marginamt = '0';
+       PurTotAmt = '0';
+       GSTAmount = '0';
+       CGSTAmt = '0';
+       SGSTAmt = '0';
+       IGSTAmt = '0';
+    }
       this._salesService.ItemSearchGroup.patchValue({
         TotalMrp: TotalMRP,
         NetAmt: TotalMRP,
@@ -713,7 +627,6 @@ export class SalesHospitalNewComponent implements OnInit {
         IGSTAmt: IGSTAmt,
         PurTotAmt: PurTotAmt,
       })
-    }
   }
   public discperCal(): void {
     const formValue = this._salesService.ItemSearchGroup.value;
@@ -722,8 +635,7 @@ export class SalesHospitalNewComponent implements OnInit {
     if (discPer < 0 || discPer > 100) {
       this.toastr.error('Enter discount between 0 - 100', 'Error !', {
         toastClass: 'tostr-tost custom-toast-warning',
-      });
-      this.chkdiscper = false;
+      }); 
       this._salesService.ItemSearchGroup.patchValue({
         DiscAmt: 0,
         DiscPer: 0,
@@ -732,8 +644,7 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     if (formValue.TotalMrp) {
       // Calculate discount amount from percentage
-      let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
-      this.chkdiscper = true;
+      let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2); 
       this._salesService.ItemSearchGroup.patchValue({
         DiscAmt: DiscAmt,
       });
@@ -778,7 +689,7 @@ export class SalesHospitalNewComponent implements OnInit {
     return this.formBuilder.group({
       ItemId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ItemName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      BatchNo: [this.selectedItem?.batchNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      BatchNo: [this.selectedItem?.batchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       BatchExpDate: [this.datePipe.transform(this.selectedItem?.batchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
       Qty: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       UnitMRP: [this.selectedItem?.unitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -790,7 +701,7 @@ export class SalesHospitalNewComponent implements OnInit {
       NetAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       RoundNetAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       StockId: [this.selectedItem?.stockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      VatPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      VatPer: [this.selectedItem?.vatPercentage, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       VatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       LandedRate: [this.selectedItem?.landedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       LandedRateandedTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -821,12 +732,21 @@ export class SalesHospitalNewComponent implements OnInit {
         }
       });
     }
-    if (this.vBarcode == 0) {
-      if (this.ItemId == 0 || this.Qty == null || this.MRP == '' || this.TotalMRP == 0) {
-        this.toastr.warning('Please select Item Detail', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+    if (this._salesService.ItemSearchGroup.invalid) {
+      let invalidFields = [];
+      if (this._salesService.ItemSearchGroup.invalid) {
+        for (const controlName in this._salesService.ItemSearchGroup.controls) {
+          if (this._salesService.ItemSearchGroup.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
         });
-        return;
+        return
       }
     }
     const formValue = this._salesService.ItemSearchGroup.value;
@@ -876,6 +796,11 @@ export class SalesHospitalNewComponent implements OnInit {
       this.add = false;
       this.ItemFormreset();
       this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
+      this._salesService.ItemSearchGroup.markAllAsTouched()
+         const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+          if (ItemIdElement) {
+            ItemIdElement.focus();
+          }
     }
   }
   ItemFormreset() {
@@ -904,20 +829,13 @@ export class SalesHospitalNewComponent implements OnInit {
     this.dsBalAvaListStore.data = [];
 
   }
-  Formreset() {
-    this.FinalTotalAmt = 0;
-    this.FinalDiscPer = 0;
-    this.FinalDiscAmt = 0;
-    this.BalAmount = 0;
-    this.FinalGSTAmt = 0;
-    this.FinalNetAmount = 0;
+  Formreset() {     
     this.ItemSubform.reset();
     this.RegId = '';
     this.PatientName = '';
     this.DoctorName = '';
     this.ItemSubform.get('opIpType').setValue('2');
-    this.ItemSubform.get('CashPay').setValue('CashPay');
-    this.IsOnlineRefNo = false;
+    this.ItemSubform.get('CashPay').setValue('CashPay'); 
     this.ItemSubform.get('referanceNo').reset('');
     this.ItemSubform.get('extMobileNo').reset('');
     this.ItemSubform.get('externalPatientName').reset('');
@@ -956,12 +874,26 @@ export class SalesHospitalNewComponent implements OnInit {
       discAmount: FinalDiscAmt,
       netAmount: FinalNetAmt,
     })
+    if(this.ItemSubform.get('discAmount').value){
+      this.chkdiscper = true;
+      this.ConShow = true;
+       this.ItemSubform.get('FinalDiscPer').disable();
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
+      this.ItemSubform.get('concessionReasonId').enable();
+    }else{
+      this.chkdiscper = false;
+      this.ConShow = false;
+       this.ItemSubform.get('FinalDiscPer').enable();
+      this.ItemSubform.get('concessionReasonId').reset();
+      this.ItemSubform.get('concessionReasonId').clearValidators();
+      this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+    }
   }  
   getStoredet() {
     this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
       const storename = data;
-      this.StoreName = storename[1].text;
-      console.log(this.StoreName);
+      this.StoreName = storename[1].text; 
     });
   }
   getFinalDiscperAmt() {
@@ -1012,42 +944,54 @@ export class SalesHospitalNewComponent implements OnInit {
 
   }
   onSave(event) {
+        debugger
     const formValue = this.ItemSubform.value
     if (!this.isValidForm()) {
       Swal.fire('Please enter valid table data.');
       return;
     }
     if (this.ItemSubform.get('opIpType').value == '2') {
-      if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
+      if (formValue.externalPatientName == '' || formValue.doctorName == '' || formValue.extMobileNo == '') {
         this.toastr.warning('Please select Customer Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
+    } 
+    if(Number(formValue.discAmount) > 0 ){ 
+      if(!formValue.concessionReasonId){
+         this.toastr.warning('Please select Concession Reason ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     }
-    debugger
-
     this.PharmaSalesForm.get('sales.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesForm.get('sales.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
-    this.PharmaSalesForm.get('sales.opIpType').setValue(formValue.opIpType)
-    this.PharmaSalesForm.get('sales.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
-    this.PharmaSalesForm.get('sales.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
-    this.PharmaSalesForm.get('sales.discAmount').setValue(Number(Math.round(formValue.discAmount)))
-    this.PharmaSalesForm.get('sales.netAmount').setValue(Number(Math.round(formValue.netAmount)))
-    this.PharmaSalesForm.get('sales.roundOff').setValue(Number(Math.round(formValue.netAmount)))
-    this.PharmaSalesForm.get('sales.regId').setValue(this.Patientdetails?.regID)
-    this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue.concessionReasonId)
-    this.PharmaSalesForm.get('sales.opIpId').setValue(this.Patientdetails?.admissionID)
-    this.PharmaSalesForm.get('sales.unitId').setValue(this.Patientdetails?.hospitalID)
-    this.PharmaSalesForm.get('sales.wardId').setValue(this.Patientdetails?.wardId)
-    this.PharmaSalesForm.get('sales.bedId').setValue(this.Patientdetails?.bedId)
+    this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType ?? 0)
+    this.PharmaSalesForm.get('sales.totalAmount').setValue(Number(Math.round(formValue?.totalAmount ?? 0)))
+    this.PharmaSalesForm.get('sales.vatAmount').setValue(Number(Math.round(formValue?.vatAmount ?? 0)))
+    this.PharmaSalesForm.get('sales.discAmount').setValue(Number(Math.round(formValue?.discAmount ?? 0)))
+    this.PharmaSalesForm.get('sales.netAmount').setValue(Number(Math.round(formValue?.netAmount ?? 0)))
+    this.PharmaSalesForm.get('sales.roundOff').setValue(Number(Math.round(formValue?.netAmount ?? 0)))
+    this.PharmaSalesForm.get('sales.regId').setValue(this.RegId)
+    this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
+    this.PharmaSalesForm.get('sales.opIpId').setValue(this.OP_IP_Id)
+    this.PharmaSalesForm.get('sales.unitId').setValue(this.HospitalId)
+    this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId )
+    this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId )
 
 
     if (formValue.opIpType == 2) {
-      this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue.externalPatientName)
-      this.PharmaSalesForm.get('sales.doctorName').setValue(formValue.doctorName)
-      this.PharmaSalesForm.get('sales.extAddress').setValue(formValue.extAddress)
-      this.PharmaSalesForm.get('sales.extMobileNo').setValue(formValue.extMobileNo)
+      this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue?.externalPatientName ?? '')
+      this.PharmaSalesForm.get('sales.doctorName').setValue(formValue?.doctorName ?? '') 
+      this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress ?? '')
+      this.PharmaSalesForm.get('sales.extMobileNo').setValue(formValue?.extMobileNo ?? '') 
+      this.PharmaSalesForm.get('sales.regId').clearValidators();
+      this.PharmaSalesForm.get('sales.regId').updateValueAndValidity(); 
+       this.PharmaSalesForm.get('sales.regId').setValue(0); 
+      this.PharmaSalesForm.get('sales.opIpId').clearValidators();
+      this.PharmaSalesForm.get('sales.opIpId').updateValueAndValidity(); 
     }
 
     if (this.PharmaSalesForm.valid) {
@@ -1135,17 +1079,15 @@ export class SalesHospitalNewComponent implements OnInit {
         return
       }
     }
-    this.getDraftorderList();
-    this.PatientName = '';
-    this.DoctorName = '';
-
+    this.getDraftorderList(); 
   }
   onClose() {
     this.Itemchargeslist = [];
     this.ItemFormreset();
     this.ItemSubform.reset();
     this.Formreset();
-    this.PatientName = '';
+    this.PatientName = ''; 
+    this.DoctorName = '';
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.ItemSubform.get('FinalDiscPer').enable();
@@ -1175,43 +1117,43 @@ export class SalesHospitalNewComponent implements OnInit {
     this.repeatItemList.forEach((element) => {
       let Qty = parseInt(element.Qty.toString());
       let UnitMrp = element.UnitMRP.split('|')[0];
-      let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
-      let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
-      let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
-      let IGSTAmt = (((element.UnitMRP * this.IgstPer) / 100) * Qty).toFixed(2);
+      // let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
+      // let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
+      // let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
+      // let IGSTAmt = (((element.UnitMRP * this.IgstPer) / 100) * Qty).toFixed(2);
 
-      this.NetAmt = (UnitMrp * element.Qty).toFixed(2);
-      this.Itemchargeslist.push({
-        ItemId: element.ItemId,
-        ItemName: element.ItemShortName,
-        BatchNo: element.BatchNo,
-        BatchExpDate: this.datePipe.transform(element.BatchExpDate, 'dd/MM/YYYY'),
-        Qty: element.Qty,
-        UnitMRP: UnitMrp || element.UnitMRP,
-        TotalMRP: element.TotalAmount,
-        GSTPer: element.VatPer || 0,
-        GSTAmount: element.VatAmount || 0,
-        DiscPer: element.DiscPer,
-        DiscAmt: element.DiscAmount,
-        NetAmt: this.NetAmt,
-        RoundNetAmt: Math.round(this.NetAmt),
-        StockId: this.StockId,
-        VatPer: this.VatPer,
-        VatAmount: this.GSTAmount,
-        LandedRate: this.LandedRate,
-        LandedRateandedTotal: this.LandedRateandedTotal,
-        CgstPer: this.CgstPer,
-        CGSTAmt: this.CGSTAmt,
-        SgstPer: this.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IgstPer: this.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        PurchaseRate: this.PurchaseRate,
-        PurTotAmt: this.PurTotAmt,
-        MarginAmt: this.v_marginamt,
-        BalanceQty: this.BalQty,
-        SalesDraftId: 1,
-      });
+      // this.NetAmt = (UnitMrp * element.Qty).toFixed(2);
+      // this.Itemchargeslist.push({
+      //   ItemId: element.ItemId,
+      //   ItemName: element.ItemShortName,
+      //   BatchNo: element.BatchNo,
+      //   BatchExpDate: this.datePipe.transform(element.BatchExpDate, 'dd/MM/YYYY'),
+      //   Qty: element.Qty,
+      //   UnitMRP: UnitMrp || element.UnitMRP,
+      //   TotalMRP: element.TotalAmount,
+      //   GSTPer: element.VatPer || 0,
+      //   GSTAmount: element.VatAmount || 0,
+      //   DiscPer: element.DiscPer,
+      //   DiscAmt: element.DiscAmount,
+      //   NetAmt: this.NetAmt,
+      //   RoundNetAmt: Math.round(this.NetAmt),
+      //   StockId: this.StockId,
+      //   VatPer: this.VatPer,
+      //   VatAmount: this.GSTAmount,
+      //   LandedRate: this.LandedRate,
+      //   LandedRateandedTotal: this.LandedRateandedTotal,
+      //   CgstPer: this.CgstPer,
+      //   CGSTAmt: this.CGSTAmt,
+      //   SgstPer: this.SgstPer,
+      //   SGSTAmt: this.SGSTAmt,
+      //   IgstPer: this.IgstPer,
+      //   IGSTAmt: this.IGSTAmt,
+      //   PurchaseRate: this.PurchaseRate,
+      //   PurTotAmt: this.PurTotAmt,
+      //   MarginAmt: this.v_marginamt,
+      //   BalanceQty: this.BalQty,
+      //   SalesDraftId: 1,
+      // });
     });
     this.sIsLoading = '';
     this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -1394,43 +1336,43 @@ export class SalesHospitalNewComponent implements OnInit {
       this.NetAmt = (parseFloat(this.TotalMRP) - 0).toFixed(2);
 
       if (contact.DiscPer > 0) {
-        this.DiscAmt = ((this.TotalMRP * contact.DiscPer) / 100).toFixed(2);
-        this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
+        // this.DiscAmt = ((this.TotalMRP * contact.DiscPer) / 100).toFixed(2);
+        // this.NetAmt = (this.TotalMRP - this.DiscAmt).toFixed(2);
       }
 
       // if (this.ItemName && (parseInt(contact.Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
       // this.saleSelectedDatasource.data = [];
 
       this.Itemchargeslist.push({
-        ItemId: contact.ItemId,
-        ItemName: contact.ItemName,
-        BatchNo: contact.BatchNo,
-        BatchExpDate: this.datePipe.transform(contact.BatchExpDate, 'yyyy-MM-dd'),
-        Qty: DraftQty,
-        UnitMRP: contact.UnitMRP,
-        GSTPer: contact.VatPercentage || 0,
-        GSTAmount: this.GSTAmount || 0,
-        TotalMRP: this.TotalMRP,
-        DiscPer: contact.DiscPer || 0,
-        DiscAmt: this.DiscAmt || 0,
-        NetAmt: this.NetAmt || 0,
-        RoundNetAmt: Math.round(this.NetAmt),
-        StockId: contact.StockId,
-        VatPer: contact.VatPer,
-        VatAmount: this.GSTAmount,
-        LandedRate: contact.LandedRate,
-        LandedRateandedTotal: this.LandedRateandedTotal,
-        CgstPer: contact.CgstPer,
-        CGSTAmt: this.CGSTAmt,
-        SgstPer: contact.SgstPer,
-        SGSTAmt: this.SGSTAmt,
-        IgstPer: contact.IgstPer,
-        IGSTAmt: this.IGSTAmt,
-        PurchaseRate: contact.PurchaseRate,
-        PurTotAmt: this.PurTotAmt,
-        MarginAmt: this.v_marginamt,
-        BalanceQty: contact.BalQty,
-        SalesDraftId: 0,
+        // ItemId: contact.ItemId,
+        // ItemName: contact.ItemName,
+        // BatchNo: contact.BatchNo,
+        // BatchExpDate: this.datePipe.transform(contact.BatchExpDate, 'yyyy-MM-dd'),
+        // Qty: DraftQty,
+        // UnitMRP: contact.UnitMRP,
+        // GSTPer: contact.VatPercentage || 0,
+        // GSTAmount: this.GSTAmount || 0,
+        // TotalMRP: this.TotalMRP,
+        // DiscPer: contact.DiscPer || 0,
+        // DiscAmt: this.DiscAmt || 0,
+        // NetAmt: this.NetAmt || 0,
+        // RoundNetAmt: Math.round(this.NetAmt),
+        // StockId: contact.StockId,
+        // VatPer: contact.VatPer,
+        // VatAmount: this.GSTAmount,
+        // LandedRate: contact.LandedRate,
+        // LandedRateandedTotal: this.LandedRateandedTotal,
+        // CgstPer: contact.CgstPer,
+        // CGSTAmt: this.CGSTAmt,
+        // SgstPer: contact.SgstPer,
+        // SGSTAmt: this.SGSTAmt,
+        // IgstPer: contact.IgstPer,
+        // IGSTAmt: this.IGSTAmt,
+        // PurchaseRate: contact.PurchaseRate,
+        // PurTotAmt: this.PurTotAmt,
+        // MarginAmt: this.v_marginamt,
+        // BalanceQty: contact.BalQty,
+        // SalesDraftId: 0,
       });
       this.sIsLoading = '';
 
@@ -1654,7 +1596,11 @@ export class SalesHospitalNewComponent implements OnInit {
     this.OPDNo = '';
   }
   CalPaidbackAmt() {
-    this.v_PaidbacktoPatient = (parseFloat(this.roundoffAmt) - parseFloat(this.v_PaidbyPatient)).toFixed(2);
+    const formvalue=this.ItemSubform.value
+    let PaidbacktoPatient = (parseFloat(formvalue.roundoffAmt) - parseFloat(formvalue.PaidbyPatient)).toFixed(2);
+    this.ItemSubform.patchValue({
+      PaidbacktoPatient:PaidbacktoPatient
+    })
   }
   chkbarcode(event) {
     if (event.checked == true) {
@@ -1958,6 +1904,9 @@ export class SalesHospitalNewComponent implements OnInit {
       StoreId: [
         // { name: "required", Message: "Invoice No is required" }
       ],
+         concessionId: [
+        // { name: "required", Message: "Invoice No is required" }
+      ],
     };
   }
   public onEnterpatientname(event): void {
@@ -2042,4 +1991,97 @@ export class SalesHospitalNewComponent implements OnInit {
     });
   }
   T
+}
+
+export class IndentList {
+    SalesNo: any
+    ItemId: any;
+    ItemName: string;
+    ItemShortName: any;
+    BatchNo: string;
+    BatchExpDate: any;
+    BalanceQty: any;
+    QtyPerDay: any;
+    UnitMRP: any;
+    Qty: number;
+    IssueQty: number;
+    Bal: number;
+    StoreId: any;
+    StoreName: any;
+    GSTPer: any;
+    GSTAmount: any;
+    TotalMRP: any;
+    DiscPer: any;
+    DiscAmt: any;
+    NetAmt: any;
+    StockId: any;
+    ReturnQty: any;
+    TotalAmount: any;
+    Total: any;
+    VatPer: any;
+    VatAmount: any;
+    LandedRate: any;
+    CgstPer: any;
+    CGSTAmt: any;
+    SgstPer: any;
+    SGSTAmt: any;
+    IgstPer: any;
+    IGSTAmt: any;
+    LandedRateandedTotal: any;
+    PurchaseRate: any;
+    PurTotAmt; any;
+    BalanceAmount: any;
+    PatientName: any;
+    SalesReturnId: any;
+    DiscAmount: any;
+    NetAmount: any;
+    MarginAmt: any;
+    /**
+     * Constructor
+     *
+     * @param IndentList
+     */
+    constructor(IndentList) {
+        {
+            this.SalesNo = IndentList.SalesNo || 0;
+            this.ItemId = IndentList.ItemId || 0;
+            this.ItemName = IndentList.ItemName || "";
+            this.ItemShortName = IndentList.ItemShortName || "";
+            this.BatchNo = IndentList.BatchNo || "";
+            this.BatchExpDate = IndentList.BatchExpDate || "";
+            this.UnitMRP = IndentList.UnitMRP || "";
+            this.ItemName = IndentList.ItemName || "";
+            this.Qty = IndentList.Qty || 0;
+            this.IssueQty = IndentList.IssueQty || 0;
+            this.QtyPerDay = IndentList.QtyPerDay || 0;
+            this.Bal = IndentList.Bal || 0;
+            this.StoreId = IndentList.StoreId || 0;
+            this.StoreName = IndentList.StoreName || '';
+            this.GSTPer = IndentList.GSTPer || "";
+            this.TotalMRP = IndentList.TotalMRP || 0;
+            this.DiscAmt = IndentList.DiscAmt || 0;
+            this.NetAmt = IndentList.NetAmt || 0;
+            this.StockId = IndentList.StockId || 0;
+            this.NetAmt = IndentList.NetAmt || 0;
+            this.ReturnQty = IndentList.ReturnQty || 0;
+            this.TotalAmount = IndentList.TotalAmount || 0;
+            this.Total = IndentList.Total || '';
+            this.VatPer = IndentList.VatPer || 0;
+            this.VatAmount = IndentList.VatAmount || 0;
+            this.LandedRate = IndentList.LandedRate || 0;
+            this.CgstPer = IndentList.CgstPer || 0;
+            this.CGSTAmt = IndentList.CGSTAmt || 0;
+            this.SgstPer = IndentList.SgstPer || 0;
+            this.SGSTAmt = IndentList.SGSTAmt || 0;
+            this.IgstPer = IndentList.IgstPer || 0;
+            this.IGSTAmt = IndentList.IGSTAmt || 0;
+            this.BalanceAmount = IndentList.BalanceAmount || 0;
+            this.PatientName = IndentList.PatientName || '';
+            this.SalesReturnId = IndentList.SalesReturnId || 0;
+            this.NetAmount = IndentList.NetAmount || 0;
+            this.DiscAmount = IndentList.DiscAmount || 0;
+            this.MarginAmt = IndentList.MarginAmt || 0;
+            this.DiscPer = IndentList.DiscPer || 0;
+        }
+    }
 }

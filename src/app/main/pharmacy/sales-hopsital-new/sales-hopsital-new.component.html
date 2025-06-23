@@ -200,11 +200,11 @@
                                 formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No"
                                 fxFlex
-                                ApiUrl="OutPatient/auto-complete?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)"
+                                 ApiUrl="VisitDetail/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjOP($event)" 
+                                ValueField="regId"
                                 TextField="formattedText"
-                                ValueField="itemId"
-                              ></airmid-autocomplete>
+                              ></airmid-autocomplete>  
                             </div>
 
                             <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
@@ -228,8 +228,8 @@
                                 formControlName="extMobileNo"
                                 [formGroup]="ItemSubform"
                                 [validations]="getValidationMessages().mobileNo"
-                                [type]="'text'"
-                                maxLength="10"
+                                [type]="'number'" 
+                                 [maxLength]="10" 
                               ></airmid-textbox>
                             </div>
 
@@ -403,17 +403,16 @@
                           <airmid-textbox label="Margin Amount"  formControlName="MarginAmt" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
-                    
-                        <!-- [disabled]="!add" -->
+                     
                         <div matTooltip="Select  name to enable this button!!" [matTooltipDisabled]="!_salesService.ItemSearchGroup.invalid"
                           [matTooltipPosition]="'above'">
                           <button (click)="OnAddItem()" class="btn btn-primary btn-with-icon py-8"
-                            [disabled]="!this._salesService.ItemSearchGroup.valid" #addbutton> <!-- [disabled]="!add" -->
+                            #addbutton> 
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
                             </span>
                           </button>
-                          <!-- [disabled]="_salesService.ItemSearchGroup.invalid" -->
+                          <!--  [disabled]="!this._salesService.ItemSearchGroup.valid" -->
                         </div>
                       </div>
                     </form>
@@ -584,14 +583,13 @@
                                 </div>
                                 <airmid-textbox fxFlex="8%" label="Total Amount" 
                                 [formGroup]="ItemSubform" formControlName="totalAmount" 
-                                [(ngModel)]="FinalTotalAmt" [readonly]="true"></airmid-textbox>
+                              [readonly]="true"></airmid-textbox>
   
                                 <airmid-textbox
                                   fxFlex="7%"
                                   label="Discount %"
                                   [formGroup]="ItemSubform"
-                                  formControlName="FinalDiscPer"
-                                  [(ngModel)]="FinalDiscPer"
+                                  formControlName="FinalDiscPer" 
                                   (valueChange)="getFinalDiscperAmt()"
                                    [disabled]="chkdiscper"
                                 ></airmid-textbox>
@@ -600,59 +598,52 @@
                                   fxFlex="8%"
                                   label="Discount Amount"
                                   [formGroup]="ItemSubform"
-                                  formControlName="discAmount"
-                                  [(ngModel)]="FinalDiscAmt"
+                                  formControlName="discAmount" 
                                   (valueChange)="getFinalDiscAmount()"
                                   [readonly]="true"
                                   type="number"
-                                ></airmid-textbox>
-                                <!-- TODO: Pending -->
-                                <mat-form-field appearance="outline" style="width: 200px" *ngIf="ConShow">
-                                  <mat-label>Concession Reason Type</mat-label>
-                                  <mat-select formControlName="concessionReasonId" #ConseId>
-                                    <mat-option *ngFor="let Doc of ConcessionReasonList" [value]="Doc">
-                                      {{ Doc.ConcessionReason }}
-                                    </mat-option>
-                                  </mat-select>
-                                </mat-form-field>
+                                ></airmid-textbox> 
+
+                                <div style="width: 200px" *ngIf="ConShow">
+                                  <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId" 
+                                  [formGroup]="ItemSubform" [validations]="getValidationMessages().concessionId"
+                                   [mode]="autocompleteModeConcession">
+                                  </airmid-dropdown>
+                                </div>
   
                                 <airmid-textbox
                                   fxFlex="8%"
                                   label="Net Amount"
                                   [formGroup]="ItemSubform"
-                                  formControlName="netAmount"
-                                  [(ngModel)]="FinalNetAmount"
+                                  formControlName="netAmount" 
                                   [readonly]="true"
                                   [required]="true"
                                 ></airmid-textbox>
   
                                 <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform" 
-                                formControlName="balanceAmount" [(ngModel)]="BalAmount"></airmid-textbox>
+                                formControlName="balanceAmount"></airmid-textbox>
   
                                 <airmid-textbox
                                   fxFlex="8%"
                                   label="Net Amount (Round off)"
                                   [formGroup]="ItemSubform"
-                                  formControlName="roundoffAmt"
-                                  [(ngModel)]="roundoffAmt"
+                                  formControlName="roundoffAmt" 
                                   [readonly]="true"
                                 ></airmid-textbox>
   
                                 <airmid-textbox
-                                  fxFlex
+                                  fxFlex="8%"
                                   label="Paid By Patient"
                                   [formGroup]="ItemSubform"
-                                  formControlName="PaidbyPatient"
-                                  [(ngModel)]="v_PaidbyPatient"
+                                  formControlName="PaidbyPatient" 
                                   (valueChange)="CalPaidbackAmt()"
                                 ></airmid-textbox>
   
                                 <airmid-textbox
-                                  fxFlex
+                                   fxFlex="8%"
                                   label="Paid Back To Patient"
                                   [formGroup]="ItemSubform"
-                                  formControlName="PaidbacktoPatient"
-                                  [(ngModel)]="v_PaidbacktoPatient"
+                                  formControlName="PaidbacktoPatient" 
                                   [readonly]="true"
                                 ></airmid-textbox>
                               </div>
@@ -663,17 +654,7 @@
                                   <!-- <mat-radio-button value="Online">Online</mat-radio-button> -->
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                   <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
-                                </mat-radio-group>
-  
-                                <airmid-textbox
-                                  fxFlex
-                                  *ngIf="isPaymentSuccess"
-                                  label="Referance no"
-                                  [formGroup]="ItemSubform"
-                                  formControlName="referanceNo"
-                                  [(ngModel)]="v_PaidbacktoPatient"
-                                  [readonly]="true"
-                                ></airmid-textbox>
+                                </mat-radio-group> 
   
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
                                   <button mat-raised-button (click)="getPRESCRIPTION()" class="btn btn-primary-outline">GET PRESCRIPTION</button>
@@ -709,7 +690,7 @@
                           <li>
                             <div class="list-item">
                               <span class="list-item-key">Bill Amount :</span>
-                              <span class="list-item-value">{{ roundoffAmt | currency : 'INR' }}</span>
+                              <span class="list-item-value">{{ ItemSubform.get('roundoffAmt')?.value | currency : 'INR' }}</span>
                             </div>
                           </li>
                           <li>
