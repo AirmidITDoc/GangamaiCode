@@ -19,13 +19,13 @@ export class ConsentMasterComponent implements OnInit {
 msg: any;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
+        apiUrl: "ConsentMaster/List",
         columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT Consent Name", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Consent Desc ", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Department Name", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "CreatedBy", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Department Name", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+           // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -34,7 +34,7 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._ConsentMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this._ConsentMasterService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
@@ -42,7 +42,7 @@ msg: any;
                     }]
             } //Action 1-view, 2-Edit,3-delete
         ],
-        sortField: "search facility",
+        sortField: "ConsentId",
         sortOrder: 0,
         filters: [
             { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.Contains },
@@ -64,8 +64,8 @@ msg: any;
         let that = this;
         const dialogRef = this._matDialog.open(NewConsentMasterComponent,
             {
-                maxWidth: "50vw",
-                maxHeight: '50%',
+                maxWidth: "90vw",
+                maxHeight: '85%',
                 width: '70%',
                 data: row
             });

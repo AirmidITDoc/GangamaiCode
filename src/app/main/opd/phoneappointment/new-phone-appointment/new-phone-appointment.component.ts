@@ -42,11 +42,11 @@ export class NewPhoneAppointmentComponent implements OnInit {
     selectedTime: string | null = null;
     fromDate: Date;
     toDate: Date;
-    deptNames:string;
-    doctorName:string;
-    depId:any;
-    docId:any;
-isEditMode: boolean = false;
+    deptNames: string;
+    doctorName: string;
+    depId: any;
+    docId: any;
+    isEditMode: boolean = false;
 
     public now: Date = new Date();
     constructor(private _fuseSidebarService: FuseSidebarService,
@@ -93,6 +93,9 @@ isEditMode: boolean = false;
         } else {
             this.isEditMode = false;
             const currentDateTime = new Date();
+            const today = new Date();
+            const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+            this.phoneappForm.get('phAppDate').setValue(utcMidnight.toISOString());
             this.phoneappForm.get('phAppTime')?.setValue(currentDateTime);
             this.phoneappForm.get('endTime')?.setValue(currentDateTime);
             this.phoneappForm.get('startTime').setValue(currentDateTime);
@@ -119,17 +122,26 @@ isEditMode: boolean = false;
     }
 
     onChangeDate(value: any) {
+        debugger;
         if (value) {
-            const dateOfReg = new Date(value);
+            const inputDate = new Date(value);
 
+            const dateOfReg = new Date(Date.UTC(
+                inputDate.getFullYear(),
+                inputDate.getMonth(),
+                inputDate.getDate()
+            ));
+
+            // Optional: Emit localized date and time
             const [datePart, timePart] = dateOfReg
-            .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-            .split(',')
-            .map(part => part.trim());
+                .toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+                .split(',')
+                .map(part => part.trim());
 
             this.eventEmitForParent(datePart, timePart);
 
-            this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(dateOfReg, 'yyyy-MM-dd'));
+            const isoDateString = dateOfReg.toISOString();
+            this.phoneappForm.get('phAppDate').setValue(isoDateString);
         }
     }
 
@@ -151,24 +163,24 @@ isEditMode: boolean = false;
 
             this.eventEmitForParent(datePart, timePart);
         }
+    }
+
+    onChangeTime1(event: any) {
+        this.timeflag = 1;
+
+        if (event) {
+            const selectedTime = new Date(event);
+
+            const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
+            this.isTimeChanged = true;
+            this.phdatetime = timePart;
+            console.log(this.phdatetime);
+            this.phoneappForm.get('endTime').setValue(selectedTime);
+            this.eventEmitForParent(datePart, timePart);
         }
-
-        onChangeTime1(event: any) {
-            this.timeflag = 1;
-
-            if (event) {
-                const selectedTime = new Date(event);
-
-                const localeString = selectedTime.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
-                const [datePart, timePart] = localeString.split(',').map(part => part.trim());
-
-                this.isTimeChanged = true;
-                this.phdatetime = timePart;
-                console.log(this.phdatetime);
-                this.phoneappForm.get('endTime').setValue(selectedTime);
-                this.eventEmitForParent(datePart, timePart);
-            }
-            }
+    }
 
     eventEmitForParent(actualDate, actualTime) {
         let localaDateValues = actualDate.split('/');
@@ -223,7 +235,7 @@ isEditMode: boolean = false;
         this.depId = obj.value
         this._phoneAppointListService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
             this.ddlDoctor.options = data;
-            this.docId=data.value
+            this.docId = data.value
             this.ddlDoctor.bindGridAutoComplete();
         });
     }
