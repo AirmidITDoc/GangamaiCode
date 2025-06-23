@@ -6,19 +6,20 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { VisitMaster1 } from '../../appointment-list.component';
 import { AppointmentlistService } from '../../appointmentlist.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-patientvital-information',
   templateUrl: './patientvital-information.component.html',
   styleUrls: ['./patientvital-information.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class PatientvitalInformationComponent {
 
-  RegId: any; 
+  RegId: any;
   vClassId: any = 0;
-  CompanyId: any = 0;  
+  CompanyId: any = 0;
   RegNo: any;
   PatientName: any;
   Doctorname: any;
@@ -32,8 +33,8 @@ export class PatientvitalInformationComponent {
   Tarrifname: any;
   CompanyName: any;
   RefDocName: any;
-  advanceObj:any;
-  MyFormGroup:FormGroup
+  advanceObj: any;
+  MyFormGroup: FormGroup
 
   vHeight: any;
   vWeight: any;
@@ -44,90 +45,62 @@ export class PatientvitalInformationComponent {
   vTemp: any;
   vSpO2: any;
   vPulse: any;
-   registerObj1 = new VisitMaster1({});
-   patientDetail1 = new VisitMaster1({});
+  registerObj1 = new VisitMaster1({});
+  patientDetail1 = new VisitMaster1({});
 
-  constructor( 
+  constructor(
     public _OpAppointmentService: AppointmentlistService,
     private _formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<PatientvitalInformationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
-    public _matDialog: MatDialog, 
+    public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-   
+
     this.MyFormGroup = this.createMyForm();
-    if(this.data){
+    this.MyFormGroup.markAllAsTouched();
+    if (this.data) {
       console.log(this.data)
-      this.VisitId=this.data.visitId
-            
+      this.VisitId = this.data.visitId
+
       setTimeout(() => {
         this._OpAppointmentService.getVisitById(this.VisitId).subscribe(data => {
           this.patientDetail1 = data;
           console.log(data)
-          this.vHeight=data.height
-          this.vWeight=data.pweight
-          this.vBSL=data.bmi
-          this.vBMI=data.bmi 
-          this.vBP=data. bp
-          this.vTemp=data.temp
-          this.vSpO2=data.spO2
-          this.vPulse=data.pulse
+          this.vHeight = data.height
+          this.vWeight = data.pweight
+          this.vBSL = data.bmi
+          this.vBMI = data.bmi
+          this.vBP = data.bp
+          this.vTemp = data.temp
+          this.vSpO2 = data.spO2
+          this.vPulse = data.pulse
         });
       }, 1000);
     }
-}
-  
-  createMyForm(){
+  }
+
+  createMyForm() {
     return this._formBuilder.group({
-      visitId:this.data.visitId,
-      height: [0, [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      pweight:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      bmi:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      bsl: ['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      spO2:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      temp:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      pulse:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-      bp:['', [Validators.required,
-            Validators.minLength(0),
-            Validators.maxLength(3),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]]
+      visitId: this.data.visitId,
+      height: ['', [Validators.required, Validators.minLength(0), Validators.maxLength(3),
+      this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.pattern("^[0-9]{1,3}$")]],
+      pweight: ['', [Validators.required, Validators.minLength(0), Validators.maxLength(3),
+      Validators.pattern("^[0-9]{1,3}$"), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      bmi: ['', [Validators.minLength(0), Validators.maxLength(5),Validators.pattern("^$|^[0-9]{1,5}$")]],
+      bsl: ['', [Validators.minLength(0), Validators.maxLength(3),Validators.pattern("^[0-9]{1,3}$")]],
+      spO2: ['', [Validators.minLength(0), Validators.maxLength(3),Validators.pattern("^[0-9]{1,3}$")]],
+      temp: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
+      pulse: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
+      bp: ['', [Validators.minLength(0), Validators.maxLength(3),
+      Validators.pattern("^[0-9]{1,3}$")]]
     });
   }
 
-  
   getBMIcalculation() {
     debugger
     if (this.vHeight > 0 && this.vWeight > 0) {
@@ -136,27 +109,43 @@ export class PatientvitalInformationComponent {
     }
     else if (this.vHeight <= 0) {
       this.vBMI = 0;
-     
+
     }
     else if (this.vWeight <= 0) {
       this.vBMI = 0;
-      
+
     }
   }
 
-  onSave(){
-   let visitId=this.data.visitId
-    console.log(this.MyFormGroup.value)
-   this._OpAppointmentService.InsertVitalInfo(visitId,this.MyFormGroup.value).subscribe((response) => {
-    this.toastr.success(response.message);
-    console.log(response)
-   this._matDialog.closeAll();
-});
+  onSave() {
+    if (!this.MyFormGroup.invalid) {
+      let visitId = this.data.visitId
+      console.log(this.MyFormGroup.value)
+      this._OpAppointmentService.InsertVitalInfo(visitId, this.MyFormGroup.value).subscribe((response) => {
+        this._matDialog.closeAll();
+      });
+    } else {
+      let invalidFields: string[] = [];
+      if (this.MyFormGroup.invalid) {
+        for (const controlName in this.MyFormGroup.controls) {
+          if (this.MyFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`My Form: ${controlName}`);
+          }
+        }
+      }
 
-}  
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
 
-  onClose(){
-   
+  }
+
+  onClose() {
+
     this.MyFormGroup.reset();
     this._matDialog.closeAll();
   }
@@ -171,7 +160,7 @@ export class PatientvitalInformationComponent {
   @ViewChild('EBMI') EBMI: ElementRef;
   @ViewChild('EBP') EBP: ElementRef;
   @ViewChild('ETemp') ETemp: ElementRef;
-  
+
   public onEnterHeight(event): void {
     if (event.which === 13) {
       this.EWeight.nativeElement.focus();
@@ -213,14 +202,14 @@ export class PatientvitalInformationComponent {
   }
 
   keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -230,7 +219,7 @@ export class PatientvitalInformationComponent {
       return false;
     }
   }
- 
+
   keyPressOk(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {

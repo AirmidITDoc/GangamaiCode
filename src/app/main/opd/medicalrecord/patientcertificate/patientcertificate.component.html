@@ -1,113 +1,108 @@
 <div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
-      <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-          style="color: white;">
-          <mat-icon>account_box</mat-icon>
-        </button>
-        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-          Certificate
-        </span>
-      </div>
-      <div fxLayout="row" fxLayoutALign="end start">
-        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
-  
-    <div class="content">
-      <div class="center p-12 pb-56" fxFlexAlign="start center">
-  
-        <div class="content-card" style="border-radius:4px; ">
-          <div class="nav material2">
-            <div fxFlexFill fxLayout="column" fxLayoutGap="9px">
-  
-              <form [formGroup]="mycertificateForm" style="padding: 6px 6px 5px 5px;">
-                <div fxLayout="column" fxLayoutGap="10px">
-  
-                  <mat-card style="padding: 5px;">
-                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                      <div class="patient-info-container">
-                        <div class="patient-info-box">
-                          <div class="patient-info-title">
-                            <span class="h1">Patient Information</span>
-                          </div>
-                          <hr>
-                          <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                            class="patient-info">
-                            <div class="patient-sub">
-                              <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                fxLayoutAlign="space-between">
-                                <div fxLayout="column" fxLayoutGap="6px">
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">OPD NO
-                                    </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vOPDNo}}</span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Patient Name
-                                    </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vPatientName}}</span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Doctor Name</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vDoctorName}}</span>
-                                  </div>
+  <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+        style="color: white;">
+        <mat-icon>account_box</mat-icon>
+      </button>
+      <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        Certificate
+      </span>
+    </div>
+    <div fxLayout="row" fxLayoutALign="end start">
+      <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <div class="content">
+    <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+      <div class="content-card" style="border-radius:4px; ">
+        <div class="nav material2">
+          <div fxFlexFill fxLayout="column" fxLayoutGap="9px">
+
+            <form [formGroup]="mycertificateForm" style="padding: 6px 6px 5px 5px;">
+              <div fxLayout="column" fxLayoutGap="10px">
+
+                <mat-card style="padding: 5px;">
+                  <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                    <div class="patient-info-container">
+                      <div class="patient-info-box">
+                        <div class="patient-info-title">
+                          <span class="h1">Patient Information</span>
+                        </div>
+                        <hr>
+                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                          class="patient-info">
+                          <div class="patient-sub">
+                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                              fxLayoutAlign="space-between">
+                              <div fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-col">
+                                  <span class="patient-col-key">OPD NO
+                                  </span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vOPDNo}}</span>
                                 </div>
-                                <div fxLayout="column" fxLayoutGap="6px">
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Age
-                                    </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">
-                                      {{ vAgeYear + 'Y' }}
-                                    </span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Department</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vDepartmentName}}</span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">MobileNo</span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vOP_MobileNo}}</span>
-                                  </div>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Patient Name
+                                  </span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vPatientName}}</span>
                                 </div>
-                                <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
-  
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Tarrif Name
-                                    </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vTariffName}}</span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Company Name</span>
-                                    <span>:</span>
-                                    <span 
-                                      class="patient-col-value" 
-                                      [matTooltip]="vCompanyName" 
-                                      *ngIf="vCompanyName.split(' ').length <= 3">
-                                      {{ vCompanyName }}
-                                    </span>
-                                    <span 
-                                      class="patient-col-value" 
-                                      [matTooltip]="vCompanyName" 
-                                      *ngIf="vCompanyName.split(' ').length > 3">
-                                      {{ vCompanyName | slice:0:20 }}...
-                                    </span>
-                                  </div>
-                                  <div class="patient-col">
-                                    <span class="patient-col-key">Ref-Doctor Name
-                                    </span>
-                                    <span>:</span>
-                                    <span class="patient-col-value">{{vRefDocName}}</span>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Doctor Name</span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vDoctorName}}</span>
                                 </div>
+                              </div>
+                              <div fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Age
+                                  </span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">
+                                    {{ vAgeYear + 'Y' }}
+                                  </span>
+                                </div>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Department</span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vDepartmentName}}</span>
+                                </div>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">MobileNo</span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vOP_MobileNo}}</span>
+                                </div>
+                              </div>
+                              <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
+
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Tarrif Name
+                                  </span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vTariffName}}</span>
+                                </div>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Company Name</span>
+                                  <span>:</span>
+                                  <span class="patient-col-value" [matTooltip]="vCompanyName"
+                                    *ngIf="vCompanyName.split(' ').length <= 3">
+                                    {{ vCompanyName }}
+                                  </span>
+                                  <span class="patient-col-value" [matTooltip]="vCompanyName"
+                                    *ngIf="vCompanyName.split(' ').length > 3">
+                                    {{ vCompanyName | slice:0:20 }}...
+                                  </span>
+                                </div>
+                                <div class="patient-col">
+                                  <span class="patient-col-key">Ref-Doctor Name
+                                  </span>
+                                  <span>:</span>
+                                  <span class="patient-col-value">{{vRefDocName}}</span>
                                 </div>
                               </div>
                             </div>
@@ -115,157 +110,148 @@
                         </div>
                       </div>
                     </div>
-                  </mat-card>
-  
-                  <mat-card>
-  
-                    <div class="content p-12 pb-56">
-  
-                      <div fxLayout="row" fxLayoutGap="10px">
-  
-                        <!-- left table -->
-                         <div fxFlex.gt-sm="50%" fxFlex>
-                          <mat-card style="padding: 5px;">
-                            <mat-table class="table2" matSort [dataSource]="dsCertficateTemp"
-                              [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
-  
-                              <ng-container matColumnDef="CertificateDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
-                                  DateTime </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
-                                  {{element.CertificateDate | date: 'dd/MM/yyyy'}}- {{element.CertificateTime |
-                                  date:'shortTime'}} </mat-cell>
-                              </ng-container>
-  
-                              <ng-container matColumnDef="CertificateName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-120">
-                                  Template Name </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
-                                  {{element.CertificateName}} </mat-cell>
-                              </ng-container>
-    
-                              <ng-container matColumnDef="CertificateText">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
-                                  Template Desc
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
-                                  <span matTooltip="{{element.CertificateText}}" matTooltipPosition="above">
-                                    {{element.CertificateText | slice:0:10}}...
-                                  </span>
-                                </mat-cell>
-                              </ng-container>
-    
-                              <ng-container matColumnDef="Action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
-                                  Action </mat-header-cell>
-                                <mat-cell *matCellDef="let element" class="w-70">
-                                  <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
-                                    <mat-icon>edit</mat-icon>
-                                  </button>
-                                  <button mat-icon-button matTooltip="Print" (click)="viewgetCertificateReportPdf(element)">
-                                    <mat-icon>print</mat-icon>
-                                  </button>
-                                </mat-cell>
-                              </ng-container>
-  
-                              <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                              </ng-container>
-  
-                              <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                  no data found...
-                                </mat-footer-cell>
-                              </ng-container>
-  
-                              <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                              </mat-header-row>
-                              <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                              <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
-                              </mat-footer-row>
-                            </mat-table>
-                            <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                              showFirstLastButtons>
-                            </mat-paginator>
-                          </mat-card>
-                        </div> 
-  
-                        <!-- right form -->
-                         <div fxFlex.gt-sm="50%" fxFlex>
-                          <div fxLayout="column" fxLayoutGap="10px">
-                            <mat-card style="padding: 5px;overflow: auto;height:370px;" fxLayout="column">
-  
-                              <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-  
-                                <input type="hidden" name="certificateId" formControlName="certificateId"
-                                  [(ngModel)]="vCertificateId">
-  
-                                <airmid-dropdown label="Template" formControlName="Template" [formGroup]="mycertificateForm"
-                                    [validations]="getValidationMessages().Template" fxFlex="70%"
-                                     [mode]="autocompleteModeTemplate"
-                                    (selectionChange)="selectChangeTemplate($event)">
-                                </airmid-dropdown>
-  
-                                <div class="modal-footer-buttons gap-8 m-8">
-                                  <button class="btn btn-primary" (click)="addTemplateDescription()"
-                                    [disabled]="isButtonDisabled">
-                                    Add
-                                  </button>
-                                </div>
-  
-                              </div>
-  
-                              <div>
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Certificate Details</mat-label>
-                                            <textarea rows="10" matInput name="ConsentText" formControlName="ConsentText"
-                                                type="text" id="ConsentText" required [(ngModel)]="vConsentText">
-                                            </textarea>
-                                    </mat-form-field>
-                                  <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                        [(ngModel)]="vConsentText" required
-                                                    formControlName="ConsentText">
-                                                </angular-editor> -->
-                              </div>
-  
-                            </mat-card>
-  
-                            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
-  
-                              <div>
-                                <mat-radio-group name="Language" value="1" formControlName="Language"
-                                  style="padding: 15px 0px 0px 0px">
-                                  <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
-                                  <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
-                                </mat-radio-group>
-                              </div>
-  
-                              <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="onSave()">
-                                  Save</button>
-                              </div>
-  
+                  </div>
+                </mat-card>
+
+                <mat-card>
+
+                  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                    <mat-tab label="Certificate List">
+                      <mat-card style="padding: 5px;">
+                        <mat-table class="table2" matSort [dataSource]="dsCertficateTemp"
+                          [@animateStagger]="{value:'50'}" style="overflow: auto;height:360px;">
+
+                          <ng-container matColumnDef="CertificateDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                              DateTime </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                              {{element.CertificateDate | date: 'dd/MM/yyyy'}}- {{element.CertificateTime |
+                              date:'shortTime'}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="CertificateName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                              Template Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                              {{element.CertificateName}} </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="CertificateText">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                              Template Desc
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                              <span matTooltip="{{element.CertificateText}}" matTooltipPosition="above">
+                                {{element.CertificateText | slice:0:10}}...
+                              </span>
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                              Action </mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                              <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                              <button mat-icon-button matTooltip="Print" (click)="viewgetCertificateReportPdf(element)">
+                                <mat-icon>print</mat-icon>
+                              </button>
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="loading">
+                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                            </mat-header-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                              no data found...
+                            </mat-footer-cell>
+                          </ng-container>
+
+                          <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                          </mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                          <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
+                          </mat-footer-row>
+                        </mat-table>
+                        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
+                          showFirstLastButtons>
+                        </mat-paginator>
+                      </mat-card>
+                    </mat-tab>
+
+                    <mat-tab label="Certificate Detail">
+                      <div fxLayout="column" fxLayoutGap="10px">
+                        <mat-card style="padding: 5px;overflow: auto;height:370px;" fxLayout="column">
+
+                          <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+
+                            <input type="hidden" name="certificateId" formControlName="certificateId"
+                              [(ngModel)]="vCertificateId">
+
+                            <airmid-dropdown label="CertificateTemplate" formControlName="certificateTempId" [formGroup]="mycertificateForm"
+                              fxFlex="35%" [mode]="autocompleteModeTemplate" (selectionChange)="selectChangeTemplate($event)">
+                            </airmid-dropdown>
+
+                            <div class="modal-footer-buttons gap-8 m-8">
+                              <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                [disabled]="isButtonDisabled">
+                                Add
+                              </button>
                             </div>
-  
+
                           </div>
-                        </div> 
-  
+
+                          <div>
+                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Certificate Details</mat-label>
+                                            <textarea rows="10" matInput name="certificateText" formControlName="certificateText"
+                                                type="text" id="certificateText" required [(ngModel)]="vcertificateText">
+                                            </textarea>
+                                    </mat-form-field> -->
+                            <mat-label>Certificate Details</mat-label>
+                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                              [(ngModel)]="vcertificateText" required formControlName="certificateText">
+                            </angular-editor>
+                          </div>
+
+                        </mat-card>
+
+                        <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                          <div>
+                            <mat-radio-group name="Language" value="1" formControlName="Language"
+                              style="padding: 15px 0px 0px 0px">
+                              <mat-radio-button value="1" class="mr-sm-12">English</mat-radio-button>
+                              <mat-radio-button value="0" class="mr-sm-12">Marathi</mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+
+                          <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                            <button class="btn btn-primary" (click)="onSave()">
+                              Save</button>
+                          </div>
+
+                        </div>
+
                       </div>
-  
-                    </div>
-  
-                  </mat-card>
-  
-                </div>
-              </form>  
-            </div>
+                    </mat-tab>
+                  </mat-tab-group>
+
+                </mat-card>
+
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  
   </div>
+
+</div>

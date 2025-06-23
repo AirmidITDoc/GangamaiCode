@@ -15,10 +15,6 @@ export class CasepaperService {
     private _loaderService: LoaderService,
     private _formBuilder: UntypedFormBuilder) { }
 
-  public getcasepaperVisitDetails(visitId) {
-    return this._httpClient.post("Generic/GetByProc?procName=rtrv_CaseparVisitDetails", { "VisitId": visitId });
-  }
-
   public onSaveCasepaper(param,loader = true){ 
     if (loader) {
       this._loaderService.show();

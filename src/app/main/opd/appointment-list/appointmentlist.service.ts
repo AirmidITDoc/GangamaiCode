@@ -334,4 +334,16 @@ public InsertOPBillingpayment(employee) {
     public getSuggestions(apiUrl:string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
+
+    // OPD Certificate apis
+
+     public getCertificateList(param) {
+        return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList",param);
+    }
+
+    public CertificateInsertUpdate(Param) {
+    if (Param.certificateId) {
+      return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/" + Param.certificateId, Param);
+    } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
+  }
 }

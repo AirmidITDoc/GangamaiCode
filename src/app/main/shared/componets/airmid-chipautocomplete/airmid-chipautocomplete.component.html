@@ -1,12 +1,11 @@
-<div class="relative-container">
+<!-- <div class="relative-container">
   <div class="chip-wrapper">
-    <!-- Display selected chips -->
+    
     <div class="chip" *ngFor="let chip of chips">
       {{ chip[displayKey] }}
       <button type="button" (click)="removeChip(chip)">×</button>
     </div>
 
-    <!-- Input field -->
     <input
       [(ngModel)]="inputValue"
       (keydown.enter)="handleEnter()"
@@ -17,7 +16,6 @@
     />
   </div>
 
-  <!-- Scrollable suggestions -->
   <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
     <div class="autocomplete-item"
          *ngFor="let option of filteredOptions"
@@ -25,6 +23,36 @@
       {{ option[displayKey] }}
     </div>
   </div>
-</div>
+</div> -->
 
+<div class="relative-container">
+  <div class="chip-wrapper">
+    <div class="chip" *ngFor="let chip of chips">
+      {{ chip[displayKey] }}
+      <button type="button" (click)="removeChip(chip)">×</button>
+    </div>
+
+    <!-- Input field -->
+    <input
+      [(ngModel)]="inputValue"
+      (keydown)="onKeyDown($event)"
+      (input)="filterOptions()"
+      (focus)="onInputFocus()"
+      (blur)="hideDropdownWithDelay()"
+      placeholder="Type or select an item"
+    />
+  </div>
+
+  <!-- Scrollable suggestions -->
+  <div class="autocomplete-list" *ngIf="showDropdown && filteredOptions.length > 0">
+    <div
+      class="autocomplete-item"
+      *ngFor="let option of filteredOptions; let i = index"
+      [class.active]="i === focusedIndex"
+      (mousedown)="selectOption(option)" #autocompleteItem>
+      {{ option[displayKey] }}
+    </div>
+    <div *ngIf="filteredOptions.length === 0" class="no-results">No results found</div>
+  </div>
+</div>
 

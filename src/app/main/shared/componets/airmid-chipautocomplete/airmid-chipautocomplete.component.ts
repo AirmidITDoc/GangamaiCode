@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Optional, Output, Self, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Optional, Output, QueryList, Self, SimpleChanges, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { map, Observable, ReplaySubject, startWith, Subject, takeUntil } from 'rxjs';
@@ -23,6 +23,10 @@ export class AirmidChipautocompleteComponent implements OnInit {
   inputValue: string = '';
   allOptions: any[] = [];  // array of objects
   filteredOptions: any[] = [];
+
+  showDropdown = false;
+  focusedIndex: number = -1;
+  @ViewChildren('autocompleteItem') autocompleteItems!: QueryList<ElementRef>;
 
   constructor(private http: ApiCaller) { }
 
@@ -72,11 +76,60 @@ export class AirmidChipautocompleteComponent implements OnInit {
     this.chipsChange.emit(this.chips);
   }
 
+  // filterOptions() {
+  //   const filter = this.inputValue.toLowerCase();
+  //   this.filteredOptions = this.allOptions.filter(opt =>
+  //     (opt[this.displayKey]?.toLowerCase() || '').includes(filter)
+  //   );
+  // }
   filterOptions() {
     const filter = this.inputValue.toLowerCase();
     this.filteredOptions = this.allOptions.filter(opt =>
       (opt[this.displayKey]?.toLowerCase() || '').includes(filter)
     );
+    this.focusedIndex = this.filteredOptions.length > 0 ? 0 : -1;
+    this.showDropdown = true;
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    const total = this.filteredOptions.length;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (total > 0) {
+        this.focusedIndex = (this.focusedIndex + 1) % total;
+        this.scrollToFocusedItem();
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (total > 0) {
+        this.focusedIndex = (this.focusedIndex - 1 + total) % total;
+        this.scrollToFocusedItem();
+      }
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.focusedIndex >= 0 && this.focusedIndex < total) {
+        const option = this.filteredOptions[this.focusedIndex];
+        this.selectOption(option);
+      } else {
+        this.handleEnter();
+      }
+    }
+  }
+
+  scrollToFocusedItem() {
+    const items = this.autocompleteItems.toArray();
+    if (this.focusedIndex >= 0 && this.focusedIndex < items.length) {
+      items[this.focusedIndex].nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }
+
+  onInputFocus() {
+    this.filterOptions();
+    this.showDropdown = true;
   }
 
   handleEnter() {
@@ -87,19 +140,29 @@ export class AirmidChipautocompleteComponent implements OnInit {
     this.addChip(this.inputValue);
   }
 
+  // private resetInput() {
+  //   this.inputValue = '';
+  //   this.filteredOptions = [...this.allOptions];
+  // }
+
   private resetInput() {
     this.inputValue = '';
     this.filteredOptions = [...this.allOptions];
+    this.focusedIndex = -1;
   }
 
-  showDropdown = false;
+  hideDropdownWithDelay() {
+    setTimeout(() => this.showDropdown = false, 200); // delay to allow click
+  }
 
-hideDropdownWithDelay() {
-  setTimeout(() => this.showDropdown = false, 200); // delay to allow click
-}
+  // selectOption(option: any) {
+  //     this.addChip(option[this.displayKey]);
+  //     this.showDropdown = false;
+  //   }
 
-selectOption(option: any) {
-    this.addChip(option[this.displayKey]);
+  selectOption(option: any) {
+    const value = option[this.displayKey];
+    this.addChip(value);
     this.showDropdown = false;
   }
 

@@ -414,8 +414,11 @@ export class AppointmentListComponent implements OnInit {
     OnVitalInfo(element) {
         const dialogRef = this._matDialog.open(PatientvitalInformationComponent,
             {
-                maxWidth: '95%',
-                height: '48%',
+                // maxWidth: '95%',
+                // height: '48%',
+                 maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
                 data: element
             });
 

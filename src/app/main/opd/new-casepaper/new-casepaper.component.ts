@@ -27,6 +27,7 @@ import { PrescriptionTemplateComponent } from './prescription-template/prescript
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { setValue } from '@ngx-translate/core';
+import { Console } from 'console';
 
 // interface Patient {
 //   PHeight: string;
@@ -524,7 +525,7 @@ export class NewCasepaperComponent implements OnInit {
       }
      this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
-      // console.log('form:', this.casePaperInsertForm.value);
+      console.log('form:', this.casePaperInsertForm.value);
 
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
 
@@ -651,6 +652,7 @@ export class NewCasepaperComponent implements OnInit {
           this.vInst = item.instruction
           this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
         }
+        console.log(this.dsItemList.data)
       }
     });
 
@@ -1396,7 +1398,6 @@ selectChangeChiefComplaint(selectedChips: string[]) {
   displayedColumns: string[] = ['patientName', 'age', 'gender'];
 
   getnewVisistListDemo(obj) {
-    // 
     var D_data = {
       "first": 0,
       "rows": 10,
@@ -1412,7 +1413,6 @@ selectChangeChiefComplaint(selectedChips: string[]) {
       "Columns": [],
       "exportType": "JSON"
     }
-    
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
       this.patients = Visit?.data as MedicineItemList[];
       this.extractUniqueDates();

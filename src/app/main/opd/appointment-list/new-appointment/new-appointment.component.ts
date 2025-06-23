@@ -482,7 +482,6 @@ export class NewAppointmentComponent implements OnInit {
                         LastName: this.registerObj.lastName,
                         MobileNo: this.registerObj.mobileNo
                     });
-                    // console.log(this.registerObj)
                 });
 
             }, 100);
@@ -498,7 +497,7 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo
+                        MobileNo: this.registerObj.mobileNo.trim()
                     });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
