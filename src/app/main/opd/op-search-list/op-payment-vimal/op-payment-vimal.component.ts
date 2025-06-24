@@ -265,8 +265,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
             this.PatientName = this.advanceData.PatientName;
             this.RegNo = this.advanceData.RegNo;
-            this.DoctorName = this.advanceData.DoctorName;
-            this.CompanyName = this.advanceData.CompanyName;
+            this.DoctorName = this.advanceData.DoctorName; 
             this.Date = this.advanceData.Date;
             this.Age = this.advanceData.Age;
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
