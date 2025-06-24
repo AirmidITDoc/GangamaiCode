@@ -16,11 +16,12 @@ import { NewConsentMasterComponent } from './new-consent-master/new-consent-mast
                 animations: fuseAnimations,
 })
 export class ConsentMasterComponent implements OnInit {
-msg: any;
+ msg: any;
+    consentName: any = "";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "ConsentMaster/List",
-        columnsList: [
+   
+        allColumns = [
             { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +42,17 @@ msg: any;
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ConsentId",
-        sortOrder: 0,
-        filters: [
+        ]
+       allFilters =  [
             { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    gridConfig: gridModel = {
+        apiUrl: "ConsentMaster/List",
+        columnsList: this.allColumns,
+        sortField: "ConsentId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
 
     constructor(

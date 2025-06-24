@@ -16,11 +16,12 @@ import { TypeMasterService } from './type-master.service';
             animations: fuseAnimations,
 })
 export class TypeMasterComponent implements OnInit {
-msg: any;
+ msg: any;
+typeName: any = "";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "OtTypeMaster/List",
-        columnsList: [
+   
+         allColumns = [
             { heading: "Code", key: "ottypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT Type Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,13 +42,17 @@ msg: any;
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "OttypeId",
-        sortOrder: 0,
-        filters: [
+        ]
+        allFilters = [
             // { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "OtTypeMaster/List",
+        columnsList: this.allColumns,
+        sortField: "OttypeId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
 
     constructor(

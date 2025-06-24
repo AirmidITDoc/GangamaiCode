@@ -17,15 +17,18 @@ import { SurgeryMasterService } from './surgery-master.service';
 })
 export class SurgeryMasterComponent implements OnInit {
 msg: any;
+ surgeryName: any = "";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "VillageMaster/List",
-        columnsList: [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SurgeryName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DepartmentName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SurgeryCategoryName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SiteDescriptionName", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    
+         allColumns =  [
+            { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SurgeryName", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "DepartmentName", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SurgeryCategoryName", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "SiteDescriptionName", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Amount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -34,20 +37,24 @@ msg: any;
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._SurgeryMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
                                 this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "search facility",
-        sortOrder: 0,
-        filters: [
+        ]
+       allFilters =[
             { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "SurgeryMaster/List",
+        columnsList: this.allColumns,
+        sortField: "SurgeryId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
 
     constructor(

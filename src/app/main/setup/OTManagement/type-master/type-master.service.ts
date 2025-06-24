@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ myForm: FormGroup;
   myformSearch: FormGroup;
   constructor(
       private _httpClient: ApiCaller,
-      private _formBuilder: UntypedFormBuilder
+      private _formBuilder: UntypedFormBuilder,
+     private _FormvalidationserviceService: FormvalidationserviceService
   ) {
       this.myForm = this.createTypeForm();
       this.myformSearch = this.createSearchForm();
@@ -18,15 +20,16 @@ myForm: FormGroup;
 
      createTypeForm(): FormGroup {
              return this._formBuilder.group({
-                 OttypeId: [0],
+                 OttypeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                  typeName: ["",
                       [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
                  ],
-                talukaName: [""],
+                //talukaName: [""],
                 isActive:[true,[Validators.required]]
              });
          }

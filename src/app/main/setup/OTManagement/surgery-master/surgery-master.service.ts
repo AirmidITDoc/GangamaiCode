@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,44 +12,50 @@ export class SurgeryMasterService {
   myformSearch: FormGroup;
   constructor(
       private _httpClient: ApiCaller,
-      private _formBuilder: UntypedFormBuilder
+      private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
   ) {
-      this.myForm = this.createVillageForm();
+      this.myForm = this.createSurgeryForm();
       this.myformSearch = this.createSearchForm();
   }
 
-    createVillageForm(): FormGroup {
+    createSurgeryForm(): FormGroup {
            return this._formBuilder.group({
-               villageId: [0],
-               villageName: ["",
+               SurgeryId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+               SurgeryName: ["",
                   [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
                ],
-               talukaName: [""],
-               isActive:[true,[Validators.required]]
+               surgeryCategoryId: [0],
+                departmentId: [0],
+                surgeryAmount: [0],
+                 ottemplateId: [0],
+                 siteDescId:[0],
+               //isActive:[true,[Validators.required]]
            });
        }
      
        createSearchForm(): FormGroup {
            return this._formBuilder.group({
-               VillageNameSearch: [""],
+               SurgeryNameSearch: [""],
                IsDeletedSearch: ["2"],
            });
        }
    
        initializeFormGroup() {
-           this.createVillageForm();
+           this.createSurgeryForm();
        }
    
        public stateMasterSave(Param: any) {
-           if (Param.villageId) {
-               return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-           } else return this._httpClient.PostData("VillageMaster", Param);
+           if (Param.surgeryId) {
+               return this._httpClient.PutData("SurgeryMaster/" + Param.surgeryId, Param);
+           } else return this._httpClient.PostData("SurgeryMaster", Param);
        }
   public deactivateTheStatus(m_data) {
-   return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+   return this._httpClient.DeleteData("SurgeryMaster?Id=" + m_data.toString());
 }
 }
