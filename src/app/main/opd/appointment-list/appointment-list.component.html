@@ -17,9 +17,9 @@
 
 
     </div>
-    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" class="px-12 py-4 border-bottom">
-        <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" class="px-12 py-4 border-bottom gap-8">
+        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" >
                 <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                     <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
@@ -60,6 +60,53 @@
                 <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                     <span class="red-orange-fg">Waiting : {{VBillcount}}</span>
+                </div>
+            </div> -->
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                <!-- Registrations -->
+                <div class="dashboard-card registrations">
+                    <div class="card-label">Registrations</div>
+                    <div class="card-value">{{Vtotalcount}}</div>
+                    <mat-icon class="card-icon">person_add</mat-icon>
+                </div>
+                <!-- Appointments -->
+                <div class="dashboard-card appointments">
+                    <div class="card-label">Appointments</div>
+                    <div class="card-value">{{Vtotalcount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+                <!-- Appointments New/Follow-up -->
+                <div class="dashboard-card appointments-split">
+                    <div class="card-label">Appointments</div>
+                    <div class="card-value">
+                        <div>New {{VNewcount}}</div>
+                        <div>Follow-up {{VFollowupcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                <!-- Bills -->
+                <div class="dashboard-card bills">
+                    <div class="card-label">Bills</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+                <!-- EMR Ready -->
+                <div class="dashboard-card emr-ready">
+                    <div class="card-label">EMR Ready</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">assignment_turned_in</mat-icon>
+                </div>
+                <!-- Check-Out -->
+                <div class="dashboard-card checkout">
+                    <div class="card-label">Check-Out</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">exit_to_app</mat-icon>
+                </div>
+                <!-- Waiting -->
+                <div class="dashboard-card waiting">
+                    <div class="card-label">Waiting</div>
+                    <div class="card-value">{{VWaitingCount}}</div>
+                    <mat-icon class="card-icon">groups</mat-icon>
                 </div>
             </div>
         </div>

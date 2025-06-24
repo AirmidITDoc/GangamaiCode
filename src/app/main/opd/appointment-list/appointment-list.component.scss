@@ -1,16 +1,71 @@
 .p-sm-24 {
-    padding: 10px !important;
+  padding: 10px !important;
 }
 
 app-appointment-list {
+  .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px;
+    height: 20px;
+    flex-shrink: 0;
+    line-height: 20px;
+    border-radius: 50%;
+  }
+}
 
-    .mat-icon-button {
-        padding: 0;
-        min-width: 0;
-        width: 40px;
-        height: 20px;
-        flex-shrink: 0;
-        line-height: 20px;
-        border-radius: 50%;
+.info-badge-top {
+  .dashboard-card {
+    min-width: 140px;
+    border-radius: 12px;
+    padding: 4px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    .card-label {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
     }
+    .card-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .card-icon {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 28px;
+      opacity: 0.7;
+    }
+    &.registrations {
+      background: #4caf50;
+    }
+    &.appointments {
+      background: #1565c0;
+    }
+    &.appointments-split {
+      background: #795548;
+    }
+    &.bills {
+      background: #388e3c;
+    }
+    &.emr-ready {
+      background: #0097a7;
+    }
+    &.checkout {
+      background: #b28900;
+    }
+    &.waiting {
+      background: #c2185b;
+    }
+    & .card-value div {
+      font-size: 13px;
+    }
+  }
 }
