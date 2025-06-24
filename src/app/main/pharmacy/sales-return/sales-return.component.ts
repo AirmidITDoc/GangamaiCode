@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -78,7 +78,7 @@ export class SalesReturnComponent implements OnInit {
   currentDate =new Date();   
   PaymentType: any; 
   SearchForm: FormGroup;
-  FinalReturnform: FormGroup;
+  IPSalesRetFooterform: FormGroup;
 
     //   // sales bill lsit
   FromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
@@ -103,20 +103,20 @@ export class SalesReturnComponent implements OnInit {
     public _SalesReturnService: SalesReturnService,
     public _matDialog: MatDialog, 
     public datePipe: DatePipe,
-    private _formBuilder: UntypedFormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public toastr : ToastrService,
     public _FormvalidationserviceService:FormvalidationserviceService
   ) { this.SearchForm = this.SearchFilter();
-    this.FinalReturnform = this.Returnform();}
+    this.IPSalesRetFooterform = this.Returnform();}
 
   ngOnInit(): void {
     this.SearchForm.markAllAsTouched();
-     this.FinalReturnform.markAllAsTouched(); 
+     this.IPSalesRetFooterform.markAllAsTouched(); 
     this.getSalesList(); 
   } 
     SearchFilter(): FormGroup {
-    return this._formBuilder.group({ 
+    return this.formBuilder.group({ 
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       RegNo: '',
@@ -127,7 +127,7 @@ export class SalesReturnComponent implements OnInit {
     })
   } 
   Returnform() {
-    return this._formBuilder.group({
+    return this.formBuilder.group({
       NetAmt:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
       ReturnAmt: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] ,
       TotDiscAmount:0,
@@ -135,6 +135,126 @@ export class SalesReturnComponent implements OnInit {
       GSTAmount:0
     });
   } 
+  IpSalesReturnForm:FormGroup;
+    CreateSalesReturnForm() {
+      return this.formBuilder.group({
+        //sales return header  
+        salesReturn: this.formBuilder.group({
+          salesReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+          time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+          salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          opIpId: [this.selcteditemObj.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          opIpType: [1],
+          totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          isSellted: false,
+          isPrint: true,
+          isFree: false,
+          unitId: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          addedBy: [this._loggedService.currentUserValue.userId],
+          storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
+        }),
+        // sales return details in array
+        salesReturnDetails: this.formBuilder.array([]),
+        // Current stock in array
+        currentStock: this.formBuilder.array([]),
+        // sales details update in array
+        salesDetail: this.formBuilder.array([]),
+        //Payment form
+        payment: this.formBuilder.group({
+          paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+          paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+          paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+          cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          chequeDate: ['1999-01-01'],
+          cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          cardDate: ['1999-01-01'],
+          advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          addBy: [this._loggedService.currentUserValue.userId],
+          isCancelled: [false],
+          isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          isCancelledDate: ['1999-01-01'],
+          opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          neftdate: ['1999-01-01'],
+          payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+          payTmdate: ['1999-01-01'],
+        })
+      });
+    }
+    createSalesretDetails(element: any): FormGroup {
+      return this.formBuilder.group({
+        salesReturnID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        batchNo: [element.BatchNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        batchExpDate: [this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd"), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitMrp: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        qty: [element.ReturnQty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatPer: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discPer: [element.DiscPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discAmount: [element.DiscAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        grossAmount: [element.GrossAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        landedPric: [element.LandedPrice, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalLandedAmount: [element.TotalLandedAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        purRate: [element.PurRateWf, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        purTot: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isCashOrCredit: [element.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cgstper: [element.CGSTPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cgstamt: [element.CGSTAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        sgstper: [element.SGSTPer,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        sgstamt: [element.SGSTAmount,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        igstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        igstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        stkId: [element.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      })   
+    }
+    createcurrentStock(element: any): FormGroup {
+      return this.formBuilder.group({
+        itemId: [element?.ItemId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        issueQty: [element?.ReturnQty ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        storeId: [this._loggedService.currentUserValue.storeId],
+        istkId: [element?.StkID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      });
+    }
+    createSalesDetails(element: any): FormGroup {
+      return this.formBuilder.group({
+        salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        returnQty: [element.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      });
+    }
+    // Getters 
+    get SaleRetDetailsArray(): FormArray {
+      return this.IpSalesReturnForm.get('salesReturnDetails') as FormArray;
+    }
+    get currentStockArray(): FormArray {
+      return this.IpSalesReturnForm.get('currentStock') as FormArray;
+    }
+    get SalesDetArray(): FormArray {
+      return this.IpSalesReturnForm.get('salesDetail') as FormArray;
+    }
 getbillllist(){  
     this.firstName = this.SearchForm.get('F_Name').value + '%' || '%',
     this.LastName = this.SearchForm.get('L_Name').value + '%' || '%',
@@ -285,6 +405,7 @@ getbillllist(){
       });
     this.selectedssaleDetailList.data = this.Itemselectedlist;
     this.getUpdateTotalAmtSum()
+    this.IpSalesReturnForm = this.CreateSalesReturnForm();
   }
   deleteTableRow(element) {
     let index = this.Itemselectedlist.indexOf(element);
@@ -302,7 +423,7 @@ getbillllist(){
     let NetAmt = itemlist.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0).toFixed(2);
     let DiscAmount = itemlist.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(2);
     let GSTAmount = itemlist.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0).toFixed(2);
-    this.FinalReturnform.patchValue({
+    this.IPSalesRetFooterform.patchValue({
       NetAmt: NetAmt,
       ReturnAmt: NetAmt,
       TotDiscAmount:DiscAmount,
@@ -363,7 +484,7 @@ getbillllist(){
    //Save code 
    onSave() {
  debugger
-     const formValues = this.FinalReturnform.value
+     const formValues = this.IPSalesRetFooterform.value
      if (!(this.dssaleList.data.length>0)) {
        this.toastr.warning('Please select bill', 'Warning !', {
          toastClass: 'tostr-tost custom-toast-warning',
@@ -407,7 +528,77 @@ getbillllist(){
        }
      })
    } 
-   onSavePayment() {
+     onSavePayment() {
+     const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
+
+    this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
+    this.IpSalesReturnForm.get('salesReturn.time').setValue(formattedTime)
+    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('TotalAmt').value)))
+    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('GSTAmount').value)))
+    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('TotDiscAmount').value)))
+    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+
+    if (this.IpSalesReturnForm.valid) {
+      this.SaleRetDetailsArray.clear()
+      this.currentStockArray.clear()
+      this.SalesDetArray.clear()
+      this.selectedssaleDetailList.data.forEach((element) => {
+        this.SaleRetDetailsArray.push(this.createSalesretDetails(element));
+        this.currentStockArray.push(this.createcurrentStock(element));
+        this.SalesDetArray.push(this.createSalesDetails(element));
+      });
+      if (this.PaymentType == 'Paid') {
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(0)
+        this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+
+        console.log(this.IpSalesReturnForm.value);
+        this._SalesReturnService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
+          this.OnReset();
+        });
+      }
+      else {
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+        this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+
+        console.log(this.IpSalesReturnForm.value);
+        this._SalesReturnService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
+          this.OnReset();
+        });
+      }
+    } else {
+      let invalidFields = [];
+      if (this.IpSalesReturnForm.invalid) {
+        for (const controlName in this.IpSalesReturnForm.controls) {
+          const control = this.IpSalesReturnForm.get(controlName);
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Sales Return Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Sales Return From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
+    }
+  } 
+   onSavePaymentold() {
      const currentDate = new Date();
      const datePipe = new DatePipe('en-US');
      const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -419,16 +610,16 @@ getbillllist(){
      salesReturnHeader['salesId'] = this.selcteditemObj.SalesId || 0;
      salesReturnHeader['opIpId'] =  this.selcteditemObj.OP_IP_ID || 0;
      salesReturnHeader['opIpType'] = 1;
-     salesReturnHeader['totalAmount'] = this.FinalReturnform.get('TotalAmt').value || 0;
-     salesReturnHeader['vatAmount'] = this.FinalReturnform.get('GSTAmount').value || 0;
-     salesReturnHeader['discAmount'] = this.FinalReturnform.get('TotDiscAmount').value || 0;
-     salesReturnHeader['netAmount'] = Math.round(this.FinalReturnform.get('ReturnAmt').value) || 0;
+     salesReturnHeader['totalAmount'] = this.IPSalesRetFooterform.get('TotalAmt').value || 0;
+     salesReturnHeader['vatAmount'] = this.IPSalesRetFooterform.get('GSTAmount').value || 0;
+     salesReturnHeader['discAmount'] = this.IPSalesRetFooterform.get('TotDiscAmount').value || 0;
+     salesReturnHeader['netAmount'] = Math.round(this.IPSalesRetFooterform.get('ReturnAmt').value) || 0;
      if (this.PaymentType == 'Paid') {
-       salesReturnHeader['paidAmount'] = Math.round(this.FinalReturnform.get('ReturnAmt').value ) || 0;
+       salesReturnHeader['paidAmount'] = Math.round(this.IPSalesRetFooterform.get('ReturnAmt').value ) || 0;
        salesReturnHeader['balanceAmount'] = 0;
      } else {
        salesReturnHeader['paidAmount'] = 0;
-       salesReturnHeader['balanceAmount'] = Math.round(this.FinalReturnform.get('ReturnAmt').value ) || 0;
+       salesReturnHeader['balanceAmount'] = Math.round(this.IPSalesRetFooterform.get('ReturnAmt').value ) || 0;
      }
      salesReturnHeader['isSellted'] = false;
      salesReturnHeader['isPrint'] = true,
@@ -511,7 +702,7 @@ getbillllist(){
      PaymentInsertobj['billNo'] = this.selcteditemObj.SalesId || 0,
      PaymentInsertobj['paymentDate'] = formattedDate;
      PaymentInsertobj['paymentTime'] = formattedTime;
-     PaymentInsertobj['cashPayAmount'] = this.FinalReturnform.get('ReturnAmt').value  || 0;
+     PaymentInsertobj['cashPayAmount'] = this.IPSalesRetFooterform.get('ReturnAmt').value  || 0;
      PaymentInsertobj['chequePayAmount'] = 0,
      PaymentInsertobj['chequeNo'] = '0',
      PaymentInsertobj['bankName'] = '',
@@ -584,12 +775,12 @@ getbillllist(){
     this.selectedssaleDetailList.data = [];
   }
   OnReset() {
-    this.FinalReturnform.reset(); 
+    this.IPSalesRetFooterform.reset(); 
     this.selectedssaleDetailList.data = [];
     this.Itemselectedlist = [];  
     this.dssaleDetailList.data = [];
     this.selcteditemObj = '' ; 
-    this.FinalReturnform.markAllAsTouched(); 
+    this.IPSalesRetFooterform.markAllAsTouched(); 
   } 
    isValidForm(): boolean {
     return this.selectedssaleDetailList.data.every((i) => i.ReturnQty > 0);

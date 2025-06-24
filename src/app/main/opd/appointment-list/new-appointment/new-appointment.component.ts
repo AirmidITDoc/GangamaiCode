@@ -920,10 +920,6 @@ export class NewAppointmentComponent implements OnInit {
         }
     }
 
-    toggleSidebar(): void {
-        this._fuseSidebarService.getSidebar(this.sidebarName).toggleOpen();
-    }
-
     handleInputChange(changedField: string): void {
         // Get all current field values
         const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
@@ -984,7 +980,6 @@ export class NewAppointmentComponent implements OnInit {
     }
     onSelectPatient(row: any) {
         this.getSelectedObj(row);
-        this.toggleSidebar();
         this.resetFilteredOptions();
     }
     handleInputChangeDebounced(changedField: string): void {

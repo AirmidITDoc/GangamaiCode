@@ -15,44 +15,51 @@ export class ConsentMasterService {
           private _formBuilder: UntypedFormBuilder,
            private _FormvalidationserviceService: FormvalidationserviceService
       ) {
-          this.myForm = this.createVillageForm();
+          this.myForm = this.createConsentForm();
           this.myformSearch = this.createSearchForm();
       }
     
-         createVillageForm(): FormGroup {
+         createConsentForm(): FormGroup {
                  return this._formBuilder.group({
-                     villageId: [0],
-                     villageName: ["",
+                     consentId: [0],
+                     consentName: ["",
                           [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ] 
                      ],
-                     talukaName: ["",
+                     consentDesc: ["",
+                          [
+                    Validators.required,
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ] 
+                     ],
+                     departmentId: ["",
                          [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
                      ],
-                     isActive:[true,[Validators.required,]]
+                     //isActive:[true,[Validators.required,]]
                  });
              }
            
              createSearchForm(): FormGroup {
                  return this._formBuilder.group({
-                     VillageNameSearch: [""],
+                     ConsentNameSearch: [""],
                      IsDeletedSearch: ["2"],
                  });
              }
          
              initializeFormGroup() {
-                 this.createVillageForm();
+                 this.createConsentForm();
              }
          
              public stateMasterSave(Param: any) {
-                 if (Param.villageId) {
-                     return this._httpClient.PutData("VillageMaster/" + Param.villageId, Param);
-                 } else return this._httpClient.PostData("VillageMaster", Param);
+                 if (Param.consentId) {
+                     return this._httpClient.PutData("ConsentMaster/" + Param.consentId, Param);
+                 } else return this._httpClient.PostData("ConsentMaster", Param);
              }
       public deactivateTheStatus(m_data) {
-       return this._httpClient.DeleteData("VillageMaster?Id=" + m_data.toString());
+       return this._httpClient.DeleteData("ConsentMaster?Id=" + m_data.toString());
     }
 }

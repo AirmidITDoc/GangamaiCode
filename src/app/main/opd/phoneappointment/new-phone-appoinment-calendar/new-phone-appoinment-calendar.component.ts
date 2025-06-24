@@ -1,16 +1,19 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, } from 'date-fns';
-import { Subject } from 'rxjs';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, ChangeDetectorRef, } from '@angular/core';
+import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, addMinutes, endOfWeek, } from 'date-fns';
+import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
-import { EventColor } from 'calendar-utils';
+import { EventColor, WeekViewHourSegment } from 'calendar-utils';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
 import { calendarFormat } from 'moment';
 import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { DatePipe } from '@angular/common';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -40,6 +43,10 @@ export class NewPhoneAppoinmentCalendarComponent {
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
     objDoctor: any;
     view: CalendarView = CalendarView.Week;
+    dragToCreateActive = false;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    weekStartsOn: 0 = 0;
 
     CalendarView = CalendarView;
 
@@ -77,9 +84,9 @@ export class NewPhoneAppoinmentCalendarComponent {
     };
 
     // raksha date:20/6/25
-     depId = 0
-     depName:any;
-     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+    depId = 0
+    depName: any;
+    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
     selectChangedepartment(obj: any) {
         this.depId = obj.value
         this.depName = obj.text
@@ -121,33 +128,54 @@ export class NewPhoneAppoinmentCalendarComponent {
                 ...obj,
                 start: new Date(obj.start),
                 end: new Date(obj.end),
-                actions: this.actions,
+                actions: this.actions.filter(x => x.a11yLabel == "Delete"),
             }));
 
         });
     }
     actions: CalendarEventAction[] = [
         {
+            label: '<i class="fas fa-fw fa-plus"></i>',
+            a11yLabel: 'Add',
+            onClick: ({ event }: { event: CalendarEvent }): void => {
+                debugger
+                this.handleEvent('CellClicked', event);
+            },
+        },
+        {
             label: '<i class="fas fa-fw fa-pencil-alt"></i>',
             a11yLabel: 'Edit',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.handleEvent('Edited', event);
+                debugger
+                this.handleEvent('CellClicked', event);
             },
         },
         {
             label: '<i class="fas fa-fw fa-trash-alt"></i>',
             a11yLabel: 'Delete',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.events = this.events.filter((iEvent) => iEvent !== event);
-                this.handleEvent('Deleted', event);
+                debugger
+                this.confirmDialogRef = this._matDialog.open(
+                    FuseConfirmDialogComponent,
+                    {
+                        disableClose: false,
+                    }
+                );
+                this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to cancel this appointment?";
+                this.confirmDialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this._service.phoneMasterCancle(event.id).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.bindData();
+                        });
+                    }
+                    this.confirmDialogRef = null;
+                });
             },
         },
     ];
 
     refresh = new Subject<void>();
-    CellClick($event) {
-        debugger
-    }
     events: CalendarEvent[] = [
         // {
         //     start: subDays(startOfDay(new Date()), 1),
@@ -192,12 +220,79 @@ export class NewPhoneAppoinmentCalendarComponent {
     activeDayIsOpen: boolean = true;
 
     constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService,
+        public datePipe: DatePipe
     ) {
         this.myFilterform = this._formBuilder.group({
             DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             DepartmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
+    }
+    floorToNearest(amount: number, precision: number) {
+        return Math.floor(amount / precision) * precision;
+    }
+
+    ceilToNearest(amount: number, precision: number) {
+        return Math.ceil(amount / precision) * precision;
+    }
+    startDragToCreate(
+        segment: WeekViewHourSegment,
+        mouseDownEvent: MouseEvent,
+        segmentElement: HTMLElement
+    ) {
+        const dragToSelectEvent: CalendarEvent = {
+            id: this.events.length,
+            title: 'New event',
+            start: segment.date,
+            actions: this.actions.filter(x => x.a11yLabel == "Add"),
+            meta: {
+                tmpEvent: true,
+            },
+            resizable: {
+                beforeStart: true,
+                afterEnd: true,
+            },
+            draggable: true,
+        };
+        this.events = [...this.events, dragToSelectEvent];
+        const segmentPosition = segmentElement.getBoundingClientRect();
+        this.dragToCreateActive = true;
+        const endOfView = endOfWeek(this.viewDate, {
+            weekStartsOn: this.weekStartsOn,
+        });
+
+        fromEvent(document, 'mousemove')
+            .pipe(
+                finalize(() => {
+                    delete dragToSelectEvent.meta.tmpEvent;
+                    this.dragToCreateActive = false;
+                    this.refreshData();
+                }),
+                takeUntil(fromEvent(document, 'mouseup'))
+            )
+            .subscribe((mouseMoveEvent: MouseEvent) => {
+                const minutesDiff = this.ceilToNearest(
+                    mouseMoveEvent.clientY - segmentPosition.top,
+                    30
+                );
+
+                const daysDiff =
+                    this.floorToNearest(
+                        mouseMoveEvent.clientX - segmentPosition.left,
+                        segmentPosition.width
+                    ) / segmentPosition.width;
+
+                const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
+                if (newEnd > segment.date && newEnd < endOfView) {
+                    dragToSelectEvent.end = newEnd;
+                }
+                this.refreshData();
+            });
+    }
+
+    refreshData() {
+        this.events = [...this.events];
+        this.cdr.detectChanges();
     }
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
         if (isSameMonth(date, this.viewDate)) {
@@ -218,20 +313,14 @@ export class NewPhoneAppoinmentCalendarComponent {
         newStart,
         newEnd,
     }: CalendarEventTimesChangedEvent): void {
-        this.events = this.events.map((iEvent) => {
-            if (iEvent === event) {
-                return {
-                    ...event,
-                    start: newStart,
-                    end: newEnd,
-                };
-            }
-            return iEvent;
-        });
+        debugger
+        event.start=newStart;
+        event.end=newEnd;
         this.handleEvent('Dropped or resized', event);
     }
 
     handleEvent(action: string, event: CalendarEvent): void {
+        debugger
         if (action == "CellClicked") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
@@ -242,12 +331,22 @@ export class NewPhoneAppoinmentCalendarComponent {
                     maxWidth: "95vw",
                     maxHeight: '80%',
                     width: '90%',
-                    data: { fromDate: event["date"], toDate: event["date"], deptNames: this.depName,departmentId:this.depId, doctorName: this.objDoctor.text, doctorId:this.objDoctor.value }
+                    data: { fromDate: event["start"], toDate: event["end"], deptNames: this.depName, departmentId: this.depId, doctorName: this.objDoctor.text, doctorId: this.objDoctor.value }
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
-                    // that.grid.bindGridData();
+                    this.bindData();
                 }
+            });
+        }
+        else if (action == "Dropped or resized") {
+            var data = {
+                "phoneAppId": event.id,
+                "startDate": event.start,
+                "endDate": event.end
+            }
+            this._service.getDateTimeChange(data).subscribe(response => {
+                this._matDialog.closeAll();
             });
         }
         //this.modalData = { event, action };
