@@ -17,10 +17,12 @@ import { NewCategoryMasterComponent } from './new-category-master/new-category-m
 })
 export class CategoryMasterComponent implements OnInit {
 msg: any;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "SurgeryCategoryMaster/List",
-        columnsList: [
+ categoryName: any = "";
+
+
+ @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   
+        allColumns =  [
             { heading: "Code", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "SystemName", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
@@ -41,15 +43,20 @@ msg: any;
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "SurgeryCategoryId",
-        sortOrder: 0,
-        filters: [
+        ]
+       
+        allFilters = [
             { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+    
+ gridConfig: gridModel = {
+        apiUrl: "SurgeryCategoryMaster/List",
+        columnsList: this.allColumns,
+        sortField: "SurgeryCategoryId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
-
     constructor(
         public _CategoryMasterService: CategoryMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog

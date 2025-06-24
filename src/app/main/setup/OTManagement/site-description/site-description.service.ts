@@ -21,12 +21,13 @@ export class SiteDescriptionService {
   
        createSiteDescForm(): FormGroup {
                return this._formBuilder.group({
-                   siteDescId: [0],
+                   siteDescId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                    siteDescriptionName: ["",
                       [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
                    ],
                    surgeryCategoryId: ["",
@@ -48,8 +49,8 @@ export class SiteDescriptionService {
            }
        
            public stateMasterSave(Param: any) {
-               if (Param.SiteDescId) {
-                   return this._httpClient.PutData("SiteDescriptionMaster/" + Param.SiteDescId, Param);
+               if (Param.siteDescId) {
+                   return this._httpClient.PutData("SiteDescriptionMaster/" + Param.siteDescId, Param);
                } else return this._httpClient.PostData("SiteDescriptionMaster", Param);
            }
     public deactivateTheStatus(m_data) 

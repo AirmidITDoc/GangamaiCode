@@ -17,68 +17,68 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="villageId" formControlName="villageId">
+                <input type="hidden" name="SurgeryId" formControlName="SurgeryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox 
+                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
                             label="Department" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                            [value]="data?.departmentId" 
+                            formControlName="departmentId"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
-                            [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-                    <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="30%">
-                        <airmid-textbox 
-                            label="Surgery category" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
-                            [maxLength]="50">
-                        </airmid-textbox>
+                            [validations]="getValidationMessages().departmentId"
+                            [mode]="autocompleteModeDepartment">
+                        </airmid-dropdown>
                     </div>
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox 
-                            label="site Description" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                        <airmid-dropdown 
+                            label="Surgery Category" 
+                            [value]="data?.surgeryCategoryId" 
+                            formControlName="surgeryCategoryId"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
-                            [maxLength]="50">
-                        </airmid-textbox>
+                            [validations]="getValidationMessages().surgeryCategoryId"
+                            [mode]="autocompleteModetaluka">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
+                            label="site Description" 
+                            formControlName="siteDescId" 
+                            [value]="data?.siteDescId"
+                            [formGroup]="myForm" 
+                            [validations]="getValidationMessages().siteDescId" 
+                            [mode]="autocompleteModetaluka">
+                        </airmid-dropdown>
                     </div>
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox 
                             label="Template Name" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                            formControlName="SurgeryName" 
+                            [value]="data?.SurgeryName"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
+                            [validations]="getValidationMessages().SurgeryName" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox 
                             label="Surgery Name" 
-                            formControlName="villageName" 
-                            [value]="data?.villageName"
+                            formControlName="SurgeryName" 
+                            [value]="data?.SurgeryName"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().villageName" 
+                            [validations]="getValidationMessages().SurgeryName" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown 
+                        <airmid-textbox
                             label="Amount" 
-                            [value]="data?.talukaName" 
-                            formControlName="talukaName"
+                            [value]="data?.surgeryAmount" 
+                            formControlName="surgeryAmount"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().talukaName"
-                            [mode]="autocompleteModetaluka">
-                        </airmid-dropdown>
+                            [validations]="getValidationMessages().surgeryAmount"
+                            [maxLength]="50">
+                        </airmid-textbox>
                     </div>
 
                 </div>

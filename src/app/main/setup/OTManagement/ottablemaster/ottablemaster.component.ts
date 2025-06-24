@@ -17,11 +17,14 @@ import { OttablemasterService } from './ottablemaster.service';
       animations: fuseAnimations,
 })
 export class OTTablemasterComponent implements OnInit{
+
 msg: any;
+tableName: any = "";
+
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "OtTableMaster/List",
-        columnsList: [
+   
+        allColumns =[
             { heading: "Code", key: "ottableId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT Room Name", key: "ottableName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location Name", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
@@ -43,13 +46,17 @@ msg: any;
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "OttableId",
-        sortOrder: 0,
-        filters: [
+        ]
+        allFilters = [
             // { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.Contains },
             // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "OtTableMaster/List",
+        columnsList: this.allColumns,
+        sortField: "OttableId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
 
     constructor(

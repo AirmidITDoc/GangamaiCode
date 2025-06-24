@@ -25,6 +25,8 @@ export class PatientcertificateComponent {
   vPatientName: any;
   vDoctorName: any;
   vAgeYear: any;
+  vAgeMonth: any;
+  vAgeDay: any;
   vDepartmentName: any;
   vOP_MobileNo: any;
   vTariffName: any;
@@ -51,7 +53,7 @@ export class PatientcertificateComponent {
     'CertificateText',
     'Action'
   ]
-  autocompleteModeTemplate: string = 'OPDEMR'
+  autocompleteModeTemplate: string = 'Template' //'OPDEMR'
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -86,13 +88,13 @@ export class PatientcertificateComponent {
 
     if (this.data) {
       this.registerObj = this.data;
-      console.log("Certificate RegisterObj:", this.registerObj)
-
       this.vWardName = this.registerObj.RoomName;
       this.vBedNo = this.registerObj.BedName;
       this.vGenderName = this.registerObj.GenderName;
       this.vPatientName = this.registerObj.patientName;
       this.vAgeYear = this.registerObj.ageYear;
+      this.vAgeMonth = this.registerObj.ageMonth
+      this.vAgeDay = this.registerObj.ageDay
       this.RegId = this.registerObj.regId;
       this.vVisitedId = this.registerObj.visitId
       this.vAge = this.registerObj.Age;
@@ -105,14 +107,16 @@ export class PatientcertificateComponent {
       this.vDepartmentName = this.registerObj.departmentName;
       this.vRefDocName = this.registerObj.refDocName
       this.selectedTemplate = this.registerObj.ConsentTempId;
+      this.getCertificateList();
     }
+
   }
 
   CreatePatientCertiform() {
     return this._formBuilder.group({
       certificateId: [0],
-      certificateDate: [(new Date()).toISOString()], //"2025-09-08",
-      certificateTime: [(new Date()).toISOString()], //"10:00:00AM",
+      certificateDate: [new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())).toISOString()],
+      certificateTime: [(new Date()).toISOString()],
       visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       certificateTempId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       certificateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -120,15 +124,17 @@ export class PatientcertificateComponent {
       Language: ['1'],
     })
   }
+
   onSave() {
     if (!this.mycertificateForm.invalid) {
       this.mycertificateForm.get('visitId').setValue(this.vVisitedId)
-      this.mycertificateForm.removeControl('Language')
-      console.log(this.mycertificateForm.value)
-
-      // this._AppointmentServiceService.CertificateInsertUpdate(this.mycertificateForm.value).subscribe((response) => {
-      //   this.onSubList()
-      // });
+      const payload = this.mycertificateForm.getRawValue();
+      delete payload.Language;
+      this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
+        this.onSubList()
+        this.mycertificateForm.reset();
+        this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
+      });
     }
     else {
       let invalidFields: string[] = [];
@@ -159,49 +165,41 @@ export class PatientcertificateComponent {
   }
 
   addTemplateDescription() {
-
     this.isButtonDisabled = false;
-    if (this.selectedTemplate == '' || this.selectedTemplate == null || this.selectedTemplate == undefined) {
+    if (!this.mycertificateForm.get('certificateTempId').value) {
       this.toastr.warning('Please select Certificate Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (this.mycertificateForm.get('certificateTempId').value) {
-      //   if(!this.TemplateList.find(item => item.ConsentId == this.mycertificateForm.get('Template').value.ConsentId))
-      //  {
-      //   this.toastr.warning('Please select Valid CertificateTemplate Name', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      //  }
+    if (this.registerObjDet) {
+      this.vcertificateText = this.registerObjDet;
+      this.registerObjDet = '';
     }
-
-    this.vcertificateText = this.registerObjDet || '';
-    this.registerObjDet = '';
   }
 
+
   selectChangeTemplate(data) {
-    this.registerObjDet = data.CertificateDesc;
+    this.registerObjDet = data.certificateDesc;
+    this.mycertificateForm.get('certificateName').setValue(data.certificateName)
   }
 
   getCertificateList() {
     const D_data = {
       "first": 0,
       "rows": 10,
-      "sortField": "CertificateId",
+      "sortField": "VisitedID",
       "sortOrder": 0,
       "filters": [
         {
-          "fieldName": "CertificateId",
-          "fieldValue": "1",
+          "fieldName": "VisitedID",
+          "fieldValue": String(this.vVisitedId),
           "opType": "Equals"
         }
       ],
       "exportType": "JSON",
       "columns": []
     }
-    console.log('data:', D_data)
     this._AppointmentServiceService.getCertificateList(D_data).subscribe(Visit => {
       this.dsCertficateTemp.data = Visit.data as certificateTemp[];
       this.dsCertficateTemp.sort = this.sort;

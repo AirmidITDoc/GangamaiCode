@@ -21,7 +21,7 @@ import { PharAdvanceService } from '../phar-advance.service';
 export class NewAdvanceComponent implements OnInit {
   displayedColumns = [
     'Date',
-    'AdvanceNo', 
+    'AdvanceNo',
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
@@ -32,48 +32,49 @@ export class NewAdvanceComponent implements OnInit {
     'NeftPay',
     'PayTMPay',
     'UserName',
-    'buttons' 
+    'buttons'
   ];
 
   dateTimeObj: any;
   sIsLoading: string = '';
-  isLoading:''; 
-  isRegIdSelected:boolean=false;
+  isLoading: '';
+  isRegIdSelected: boolean = false;
   PatientListfilteredOptions: any;
-  noOptionFound:any;
+  noOptionFound: any;
   // filteredOptions:any;
   screenFromString = 'pharma-advance';
-  vRegNo:any;
-  vPatienName:any;
-  vMobileNo:any;
-  vAdmissionDate:any;
-  vAdmissionID:any;
-  vIPDNo:any;
-  vRoomName:any;
-  vTariffName:any;
-  vBedName:any;
-  vCompanyName:any;
-  vDoctorName:any;
-  vGenderName:any;
-  vAge:any;
-  vAgeMonth:any;
-  vAgeDay:any;
-  vRefDocName:any;
-  vDepartment:any;
-  vadvanceAmount:any;
-  vRegId:any;
-  vPatientType:any;
-
+  vRegNo: any;
+  vPatienName: any;
+  vMobileNo: any;
+  vAdmissionDate: any;
+  vAdmissionID: any;
+  vIPDNo: any;
+  vRoomName: any;
+  vTariffName: any;
+  vBedName: any;
+  vCompanyName: any;
+  vDoctorName: any;
+  vGenderName: any;
+  vAge: any;
+  vAgeMonth: any;
+  vAgeDay: any;
+  vRefDocName: any;
+  vDepartment: any;
+  vadvanceAmount: any;
+  vRegId: any;
+  vPatientType: any;
+  vAdmissionTime: any;
+  regObj: any;
   dsIpItemList = new MatTableDataSource<IpItemList>();
-  
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
 
   constructor(
-    public _PharAdvanceService:PharAdvanceService, 
+    public _PharAdvanceService: PharAdvanceService,
     private _loggedService: AuthenticationService,
-    public _matDialog: MatDialog, 
-    public datePipe: DatePipe, 
+    public _matDialog: MatDialog,
+    public datePipe: DatePipe,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewAdvanceComponent>,
@@ -84,67 +85,48 @@ export class NewAdvanceComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this._PharAdvanceService.NewAdvanceForm.get('RegID').value}%`
+
+  getSelectedObjIP(obj) {
+    if ((obj.regID ?? 0) > 0) {
+      this.regObj = obj
+      console.log("Admitted patient:", this.regObj)
+      this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vAdmissionTime = obj.admissionTime
+      this.vAdmissionID = obj.admissionID;
+      this.getAdvanceList(obj);
     }
-    if (this._PharAdvanceService.NewAdvanceForm.get('RegID').value.length >= 1) {
-      // this._PharAdvanceService.getAdmittedpatientlist(m_data).subscribe(resData => {
-      //   this.filteredOptions = resData;
-      //   console.log(resData)
-      //   this.PatientListfilteredOptions = resData;
-      //   if (this.filteredOptions.length == 0) {
-      //     this.noOptionFound = true;
-      //   } else {
-      //     this.noOptionFound = false;
-      //   } 
-      // });
-    } 
-  } 
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
   }
 
-  getSelectedObj(obj){
-    console.log(obj)
-   this.vRegNo = obj.RegNo;
-   this.vRegId= obj.RegID;
-   this.vPatienName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
-   this.vAdmissionDate = obj.AdmissionDate;
-   this.vRoomName = obj.RoomName; 
-   this.vAdmissionID = obj.AdmissionID;
-   this.vIPDNo = obj.IPDNo
-   this.vTariffName = obj.TariffName;
-   this.vBedName = obj.BedName;
-   this.vCompanyName = obj.CompanyName;
-   this.vDoctorName = obj.DoctorName;
-   this.vGenderName = obj.GenderName;
-   this.vAge = obj.Age
-   this.vAgeMonth = obj.AgeMonth
-   this.vAgeDay = obj.AgeDay
-   this.vRefDocName = obj.RefDocName
-   this.getAdvanceList(obj);
-  }
-  vAdvanceId:any;
-  vAdvanceDetailID:any;
+  vAdvanceId: any;
+  vAdvanceDetailID: any;
   getAdvanceList(obj) {
-    this.sIsLoading = 'loading';
     var m_data = {
-      "AdmissionID": obj.AdmissionID
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(obj.admissionID),
+          "opType": "Equals"
+        }
+
+      ],
+      "exportType": "JSON",
+      "columns": []
     }
-    console.log(m_data) 
-      this.sIsLoading = 'loading';
-      this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
-        this.dsIpItemList.data = Visit as IpItemList[];
-        this.vAdvanceId = this.dsIpItemList.data[0]['AdvanceId'];
-        this.vAdvanceDetailID = this.dsIpItemList.data[0].AdvanceDetailID;
-        console.log(this.dsIpItemList.data)
-        this.dsIpItemList.sort = this.sort;
-        this.dsIpItemList.paginator = this.paginator;  
-      }); 
+    console.log(m_data)
+    this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
+      this.dsIpItemList.data = Visit.data as IpItemList[];
+      this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
+      this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
+      console.log(this.dsIpItemList.data)
+      this.dsIpItemList.sort = this.sort;
+      this.dsIpItemList.paginator = this.paginator;
+    });
   }
- 
+
   // getAdvancetotal(element) {
   //   let netAmt;
   //   netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
@@ -158,7 +140,7 @@ export class NewAdvanceComponent implements OnInit {
   //   this.Advavilableamt = netAmt;
   //   return netAmt;
   // } 
-  keyPressCharater(event){
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -166,13 +148,13 @@ export class NewAdvanceComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  } 
+  }
   onSave() {
     if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
       this.toastr.warning('Please enter advance amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-    } 
+    }
     if (!this.vAdvanceId) {
       let insertPHAdvanceObj = {};
       insertPHAdvanceObj['advanceID'] = 0;
@@ -232,28 +214,28 @@ export class NewAdvanceComponent implements OnInit {
       //     }
       //   });
 
-        PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['PatientName'] =  this.vPatienName;
-        PatientHeaderObj['RegNo'] =this.vRegNo;
-        PatientHeaderObj['DoctorName'] =this.vDoctorName;
-        PatientHeaderObj['CompanyName'] = this.vCompanyName; 
-        PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
-        PatientHeaderObj['Age'] =   this.vAge ;
-        PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-          const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-              maxWidth: "80vw",
-              height: '650px',
-              width: '80%',
-              data: {
-                vPatientHeaderObj: PatientHeaderObj,
-                FromName: "IP-Pharma-Advance",
-                advanceObj: PatientHeaderObj,
-              }
-            });
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+        PatientHeaderObj['PatientName'] = this.vPatienName;
+      PatientHeaderObj['RegNo'] = this.vRegNo;
+      PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      PatientHeaderObj['CompanyName'] = this.vCompanyName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      PatientHeaderObj['Age'] = this.vAge;
+      PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Pharma-Advance",
+            advanceObj: PatientHeaderObj,
+          }
+        });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========', result);
-       
+
         let submitData = {
           "insertPHAdvance": insertPHAdvanceObj,
           "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
@@ -268,15 +250,15 @@ export class NewAdvanceComponent implements OnInit {
             });
             console.log(response)
             this.viewgetIPAdvanceReportPdf(response);
-            this._matDialog.closeAll(); 
+            this._matDialog.closeAll();
             this.onClose();
           } else {
             this.toastr.success('IP Pharma Advance data not Saved!', 'Error !', {
               toastClass: 'tostr-tost custom-toast-success',
-            }); 
+            });
           }
-        }); 
-      }); 
+        });
+      });
 
     }
     else {
@@ -328,97 +310,97 @@ export class NewAdvanceComponent implements OnInit {
       //     }
       //   });
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      PatientHeaderObj['PatientName'] =  this.vPatienName;
-      PatientHeaderObj['RegNo'] =this.vRegNo;
-      PatientHeaderObj['DoctorName'] =this.vDoctorName;
-      PatientHeaderObj['CompanyName'] = this.vCompanyName; 
-      PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
-      PatientHeaderObj['Age'] =   this.vAge ;
+        PatientHeaderObj['PatientName'] = this.vPatienName;
+      PatientHeaderObj['RegNo'] = this.vRegNo;
+      PatientHeaderObj['DoctorName'] = this.vDoctorName;
+      PatientHeaderObj['CompanyName'] = this.vCompanyName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      PatientHeaderObj['Age'] = this.vAge;
       PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-          {
-            maxWidth: "80vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "IP-Pharma-Advance",
-              advanceObj: PatientHeaderObj,
-            }
-          });
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Pharma-Advance",
+            advanceObj: PatientHeaderObj,
+          }
+        });
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========');
 
         let submitData = {
           "updatePHAdvance": updatePHAdvanceObj,
           "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
-          "insertPHPayment":result.submitDataPay.ipPaymentInsert
+          "insertPHPayment": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
         this._PharAdvanceService.UpdateIpPharmaAdvance(submitData).subscribe(response => {
           if (response) {
             this.toastr.success('IP Pharma Advance data Updated Successfully !', 'Updated !', {
               toastClass: 'tostr-tost custom-toast-success',
-            }); 
-                this._matDialog.closeAll();
-                this.onClose();
-                this.viewgetIPAdvanceReportPdf(response); 
+            });
+            this._matDialog.closeAll();
+            this.onClose();
+            this.viewgetIPAdvanceReportPdf(response);
           } else {
             this.toastr.success('IP Pharma Advance data not Updated !', 'error !', {
               toastClass: 'tostr-tost custom-toast-success',
-            });  
+            });
           }
           this.isLoading = '';
         });
 
-      }); 
+      });
     }
 
   }
 
 
-   
-viewgetIPAdvanceReportPdf(contact) {
-  
-  
-  this.sIsLoading = 'loading-data';
-  setTimeout(() => {
-   
-  this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
-    contact.AdvanceDetailID
-  ).subscribe(res => {
-    const matDialog = this._matDialog.open(PdfviewerComponent,
-      {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "Phrama Advance Receipt Viewer"
-        }
+
+  viewgetIPAdvanceReportPdf(contact) {
+
+
+    this.sIsLoading = 'loading-data';
+    setTimeout(() => {
+
+      this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
+        contact.AdvanceDetailID
+      ).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Phrama Advance Receipt Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+          this.sIsLoading = '';
+        });
       });
-      matDialog.afterClosed().subscribe(result => {
-                this.sIsLoading = '';
-      });
-  });
- 
-  },100)
-  
-}
+
+    }, 100)
+
+  }
 
 
 
-  onClose(){
+  onClose() {
     this._matDialog.closeAll();
     this.OnReset();
   }
-  OnReset(){
+  OnReset() {
     this._PharAdvanceService.NewAdvanceForm.reset();
     this._PharAdvanceService.NewAdvanceForm.get('Op_ip_id').setValue('1');
-    this.dsIpItemList.data =[];
+    this.dsIpItemList.data = [];
   }
-  
- inputValue = '';
+
+  inputValue = '';
   chips: string[] = [];
 
   allOptions: string[] = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
@@ -433,21 +415,21 @@ viewgetIPAdvanceReportPdf(contact) {
     this.addChip(this.inputValue.trim());
   }
 
- 
+
 
   addChip(value: string) {
-  value = value.trim();
-  if (!value) return;
+    value = value.trim();
+    if (!value) return;
 
-  const isDuplicate = this.chips.includes(value);
+    const isDuplicate = this.chips.includes(value);
 
-  if (!isDuplicate) {
-    this.chips.push(value);
+    if (!isDuplicate) {
+      this.chips.push(value);
+    }
+
+    this.inputValue = '';
+    this.filteredOptions = [...this.allOptions];
   }
-
-  this.inputValue = '';
-  this.filteredOptions = [...this.allOptions];
-}
 
 
   removeChip(value: string) {
@@ -473,12 +455,14 @@ export class IpItemList {
   CashPay: any;
   ChequePay: any;
   CardPay: any;
-  AdvanceId:any;
+  AdvanceId: any;
   OPD_IPD_Id: any;
-  NeftPay:any;
+  NeftPay: any;
   PayTMPay: any;
-  UserName:any;
-  AdvanceDetailID:any;
+  UserName: any;
+  AdvanceDetailID: any;
+  advanceDetailId: any;
+  advanceId: any;
 
   constructor(IpItemList) {
     {
@@ -491,6 +475,7 @@ export class IpItemList {
       this.BalanceAmount = IpItemList.BalanceAmount || 0;
       this.RefundAmount = IpItemList.RefundAmount || 0;
       this.AdvanceId = IpItemList.AdvanceId || 0;
+      this.advanceId = IpItemList.advanceId || 0;
       this.OPD_IPD_Id = IpItemList.OPD_IPD_Id || 0;
       this.CashPay = IpItemList.CashPay || 0;
       this.ChequePay = IpItemList.ChequePay || 0;
@@ -498,6 +483,7 @@ export class IpItemList {
       this.NeftPay = IpItemList.NeftPay || 0;
       this.PayTMPay = IpItemList.PayTMPay || 0;
       this.UserName = IpItemList.UserName || '';
+      this.advanceDetailId = IpItemList.advanceDetailId || 0
     }
   }
 }
