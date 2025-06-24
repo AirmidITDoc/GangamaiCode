@@ -21,12 +21,13 @@ export class ConsentMasterService {
     
          createConsentForm(): FormGroup {
                  return this._formBuilder.group({
-                     consentId: [0],
+                     consentId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                      consentName: ["",
                           [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
                      ],
                      consentDesc: ["",

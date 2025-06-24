@@ -42,7 +42,7 @@ export class NewConsentMasterComponent {
 
     autocompleteModeDepartment: string = "Department";
 
-    talukaId = 0;
+    departmentId = 0;
 
     ngOnInit(): void {
         this.myForm = this._ConsentMasterService.createConsentForm();
@@ -59,23 +59,30 @@ export class NewConsentMasterComponent {
 
 
     onSubmit() {
-        if (!this.myForm.invalid) {
-            console.log(this.myForm.value);
+         if (!this.myForm.invalid) {
+            console.log(this.myForm.value)
             this._ConsentMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
                 this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
             });
-        }
-        else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        } {
+            let invalidFields = [];
+            if (this.myForm.invalid) {
+                for (const controlName in this.myForm.controls) {
+                    if (this.myForm.controls[controlName].invalid) {
+                        invalidFields.push(`myForm Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
 
+        }
     }
+
 
     getValidationMessages() {
         return {
@@ -96,7 +103,7 @@ export class NewConsentMasterComponent {
 
     selectChangecountry(obj: any) {
         console.log(obj);
-        this.talukaId = obj.value
+        this.departmentId = obj.value
     }
 
     onClear(val: boolean) {

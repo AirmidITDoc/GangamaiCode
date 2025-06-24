@@ -16,11 +16,12 @@ import { SiteDescriptionService } from './site-description.service';
               animations: fuseAnimations,
 })
 export class SiteDescriptionComponent implements OnInit {
-msg: any;
+ msg: any;
+    siteDescName: any = "";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "SiteDescriptionMaster/List",
-        columnsList: [
+   
+        allColumns = [
             { heading: "Code", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT SiteDesc Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
@@ -42,15 +43,18 @@ msg: any;
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "SiteDescId",
-        sortOrder: 0,
-        filters: [
+        ]
+        allFilters = [
             { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
+     gridConfig: gridModel = {
+        apiUrl: "SiteDescriptionMaster/List",
+        columnsList: this.allColumns,
+        sortField: "SiteDescId",
+        sortOrder: 0,
+        filters: this.allFilters
     }
-
     constructor(
         public _SiteDescriptionService: SiteDescriptionService,
         public toastr: ToastrService, public _matDialog: MatDialog

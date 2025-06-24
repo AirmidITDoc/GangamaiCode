@@ -19,12 +19,13 @@ export class OttablemasterService {
       }
    createTableForm(): FormGroup {
          return this._formBuilder.group({
-             ottableId: [0],
+             ottableId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
              ottableName: ["",
                  [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
              ],
              locationId: ["",
