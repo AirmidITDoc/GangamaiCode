@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class PharAdvanceService {
   constructor(
     public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient,
+    public _httpClient1:ApiCaller,
     private _loaderService: LoaderService
   )
    { 
@@ -26,11 +28,15 @@ export class PharAdvanceService {
    
    CreaterSearchForm(){
     return this._formbuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       RegNo: [''],
-      F_Name: [''],
-      L_Name: [''],
+      FirstName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      LastName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
       AdvanceNo: ['']
     });
    }
@@ -66,6 +72,11 @@ export class PharAdvanceService {
       BalanceAmount:[''],
     });
    }
+   
+  public getAdvanceList(employee)
+  {
+    return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
+  }
 
    public getIPAdvanceList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BrowseIPPharAdvanceReceipt", Param);
@@ -78,10 +89,6 @@ export class PharAdvanceService {
   }
   public getAdmittedpatientlist(employee){
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientAdmittedListSearch ", employee)
-  }
-  public getAdvanceList(employee)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_AdvanceList",employee)
   }
   public getAdvanceOldList(data) {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})

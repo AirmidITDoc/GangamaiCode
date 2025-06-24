@@ -60,12 +60,11 @@
                               </div>
                               <div fxLayout="column" fxLayoutGap="6px">
                                 <div class="patient-col">
-                                  <span class="patient-col-key">Age
+                                  <span class="patient-col-key">Age | Sex
                                   </span>
                                   <span>:</span>
-                                  <span class="patient-col-value">
-                                    {{ vAgeYear + 'Y' }}
-                                  </span>
+                                  <span class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}M|{{vAgeDay}}</span>
+                                    <!-- D | {{GenderName}} -->
                                 </div>
                                 <div class="patient-col">
                                   <span class="patient-col-key">Department</span>
@@ -195,7 +194,9 @@
                               [(ngModel)]="vCertificateId">
 
                             <airmid-dropdown label="CertificateTemplate" formControlName="certificateTempId" [formGroup]="mycertificateForm"
-                              fxFlex="35%" [mode]="autocompleteModeTemplate" (selectionChange)="selectChangeTemplate($event)">
+                              fxFlex="35%" [mode]="autocompleteModeTemplate" (selectionChange)="selectChangeTemplate($event)"
+                              ValueField="certificateId" TextField="certificateName"
+                              ApiUrl="OPDEMRCertificate/get-CertificateMaster">
                             </airmid-dropdown>
 
                             <div class="modal-footer-buttons gap-8 m-8">

@@ -225,7 +225,7 @@
                                                             Chief Complaint
                                                         </span>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete
+                                                        <app-airmid-chipautocomplete  style="width: 100%;"
                                                             [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
@@ -238,7 +238,7 @@
                                                             Diagnosis
                                                         </span>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete
+                                                        <app-airmid-chipautocomplete style="width: 100%;"
                                                             [chips]="caseFormGroup.get('mAssignDiagnosis')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
@@ -251,7 +251,7 @@
                                                             Examination
                                                         </span>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete
+                                                        <app-airmid-chipautocomplete style="width: 100%;"
                                                             [chips]="caseFormGroup.get('mAssignExamination')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
