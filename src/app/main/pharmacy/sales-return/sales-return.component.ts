@@ -324,18 +324,20 @@ getbillllist(){
       // { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
       // { "fieldName": "SalesNo", "fieldValue": String(Parama?.salesNo), "opType": "Equals" },
       // { "fieldName": "CashCounterId", "fieldValue": String(Parama?.cashCounterID), "opType": "Equals" }
-    ] 
- 
+      //SalesReturnCash
+      //SalesReturnCredit 
+    ]
+  
     if (Parama.paidType == 'Paid') {
       var vdata = {
         "searchFields": Filters,
-        "mode": "SalesReturnCash"
+        "mode": "IPSalesReturnCash"
       }
     }
     else {
       var vdata = {
         "searchFields": Filters,
-        "mode": "SalesReturnCredit"
+        "mode": "IPSalesReturnCredit"
       }
     } 
       setTimeout(() => {
