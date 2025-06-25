@@ -182,11 +182,7 @@
                         <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                             *ngIf="element.balanceAmount!='0'">
                             <mat-icon title="Settlement">payment</mat-icon>
-                        </button>
-                        <button mat-icon-button matTooltip="Print Payment Receipt" *ngIf="element.balanceAmount =='0'"
-                            (click)="viewgetOPPayemntPdf(element,false)">
-                            <mat-icon> print</mat-icon>
-                        </button>
+                        </button> 
                     </div>
                 </ng-template>
 
@@ -378,15 +374,7 @@
                         <button mat-icon-button (click)="getDiscFinalBill(element)" matTooltip="Final Discount"
                             *ngIf="element.balanceAmount!='0'">
                             <mat-icon title="Settlement">gradient</mat-icon>
-                        </button>
-                        <!-- <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
-                                    *ngIf="element.balanceAmount!='0'">
-                                    <mat-icon title="Settlement">payment</mat-icon>
-                                </button> -->
-                        <button mat-icon-button matTooltip="Print Payment Receipt" *ngIf="element.balanceAmount =='0'"
-                            (click)="viewgetOPPayemntPdf(element,false)">
-                            <mat-icon> print</mat-icon>
-                        </button>
+                        </button>  
                     </div>
                 </ng-template>
 

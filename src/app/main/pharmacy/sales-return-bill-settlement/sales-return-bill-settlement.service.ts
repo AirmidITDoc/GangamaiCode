@@ -36,8 +36,7 @@ export class SalesReturnBillSettlementService {
   public getPatientVisitedListSearch(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
   }
-  public InsertSalessettlement(emp) {
-  
-    return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
+  public InsertSalessettlement(emp) { 
+    return this._httpClient1.PostData("Sales/PaymentSettlement", emp);
   }
 }

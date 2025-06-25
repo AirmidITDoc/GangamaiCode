@@ -874,7 +874,7 @@ export class SalesHospitalNewComponent implements OnInit {
       discAmount: FinalDiscAmt,
       netAmount: FinalNetAmt,
     })
-    if(this.ItemSubform.get('discAmount').value){
+    if(Number(FinalDiscAmt > 0)){
       this.chkdiscper = true;
       this.ConShow = true;
        this.ItemSubform.get('FinalDiscPer').disable();

@@ -35,7 +35,7 @@ export class BrowsSalesBillService {
       F_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       L_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       SalesNo: '',
-      OP_IP_Type: ['3'], 
+      OP_IP_Type: ['1'], 
       IPNo: '',
       UserId:'',
       PaymentMode:'',
@@ -51,7 +51,7 @@ export class BrowsSalesBillService {
       F_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       L_Name: ['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
       SalesNo: '',
-      OP_IP_Type: ['3'],
+      OP_IP_Type: ['1'],
       StoreId: [this._loggedService.currentUserValue.user.storeId]
 
     })

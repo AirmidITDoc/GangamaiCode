@@ -77,7 +77,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)">
+                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)" #grid>
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
 

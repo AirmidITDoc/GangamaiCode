@@ -314,21 +314,28 @@ getbillllist(){
  
     let storeID = this.SearchForm.get('StoreId').value 
     const Filters = [
-      { "fieldName": "RegNo", "fieldValue": String(Parama.regNo), "opType": "Equals" },
+      { "fieldName": "SalesId", "fieldValue": String(Parama.regNo), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
-      { "fieldName": "ItemName", "fieldValue": "%", "opType": "Equals" },
-      { "fieldName": "BatchNo", "fieldValue": "0", "opType": "Equals" }
+      { "fieldName": "SalesNo", "fieldValue": "%", "opType": "Equals" },
+      { "fieldName": "CashCounterId", "fieldValue": "0", "opType": "Equals" }
+
+
+      //  { "fieldName": "SalesId", "fieldValue": String(Parama?.salesId), "opType": "Equals" },
+      // { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
+      // { "fieldName": "SalesNo", "fieldValue": String(Parama?.salesNo), "opType": "Equals" },
+      // { "fieldName": "CashCounterId", "fieldValue": String(Parama?.cashCounterID), "opType": "Equals" }
     ] 
+ 
     if (Parama.paidType == 'Paid') {
       var vdata = {
         "searchFields": Filters,
-        "mode": "IPSalesReturnCash"
+        "mode": "SalesReturnCash"
       }
     }
     else {
       var vdata = {
         "searchFields": Filters,
-        "mode": "IPSalesReturnCredit"
+        "mode": "SalesReturnCredit"
       }
     } 
       setTimeout(() => {
