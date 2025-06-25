@@ -144,7 +144,8 @@ export class PrescriptionTemplateComponent implements OnInit {
   }
 
   onClose() {
-    this._matDialog.closeAll();
+    // this._matDialog.closeAll();
+    this.dialogRef.close();
   }
 
   keyPressAlphanumeric(event) {

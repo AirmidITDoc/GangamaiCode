@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" fusePerfectScrollbar>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="modal-body modal-body-light" fusePerfectScrollbar>
+    <div class="modal-body modal-body-light">
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
                 <div class="modal-card-container">
@@ -152,7 +152,16 @@
                     </mat-card>
                 </div>
 
-                <div fxlayout="column" style="max-height: 250px; overflow-y: auto;">
+                <div class="modal-card-container h-100-p">
+                    <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+
+                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                        </airmid-table>
+
+                    </div>
+                </div>
+
+                <!-- <div fxlayout="column" style="max-height: 250px; overflow-y: auto;">
 
                     <mat-table matSort [dataSource]="dsIpItemList" [@animateStagger]="{ value: '50' }">
                         <ng-container matColumnDef="Date" sticky>
@@ -286,7 +295,7 @@
 
                     </mat-table>
 
-                </div>
+                </div> -->
 
                 <div class="table-footer mt-8">
 

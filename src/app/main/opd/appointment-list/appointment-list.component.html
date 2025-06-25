@@ -17,7 +17,8 @@
 
 
     </div>
-    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" class="px-12 py-4 border-bottom gap-8">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
         <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
             <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" >
                 <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
@@ -210,18 +211,20 @@
                     (click)="OnWhatsAppAppointmentSend(element)">
                     <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                 </button>
-                
-                 <div fxLayout="row" fxLayoutGap="5px">
-                    <button mat-raised-button matTooltip="Consultant start / Check-In" style="padding: 0 8px; min-width: unset;"
-                            (click)="onCheckIn(element.visitId)" [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                             <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" />
-                             <!-- Check-In -->
+
+                <div fxLayout="row" fxLayoutGap="5px">
+                    <button mat-raised-button matTooltip="Consultant start / Check-In"
+                        style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
+                        [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                        <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" />
+                        <!-- Check-In -->
                     </button>
 
-                    <button mat-raised-button matTooltip="Consultant End / Check Out" style="padding: 0 8px; min-width: unset;"
-                            (click)="onCheckOut(element.visitId)" [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                             <img src="assets/images/logos/checkOut.png" alt="Check-Out" width="24" height="24" />
-                             <!-- Check-Out -->
+                    <button mat-raised-button matTooltip="Consultant End / Check Out"
+                        style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
+                        [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                        <img src="assets/images/logos/checkOut.png" alt="Check-Out" width="24" height="24" />
+                        <!-- Check-Out -->
                     </button>
                 </div>
 
@@ -229,12 +232,12 @@
                     (click)="$event.stopPropagation();">
                     <mat-icon class="secondary-text">more_vert</mat-icon>
                 </button>
-                
+
                 <mat-menu #moreMenu="matMenu">
                     <ng-container *ngFor="let m of menuActions">
-                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element, m)" 
-                        [disabled]="shouldDisableMenuItem(m, element)">
-                        <span>{{ m }}</span>
+                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element, m)"
+                            [disabled]="shouldDisableMenuItem(m, element)">
+                            <span>{{ m }}</span>
                         </button>
                     </ng-container>
                 </mat-menu>
@@ -277,10 +280,14 @@
                         </button>
                     </mat-form-field>
 
+                    <airmid-dropdown label="Department Name" formControlName="departmentId" [formGroup]="myformSearch"
+                        [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                    </airmid-dropdown>
+
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
-                        [(ngModel)]="gridConfig.filters[3].fieldValue"
-                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
-                        (selectionChange)="ListView($event)" (keyup)="ListView($event)">
+                        [(ngModel)]="gridConfig.filters[3].fieldValue" #ddlDoctor
+                        [validations]="getValidationdoctorMessages().DoctorId" (selectionChange)="ListView($event)"
+                        (keyup)="ListView($event)">
                     </airmid-dropdown>
 
                 </form>

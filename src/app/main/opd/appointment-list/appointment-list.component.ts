@@ -24,6 +24,7 @@ import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refranc
 import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -58,6 +59,7 @@ export class AppointmentListComponent implements OnInit {
     patientDetail = new RegInsert({});
     patientDetail1 = new VisitMaster1({});
     RegId = 0
+    autocompletedepartment: string = "Department";
 
     vOPIPId = 0;
     f_name: any = ""
@@ -199,7 +201,7 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: String(this.DoctorId), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
@@ -224,8 +226,28 @@ export class AppointmentListComponent implements OnInit {
         this.onChangeFirst();
     }
 
-    ListView(value) {
+    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+    selectChangedepartment(obj: any) {
+        if (!obj?.value || obj.value === 0) {
+            this.ddlDoctor.options = [];
+            return;
+        }
+        this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+            this.ddlDoctor.options = data;
+            console.log(data);
+            this.ddlDoctor.bindGridAutoComplete();
+        });
+    }
 
+    ListView(value) {
+        debugger
+        const departmentId = this.myformSearch.get('departmentId')?.value;
+        if (!departmentId || departmentId === "0" || departmentId === 0) {
+            this.ddlDoctor.options = [];
+            this.toastr.warning("Please select a Department First.", "warning");
+            this.DoctorId = "0";
+            return;
+        }
         console.log(value)
         if (value.value !== 0)
             this.DoctorId = value.value

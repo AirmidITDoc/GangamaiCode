@@ -10,6 +10,9 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { PharAdvanceService } from '../phar-advance.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-new-advance',
@@ -19,21 +22,21 @@ import { PharAdvanceService } from '../phar-advance.service';
   animations: fuseAnimations,
 })
 export class NewAdvanceComponent implements OnInit {
-  displayedColumns = [
-    'Date',
-    'AdvanceNo',
-    'AdvanceAmount',
-    'UsedAmount',
-    'BalanceAmount',
-    'RefundAmount',
-    'CashPay',
-    'ChequePay',
-    'CardPay',
-    'NeftPay',
-    'PayTMPay',
-    'UserName',
-    'buttons'
-  ];
+  // displayedColumns = [
+  //   'Date',
+  //   'AdvanceNo',
+  //   'AdvanceAmount',
+  //   'UsedAmount',
+  //   'BalanceAmount',
+  //   'RefundAmount',
+  //   'CashPay',
+  //   'ChequePay',
+  //   'CardPay',
+  //   'NeftPay',
+  //   'PayTMPay',
+  //   'UserName',
+  //   'buttons'
+  // ];
 
   dateTimeObj: any;
   sIsLoading: string = '';
@@ -67,8 +70,9 @@ export class NewAdvanceComponent implements OnInit {
   regObj: any;
   dsIpItemList = new MatTableDataSource<IpItemList>();
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  // @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+  @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
   constructor(
     public _PharAdvanceService: PharAdvanceService,
@@ -94,7 +98,51 @@ export class NewAdvanceComponent implements OnInit {
       this.vAdmissionTime = obj.admissionTime
       this.vAdmissionID = obj.admissionID;
       this.getAdvanceList(obj);
+      this.getListdata();
     }
+  }
+
+    AllColumns = [
+      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'},
+      { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+      { heading: "UsedAmount", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+      { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+      { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+      { heading: "NeftPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+      { heading: "PayTMPay", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
+      { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'},
+      {
+        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+          { action: gridActions.print, callback: (data: any) => {} }]
+      }
+    ]
+    gridConfig: gridModel = {
+      apiUrl: "Sales/PharAdvanceList",
+      columnsList: this.AllColumns,
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [
+          { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+        ],
+      row: 25
+    }
+    
+  getListdata() {
+    this.gridConfig = {
+      apiUrl: "Sales/PharAdvanceList",
+      columnsList: this.AllColumns,
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmissionId", fieldValue: String(this.vAdmissionID), opType: OperatorComparer.Equals },
+      ]
+    }
+    this.grid.gridConfig = { ...this.gridConfig };
+    this.grid.bindGridData();
   }
 
   vAdvanceId: any;
@@ -122,8 +170,6 @@ export class NewAdvanceComponent implements OnInit {
       this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
       this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
       console.log(this.dsIpItemList.data)
-      this.dsIpItemList.sort = this.sort;
-      this.dsIpItemList.paginator = this.paginator;
     });
   }
 

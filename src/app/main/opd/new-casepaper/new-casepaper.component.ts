@@ -764,6 +764,7 @@ export class NewCasepaperComponent implements OnInit {
               this._CasepaperService.getItemGenericById(this.vItemGenericNameId).subscribe((response) => {
                 this.itemGeneric = response;
                 this.vItemGenericName = this.itemGeneric.itemGenericName
+                console.log('genericName:',this.vItemGenericName)
               });
             }, 500);
           }
@@ -1123,9 +1124,19 @@ selectChangeChiefComplaint(selectedChips: string[]) {
         "Columns": [],
         "exportType": "JSON"
       }
-      
+
       this._CasepaperService.getTempPrescriptionList(vdata).subscribe(data => {
         this.dsItemList.data = data.data as MedicineItemList[];
+        console.log('Template data:', this.dsItemList.data)
+        const validItems = this.dsItemList.data.filter(item => (item?.genericid ?? 0) > 0);
+
+        validItems.forEach((item, index) => {
+          setTimeout(() => {
+            this._CasepaperService.getItemGenericById(item.genericid).subscribe((response) => {
+              item.genericName = response.itemGenericName;
+            });
+          }, 500 * (index + 1));
+        });
         this.Chargelist = data.data as MedicineItemList[];
       });
     }
@@ -1557,6 +1568,7 @@ selectChangeChiefComplaint(selectedChips: string[]) {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+  
   getDosemaster() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
@@ -1568,6 +1580,7 @@ selectChangeChiefComplaint(selectedChips: string[]) {
         height: '85%',
         width: '70%',
       });
+      dialogRef.componentInstance.openedFromOPD = true;
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //  that.grid.bindGridData();
@@ -1809,8 +1822,6 @@ export class ServiceDet {
   }
 }
 
-
-
 export class MedicineItemList {
   ItemID: any;
   ItemId: any;
@@ -1980,7 +1991,7 @@ export class MedicineItemList {
       this.doseOption3 = MedicineItemList.doseOption3
       this.doseNameOption3 = MedicineItemList.doseNameOption3
       this.daysOption3 = MedicineItemList.daysOption3
-      this.genericid = MedicineItemList.genericid
+      this.genericid = MedicineItemList.genericid || 0
     }
   }
 }
