@@ -45,6 +45,13 @@ export class PharAdvanceComponent implements OnInit {
   PBillNo: any = "0"
   storeId: any = this._loggedService.currentUserValue.user.storeId
 
+  fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  f_name1: any = ""
+  regNo1: any = "0"
+  l_name1: any = ""
+  storeId1: any = this._loggedService.currentUserValue.user.storeId
+
   constructor(
     public _PharAdvanceService: PharAdvanceService,
     private _loggedService: AuthenticationService,
@@ -150,18 +157,13 @@ export class PharAdvanceComponent implements OnInit {
     this.onChangeGrid();
   }
 
-  onClear() {
-    this._PharAdvanceService.SearchGroupForm.reset();
-  }
-
   allfilters2 = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "From_Dt", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+    { fieldName: "StoreId", fieldValue: String(this.storeId1), opType: OperatorComparer.Equals }
   ]
 
   allColumns2 = [
@@ -193,40 +195,60 @@ export class PharAdvanceComponent implements OnInit {
     filters: this.allfilters2
   }
 
-  getIPAdvanceRefundList() {
-    var Param = {
-      "From_Dt": this.datePipe.transform(this._PharAdvanceService.SearchRefundForm.get("start").value, "MM-dd-yyyy") || "01/01/1900",
-      "To_Dt": this.datePipe.transform(this._PharAdvanceService.SearchRefundForm.get("end").value, "MM-dd-yyyy") || "01/01/1900",
-      "F_Name": this._PharAdvanceService.SearchRefundForm.get("F_Name").value + '%' || "%",
-      "L_Name": this._PharAdvanceService.SearchRefundForm.get("L_Name").value + '%' || "%",
-      "Reg_No": this._PharAdvanceService.SearchRefundForm.get("RegNo").value || 0,
-      "StoreId": this._loggedService.currentUserValue.storeId || 0
+  onChangeGrid1() {
+    debugger
+    this.fromDate1 = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate1 = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name1 = this.myFilterform.get('FirstName').value + "%"
+    this.l_name1 = this.myFilterform.get('LastName').value + "%"
+    this.regNo1 = this.myFilterform.get('RegNo').value || "0"
+    this.getfilterGrid1();
+  }
+
+  getfilterGrid1() {
+    this.gridConfig1 = {
+      apiUrl: "Sales/PhAdvRefundReceiptList",
+      columnsList: this.allColumns2,
+      sortField: "RefundId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name1, opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: this.l_name1, opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.regNo1, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: String(this.storeId1), opType: OperatorComparer.Equals }
+      ]
     }
-    console.log(Param)
-    // this._PharAdvanceService.getIPAdvanceRefList(Param).subscribe(data => {
-    //   this.dsIPAdvanceRefundList.data = data as IPAdvanceRefList[];
-    //   console.log(this.dsIPAdvanceRefundList.data)
-    //   this.dsIPAdvanceRefundList.sort = this.sort;
-    //   this.dsIPAdvanceRefundList.paginator = this.Secondpaginator;
-    //   this.sIsLoading = '';
-    // },
-    //   error => {
-    //     this.sIsLoading = '';
-    //   });
+    console.log(this.gridConfig1)
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
   }
-  onClearRefund() {
-    this._PharAdvanceService.SearchRefundForm.reset();
+
+  ClearfilterGrid1(event) {
+    if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterform.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myFilterform.get('RegNo').setValue("")
+    if (event == 'AdvanceNo')
+      this.myFilterform.get('AdvanceNo').setValue("")
+    this.onChangeGrid1();
   }
+
   newAdvance() {
     const dialogRef = this._matDialog.open(NewAdvanceComponent,
       {
         maxWidth: "95vw",
-        maxHeight: '80vh',
-        height: '80%',
+        maxHeight: '95vh',
+        height: '90%',
         width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
       // this.getIPAdvanceList();
     });
   }
@@ -240,6 +262,7 @@ export class PharAdvanceComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       // this.getIPAdvanceRefundList();
+      this.grid1.bindGridData();
     });
   }
 

@@ -91,7 +91,7 @@
                         </div>
                         <div class="top-header-right">
                             <div class="header-add-button">
-                                <button mat-raised-button (click)="newAdvance()">New Refund Advance</button>
+                                <button mat-raised-button (click)="newAdvanceRef()">New Refund Advance</button>
                             </div>
                         </div>
                     </div>
@@ -101,15 +101,15 @@
                          <form [formGroup]="myFilterform">
                             <airmid-datepicker [formGroup]="myFilterform"
                                 [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[3].fieldValue">
+                                [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                [(toValue)]="gridConfig1.filters[3].fieldValue">
                             </airmid-datepicker>
 
                             <mat-form-field appearance="outline">
                                 <mat-label>Reg No</mat-label>
                                 <input matInput placeholder="Search Reg No" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeGrid()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid('RegNo')">
+                                    [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeGrid1()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid1('RegNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -117,8 +117,8 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>First Name</mat-label>
                                 <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeGrid()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid('FirstName')">
+                                    [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeGrid1()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid1('FirstName')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
@@ -126,20 +126,20 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>Last Name</mat-label>
                                 <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="LastName" (input)="onChangeGrid()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid('LastName')">
+                                    [formGroup]="myFilterform" formControlName="LastName" (input)="onChangeGrid1()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid1('LastName')">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline">
+                            <!-- <mat-form-field appearance="outline">
                                 <mat-label>Advance No</mat-label>
                                 <input matInput placeholder="Search AdvanceNo" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="AdvanceNo" (input)="onChangeGrid()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid('AdvanceNo')">
+                                    [formGroup]="myFilterform" formControlName="AdvanceNo" (input)="onChangeGrid1()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterGrid1('AdvanceNo')">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                         </form>
                         </ng-container>

@@ -37,6 +37,7 @@ export class AppointmentlistService {
            Validators.pattern("^[A-Za-z / () ]*$")
             ]],
             DoctorId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId:[0],
             fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
             enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
         });

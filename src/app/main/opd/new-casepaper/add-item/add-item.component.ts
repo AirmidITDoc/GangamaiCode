@@ -163,26 +163,19 @@ export class AddItemComponent {
 
 
  removestore(item) {
-debugger
     let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId === item.storeId);
-
     if (removedIndex !== -1) {
       this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
-
       this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
-
       this.selectedItems = this.itemForm.value.mAssignItemToStores.map(x => ({
         storeId: x.storeId,
         assignId: x.assignId,
         itemId: x.itemId
       }));
-
-      console.log("Updated addExaminlist after removal:", this.selectedItems);
     }
   }
 
   selectChangeItemName(row) {
-    console.log("Drug:", row)
     this.itemId = row.itemId
     this.vItemName = row.itemName
 
@@ -190,7 +183,7 @@ debugger
 
       this._CasepaperService.getItemMasterById(this.itemId).subscribe((response) => {
         this.itemObjects = response;
-        console.log("all data:", this.itemObjects)
+        
         this.vItemId = this.itemObjects.itemId
         this.itemForm.get("itemGenericNameId").setValue(this.itemObjects.itemGenericNameId)
         this.itemForm.get("purchaseUomid").setValue(this.itemObjects.purchaseUomid)
@@ -207,7 +200,7 @@ debugger
         this.itemForm.get("manufId").setValue(this.itemObjects.manufId)
 
         // retriving store data
-        console.log("jjjj:", this.itemObjects.mAssignItemToStores)
+        // console.log("jjjj:", this.itemObjects.mAssignItemToStores)
         this.selectedItems = this.itemObjects.mAssignItemToStores;
 
         this.vStoreIds = this.itemObjects.mAssignItemToStores.map(store => store.storeId); // Extract all storeIds
@@ -219,7 +212,7 @@ debugger
             );
 
             forkJoin(requests).subscribe((responses: any[]) => {
-              console.log("getStores:", responses);
+              // console.log("getStores:", responses);
 
               // Map store names to corresponding store IDs
               const storeMap: { [key: number]: string } = responses.reduce((acc, store, index) => {
@@ -227,7 +220,7 @@ debugger
                 return acc;
               }, {} as { [key: number]: string });
 
-              console.log("Store Map:", storeMap);
+              // console.log("Store Map:", storeMap);
 
               this.itemForm.get("mAssignItemToStores").setValue(
                 this.itemObjects.mAssignItemToStores.map(store => ({
@@ -238,21 +231,16 @@ debugger
             });
           }, 500);
         }
-
-
       });
     }
   }
 
   selectChangeItemGenericName(row) {
-    console.log("ItemGenericName:", row)
   }
   selectChangePurchaseUOMId(row) {
-    console.log("PurchaseUOMId:", row)
   }
 
   selectChangeStoreId(row) {
-    console.log("StoreId:", row);
 
     if (!this.selectedItems) {
       this.selectedItems = [];
@@ -264,8 +252,6 @@ debugger
         this.selectedItems.push(newStore);
       }
     });
-
-    console.log("Updated selectedItems:", this.selectedItems);
   }
 
   getValidationMessages() {

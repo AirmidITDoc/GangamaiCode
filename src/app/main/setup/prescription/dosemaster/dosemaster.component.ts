@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
+import { Component, OnInit, Optional, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
@@ -54,9 +54,12 @@ export class DosemasterComponent implements OnInit {
         sortOrder: 0,
         filters: this.allfilters
     }
+    openedFromOPD = false;
     constructor(public _DoseService: DosemasterService, 
         public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        @Optional() private dialogRef: MatDialogRef<DosemasterComponent>
+    ) { }
 
     ngOnInit(): void { }
     //filters addedby avdhoot vedpathak date-28/05/2025
@@ -97,6 +100,12 @@ export class DosemasterComponent implements OnInit {
     //     console.error("Grid is undefined!");
     // }
     // }
+
+     closeDialog() {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+  }
     onSearch() { }
 
     onSearchClear() {

@@ -13,6 +13,11 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave()">+ New Dose Master
             </button>
+
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close" (click)="closeDialog()" *ngIf="openedFromOPD" >
+                        <mat-icon>close</mat-icon>
+                    </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
