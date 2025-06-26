@@ -241,7 +241,7 @@ export class NewPhoneAppoinmentCalendarComponent {
         segmentElement: HTMLElement
     ) {
         const dragToSelectEvent: CalendarEvent = {
-            id: this.events.length,
+            id: 0,
             title: 'New event',
             start: segment.date,
             actions: this.actions.filter(x => x.a11yLabel == "Add"),
@@ -313,9 +313,8 @@ export class NewPhoneAppoinmentCalendarComponent {
         newStart,
         newEnd,
     }: CalendarEventTimesChangedEvent): void {
-        debugger
-        event.start=newStart;
-        event.end=newEnd;
+        event.start = newStart;
+        event.end = newEnd;
         this.handleEvent('Dropped or resized', event);
     }
 
@@ -340,14 +339,16 @@ export class NewPhoneAppoinmentCalendarComponent {
             });
         }
         else if (action == "Dropped or resized") {
-            var data = {
-                "phoneAppId": event.id,
-                "startDate": event.start,
-                "endDate": event.end
+            if (Number(event.id) > 0) {
+                var data = {
+                    "phoneAppId": event.id,
+                    "startDate": event.start,
+                    "endDate": event.end
+                }
+                this._service.getDateTimeChange(data).subscribe(response => {
+                    this._matDialog.closeAll();
+                });
             }
-            this._service.getDateTimeChange(data).subscribe(response => {
-                this._matDialog.closeAll();
-            });
         }
         //this.modalData = { event, action };
         //this.modal.open(this.modalContent, { size: 'lg' });
