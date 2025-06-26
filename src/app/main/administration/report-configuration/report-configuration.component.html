@@ -22,7 +22,7 @@
             <ng-container filters>
                 <form [formGroup]="myform">
                     
-                    <mat-form-field appearance="outline">
+                    <!-- <mat-form-field appearance="outline">
                         <mat-label>Report Name</mat-label>
                         <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
                             formControlName="reportName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
@@ -30,9 +30,17 @@
                             (click)="gridConfig.filters[0].fieldValue=''">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
+                    <airmid-dropdown label="Report Name" formControlName="reportName" [formGroup]="myform"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" (selectionChange)="ListView($event)"
+                        [mode]="autocompleteModedReport">
+                    </airmid-dropdown>
 
+                    <airmid-dropdown label="Menu Name" formControlName="MenuName" [formGroup]="myform"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue" (selectionChange)="ListView1($event)"
+                        [mode]="autocompleteModedMenu">
+                    </airmid-dropdown>
 
                 </form>
             </ng-container>

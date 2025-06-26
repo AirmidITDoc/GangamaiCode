@@ -22,7 +22,7 @@ app-appointment-list {
     display: flex;
     flex-direction: column;
     justify-content: start;
-    color: #fff;
+    color: black; //#fff;
     position: relative;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     height: 100%;
@@ -44,28 +44,29 @@ app-appointment-list {
       opacity: 0.7;
     }
     &.registrations {
-      background: #4caf50;
+      background: #e1f0d1;
     }
     &.appointments {
-      background: #1565c0;
+      background: #d9edf4;
     }
     &.appointments-split {
-      background: #795548;
+      background: #f2d28a;
     }
     &.bills {
-      background: #388e3c;
+      background: #c9c79c;
     }
     &.emr-ready {
-      background: #0097a7;
+      background: #a5d1c7;
     }
     &.checkout {
-      background: #b28900;
+      background: #f7f1a3;
     }
     &.waiting {
-      background: #c2185b;
+      background: #e9b8d8;
     }
     & .card-value div {
       font-size: 13px;
     }
   }
+
 }

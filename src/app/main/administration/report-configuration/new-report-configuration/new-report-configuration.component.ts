@@ -16,6 +16,7 @@ import { ReportConfigurationService } from '../report-configuration.service';
 export class NewReportConfigurationComponent implements OnInit{
     myform: FormGroup;
     isActive:boolean=true;
+    autocompleteModedReport: string = "ReportConfig";
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
@@ -34,6 +35,9 @@ export class NewReportConfigurationComponent implements OnInit{
         this.myform.markAllAsTouched();
         if((this.data?.reportId??0) > 0)
         {
+            debugger          
+            this.myform.get('reportSectionId').setValue(this.data.parentid)  
+            console.log(this.myform.get('reportSectionId')?.value)
             this.isActive=this.data.isActive
             this.myform.patchValue(this.data);
         }
@@ -51,10 +55,21 @@ export class NewReportConfigurationComponent implements OnInit{
         });
     }
 
+    reportName=''
+    reportId=0
+     ListView(obj: any) {
+        console.log(obj)
+        this.reportId=obj.value
+        this.reportName=obj.text
+        this.myform.get('parentid')?.setValue(this.reportId)
+    }
+
     onSubmit() {
         console.log("Report-Config JSON :-", this.myform.value);
         if (!this.myform.invalid) 
         {
+            this.myform.get('reportSection')?.setValue(this.reportName)
+            this.myform.removeControl('reportSectionId')
             console.log("Report-Config JSON :-", this.myform.value);
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
                 this.onClear(true);

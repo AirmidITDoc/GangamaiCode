@@ -344,7 +344,7 @@ public InsertOPBillingpayment(employee) {
 
     public CertificateInsertUpdate(Param) {
     if (Param.certificateId) {
-      return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/" + Param.certificateId, Param);
+      return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
     } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
   }
 }

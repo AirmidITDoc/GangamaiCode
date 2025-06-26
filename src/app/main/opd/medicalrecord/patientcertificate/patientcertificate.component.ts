@@ -118,7 +118,7 @@ export class PatientcertificateComponent {
       certificateDate: [new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())).toISOString()],
       certificateTime: [(new Date()).toISOString()],
       visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      certificateTempId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CertificateTemplateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       certificateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       certificateText: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       Language: ['1'],
@@ -128,8 +128,10 @@ export class PatientcertificateComponent {
   onSave() {
     if (!this.mycertificateForm.invalid) {
       this.mycertificateForm.get('visitId').setValue(this.vVisitedId)
+      this.mycertificateForm.get('certificateId').setValue(this.certiID ?? 0);
       const payload = this.mycertificateForm.getRawValue();
       delete payload.Language;
+      console.log(payload)
       this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
         this.onSubList()
         this.mycertificateForm.reset();
@@ -166,7 +168,7 @@ export class PatientcertificateComponent {
 
   addTemplateDescription() {
     this.isButtonDisabled = false;
-    if (!this.mycertificateForm.get('certificateTempId').value) {
+    if (!this.mycertificateForm.get('CertificateTemplateId').value) {
       this.toastr.warning('Please select Certificate Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -177,7 +179,6 @@ export class PatientcertificateComponent {
       this.registerObjDet = '';
     }
   }
-
 
   selectChangeTemplate(data) {
     this.registerObjDet = data.certificateDesc;
@@ -206,6 +207,19 @@ export class PatientcertificateComponent {
       this.dsCertficateTemp.paginator = this.paginator;
       console.log('check:', this.dsCertficateTemp.data)
     })
+  }
+  
+    selectedTabIndex = 0;
+    certiID=0;
+   OnEdit(row) {
+    console.log('Row data received:', row);
+    this.certiID=row.certificateId
+    this.mycertificateForm.get('certificateName').setValue(row.certificateName)
+    this.mycertificateForm.patchValue({
+      CertificateTemplateId: row.certificateTemplateId,
+      certificateText: row.certificateText
+    });
+    this.selectedTabIndex = 1;
   }
 }
 export class certificateTemp {

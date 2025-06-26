@@ -16,21 +16,25 @@
         </div>
     </div>
 
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
+    <div class="modal-body">
+        <div class="modal-body-container" fusePerfectScrollbar>
             <form [formGroup]="myform">
                 <input type="hidden" name="reportId" formControlName="reportId">
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
+                            <!-- <airmid-textbox 
                                 label="ReportSection" 
                                 formControlName="reportSection" 
                                 [value]="data?.reportSection" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportSection" 
                                 [maxLength]="50">
-                            </airmid-textbox>
+                            </airmid-textbox> -->
+                        
+                            <airmid-dropdown label="Report Section" formControlName="reportSectionId" [formGroup]="myform"
+                                [mode]="autocompleteModedReport" (selectionChange)="ListView($event)">
+                            </airmid-dropdown>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -51,7 +55,8 @@
                                 [value]="data?.parentid" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().parentid" 
-                                [maxLength]="10">
+                                [maxLength]="10" 
+                                [readonly]="true">
                             </airmid-textbox>
                         </div>
                     </div>
