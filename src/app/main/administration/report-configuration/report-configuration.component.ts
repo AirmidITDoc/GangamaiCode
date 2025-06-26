@@ -37,6 +37,7 @@ export class ReportConfigurationComponent implements OnInit{
                 { heading: "reportTotalField", key: "reportTotalField", sort: true, align: "left", emptySign: 'NA', width: 350 },
                 { heading: "reportGroupByLabel", key: "reportGroupByLabel", sort: true, align: "left", emptySign: 'NA', width: 250 },
                 { heading: "summaryLabel", key: "summaryLabel", sort: true, align: "left", emptySign: 'NA', width: 250 },
+                { heading: "Column Widths", key: "reportColumnWidths", sort: true, align: "left", emptySign: 'NA', width: 250 },
                 { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
