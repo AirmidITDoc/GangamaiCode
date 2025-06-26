@@ -1,24 +1,20 @@
-<div class="modal-wrapper grid-container" fusePerfectScrollbar>
-    <!-- Modal header -->
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Phone Appointment</span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <div class="close-icon">
-                        <mat-icon tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">close</mat-icon>
-                    </div>
-                </div>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Phone Appointment
+                </span>
             </div>
         </div>
     </div>
 
-    <!-- Modal body -->
-    <div class="modal-body">
-        <div class="modal-body-container">
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                <div class="modal-body-container">
             <!-- <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                     <form [formGroup]="myFilterform">
@@ -81,7 +77,7 @@
             <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
 
                 <!-- Department Dropdown -->
-                <div fxFlex="20%" fxFlex.xs="100%">
+                    <div fxFlex="20%" fxFlex.xs="100%" style="padding-top: 12px; padding-left: 10px;">
                     <airmid-dropdown label="Department Name" formControlName="DepartmentId" [formGroup]="myFilterform"
                         [mode]="autocompletedepartment" [(ngModel)]="DepartmentId"
                         (selectionChange)="selectChangedepartment($event)">
@@ -89,7 +85,7 @@
                 </div>
 
                 <!-- Doctor Dropdown -->
-                <div fxFlex="20%" fxFlex.xs="100%">
+                <div fxFlex="20%" fxFlex.xs="100%" style="padding-top: 12px;">
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
                         #ddlDoctor (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
@@ -145,5 +141,7 @@
                 </div>
             </ng-template>
         </div>
+                
     </div>
+
 </div>

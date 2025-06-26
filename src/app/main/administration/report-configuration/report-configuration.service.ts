@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,8 @@ export class ReportConfigurationService {
 
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService,
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createForm();
@@ -20,13 +22,15 @@ export class ReportConfigurationService {
 
     createForm(): FormGroup {
         return this._formBuilder.group({
+        reportSectionId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+
             reportId: [0],
             menuId: [1],
             reportSection: ["",
                 [
-                    Validators.required,
-                    Validators.maxLength(500),
-                    Validators.pattern("^[A-Za-z @#&]+$") //include space 
+                    // Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                    // Validators.maxLength(500),
+                    // Validators.pattern("^[A-Za-z @#&]+$") //include space 
                 ]
             ],
             reportName: ["",
@@ -72,6 +76,7 @@ export class ReportConfigurationService {
             reportTotalField: [""],
             summaryLabel:[""],
             reportGroupByLabel: [""],
+            reportcolumnWidths: [""],
             reportHeaderFile: ["",
                 [
                     Validators.required,

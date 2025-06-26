@@ -23,14 +23,18 @@
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox 
+                            <!-- <airmid-textbox 
                                 label="ReportSection" 
                                 formControlName="reportSection" 
                                 [value]="data?.reportSection" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().reportSection" 
                                 [maxLength]="50">
-                            </airmid-textbox>
+                            </airmid-textbox> -->
+                        
+                            <airmid-dropdown label="Report Section" formControlName="reportSectionId" [formGroup]="myform"
+                                [mode]="autocompleteModedReport" (selectionChange)="ListView($event)">
+                            </airmid-dropdown>
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -51,7 +55,8 @@
                                 [value]="data?.parentid" 
                                 [formGroup]="myform" 
                                 [validations]="getValidationMessages().parentid" 
-                                [maxLength]="10">
+                                [maxLength]="10" 
+                                [readonly]="true">
                             </airmid-textbox>
                         </div>
                     </div>
@@ -114,6 +119,13 @@
                         <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox label="summaryLabel" formControlName="summaryLabel" [value]="data?.summaryLabel"
                                 [formGroup]="myform" [validations]="getValidationMessages().summaryLabel" [maxLength]="2000">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="reportcolumnWidths" formControlName="reportcolumnWidths" [value]="data?.reportcolumnWidths"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportcolumnWidths" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>
