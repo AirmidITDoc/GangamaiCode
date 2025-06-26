@@ -1,0 +1,170 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Doctor Schdule Detail</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close" (click)="onClose()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+
+                <div class="modal-card-container">
+                    <mat-card>
+
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Schdule Information</span>
+                            </div>
+                            <form [formGroup]="DrAdhocschduleForm" style="border: blue">
+                                <div class="radio-container">
+                                    <mat-radio-group aria-label="Select an option" formControlName="schRadio"
+                                        name="regRadio" (change)="onChangeSch($event)">
+                                        <mat-radio-button value="adhoc" [disabled]="schstatus">Ad-hoc
+                                            Availability</mat-radio-button>
+                                        <mat-radio-button value="Sch">Schdule</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div *ngIf="schstatus">
+                                    <!-- <form [formGroup]="DrschduleForm" style="border: blue"> -->
+
+                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                        <div fxFlex="30" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
+                                            <mat-form-field class="full-width" appearance="outline">
+                                                <mat-label>Select Days</mat-label>
+                                                <mat-select [formControl]="days" multiple
+                                                    (selectionChange)="onDaySelectionChange()">
+                                                    <mat-option *ngFor="let day of allDays" [value]="day">{{ day
+                                                        }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                           
+                                        </div>
+
+
+                                        <div fxFlex="70" fxFlex.xs="100" fxFlex.sm="33"
+                                            style="margin-left: 20px;color: blue;">
+                                            <mat-chip-listbox #chipList>
+                                                <mat-chip *ngFor="let day of selectedDays"
+                                                    style="background-color: rgb(81, 243, 243);">
+                                                    {{ day }} <mat-icon>close</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-listbox>
+
+
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style=" margin-left: 20px;margin-right: 20px;">
+                                            <mat-form-field appearance="outline" class="timeField">
+                                                <mat-label>Start Time</mat-label>
+                                                <input matTimepicker #t="matTimepicker" mode="12h"
+                                                    formControlName="startTime" (timeChange)="onChangeTime($event)"
+                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                                <mat-icon matSuffix
+                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style="margin-left: 20px;margin-right: 20px;">
+                                            <mat-form-field appearance="outline" class="timeField">
+                                                <mat-label>End Time</mat-label>
+                                                <input matTimepicker #t1="matTimepicker1" mode="12h"
+                                                    formControlName="endTime" (timeChange)="onChangeTime($event)"
+                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                                <mat-icon matSuffix
+                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
+                                            <airmid-textbox label="Slot" formControlName="slot"
+                                                [formGroup]="DrschduleForm">
+                                            </airmid-textbox>
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!-- </form> -->
+                                </div>
+                            </form>
+
+                            <div *ngIf="!schstatus">
+                                <form [formGroup]="DrschduleForm" style="border: blue">
+                                    <!-- <h3 style="font-weight: bold">Medico Legal Case Information</h3> -->
+                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style=" margin-left: 20px;margin-right: 20px;">
+                                            <mat-form-field appearance="outline" class="timeField">
+                                                <mat-label>Start Time</mat-label>
+                                                <input matTimepicker #t="matTimepicker" mode="12h"
+                                                    formControlName="startTime" (timeChange)="onChangeTime($event)"
+                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                                <mat-icon matSuffix
+                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style="margin-left: 20px;margin-right: 20px;">
+                                            <mat-form-field appearance="outline" class="timeField">
+                                                <mat-label>End Time</mat-label>
+                                                <input matTimepicker #t="matTimepicker" mode="12h"
+                                                    formControlName="endTime" (timeChange)="onChangeTime($event)"
+                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                                <mat-icon matSuffix
+                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
+                                            <airmid-textbox label="Slot" formControlName="slot"
+                                                [formGroup]="DrschduleForm">
+                                            </airmid-textbox>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                        <!-- </form> -->
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

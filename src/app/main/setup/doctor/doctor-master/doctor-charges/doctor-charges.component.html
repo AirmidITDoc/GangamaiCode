@@ -1,0 +1,140 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Doctor Charges Detail</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close" (click)="onClose()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Doctor Charges Information</span>
+                            </div>
+                            <form [formGroup]="DrchargesForm">
+                                <!-- <div *ngFor="let group of appointmentGroups">
+                                    <h4>{{ group.label }}</h4>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Appointment Type</th>
+                                                <th>Grace Days</th>
+                                                <th>No. of Visits</th>
+                                                <th>Charges</th>
+                                                <th>Service Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of group.rows; let i = index">
+                                                <td>
+                                                    <mat-checkbox [(ngModel)]="item.enabled"
+                                                        name="enabled_{{ group.label }}_{{ i }}"></mat-checkbox>
+                                                </td>
+                                                <td>{{ item.type }}</td>
+                                                <td><input matInput type="number" [(ngModel)]="item.graceDays"
+                                                        name="grace_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
+                     border: 1px solid rgb(49, 186, 245) ;" /></td>
+                                                <td><input matInput type="number" [(ngModel)]="item.noOfVisits"
+                                                        name="visits_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
+                     border: 1px solid rgb(49, 186, 245) ;" /></td>
+                                                <td><input matInput type="number" [(ngModel)]="item.charges"
+                                                        name="charges_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
+                     border: 1px solid rgb(49, 186, 245) ;" /></td>
+                                                <td>
+                                                    <mat-form-field class="full-width">
+                                                        <input type="text" matInput [matAutocomplete]="auto"
+                                                            [(ngModel)]="item.serviceName" name="service_{{ i }}"
+                                                            [disabled]="!item.enabled" (input)="filterService(item)" />
+                                                        <mat-autocomplete #auto="matAutocomplete">
+                                                            <mat-option *ngFor="let option of item.filteredServices"
+                                                                [value]="option">
+                                                                {{ option }}
+                                                            </mat-option>
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> -->
+
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+
+                                    <input type="hidden" name="docChargeId" formControlName="docChargeId"/>
+
+                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="DrchargesForm"
+                                            formControlName="serviceId" placeholderText="Enter Service Name" fxFlex
+                                            ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
+                                            TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-dropdown label="Tariff Name" formControlName="tariffId"
+                                            [formGroup]="DrchargesForm"
+                                            [mode]="autocompleteModetariff"
+                                            (selectionChange)="getSelectedTariffObj($event)" fxFlex>
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-dropdown label="Class Name" formControlName="classId"
+                                            [formGroup]="DrchargesForm" 
+                                            [mode]="autocompleteModeclass"
+                                            (selectionChange)="getSelectedclassObj($event)" fxFlex>
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                      
+                                         <airmid-textbox label="Price" formControlName="price"
+                                                [formGroup]="DrchargesForm" 
+                                                [type]="'number'" >
+                                            </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="Days" formControlName="days"  [type]="'number'"
+                                            [formGroup]="DrchargesForm">
+                                        </airmid-textbox>
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

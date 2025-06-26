@@ -1,0 +1,128 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Doctor Leave Detail</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Doctor Leave Information</span>
+                            </div>
+                            <div class="leave-form">
+                                <h3>Leave</h3>
+                                <form [formGroup]="leaveForm">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>From Date</mat-label>
+                                        <input matInput [matDatepicker]="fromPicker" formControlName="fromDate">
+                                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #fromPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>To Date</mat-label>
+                                        <input matInput [matDatepicker]="toPicker" formControlName="toDate">
+                                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #toPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>From Time</mat-label>
+                                        <input matInput type="time" formControlName="fromTime">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>To Time</mat-label>
+                                        <input matInput type="time" formControlName="toTime">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Reason</mat-label>
+                                        <input matInput formControlName="reason">
+                                    </mat-form-field>
+
+                                    <mat-checkbox formControlName="isHoliday">Leave For Holiday</mat-checkbox>
+
+                                  
+                                </form>
+                            </div>
+
+                            <!-- Leave List Table -->
+                            <!-- <div class="leave-list">
+                                <h3>Leave List</h3>
+                                <button mat-stroked-button color="primary" (click)="addLeave()">+ Add</button>
+
+                                <table mat-table [dataSource]="leaveList" class="mat-elevation-z8">
+                                    <ng-container matColumnDef="fromDate">
+                                        <th mat-header-cell *matHeaderCellDef> From Date </th>
+                                        <td mat-cell *matCellDef="let leave"> {{ leave.fromDate | date }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="toDate">
+                                        <th mat-header-cell *matHeaderCellDef> To Date </th>
+                                        <td mat-cell *matCellDef="let leave"> {{ leave.toDate | date }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="fromTime">
+                                        <th mat-header-cell *matHeaderCellDef> Start Time </th>
+                                        <td mat-cell *matCellDef="let leave"> {{ leave.fromTime }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="toTime">
+                                        <th mat-header-cell *matHeaderCellDef> End Time </th>
+                                        <td mat-cell *matCellDef="let leave"> {{ leave.toTime }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="availability">
+                                        <th mat-header-cell *matHeaderCellDef> Availability </th>
+                                        <td mat-cell *matCellDef="let leave"> Leave </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="actions">
+                                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                                        <td mat-cell *matCellDef="let leave">
+                                            <button mat-icon-button (click)="editLeave(leave)">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                                </table>
+                            </div> -->
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveLeave()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

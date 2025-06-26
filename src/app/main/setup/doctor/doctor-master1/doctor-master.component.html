@@ -12,13 +12,11 @@
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <input hidden #excelInputRef type="file" (change)="handleFileChange($event, excelInputRef)" />
-            <!-- <button mat-raised-button (click)="excelInputRef.click()">
+            <button mat-raised-button (click)="excelInputRef.click()">
                 Import excel
-            </button> -->
+            </button>
             <button mat-raised-button (click)="newDoctormaster()">New Doctor
             </button>
-             <!-- <button mat-raised-button (click)="newSchdule()">New Doctor Schdule
-            </button> -->
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">

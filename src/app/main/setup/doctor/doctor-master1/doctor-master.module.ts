@@ -36,14 +36,6 @@ import { DoctorMasterService } from "./doctor-master.service";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
 import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
-import { DoctorschdulerComponent } from './doctorschduler/doctorschduler.component';
-import { MatTabsModule } from "@angular/material/tabs";
-import { DoctorEducationComponent } from './doctor-education/doctor-education.component';
-import { DoctorExperienceComponent } from './doctor-experience/doctor-experience.component';
-import { DoctorChargesComponent } from './doctor-charges/doctor-charges.component';
-import { DoctorSchduleComponent } from './doctor-schdule/doctor-schdule.component';
-import { MatTimepickerModule } from "mat-timepicker";
-import { DoctorLeaveComponent } from "./doctor-leave/doctor-leave.component";
 
 const routes: Routes = [
     {
@@ -53,8 +45,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent, ExcelPreviewDialogComponent, DoctorschdulerComponent, DoctorEducationComponent, DoctorExperienceComponent, DoctorChargesComponent,
-         DoctorSchduleComponent,DoctorLeaveComponent],
+    declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent, ExcelPreviewDialogComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,
@@ -87,11 +78,7 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
-        MatDialogModule,
-           MatTabsModule,
-        //    SignaturePadModule 
-                MatTimepickerModule,
-                
+        MatDialogModule
     ],
     providers: [DoctorMasterService, DatePipe]
 })

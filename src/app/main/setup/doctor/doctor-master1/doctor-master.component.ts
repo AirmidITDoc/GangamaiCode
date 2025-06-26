@@ -14,7 +14,6 @@ import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
-import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
 
 @Component({
   selector: "app-doctor-master",
@@ -280,25 +279,6 @@ FuseConfirmDialogComponent,
       this.grid.bindGridData();
     });
   }
-
-  newSchdule() {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-  const dialogRef = this._matDialog.open(DoctorschdulerComponent, {
-       maxWidth: "95vw",
-      maxHeight: "98vh",
-      width: "100%",
-      // height: "100%",
-      autoFocus: false,
-      ariaModal: true,
-      
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed - Insert Action", result);
-      this.grid.bindGridData();
-    });
-  }
-
 
   async handleFileChange(event: Event, inputRef: HTMLInputElement): Promise<void> {
     const file = (event.target as HTMLInputElement).files?.[0];

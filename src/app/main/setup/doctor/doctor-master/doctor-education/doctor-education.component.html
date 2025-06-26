@@ -1,0 +1,115 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Education Detail</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close" (click)="onClose()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Education Information</span>
+                            </div>
+                            <form [formGroup]="EducationForm" style="border: blue">
+                                <!-- <h3 style="font-weight: bold">Medico Legal Case Information</h3> -->
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+
+                                    <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
+                                        <!-- <airmid-textbox label="Qualification" formControlName="qualificationId"
+                                            [value]="registerObj.qualificationId" [formGroup]="EducationForm"
+                                            [maxLength]="50">
+                                        </airmid-textbox> -->
+                                        <airmid-dropdown label="Qualification" formControlName="qualificationId"
+                                            [formGroup]="EducationForm"  [(value)]="registerObj.qualificationId"
+                                            [mode]="autocompleteModeQualifiy"></airmid-dropdown>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="ShortName" formControlName="shortName"
+                                            [formGroup]="EducationForm" [maxLength]="50">
+                                        </airmid-textbox>
+
+
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <!-- <airmid-textbox label="PassingYear" formControlName="PassingYear"
+                                            [value]="registerObj.PassingYear" [formGroup]="EducationForm"
+                                            [maxLength]="4">
+                                        </airmid-textbox> -->
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Choose Year</mat-label>
+                                            <input matInput [matDatepicker]="picker" [readonly]="true"
+                                                formControlName="passingYear">{{selectedYear}}
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker startView="multi-year"
+                                                (yearSelected)="chosenYearHandler($event, picker)"
+                                                panelClass="year-picker">
+                                            </mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                                        <!-- <airmid-textbox label="InstitutionName" formControlName="institutionNameId"
+                                            [formGroup]="EducationForm" [type]="'number'">
+                                        </airmid-textbox> -->
+
+                                        <airmid-dropdown label="InstitutionName" formControlName="institutionNameId"
+                                            [formGroup]="EducationForm"  [(value)]="registerObj.institutionNameId"
+                                            [mode]="autocompleteModeInstitute"></airmid-dropdown>
+
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-dropdown label="City" formControlName="cityId"
+                                            [formGroup]="EducationForm" [(value)]="registerObj.cityId"
+                                            [validations]="getValidationMessages().City" [mode]="autocompleteModecity">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-dropdown label="Country" formControlName="countryId"
+                                            [value]="registerObj?.countryId" [formGroup]="EducationForm"
+                                            [validations]="getValidationMessages().countryId"
+                                            [mode]="autocompleteModecountry"> </airmid-dropdown>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

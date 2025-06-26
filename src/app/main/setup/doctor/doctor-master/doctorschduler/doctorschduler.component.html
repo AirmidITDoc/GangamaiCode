@@ -1,0 +1,309 @@
+<div class="modal-wrapper grid-container discharge-summary-section p-12">
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Config Manager</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="content-card ">
+      <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+
+        <mat-tab-group>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Schdule Detail
+            </ng-template>
+            <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+
+
+
+              <mat-tab-group>
+                <mat-tab label="Time Schdule">
+                  <!-- Inputs for start and end time -->
+                  <label style="font-size: larger;color: blue;text-align: center;">Schdule Appointment</label>
+                  <div>
+                    <label style="font-size: x-large;color: rgb(9, 56, 73);">Start Time:</label>
+                    <input type="time" [(ngModel)]="startTime" (change)="updateTimeSlots()" />
+                    <label>---</label>
+                    <label style="margin-left: 100px;font-size: x-large;color: rgb(9, 56, 73);">End Time:</label>
+                    <input type="time" [(ngModel)]="endTime" (change)="updateTimeSlots()" />
+                  </div>
+
+                  <!-- <div>
+                    <label>End Time:</label>
+                    <input type="time" [(ngModel)]="endTime" (change)="updateTimeSlots()" />
+                  </div> -->
+
+
+                  <mat-form-field appearance="fill" style="width: 300px; margin-top: 16px;">
+                    <mat-label>Select Appointment Time</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let time of timeSlots" [value]="time">
+                        {{ time }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <span style="font-size: x-large;color: blueviolet;font-weight: bold;">Avilable Slots</span>
+                  <div>
+                    <!-- [disabled]="chkstatus" -->
+                    <button mat-button *ngFor="let time of timeSlots" style="border-color: rgb(46, 234, 115);border-radius: 12px;
+                     border: 1px solid rgb(49, 186, 245) ;box-shadow: 0 0 0 2px rgb(235, 175, 221);"
+                      (click)="selectSlot(time)" [disabled]="chkstatus">
+                      {{ time }}
+                    </button>
+
+                  </div>
+
+                </mat-tab>
+                <mat-tab label="Appointment">
+                  <form [formGroup]="appointmentForm">
+                    <div class="form-group">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Department</mat-label>
+                        <mat-select formControlName="department" required>
+                          <mat-option *ngFor="let dept of departments" [value]="dept">
+                            {{ dept }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Physician</mat-label>
+                        <mat-select formControlName="physician" required>
+                          <mat-option *ngFor="let doc of physicians" [value]="doc">
+                            {{ doc }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Appointment Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+
+
+                      <h3>Schedule Appointment</h3>
+                      <div class="slots">
+                        <button mat-button color="primary" *ngFor="let time of availableSlots"
+                          style="border-color: chartreuse;" (click)="selectSlot(time)">
+                          {{ time }}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </mat-tab>
+              </mat-tab-group>
+
+            </div>
+          </mat-tab>
+
+
+        </mat-tab-group>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <div fxLayoutAlign="end">
+    <div class="sales-footer-buttons gap-8">
+      <button class="btn btn-danger-outline">Close</button>
+      <button class="btn btn-primary">Save</button>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<!-- <div class="modal-body">
+                <div class="content-card ">
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
+
+                        <mat-tab-group>
+
+                            <mat-tab>
+                                <ng-template mat-tab-label>
+                                    Schdule Detail
+                                </ng-template>
+                                <div class="content-card " fusePerfectScrollbar style="padding: 5px 5px 5px 5px;">
+
+                                    <mat-tab-group>
+                                        <mat-tab label="Time Schdule">
+
+                                            <ng-template mat-tab-label>
+                                                Ad-Hoc Availability
+                                            </ng-template>
+                                            <div>
+                                                <label style="font-size: x-large;color: rgb(9, 56, 73);">Start
+                                                    Time:</label>
+                                                <input type="time" [(ngModel)]="startTime"
+                                                    (change)="updateTimeSlots()" />
+                                                <label>---</label>
+                                                <label
+                                                    style="margin-left: 100px;font-size: x-large;color: rgb(9, 56, 73);">End
+                                                    Time:</label>
+                                                <input type="time" [(ngModel)]="endTime" (change)="updateTimeSlots()" />
+                                            </div>
+
+
+                                            <mat-form-field appearance="fill" style="width: 300px; margin-top: 16px;">
+                                                <mat-label>Select Appointment Time</mat-label>
+                                                <mat-select>
+                                                    <mat-option *ngFor="let time of timeSlots" [value]="time">
+                                                        {{ time }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <span
+                                                style="font-size: x-large;color: blueviolet;font-weight: bold;">Avilable
+                                                Slots</span>
+                                            <div>
+
+                                                <button mat-button *ngFor="let time of timeSlots" style="border-color: rgb(46, 234, 115);border-radius: 12px;
+                     border: 1px solid rgb(49, 186, 245) ;box-shadow: 0 0 0 2px rgb(235, 175, 221);"
+                                                    (click)="selectSlot(time)">
+                                                    {{ time }}
+                                                </button>
+
+                                            </div>
+
+                                        </mat-tab>
+                                        <mat-tab label="Schedule">
+
+                                            <ng-template mat-tab-label>
+                                                Schedule
+                                                (Show all added schedule)
+                                            </ng-template>
+
+                                        </mat-tab>
+                                        <mat-tab>
+                                            <ng-template mat-tab-label>
+                                                Leave Details
+                                            </ng-template>
+                                            <div class="form-section">
+                                                <form [formGroup]="leaveForm" (ngSubmit)="onSubmit1()">
+                                                    <mat-form-field>
+                                                        <mat-label>From Date</mat-label>
+                                                        <input matInput [matDatepicker]="fromPicker"
+                                                            formControlName="fromDate" required />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="fromPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #fromPicker></mat-datepicker>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field>
+                                                        <mat-label>To Date</mat-label>
+                                                        <input matInput [matDatepicker]="toPicker"
+                                                            formControlName="toDate" required />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="toPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #toPicker></mat-datepicker>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field>
+                                                        <mat-label>Unavailability Reason</mat-label>
+                                                        <input matInput formControlName="reason"
+                                                            placeholder="Vacation Tour" />
+                                                    </mat-form-field>
+
+                                                    <mat-checkbox formControlName="fullDay"
+                                                        (change)="toggleTime($event.checked)">Leave For
+                                                        Fullday</mat-checkbox>
+
+                                                    <div *ngIf="!leaveForm.get('fullDay')?.value">
+                                                        <mat-form-field>
+                                                            <mat-label>From Time</mat-label>
+                                                            <input matInput type="time" formControlName="fromTime" />
+                                                        </mat-form-field>
+
+                                                        <mat-form-field>
+                                                            <mat-label>To Time</mat-label>
+                                                            <input matInput type="time" formControlName="toTime" />
+                                                        </mat-form-field>
+                                                    </div>
+
+
+                                                </form>
+                                            </div>
+
+                                            <div class="table-section mt-4">
+                                                <table mat-table [dataSource]="leaveList" class="mat-elevation-z8">
+
+                                                    <ng-container matColumnDef="fromDate">
+                                                        <th mat-header-cell *matHeaderCellDef> From Date </th>
+                                                        <td mat-cell *matCellDef="let row"> {{ row.fromDate | date:'MMM
+                                                            d, y' }} </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="toDate">
+                                                        <th mat-header-cell *matHeaderCellDef> To Date </th>
+                                                        <td mat-cell *matCellDef="let row"> {{ row.toDate | date:'MMM d,
+                                                            y' }} </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="startTime">
+                                                        <th mat-header-cell *matHeaderCellDef> Start Time </th>
+                                                        <td mat-cell *matCellDef="let row"> {{ row.startTime }} </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="endTime">
+                                                        <th mat-header-cell *matHeaderCellDef> End Time </th>
+                                                        <td mat-cell *matCellDef="let row"> {{ row.endTime }} </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="availability">
+                                                        <th mat-header-cell *matHeaderCellDef> Availability </th>
+                                                        <td mat-cell *matCellDef="let row"> LEAVE </td>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="action">
+                                                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                                                        <td mat-cell *matCellDef="let row">
+                                                            <button mat-icon-button color="primary"
+                                                                (click)="editLeave(row)">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                                </table>
+                                            </div>
+                                        </mat-tab>
+                                    </mat-tab-group>
+
+                                </div>
+                            </mat-tab>
+
+
+                        </mat-tab-group>
+
+                    </div>
+
+                </div>
+            </div> -->
