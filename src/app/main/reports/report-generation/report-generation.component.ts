@@ -427,6 +427,7 @@ export class ReportGenerationComponent implements OnInit {
                 "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
                 "groupByLabel": this.reportDetail?.reportGroupByLabel,
                 "summaryLabel": this.reportDetail?.summaryLabel,
+                "columnWidths": this.reportDetail?.columnWidths,
                 "htmlFilePath": this.reportDetail?.reportBodyFile,
                 "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
                 "spName": this.reportDetail?.reportSpname,

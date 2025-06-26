@@ -16,8 +16,8 @@
         </div>
     </div>
 
-    <div class="modal-body">
-        <div class="modal-body-container" fusePerfectScrollbar>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
             <form [formGroup]="myform">
                 <input type="hidden" name="reportId" formControlName="reportId">
                 <div>
@@ -119,6 +119,13 @@
                         <div fxFlex fxFlex.xs="100%">
                             <airmid-textbox label="summaryLabel" formControlName="summaryLabel" [value]="data?.summaryLabel"
                                 [formGroup]="myform" [validations]="getValidationMessages().summaryLabel" [maxLength]="2000">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="reportcolumnWidths" formControlName="reportcolumnWidths" [value]="data?.reportcolumnWidths"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportcolumnWidths" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>

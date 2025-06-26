@@ -20,7 +20,7 @@ export class NewReportConfigurationComponent implements OnInit{
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
-    reportBodyFile: string[] = ["SimpleReportFormat.html", "SimpleTotalReportFormat.html","MultiTotalReportFormat.html"];
+    reportBodyFile: string[] = ["SimpleReportFormat.html","MultiTotalReportFormat.html"];
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -125,11 +125,15 @@ export class NewReportConfigurationComponent implements OnInit{
                 // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
              summaryLabel:[
-                { name: "maxlength", Message: "Report Column should not be greater than 1000 char." },
+                { name: "maxlength", Message: "Report Column should not be greater than 2000 char." },
+            ],
+            reportcolumnWidths:[
+                { name: "required", Message: "Report Column Widths is required" },
+                { name: "maxlength", Message: "Report Column Widths should not be greater than 2000 char." },
             ],
             reportColumn:[
                 { name: "required", Message: "Report column is required" },
-                { name: "maxlength", Message: "Report Column should not be greater than 1000 char." },
+                { name: "maxlength", Message: "Report Column should not be greater than 2000 char." },
             ],
             reportGroupByLabel:[
                 // { name: "required", Message: "Report column is required" },

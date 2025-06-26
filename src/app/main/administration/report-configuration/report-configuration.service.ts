@@ -76,6 +76,7 @@ export class ReportConfigurationService {
             reportTotalField: [""],
             summaryLabel:[""],
             reportGroupByLabel: [""],
+            reportcolumnWidths: [""],
             reportHeaderFile: ["",
                 [
                     Validators.required,
