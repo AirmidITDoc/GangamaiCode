@@ -138,7 +138,6 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-plus"></i>',
             a11yLabel: 'Add',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                debugger
                 this.handleEvent('CellClicked', event);
             },
         },

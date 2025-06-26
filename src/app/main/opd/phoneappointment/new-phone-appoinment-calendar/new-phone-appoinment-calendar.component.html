@@ -11,86 +11,20 @@
             </div>
         </div>
     </div>
-
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
         <div class="modal-body-container">
-            <!-- <div fxLayout="row" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <form [formGroup]="myFilterform">
-                        
-                        <div fxLayout="row" fxLayoutGap="8px">
-                            <div fxFlex="55%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                                    [formGroup]="myFilterform" [mode]="autocompletedepartment"
-                                    [(ngModel)]="DepartmentId" (selectionChange)="selectChangedepartment($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div fxFlex="55%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Doctor Name" formControlName="DoctorId"
-                                    [formGroup]="myFilterform" #ddlDoctor
-                                    (selectionChange)="selectChangedeptdoc($event)">
-                                </airmid-dropdown>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0" style="border: 1px solid red;">
-                    <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()">
-                        Previous
-                    </button>
-                    <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()">
-                        Today
-                    </button>
-                    <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-                        (viewDateChange)="closeOpenMonthViewDay()">
-                        Next
-                    </button>
-                </div>
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
-                    <h3 #dateDisplay>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-                </div>
-                
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="DoctorId>0">
-                    <div class="btn-group">
-                        <button mat-raised-button (click)="setView(CalendarView.Month)"
-                            [class.active]="view === CalendarView.Month">
-                            Month
-                        </button>
-                        <button mat-raised-button (click)="setView(CalendarView.Week)"
-                            [class.active]="view === CalendarView.Week">
-                            Week
-                        </button>
-                        <button mat-raised-button (click)="setView(CalendarView.Day)"
-                            [class.active]="view === CalendarView.Day">
-                            Day
-                        </button>
-                    </div>
-                </div>
-            </div> -->
-
             <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
-
-                <!-- Department Dropdown -->
                 <div fxFlex="20%" fxFlex.xs="100%" style="padding-top: 12px; padding-left: 10px;">
                     <airmid-dropdown label="Department Name" formControlName="DepartmentId" [formGroup]="myFilterform"
                         [mode]="autocompletedepartment" [(ngModel)]="DepartmentId"
                         (selectionChange)="selectChangedepartment($event)">
                     </airmid-dropdown>
                 </div>
-
-                <!-- Doctor Dropdown -->
                 <div fxFlex="20%" fxFlex.xs="100%" style="padding-top: 12px;">
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myFilterform"
                         #ddlDoctor (selectionChange)="selectChangedeptdoc($event)">
                     </airmid-dropdown>
                 </div>
-
                 <div fxFlex="20%" *ngIf="DoctorId > 0">
                     <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
                         (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
@@ -99,11 +33,9 @@
                     <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
                         (viewDateChange)="closeOpenMonthViewDay()">Next</button>
                 </div>
-
                 <div fxFlex="20%" *ngIf="DoctorId > 0">
                     <h3 #dateDisplay>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
                 </div>
-
                 <div fxFlex="20%" *ngIf="DoctorId > 0">
                     <div class="btn-group">
                         <button mat-raised-button (click)="setView(CalendarView.Month)"
@@ -114,9 +46,7 @@
                             [class.active]="view === CalendarView.Day">Day</button>
                     </div>
                 </div>
-
             </div>
-
             <br />
             <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="DoctorId>0">
                 <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
@@ -141,17 +71,10 @@
                     [class.cal-hour-start]="segment.isStart" [class.cal-after-hour-start]="!segment.isStart"
                     [ngClass]="segment.cssClass" (mousedown)="startDragToCreate(segment, $event, segmentElement)">
                     <div class="cal-time" *ngIf="isTimeLabel">
-                        {{ segment.date | calendarDate:'weekViewHour':locale }}
+                        {{ segment.date | date:'hh:mm a' }}
                     </div>
                 </div>
             </ng-template>
-            <ng-template #customHourSegmentTemplate let-segment="segment">
-                <div class="custom-segment">
-                    {{ segment.date | date: 'HH:mm' }}
-                </div>
-            </ng-template>
         </div>
-
     </div>
-
 </div>
