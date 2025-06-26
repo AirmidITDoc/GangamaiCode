@@ -273,7 +273,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             .subscribe((mouseMoveEvent: MouseEvent) => {
                 const minutesDiff = this.ceilToNearest(
                     mouseMoveEvent.clientY - segmentPosition.top,
-                    30
+                    10
                 );
 
                 const daysDiff =
