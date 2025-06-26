@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, ChangeDetectorRef, } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, addMinutes, endOfWeek, } from 'date-fns';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView, } from 'angular-calendar';
 import { EventColor, WeekViewHourSegment } from 'calendar-utils';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -102,6 +102,16 @@ export class NewPhoneAppoinmentCalendarComponent {
         this.objDoctor = obj;
         this.bindData();
     }
+    now:Date=new Date();
+    hourSegmentModifier: Function = (segment: WeekViewHourSegment): void => {
+        debugger
+        const now = new Date();
+        const segDate = new Date(segment.date);
+
+        if (segDate < now) {
+            segment.cssClass = 'cal-disabled-segment';
+        }
+    };
     bindData() {
         let fromDate, toDate;
         if (this.dateDisplay) {
@@ -138,7 +148,6 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-plus"></i>',
             a11yLabel: 'Add',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                debugger
                 this.handleEvent('CellClicked', event);
             },
         },
@@ -154,7 +163,6 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-trash-alt"></i>',
             a11yLabel: 'Delete',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                debugger
                 this.confirmDialogRef = this._matDialog.open(
                     FuseConfirmDialogComponent,
                     {
@@ -241,7 +249,7 @@ export class NewPhoneAppoinmentCalendarComponent {
         segmentElement: HTMLElement
     ) {
         const dragToSelectEvent: CalendarEvent = {
-            id: this.events.length,
+            id: 0,
             title: 'New event',
             start: segment.date,
             actions: this.actions.filter(x => x.a11yLabel == "Add"),
@@ -254,6 +262,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             },
             draggable: true,
         };
+        this.events = this.events.filter(x => Number(x.id) > 0);
         this.events = [...this.events, dragToSelectEvent];
         const segmentPosition = segmentElement.getBoundingClientRect();
         this.dragToCreateActive = true;
@@ -273,7 +282,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             .subscribe((mouseMoveEvent: MouseEvent) => {
                 const minutesDiff = this.ceilToNearest(
                     mouseMoveEvent.clientY - segmentPosition.top,
-                    30
+                    10
                 );
 
                 const daysDiff =
@@ -313,14 +322,12 @@ export class NewPhoneAppoinmentCalendarComponent {
         newStart,
         newEnd,
     }: CalendarEventTimesChangedEvent): void {
-        debugger
-        event.start=newStart;
-        event.end=newEnd;
+        event.start = newStart;
+        event.end = newEnd;
         this.handleEvent('Dropped or resized', event);
     }
 
     handleEvent(action: string, event: CalendarEvent): void {
-        debugger
         if (action == "CellClicked") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
@@ -340,14 +347,16 @@ export class NewPhoneAppoinmentCalendarComponent {
             });
         }
         else if (action == "Dropped or resized") {
-            var data = {
-                "phoneAppId": event.id,
-                "startDate": event.start,
-                "endDate": event.end
+            if (Number(event.id) > 0) {
+                var data = {
+                    "phoneAppId": event.id,
+                    "startDate": event.start,
+                    "endDate": event.end
+                }
+                this._service.getDateTimeChange(data).subscribe(response => {
+                    this._matDialog.closeAll();
+                });
             }
-            this._service.getDateTimeChange(data).subscribe(response => {
-                this._matDialog.closeAll();
-            });
         }
         //this.modalData = { event, action };
         //this.modal.open(this.modalContent, { size: 'lg' });

@@ -13,6 +13,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { ReScheduleComponent } from './re-schedule/re-schedule.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-phoneappointment',
@@ -81,7 +82,8 @@ export class PhoneappointmentComponent implements OnInit {
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -169,6 +171,14 @@ export class PhoneappointmentComponent implements OnInit {
             }
         });
     }
+//     onSave1(row: any = null) {
+//   const buttonElement = document.activeElement as HTMLElement;
+//   buttonElement.blur();
+
+//   // Navigate directly with optional data as query params or state
+//   this.router.navigate(['/new-phone-appointment'], { state: { rowData: row } });
+// }
+
 
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[2].fieldValue = obj.value

@@ -43,11 +43,21 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ReScheduleComponent } from './re-schedule/re-schedule.component';
 
+// const routes: Routes = [
+//     {
+//         path: '**',
+//         component: PhoneappointmentComponent,
+//     },
+// ];
 const routes: Routes = [
-    {
-        path: '**',
-        component: PhoneappointmentComponent,
-    },
+  {
+    path: 'new-phone-appointment',
+    component: NewPhoneAppoinmentCalendarComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'new-phone-appointment'
+  }
 ];
 @NgModule({
     declarations: [

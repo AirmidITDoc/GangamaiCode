@@ -114,7 +114,7 @@
 
                 <mat-card>
 
-                  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="selectedTabIndex">
                     <mat-tab label="Certificate List">
                       <mat-card style="padding: 5px;">
                         <mat-table class="table2" matSort [dataSource]="dsCertficateTemp"
@@ -124,26 +124,34 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                               DateTime </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                              {{element.CertificateDate | date: 'dd/MM/yyyy'}}- {{element.CertificateTime |
-                              date:'shortTime'}} </mat-cell>
+                              <!-- {{element.certificateDate | date: 'dd/MM/yyyy'}}- {{element.certificateTime |
+                                                                                  date:'shortTime'}} -->
+                              {{element.certificateTime}}
+                            </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="CertificateName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                               Template Name </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                              {{element.CertificateName}} </mat-cell>
+                              {{element.certificateName}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="CertificateText">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                               Template Desc
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                               <span matTooltip="{{element.CertificateText}}" matTooltipPosition="above">
-                                {{element.CertificateText | slice:0:10}}...
+                                {{element.certificateText | slice:0:10}}...
+                              </span>
+                            </mat-cell> -->
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                              <span matTooltip="{{element.certificateText}}" matTooltipPosition="above" class="ellipsis-text">
+                                {{ element.certificateText }}
                               </span>
                             </mat-cell>
+                          
                           </ng-container>
 
                           <ng-container matColumnDef="Action" stickyEnd>
@@ -193,7 +201,7 @@
                             <input type="hidden" name="certificateId" formControlName="certificateId"
                               [(ngModel)]="vCertificateId">
 
-                            <airmid-dropdown label="CertificateTemplate" formControlName="certificateTempId" [formGroup]="mycertificateForm"
+                            <airmid-dropdown label="CertificateTemplate" formControlName="CertificateTemplateId" [formGroup]="mycertificateForm"
                               fxFlex="35%" [mode]="autocompleteModeTemplate" (selectionChange)="selectChangeTemplate($event)"
                               ValueField="certificateId" TextField="certificateName"
                               ApiUrl="OPDEMRCertificate/get-CertificateMaster">
