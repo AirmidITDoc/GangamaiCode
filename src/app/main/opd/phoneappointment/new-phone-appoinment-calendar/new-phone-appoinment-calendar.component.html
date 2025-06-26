@@ -128,7 +128,7 @@
                     [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
                     (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="6" [dayStartHour]="8"
                     (hourSegmentClicked)="handleEvent('CellClicked', $event)"
-                    [hourSegmentTemplate]="customHourSegmentTemplate">
+                    >
                 </mwl-calendar-week-view>
                 <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events"
                     [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
