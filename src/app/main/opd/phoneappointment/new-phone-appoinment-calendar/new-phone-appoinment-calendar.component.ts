@@ -153,7 +153,6 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-trash-alt"></i>',
             a11yLabel: 'Delete',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                debugger
                 this.confirmDialogRef = this._matDialog.open(
                     FuseConfirmDialogComponent,
                     {
@@ -253,6 +252,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             },
             draggable: true,
         };
+        this.events = this.events.filter(x => Number(x.id) > 0);
         this.events = [...this.events, dragToSelectEvent];
         const segmentPosition = segmentElement.getBoundingClientRect();
         this.dragToCreateActive = true;
