@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, ChangeDetectorRef, } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, addMinutes, endOfWeek, } from 'date-fns';
 import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView, } from 'angular-calendar';
 import { EventColor, WeekViewHourSegment } from 'calendar-utils';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -102,6 +102,16 @@ export class NewPhoneAppoinmentCalendarComponent {
         this.objDoctor = obj;
         this.bindData();
     }
+    now:Date=new Date();
+    hourSegmentModifier: Function = (segment: WeekViewHourSegment): void => {
+        debugger
+        const now = new Date();
+        const segDate = new Date(segment.date);
+
+        if (segDate < now) {
+            segment.cssClass = 'cal-disabled-segment';
+        }
+    };
     bindData() {
         let fromDate, toDate;
         if (this.dateDisplay) {
@@ -318,7 +328,6 @@ export class NewPhoneAppoinmentCalendarComponent {
     }
 
     handleEvent(action: string, event: CalendarEvent): void {
-        debugger
         if (action == "CellClicked") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
