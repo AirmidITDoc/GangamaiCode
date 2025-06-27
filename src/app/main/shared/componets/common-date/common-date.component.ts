@@ -97,6 +97,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'Pharmacy Time';
             this.isDatePckrDisabled = false;
         }
+         else if (this.screenFromString == 'OPDEMR') {
+            this.dateLabel = 'OPDEMR Date';
+            this.timeLabel = 'OPDEMR Time';
+            this.isDatePckrDisabled = false;
+        }
         else if (this.screenFromString == 'Common-form') {
             this.dateLabel = 'Date';
             this.timeLabel = 'Time';
