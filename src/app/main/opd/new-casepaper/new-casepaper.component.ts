@@ -101,7 +101,7 @@ export class NewCasepaperComponent implements OnInit {
   vTemp: any;
   vSpO2: any;
   vPulse: any;
-  screenFromString = 'OP-billing';
+  screenFromString = 'OPDEMR';
   vChiefComplaint: any;
   vDiagnosis: any;
   vExamination: any;
@@ -438,7 +438,8 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-  onSave() {
+   onSave() {
+
     if (this.addCheiflist.length > 0) {
       this.addCheiflist.forEach(element => {
         this.AllTypeDescription.push({
@@ -465,6 +466,7 @@ export class NewCasepaperComponent implements OnInit {
         });
       });
     }
+    // console.log("Updated AllTypeDescription:", this.AllTypeDescription);
 
     let ReferDocNameID = 0;
     if (this.MedicineItemForm.get('DoctorID').value) {
@@ -472,33 +474,38 @@ export class NewCasepaperComponent implements OnInit {
     } else {
       ReferDocNameID = 0
     }
+    debugger
 
     if (!this.caseFormGroup.invalid && !this.casePaperInsertForm.invalid) {
       this.tPrescriptionArray.clear();
-      if (this.dsItemList.data.length === 0) {
-        this.toastr.warning('Please add prescription!', 'Warning');
-        return; // Stop further execution
-      }
-      this.dsItemList.data.forEach((item, index) => {
-        const group = this.createtPrescription(item);
-        group.get('advice').setValue(this.MedicineItemForm.get('Remark').value);
-        group.get('remark').setValue(this.MedicineItemForm.get('Remark').value);
-        group.get('isEnglishOrIsMarathi').setValue(JSON.parse(this.caseFormGroup.get('LangaugeRadio').value));
-        group.get('chiefComplaint').setValue(this.caseFormGroup.get('ChiefComplaint').value);
-        group.get('diagnosis').setValue(this.caseFormGroup.get('Diagnosis').value);
-        group.get('examination').setValue(this.caseFormGroup.get('Examination').value);
-        group.get('height').setValue(this.caseFormGroup.get('Height').value);
-        group.get('pweight').setValue(this.caseFormGroup.get('Weight').value);
-        group.get('bmi').setValue(String(this.caseFormGroup.get('BMI').value));
-        group.get('bsl').setValue(this.caseFormGroup.get('BSL').value);
-        group.get('spO2').setValue(this.caseFormGroup.get('SpO2').value);
-        group.get('pulse').setValue(this.caseFormGroup.get('Pulse').value);
-        group.get('bp').setValue(this.caseFormGroup.get('BP').value);
-        group.get('temp').setValue(this.caseFormGroup.get('Temp').value);
-        group.get('patientReferDocId').setValue(Number(ReferDocNameID));
 
-        this.tPrescriptionArray.push(group);
-      });
+      // First group from caseFormGroup
+      const caseFormData = {
+        pHeight: this.caseFormGroup.get('Height')?.value,
+        pWeight: this.caseFormGroup.get('Weight')?.value,
+        bmi: String(this.caseFormGroup.get('BMI')?.value),
+        bsl: this.caseFormGroup.get('BSL')?.value,
+        spO2: this.caseFormGroup.get('SpO2')?.value,
+        temp: this.caseFormGroup.get('Temp')?.value,
+        pulse: this.caseFormGroup.get('Pulse')?.value,
+        bp: this.caseFormGroup.get('BP')?.value,
+        remark: this.MedicineItemForm.get('Remark')?.value,
+        chiefComplaint: this.caseFormGroup.get('ChiefComplaint')?.value,
+        diagnosis: this.caseFormGroup.get('Diagnosis')?.value,
+        examination: this.caseFormGroup.get('Examination')?.value,
+        advice: this.MedicineItemForm.get('Remark')?.value,
+        isEnglishOrIsMarathi: JSON.parse(this.caseFormGroup.get('LangaugeRadio')?.value),
+        patientReferDocId: Number(ReferDocNameID)
+      };
+
+      if (this.dsItemList.data.length === 0) {
+        this.tPrescriptionArray.push(this.createtPrescription(caseFormData));
+      } else {
+        this.dsItemList.data.forEach(item => {
+          const combined = { ...item, ...caseFormData };
+          this.tPrescriptionArray.push(this.createtPrescription(combined));
+        });
+      }
 
       // 2nd detail
       this.topRequestListArray.clear();
@@ -523,10 +530,9 @@ export class NewCasepaperComponent implements OnInit {
           this.mopCasepaperDignosisArray.push(mopCasePaperFormGroup);
         });
       }
-     this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
+      this.casePaperInsertForm.get(['visitDetails', 'visitId'])?.setValue(this.vOPIPId);
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
-      console.log('form:', this.casePaperInsertForm.value);
-
+      console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
 
         if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
@@ -603,7 +609,62 @@ export class NewCasepaperComponent implements OnInit {
     this.getRtrvCheifComplaintList(obj); // retrive list
   }
 
-  getPrescription(obj) {
+  // getPrescription(obj) {
+  //   this.visitIdRefresh = obj.visitId;
+  //   var m_data2 = {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "VisitId",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "VisitId",
+  //         "fieldValue": String(obj.visitId),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "Columns": [],
+  //     "exportType": "JSON"
+  //   }
+  //   this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
+  //     this.dsItemList.data = Visit?.data as MedicineItemList[];
+  //     if (this.dsItemList.data)
+  //     this.Chargelist = this.dsItemList.data;
+
+  //     if (this.dsItemList.data.length > 0) {
+  //       for (let item of this.dsItemList.data) {
+  //         this.caseFormGroup.patchValue({
+  //           Height: item.pHeight,
+  //           Weight: item.pWeight,
+  //           BMI: item.bmi,
+  //           BSL: item.bsl,
+  //           SpO2: item.spO2,
+  //           Pulse: item.pulse,
+  //           BP: item.bp,
+  //           Temp: item.temp
+  //         });
+
+  //         this.vChiefComplaint = item.chiefComplaint;
+  //         this.vDiagnosis = item.diagnosis;
+  //         this.vExamination = item.examination;
+  //         this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
+  //         this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
+  //         this.MedicineItemForm.get('Remark').setValue(item.advice)
+  //         this.RefDocName = item.doctorname
+  //         this.vDrugName = item.drugName
+  //         this.vDoseName = item.doseName
+  //         this.vItemGN = item.genericName
+  //         this.vDayys = item.days
+  //         this.vInst = item.instruction
+  //         this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
+  //       }
+  //       console.log(this.dsItemList.data)
+  //     }
+  //   });
+
+  // }  
+
+   getPrescription(obj) {
     this.visitIdRefresh = obj.visitId;
     var m_data2 = {
       "first": 0,
@@ -621,42 +682,48 @@ export class NewCasepaperComponent implements OnInit {
       "exportType": "JSON"
     }
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
-      this.dsItemList.data = Visit?.data as MedicineItemList[];
-      if (this.dsItemList.data)
-      this.Chargelist = this.dsItemList.data;
+  const allItems = Visit?.data as MedicineItemList[] || [];
+debugger
+  // Patch form values from the first item, regardless of drugId
+  if (allItems.length > 0) {
+    const firstItem = allItems[0];
 
-      if (this.dsItemList.data.length > 0) {
-        for (let item of this.dsItemList.data) {
-          this.caseFormGroup.patchValue({
-            Height: item.pHeight,
-            Weight: item.pWeight,
-            BMI: item.bmi,
-            BSL: item.bsl,
-            SpO2: item.spO2,
-            Pulse: item.pulse,
-            BP: item.bp,
-            Temp: item.temp
-          });
-
-          this.vChiefComplaint = item.chiefComplaint;
-          this.vDiagnosis = item.diagnosis;
-          this.vExamination = item.examination;
-          this.PrefollowUpDate = this.datePipe.transform(item.followupDate, 'MM/dd/YYYY');
-          this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
-          this.MedicineItemForm.get('Remark').setValue(item.advice)
-          this.RefDocName = item.doctorname
-          this.vDrugName = item.drugName
-          this.vDoseName = item.doseName
-          this.vItemGN = item.genericName
-          this.vDayys = item.days
-          this.vInst = item.instruction
-          this.MedicineItemForm.get("DoctorID").setValue(item.patientReferDocId)
-        }
-        console.log(this.dsItemList.data)
-      }
+    this.caseFormGroup.patchValue({
+      Height: firstItem.pHeight,
+      Weight: firstItem.pWeight,
+      BMI: firstItem.bmi,
+      BSL: firstItem.bsl,
+      SpO2: firstItem.spO2,
+      Pulse: firstItem.pulse,
+      BP: firstItem.bp,
+      Temp: firstItem.temp
     });
 
+    this.vChiefComplaint = firstItem.chiefComplaint;
+    this.vDiagnosis = firstItem.diagnosis;
+    this.vExamination = firstItem.examination;
+    this.PrefollowUpDate = this.datePipe.transform(firstItem.followupDate, 'MM/dd/YYYY');
+    this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
+    this.MedicineItemForm.get('Remark').setValue(firstItem.advice);
+    this.RefDocName = firstItem.doctorname;
+    this.MedicineItemForm.get("DoctorID").setValue(firstItem.patientReferDocId);
+
+    this.vDrugName = firstItem.drugName;
+    this.vDoseName = firstItem.doseName;
+    this.vItemGN = firstItem.genericName;
+    this.vDayys = firstItem.days;
+    this.vInst = firstItem.instruction;
   }
+
+  // Filter items where drugId !== 0 for display purposes
+  const filteredItems = allItems.filter(item => item.drugId !== 0);
+
+  this.dsItemList.data = filteredItems;
+  this.Chargelist = filteredItems;
+
+  console.log(this.dsItemList.data);
+});
+  }  
 
    getRtrvCheifComplaintList(obj) {
     this.addCheiflist = [];
@@ -1426,6 +1493,7 @@ selectChangeChiefComplaint(selectedChips: string[]) {
     }
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
       this.patients = Visit?.data as MedicineItemList[];
+      console.log(this.patients)
       this.extractUniqueDates();
     });
   }
