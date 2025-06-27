@@ -44,11 +44,10 @@ import { ResultEntryComponent } from './result-entry.component';
 import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
 import { ResultEntryService } from './result-entry.service';
-// import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 // import { ResultEntryComponent } from './result-entry.component';
-// import { ResultEntryService } from './result-entry.service';
+// import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 // import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
-
+// import { ResultEntryService } from './result-entry.service';
 
 const routes: Routes = [
  

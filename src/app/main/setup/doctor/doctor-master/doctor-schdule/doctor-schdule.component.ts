@@ -23,6 +23,7 @@ export class DoctorSchduleComponent {
   DrschduleForm: FormGroup
   scheduleForm: FormGroup
   DrAdhocschduleForm: FormGroup
+  RadioForm:FormGroup;
   allDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   selectedDays: string[] = [];
@@ -43,21 +44,15 @@ export class DoctorSchduleComponent {
     public dialogRef: MatDialogRef<DoctorSchduleComponent>,
     private fb: FormBuilder
   ) {
-    this.scheduleForm = this.fb.group({
-      schedules: this.fb.array([this.createScheduleGroup()]),
-      StartTime: [],
-      EndTime: [],
-      Slot: ['', [
-        Validators.required]],
-    });
+
   }
 
   ngOnInit(): void {
     this.DrschduleForm = this.createDrSchduleForm();
     this.DrschduleForm.markAllAsTouched();
-    this.DrAdhocschduleForm = this.createScheduleGroup();
+    this.DrAdhocschduleForm = this.createAdhocScheduleGroup();
     this.DrAdhocschduleForm.markAllAsTouched();
-
+    this.RadioForm=this.createSearch();
   }
 
 
@@ -65,35 +60,45 @@ export class DoctorSchduleComponent {
     return this.formBuilder.group({
 
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      scheduleDays: this.days.value,
       slot: [''],
+      startTime: [''],
+      endTime: [''],
+
+    });
+  }
+ 
+  createAdhocScheduleGroup(): FormGroup {
+    return this.fb.group({
+      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      scheduleDays: "",
       startTime: [],
       endTime: [],
+      slot: [],
 
+      // schRadio: ['adhoc'],
     });
   }
-  isDatePckrDisabled: boolean = false;
-  onChangeTime(event) {
-  }
 
-
-  get schedules(): FormArray {
-    return this.scheduleForm.get('schedules') as FormArray;
-  }
-
-  createScheduleGroup(): FormGroup {
+  createSearch(): FormGroup {
     return this.fb.group({
-
-      scheduleDays: this.days.value,
-      fromTime: [''],
-      toTime: [''],
-    
-      schRadio: ['adhoc'],
+          schRadio: ['adhoc'],
     });
   }
 
-  addSchedule() {
-    // this.schedules.push(this.createScheduleGroup());
-  }
+  //  isDatePckrDisabled: boolean = false;
+  // onChangeTime(event) {
+  // }
+
+
+  // get schedules(): FormArray {
+  //   return this.scheduleForm.get('schedules') as FormArray;
+  // }
+
+
+  // addSchedule() {
+  //   // this.schedules.push(this.createScheduleGroup());
+  // }
 
   schstatus: boolean = false
   onChangeSch(event) {
@@ -106,9 +111,6 @@ export class DoctorSchduleComponent {
     }
   }
 
-  // removeSchedule(index: number) {
-  //   this.schedules.removeAt(index);
-  // }
   onDaySelectionChange() {
     this.selectedDays = this.days.value;
   }
@@ -121,9 +123,21 @@ export class DoctorSchduleComponent {
     }
   }
   onSubmit() {
-    this.dialogRef.close(this.DrschduleForm.value)
-  }
+    if (this.schstatus) {
+      console.log(this.DrschduleForm.value)
+      console.log(this.selectedDays)
+      console.log(this.days.value)
 
+      this.DrschduleForm.get("scheduleDays").setValue(this.days.value)
+      this.dialogRef.close(this.DrschduleForm.value)
+    }
+    else{
+    // var Payload=this.DrAdhocschduleForm.value
+    //  Payload.delete.schRadio
+
+      this.dialogRef.close(this.DrAdhocschduleForm.value)
+  }
+  }
 
   onClear(val: boolean) {
     this.DrschduleForm.reset();
@@ -131,6 +145,50 @@ export class DoctorSchduleComponent {
   }
   onClose() {
     this.dialogRef.close()
+  }
+  //new time
+  startHour = 12;
+  startMinute = 0;
+  startMeridian = 'PM';
+
+  endHour = 1;
+  endMinute = 0;
+  endMeridian = 'PM';
+
+  increment(type: 'start' | 'end', field: 'hour' | 'minute') {
+    if (type === 'start') {
+      if (field === 'hour') this.startHour = this.startHour === 12 ? 1 : this.startHour + 1;
+      else this.startMinute = (this.startMinute + 1) % 60;
+    } else {
+      if (field === 'hour') this.endHour = this.endHour === 12 ? 1 : this.endHour + 1;
+      else this.endMinute = (this.endMinute + 1) % 60;
+    }
+  }
+
+  decrement(type: 'start' | 'end', field: 'hour' | 'minute') {
+    if (type === 'start') {
+      if (field === 'hour') this.startHour = this.startHour === 1 ? 12 : this.startHour - 1;
+      else this.startMinute = (this.startMinute - 1 + 60) % 60;
+    } else {
+      if (field === 'hour') this.endHour = this.endHour === 1 ? 12 : this.endHour - 1;
+      else this.endMinute = (this.endMinute - 1 + 60) % 60;
+    }
+  }
+
+  toggleMeridian(type: 'start' | 'end') {
+    if (type === 'start') {
+      this.startMeridian = this.startMeridian === 'AM' ? 'PM' : 'AM';
+    } else {
+      this.endMeridian = this.endMeridian === 'AM' ? 'PM' : 'AM';
+    }
+  }
+
+  formatHour(hour: number): string {
+    return hour < 10 ? '0' + hour : hour.toString();
+  }
+
+  formatMinute(min: number): string {
+    return min < 10 ? '0' + min : min.toString();
   }
 }
 

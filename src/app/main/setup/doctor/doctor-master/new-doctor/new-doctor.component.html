@@ -354,34 +354,7 @@
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
 
-                                                    <!-- <table border="1" style="width: 100%; border-collapse: collapse;">
-                                                        <thead
-                                                            style="font-size: large;color: rgb(7, 69, 94);font-weight: bold;align-items: center;background-color: aliceblue;font-family: 'Times New Roman', Times, serif;">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Qualification</th>
-                                                                <th>ShortName</th>
-                                                                <th>PassingYear</th>
-                                                                <th>InstitutionName</th>
-                                                                <th>City</th>
-                                                                <th>Country</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let user of dummyEducationData; let i = index"
-                                                                style="font-size: large;font-weight: bold;">
-                                                                <td>{{ i + 1 }}</td>
-                                                                <td>{{ user.Qualification }}</td>
-                                                                <td>{{ user.ShortName }}</td>
-                                                                <td>{{ user.PassingYear }}</td>
-                                                                <td>{{ user.InstitutionName }}</td>
-                                                                <td>{{ user.City }}</td>
-                                                                <td>{{ user.Country }}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table> -->
-
-
+                                                  
                                                     <mat-table matSort [dataSource]="dataSourceeducation"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                         <ng-container matColumnDef="qualificationId">
@@ -482,34 +455,7 @@
                                                     </div>
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
-                                                    <!-- <table border="1" style="width: 100%; border-collapse: collapse;">
-                                                        <thead
-                                                            style="font-size: large;color: rgb(7, 69, 94);font-weight: bold;align-items: center;background-color: aliceblue;font-family: 'Times New Roman', Times, serif;">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>HospitalName</th>
-                                                                <th>Designation</th>
-                                                                <th>StartDate</th>
-                                                                <th>EndDate</th>
-                                                                <th>YearsExp</th>
-                                                                <th>MonthExp</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let user of dummyExperienceData; let i = index"
-                                                                style="font-size: large;font-weight: bold;">
-                                                                <td>{{ i + 1 }}</td>
-                                                                <td>{{ user.HospitalName }}</td>
-                                                                <td>{{ user.Designation }}</td>
-                                                                <td>{{ user.StartDate }}</td>
-                                                                <td>{{ user.EndDate }}</td>
-                                                                <td>{{ user.YearsExp }}</td>
-                                                                <td>{{ user.MonthExp }}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table> -->
-
-
+                                                 
                                                     <mat-table matSort [dataSource]="dataSourceeexperience"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
 
@@ -615,40 +561,16 @@
                                                     </div>
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
-                                                    <!-- <table border="1" style="width: 100%; border-collapse: collapse;">
-                                                        <thead
-                                                            style="font-size: large;color: rgb(7, 69, 94);font-weight: bold;align-items: center;background-color: aliceblue;font-family: 'Times New Roman', Times, serif;">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>Days</th>
-                                                                <th>StartTime</th>
-                                                                <th>EndTime</th>
-                                                                <th>Slot</th>
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let user of dummySchduleData; let i = index"
-                                                                style="font-size: large;font-weight: bold;">
-                                                                <td>{{ i + 1 }}</td>
-                                                                <td>{{ user.Days }}</td>
-                                                                <td>{{ user.StartTime }}</td>
-                                                                <td>{{ user.EndTime }}</td>
-                                                                <td>{{ user.Slot }}</td>
-
-                                                            </tr>
-                                                        </tbody>
-                                                    </table> -->
-
+                                                    
                                                     <mat-table matSort [dataSource]="dataSourceSchdule"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
-                                                        <!-- <ng-container matColumnDef="scheduleDays">
+                                                        <ng-container matColumnDef="scheduleDays">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>scheduleDays</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
                                                                 <span>{{ element.scheduleDays }}</span>
                                                             </mat-cell>
-                                                        </ng-container> -->
+                                                        </ng-container>
 
                                                         <ng-container matColumnDef="startTime">
                                                             <mat-header-cell *matHeaderCellDef

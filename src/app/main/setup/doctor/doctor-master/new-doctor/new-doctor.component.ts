@@ -58,7 +58,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   ];
 
   displayedColumnssch = [
-    // 'scheduleDays',
+    'scheduleDays',
     'startTime',
     'endTime',
     'slot',
@@ -138,7 +138,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this.myForm = this.createdDoctormasterForm();
     this.myForm.markAllAsTouched();
 
-    this.appointmentForm = this._formBuilder.group({});
+    // this.appointmentForm = this._formBuilder.group({});
     this.signatureForm = this.createSignatureForm();
     this.initFilterOptions();
 
@@ -171,7 +171,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     else {
       this.myForm.reset();
-      this.myForm.get('isActive').setValue(true);
+      this.myForm.get('IsActive').setValue(true);
       this.myForm.get('IsConsultant').setValue(true);
     }
 
@@ -288,10 +288,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       ],
 
       MDoctorDepartmentDets: ["", Validators.required],
-      // DepartmentName: [""],
-      // AddedBy: [""],
-      // UpdatedBy: [""],
-      // AddedByName: [""],
       Pancardno: ["", Validators.required],
       AadharCardNo: ["",
         [
@@ -301,9 +297,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
           Validators.maxLength(12),
         ]
       ],
-      signature: "U2FtcGxlU2lnbmF0dXJl",
-      createdBy: 2,
-      createdDate: "2025-06-23",
+      signature: "",
+      // createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      // createdDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
       mDoctorExperienceDetails: this.formBuilder.array([]),
       mDoctorQualificationDetails: this.formBuilder.array([]),
       mDoctorScheduleDetails: this.formBuilder.array([]),
@@ -347,7 +343,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     return this.formBuilder.group({
       docSchedId: [item.docSchedId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      scheduleDays: [''],
+      scheduleDays: [item.scheduleDays || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       startTime: [this.datePipe.transform(item.startTime, 'HH:mm:ss')],
       endTime: [this.datePipe.transform(item.endTime, 'HH:mm:ss')],
       slot: [parseInt(item.slot), [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -389,7 +385,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     return this.myForm.get('mDoctorChargesDetails') as FormArray;
   }
 
-  // get mDoctorChargesDetails(): FormArray {
+  // get mDoctorLeaveDetails(): FormArray {
   //   return this.myForm.get('mDoctorChargesDetails') as FormArray;
   // }
 
@@ -450,13 +446,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       data.IsInHouseDoctor = false
       data.IsOnCallDoctor = false
       data.IsActive = true
-
+      // data.CreatedBy=this.accountService.currentUserValue.userId
 
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
       data.Signature = this.signature;
-      // data.DateOfBirth =  this.value
-
+     
       console.log(data)
 
       this._doctorService.doctortMasterInsert(data).subscribe((response) => {
@@ -482,7 +477,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
 
     this.myForm.reset();
-    this.myForm.patchValue(this.createdDoctormasterForm().value);
+    // this.myForm.patchValue(this.createdDoctormasterForm().value);
   }
 
 
@@ -611,28 +606,28 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  appointmentForm: FormGroup;
-  departments = ['Diabetology', 'Cardiology', 'Neurology'];
-  physicians = ['Dr. Jotsna', 'Dr. Arun', 'Dr. Mehta'];
-  visitTypes = ['Clinic', 'Video', 'Home Visit With Physician', 'Home Visit Without Physician'];
-  availableSlots =
-    [
-      '2:45 PM', '3:00 PM', '3:15 PM', '3:30 PM', '3:45 PM',
-      '4:00 PM', '4:15 PM', '4:30 PM', '4:45 PM', '5:00 PM',
-      '5:15 PM', '5:30 PM', '6:00 PM', '6:15 PM',
-      '6:45 PM', '7:00 PM', '7:15 PM'
-    ];
+  // appointmentForm: FormGroup;
+  // departments = ['Diabetology', 'Cardiology', 'Neurology'];
+  // physicians = ['Dr. Jotsna', 'Dr. Arun', 'Dr. Mehta'];
+  // visitTypes = ['Clinic', 'Video', 'Home Visit With Physician', 'Home Visit Without Physician'];
+  // availableSlots =
+  //   [
+  //     '2:45 PM', '3:00 PM', '3:15 PM', '3:30 PM', '3:45 PM',
+  //     '4:00 PM', '4:15 PM', '4:30 PM', '4:45 PM', '5:00 PM',
+  //     '5:15 PM', '5:30 PM', '6:00 PM', '6:15 PM',
+  //     '6:45 PM', '7:00 PM', '7:15 PM'
+  //   ];
 
 
 
-  selectSlot(time: string) {
-    console.log('Selected time slot:', time);
-    Swal.fire('Selected time slot:', time)
-  }
+  // selectSlot(time: string) {
+  //   console.log('Selected time slot:', time);
+  //   Swal.fire('Selected time slot:', time)
+  // }
 
-  JobType: string[] = ['Full Time', 'Visiting', 'Referring', 'Intern', 'Medical Student', 'Trainee Doctor'];
+  // JobType: string[] = ['Full Time', 'Visiting', 'Referring', 'Intern', 'Medical Student', 'Trainee Doctor'];
 
-  onChangeJob(event) { }
+  // onChangeJob(event) { }
 
   ///Leave code
   leaveForm: FormGroup;
@@ -684,22 +679,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     'FOLLOWUP CHARGE'
   ];
 
-  // appointmentGroups = [
-  //   {
-  //     label: 'Appointment Charges setup',
-  //     rows: [
-  //       { type: 'New Visit', graceDays: '', noOfVisits: '', charges: '', serviceName: 'Consultation Fee', enabled: true, filteredServices: [] },
-  //       { type: 'Re-Visit Same Doctor', graceDays: '', noOfVisits: '', charges: '', serviceName: '', enabled: true, filteredServices: [] }
-  //     ]
-  //   },
-  //   {
-  //     label: 'Appointment Charges setup - VIDEO',
-  //     rows: [
-  //       { type: 'New Visit', graceDays: '', noOfVisits: '', charges: '', serviceName: '', enabled: true, filteredServices: [] }
-  //     ]
-  //   }
-  // ];
-
+  
 
   initFilterOptions() {
     // this.appointmentGroups.forEach(group => {
@@ -883,6 +863,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       console.log(result)
       if (result !== undefined) {
         if (this.dataSourceeducation.data.length > 0) {
+           this.chargeeduList = []
           this.chargeeduList = this.dataSourceeducation.data
         }
         this.chargeeduList.push(result);
@@ -915,8 +896,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         delete payload.DaysExp;
         delete payload.MonthExp;
 
-
         if (this.dataSourceeexperience.data.length > 0) {
+            this.chargeexpList = []
           this.chargeexpList = this.dataSourceeexperience.data
         }
         this.chargeexpList.push(payload);
@@ -943,6 +924,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       if (result !== undefined) {
 
         if (this.dataSourceSchdule.data.length > 0) {
+           this.chargeschList = []
           this.chargeschList = this.dataSourceSchdule.data
         }
         this.chargeschList.push(result);

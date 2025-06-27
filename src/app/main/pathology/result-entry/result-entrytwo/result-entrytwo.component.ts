@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ResultEntryService } from '../result-entry.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-result-entrytwo',
@@ -21,23 +22,28 @@ import { ResultEntryService } from '../result-entry.service';
   animations: fuseAnimations
 })
 export class ResultEntrytwoComponent implements OnInit {
-   editorConfig: AngularEditorConfig = {
-          editable: true,
-          spellcheck: true,
-          height: '20rem',
-          minHeight: '20rem',
-          translate: 'yes',
-          placeholder: 'Enter text here...',
-          enableToolbar: true,
-          showToolbar: true,
-      
-        };
-                 
-    onBlur(e: any) {
-      this.vTemplateDesc = e.target.innerHTML;
-      throw new Error('Method not implemented.');
-    }
-    
+  TemplateForm: FormGroup
+  PathReportTemplateForm: FormGroup
+  PathReportHeaderForm: FormGroup
+  @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '20rem',
+    minHeight: '20rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+
+  };
+
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+  }
+
   isresultdrSelected: boolean = false;
   vTemplateName: any = 0;
   vPathResultDoctorId: any = 0;
@@ -46,23 +52,23 @@ export class ResultEntrytwoComponent implements OnInit {
   currentDate: Date = new Date();
   selectedAdvanceObj1: AdmissionPersonlModel;
   screenFromString = 'opd-casepaper';
-  printTemplate:any;
+  printTemplate: any;
   PathReportID: any;
   PathTestId: any
-  TemplateList:any=[];
+  TemplateList: any = [];
   optionsTemplate: any[] = [];
   optionsDoc3: any[] = [];
-  PathologyDoctorList:any=[];
+  PathologyDoctorList: any = [];
   sIsLoading: string = '';
   isTemplateNameSelected: boolean = false;
- filteredOptionsisTemplate: Observable<string[]>;
- filteredresultdr: Observable<string[]>;
- TemplateDesc:any;
+  filteredOptionsisTemplate: Observable<string[]>;
+  filteredresultdr: Observable<string[]>;
+  TemplateDesc: any;
   otherForm: FormGroup;
-  reportIdData:any;
-  TemplateId:any=0;
-  vTemplateDesc:any="";
-  OP_IPType:any;
+  reportIdData: any;
+  TemplateId: any = 0;
+  vTemplateDesc: any = "";
+  OP_IPType: any;
   PathResultDr1: any;
   vsuggestionNotes: any = '';
 
@@ -78,90 +84,215 @@ export class ResultEntrytwoComponent implements OnInit {
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-     public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
+    public dialogRef: MatDialogRef<ResultEntrytwoComponent>,
+    private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
     dialogRef.disableClose = true;
-  
-    if(this.data){
+
+    if (this.data) {
       this.selectedAdvanceObj1 = this.data;
-       
-      console.log( this.selectedAdvanceObj1)
-      this.OP_IPType=this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
-      this.reportIdData =this.selectedAdvanceObj1.pathReportId
-      this.PathResultDr1=this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
+
+      console.log(this.selectedAdvanceObj1)
+      this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
+      this.reportIdData = this.selectedAdvanceObj1.pathReportId
+      this.PathResultDr1 = this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
 
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP(this.selectedAdvanceObj1);
       else
         this.getTemplatedetailOP(this.selectedAdvanceObj1);
     }
-   
-   }
+    this.otherForm = this.formBuilder.group({
+      TemplateName: ['', Validators.required],
+      ResultEntry: ['', Validators.required],
+      TemplateId: [0],
+      suggestionNotes: [''],
+      PathResultDoctorId: ['']
+
+    });
+  }
 
   ngOnInit(): void {
-    this.otherForm = this.formBuilder.group({
-      TemplateName:['',Validators.required],
-      ResultEntry:['',Validators.required],
-      TemplateId:[0],
-      suggestionNotes:[''],
-      PathResultDoctorId:['']
-    
+    this.TemplateForm = this.vResultTemplateFormInsert()
+
+    this.PathReportTemplateForm = this.createTemplateform();
+    this.PathReportHeaderForm = this.createTemplateHeader();
+  }
+
+  vResultTemplateFormInsert(): FormGroup {
+    return this.formBuilder.group({
+
+      pathologyReportTemplate: [''],
+      pathologyReportHeader: ['']
+
     });
-   
-    }
-    
-    @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
-   
-    public onEnterSugg(event): void {
-        if (event.which === 13) {
-            this.PathResultDoctorId.nativeElement.focus();
-        }
-    }
+  }
 
-    PathReportId = 0
+
+  // get ReporttemplateArray(): FormArray {
+  //   return this.PathReportTemplate.get('pathologyReportTemplate') as FormArray;
+  // }
+
+  // get ReportheaderArray(): FormArray {
+  //   return this.PathReportHeader.get('pathologyReportHeader') as FormArray;
+  // }
+
+  createTemplateform(): FormGroup {
+    return this.formBuilder.group({
+      pathReportId: [this.reportIdData || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pathTemplateId: [this.TemplateId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pathTemplateDetailsResult: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      templateResultInHTML: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      testId: [this.selectedAdvanceObj1.pathTestID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      suggestionNotes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      pathResultDr1: [this.VpathResultDr1 || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+    });
+  }
+
+
+  createTemplateHeader(): FormGroup {
+    return this.formBuilder.group({
+      pathReportID: [this.reportIdData || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reportDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      reportTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      isCompleted: true,
+      isPrinted: true,
+      pathResultDr1: [this.VpathResultDr1 || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pathResultDr2: 0,
+      pathResultDr3: 0,
+      isTemplateTest: 0,
+      suggestionNotes: "",
+      admVisitDoctorID: [this.selectedAdvanceObj1.adm_Visit_docId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refDoctorID: 0
+    });
+  }
+
+
+  public onEnterSugg(event): void {
+    if (event.which === 13) {
+      this.PathResultDoctorId.nativeElement.focus();
+    }
+  }
+
+  PathReportId = 0
   templateObj: any;
-    getTemplatedetailIP(row) {
-      debugger
-      console.log("data:", row)
+  getTemplatedetailIP(row) {
+    debugger
+    console.log("data:", row)
     this.PathReportId = row.pathReportId
-      if ((this.PathReportId ?? 0) > 0) {
-        setTimeout(() => {
-          this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
-            this.templateObj = response;
-            console.log("all data:", this.templateObj)
-            this.vTemplateDesc=this.templateObj.templateResultInHTML
-            this.vsuggestionNotes=this.templateObj.suggestionNotes
-            this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
-          });
-        }, 500);
-      }
+    if ((this.PathReportId ?? 0) > 0) {
+      setTimeout(() => {
+        this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
+          this.templateObj = response;
+          console.log("all data:", this.templateObj)
+          this.vTemplateDesc = this.templateObj.templateResultInHTML
+          this.vsuggestionNotes = this.templateObj.suggestionNotes
+          this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
+        });
+      }, 500);
     }
-  
-    getTemplatedetailOP(row) {
-      debugger
-      console.log("data:", row)
+  }
+
+  getTemplatedetailOP(row) {
+    debugger
+    console.log("data:", row)
     this.PathReportId = row.pathReportId
-      if ((this.PathReportId ?? 0) > 0) {
-        setTimeout(() => {
-          this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
-            this.templateObj = response;
-            console.log("all data:", this.templateObj)
-            this.vTemplateDesc=this.templateObj.templateResultInHTML
-            this.vsuggestionNotes=this.templateObj.suggestionNotes
-            this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
-          });
-        }, 500);
-      }
+    if ((this.PathReportId ?? 0) > 0) {
+      setTimeout(() => {
+        this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
+          this.templateObj = response;
+          console.log("all data:", this.templateObj)
+          this.vTemplateDesc = this.templateObj.templateResultInHTML
+          this.vsuggestionNotes = this.templateObj.suggestionNotes
+          this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
+        });
+      }, 500);
     }
+  }
 
-    VpathResultDr1=0
-    selectChangeDoctorName(row){
-      this.VpathResultDr1=row.value
-    }
+  VpathResultDr1 = 0
+  selectChangeDoctorName(row) {
+    this.VpathResultDr1 = row.value
+  }
 
-    // demo check
-    dataSource: any = { data: [] };
- 
+  // demo check
+  dataSource: any = { data: [] };
+
+  // onSubmit1() {
+  //   debugger
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+
+  //   // if (this.otherForm.get("ResultEntry")?.value == '') {
+  //   //   this.toastr.warning('Please select valid Template ', 'Warning !', {
+  //   //     toastClass: 'tostr-tost custom-toast-warning',
+  //   //   });
+  //   //   return;
+  //   // }
+  //   if (this.otherForm.get("PathResultDoctorId")?.value == '') {
+  //     this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  // }
+  // if (this.otherForm.get("ResultEntry")?.value == '') {
+  //   this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+
+  //     let pathologyReportTemplate= {
+  //       "pathReportId": this.reportIdData || 0,
+  //       "pathTemplateId": this.TemplateId || 0,
+  //       "pathTemplateDetailsResult":this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
+  //       "templateResultInHTML": this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
+  //       "testId":  this.selectedAdvanceObj1.pathTestID || 0,
+  //       "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
+  //       "pathResultDr1": this.VpathResultDr1 || 0,
+  //     }
+
+  //     let pathologyReportHeader={
+  //       "pathReportID": this.reportIdData || 0,
+  //       "reportDate": formattedDate,
+  //       "reportTime": formattedTime,
+  //       "isCompleted": true,
+  //       "isPrinted": true,
+  //       "pathResultDr1": this.VpathResultDr1 || 0,
+  //       "pathResultDr2": 0,
+  //       "pathResultDr3": 0,
+  //       "isTemplateTest": 0,
+  //       "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
+  //       "admVisitDoctorID": this.selectedAdvanceObj1.adm_Visit_docId,
+  //       "refDoctorID": 0
+  //     }
+
+  //   console.log('==============================  Advance Amount ===========');
+  //   let submitData = {
+  //     "pathologyReportTemplate": pathologyReportTemplate,
+  //     "pathologyReportHeader": pathologyReportHeader
+  //   };
+  //       console.log(submitData);
+
+  //         this._SampleService.PathTemplateResultentryInsert(submitData).subscribe(response => {
+
+  //           if (response) {
+  //             Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
+  //               if (result.isConfirmed) {
+  //                this.dialogRef.close();
+  //                this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+  //               }
+  //             });
+  //           } else {
+  //             Swal.fire('Error !', 'Pathology Template data not saved', 'error');
+  //           }
+  //           this.isLoading = '';
+  //         });
+
+  // }
   onSubmit() {
     debugger
     const currentDate = new Date();
@@ -169,111 +300,75 @@ export class ResultEntrytwoComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
-    // if (this.otherForm.get("ResultEntry")?.value == '') {
-    //   this.toastr.warning('Please select valid Template ', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
     if (this.otherForm.get("PathResultDoctorId")?.value == '') {
       this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+        toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-  }
-  if (this.otherForm.get("ResultEntry")?.value == '') {
-    this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
-      toastClass: 'tostr-tost custom-toast-warning',
+    }
+    if (this.otherForm.get("ResultEntry")?.value == '') {
+      this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+
+    this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
+    this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
+    this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
+    this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+    this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
+
+    this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
+    this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
+
+    console.log(this.TemplateForm.value);
+
+    this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
+      this.dialogRef.close();
+      this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+
     });
-    return;
   }
 
-      let pathologyReportTemplate= {
-        "pathReportId": this.reportIdData || 0,
-        "pathTemplateId": this.TemplateId || 0,
-        "pathTemplateDetailsResult":this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
-        "templateResultInHTML": this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
-        "testId":  this.selectedAdvanceObj1.pathTestID || 0,
-        "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
-        "pathResultDr1": this.VpathResultDr1 || 0,
-      }
-      
-      let pathologyReportHeader={
-        "pathReportID": this.reportIdData || 0,
-        "reportDate": formattedDate,
-        "reportTime": formattedTime,
-        "isCompleted": true,
-        "isPrinted": true,
-        "pathResultDr1": this.VpathResultDr1 || 0,
-        "pathResultDr2": 0,
-        "pathResultDr3": 0,
-        "isTemplateTest": 0,
-        "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
-        "admVisitDoctorID": this.selectedAdvanceObj1.adm_Visit_docId,
-        "refDoctorID": 0
-      }
-    
-    console.log('==============================  Advance Amount ===========');
-    let submitData = {
-      "pathologyReportTemplate": pathologyReportTemplate,
-      "pathologyReportHeader": pathologyReportHeader
-    };
-        console.log(submitData);
-      
-          this._SampleService.PathTemplateResultentryInsert(submitData).subscribe(response => {
-            
-            if (response) {
-              Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
-                if (result.isConfirmed) {
-                 this.dialogRef.close();
-                 this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
-                }
-              });
-            } else {
-              Swal.fire('Error !', 'Pathology Template data not saved', 'error');
-            }
-            this.isLoading = '';
-          });
-        
-  }
-  
   viewgetPathologyTemplateReportPdf(contact) {
     // debugger
     setTimeout(() => {
-                let param = {
-                        "searchFields": [
-                            {
-                                "fieldName": "PathReportId" ,
-                                "fieldValue": String(contact.pathReportId),
-                                "opType": "Equals"
-                            },
-                            {
-                                "fieldName": "OP_IP_Type"   ,
-                                "fieldValue": String(contact.opdipdtype),
-                                "opType": "Equals"
-                            }
-                        ],
-                        "mode": "PathologyReportTemplate"
-                    }
-    
-              this._SampleService.getReportView(param).subscribe(res => {
-                  
-                    const matDialog = this._matDialog.open(PdfviewerComponent,
-                        {
-                            maxWidth: "85vw",
-                            height: '750px',
-                            width: '100%',
-                            data: {
-                                base64: res["base64"] as string,
-                                title: "Template Report" + " "+ "Viewer"
-                            }
-                        });
-                    matDialog.afterClosed().subscribe(result => {
-                    });
-                });
-            }, 100);
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "PathReportId",
+            "fieldValue": String(contact.pathReportId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OP_IP_Type",
+            "fieldValue": String(contact.opdipdtype),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "PathologyReportTemplate"
+      }
+
+      this._SampleService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Template Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
   }
-  
+
   onEdit(row) {
     var m_data = {
       "TemplateId": row.TemplateId,
@@ -283,11 +378,11 @@ export class ResultEntrytwoComponent implements OnInit {
       "UpdatedBy": row.UpdatedBy,
     }
     this._SampleService.populateForm(m_data);
-  }   
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-     this.dateTimeObj = dateTimeObj;
+    this.dateTimeObj = dateTimeObj;
   }
 
   onClear() {
@@ -304,7 +399,7 @@ export class ResultEntrytwoComponent implements OnInit {
   selectChangeTemplateName(row) {
     console.log("Template:", row)
     this.Tempdesc = row.templateDesc
-    this.TemplateId=row.templateId
+    this.TemplateId = row.templateId
     if (row.templateId)
       this.isSelected = true
   }
@@ -313,18 +408,18 @@ export class ResultEntrytwoComponent implements OnInit {
     this.vTemplateDesc = this.Tempdesc
   }
 
-public onEnterPathResultDoctorId(event, value): void {
+  public onEnterPathResultDoctorId(event, value): void {
 
-  if (event.which === 13) {
+    if (event.which === 13) {
       console.log(value)
       if (value == undefined) {
-          this.toastr.warning('Please Enter Valid Pathology Doctor .', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-      } 
+        this.toastr.warning('Please Enter Valid Pathology Doctor .', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
   }
-}
 
 }
 
@@ -332,18 +427,18 @@ public onEnterPathResultDoctorId(event, value): void {
 export class PthologyresulUp {
 
   PathReportID: number;
-  ReportDate :any;
-  ReportTime:any;
+  ReportDate: any;
+  ReportTime: any;
   IsCompleted: boolean;
-  IsPrinted:boolean;
-  PathResultDr1 :any;
-  PathResultDr2 :any;
-  PathResultDr3 :any;
-  IsTemplateTest :any;
-  SuggestionNotes :any;
-  AdmVisitDoctorID :any;
-  RefDoctorID :any;
- 
+  IsPrinted: boolean;
+  PathResultDr1: any;
+  PathResultDr2: any;
+  PathResultDr3: any;
+  IsTemplateTest: any;
+  SuggestionNotes: any;
+  AdmVisitDoctorID: any;
+  RefDoctorID: any;
+
   constructor(pathologyTemplateUpdateObj) {
     this.PathReportID = pathologyTemplateUpdateObj.PathReportID || 0;
     this.ReportDate = pathologyTemplateUpdateObj.ReportDate || '';
@@ -364,19 +459,19 @@ export class PthologyresulUp {
 
 export class PthologyresultInsert {
 
-  PathReportId : number;
-  PathTemplateId : number;
-  PathTemplateDetailsResult : any;
-  TestId : any;
- 
- 
+  PathReportId: number;
+  PathTemplateId: number;
+  PathTemplateDetailsResult: any;
+  TestId: any;
+
+
   constructor(pathologyTemplateInsertObj) {
- 
+
     this.PathReportId = pathologyTemplateInsertObj.PathReportId || 0;
     this.PathTemplateId = pathologyTemplateInsertObj.PathTemplateId || 0;
     this.PathTemplateDetailsResult = pathologyTemplateInsertObj.PathTemplateDetailsResult || 0;
     this.TestId = pathologyTemplateInsertObj.TestId || 0;
-   
+
   }
 
 }
@@ -385,10 +480,10 @@ export class PthologyresultInsert {
 export class PthologyresulDelt {
 
   pathReportId: number;
- 
+
   constructor(pathologyTemplateDeleteObj) {
     this.pathReportId = pathologyTemplateDeleteObj.pathReportId || 0;
-  
+
   }
 
 }

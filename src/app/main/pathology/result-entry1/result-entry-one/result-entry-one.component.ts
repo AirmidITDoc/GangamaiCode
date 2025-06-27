@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
@@ -28,15 +28,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     animations: fuseAnimations
 })
 export class ResultEntryOneComponent implements OnInit {
- ResultForm: FormGroup
-    PathResultForm: FormGroup
-    vresultdetailFormGroup: FormGroup
-     @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
-    @ViewChild('DoctorId') DoctorId: ElementRef;
-    @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
-    @ViewChild('helpinput') helpinput: ElementRef;
 
-    
     displayedColumns: string[] = [
         'TestName',
         // 'SubTestName',
@@ -65,7 +57,7 @@ export class ResultEntryOneComponent implements OnInit {
 
     configDoc: any;
     sIsLoading: string = '';
-  
+
     currentDate: Date = new Date();
     autocompleteModeDoctor: string = "ConDoctor";
 
@@ -86,7 +78,7 @@ export class ResultEntryOneComponent implements OnInit {
     CheckAge: any;
     CheckAgemonth: any = 0
     CheckAgeday: any = 0
-    regObj:any;
+    regObj: any;
 
     // MaxAge:any;
     @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -102,14 +94,15 @@ export class ResultEntryOneComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private advanceDataStored: AdvanceDataStored,
         private configService: ConfigService,
-          private commonService: PrintserviceService,
+        private commonService: PrintserviceService,
         public toastr: ToastrService,
-          private _FormvalidationserviceService: FormvalidationserviceService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
-           
+            // debugger
             this.selectedAdvanceObj2 = data.patientdata;
+            console.log(this.selectedAdvanceObj2)
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
             this.SexId = this.selectedAdvanceObj2.genderId;
@@ -121,56 +114,115 @@ export class ResultEntryOneComponent implements OnInit {
                 this.CheckAgeday = this.selectedAdvanceObj2.ageDay.trim();
 
             this.reportIdData = [];
-            this.regObj=data.RIdData
-                this.vPathReportId=this.regObj[0].PathReportId
+            this.regObj = data.RIdData
+            this.vPathReportId = this.regObj[0].PathReportId
 
-                this.data.RIdData.forEach((element) => {
+            this.data.RIdData.forEach((element) => {
                 this.reportIdData.push(element.PathReportId)
                 this.ServiceIdData.push(element.ServiceId)
                 if (element.IsCompleted == "true")
                     this.Iscompleted = 1;
                 else
-                    this.Iscompleted=0
+                    this.Iscompleted = 0
             });
 
         }
-       
+
         if (this.Iscompleted == 0) {
             if (this.OP_IPType == 1)
-                this.getResultListIP(this.selectedAdvanceObj2,this.regObj);
+                this.getResultListIP(this.selectedAdvanceObj2, this.regObj);
             else
-                this.getResultListOP(this.selectedAdvanceObj2,this.regObj);
+                this.getResultListOP(this.selectedAdvanceObj2, this.regObj);
 
         } else {
             this.getResultList1(this.regObj);
         }
 
     }
-   
+    ResultForm: FormGroup
+    PathResultForm: FormGroup
+    vresultdetailFormGroup: FormGroup
     ngOnInit(): void {
+        this.ResultForm = this.createResultInsertForm();
+        this.PathResultForm= this.createPathologyResultForm();
+        // loop array defined
+        this.pathologyResultArray.push(this.createResultdetailForm());
 
-         this.otherForm = this.formBuilder.group({
+        this.otherForm = this.formBuilder.group({
             suggestionNotes: '',
             PathResultDoctorId: [0],
             DoctorId: [0],
-            AdmDoctorID: [0],
-            RefDoctorID: [0],
+            // AdmDoctorID: [0],
+            // RefDoctorID: [0],
+
+            
         });
 
-        this.ResultForm = this.createResultInsertForm();
-        this.PathResultForm= this.createPathologyResultForm();
-        this.pathologyResultArray.push(this.createResultdetailForm());
-
     }
 
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
+
+    // FormArray Getters
+    get pathologyReportarray(): FormArray {
+        return this.vresultdetailFormGroup.get('pathologyReport') as FormArray;
     }
 
-    dateTimeObj: any;
-    getDateTime(dateTimeObj) {
-        this.dateTimeObj = dateTimeObj;
+      createResultInsertForm(): FormGroup {
+        return this.formBuilder.group({
+            pathologyResult: this.PathResultForm.value,
+            pathologyReport: this.formBuilder.array([]), // FormArray for details
+        });
     }
+
+       createPathologyResultForm(): FormGroup {
+        debugger
+        return this.formBuilder.group({
+            pathReportId: this.vPathReportId,
+            reportDate: this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
+            reportTime: this.datePipe.transform(this.currentDate, "HH:mm"),
+            isCompleted: true,
+            isPrinted: true,
+            pathResultDr1: this.vPathResultDoctorId,
+            pathResultDr2: 0,
+            pathResultDr3: 0,
+            isTemplateTest: 0,
+            suggestionNotes: this.otherForm.get('suggestionNotes').value || "",
+            admVisitDoctorId: 0,
+            refDoctorId: 0,
+       });
+    }     
+
+    createResultdetailForm(item: any = {}): FormGroup {
+        return this.formBuilder.group({
+            pathReportDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            pathReportId: [item.PathReportId , [this._FormvalidationserviceService.onlyNumberValidator()]],
+            categoryId: [item.CategoryId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            testId: [item.TestId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            subTestId: [item.SubTestId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            parameterId: [item.ParameterId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            resultValue: [item.ResultValue, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item.UnitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            normalRange: [item.NormalRange, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            printOrder: [item.PrintOrder, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            pisNumeric: [item.ParaIsNumeric, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            categoryName: [item.CategoryName],
+            testName: [item.TestName],
+            subTestName: [item.SubTestName],
+            parameterName: [item.ParameterName],
+            unitName: [item.UnitName],
+            patientName: [this.selectedAdvanceObj2.PatientName],
+            regNo: [this.selectedAdvanceObj2.regNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            sampleId: [item.SampleID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            paraBoldFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            minValue: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            maxValue: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+
+ get pathologyResultArray(): FormArray {
+    return this.ResultForm.get('pathologyReport') as FormArray;
+  }
 
     setDropdownObjs() {
 
@@ -195,32 +247,32 @@ export class ResultEntryOneComponent implements OnInit {
 
     // onResultUp(data) {
     //     debugger
-        // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+    // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
-    
+
     //     for (let i = 0; i < items.length; i++) {
     //         let formula = items[i].Formula;
     //         let formulas = this.getShortNames(formula);
-    
+
     //         formulas.forEach(e => {
     //             let itm = this.dataSource.data.find(x => x.ParameterShortName?.toLowerCase().trim() === e.toLowerCase().trim());
-    
+
     //             let valueToReplace = itm?.ResultValue !== undefined && itm?.ResultValue !== null ? itm.ResultValue : "0";
-    
+
     //             formula = formula.replaceAll("{{" + e.trim() + "}}", valueToReplace);
-    
+
     //             console.log("Matching for:", e.trim());
     //             console.log("Matched item:", itm);
     //             console.log("Replacing {{ " + e.trim() + " }} with:", valueToReplace);
     //         });
-    
+
     //         if (formula.includes('{{')) {
     //             console.error("Formula still has unresolved placeholders:", formula);
     //             items[i].ResultValue = "";
     //         } else {
     //             try {
     //                 items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
-    
+
     //                 if (!isNaN(items[i].ResultValue)) {
     //                     items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
     //                 }
@@ -230,14 +282,14 @@ export class ResultEntryOneComponent implements OnInit {
     //             }
     //         }
     //     }
-    
+
     //     // Set flag for bold if the value is out of range
     //     data.ParaBoldFlag = '';
     //     if (data.PIsNumeric) {
     //         let a = parseFloat(data.ResultValue);
     //         let b = parseFloat(data.MinValue);
     //         let c = parseFloat(data.MaxValue);
-    
+
     //         if (b != null && c != null && a != null) {
     //             if (a < b || a > c) {
     //                 data.ParaBoldFlag = 'B'; // Set bold flag if value is out of range
@@ -245,13 +297,13 @@ export class ResultEntryOneComponent implements OnInit {
     //         }
     //     }
     // }    
-    
+
     // isValidFormula(formula: string): boolean {
     //     // Basic regex to allow only numbers, operators, and parentheses
     //     const validFormulaPattern = /^[0-9+\-*/().\s]+$/;
     //     return validFormulaPattern.test(formula.trim());
     // }
-    
+
     onResultUp(data) {
         debugger
         let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
@@ -338,41 +390,40 @@ export class ResultEntryOneComponent implements OnInit {
     getResultList1(rbj) {
         debugger
         if (this.OP_IPType == 0) {
-            var param =  {
-                "searchFields": [          
-                  {          
-                    "fieldName": "PathReportId",   
-                    "fieldValue": String(rbj[0].PathReportId), //"150598",  
-                    "opType": "Equals"          
-                  }          
-                ],          
-                "mode": "PathologyResultEntryOPCompleted"          
-              }
+            var param = {
+                "searchFields": [
+                    {
+                        "fieldName": "PathReportId",
+                        "fieldValue": String(rbj[0].PathReportId), //"150598",  
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "PathologyResultEntryOPCompleted"
+            }
         }
-        else if(this.OP_IPType == 1){
-            var param =  {
-                "searchFields": [          
-                  {          
-                    "fieldName": "PathReportId",          
-                    "fieldValue": String(rbj[0].PathReportId),         
-                    "opType": "Equals"          
-                  }          
-                ],          
-                "mode": "PathologyResultEntryIPCompleted"          
-              }
+        else if (this.OP_IPType == 1) {
+            var param = {
+                "searchFields": [
+                    {
+                        "fieldName": "PathReportId",
+                        "fieldValue": String(rbj[0].PathReportId),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "PathologyResultEntryIPCompleted"
+            }
         }
-       
+
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
             debugger
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
-            // this.Pthologyresult = Visit as Pthologyresult[];
-            this.dataSource.sort = this.sort;
+                        this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             this.sIsLoading = '';
             this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-            this.vPathResultDoctorId=this.dataSource.data[0].PathResultDr1
+            this.vPathResultDoctorId = this.dataSource.data[0].PathResultDr1
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
@@ -384,240 +435,272 @@ export class ResultEntryOneComponent implements OnInit {
 
     }
 
-  getResultListIP(obj, rbj) {
-          debugger
-          var SelectQuery =
-          {
-              "searchFields": [
-                  {
-                      "fieldName": "OPIPId",
-                      "fieldValue": String(obj.opdipdid),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "ServiceId ",
-                      "fieldValue": String(rbj[0].ServiceId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "OPIPType",
-                      "fieldValue": String(obj.opdipdtype),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "PathReportId",
-                      "fieldValue": String(rbj[0].PathReportId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "SexId",
-                      "fieldValue": String(obj.genderId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "MaxAge",
-                      "fieldValue": String(obj.ageYear),
-                      "opType": "Equals"
-                  }
-              ],
-              "mode": "PathologyResultEntryIP"
-          }
-  
-          console.log(SelectQuery);
-          this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-              this.dataSource.data = Visit as Pthologyresult[];
-              //  this.Pthologyresult = Visit as Pthologyresult[];
-              console.log(this.dataSource.data)
-              this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-              this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-              this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-              this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-              this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator;
-              this.sIsLoading = '';
-          },
-              error => {
-                  this.sIsLoading = '';
-              });
-      }
-  
-      getResultListOP(obj, rbj) {
-          const serviceIds = rbj.map(r => String(r.ServiceId));
-          const pathReportIds = rbj.map(r => String(r.PathReportId));
-  
-          debugger
-          var SelectQuery =
-          {
-              "searchFields": [
-                  {
-                      "fieldName": "OPIPId",
-                      "fieldValue": String(obj.opdipdid),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "ServiceId ",
-                      "fieldValue": String(rbj[0].ServiceId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "OPIPType",
-                      "fieldValue": String(obj.opdipdtype),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "PathReportId",
-                      "fieldValue": String(rbj[0].PathReportId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "SexId",
-                      "fieldValue": String(obj.genderId),
-                      "opType": "Equals"
-                  },
-                  {
-                      "fieldName": "MaxAge",
-                      "fieldValue": String(obj.ageYear),
-                      "opType": "Equals"
-                  }
-              ],
-              "mode": "PathologyResultEntryOP"
-          }
-          console.log(SelectQuery)
-          this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-              this.dataSource.data = Visit as Pthologyresult[];
-              console.log(this.dataSource.data)
-              // this.Pthologyresult = Visit as Pthologyresult[];
-              this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator;
-              this.sIsLoading = '';
-              // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-              this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-  
-              this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-              this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-              this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-              console.log(this.PathResultDr1);
-              // this.getPathresultDoctorList();
-          },
-              error => {
-                  this.sIsLoading = '';
-              });
-  
-      }
+    getResultListIP(obj, rbj) {
+        debugger
+        var SelectQuery =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "OPIPId",
+                    "fieldValue": String(obj.opdipdid),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ServiceId ",
+                    "fieldValue": String(rbj[0].ServiceId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OPIPType",
+                    "fieldValue": String(obj.opdipdtype),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "PathReportId",
+                    "fieldValue": String(rbj[0].PathReportId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "SexId",
+                    "fieldValue": String(obj.genderId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "MaxAge",
+                    "fieldValue": String(obj.ageYear),
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyResultEntryIP"
+        }
 
-    selectChangeDoctor(row){
-      
-        this.vPathResultDoctorId = row.value;
-         
+        console.log(SelectQuery);
+        this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
+            this.dataSource.data = Visit as Pthologyresult[];
+            console.log(this.dataSource.data)
+            this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+            this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+            this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.sIsLoading = '';
+        },
+            error => {
+                this.sIsLoading = '';
+            });
     }
-    onReload(){
+
+    getResultListOP(obj, rbj) {
+        const serviceIds = rbj.map(r => String(r.ServiceId));
+        const pathReportIds = rbj.map(r => String(r.PathReportId));
+
+        debugger
+        var SelectQuery =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "OPIPId",
+                    "fieldValue": String(obj.opdipdid),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ServiceId ",
+                    "fieldValue": String(rbj[0].ServiceId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OPIPType",
+                    "fieldValue": String(obj.opdipdtype),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "PathReportId",
+                    "fieldValue": String(rbj[0].PathReportId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "SexId",
+                    "fieldValue": String(obj.genderId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "MaxAge",
+                    "fieldValue": String(obj.ageYear),
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyResultEntryOP"
+        }
+        console.log(SelectQuery)
+        this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
+            this.dataSource.data = Visit as Pthologyresult[];
+            console.log(this.dataSource.data)
+            // this.Pthologyresult = Visit as Pthologyresult[];
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            this.sIsLoading = '';
+            // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
+            this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+
+            this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+            this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+            this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+            console.log(this.PathResultDr1);
+            // this.getPathresultDoctorList();
+        },
+            error => {
+                this.sIsLoading = '';
+            });
+
+    }
+
+    selectChangeDoctor(row) {
+        debugger
+
+        console.log(row)
+        this.vPathResultDoctorId = row.value;
+         console.log( this.vPathResultDoctorId )
+    }
+    onReload() {
         this.getResultList1(this.regObj);
     }
 
-    onUpload(){
-    //    debugger
-            if ((this.vPathResultDoctorId == '')) {
-                this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-    
-            let PathInsertArry = [];
-            // let pathologyDeleteObjarray = [];
-            let pathologyUpdateReportObjarray = [];
-    
-            // this.data.RIdData.forEach((element) => {
-            //     let pathologyDeleteObj = {};
-            //     pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
-            //     pathologyDeleteObjarray.push(pathologyDeleteObj);
-            // });
-    
-            this.dataSource.data.forEach((element) => {
-    
-                let pathologyInsertReportObj = {};
-                pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
-                pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
-                pathologyInsertReportObj['TestID'] = element.TestId || 0;
-                pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
-                pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
-                pathologyInsertReportObj['ResultValue'] = element.ResultValue || ' ';
-                pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
-                pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
-                pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
-                pathologyInsertReportObj['PIsNumeric'] = element.ParaIsNumeric || element.PIsNumeric || 0;
-                pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
-                pathologyInsertReportObj['TestName'] = element.TestName || '';
-                pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
-                pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
-                pathologyInsertReportObj['UnitName'] = element.UnitName || '';
-                pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
-                pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.regNo;
-                pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
-                pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
-                pathologyInsertReportObj['SampleID'] = element.SampleID || '';
-    
-                pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
-    
-                PathInsertArry.push(pathologyInsertReportObj);
+    onUpload() {
+        //    debugger
+        if ((this.vPathResultDoctorId == '')) {
+            this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
-    
-            this.data.RIdData.forEach((element) => {
-                let pathologyUpdateReportObj = {};
-    
-                pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
-                pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
-                // pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
-                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "HH:mm");
-                pathologyUpdateReportObj['IsCompleted'] = true;
-                pathologyUpdateReportObj['IsPrinted'] = true;
-                pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
-                pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
-                pathologyUpdateReportObj['PathResultDr3'] = 0;
-                pathologyUpdateReportObj['IsTemplateTest'] = 0;
-                pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
-                pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
-                pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value || 0;
-    
-                pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
-            });
-    
-            console.log('==============================  PathologyResult ===========');
-            let submitData = {
-                // "deletepathreportheader": pathologyDeleteObjarray,
-                "insertpathreportdetail": PathInsertArry,
-                "updatepathreportheader": pathologyUpdateReportObjarray
-            };
-            console.log(submitData);
-            this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
-                if (response) {
-                    Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
-                        this._matDialog.closeAll();
-                        this.Printresultentry();
-                    });
-                } else {
-                    Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-                }
-                this.isLoading = '';
-            });
-    
+            return;
         }
 
-    
+        let PathInsertArry = [];
+        // let pathologyDeleteObjarray = [];
+        let pathologyUpdateReportObjarray = [];
+
+        // this.data.RIdData.forEach((element) => {
+        //     let pathologyDeleteObj = {};
+        //     pathologyDeleteObj['pathReportID'] = element.PathReportId// element1.PathReportId;
+        //     pathologyDeleteObjarray.push(pathologyDeleteObj);
+        // });
+
+        this.dataSource.data.forEach((element) => {
+
+            let pathologyInsertReportObj = {};
+            pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
+            pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
+            pathologyInsertReportObj['TestID'] = element.TestId || 0;
+            pathologyInsertReportObj['SubTestId'] = element.SubTestId || 0;
+            pathologyInsertReportObj['ParameterId'] = element.ParameterId || 0;
+            pathologyInsertReportObj['ResultValue'] = element.ResultValue || ' ';
+            pathologyInsertReportObj['UnitId'] = element.UnitId || 1;
+            pathologyInsertReportObj['NormalRange'] = element.NormalRange || '';
+            pathologyInsertReportObj['PrintOrder'] = element.PrintOrder || 0;
+            pathologyInsertReportObj['PIsNumeric'] = element.ParaIsNumeric || element.PIsNumeric || 0;
+            pathologyInsertReportObj['CategoryName'] = element.CategoryName || '';
+            pathologyInsertReportObj['TestName'] = element.TestName || '';
+            pathologyInsertReportObj['SubTestName'] = element.SubTestName || '';
+            pathologyInsertReportObj['ParameterName'] = element.ParameterName || '';
+            pathologyInsertReportObj['UnitName'] = element.UnitName || '';
+            pathologyInsertReportObj['PatientName'] = this.selectedAdvanceObj2.PatientName || '';
+            pathologyInsertReportObj['RegNo'] = this.selectedAdvanceObj2.regNo;
+            pathologyInsertReportObj['MinValue'] = parseFloat(element.MinValue) || 0;
+            pathologyInsertReportObj['MaxValue'] = parseFloat(element.MaxValue) || 0;
+            pathologyInsertReportObj['SampleID'] = element.SampleID || '';
+
+            pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
+
+            PathInsertArry.push(pathologyInsertReportObj);
+        });
+
+        this.data.RIdData.forEach((element) => {
+            let pathologyUpdateReportObj = {};
+
+            pathologyUpdateReportObj['PathReportID'] = element.PathReportId// element1.PathReportId;
+            pathologyUpdateReportObj['ReportDate'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
+                // pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "MM-dd-yyyy hh:mm"),
+                pathologyUpdateReportObj['ReportTime'] = this.datePipe.transform(this.currentDate, "HH:mm");
+            pathologyUpdateReportObj['IsCompleted'] = true;
+            pathologyUpdateReportObj['IsPrinted'] = true;
+            pathologyUpdateReportObj['PathResultDr1'] = this.otherForm.get('PathResultDoctorId').value || 0;
+            pathologyUpdateReportObj['PathResultDr2'] = 0; //this.otherForm.get('DoctorId').value.DoctorId || 0;
+            pathologyUpdateReportObj['PathResultDr3'] = 0;
+            pathologyUpdateReportObj['IsTemplateTest'] = 0;
+            pathologyUpdateReportObj['SuggestionNotes'] = this.otherForm.get('suggestionNotes').value || "";
+            pathologyUpdateReportObj['AdmVisitDoctorID'] = 0; //this.otherForm.get('AdmDoctorID').value.DoctorID || 0;
+            pathologyUpdateReportObj['RefDoctorID'] = this.otherForm.get('RefDoctorID').value || 0;
+
+            pathologyUpdateReportObjarray.push(pathologyUpdateReportObj);
+        });
+
+        console.log('==============================  PathologyResult ===========');
+        let submitData = {
+            // "deletepathreportheader": pathologyDeleteObjarray,
+            "insertpathreportdetail": PathInsertArry,
+            "updatepathreportheader": pathologyUpdateReportObjarray
+        };
+        console.log(submitData);
+        this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
+            if (response) {
+                Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
+                    this._matDialog.closeAll();
+                    this.Printresultentry();
+                });
+            } else {
+                Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
+            }
+            this.isLoading = '';
+        });
+
+    }
+
+    // Printresultentry() {
+    //     debugger;
+    //         const param = {
+    //             searchFields: [
+    //                 {
+    //                     fieldName: "OP_IP_Type",
+    //                     fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
+    //                     opType: "Equals"
+    //                 }
+    //             ],
+    //             mode: "PathologyReport"
+    //         };
+
+    //         console.log(param);
+
+    //         this._SampleService.getReportView(param).subscribe(res => {
+    //             const matDialog = this._matDialog.open(PdfviewerComponent, {
+    //                 maxWidth: "85vw",
+    //                 height: '750px',
+    //                 width: '100%',
+    //                 data: {
+    //                     base64: res["base64"] as string,
+    //                     title: "Pathology Test Report Viewer"
+    //                 }
+    //             });
+
+    //             matDialog.afterClosed().subscribe(result => {
+
+    //             });
+    //         });        
+    // }
+
     Printresultentry() {
-        debugger
+        // debugger
         let pathologyDelete = [];
-    
+
         this.data.RIdData.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.PathReportId });
         });
-    
+
         const submitData = {
             pathPrintResultEntry: pathologyDelete
         };
-    
+
         console.log(submitData);
-    
+
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
                 this.viewgetPathologyTestReportPdf()
@@ -627,41 +710,41 @@ export class ResultEntryOneComponent implements OnInit {
 
     viewgetPathologyTestReportPdf() {
         // debugger;
-            const param = {
-                searchFields: [
-                    {
-                        fieldName: "OP_IP_Type",
-                        fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
-                        opType: "Equals"
-                    }
-                ],
-                mode: "PathologyReport"
-            };
-    
-            console.log(param);
-    
-            this._SampleService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent, {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Pathology Test Report Viewer"
-                    }
-                });
-    
-                matDialog.afterClosed().subscribe(result => {
-                    
-                });
-            });        
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "OP_IP_Type",
+                    fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
+                    opType: "Equals"
+                }
+            ],
+            mode: "PathologyReport"
+        };
+
+        console.log(param);
+
+        this._SampleService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "Pathology Test Report Viewer"
+                }
+            });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
     }
 
     nEnterresultdr
     Saveflag = 2;
     printf: boolean = true;
 
-    // onSave() {
+    // onSave1() {
     //     debugger
     //     if ((this.vPathResultDoctorId == '')) {
     //         this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
@@ -737,46 +820,43 @@ export class ResultEntryOneComponent implements OnInit {
 
     // }
 
+   
 
      onSave() {
-            debugger
-            if ((this.vPathResultDoctorId == '')) {
-                this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-    
-             this.vPathResultDoctorId
-
-             this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
-             this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
-       
-             this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
-
-            this.pathologyResultArray.clear();
-            this.dataSource.data.forEach(item => {
-                console.log(item)
-                this.pathologyResultArray.push(this.createResultdetailForm(item));
+        debugger
+        if ((this.vPathResultDoctorId == '')) {
+            this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
-    
-    
-            console.log(this.ResultForm.value);
-            this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
-                if (response) {
-                    Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
-                        this._matDialog.closeAll();
-                        this.Printresultentry();
-                    });
-                } else {
-                    Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-                }
-                this.isLoading = '';
-            });
-    
+            return;
         }
 
-   
+        this.pathologyResultArray.clear();
+        this.dataSource.data.forEach(item => {
+            console.log(item)
+            this.pathologyResultArray.push(this.createResultdetailForm(item));
+        });
+
+
+        console.log(this.ResultForm.value);
+        this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
+            if (response) {
+                Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
+                    this._matDialog.closeAll();
+                    this.Printresultentry();
+                });
+            } else {
+                Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
+            }
+            this.isLoading = '';
+        });
+
+    }
+    @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
+    @ViewChild('DoctorId') DoctorId: ElementRef;
+    @ViewChild('RefDoctorID') RefDoctorID: ElementRef;
+    @ViewChild('helpinput') helpinput: ElementRef;
+
     // public onEnterSugg(event:KeyboardEvent): void {
     //     if (event.which === 13) {
     //         this.PathResultDoctorId.nativeElement.focus();
@@ -790,7 +870,7 @@ export class ResultEntryOneComponent implements OnInit {
         }
     }
 
-    
+
     public onEnterPathResultDoctorId(event, value): void {
 
         if (event.which === 13) {
@@ -806,6 +886,17 @@ export class ResultEntryOneComponent implements OnInit {
         }
     }
 
+  
+
+toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+
     onClear() {
         this.otherForm.reset();
     }
@@ -813,66 +904,6 @@ export class ResultEntryOneComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
-
-    //new
-
-  createResultInsertForm(): FormGroup {
-        return this.formBuilder.group({
-            pathologyReport:'',// this.PathResultForm.value,
-            pathologyResult: this.formBuilder.array([]), // FormArray for details
-        });
-    }
-
-       createPathologyResultForm(): FormGroup {
-        return this.formBuilder.group({
-            pathReportId: this.vPathReportId,
-            reportDate: this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
-            reportTime: this.datePipe.transform(this.currentDate, "HH:mm"),
-            isCompleted: true,
-            isPrinted: true,
-            pathResultDr1: this.vPathResultDoctorId,
-            pathResultDr2: 0,
-            pathResultDr3: 0,
-            isTemplateTest: 0,
-            suggestionNotes: "",
-            admVisitDoctorId: 0,
-            refDoctorId: 0,
-       });
-    }     
-
-    createResultdetailForm(item: any = {}): FormGroup {
-        return this.formBuilder.group({
-            pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            pathReportId: [item.PathReportId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            categoryId: [item.CategoryId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            testId: [item.TestId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            subTestId: [item.SubTestId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            parameterId: [item.ParameterId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            resultValue: [item.ResultValue || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            unitId: [item.UnitId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-            normalRange: [item.NormalRange || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            printOrder: [item.PrintOrder || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            pisNumeric: [item.ParaIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            testName: [item.TestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            subTestName: [item.SubTestName || '' , [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            parameterName: [item.ParameterName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            unitName: [item.UnitName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            patientName: [this.selectedAdvanceObj2.PatientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            regNo: [this.selectedAdvanceObj2.regNo ||'', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            sampleId: [item.SampleID || "", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-
-            paraBoldFlag: [item.ParaBoldFlag || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            minValue: [parseFloat(item.MinValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
-            maxValue: [parseFloat(item.MaxValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
-        });
-    }
-
- get pathologyResultArray(): FormArray {
-    return this.ResultForm.get('pathologyResult') as FormArray;
-  }
-
 }
 
 export class Pthologyresult {
@@ -894,13 +925,13 @@ export class Pthologyresult {
     UnitId: any;
     PrintOrder: any;
     ParaIsNumeric: any;
-    PIsNumeric:any;
+    PIsNumeric: any;
     CategoryName: any;
     UnitName: any;
     MinValue: any;
     MaxValue: any;
     SampleID: any;
-    adm_Visit_docId:any;
+    adm_Visit_docId: any;
 
     constructor(Pthologyresult) {
         this.TestName = Pthologyresult.TestName || '';
@@ -914,7 +945,7 @@ export class Pthologyresult {
         this.ParaBoldFlag = Pthologyresult.ParaBoldFlag || '';
         this.SuggestionNote = Pthologyresult.SuggestionNote || '';
         this.PathResultDr1 = Pthologyresult.PathResultDr1 || 0;
-        this.adm_Visit_docId=Pthologyresult.adm_Visit_docId || 0;
+        this.adm_Visit_docId = Pthologyresult.adm_Visit_docId || 0;
         this.PathReportId = Pthologyresult.PathReportId || '';
         this.CategoryId = Pthologyresult.CategoryId || '';
         this.TestId = Pthologyresult.TestId || '';
@@ -962,7 +993,7 @@ export class PthologyresultInsert {
     NormalRange: any;
     PrintOrder: any;
     ParaIsNumeric: boolean;
-    PIsNumeric:any;
+    PIsNumeric: any;
     CategoryName: any;
     TestName: any;
     SubTestName: any;

@@ -30,18 +30,18 @@
                             <div class="form-title mb-2 border-bottom pb-2">
                                 <span class="h3 font-weight-600">Schdule Information</span>
                             </div>
-                            <form [formGroup]="DrAdhocschduleForm" style="border: blue">
+                            <form [formGroup]="RadioForm" style="border: blue">
                                 <div class="radio-container">
                                     <mat-radio-group aria-label="Select an option" formControlName="schRadio"
                                         name="regRadio" (change)="onChangeSch($event)">
-                                        <mat-radio-button value="adhoc" [disabled]="schstatus">Ad-hoc
+                                        <mat-radio-button value="adhoc">Ad-hoc
                                             Availability</mat-radio-button>
                                         <mat-radio-button value="Sch">Schdule</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-
+                            </form>
+                            <form [formGroup]="DrschduleForm" style="border: blue">
                                 <div *ngIf="schstatus">
-                                    <!-- <form [formGroup]="DrschduleForm" style="border: blue"> -->
 
                                     <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
@@ -54,7 +54,7 @@
                                                         }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                           
+
                                         </div>
 
 
@@ -88,7 +88,7 @@
                                             style="margin-left: 20px;margin-right: 20px;">
                                             <mat-form-field appearance="outline" class="timeField">
                                                 <mat-label>End Time</mat-label>
-                                                <input matTimepicker #t1="matTimepicker1" mode="12h"
+                                                <input matTimepicker #t1="matTimepicker" mode="12h"
                                                     formControlName="endTime" (timeChange)="onChangeTime($event)"
                                                     [disableDialogOpenOnClick]="isDatePckrDisabled">
                                                 <mat-icon matSuffix
@@ -106,13 +106,13 @@
                                     </div>
 
 
-                                    <!-- </form> -->
+
                                 </div>
                             </form>
 
                             <div *ngIf="!schstatus">
-                                <form [formGroup]="DrschduleForm" style="border: blue">
-                                    <!-- <h3 style="font-weight: bold">Medico Legal Case Information</h3> -->
+                                <form [formGroup]="DrAdhocschduleForm" style="border: blue">
+
                                     <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
@@ -140,19 +140,84 @@
                                         </div>
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
                                             <airmid-textbox label="Slot" formControlName="slot"
-                                                [formGroup]="DrschduleForm">
+                                                [formGroup]="DrAdhocschduleForm">
                                             </airmid-textbox>
                                         </div>
 
                                     </div>
 
+
+                                    <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                      
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style="margin-left: 20px;margin-right: 20px;">
+                                            <label>Start Time:</label>
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                               
+                                                <div fxLayout="column" style="align-items: center;">
+                                                    <button (click)="increment('start', 'hour')">▲</button>
+                                                    <input type="text" [value]="formatHour(startHour)" readonly
+                                                        formControlName="startTime">
+                                                    <button (click)="decrement('start', 'hour')">▼</button>
+                                                </div>
+
+                                             
+                                                <span style="font-size: 20px;">:</span>
+
+                                                
+                                                <div fxLayout="column" style="align-items: center;">
+                                                    <button (click)="increment('start', 'minute')">▲</button>
+                                                    <input type="text" [value]="formatMinute(startMinute)" readonly>
+                                                    <button (click)="decrement('start', 'minute')">▼</button>
+                                                </div>
+
+                                                
+                                                <button class="ampm-btn" (click)="toggleMeridian('start')">{{
+                                                    startMeridian }}</button>
+                                            </div>
+                                        </div>
+
+                                       
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                            style="margin-left: 20px;margin-right: 20px;">
+                                            <label>End Time:</label>
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                              
+                                                <div fxLayout="column" style="align-items: center;">
+                                                    <button (click)="increment('end', 'hour')">▲</button>
+                                                    <input type="text" [value]="formatHour(endHour)" readonly
+                                                        formControlName="endTime">
+                                                    <button (click)="decrement('end', 'hour')">▼</button>
+                                                </div>
+
+                                              
+                                                <span style="font-size: 20px;">:</span>
+
+                                               
+                                                <div fxLayout="column" style="align-items: center;">
+                                                    <button (click)="increment('end', 'minute')">▲</button>
+                                                    <input type="text" [value]="formatMinute(endMinute)" readonly>
+                                                    <button (click)="decrement('end', 'minute')">▼</button>
+                                                </div>
+
+                                              
+                                                <button class="ampm-btn" (click)="toggleMeridian('end')">{{ endMeridian
+                                                    }}</button>
+                                            </div>
+                                        </div>
+
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
+                                            <airmid-textbox label="Slot" formControlName="slot"
+                                                [formGroup]="DrschduleForm">
+                                            </airmid-textbox>
+                                        </div>
+                                    </div> -->
                                 </form>
 
                             </div>
 
                         </div>
-                        <!-- </form> -->
-
                     </mat-card>
                 </div>
             </div>

@@ -92,6 +92,7 @@ const routes: Routes = [
         //    SignaturePadModule 
                 MatTimepickerModule,
                 
+                
     ],
     providers: [DoctorMasterService, DatePipe]
 })

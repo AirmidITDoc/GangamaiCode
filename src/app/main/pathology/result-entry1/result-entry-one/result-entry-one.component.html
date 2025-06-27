@@ -274,12 +274,11 @@
 
 
                         </mat-card>
-                         <!-- [disabled]="otherForm.invalid" -->
                         <div fxLayout="row" fxLayoutAlign="end">
                             <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
                                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 <button class="btn btn-primary" (click)="onSave()"
-                                   >Save</button>
+                                    [disabled]="otherForm.invalid">Save</button>
                                 <button class="btn btn-success" (click)="Printresultentry()">Authorization</button>
                             </div>
                         </div>

@@ -1,0 +1,310 @@
+<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" dynamicTableHeight fusePerfectScrollbar>
+    <!-- HEADER -->
+    <div class="top-header">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center" >
+            
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Pathology Result Entry </span>
+            </div>
+        </div>
+
+        
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: OP </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green s-16">circle</mat-icon>
+                <span>: IP </span>
+            </div>
+        </div>
+    </div>
+    <div class="layout-body p-12">
+        <div class="layout-body-container center">
+            <form [formGroup]="myformSearch" class="mat-error-fix">
+                <div fxLayout="column">
+                    <div class="layout-card-container" style="height: 80px;">
+
+                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
+                            <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+                                <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                        formStartControlName="start" formEndControlName="end"
+                                        [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
+
+                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>RegNo</mat-label>
+                                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNoSearch" (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNoSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="16%" fxLayout="row">
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
+                                        fxLayout="column" value="2" class="gap-4"
+                                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                        <mat-label><b>Patient Type:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='2'>All</mat-radio-button>
+                                            <mat-radio-button value='1'>IP</mat-radio-button>
+                                            <mat-radio-button value='0'>OP</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxLayout="row">
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"  (change)="onChangeFirst()"
+                                        fxLayout="column" value="0" class="gap-4"
+                                        [(ngModel)]="vStatusSearch">
+                                        <mat-label><b>Status:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='0'>Pending</mat-radio-button>
+                                            <mat-radio-button value='1'>Completed</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                                <!-- (click)="searchRecords($event)" -->
+                                <div class="action-button-container">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs"
+                                        (click)="searchRecords($event)" >
+                                            <span>Search</span>
+                                            <span class="btn-icon">
+                                                <mat-icon>search</mat-icon>
+                                            </span>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="layout-card-containr">
+                        <mat-card>
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <ng-template #actionButtonTemplate let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <button mat-icon-button matTooltip="Sample Collection"
+                                            (click)="onSave(element)">
+                                            <mat-icon>description</mat-icon>
+                                        </button>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #actionsIPOP let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.patientType=='OP'" title="OP"
+                                            class="pill orange s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='IP'" title="IP"
+                                            class="pill green s-16">circle</mat-icon>
+
+                                    </div>
+                                </ng-template>
+
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"
+                                (onSelectRow)="getSelectedRow($event)">
+                                </airmid-table>
+
+                            </div>
+                        </mat-card>
+
+                        <mat-card style="margin-top: 10px;">
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <div style="height: 50px; padding: 10px;">
+                                    <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
+                                        Result Entry
+                                    </button>
+
+                                    <button mat-raised-button (click)="Printresultentry()" style="margin-left: 5px;"
+                                        *ngIf="selection.selected.length>0">
+                                        Print Result
+                                    </button>
+
+                                    <button mat-raised-button (click)="Printresultentrywithheader(contact)"
+                                        *ngIf="selection.selected.length>0" style="margin-left: 5px;">
+                                        Print With Header
+                                    </button>
+                                </div>
+
+                                <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
+                                    [@animateStagger]="{value:'50'}">
+                                    <ng-container matColumnDef="select">
+                                        <th mat-header-cell *matHeaderCellDef >
+                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="selection.hasValue()"
+                                                [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                            </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let contact" class="w-90">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="onresultentryshow($event,contact)"
+                                                (change)="$event ? selection.toggle(contact) : null"
+                                                *ngIf="contact.isTemplateTest !='1' else noMLC"
+                                                [checked]="selection.isSelected(contact)">
+                                            </mat-checkbox>
+                                            <ng-template #noMLC>
+                                                <span>----</span>
+                                            </ng-template>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsTemplateTest">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                            class="w-100">IsTemplate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-90">
+
+                                            <mat-icon *ngIf="contact.isTemplateTest=='1'"
+                                                matTooltip="IsTemplateTest">assignment</mat-icon>
+                                            <mat-icon *ngIf="contact.isTemplateTest !='1'" matTooltip="Result Entry">
+                                                <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                                            </mat-icon>
+
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="TestName" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-250">TestName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                            <span> {{contact.serviceName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="IsCompleted">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="w-120">
+                                            Completed
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-120">
+                                            <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
+                                                class="active-icon green-500 s-16">check_circle</mat-icon>
+                                            <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
+                                                class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SampleCollectionTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                            Sample Coll.Date/Time
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <!-- <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span> -->
+                                            <span> {{contact.sampleCollectionTime}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SampleNo">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                            SampleNo
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <span> {{contact.sampleNo}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="CategoryName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                            CategoryName
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                            <span> {{contact.categoryName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                            Action</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+
+                                                <button
+                                                *ngIf="contact.isTemplateTest == 1"
+                                                title="IsTemplateTest"
+                                                (click)="chkresultentry(contact, false)"
+                                                style="background: none; border: none; padding: 0; cursor: pointer;">
+                                                <mat-icon title="IsTemplateTest">edit</mat-icon>
+                                                <!-- <img src="assets/images/logos/radiology.png" width="15px" height="8px" /> -->
+                                                </button>
+
+                                            <!-- <mat-icon *ngIf="contact.isTemplateTest != 1" title="IsTest">
+                                                <img width="15px" height="9px" src="assets/images/logos/pathology.png">
+                                            </mat-icon> -->
+
+                                            <button mat-icon-button class="material-icons"
+                                                (click)="Cancleresult(contact)" matTooltip="Cancel Result">
+                                                <mat-icon title="Cancel Result">highlight_off</mat-icon>
+                                            </button>
+
+                                            <button mat-icon-button (click)="getPrint(contact)" matTooltip="Print"
+                                                *ngIf="contact.isCompleted">
+                                                <mat-icon>print</mat-icon>
+                                            </button>
+                                            <button mat-icon-button matTooltip="Send Result On WhatsApp"
+                                                *ngIf="contact.isCompleted" (click)="getWhatsappshareResult(contact)">
+                                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                            </button>
+
+                                            <ng-template #noMLC>
+                                                <span>------</span>
+                                            </ng-template>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                            <div class="spinner-border text-danger" *ngIf="isLoading == 'list-loading'"
+                                                class="backgroundBlur">
+                                            </div>
+                                            <span *ngIf="isLoading == 'list-loaded'">No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-1100"
+                                        *matHeaderRowDef="displayedColumns1; sticky: true">
+                                    </mat-header-row>
+
+                                    <mat-row class="table1-row" #table1Row
+                                        *matRowDef="let contact; columns: displayedColumns1;"
+                                        [ngClass]="contact.isCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
+                                        [@animate]="{value:'*',params:{y:'100%'}}">
+                                    </mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide':dataSource1!=null}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
