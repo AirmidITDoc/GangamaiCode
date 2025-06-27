@@ -17,6 +17,8 @@ import { TestmasterService } from "../testmaster.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import { element } from "protractor";
 
+
+
 @Component({
     selector: "app-test-form-master",
     templateUrl: "./test-form-master.component.html",
@@ -54,6 +56,9 @@ export class TestFormMasterComponent implements OnInit {
     Statusflag: any = false;
     isActive: boolean = true;
     vTestName: any;
+    showTemplateTable: boolean=false;
+   displayedColumns5: string[] = ['TemplateName', 'Action'];
+
     // ///////////////////////
 
     constructor(
@@ -496,20 +501,22 @@ export class TestFormMasterComponent implements OnInit {
 
     onAddTemplate() {
         if (!this.list) {
-            this.list = [];
-        }
-        const newItem = {
-            templateId: this.DDtemplateId, //this.templatedetailsForm.get("TemplateId").value, // Ensure correct property name
-            templateName: this.DDtemplateName //this.templatedetailsForm.get("TemplateName").value, // Ensure correct property name
-        };
+    this.list = [];
+  }
 
-        this.list.push(newItem);
+  const newItem = {
+    templateId: this.DDtemplateId,
+    templateName: this.DDtemplateName
+  };
 
-        this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
-        // Reset form fields
-        this.templatedetailsForm.get("TemplateId").reset();
-        this.templatedetailsForm.get("TemplateName").reset();
-    }
+  this.list.push(newItem);
+  this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
+
+  this.templatedetailsForm.get("TemplateId").reset();
+  this.templatedetailsForm.get("TemplateName").reset();
+
+  this.showTemplateTable = true;
+}
 
     addParameter(row) {
         // ;
