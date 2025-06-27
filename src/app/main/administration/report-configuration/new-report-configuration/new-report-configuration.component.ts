@@ -21,6 +21,8 @@ export class NewReportConfigurationComponent implements OnInit{
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
     reportBodyFile: string[] = ["SimpleReportFormat.html","MultiTotalReportFormat.html"];
+    reportName=''
+    reportId=0
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -34,10 +36,9 @@ export class NewReportConfigurationComponent implements OnInit{
         this.myform = this._ReportConfigurationService.createForm();
         this.myform.markAllAsTouched();
         if((this.data?.reportId??0) > 0)
-        {
-            debugger          
-            this.myform.get('reportSectionId').setValue(this.data.parentid)  
-            console.log(this.myform.get('reportSectionId')?.value)
+        {     
+            this.myform.get('reportSectionId').setValue(this.data.parentid)
+            this.reportName=this.data.reportSection
             this.isActive=this.data.isActive
             this.myform.patchValue(this.data);
         }
@@ -55,8 +56,6 @@ export class NewReportConfigurationComponent implements OnInit{
         });
     }
 
-    reportName=''
-    reportId=0
      ListView(obj: any) {
         console.log(obj)
         this.reportId=obj.value
@@ -65,7 +64,6 @@ export class NewReportConfigurationComponent implements OnInit{
     }
 
     onSubmit() {
-        console.log("Report-Config JSON :-", this.myform.value);
         if (!this.myform.invalid) 
         {
             this.myform.get('reportSection')?.setValue(this.reportName)
@@ -127,7 +125,7 @@ export class NewReportConfigurationComponent implements OnInit{
              summaryLabel:[
                 { name: "maxlength", Message: "Report Column should not be greater than 2000 char." },
             ],
-            reportcolumnWidths:[
+            reportColumnWidths:[
                 { name: "required", Message: "Report Column Widths is required" },
                 { name: "maxlength", Message: "Report Column Widths should not be greater than 2000 char." },
             ],

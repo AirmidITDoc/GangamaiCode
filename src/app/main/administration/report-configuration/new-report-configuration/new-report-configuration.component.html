@@ -22,7 +22,7 @@
                 <input type="hidden" name="reportId" formControlName="reportId">
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <!-- <airmid-textbox 
                                 label="ReportSection" 
                                 formControlName="reportSection" 
@@ -37,7 +37,7 @@
                             </airmid-dropdown>
                         </div>
 
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportName" 
                                 formControlName="reportName" 
@@ -48,7 +48,7 @@
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ParentID" 
                                 formControlName="parentid" 
@@ -58,7 +58,7 @@
                                 [maxLength]="10" 
                                 [readonly]="true">
                             </airmid-textbox>
-                        </div>
+                        </div> -->
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -124,8 +124,8 @@
                     </div>
                      <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex fxFlex.xs="100%">
-                            <airmid-textbox label="reportcolumnWidths" formControlName="reportcolumnWidths" [value]="data?.reportcolumnWidths"
-                                [formGroup]="myform" [validations]="getValidationMessages().reportcolumnWidths" [maxLength]="2000">
+                            <airmid-textbox label="reportColumnWidths" formControlName="reportColumnWidths" [value]="data?.reportColumnWidths"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportColumnWidths" [maxLength]="2000">
                             </airmid-textbox>
                         </div>
                     </div>

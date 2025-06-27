@@ -71,7 +71,8 @@ export class ReportConfigurationComponent implements OnInit {
         //     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         // ]
         filters: [
-            { fieldName: "ReportId", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "parentid", fieldValue: "", opType: OperatorComparer.Equals },
+            // { fieldName: "ReportId", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
@@ -99,7 +100,8 @@ export class ReportConfigurationComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewReportConfigurationComponent,
             {
                 maxWidth: "80vw",
-                maxHeight: '95%',
+                maxHeight: '95vh',
+                height:'95%',
                 width: '90%',
                 data: row
             });
