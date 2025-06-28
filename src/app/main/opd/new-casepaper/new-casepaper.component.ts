@@ -231,6 +231,7 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getPrescription(this.regObj);
       this.getnewVisistListDemo(this.regObj);
+      this.getPrevVisitDiagnosisList(this.regObj);
       this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
       // this.getCheifComplaintList();
@@ -354,10 +355,10 @@ export class NewCasepaperComponent implements OnInit {
   createCasePaperForm() {
     return this._formBuilder.group({
       tPrescription: this._formBuilder.array([]),
-       visitDetails: this._formBuilder.group({
-          visitId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]], 
-          followupDate: [''] 
-        }),
+      visitDetails: this._formBuilder.group({
+        visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        followupDate: ['']
+      }),
       topRequestList: this._formBuilder.array([]),
       mopCasepaperDignosisMaster: this._formBuilder.array([]),
     });
@@ -438,7 +439,7 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
-   onSave() {
+  onSave() {
 
     if (this.addCheiflist.length > 0) {
       this.addCheiflist.forEach(element => {
@@ -474,7 +475,7 @@ export class NewCasepaperComponent implements OnInit {
     } else {
       ReferDocNameID = 0
     }
-    debugger
+    // debugger
 
     if (!this.caseFormGroup.invalid && !this.casePaperInsertForm.invalid) {
       this.tPrescriptionArray.clear();
@@ -604,6 +605,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     this.getPrescription(obj);
     this.getnewVisistListDemo(obj);
+    this.getPrevVisitDiagnosisList(obj);
     // this.getVitalInfo(obj);
     this.getRtrvTestServiceList(obj); // retrive list
     this.getRtrvCheifComplaintList(obj); // retrive list
@@ -664,7 +666,7 @@ export class NewCasepaperComponent implements OnInit {
 
   // }  
 
-   getPrescription(obj) {
+  getPrescription(obj) {
     this.visitIdRefresh = obj.visitId;
     var m_data2 = {
       "first": 0,
@@ -682,50 +684,49 @@ export class NewCasepaperComponent implements OnInit {
       "exportType": "JSON"
     }
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
-  const allItems = Visit?.data as MedicineItemList[] || [];
-debugger
-  // Patch form values from the first item, regardless of drugId
-  if (allItems.length > 0) {
-    const firstItem = allItems[0];
+      const allItems = Visit?.data as MedicineItemList[] || [];
+      // Patch form values from the first item, regardless of drugId
+      if (allItems.length > 0) {
+        const firstItem = allItems[0];
 
-    this.caseFormGroup.patchValue({
-      Height: firstItem.pHeight,
-      Weight: firstItem.pWeight,
-      BMI: firstItem.bmi,
-      BSL: firstItem.bsl,
-      SpO2: firstItem.spO2,
-      Pulse: firstItem.pulse,
-      BP: firstItem.bp,
-      Temp: firstItem.temp
+        this.caseFormGroup.patchValue({
+          Height: firstItem.pHeight,
+          Weight: firstItem.pWeight,
+          BMI: firstItem.bmi,
+          BSL: firstItem.bsl,
+          SpO2: firstItem.spO2,
+          Pulse: firstItem.pulse,
+          BP: firstItem.bp,
+          Temp: firstItem.temp
+        });
+
+        this.vChiefComplaint = firstItem.chiefComplaint;
+        this.vDiagnosis = firstItem.diagnosis;
+        this.vExamination = firstItem.examination;
+        this.PrefollowUpDate = this.datePipe.transform(firstItem.followupDate, 'MM/dd/YYYY');
+        this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
+        this.MedicineItemForm.get('Remark').setValue(firstItem.advice);
+        this.RefDocName = firstItem.doctorname;
+        this.MedicineItemForm.get("DoctorID").setValue(firstItem.patientReferDocId);
+
+        this.vDrugName = firstItem.drugName;
+        this.vDoseName = firstItem.doseName;
+        this.vItemGN = firstItem.genericName;
+        this.vDayys = firstItem.days;
+        this.vInst = firstItem.instruction;
+      }
+
+      // Filter items where drugId !== 0 for display purposes
+      const filteredItems = allItems.filter(item => item.drugId !== 0);
+
+      this.dsItemList.data = filteredItems;
+      this.Chargelist = filteredItems;
+
+      console.log(this.dsItemList.data);
     });
-
-    this.vChiefComplaint = firstItem.chiefComplaint;
-    this.vDiagnosis = firstItem.diagnosis;
-    this.vExamination = firstItem.examination;
-    this.PrefollowUpDate = this.datePipe.transform(firstItem.followupDate, 'MM/dd/YYYY');
-    this.MedicineItemForm.get('start').setValue(new Date(this.PrefollowUpDate));
-    this.MedicineItemForm.get('Remark').setValue(firstItem.advice);
-    this.RefDocName = firstItem.doctorname;
-    this.MedicineItemForm.get("DoctorID").setValue(firstItem.patientReferDocId);
-
-    this.vDrugName = firstItem.drugName;
-    this.vDoseName = firstItem.doseName;
-    this.vItemGN = firstItem.genericName;
-    this.vDayys = firstItem.days;
-    this.vInst = firstItem.instruction;
   }
 
-  // Filter items where drugId !== 0 for display purposes
-  const filteredItems = allItems.filter(item => item.drugId !== 0);
-
-  this.dsItemList.data = filteredItems;
-  this.Chargelist = filteredItems;
-
-  console.log(this.dsItemList.data);
-});
-  }  
-
-   getRtrvCheifComplaintList(obj) {
+  getRtrvCheifComplaintList(obj) {
     this.addCheiflist = [];
     this.addDiagnolist = [];
     this.addExaminlist = [];
@@ -758,7 +759,7 @@ debugger
               }
             )
           })
-            this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
+          this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
         }
         // Process Diagnosis
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
@@ -771,7 +772,7 @@ debugger
               }
             )
           })
-            this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
+          this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
         }
         // Process Examination
         let Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
@@ -831,7 +832,7 @@ debugger
               this._CasepaperService.getItemGenericById(this.vItemGenericNameId).subscribe((response) => {
                 this.itemGeneric = response;
                 this.vItemGenericName = this.itemGeneric.itemGenericName
-                console.log('genericName:',this.vItemGenericName)
+                console.log('genericName:', this.vItemGenericName)
               });
             }, 500);
           }
@@ -891,7 +892,7 @@ debugger
       "Columns": [],
       "exportType": "JSON"
     }
-    
+
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
       this.FetchList = Visit.data as MedicineItemList[];
       this.Chargelist = this.dsItemList.data.filter(item => item.OPD_IPD_IP != contact.OPD_IPD_IP)
@@ -1028,10 +1029,10 @@ debugger
   selectChangeDoctorName(row) {
   }
 
-selectChangeChiefComplaint(selectedChips: string[]) {
-  this.addCheiflist = selectedChips;
-  this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
-}
+  selectChangeChiefComplaint(selectedChips: string[]) {
+    this.addCheiflist = selectedChips;
+    this.caseFormGroup.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
+  }
 
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
@@ -1456,12 +1457,6 @@ selectChangeChiefComplaint(selectedChips: string[]) {
       this.add = true;
     }
   }
-  public onEnterChiefComplaint(event): void {
-    // if (event.which === 13) {
-    //   this.addbutton.focus;
-    //   this.add = true;
-    // }
-  }
 
   onChangeLangaugeRadio(event) {
 
@@ -1493,9 +1488,65 @@ selectChangeChiefComplaint(selectedChips: string[]) {
     }
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
       this.patients = Visit?.data as MedicineItemList[];
-      console.log(this.patients)
       this.extractUniqueDates();
+      console.log(this.patients)
     });
+  }
+
+  patientDiagnosis: any[] = [];
+  complaints: any[] = [];
+  diagnoses: any[] = [];
+  examinations: any[] = [];
+
+  // get prev visit complaint info
+  groupedVisits: any[] = [];
+  getPrevVisitDiagnosisList(obj) {
+    var D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "RegID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegID",
+          "fieldValue": String(obj.regId), //"100105"	
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._CasepaperService.getPrevVisitDiagnosisList(D_data).subscribe(Visit => {
+      this.patientDiagnosis = Visit?.data || [];
+      console.log(this.patientDiagnosis)
+      // Group by VisitId
+      const grouped = {};
+
+      for (let item of this.patientDiagnosis) {
+        const visitId = item.visitId;
+
+        if (!grouped[visitId]) {
+          grouped[visitId] = {
+            visitId: visitId,
+            complaints: [],
+            diagnoses: [],
+            examinations: []
+          };
+        }
+
+        if (item.descriptionType === 'Complaint') grouped[visitId].complaints.push(item.descriptionName);
+        else if (item.descriptionType === 'Diagnosis') grouped[visitId].diagnoses.push(item.descriptionName);
+        else if (item.descriptionType === 'Examination') grouped[visitId].examinations.push(item.descriptionName);
+      }
+
+      // Convert grouped object to array for ngFor
+      this.groupedVisits = Object.values(grouped);
+      console.log('Grouped Visits:', this.groupedVisits);
+    });
+  }
+
+  getVisitDataById(visitId: number): any[] {
+    return this.groupedVisits.filter(visit => visit.visitId === visitId);
   }
 
   extractUniqueDates() {
@@ -1636,7 +1687,7 @@ selectChangeChiefComplaint(selectedChips: string[]) {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-  
+
   getDosemaster() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
@@ -1648,7 +1699,7 @@ selectChangeChiefComplaint(selectedChips: string[]) {
         height: '85%',
         width: '70%',
       });
-      dialogRef.componentInstance.openedFromOPD = true;
+    dialogRef.componentInstance.openedFromOPD = true;
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //  that.grid.bindGridData();

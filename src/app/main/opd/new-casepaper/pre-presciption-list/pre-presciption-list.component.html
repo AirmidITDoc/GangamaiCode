@@ -109,10 +109,10 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="Days">
-                                                <mat-header-cell *matHeaderCellDef>Days
-                                                </mat-header-cell>
+                                                <mat-header-cell *matHeaderCellDef>Days</mat-header-cell>
+                                            
                                                 <mat-cell *matCellDef="let patient">
-                                                    <span> {{patient.days}}</span>
+                                                    <span *ngIf="patient.days !== 0 && patient.days !== '0'">{{ patient.days }}</span>
                                                 </mat-cell>
                                             </ng-container>
 
