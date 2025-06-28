@@ -76,6 +76,10 @@ public getRtrvVisitedListdemo(employee) {
   return this._httpClient1.PostData("OPDPrescriptionMedical/GetVisitList",employee)
 }
 
+public getPrevVisitDiagnosisList(employee) {
+  return this._httpClient1.PostData("OPDPrescriptionMedical/GetPrevVisitDiagnosisList",employee)
+}
+
 public getItemMasterById(Id) {
   return this._httpClient1.GetData("ItemMaster/" + Id);
 }

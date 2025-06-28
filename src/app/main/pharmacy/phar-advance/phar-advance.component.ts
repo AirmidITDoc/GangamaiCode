@@ -255,9 +255,14 @@ export class PharAdvanceComponent implements OnInit {
   newAdvanceRef() {
     const dialogRef = this._matDialog.open(NewIPRefundAdvanceComponent,
       {
-        maxWidth: "100%",
-        height: '95%',
-        width: '70%'
+        // maxWidth: "100%",
+        // height: '95%',
+        // width: '70%'
+        
+        maxWidth: "95vw",
+        maxHeight: '95vh',
+        height: '90%',
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
