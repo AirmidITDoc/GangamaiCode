@@ -118,7 +118,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     }
   
     public InsertSalesDraftBill(employee){
-      return this._httpClient.post("Sales/SalesDraftBillSave", employee)
+      return this._httpClient1.PostData("Sales/SalesDraftBillSave", employee)
     }
   
     public getTemplate(query) {
@@ -136,11 +136,11 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     }
   
     public getDraftList (emp){
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SalesDraftBillList",emp);
+      return this._httpClient1.PostData("Sales/salesDraftlist",emp);
     }
   
     public getBalAvaListStore(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_getBalAvaListStore",Param);
+      return this._httpClient1.PostData("Sales/StockavailableList",Param);
     }
     public getchargesList(data) {
       return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})

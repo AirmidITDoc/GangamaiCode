@@ -33,13 +33,12 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 })
 export class SalesHospitalNewComponent implements OnInit {
   // Display Columns
-  patientDisplayedColumns: string[] = ['UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName'];
+  DraftSaleDisplayedCol: string[] = ['Action','UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName','DraftClose'];
   displayedColumns = ['FromStoreId', 'IndentNo', 'IndentDate', 'FromStoreName', 'ToStoreName', 'Addedby', 'IsInchargeVerify', 'action'];
   displayedColumns1 = ['ItemName', 'Qty', 'IssQty', 'Bal'];
   selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'MarginAmt', 'buttons'];
   DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
-  DraftSaleDisplayedCol = ['ExtMobileNo', 'buttons'];
-  // View Children
+   // View Children
   @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
   @ViewChild('discAmount') discAmount: ElementRef;
   @ViewChild('ConseId') ConseId: ElementRef;
@@ -63,8 +62,7 @@ export class SalesHospitalNewComponent implements OnInit {
   // Data Sources  
   saleSelectedDatasource = new MatTableDataSource<IndentList>();
   tempDatasource = new MatTableDataSource<IndentList>();
-  chargeslist = new MatTableDataSource<IndentList>();
-  dsPatientList = new MatTableDataSource();
+  chargeslist = new MatTableDataSource<IndentList>(); 
   dsDraftList = new MatTableDataSource<DraftSale>();
   dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
   dsItemNameList1 = new MatTableDataSource<IndentList>();
@@ -100,8 +98,7 @@ export class SalesHospitalNewComponent implements OnInit {
   vBarcodeflag: boolean = false;
   Itemflag: boolean = false;  
   barcodeflag: boolean = false;
-  add: Boolean = false; 
-  chargeslist1: any = []; 
+  add: Boolean = false;  
   sIsLoading: string = ''; 
   currentDate = new Date(); 
   DraftID: any = 0; 
@@ -417,7 +414,7 @@ export class SalesHospitalNewComponent implements OnInit {
       totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discPer: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -501,6 +498,7 @@ export class SalesHospitalNewComponent implements OnInit {
   }
   onItemChange(event: SalesItemModel): void { 
     this.getBatch(event.itemId, event.storeId);
+     this.m_getBalAvaListStore(event.itemId)
   }
   // NOTE: If `isEditable` true then it means this popup will open for table row data 
   getBatch(itemId: number, storeId: number, isEditable = false) {
@@ -1094,21 +1092,29 @@ export class SalesHospitalNewComponent implements OnInit {
   }
 
  ///////////////// //Darft part ---------------------------------------------------------------------------------------////////////////////////////
-  getDraftorderList() {
-    this.chargeslist1 = [];
-    this.dsDraftList.data = [];
-    let currentDate = new Date();
+  getDraftorderList() { 
+    this.dsDraftList.data = []; 
     var m = {
-      FromDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
-      ToDate: this.datePipe.transform(currentDate, 'MM/dd/yyyy') || '01/01/1900',
-    };
-    // this._salesService.getDraftList(m).subscribe(
-    //   (data) => {
-    //     this.chargeslist1 = data as ChargesList[];
-    //     this.dsDraftList.data = this.chargeslist1;
-    //   },
-    //   (error) => {}
-    // );
+      "first": 0,
+      "rows": 10,
+      "sortField": "DSalesId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "FromDate", "fieldValue": String(this.datePipe.transform(new Date(), 'yyyy-MM-dd')), "opType": "Equals" },
+        { "fieldName": "ToDate", "fieldValue": String(this.datePipe.transform(new Date(), 'yyyy-MM-dd')), "opType": "Equals" } 
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ] 
+    } 
+    this._salesService.getDraftList(m).subscribe((response) => {
+        this.dsDraftList.data  = response.data as DraftSale[]; 
+        console.log(this.dsDraftList.data )
+      });
   }
   AddItem(row) {
     console.log(row);
@@ -1192,7 +1198,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PharmaSalesDraftForm.get('salesDraft.unitId').setValue(this.Patientdetails?.hospitalID)
     this.PharmaSalesDraftForm.get('salesDraft.wardId').setValue(this.Patientdetails?.wardId)
     this.PharmaSalesDraftForm.get('salesDraft.bedId').setValue(this.Patientdetails?.bedId)
-    this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue.concessionReasonId)
+    this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
     this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue.netAmount)))
 
     if (formValue.opIpType == 2) {
@@ -1498,14 +1504,24 @@ export class SalesHospitalNewComponent implements OnInit {
   m_getBalAvaListStore(Param) {
     this.dsDraftList.data = [];
     var m = {
-      ItemId: Param,
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "ItemId", "fieldValue": String(Param), "opType": "Contains" }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ] 
     };
-    this._salesService.getBalAvaListStore(m).subscribe(
-      (data) => {
-        this.dsBalAvaListStore.data = data as BalAvaListStore[];
-      },
-      (error) => { }
-    );
+    this._salesService.getBalAvaListStore(m).subscribe((response) => {
+        this.dsBalAvaListStore.data = response.data as BalAvaListStore[];
+      });
   }
   
   salesIdWiseObj: any;
