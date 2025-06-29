@@ -142,13 +142,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this.signatureForm = this.createSignatureForm();
     this.initFilterOptions();
 
-
-
+   
     this.leaveForm = this.createLeaveForm()
 
     if ((this.data?.doctorId ?? 0) > 0) {
       this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
         this.registerObj = response;
+         console.log(this.registerObj)
         this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
         if (this.registerObj.signature) {
           this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
@@ -159,11 +159,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
         this.myForm.controls["RegDate"].setValue(this.registerObj.regDate);
         this.myForm.controls["DateOfBirth"].setValue(this.registerObj.dateofBirth);
+        debugger
+          this.onChangeDateofBirth(this.registerObj.dateofBirth);
       }, (error) => {
         this.toastr.error(error.message);
       });
 
-
+    
       this.getdrschduleList()
       this.getDrExperienceList()
       this.getDrEducationList()
@@ -217,7 +219,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
           , this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
           Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
           Validators.minLength(10),
-          Validators.maxLength(15),
+          Validators.maxLength(10),
         ],
       ],
       Phone: [
@@ -226,7 +228,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
           Validators.required,
           Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
           Validators.minLength(10),
-          Validators.maxLength(15),
+          Validators.maxLength(10),
         ],
       ],
       GenderId: ["", Validators.required],
@@ -451,7 +453,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
       data.Signature = this.signature;
-     
+        data.ageYear= String(this.ageYear)
+
+
       console.log(data)
 
       this._doctorService.doctortMasterInsert(data).subscribe((response) => {
@@ -524,7 +528,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         { name: "required", Message: "Phone no is required" },
         { name: "pattern", Message: "Enter valid numbers" },
         { name: "minLength", Message: "10 digit required." },
-        { name: "maxLength", Message: "More than 15 digits not allowed." }
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
       ],
       GenderId: [
         { name: "required", Message: "Gender is required" }
@@ -1069,37 +1073,39 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   minDate = new Date();
   value = this.datePipe.transform(new Date(), "yyyy-MM-dd");
-  // onChangeDateofBirth(DateOfBirth: Date) {
-  //   if (DateOfBirth > this.minDate) {
-  //     Swal.fire("Enter Proper Birth Date.. ")
-  //     return;
-  //   }
-  //   if (DateOfBirth) {
-  //     const todayDate = new Date();
-  //     const dob = new Date(DateOfBirth);
-  //     const timeDiff = Math.abs(Date.now() - dob.getTime());
+  onChangeDateofBirth(DateOfBirth: Date) {
+    debugger
+    if (DateOfBirth > this.minDate) {
+      Swal.fire("Enter Proper Birth Date.. ")
+      return;
+    }
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
 
-  //     this.ageYear = todayDate.getFullYear() - dob.getFullYear();
-  //     this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-  //     this.ageDay = (todayDate.getDate() - dob.getDate());
+      this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
 
-  //     if (this.ageDay < 0) {
-  //       this.ageMonth--;
-  //       const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-  //       this.ageDay += previousMonth.getDate(); // Days in previous month
-  //       // this.ageDay =this.ageDay +1;
-  //     }
+      if (this.ageDay < 0) {
+        this.ageMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
+        // this.ageDay =this.ageDay +1;
+      }
 
-  //     if (this.ageMonth < 0) {
-  //       this.ageYear--;
-  //       this.ageMonth += 12;
-  //     }
-  //     this.value = DateOfBirth;
-  //     this.myForm.get('DateOfBirth').setValue(DateOfBirth);
-  //     if (this.ageYear > 110)
-  //       Swal.fire("Please Enter Valid BirthDate..")
-  //   }
-  // }
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+      // this.value = DateOfBirth;
+      // this.myForm.get('DateOfBirth').setValue(DateOfBirth);
+      this.myForm.get("ageYear").setValue(this.ageYear)
+      if (this.ageYear > 110)
+        Swal.fire("Please Enter Valid BirthDate..")
+    }
+  }
 
   birthdate: Date | null = null;
 

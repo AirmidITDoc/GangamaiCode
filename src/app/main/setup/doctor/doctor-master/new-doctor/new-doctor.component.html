@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body">
         <div class="modal-body-container">
 
             <div class="personal-panel">
@@ -108,7 +108,7 @@
                                                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                         <airmid-textbox label="Age (Y)" appearance="outline"  formControlName="ageYear"
-                                                             [formGroup]="myForm"
+                                                             [formGroup]="myForm" 
                                                              (input)="calculateBirthdate()">
                                                         </airmid-textbox>
 
@@ -130,7 +130,7 @@
                                                         </mat-form-field> -->
 
                                                           <airmid-textbox label="Birthdate" appearance="outline"  formControllName="DateOfBirth"
-                                                             [(value)]="value" [formGroup]="myForm"
+                                                             [(value)]="value" [formGroup]="myForm" placeholder="yyyy/mm/dd"
                                                              (input)="onChangeDateofBirth()">
                                                         </airmid-textbox>
                                                     </div>
@@ -156,7 +156,7 @@
                                                         <airmid-textbox label="Phone" formControlName="Phone"
                                                             [value]="registerObj.phone" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().Phone"
-                                                            [maxLength]="12">
+                                                            [maxLength]="10">
                                                         </airmid-textbox>
                                                     </div>
 

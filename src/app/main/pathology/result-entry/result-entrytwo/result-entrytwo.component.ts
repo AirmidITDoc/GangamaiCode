@@ -88,7 +88,7 @@ export class ResultEntrytwoComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
     dialogRef.disableClose = true;
-
+debugger
     if (this.data) {
       this.selectedAdvanceObj1 = this.data;
 
@@ -128,14 +128,6 @@ export class ResultEntrytwoComponent implements OnInit {
     });
   }
 
-
-  // get ReporttemplateArray(): FormArray {
-  //   return this.PathReportTemplate.get('pathologyReportTemplate') as FormArray;
-  // }
-
-  // get ReportheaderArray(): FormArray {
-  //   return this.PathReportHeader.get('pathologyReportHeader') as FormArray;
-  // }
 
   createTemplateform(): FormGroup {
     return this.formBuilder.group({

@@ -269,7 +269,7 @@ FuseConfirmDialogComponent,
 
     const dialogRef = this._matDialog.open(NewDoctorComponent, {
       maxWidth: "95vw",
-      maxHeight: "98vh",
+      maxHeight: "100vh",
       width: "100%",
       // height: "100%",
       autoFocus: false,
@@ -402,7 +402,7 @@ export class DoctorMaster {
       this.firstName = DoctorMaster.firstName || "";
       this.middleName = DoctorMaster.middleName || "";
       this.lastName = DoctorMaster.lastName || "";
-      this.dateofBirth = DoctorMaster.dateofBirth || this.CurrentDate;
+      this.dateofBirth = DoctorMaster.dateofBirth || '';
       this.address = DoctorMaster.address || "";
       this.city = DoctorMaster.city || "";
       this.cityId = DoctorMaster.cityId || "";

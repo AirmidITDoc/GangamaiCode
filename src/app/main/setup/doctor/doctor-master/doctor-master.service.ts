@@ -226,7 +226,7 @@ export class DoctorMasterService {
     }
 
     public getEducationList(employee) {
-       return this._httpClient.PostData("Doctor/OPBillservicedetailList",employee);
+       return this._httpClient.PostData("Doctor/DoctorQualificationDetailList",employee);
     }
 
     public getChargesList(employee) {

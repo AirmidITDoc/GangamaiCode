@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -18,6 +18,7 @@ import { GRNFormModel } from '../../good-receiptnote/new-grn/types';
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-purchaseorder',
@@ -30,6 +31,9 @@ export class NewPurchaseorderComponent {
 
   userFormGroup: FormGroup;
   FinalPurchaseform: FormGroup;
+  PurchaseInsertform: FormGroup;
+  // PurchaseHeaderForm: FormGroup;
+
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   autocompleteModeGSTType: string = "GstCalcType";
@@ -219,15 +223,20 @@ export class NewPurchaseorderComponent {
     private commonService: PrintserviceService,
     public dialogRef: MatDialogRef<NewPurchaseorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
-    this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
-    this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
+    this.userFormGroup = this.getPurchaseOrderForm();
+    this.FinalPurchaseform = this.getPurchaseOrderFinalForm()
+
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
+
+
 
     console.log(this.data)
 
@@ -274,7 +283,149 @@ export class NewPurchaseorderComponent {
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
     }
 
+    this.PurchaseInsertform = this.getPurchaseInsertForm();
+    this.purchasedetailArray.push(this.createPurchasedetailForm());
+
   }
+
+  getPurchaseOrderForm() {
+    return this._formBuilder.group({
+      purchaseId: [''],
+      purchaseNo: [''],
+      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      TotalAmount: [''],
+      DiscAmount: [''],
+      Disc: [''],
+
+      grandTotal: [''],
+      ItemName: ['', [Validators.required]],
+      ConversionFactor: [''],
+      Qty: [0, [Validators.required]],
+      UOM: [''],
+      Rate: ['', [Validators.required]],
+
+      HSNcode: '',
+      GST: [''],
+      GSTPer: [''],
+      GSTAmount: [''],
+      NetAmount: [''],
+      MRP: [''],
+      Specification: [''],
+      SupplierID: '',
+      Address: [''],
+      Mobile: '',
+      Contact: '',
+      GSTNo: '',
+      Email: '',
+      PurchaseDate: [new Date()],
+      DefRate: '',
+
+      CGSTPer: [''],
+      CGSTAmount: [''],
+      SGSTPer: [''],
+      SGSTAmount: [''],
+      IGSTPer: [''],
+      IGSTAmount: [''],
+      GSTType: [16],
+      UOMId: [''],
+
+      PurchaseId: [0],
+
+    });
+
+  }
+
+  getPurchaseOrderFinalForm() {
+    return this._formBuilder.group({
+
+      TransportCharges: [''],
+      HandlingCharges: [''],
+      Freight: [''],
+      OctriAmount: [''],
+      Worrenty: [''],
+      roundVal: [''],
+      NetAmount: [''],
+      Remark: ['', [Validators.required]],
+      PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+    });
+  }
+
+
+  getPurchaseInsertForm() {
+    debugger
+    return this._formBuilder.group({
+      purchaseId: [this.PurchaseID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseNo: this.PurchaseNo,
+      purchaseDate: new Date(),
+      purchaseTime: new Date(),
+      storeId: this.vstoreId || 0,
+      supplierId: this.vSupplierId || 0,// this.userFormGroup.get('SupplierId').value || 0,
+      totalAmount: this.FinalTotalAmt || 0,
+      discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      taxAmount: (parseFloat(this.GSTAmount)) || 0,
+      freightAmount: 0,// this.FinalPurchaseform.get('Freight').value || 0,
+      octriAmount: 0,//this.FinalPurchaseform.get('OctriAmount').value || 0,
+      grandTotal: this.FinalNetAmount || 0,
+      isclosed: false,
+      isVerified: false,
+      remarks: 0,//this.FinalPurchaseform.get('Remark').value || '',
+      taxId: 0,
+      paymentTermId: this.paymentterm || 0,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
+      modeofPayment: this.paymentmode || 0,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
+      worrenty: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],//this.FinalPurchaseform.get('Worrenty').value || " ",
+      roundVal: 0,// Math.round(this.FinalNetAmount),
+      prefix: "",
+      isVerifiedId: 0,
+      verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+      totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      transportChanges: 0,// this.FinalPurchaseform.get('TransportCharges').value || 0,
+      handlingCharges: 0,//this.FinalPurchaseform.get('HandlingCharges').value || 0,
+      freightCharges: 0,// this.FinalPurchaseform.get('Freight').value || 0,
+      isCancelled: false,
+      tPurchaseDetails: this._formBuilder.array([])
+    });
+  }
+
+
+  createPurchasedetailForm(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      uomid: [item.UOM || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      rate: [item.Rate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discPer: [item.DiscPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatPer: [item.GST || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grandTotalAmount: [item.NetAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrp: [item.MRP || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      specification: [item.Specification || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      cgstper: [item.CGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstamt: [item.CGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [item.SGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+      defRate: [item.DefRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vendDiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vendDiscAm: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+
+  get purchasedetailArray(): FormArray {
+
+    return this.PurchaseInsertform.get('tPurchaseDetails') as FormArray;
+  }
+
 
   getSelectedSupplierObj(obj) {
     // setTimeout(() => {
@@ -386,9 +537,7 @@ export class NewPurchaseorderComponent {
 
 
   deleteTableRow(row: ItemNameList) {
-    //  if (row.IsVerifiedUserId == 1) {
-    //      this.newGRNService.showToast('Verified Record should not be Deleted .', ToastType.SUCCESS);
-    //  } else {
+
     this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
     this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
     this.updatePurchaseFinalForm();
@@ -567,19 +716,125 @@ export class NewPurchaseorderComponent {
   // purchaseTime 
   // "16-05-2025 11:56:53"
 
+  // OnSave() {
+  //   debugger
+  //   let Pdate;
+  //   let pTime;
+  //   if (this.PurchaseID != 0) {
+
+  //     Pdate = this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
+  //       pTime = this.data.Obj.purchaseTime
+  //   } else {
+  //     Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+  //       pTime = this.dateTimeObj.time;
+  //   }
+
+  //   if ((!this.dsItemNameList.data.length)) {
+  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+
+  //   console.log(this.FinalPurchaseform.value)
+
+  //   debugger
+  //   if (!this.FinalPurchaseform.invalid) {
+  //     let InsertpurchaseDetailObj = [];
+  //     this.dsItemNameList.data.forEach((element) => {
+  //       // console.log(element)
+  //       let purchaseDetailInsertObj = {};
+  //       purchaseDetailInsertObj['purchaseId'] = this.PurchaseID;
+  //       purchaseDetailInsertObj['itemId'] = element.ItemId;
+  //       purchaseDetailInsertObj['uomid'] = element.UOM;
+  //       purchaseDetailInsertObj['qty'] = element.Qty || 0;
+  //       purchaseDetailInsertObj['rate'] = element.Rate || 0;
+  //       purchaseDetailInsertObj['totalAmount'] = element.TotalAmount
+  //       purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
+  //       purchaseDetailInsertObj['discPer'] = element.DiscPer;
+  //       purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
+  //       purchaseDetailInsertObj['vatPer'] = element.GST;;
+  //       purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
+  //       purchaseDetailInsertObj['mrp'] = element.MRP;
+  //       purchaseDetailInsertObj['specification'] = element.Specification;
+  //       purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
+  //       purchaseDetailInsertObj['cgstamt'] = element.CGSTAmount;
+  //       purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
+  //       purchaseDetailInsertObj['sgstamt'] = element.SGSTAmount;
+  //       purchaseDetailInsertObj['igstper'] = element.IGSTPer;
+  //       purchaseDetailInsertObj['igstamt'] = element.IGSTAmount;
+  //       purchaseDetailInsertObj['defRate'] = element.DefRate;
+  //       purchaseDetailInsertObj['vendDiscPer'] = 0;
+  //       purchaseDetailInsertObj['vendDiscAm'] = 0;
+  //       InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
+  //     });
+
+  //     let submitData = {
+  //       "purchaseId": this.PurchaseID,
+  //       "purchaseNo": this.PurchaseNo,
+  //       "purchaseDate": Pdate,
+  //       "purchaseTime": pTime,
+  //       "storeId": this.vstoreId,
+  //       "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
+  //       "totalAmount": this.FinalTotalAmt,
+  //       "discAmount": this.DiscAmount,
+  //       "taxAmount": (parseFloat(this.GSTAmount)),
+  //       "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
+  //       "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
+  //       "grandTotal": this.FinalNetAmount,
+  //       "isclosed": false,
+  //       "isVerified": false,
+  //       "remarks": this.FinalPurchaseform.get('Remark').value || '',
+  //       "taxId": 0,
+  //       "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
+  //       "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
+  //       "worrenty": this.FinalPurchaseform.get('Worrenty').value || " ",
+  //       "roundVal": Math.round(this.FinalNetAmount),
+  //       "prefix": "",
+  //       "isVerifiedId": 0,
+  //       "verifiedDateTime": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+  //       "totCgstamt": (parseFloat(this.CGSTFinalAmount)),
+  //       "totSgstamt": (parseFloat(this.SGSTFinalAmount)),
+  //       "totIgstamt": (parseFloat(this.IGSTFinalAmount)),
+  //       "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
+  //       "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
+  //       "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
+  //       "isCancelled": false,
+  //       "tPurchaseDetails": InsertpurchaseDetailObj
+  //     };
+  //     console.log(submitData);
+  //     this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
+  //       this.toastr.success(response.message);
+  //       if (response) {
+  //         this.viewgetPurchaseorderReportPdf(response)
+  //         this._matDialog.closeAll();
+  //       }
+
+  //     });
+  //   } else {
+  //     let invalidFields = [];
+  //     if (this.FinalPurchaseform.invalid) {
+  //       for (const controlName in this.FinalPurchaseform.controls) {
+  //         if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+  //       }
+  //     }
+  //     if (invalidFields.length > 0) {
+  //       invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+  //     }
+
+  //   }
+  // }
+
   OnSave() {
     debugger
     let Pdate;
     let pTime;
     if (this.PurchaseID != 0) {
-
-      //  let date = new Date(this.data.Obj.purchaseTime);
-      //  let formattedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
-      // console.log(formattedDate)
-
-      Pdate = this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
+ Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+        // Pdate = this.datePipe.transform(this.data.Obj.purchaseTime, "yyyy-MM-dd") || '1900-01-01',
         pTime = this.data.Obj.purchaseTime
-    } else {
+
+     } else {
       Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
         pTime = this.dateTimeObj.time;
     }
@@ -595,70 +850,39 @@ export class NewPurchaseorderComponent {
 
     debugger
     if (!this.FinalPurchaseform.invalid) {
-      let InsertpurchaseDetailObj = [];
-      this.dsItemNameList.data.forEach((element) => {
-        // console.log(element)
-        let purchaseDetailInsertObj = {};
-        purchaseDetailInsertObj['purchaseId'] = this.PurchaseID;
-        purchaseDetailInsertObj['itemId'] = element.ItemId;
-        purchaseDetailInsertObj['uomid'] = element.UOM;
-        purchaseDetailInsertObj['qty'] = element.Qty || 0;
-        purchaseDetailInsertObj['rate'] = element.Rate || 0;
-        purchaseDetailInsertObj['totalAmount'] = element.TotalAmount
-        purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-        purchaseDetailInsertObj['discPer'] = element.DiscPer;
-        purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
-        purchaseDetailInsertObj['vatPer'] = element.GST;;
-        purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
-        purchaseDetailInsertObj['mrp'] = element.MRP;
-        purchaseDetailInsertObj['specification'] = element.Specification;
-        purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
-        purchaseDetailInsertObj['cgstamt'] = element.CGSTAmount;
-        purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
-        purchaseDetailInsertObj['sgstamt'] = element.SGSTAmount;
-        purchaseDetailInsertObj['igstper'] = element.IGSTPer;
-        purchaseDetailInsertObj['igstamt'] = element.IGSTAmount;
-        purchaseDetailInsertObj['defRate'] = element.DefRate;
-        purchaseDetailInsertObj['vendDiscPer'] = 0;
-        purchaseDetailInsertObj['vendDiscAm'] = 0;
-        InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
+
+  
+       this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
+      this.PurchaseInsertform.get("purchaseTime").setValue(pTime)
+      
+      this.PurchaseInsertform.get("supplierId").setValue(this.userFormGroup.get('SupplierId').value)
+      this.PurchaseInsertform.get("freightAmount").setValue(this.FinalPurchaseform.get('Freight').value)
+      this.PurchaseInsertform.get("octriAmount").setValue(this.FinalPurchaseform.get('OctriAmount').value)
+      this.PurchaseInsertform.get("remarks").setValue(this.FinalPurchaseform.get('Remark').value)
+      this.PurchaseInsertform.get("worrenty").setValue(this.FinalPurchaseform.get('Worrenty').value || "")
+      this.PurchaseInsertform.get("transportChanges").setValue(this.FinalPurchaseform.get('TransportCharges').value)
+      this.PurchaseInsertform.get("handlingCharges").setValue(this.FinalPurchaseform.get('HandlingCharges').value)
+      this.PurchaseInsertform.get("freightCharges").setValue(this.FinalPurchaseform.get('Freight').value)
+      this.PurchaseInsertform.get("grandTotal").setValue(this.FinalNetAmount)
+      this.PurchaseInsertform.get("paymentTermId").setValue(this.paymentterm)
+      this.PurchaseInsertform.get("modeofPayment").setValue(this.paymentmode)
+      this.PurchaseInsertform.get("totalAmount").setValue(this.FinalTotalAmt)
+      this.PurchaseInsertform.get("discAmount").setValue(this.DiscAmount)
+      this.PurchaseInsertform.get("taxAmount").setValue(parseFloat(this.GSTAmount))
+      this.PurchaseInsertform.get("roundVal").setValue(Math.round(this.FinalNetAmount),)
+      this.PurchaseInsertform.get("totCgstamt").setValue(parseFloat(this.CGSTFinalAmount))
+      this.PurchaseInsertform.get("totSgstamt").setValue(parseFloat(this.SGSTFinalAmount))
+      this.PurchaseInsertform.get("totIgstamt").setValue(parseFloat(this.IGSTFinalAmount))
+
+
+      this.purchasedetailArray.clear();
+      this.dsItemNameList.data.forEach(item => {
+        console.log(item)
+        this.purchasedetailArray.push(this.createPurchasedetailForm(item));
       });
 
-      let submitData = {
-        "purchaseId": this.PurchaseID,
-        "purchaseNo": this.PurchaseNo,
-        "purchaseDate": Pdate,
-        "purchaseTime": pTime,
-        "storeId": this.vstoreId,
-        "supplierId": this.vSupplierId,// this.userFormGroup.get('SupplierId').value || 0,
-        "totalAmount": this.FinalTotalAmt,
-        "discAmount": this.DiscAmount,
-        "taxAmount": (parseFloat(this.GSTAmount)),
-        "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
-        "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
-        "grandTotal": this.FinalNetAmount,
-        "isclosed": false,
-        "isVerified": false,
-        "remarks": this.FinalPurchaseform.get('Remark').value || '',
-        "taxId": 0,
-        "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
-        "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
-        "worrenty": this.FinalPurchaseform.get('Worrenty').value || " ",
-        "roundVal": Math.round(this.FinalNetAmount),
-        "prefix": "",
-        "isVerifiedId": 0,
-        "verifiedDateTime": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-        "totCgstamt": (parseFloat(this.CGSTFinalAmount)),
-        "totSgstamt": (parseFloat(this.SGSTFinalAmount)),
-        "totIgstamt": (parseFloat(this.IGSTFinalAmount)),
-        "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
-        "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
-        "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
-        "isCancelled": false,
-        "tPurchaseDetails": InsertpurchaseDetailObj
-      };
-      console.log(submitData);
-      this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
+      console.log(this.PurchaseInsertform.value);
+      this._PurchaseOrder.InsertPurchaseSave(this.PurchaseInsertform.value).subscribe(response => {
         this.toastr.success(response.message);
         if (response) {
           this.viewgetPurchaseorderReportPdf(response)

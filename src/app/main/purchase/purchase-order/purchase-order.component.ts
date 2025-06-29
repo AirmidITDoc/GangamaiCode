@@ -479,7 +479,7 @@ export class ItemNameList {
       this.transportChanges= ItemNameList.transportChanges || 0;
       this.handlingCharges= ItemNameList.handlingCharges || 0;
       this.octriAmount= ItemNameList.octriAmount || 0;
-      this.worrenty= ItemNameList.worrenty || 0;
+      this.worrenty= ItemNameList.worrenty || "";
       this.remarks= ItemNameList.remarks || "";
 
     }

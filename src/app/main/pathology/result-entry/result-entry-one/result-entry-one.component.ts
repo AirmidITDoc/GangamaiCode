@@ -158,7 +158,7 @@ export class ResultEntryOneComponent implements OnInit {
         });
 
         this.ResultForm = this.createResultInsertForm();
-        this.PathResultForm= this.createPathologyResultForm();
+        this.PathResultForm=this.createPathologyResultForm();
         this.pathologyResultArray.push(this.createResultdetailForm());
 
     }
@@ -661,84 +661,7 @@ export class ResultEntryOneComponent implements OnInit {
     Saveflag = 2;
     printf: boolean = true;
 
-    // onSave() {
-    //     debugger
-    //     if ((this.vPathResultDoctorId == '')) {
-    //         this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-
-    //     let PathInsertArry = [];
-
-    //     this.dataSource.data.forEach((element) => {
-
-    //         let pathologyResult = {};
-    //         pathologyResult['pathReportDetId'] = 0 //element1.PathReportId;
-    //         pathologyResult['pathReportId'] = element.PathReportId //element1.PathReportId;
-    //         pathologyResult['categoryId'] = element.CategoryId || 0;
-    //         pathologyResult['testId'] = element.TestId || 0;
-    //         pathologyResult['subTestId'] = element.SubTestId || 0;
-    //         pathologyResult['parameterId'] = element.ParameterId || 0;
-    //         pathologyResult['resultValue'] = element.ResultValue || ' ';
-    //         pathologyResult['unitId'] = element.UnitId || 1;
-    //         pathologyResult['normalRange'] = element.NormalRange || '';
-    //         pathologyResult['printOrder'] = element.PrintOrder || 0;
-    //         pathologyResult['pisNumeric'] = element.ParaIsNumeric || element.PIsNumeric || 0;
-    //         pathologyResult['categoryName'] = element.CategoryName || '';
-    //         pathologyResult['testName'] = element.TestName || '';
-    //         pathologyResult['subTestName'] = element.SubTestName || '';
-    //         pathologyResult['parameterName'] = element.ParameterName || '';
-    //         pathologyResult['unitName'] = element.UnitName || '';
-    //         pathologyResult['patientName'] = this.selectedAdvanceObj2.PatientName || '';
-    //         pathologyResult['regNo'] = this.selectedAdvanceObj2.regNo;
-    //         pathologyResult['sampleId'] = element.SampleID || '';
-    //         pathologyResult['paraBoldFlag'] = element.ParaBoldFlag || '';
-    //         pathologyResult['minValue'] = parseFloat(element.MinValue) || 0;
-    //         pathologyResult['maxValue'] = parseFloat(element.MaxValue) || 0;
-
-    //         PathInsertArry.push(pathologyResult);
-    //     });
-
-    //     let pathologyUpdateReportObjarray = 
-    //     {        
-    //         "pathReportId": this.vPathReportId,        
-    //         "reportDate": this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),        
-    //         "reportTime":  this.datePipe.transform(this.currentDate, "HH:mm"),       
-    //         "isCompleted": true,        
-    //         "isPrinted": true,        
-    //         "pathResultDr1": this.vPathResultDoctorId,        
-    //         "pathResultDr2": 0,        
-    //         "pathResultDr3": 0,        
-    //         "isTemplateTest": 0,        
-    //         "suggestionNotes": this.otherForm.get('suggestionNotes').value || "",        
-    //         "admVisitDoctorId": 0,        
-    //         "refDoctorId": 0        
-    //       }
-
-    //     console.log('==============================  PathologyResult ===========');
-    //     let submitData = {
-    //         "pathologyResult": PathInsertArry,
-    //         "pathologyReport": pathologyUpdateReportObjarray
-    //     };
-    //     console.log(submitData);
-    //     this._SampleService.PathResultentryInsert(submitData).subscribe(response => {
-    //         if (response) {
-    //             Swal.fire('Congratulations !', 'Data saved Successfully !', 'success').then((result) => {
-    //                 this._matDialog.closeAll();
-    //                 this.Printresultentry();
-    //             });
-    //         } else {
-    //             Swal.fire('Error !', 'Pathology Resulentry data not saved', 'error');
-    //         }
-    //         this.isLoading = '';
-    //     });
-
-    // }
-
-
-     onSave() {
+        onSave() {
             debugger
             if ((this.vPathResultDoctorId == '')) {
                 this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
@@ -747,8 +670,7 @@ export class ResultEntryOneComponent implements OnInit {
                 return;
             }
     
-             this.vPathResultDoctorId
-
+            
              this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
              this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
        
@@ -819,7 +741,7 @@ export class ResultEntryOneComponent implements OnInit {
   createResultInsertForm(): FormGroup {
         return this.formBuilder.group({
             pathologyReport:'',// this.PathResultForm.value,
-            pathologyResult: this.formBuilder.array([]), // FormArray for details
+            pathologyResult: this.formBuilder.array([]) // FormArray for details
         });
     }
 
@@ -861,7 +783,7 @@ export class ResultEntryOneComponent implements OnInit {
             unitName: [item.UnitName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             patientName: [this.selectedAdvanceObj2.PatientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             regNo: [this.selectedAdvanceObj2.regNo ||'', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            sampleId: [item.SampleID || "", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            sampleId: [item.SampleID || "", [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             paraBoldFlag: [item.ParaBoldFlag || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             minValue: [parseFloat(item.MinValue), [this._FormvalidationserviceService.onlyNumberValidator()]],

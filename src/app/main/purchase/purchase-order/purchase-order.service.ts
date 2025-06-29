@@ -18,17 +18,13 @@ export class PurchaseOrderService {
     VALID_GST_RATES: [2.5, 6, 9, 14],
     GST_ERROR_MESSAGE: 'Please enter GST percentage as 2.5%, 6%, 9% or 14%'
   };
-  // userFormGroup: FormGroup
-  // PurchaseSearchGroup: FormGroup;
-  // FinalPurchaseform: FormGroup;
-  // StoreFormGroup: FormGroup;
+ 
   POEmailFrom: FormGroup;
   IgstPercentage = 0
   CgstPercentage = 0
   SgstPercentage = 0
   normalizeValues(obj: ItemNameList | PurchaseFormModel): GSTCalculationResult {
-    debugger
-    // Get all required values with proper type conversion
+   
     const finalTotalQty = Number(obj.Qty || 0);
     const values = {
       totalAmount: Number(obj.TotalAmount || 0),
