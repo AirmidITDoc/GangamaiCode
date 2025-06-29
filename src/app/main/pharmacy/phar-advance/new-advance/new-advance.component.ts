@@ -167,8 +167,8 @@ export class NewAdvanceComponent implements OnInit {
     console.log(m_data)
     this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
       this.dsIpItemList.data = Visit.data as IpItemList[];
-      this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
-      this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
+      // this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
+      // this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
       console.log(this.dsIpItemList.data)
     });
   }
@@ -196,6 +196,12 @@ export class NewAdvanceComponent implements OnInit {
     }
   }
   onSave() {
+    if (!this._PharAdvanceService.NewAdvanceForm.get('RegID')?.value && !this.vRegId) {
+        this.toastr.warning('Please Select Patient', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
     if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
       this.toastr.warning('Please enter advance amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -206,8 +212,8 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceObj['advanceID'] = 0;
       insertPHAdvanceObj['date'] = this.dateTimeObj.date || '01/01/1900';
       insertPHAdvanceObj['refId'] = this.vRegId || 0;
-      insertPHAdvanceObj['opD_IPD_Type'] = 1;
-      insertPHAdvanceObj['opD_IPD_Id'] = this.vAdmissionID || 0;
+      insertPHAdvanceObj['opdIpdType'] = 1;
+      insertPHAdvanceObj['opdIpdId'] = this.vAdmissionID || 0;
       insertPHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
       insertPHAdvanceObj['advanceUsedAmount'] = 0;
       insertPHAdvanceObj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
@@ -223,8 +229,8 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceDetailobj['advanceId'] = 0;
       insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
       insertPHAdvanceDetailobj['transactionId'] = 2;
-      insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
-      insertPHAdvanceDetailobj['opD_IPD_Id'] = this.vAdmissionID || 0;
+      insertPHAdvanceDetailobj['opdIpdId'] = this.vAdmissionID || 0;
+      insertPHAdvanceDetailobj['opdIpdType'] = 1;
       insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
       insertPHAdvanceDetailobj['usedAmount'] = 0;
       insertPHAdvanceDetailobj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
@@ -236,38 +242,19 @@ export class NewAdvanceComponent implements OnInit {
       insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
       insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
       insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
+    
+      debugger
+       const PatientHeaderObj = {
+        Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+        PatientName: this.vPatienName,
+        RegNo: this.vRegNo, 
+        DoctorName: this.vCompanyName, 
+        CompanyName: this.vDoctorName, 
+        OPD_IPD_Id: this.vIPDNo, 
+        Age: this.vAge,
+        NetPayAmount: this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0,
+      };
 
-
-      let PatientHeaderObj = {};
-      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      // PatientHeaderObj['PatientName'] = this.vPatienName;
-      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      // PatientHeaderObj['BillId'] = 0;
-      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-
-      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-      //   {
-      //     maxWidth: "90vw",
-      //     height: '640px',
-      //     width: '70%',
-
-      //     data: {
-      //       // vPatientHeaderObj: PatientHeaderObj,
-      //       FromName: "IP-Pharma-Advance",
-      //       advanceObj: PatientHeaderObj,
-      //     }
-      //   });
-
-      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['PatientName'] = this.vPatienName;
-      PatientHeaderObj['RegNo'] = this.vRegNo;
-      PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      PatientHeaderObj['CompanyName'] = this.vCompanyName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      PatientHeaderObj['Age'] = this.vAge;
-      PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "80vw",
@@ -282,28 +269,21 @@ export class NewAdvanceComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Advance Amount ===========', result);
 
-        let submitData = {
-          "insertPHAdvance": insertPHAdvanceObj,
-          "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
-          "insertPHPayment": result.submitDataPay.ipPaymentInsert
+         if (result && result.submitDataPay) {
+          debugger
+          let submitData = {
+          "pharmacyAdvance": insertPHAdvanceObj,
+          "pharmacyAdvanceDetails": insertPHAdvanceDetailobj,
+          "paymentPharmacy": result.submitDataPay.ipPaymentInsert
         };
         console.log(submitData);
-        this._PharAdvanceService.InsertIpPharmaAdvance(submitData).subscribe(response => {
+          this._PharAdvanceService.InsertIpPharmaAdvance(submitData).subscribe(response => {
 
-          if (response) {
-            this.toastr.success('IP Pharma Advance data Saved Successfully !', 'Saved !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            console.log(response)
             this.viewgetIPAdvanceReportPdf(response);
             this._matDialog.closeAll();
             this.onClose();
-          } else {
-            this.toastr.success('IP Pharma Advance data not Saved!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          }
         });
+        }
       });
 
     }

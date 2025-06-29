@@ -225,7 +225,7 @@
                                                             Chief Complaints
                                                         </span>
                                                         <hr>
-                                                        <app-airmid-chipautocomplete  style="width: 100%;"
+                                                        <app-airmid-chipautocomplete style="width: 100%;"
                                                             [chips]="caseFormGroup.get('mAssignChiefComplaint')?.value"
                                                             [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
                                                             [displayKey]="'descriptionName'" [allowCustom]="true"
@@ -819,37 +819,50 @@
                                                                     <div
                                                                         style="border: 1px solid rgb(203, 203, 203);width: 100%;">
                                                                     </div>
-                                                                    <div>
-                                                                        <div fxLayout="row" fxLayoutGap="6px">
-                                                                            <div class="patient-col">
-                                                                                <span
-                                                                                    class="patient-col-key">ChiefComplaint
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.chiefComplaint}}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                                            <div class="patient-col">
-                                                                                <span
-                                                                                    class="patient-col-key">Diagnosis</span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.diagnosis}}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                                            <div class="patient-col">
-                                                                                <span
-                                                                                    class="patient-col-key">Examination
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.examination}}</span>
-                                                                            </div>
-                                                                        </div>
+                                                                  
+                                                                   <div *ngFor="let visit of getVisitDataById(visitId)">
+                                                                    
+                                                                    <div fxLayout="row" fxLayoutGap="6px" class="patient-col">
+                                                                        <span class="patient-col-key">Chief Complaint</span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">
+                                                                        <ng-container *ngIf="visit.complaints && visit.complaints.length > 0; else noComplaints">
+                                                                            <ng-container *ngFor="let complaint of visit.complaints; let last = last">
+                                                                            {{ complaint }}<span *ngIf="!last">, </span>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                        <ng-template #noComplaints>N/A</ng-template>
+                                                                        </span>
                                                                     </div>
+
+                                                                    <div fxLayout="row" fxLayoutGap="6px" class="patient-col">
+                                                                        <span class="patient-col-key">Diagnosis</span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">
+                                                                            <ng-container *ngIf="visit.diagnoses && visit.diagnoses.length > 0; else noDiagnosis">
+                                                                                <ng-container *ngFor="let diagnosis of visit.diagnoses; let last = last">
+                                                                                    {{ diagnosis }}<span *ngIf="!last">, </span>
+                                                                                </ng-container>
+                                                                            </ng-container>
+                                                                            <ng-template #noDiagnosis>N/A</ng-template>
+                                                                        </span>
+                                                                    </div>
+                                                                    
+                                                                      <div fxLayout="row" fxLayoutGap="6px" class="patient-col">
+                                                                        <span class="patient-col-key">Examination</span>
+                                                                        <span>:</span>
+                                                                        <span class="patient-col-value">
+                                                                        <ng-container *ngIf="visit.examinations && visit.examinations.length > 0; else noExam">
+                                                                            <ng-container *ngFor="let exam of visit.examinations; let last = last">
+                                                                            {{ exam }}<span *ngIf="!last">, </span>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                        <ng-template #noExam>N/A</ng-template>
+                                                                        </span>
+                                                                    </div>
+
+                                                                </div> 
+                                                             
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -884,10 +897,10 @@
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="Days">
-                                                            <mat-header-cell *matHeaderCellDef>Days
-                                                            </mat-header-cell>
+                                                            <mat-header-cell *matHeaderCellDef>Days</mat-header-cell>
+                                                        
                                                             <mat-cell *matCellDef="let patient">
-                                                                <span> {{patient.days}}</span>
+                                                                <span *ngIf="patient.days !== 0 && patient.days !== '0'">{{ patient.days }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 

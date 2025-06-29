@@ -293,6 +293,8 @@ export class BrowsSalesBillComponent implements OnInit {
       this.menuActions.push("Patient Sales Summary");
       this.menuActions.push("Patient Sales Detail");
     }
+    this.onChangeFirst();
+    this.onChangeFirst_Retrun(); 
   }
   onChangeFirst() { 
     this.isShowDetailTable = false;
@@ -362,7 +364,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.To_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd")
     this.reg_No = this._BrowsSalesBillService.formReturn.get('RegNo').value || "0"
     this.sales_No = this._BrowsSalesBillService.formReturn.get('SalesNo').value || "0"
-    this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type').value || "0"
+    this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type_Return').value || "0"
     this.getSalesRetrunlistdata();
   }
   getSalesRetrunlistdata() { 
