@@ -15,14 +15,14 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ToastrService } from 'ngx-toastr';
-import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { PrescriptionComponent } from '../sales/prescription/prescription.component';
+import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service'; 
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { PrescriptionComponent } from './prescription/prescription.component';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -477,7 +477,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.wardId = obj.wardId;
       this.bedId = obj.bedId;
     }
-    // this.getBillSummary(); 
+     this.getBillSummary(obj?.admissionID); 
   } 
   getSelectedObjOP(obj) {
     console.log(obj);
@@ -490,8 +490,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.OP_IP_Id = obj.visitId;
     this.OPDNo = obj.opdNo;
     this.HospitalId = obj.hospitalId;
-    this.DoctorName = obj.doctorName;  
-    //this.getBillSummary(); 
+    this.DoctorName = obj.doctorName;   
   }
   onPatientChange(event: any): void {
     console.log(event);
@@ -1089,6 +1088,80 @@ export class SalesHospitalNewComponent implements OnInit {
     this.MobileNo = '';
     this.saleSelectedDatasource.data = [];
     this.ItemSubform.get('FinalDiscPer').enable();
+  } 
+   // Table calculation
+  updateCellDiscount(item: IndentList): void {
+    let discPer = +item.DiscPer;
+    let totalMrp = +item.TotalMRP;
+
+    if (discPer < 0 || discPer > 100) {
+      this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      item.DiscPer = 0;
+      item.DiscAmt = 0;
+      this.calculateCellNetAmount(item);
+      return;
+    }
+    item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
+    this.calculateCellNetAmount(item);
+  } 
+  getCellCalculation(item: IndentList) { 
+    let qty = +item.Qty;
+    if (!qty) {
+      qty = 0;
+    }
+    const gstPer = +item.GSTPer;
+    const unitMrp = +item.UnitMRP;
+    const totalMrp = qty * unitMrp;
+    const gstAmount = (totalMrp * gstPer) / 100;
+    const landedRateandedTotal = qty * item.LandedRate;
+    const marginAmt = totalMrp - landedRateandedTotal;
+
+    const updatedItem = {
+      GSTAmount: gstAmount.toFixed(2),
+      TotalMRP: totalMrp.toFixed(2),
+      MarginAmt: marginAmt.toFixed(2),
+      Qty: qty,
+    } as IndentList;
+
+    Object.assign(item, updatedItem);
+    this.calculateCellNetAmount(item);
+  }
+  calculateCellNetAmount(item: IndentList): void {
+    const formValue = this.ItemSubform.value;
+    const discAmt = +item.DiscAmt;
+    const totalMrp = +item.TotalMRP;
+
+    const netAmount = (totalMrp - discAmt).toFixed(2);
+    item.NetAmt = netAmount; 
+        let DiscPer = ((formValue.discAmount * 100) / formValue.totalAmount).toFixed(2); 
+      this.ItemSubform.patchValue({
+      FinalDiscPer: DiscPer,
+    }) 
+    this.getUpdateNetAmtSum(this.saleSelectedDatasource.data);
+  }  
+  m_getBalAvaListStore(Param) {
+    this.dsDraftList.data = [];
+    var m = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "ItemId", "fieldValue": String(Param), "opType": "Contains" }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ] 
+    };
+    this._salesService.getBalAvaListStore(m).subscribe((response) => {
+        this.dsBalAvaListStore.data = response.data as BalAvaListStore[];
+      });
   }
 
  ///////////////// //Darft part ---------------------------------------------------------------------------------------////////////////////////////
@@ -1264,7 +1337,8 @@ export class SalesHospitalNewComponent implements OnInit {
     });
   }
   onAddDraftList(contact) {
-    // console.log(contact)
+    debugger
+  console.log(contact)
     this.PatientName = contact.PatientName;
     this.MobileNo = contact.ExtMobileNo;
     this.vextAddress = contact.extAddress;
@@ -1273,6 +1347,47 @@ export class SalesHospitalNewComponent implements OnInit {
     this.saleSelectedDatasource.data = [];
     this.Itemchargeslist1 = [];
     this.Itemchargeslist = [];
+
+        if (contact.oP_IP_ID == 2) {
+      this.vSelectedOption = '2'; 
+      this.ItemSubform.get('extMobileNo').reset();
+      this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
+      this.ItemSubform.get('extMobileNo').enable();
+      this.ItemSubform.get('externalPatientName').reset();
+      this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
+      this.ItemSubform.get('externalPatientName').enable();
+      this.ItemSubform.updateValueAndValidity();
+      this.ItemSubform.get('extMobileNo').setValue(contact.extMobileNo)
+      this.ItemSubform.get('externalPatientName').setValue(contact.PatientName)  
+      this.ItemSubform.get('DoctorName').setValue(contact.AdmDoctorName)
+      this.ItemSubform.get('extAddress').setValue(contact.extAddress)
+      this.DraftID = contact.DSalesId; 
+      this.paymethod = false; 
+      this.RegId = '';
+    } else if (contact.OP_IP_Type == 0) {
+      this.paymethod = true;
+      this.vSelectedOption = '0';
+      this.ItemSubform.get('extMobileNo').clearValidators();
+      this.ItemSubform.get('externalPatientName').clearValidators();
+      this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+      this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+         this.DoctorNamecheck = true;
+      this.OPDNoCheck = false;
+      this.IPDNocheck = false;
+      this.PatientName = contact.PatientName;
+      this.RegId = contact.RegID; 
+      this.DoctorName = contact.AdmDoctorName; 
+      this.DraftID = contact.DSalesId;
+    }
+    else if (contact.OP_IP_Type == 1) {
+      this.paymethod = true;
+      this.vSelectedOption = '1';
+      this.ItemSubform.get('extMobileNo').clearValidators();
+      this.ItemSubform.get('externalPatientName').clearValidators();
+      this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+      this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+    }  
+
 
     let strSql = 'Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=' + contact.DSalesId + ' Order by ItemId ';
     this._salesService.getchargesList(strSql).subscribe((data) => {
@@ -1322,6 +1437,16 @@ export class SalesHospitalNewComponent implements OnInit {
       }
     });
   }
+
+
+
+
+
+
+
+
+
+
     getFinalCalculation(contact, DraftQty) {
     console.log(contact);
     // if (parseInt(contact.BalanceQty) > parseInt(this.)) {
@@ -1400,129 +1525,51 @@ export class SalesHospitalNewComponent implements OnInit {
 
 
 
+  getBillSummary(admissionID) {
+    // let query;
+    // query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
+    // this._salesService.getBillSummaryQuery(query).subscribe((data) => {
+    //   console.log(data);
+    //   this.TotalCreditAmt = data[0].CreditAmount;
+    // });
 
 
-
-
-
-
-
- 
-  updateCellDiscount(item: IndentList): void {
-    let discPer = +item.DiscPer;
-    let totalMrp = +item.TotalMRP;
-
-    if (discPer < 0 || discPer > 100) {
-      this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      item.DiscPer = 0;
-      item.DiscAmt = 0;
-      this.calculateCellNetAmount(item);
-      return;
-    }
-    item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
-    this.calculateCellNetAmount(item);
-  } 
-  getCellCalculation(item: IndentList) {
-    let qty = +item.Qty;
-    if (!qty) {
-      qty = 0;
-    }
-    const gstPer = +item.GSTPer;
-    const unitMrp = +item.UnitMRP;
-    const totalMrp = qty * unitMrp;
-    const gstAmount = (totalMrp * gstPer) / 100;
-    const landedRateandedTotal = qty * item.LandedRate;
-    const marginAmt = totalMrp - landedRateandedTotal;
-
-    const updatedItem = {
-      GSTAmount: gstAmount.toFixed(2),
-      TotalMRP: totalMrp.toFixed(2),
-      MarginAmt: marginAmt.toFixed(2),
-      Qty: qty,
-    } as IndentList;
-
-    Object.assign(item, updatedItem);
-    this.calculateCellNetAmount(item);
-  }
-  calculateCellNetAmount(item: IndentList): void {
-    const formValue = this.ItemSubform.value;
-    const discAmt = +item.DiscAmt;
-    const totalMrp = +item.TotalMRP;
-
-    const netAmount = (totalMrp - discAmt).toFixed(2);
-    item.NetAmt = netAmount; 
-        let DiscPer = ((formValue.discAmount * 100) / formValue.totalAmount).toFixed(2); 
-      this.ItemSubform.patchValue({
-      FinalDiscPer: DiscPer,
-    }) 
-  }
- 
-
-  tblCalucation(contact, Qty) {
-    let TotalMRP;
-    this.RQty = parseInt(contact.Qty) || 1;
-    if (this.RQty && contact.UnitMRP) {
-      TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2);
-      let LandedRateandedTotal = (parseInt(this.RQty) * contact.LandedRate).toFixed(2);
-      let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-      //
-      this.PurTotAmt = (parseInt(this.RQty) * contact.PurchaseRate).toFixed(2);
-      let NetAmt;
-      let DiscAmt;
-      this.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      this.IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      NetAmt = (parseFloat(TotalMRP) - parseFloat(contact.DiscAmt)).toFixed(2);
-
-      if (contact.DiscPer > 0) {
-        DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
-        NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
-      }
-
-      contact.GSTAmount = (((contact.UnitMRP * contact.VatPer) / 100) * parseInt(this.RQty)).toFixed(2) || 0;
-      contact.TotalMRP = (parseInt(this.RQty) * contact.UnitMRP).toFixed(2); //this.TotalMRP || 0,
-      (contact.DiscAmt = DiscAmt || 0),
-        (contact.NetAmt = NetAmt), // (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2); //this.NetAmt,
-        (contact.RoundNetAmt = Math.round(NetAmt)),
-        (contact.StockId = this.StockId),
-        (contact.VatAmount = 0), // this.GSTAmount || 0,
-        (contact.LandedRateandedTotal = LandedRateandedTotal),
-        (contact.CGSTAmt = contact.CGSTAmt || 0),
-        (contact.SGSTAmt = contact.SGSTAmt || 0),
-        (contact.IGSTAmt = contact.IGSTAmt || 0),
-        (contact.PurchaseRate = contact.PurchaseRate || 0),
-        (contact.PurTotAmt = 0), //this.PurTotAmt || 0,
-        (contact.MarginAmt = v_marginamt || 0);
-    }
-    this.ItemFormreset();
-  }
-
-
-  m_getBalAvaListStore(Param) {
-    this.dsDraftList.data = [];
-    var m = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [
-        { "fieldName": "ItemId", "fieldValue": String(Param), "opType": "Contains" }
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
+      var m_data = {
+          "first": 0,
+          "rows": 10,
+          "sortField": "AdmissionId",
+          "sortOrder": 0,
+          "filters": [
+            {
+              "fieldName": "AdmissionId",
+              "fieldValue": String(admissionID),
+              "opType": "Equals"
+            }
+    
+          ],
+          "exportType": "JSON",
+          "columns": []
         }
-      ] 
-    };
-    this._salesService.getBalAvaListStore(m).subscribe((response) => {
-        this.dsBalAvaListStore.data = response.data as BalAvaListStore[];
-      });
+        console.log(m_data)
+        this._salesService.getAdvanceList(m_data).subscribe(Visit => {
+         const advancedetails = Visit.data; 
+          console.log(advancedetails)
+        });
+
+    // query = 'select AdvanceAmount,BalanceAmount from T_PHAdvanceHeader where OPD_IPD_Id=' + this.OP_IP_Id;
+    // this._salesService.getBillSummaryQuery(query).subscribe((data) => {
+    //   console.log(data);
+    //   let mdata = (this.TotalAdvanceAmt = data[0].AdvanceAmount);
+    //   this.TotalBalanceAmt = data[0].BalanceAmount;
+    // });
   }
+
+
+
+
+
+
+
   
   salesIdWiseObj: any;
   dummySalesIdNameArr = [];
@@ -1879,21 +1926,7 @@ export class SalesHospitalNewComponent implements OnInit {
       });
     }
   }
-  getBillSummary() {
-    let query;
-    query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
-    this._salesService.getBillSummaryQuery(query).subscribe((data) => {
-      console.log(data);
-      this.TotalCreditAmt = data[0].CreditAmount;
-    });
 
-    query = 'select AdvanceAmount,BalanceAmount from T_PHAdvanceHeader where OPD_IPD_Id=' + this.OP_IP_Id;
-    this._salesService.getBillSummaryQuery(query).subscribe((data) => {
-      console.log(data);
-      let mdata = (this.TotalAdvanceAmt = data[0].AdvanceAmount);
-      this.TotalBalanceAmt = data[0].BalanceAmount;
-    });
-  }
   onEnterItemName(item: IndentList): void {
     const itemId = item.ItemId;
     const storeId = item.StoreId;

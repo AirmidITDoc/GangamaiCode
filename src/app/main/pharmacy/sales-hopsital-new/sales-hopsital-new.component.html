@@ -461,8 +461,8 @@
                         class="w-100">Qty</mat-header-cell>
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.Qty" type="number" (keyup)="getCellCalculation(contact)"
-                            min="0" name="tableQty" />
+                          <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
+                            min="0" name="tableQty" OnlyNumber/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -500,8 +500,8 @@
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.DiscPer" type="number"
-                            (keyup)="updateCellDiscount(contact)" min="0" />
+                          <input matInput [(ngModel)]="contact.DiscPer" type="text"
+                            (keyup)="updateCellDiscount(contact)" min="0" OnlyNumber/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
