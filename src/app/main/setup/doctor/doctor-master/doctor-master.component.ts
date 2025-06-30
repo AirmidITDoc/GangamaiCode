@@ -269,7 +269,7 @@ FuseConfirmDialogComponent,
 
     const dialogRef = this._matDialog.open(NewDoctorComponent, {
       maxWidth: "95vw",
-      maxHeight: "100vh",
+      height: "95%",
       width: "100%",
       // height: "100%",
       autoFocus: false,
