@@ -22,7 +22,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     ) { 
       this.userFormGroup = this.IndentID();
       this.ItemSearchGroup= this.ItemSearchFrom();
-      this.PrescriptionFrom = this.CreatePrescriptionFrom();
     }
   
     ItemSearchFrom() {
@@ -63,18 +62,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
         
       });
     }
-    CreatePrescriptionFrom() {
-      return this._formBuilder.group({
-        start: [(new Date()).toISOString()],
-        end: [(new Date()).toISOString()],
-        StoreId:'',
-        RegNo:'',
-        Status:'0',
-        PreNo:'',
-        IsActive: '',
-        
-      });
-    }
+ 
    
     public getIndentID(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
@@ -175,5 +163,10 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public getItemDetailList(Param){
       return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
     }
+      public getAdvanceList(employee)
+  {
+    return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
+  }
+
   }
   
