@@ -25,7 +25,7 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
                 <div class="modal-card-container">
-                    <form [formGroup]="_PharAdvanceService.NewAdvanceForm">
+                    <form [formGroup]="MainForm">
 
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                             <div class="radio-container">
@@ -36,7 +36,7 @@
 
                             <div class="input-container gap-8" fxFlex="50%">
 
-                                <airmid-autocomplete lbl="RgId" [formGroup]="_PharAdvanceService.NewAdvanceForm"
+                                <airmid-autocomplete lbl="RgId" [formGroup]="MainForm"
                                     formControlName="RegID" placeholderText="IP-RegNo/Patient Name/Mobile No"
                                     label="Search Reg No / Patient Name / Mobile No"
                                     ApiUrl="Admission/search-patient?Keyword="
@@ -163,7 +163,7 @@
 
                 <div class="table-footer mt-8">
 
-                    <form [formGroup]="_PharAdvanceService.NewAdvanceForm" style="padding: 10px;">
+                    <form [formGroup]="MainForm" style="padding: 10px;">
                         <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
 
                             <!-- Advance Amount -->
@@ -172,24 +172,12 @@
                                 <input matInput [(ngModel)]="vadvanceAmount" formControlName="advanceAmt"
                                     name="advanceAmt" required type="text" OnlyNumber
                                     (keypress)="keyPressCharater($event)">
-                                <mat-error
-                                    *ngIf="_PharAdvanceService.NewAdvanceForm.get('advanceAmt')?.hasError('required') && _PharAdvanceService.NewAdvanceForm.get('advanceAmt')?.touched">
-                                    Advance Amount is required
-                                </mat-error>
-                                <mat-error
-                                    *ngIf="_PharAdvanceService.NewAdvanceForm.get('advanceAmt')?.hasError('pattern') && _PharAdvanceService.NewAdvanceForm.get('advanceAmt')?.touched">
-                                    Please enter valid Amount
-                                </mat-error>
                             </mat-form-field>
 
                             <!-- Reason of Advance -->
                             <mat-form-field appearance="outline" fxFlex="30%">
                                 <mat-label>Reason of Advance</mat-label>
                                 <input matInput formControlName="comment" name="comment">
-                                <mat-error
-                                    *ngIf="_PharAdvanceService.NewAdvanceForm.get('comment')?.invalid && _PharAdvanceService.NewAdvanceForm.get('comment')?.touched">
-                                    Reason is required
-                                </mat-error>
                             </mat-form-field>
 
                             <!-- Spacer to push buttons to the right -->

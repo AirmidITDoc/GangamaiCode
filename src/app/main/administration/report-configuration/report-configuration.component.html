@@ -22,20 +22,20 @@
             <ng-container filters>
                 <form [formGroup]="myform">
                     
-                    <!-- <mat-form-field appearance="outline">
-                        <mat-label>Report Name</mat-label>
-                        <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
-                            formControlName="reportName" [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[0].fieldValue=''">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field> -->
-
-                    <airmid-dropdown label="Report Name" formControlName="reportName" [formGroup]="myform"
+                    <airmid-dropdown label="Menu Name" formControlName="MenuName" [formGroup]="myform"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" (selectionChange)="ListView($event)"
                         [mode]="autocompleteModedReport">
                     </airmid-dropdown>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Report Name</mat-label>
+                        <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
+                            formControlName="reportName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[1].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
                     <!-- <airmid-dropdown label="Menu Name" formControlName="MenuName" [formGroup]="myform"
                         [(ngModel)]="gridConfig.filters[1].fieldValue" (selectionChange)="ListView1($event)"

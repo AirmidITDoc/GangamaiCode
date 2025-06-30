@@ -42,7 +42,8 @@ export class ReportService {
             SupplierId:[""],
             PaymentId:[""],
             DrugTypeId:[""],
-            ItemId:[""]
+            ItemId:[""],
+            OPIPType:["2"]
             // 
         });
     }
