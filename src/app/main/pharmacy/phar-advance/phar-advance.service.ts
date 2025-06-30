@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class PharAdvanceService {
     public _formbuilder:UntypedFormBuilder,
     public _httpClient:HttpClient,
     public _httpClient1:ApiCaller,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     private _loaderService: LoaderService
   )
    { 
@@ -44,7 +46,8 @@ export class PharAdvanceService {
     return this._formbuilder.group({
       RegID: [''],
       Op_ip_id: ['1'],
-      advanceAmt:[''],
+      advanceAmt:['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator(),Validators.minLength(1),
+          this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       comment:['']
     });
    }
@@ -98,12 +101,7 @@ export class PharAdvanceService {
       return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate/" + Param.advanceID, Param);
     } else return this._httpClient1.PostData("Sales/PharmacyAdvanceInsert", Param)
   }
-  public UpdateIpPharmaAdvance(data,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-    return this._httpClient.post("Pharmacy/Update_PhAdvance",data)
-  }
+  
   public InsertRefundOfAdv(data,loader = true){ 
     if (loader) {
       this._loaderService.show();

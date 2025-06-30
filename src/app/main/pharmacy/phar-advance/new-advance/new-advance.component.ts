@@ -13,6 +13,8 @@ import { PharAdvanceService } from '../phar-advance.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-advance',
@@ -22,56 +24,25 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
   animations: fuseAnimations,
 })
 export class NewAdvanceComponent implements OnInit {
-  // displayedColumns = [
-  //   'Date',
-  //   'AdvanceNo',
-  //   'AdvanceAmount',
-  //   'UsedAmount',
-  //   'BalanceAmount',
-  //   'RefundAmount',
-  //   'CashPay',
-  //   'ChequePay',
-  //   'CardPay',
-  //   'NeftPay',
-  //   'PayTMPay',
-  //   'UserName',
-  //   'buttons'
-  // ];
 
   dateTimeObj: any;
-  sIsLoading: string = '';
-  isLoading: '';
-  isRegIdSelected: boolean = false;
-  PatientListfilteredOptions: any;
-  noOptionFound: any;
-  // filteredOptions:any;
-  screenFromString = 'pharma-advance';
+  screenFromString = 'Common-form';
   vRegNo: any;
   vPatienName: any;
-  vMobileNo: any;
-  vAdmissionDate: any;
   vAdmissionID: any;
   vIPDNo: any;
-  vRoomName: any;
-  vTariffName: any;
-  vBedName: any;
   vCompanyName: any;
   vDoctorName: any;
-  vGenderName: any;
   vAge: any;
-  vAgeMonth: any;
-  vAgeDay: any;
-  vRefDocName: any;
-  vDepartment: any;
   vadvanceAmount: any;
   vRegId: any;
   vPatientType: any;
   vAdmissionTime: any;
   regObj: any;
   dsIpItemList = new MatTableDataSource<IpItemList>();
+  insertForm: FormGroup
+  MainForm: FormGroup
 
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
   constructor(
@@ -79,13 +50,68 @@ export class NewAdvanceComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
+    private formBuilder: FormBuilder,
     public toastr: ToastrService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewAdvanceComponent>,
   ) { }
 
   ngOnInit(): void {
+    this.MainForm = this._PharAdvanceService.NewAdvanceForm
+    this.MainForm.markAllAsTouched()
+    this.insertForm = this.IPAdvacneFormInsert();
   }
+
+  IPAdvacneFormInsert(): FormGroup {
+    return this.formBuilder.group({
+
+      pharmacyAdvance: this.formBuilder.group({
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: '',
+        refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
+        this._FormvalidationserviceService.notEmptyOrZeroValidator()
+        ]],
+        addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+      }),
+
+      pharmacyAdvanceDetails: this.formBuilder.group({
+        advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: '',
+        time: '',
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        usedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
+        this._FormvalidationserviceService.notEmptyOrZeroValidator()
+        ]],
+        refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        reasonOfAdvanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+        reason: [''],
+        storeId: this._loggedService.currentUserValue.user.storeId || 0,
+      }),
+
+      paymentPharmacy: ''
+
+    });
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -97,40 +123,46 @@ export class NewAdvanceComponent implements OnInit {
       this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vAdmissionTime = obj.admissionTime
       this.vAdmissionID = obj.admissionID;
+      this.vRegNo = obj.regNo;
+      this.vRegId = obj.regID;
+      this.vIPDNo = obj.ipdNo;
+      this.vAge = obj.age;
+      this.vCompanyName = obj.companyName;
+      this.vDoctorName = obj.doctorName;
       this.getAdvanceList(obj);
       this.getListdata();
     }
   }
 
-    AllColumns = [
-      { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA'},
-      { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-      { heading: "UsedAmount", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-      { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-      { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-      { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-      { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-      { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-      { heading: "NeftPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-      { heading: "PayTMPay", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-      { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA'},
-      {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          { action: gridActions.print, callback: (data: any) => {} }]
-      }
-    ]
-    gridConfig: gridModel = {
-      apiUrl: "Sales/PharAdvanceList",
-      columnsList: this.AllColumns,
-      sortField: "AdmissionId",
-      sortOrder: 0,
-      filters: [
-          { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
-        ],
-      row: 25
+  AllColumns = [
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "UsedAmount", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "NeftPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "PayTMPay", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        { action: gridActions.print, callback: (data: any) => { } }]
     }
-    
+  ]
+  gridConfig: gridModel = {
+    apiUrl: "Sales/PharAdvanceList",
+    columnsList: this.AllColumns,
+    sortField: "AdmissionId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+    ],
+    row: 25
+  }
+
   getListdata() {
     this.gridConfig = {
       apiUrl: "Sales/PharAdvanceList",
@@ -164,28 +196,16 @@ export class NewAdvanceComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    console.log(m_data)
+
     this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
+      debugger
       this.dsIpItemList.data = Visit.data as IpItemList[];
-      // this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
-      // this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
+      this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
+      this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
       console.log(this.dsIpItemList.data)
     });
   }
 
-  // getAdvancetotal(element) {
-  //   let netAmt;
-  //   netAmt = element.reduce((sum, { AdvanceAmount }) => sum += +(AdvanceAmount || 0), 0);
-  //   this.TotalAdvamt = netAmt;
-  //   return netAmt;
-  // }
-
-  // getAdvavilable(element) {
-  //   let netAmt;
-  //   netAmt = element.reduce((sum, { BalanceAmount }) => sum += +(BalanceAmount || 0), 0);
-  //   this.Advavilableamt = netAmt;
-  //   return netAmt;
-  // } 
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -195,234 +215,344 @@ export class NewAdvanceComponent implements OnInit {
       return false;
     }
   }
+
+  removeControls(group: FormGroup, controlNames: string[]) {
+    controlNames.forEach(name => group?.removeControl(name));
+  }
+
   onSave() {
-    if (!this._PharAdvanceService.NewAdvanceForm.get('RegID')?.value && !this.vRegId) {
-        this.toastr.warning('Please Select Patient', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
+    if (!this.MainForm.get('RegID')?.value && !this.vRegId) {
+      this.toastr.warning('Please Select Patient', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
       this.toastr.warning('Please enter advance amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
-    if (!this.vAdvanceId) {
-      let insertPHAdvanceObj = {};
-      insertPHAdvanceObj['advanceID'] = 0;
-      insertPHAdvanceObj['date'] = this.dateTimeObj.date || '01/01/1900';
-      insertPHAdvanceObj['refId'] = this.vRegId || 0;
-      insertPHAdvanceObj['opdIpdType'] = 1;
-      insertPHAdvanceObj['opdIpdId'] = this.vAdmissionID || 0;
-      insertPHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-      insertPHAdvanceObj['advanceUsedAmount'] = 0;
-      insertPHAdvanceObj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-      insertPHAdvanceObj['addedBy'] = this._loggedService.currentUserValue.userId;
-      insertPHAdvanceObj['isCancelled'] = false;
-      insertPHAdvanceObj['isCancelledBy'] = '0';
-      insertPHAdvanceObj['isCancelledDate'] = this.dateTimeObj.date || '01/01/1900'
 
-      let insertPHAdvanceDetailobj = {};
-      insertPHAdvanceDetailobj['advanceDetailID'] = 0;
-      insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date;
-      insertPHAdvanceDetailobj['time'] = this.dateTimeObj.time;
-      insertPHAdvanceDetailobj['advanceId'] = 0;
-      insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
-      insertPHAdvanceDetailobj['transactionId'] = 2;
-      insertPHAdvanceDetailobj['opdIpdId'] = this.vAdmissionID || 0;
-      insertPHAdvanceDetailobj['opdIpdType'] = 1;
-      insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-      insertPHAdvanceDetailobj['usedAmount'] = 0;
-      insertPHAdvanceDetailobj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-      insertPHAdvanceDetailobj['refundAmount'] = 0;
-      insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
-      insertPHAdvanceDetailobj['isCancelled'] = false;
-      insertPHAdvanceDetailobj['isCancelledBy'] = 0;
-      insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
-      insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-    
-      debugger
-       const PatientHeaderObj = {
+    this.insertForm?.get("pharmacyAdvance.advanceId")?.setValue(this.vAdvanceId || 0);
+    this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
+    this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+    this.insertForm?.get("pharmacyAdvance.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+    this.insertForm?.get("pharmacyAdvance.refId")?.setValue(this.vRegId ||0);
+    this.insertForm?.get("pharmacyAdvance.opdIpdId")?.setValue(this.vAdmissionID || 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.advanceId")?.setValue(this.vAdvanceId || 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.advanceDetailId")?.setValue(this.vAdvanceDetailID || 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'shortTime'));
+    this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+    this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+    this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.refId")?.setValue(this.vRegId ||0);
+    this.insertForm?.get("pharmacyAdvanceDetails.opdIpdId")?.setValue(this.vAdmissionID ||0);
+
+    if (!this.insertForm?.invalid) {
+      const PatientHeaderObj = {
         Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
         PatientName: this.vPatienName,
-        RegNo: this.vRegNo, 
-        DoctorName: this.vCompanyName, 
-        CompanyName: this.vDoctorName, 
-        OPD_IPD_Id: this.vIPDNo, 
+        RegNo: this.vRegNo,
+        DoctorName: this.vDoctorName,
+        CompanyName: this.vCompanyName,
+        OPD_IPD_Id: this.vIPDNo,
         Age: this.vAge,
-        NetPayAmount: this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0,
+        NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
       };
 
-      const dialogRef = this._matDialog.open(OpPaymentComponent,
-        {
-          maxWidth: "80vw",
-          height: '650px',
-          width: '80%',
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Pharma-Advance",
-            advanceObj: PatientHeaderObj,
+      if (!this.vAdvanceId) {
+
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+          {
+            maxWidth: "80vw",
+            height: '650px',
+            width: '80%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "IP-Pharma-Advance",
+              advanceObj: PatientHeaderObj,
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result && result.submitDataPay) {
+            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+
+            console.log(this.insertForm?.value);
+            this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
+              this.viewgetIPAdvanceReportPdf(response);
+              this._matDialog.closeAll();
+              this.onClose();
+            });
           }
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('==============================  Advance Amount ===========', result);
 
-         if (result && result.submitDataPay) {
-          debugger
-          let submitData = {
-          "pharmacyAdvance": insertPHAdvanceObj,
-          "pharmacyAdvanceDetails": insertPHAdvanceDetailobj,
-          "paymentPharmacy": result.submitDataPay.ipPaymentInsert
-        };
-        console.log(submitData);
-          this._PharAdvanceService.InsertIpPharmaAdvance(submitData).subscribe(response => {
+      }
+      else {
+        const pharmacyAdvanceGroup = this.insertForm?.get('pharmacyAdvance') as FormGroup;
+        this.removeControls(pharmacyAdvanceGroup, [
+          'date', 'refId', 'opdIpdType', 'opdIpdId','advanceUsedAmount', 'addedBy', 'isCancelled','isCancelledBy', 'isCancelledDate']);
 
-            this.viewgetIPAdvanceReportPdf(response);
-            this._matDialog.closeAll();
-            this.onClose();
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+          {
+            maxWidth: "80vw",
+            height: '650px',
+            width: '80%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "IP-Pharma-Advance",
+              advanceObj: PatientHeaderObj,
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result && result.submitDataPay) {
+            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+
+            console.log(this.insertForm?.value);
+            this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
+              this.viewgetIPAdvanceReportPdf(response);
+              this._matDialog.closeAll();
+              this.onClose();
+            });
+          }
         });
+      }
+    } else {
+      let invalidFields: string[] = [];
+
+      if (this._PharAdvanceService.CreaterNewAdvanceForm().invalid) {
+        for (const controlName in this._PharAdvanceService.CreaterNewAdvanceForm().controls) {
+          if (this._PharAdvanceService.CreaterNewAdvanceForm().controls[controlName].invalid) {
+            invalidFields.push(`Advance of Bill Footer: ${controlName}`);
+          }
         }
-      });
+      }
+      // checks nested error 
+      if (this.insertForm?.invalid) {
+        for (const controlName in this.insertForm.controls) {
+          const control = this.insertForm.get(controlName);
 
-    }
-    else {
-      let updatePHAdvanceObj = {};
-      updatePHAdvanceObj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0
-      updatePHAdvanceObj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0
-      updatePHAdvanceObj['advanceId'] = this.vAdvanceId || 0;
-
-      let insertPHAdvanceDetailobj = {};
-      insertPHAdvanceDetailobj['advanceDetailID'] = this.vAdvanceDetailID || 0;
-      insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date;
-      insertPHAdvanceDetailobj['time'] = this.dateTimeObj.time;
-      insertPHAdvanceDetailobj['advanceId'] = this.vAdvanceId || 0;
-      insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
-      insertPHAdvanceDetailobj['transactionId'] = 2;
-      insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
-      insertPHAdvanceDetailobj['opD_IPD_Id'] = this.vAdmissionID || 0;
-      insertPHAdvanceDetailobj['advanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-      insertPHAdvanceDetailobj['usedAmount'] = 0;
-      insertPHAdvanceDetailobj['balanceAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value;
-      insertPHAdvanceDetailobj['refundAmount'] = 0;
-      insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
-      insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
-      insertPHAdvanceDetailobj['isCancelled'] = false;
-      insertPHAdvanceDetailobj['isCancelledBy'] = 0;
-      insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
-      insertPHAdvanceDetailobj['reason'] = this._PharAdvanceService.NewAdvanceForm.get('comment').value || '';
-      insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-
-      let PatientHeaderObj = {};
-      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      // PatientHeaderObj['PatientName'] = this.vPatienName;
-      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      // PatientHeaderObj['BillId'] = 0;
-      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-
-      // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-      //   {
-      //     maxWidth: "90vw",
-      //     height: '640px',
-      //     width: '70%',
-
-      //     data: {
-      //       vPatientHeaderObj: PatientHeaderObj,
-      //       FromName: "IP-Pharma-Advance",
-      //       advanceObj: PatientHeaderObj,
-      //     }
-      //   });
-      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['PatientName'] = this.vPatienName;
-      PatientHeaderObj['RegNo'] = this.vRegNo;
-      PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      PatientHeaderObj['CompanyName'] = this.vCompanyName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
-      PatientHeaderObj['Age'] = this.vAge;
-      PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewAdvanceForm.get('advanceAmt').value || 0;
-      const dialogRef = this._matDialog.open(OpPaymentComponent,
-        {
-          maxWidth: "80vw",
-          height: '650px',
-          width: '80%',
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "IP-Pharma-Advance",
-            advanceObj: PatientHeaderObj,
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Nested : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`MainForm: ${controlName}`);
           }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('==============================  Advance Amount ===========');
-
-        let submitData = {
-          "updatePHAdvance": updatePHAdvanceObj,
-          "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
-          "insertPHPayment": result.submitDataPay.ipPaymentInsert
-        };
-        console.log(submitData);
-        this._PharAdvanceService.UpdateIpPharmaAdvance(submitData).subscribe(response => {
-          if (response) {
-            this.toastr.success('IP Pharma Advance data Updated Successfully !', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this._matDialog.closeAll();
-            this.onClose();
-            this.viewgetIPAdvanceReportPdf(response);
-          } else {
-            this.toastr.success('IP Pharma Advance data not Updated !', 'error !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          }
-          this.isLoading = '';
-        });
-
-      });
+      }
     }
 
   }
 
+  //  onSave() {
+  //     if (!this.MainForm.get('RegID')?.value && !this.vRegId) {
+  //         this.toastr.warning('Please Select Patient', 'Warning!', {
+  //           toastClass: 'tostr-tost custom-toast-warning',
+  //         });
+  //         return;
+  //       }
+  //     if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
+  //       this.toastr.warning('Please enter advance amount', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //     }
+  //     if (!this.vAdvanceId) {
+  //       let insertPHAdvanceObj = {};
+  //       insertPHAdvanceObj['advanceID'] = 0;
+  //       insertPHAdvanceObj['date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')
+  //       insertPHAdvanceObj['refId'] = this.vRegId || 0;
+  //       insertPHAdvanceObj['opdIpdType'] = 1;
+  //       insertPHAdvanceObj['opdIpdId'] = this.vAdmissionID || 0;
+  //       insertPHAdvanceObj['advanceAmount'] = Number(this.MainForm.get('advanceAmt').value) || 0;
+  //       insertPHAdvanceObj['advanceUsedAmount'] = 0;
+  //       insertPHAdvanceObj['balanceAmount'] = Number(this.MainForm.get('advanceAmt').value) || 0;
+  //       insertPHAdvanceObj['addedBy'] = this._loggedService.currentUserValue.userId;
+  //       insertPHAdvanceObj['isCancelled'] = false;
+  //       insertPHAdvanceObj['isCancelledBy'] = 0;
+  //       insertPHAdvanceObj['isCancelledDate'] = '1900-01-01'
 
+  //       let insertPHAdvanceDetailobj = {};
+  //       insertPHAdvanceDetailobj['advanceDetailID'] = 0;
+  //       insertPHAdvanceDetailobj['date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')
+  //       insertPHAdvanceDetailobj['time'] = this.datePipe.transform(this.dateTimeObj.date, 'shortTime')
+  //       insertPHAdvanceDetailobj['advanceId'] = 0;
+  //       insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
+  //       insertPHAdvanceDetailobj['transactionId'] = 2;
+  //       insertPHAdvanceDetailobj['opdIpdId'] = this.vAdmissionID || 0;
+  //       insertPHAdvanceDetailobj['opdIpdType'] = 1;
+  //       insertPHAdvanceDetailobj['advanceAmount'] = Number(this.MainForm.get('advanceAmt').value);
+  //       insertPHAdvanceDetailobj['usedAmount'] = 0;
+  //       insertPHAdvanceDetailobj['balanceAmount'] = Number(this.MainForm.get('advanceAmt').value);
+  //       insertPHAdvanceDetailobj['refundAmount'] = 0;
+  //       insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
+  //       insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
+  //       insertPHAdvanceDetailobj['isCancelled'] = false;
+  //       insertPHAdvanceDetailobj['isCancelledBy'] = 0;
+  //       insertPHAdvanceDetailobj['isCancelledDate'] = '1900-01-01';
+  //       insertPHAdvanceDetailobj['reason'] = this.MainForm.get('comment').value || '';
+  //       insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.user.storeId || 0;
+
+  //       debugger
+  //        const PatientHeaderObj = {
+  //         Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+  //         PatientName: this.vPatienName,
+  //         RegNo: this.vRegNo, 
+  //         DoctorName: this.vDoctorName, 
+  //         CompanyName: this.vCompanyName, 
+  //         OPD_IPD_Id: this.vIPDNo, 
+  //         Age: this.vAge,
+  //         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
+  //       };
+
+  //       const dialogRef = this._matDialog.open(OpPaymentComponent,
+  //         {
+  //           maxWidth: "80vw",
+  //           height: '650px',
+  //           width: '80%',
+  //           data: {
+  //             vPatientHeaderObj: PatientHeaderObj,
+  //             FromName: "IP-Pharma-Advance",
+  //             advanceObj: PatientHeaderObj,
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         console.log('==============================  Advance Amount ===========', result);
+
+  //          if (result && result.submitDataPay) {
+
+  //           let submitData = {
+  //           "pharmacyAdvance": insertPHAdvanceObj,
+  //           "pharmacyAdvanceDetails": insertPHAdvanceDetailobj,
+  //           "paymentPharmacy": result.submitDataPay.ipPaymentInsert
+  //         };
+  //         console.log(submitData);
+  //           this._PharAdvanceService.InsertIpPharmaAdvance(submitData).subscribe(response => {
+
+  //             this.viewgetIPAdvanceReportPdf(response);
+  //             this._matDialog.closeAll();
+  //             this.onClose();
+  //         });
+  //         }
+  //       });
+
+  //     }
+  //     else {
+  //       let updatePHAdvanceObj = {};
+  //       updatePHAdvanceObj['advanceAmount'] = this.MainForm.get('advanceAmt').value || 0
+  //       updatePHAdvanceObj['balanceAmount'] = this.MainForm.get('advanceAmt').value || 0
+  //       updatePHAdvanceObj['advanceId'] = this.vAdvanceId || 0;
+
+  //       let insertPHAdvanceDetailobj = {};
+  //       insertPHAdvanceDetailobj['advanceDetailID'] = this.vAdvanceDetailID || 0;
+  //       insertPHAdvanceDetailobj['date'] = this.dateTimeObj.date;
+  //       insertPHAdvanceDetailobj['time'] = this.dateTimeObj.time;
+  //       insertPHAdvanceDetailobj['advanceId'] = this.vAdvanceId || 0;
+  //       insertPHAdvanceDetailobj['refId'] = this.vRegId || 0;
+  //       insertPHAdvanceDetailobj['transactionId'] = 2;
+  //       insertPHAdvanceDetailobj['opD_IPD_Type'] = 1;
+  //       insertPHAdvanceDetailobj['opD_IPD_Id'] = this.vAdmissionID || 0;
+  //       insertPHAdvanceDetailobj['advanceAmount'] = this.MainForm.get('advanceAmt').value;
+  //       insertPHAdvanceDetailobj['usedAmount'] = 0;
+  //       insertPHAdvanceDetailobj['balanceAmount'] = this.MainForm.get('advanceAmt').value;
+  //       insertPHAdvanceDetailobj['refundAmount'] = 0;
+  //       insertPHAdvanceDetailobj['reasonOfAdvanceId'] = 0;
+  //       insertPHAdvanceDetailobj['addedBy'] = this._loggedService.currentUserValue.userId;
+  //       insertPHAdvanceDetailobj['isCancelled'] = false;
+  //       insertPHAdvanceDetailobj['isCancelledBy'] = 0;
+  //       insertPHAdvanceDetailobj['isCancelledDate'] = this.dateTimeObj.date;
+  //       insertPHAdvanceDetailobj['reason'] = this.MainForm.get('comment').value || '';
+  //       insertPHAdvanceDetailobj['storeId'] = this._loggedService.currentUserValue.storeId || 0;
+
+  //       let PatientHeaderObj = {};
+  //       // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
+  //       // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+  //       // PatientHeaderObj['PatientName'] = this.vPatienName;
+  //       // PatientHeaderObj['UHIDNO'] = this.vRegNo;
+  //       // PatientHeaderObj['BillId'] = 0;
+  //       // PatientHeaderObj['DoctorName'] = this.vDoctorName;
+  //       // PatientHeaderObj['NetPayAmount'] = this.MainForm.get('advanceAmt').value || 0;
+
+  //       // const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
+  //       //   {
+  //       //     maxWidth: "90vw",
+  //       //     height: '640px',
+  //       //     width: '70%',
+
+  //       //     data: {
+  //       //       vPatientHeaderObj: PatientHeaderObj,
+  //       //       FromName: "IP-Pharma-Advance",
+  //       //       advanceObj: PatientHeaderObj,
+  //       //     }
+  //       //   });
+  //       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+  //         PatientHeaderObj['PatientName'] = this.vPatienName;
+  //       PatientHeaderObj['RegNo'] = this.vRegNo;
+  //       PatientHeaderObj['DoctorName'] = this.vDoctorName;
+  //       PatientHeaderObj['CompanyName'] = this.vCompanyName;
+  //       PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+  //       PatientHeaderObj['Age'] = this.vAge;
+  //       PatientHeaderObj['NetPayAmount'] = this.MainForm.get('advanceAmt').value || 0;
+  //       const dialogRef = this._matDialog.open(OpPaymentComponent,
+  //         {
+  //           maxWidth: "80vw",
+  //           height: '650px',
+  //           width: '80%',
+  //           data: {
+  //             vPatientHeaderObj: PatientHeaderObj,
+  //             FromName: "IP-Pharma-Advance",
+  //             advanceObj: PatientHeaderObj,
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         console.log('==============================  Advance Amount ===========');
+
+  //         let submitData = {
+  //           "updatePHAdvance": updatePHAdvanceObj,
+  //           "insertPHAdvanceDetail": insertPHAdvanceDetailobj,
+  //           "insertPHPayment": result.submitDataPay.ipPaymentInsert
+  //         };
+  //         console.log(submitData);
+  //         this._PharAdvanceService.UpdateIpPharmaAdvance(submitData).subscribe(response => {
+  //           if (response) {
+  //             this.toastr.success('IP Pharma Advance data Updated Successfully !', 'Updated !', {
+  //               toastClass: 'tostr-tost custom-toast-success',
+  //             });
+  //             this._matDialog.closeAll();
+  //             this.onClose();
+  //             this.viewgetIPAdvanceReportPdf(response);
+  //           } else {
+  //             this.toastr.success('IP Pharma Advance data not Updated !', 'error !', {
+  //               toastClass: 'tostr-tost custom-toast-success',
+  //             });
+  //           }
+  //           this.isLoading = '';
+  //         });
+
+  //       });
+  //     }
+
+  //   }
 
   viewgetIPAdvanceReportPdf(contact) {
 
-
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-
-      this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
-        contact.AdvanceDetailID
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Phrama Advance Receipt Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100)
-
   }
-
-
 
   onClose() {
     this._matDialog.closeAll();
     this.OnReset();
   }
   OnReset() {
-    this._PharAdvanceService.NewAdvanceForm.reset();
-    this._PharAdvanceService.NewAdvanceForm.get('Op_ip_id').setValue('1');
+    this.MainForm.reset();
+    this.MainForm.get('Op_ip_id').setValue('1');
     this.dsIpItemList.data = [];
   }
 

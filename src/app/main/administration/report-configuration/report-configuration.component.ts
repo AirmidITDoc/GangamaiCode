@@ -31,7 +31,7 @@ export class ReportConfigurationComponent implements OnInit {
             { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-            { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+            // { heading: "Parentid", key: "parentid", sort: true, align: 'left', emptySign: 'NA', width: 80 },
             { heading: "ReportMode", key: "reportMode", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "ReportTitle", key: "reportTitle", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "ReportHeader", key: "reportHeader", sort: true, align: 'left', emptySign: 'NA', width: 350 },
@@ -65,21 +65,16 @@ export class ReportConfigurationComponent implements OnInit {
         ],
         sortField: "ReportId",
         sortOrder: 1,
-        // filters: [
-        //     { fieldName: "reportName", fieldValue: "", opType: OperatorComparer.Contains },
-            // { fieldName: "menuName", fieldValue: "", opType: OperatorComparer.Contains },
-        //     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        // ]
         filters: [
             { fieldName: "parentid", fieldValue: "", opType: OperatorComparer.Equals },
-            // { fieldName: "ReportId", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "ReportName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
 
     ngOnInit(): void {
         this.myform = this.createseacrhform();
-        if(this.myform.get('reportName').value=="0"){
+        if(this.myform.get('MenuName').value=="0"){
             this.gridConfig.filters[0].fieldValue = ""  
         }
     }
@@ -114,19 +109,19 @@ export class ReportConfigurationComponent implements OnInit {
 
     ListView(obj: any) {
         console.log(obj)
-        if(this.myform.get('reportName').value=="0"){
-           this.myform.get('reportName').setValue("") 
+        if(this.myform.get('MenuName').value=="0"){
+           this.myform.get('MenuName').setValue("") 
         }
         this.gridConfig.filters[0].fieldValue = obj.value
     }
 
-     ListView1(obj: any) {
-        console.log(obj)
-        if(this.myform.get('MenuName').value=="0"){
-           this.myform.get('MenuName').setValue("") 
-        }
-        this.gridConfig.filters[1].fieldValue = obj.text
-    }
+    //  ListView1(obj: any) {
+    //     console.log(obj)
+    //     if(this.myform.get('MenuName').value=="0"){
+    //        this.myform.get('MenuName').setValue("") 
+    //     }
+    //     this.gridConfig.filters[1].fieldValue = obj.text
+    // }
 
 //     ListView(value) {
 //         debugger

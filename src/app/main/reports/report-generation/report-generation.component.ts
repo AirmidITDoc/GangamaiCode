@@ -67,6 +67,7 @@ export class ReportGenerationComponent implements OnInit {
     PaymentId:any;
     DrugTypeId:any;
     ItemId:any;
+    OPIPType:any='2';
     // 
     rid: number = 0;
     UId: any = 0;
@@ -110,6 +111,7 @@ export class ReportGenerationComponent implements OnInit {
     flagPaymentSelected:boolean=false;
     flagDrugTypeSelected:boolean=false;
     flagItemSelected:boolean=false;
+    flagOPIPTypeSelected:boolean=false;
     // 
 
     constructor(
@@ -181,7 +183,6 @@ export class ReportGenerationComponent implements OnInit {
         );
     }
     GetReportDeails(node: any){
-        debugger
         this.OnClose();
         this.selectedNode = node;
         this.reportDetail = this.reportsData?.find(x => (x.reportId == node?.id));
@@ -217,7 +218,9 @@ export class ReportGenerationComponent implements OnInit {
         if(controllerPermission.filter(x => x == "ItemDrugType")?.length > 0)
             this.flagDrugTypeSelected = true;
         if(controllerPermission.filter(x => x == "Item")?.length > 0)
-            this.flagItemSelected = true;
+            this.flagItemSelected = true;        
+        if(controllerPermission.filter(x => x == "OPIPType")?.length > 0)
+            this.flagOPIPTypeSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -283,6 +286,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('PaymentId').setValue('');
         this._ReportService.userForm.get('DrugTypeId').setValue('');
         this._ReportService.userForm.get('ItemId').setValue('');
+        this._ReportService.userForm.get('OPIPType').setValue('2');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
@@ -313,6 +317,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPaymentSelected=false;
         this.flagDrugTypeSelected=false;
         this.flagItemSelected=false;
+        this.flagOPIPTypeSelected=false;
     }
     GetPrint() {
         setTimeout(() => {
@@ -419,7 +424,19 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.ItemId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-                //    
+            // if (this.flagOPIPTypeSelected)
+            //     paramFilterList.push({
+            //         "fieldName": "OPIPType",
+            //         "fieldValue": this.OPIPType.toString() || "2",
+            //         "opType": OperatorComparer.Equals
+            //     });
+            if (this.flagOPIPTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "OPIPType",
+                    "fieldValue": this._ReportService.userForm.get('OPIPType').value || "2",
+                    "opType": OperatorComparer.Equals
+                });
+                //   
             let param = {
                 "searchFields": paramFilterList,
                 "mode": this.reportDetail?.reportMode,
@@ -429,7 +446,7 @@ export class ReportGenerationComponent implements OnInit {
                 "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
                 "groupByLabel": this.reportDetail?.reportGroupByLabel,
                 "summaryLabel": this.reportDetail?.summaryLabel,
-                "columnWidths": this.reportDetail?.columnWidths?.split(",") || [],
+                "columnWidths": this.reportDetail?.columnWidths?.split(",") || this.reportDetail?.reportColumnWidths?.split(",") || [],
                 "htmlFilePath": this.reportDetail?.reportBodyFile,
                 "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
                 "spName": this.reportDetail?.reportSpname,
