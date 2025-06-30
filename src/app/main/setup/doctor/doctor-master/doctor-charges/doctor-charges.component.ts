@@ -18,12 +18,13 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class DoctorChargesComponent {
   DrchargesForm: FormGroup;
+  SrvcName1: any;
+  serviceId: any
+  autocompleteModetariff: string = "Tariff";
+  autocompleteModeService: string = "Service";
+  autocompleteModeclass: string = "Class";
 
-  allServices = [
-    'Consultation Fee',
-    'FOLEYS INSERTION / REMOVAL',
-    'FOLLOWUP CHARGE'
-  ];
+
   constructor(public _DoctorMasterService: DoctorMasterService,
     private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,31 +36,17 @@ export class DoctorChargesComponent {
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<DoctorChargesComponent>,
 
-  ) {
+  ) {  this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
+
   }
 
-  // appointmentGroups = [
-  //   {
-  //     label: 'Appointment Charges setup',
-  //     rows: [
-  //       { type: 'New Visit', graceDays: '', noOfVisits: '', charges: '', serviceName: 'Consultation Fee', enabled: true, filteredServices: [] },
-  //       { type: 'Re-Visit Same Doctor', graceDays: '', noOfVisits: '', charges: '', serviceName: '', enabled: true, filteredServices: [] }
-  //     ]
-  //   },
-  //   {
-  //     label: 'Appointment Charges setup - VIDEO',
-  //     rows: [
-  //       { type: 'New Visit', graceDays: '', noOfVisits: '', charges: '', serviceName: '', enabled: true, filteredServices: [] }
-  //     ]
-  //   }
-  // ];
-
+ 
   ApiURL: any;
   ngOnInit(): void {
     this.DrchargesForm = this.createChargesForm();
     this.DrchargesForm.markAllAsTouched();
 
-    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
+    // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
 
   }
 
@@ -67,38 +54,16 @@ export class DoctorChargesComponent {
   createChargesForm() {
     return this.formBuilder.group({
 
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorId: [0],
       docChargeId: 0,
-      serviceId: [''],
-      tariffId: [0, [
-        Validators.required]],
-      classId: ['', [
-        Validators.required]],
-      days: [''],
-      price: 0
+      serviceId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      classId: ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: ['',Validators.required],
+      price: ['',Validators.required]
 
     });
   }
-
-  // initFilterOptions() {
-  //   this.appointmentGroups.forEach(group => {
-  //     group.rows.forEach(row => {
-  //       row.filteredServices = this.allServices;
-  //     });
-  //   });
-  // }
-
-  // filterService(row: any) {
-  //   const input = row.serviceName?.toLowerCase() || '';
-  //   row.filteredServices = this.allServices.filter(service =>
-  //     service.toLowerCase().includes(input)
-  //   );
-  // }
-  SrvcName1: any;
-  serviceId: any
-  autocompleteModetariff: string = "Tariff";
-  autocompleteModeService: string = "Service";
-  autocompleteModeclass: string = "Class";
 
   getSelectedserviceObj(obj) {
     this.SrvcName1 = obj.serviceName;
@@ -106,23 +71,40 @@ export class DoctorChargesComponent {
 
   }
 
-  getSelectedclassObj(obj) { }
-
-
-  getSelectedTariffObj(obj) { }
-  onSave() {
-    // console.log('Saved data:', this.appointmentGroups);
-  }
-
+ 
   onCancel() {
     // reset logic
   }
 
   onSubmit() {
+    console.log(this.DrchargesForm.value)
+       this.DrchargesForm.get("serviceId").setValue(this.serviceId)
+    if (!this.DrchargesForm.invalid) {
+      // this.DrchargesForm.get("serviceId").setValue(this.serviceId)
+      this.dialogRef.close(this.DrchargesForm.value)
+    } else {
+      let invalidFields = [];
+      if (this.DrchargesForm.invalid) {
+        for (const controlName in this.DrchargesForm.controls) {
+          if (this.DrchargesForm.controls[controlName].invalid) { invalidFields.push(`Charges Form: ${controlName}`); }
+        }
+      }
 
-    this.DrchargesForm.get("serviceId").setValue(this.serviceId)
-    this.dialogRef.close(this.DrchargesForm.value)
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+
+    }
   }
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
 
   onClear(val: boolean) {

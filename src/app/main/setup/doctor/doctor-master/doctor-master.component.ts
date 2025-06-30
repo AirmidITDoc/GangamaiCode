@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
-import { gridModel } from "app/core/models/gridRequest";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -118,9 +118,10 @@ export class DoctorMasterComponent implements OnInit {
 
   onChangeFirst() {
     debugger
-    this.f_name = this.myformSearch.get('firstName').value + "%"
-    this.l_name = this.myformSearch.get('lastName').value + "%"
-    this.active = this.myformSearch.get('FlagActive').value
+    this.f_name = this.myformSearch.get('DoctorNameSearch').value + "%"
+    this.l_name ="%",// this.myformSearch.get('lastName').value + "%" || "%"
+    this.active = 1//this.myformSearch.get('FlagActive').value
+
     if(this.myformSearch.get('IsConsultant').value == true){
       this.isCon = "1"
             }else{
@@ -144,11 +145,11 @@ export class DoctorMasterComponent implements OnInit {
       sortOrder: 0,
       filters: [
         // { fieldName: "FirstName", fieldValue:this.f_name, opType: OperatorComparer.StartsWith },
-        // { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.StartsWith },
-        // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-        // { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
-        // { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
-        // { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
+        { fieldName: "F_Name", fieldValue:this.f_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+        { fieldName: "ConsultantDoc_All", fieldValue: 1, opType: OperatorComparer.Equals },
+        { fieldName: "ReferDoc_All", fieldValue: 0, opType: OperatorComparer.Equals }
       ]
         }
     this.grid.gridConfig = this.gridConfig;
@@ -203,9 +204,8 @@ this.myformSearch.get('lastName').setValue("")
 NewDoctorComponent,
 {
       maxWidth: "95vw",
-      maxHeight: "98vh",
+      maxHeight: "100vh",
       width: "100%",
-      // height: "100%",
       data: row
             }
 );

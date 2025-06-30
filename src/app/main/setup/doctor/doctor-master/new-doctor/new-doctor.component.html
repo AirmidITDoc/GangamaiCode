@@ -29,9 +29,7 @@
                 <mat-accordion multi>
                     <mat-expansion-panel expanded class="mt-12">
                         <mat-expansion-panel-header>
-                            <!-- <mat-panel-title>
-                                Visit Details
-                            </mat-panel-title> -->
+                           
                             <div (click)="$event.stopPropagation()">
                                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
                                     (selectedTabChange)="onTabChange($event)">
@@ -45,7 +43,7 @@
                             </div>
                         </mat-expansion-panel-header>
                         <ng-container [ngSwitch]="selectedTabIndex">
-                            <div *ngSwitchCase="0" style="height:650px;">
+                            <div *ngSwitchCase="0" style="height:600px;" fusePerfectScrollbar>
                                 <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
                                     <form [formGroup]="myForm" fxLayout="column" style="padding: 5px 5px 0px 5px;">
                                         <input type="hidden" name="DoctorId" formControlName="DoctorId"
@@ -58,7 +56,7 @@
                                                 Details</span>
                                         </div>
 
-                                        <mat-card>
+                                        <mat-card style="padding-top: 10px;">
                                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
                                                 <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                                     fxLayoutGap="12px 0px grid">
@@ -105,11 +103,11 @@
                                                         </airmid-dropdown>
                                                     </div>
 
-                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                        <airmid-textbox label="Age (Y)" appearance="outline"  formControlName="ageYear"
-                                                             [formGroup]="myForm" 
-                                                             (input)="calculateBirthdate()">
+                                                        <airmid-textbox label="Age (Y)" appearance="outline"
+                                                            formControlName="ageYear" [formGroup]="myForm" type="number"
+                                                            (input)="calculateBirthdate()">
                                                         </airmid-textbox>
 
                                                     </div>
@@ -129,12 +127,13 @@
                                                             <mat-datepicker #validFromPicker></mat-datepicker>
                                                         </mat-form-field> -->
 
-                                                          <airmid-textbox label="Birthdate" appearance="outline"  formControllName="DateOfBirth"
-                                                             [(value)]="value" [formGroup]="myForm" placeholder="yyyy/mm/dd"
-                                                             (input)="onChangeDateofBirth()">
+                                                        <airmid-textbox label="Birthdate" appearance="outline"
+                                                            formControllName="DateOfBirth" [(value)]="value"
+                                                            [formGroup]="myForm" placeholder="yyyy/mm/dd"
+                                                            (input)="onChangeDateofBirth()">
                                                         </airmid-textbox>
                                                     </div>
-                                                   
+
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Pan Card No" formControlName="Pancardno"
                                                             [value]="registerObj.panCardNo" [formGroup]="myForm"
@@ -300,7 +299,7 @@
                                         <div fxLayout="row">
 
                                             <div fxFlex>
-                                                <mat-card>
+                                                <mat-card style="padding-top:10px;">
                                                     <form [formGroup]="myForm">
                                                         <div fxLayout="row">
                                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -331,7 +330,7 @@
                                 </div>
                             </div>
 
-                            <div *ngSwitchCase="1" style="height:650px;">
+                            <div *ngSwitchCase="1" style="height:600px;">
                                 <div class="modal-body">
                                     <div class="modal-body-container">
                                         <div fxLayout="column" fxLayoutGap="8px">
@@ -354,7 +353,7 @@
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
 
-                                                  
+
                                                     <mat-table matSort [dataSource]="dataSourceeducation"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                         <ng-container matColumnDef="qualificationId">
@@ -397,17 +396,16 @@
                                                             </mat-cell>
                                                         </ng-container>
 
+
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let row">
+                                                            <mat-cell *matCellDef="let contact; let i=index">
                                                                 <button mat-icon-button color="warn"
-                                                                    (click)="Ondeletequalification(i,row)">
+                                                                    (click)="Ondeletequalification(i,contact)">
                                                                     <mat-icon>delete_outline</mat-icon>
                                                                 </button>
-
                                                             </mat-cell>
-
                                                         </ng-container>
 
 
@@ -455,7 +453,7 @@
                                                     </div>
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
-                                                 
+
                                                     <mat-table matSort [dataSource]="dataSourceeexperience"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
 
@@ -492,18 +490,19 @@
                                                             </mat-cell>
                                                         </ng-container>
 
+
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let row">
+                                                            <mat-cell *matCellDef="let contact; let i=index">
                                                                 <button mat-icon-button color="warn"
-                                                                    (click)="Ondeleteexperience(i,row)">
+                                                                    (click)="Ondeleteexperience(i,contact)">
                                                                     <mat-icon>delete_outline</mat-icon>
                                                                 </button>
-
                                                             </mat-cell>
-
                                                         </ng-container>
+
+
                                                         <ng-container matColumnDef="loading">
                                                             <mat-footer-cell *matFooterCellDef colspan="6">loading
                                                                 data...</mat-footer-cell>
@@ -535,7 +534,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngSwitchCase="2" style="height:650px;">
+                            <div *ngSwitchCase="2" style="height:600px;">
                                 <div class="modal-body">
                                     <div class="modal-body-container">
                                         <div fxLayout="column" fxLayoutGap="8px">
@@ -561,7 +560,7 @@
                                                     </div>
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
-                                                    
+
                                                     <mat-table matSort [dataSource]="dataSourceSchdule"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                         <ng-container matColumnDef="scheduleDays">
@@ -571,7 +570,7 @@
                                                                 <span>{{ element.scheduleDays }}</span>
                                                             </mat-cell>
                                                         </ng-container>
-
+<!-- | date:'shortTime'  -->
                                                         <ng-container matColumnDef="startTime">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>StartTime</mat-header-cell>
@@ -596,18 +595,18 @@
                                                             </mat-cell>
                                                         </ng-container>
 
+
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let row">
+                                                            <mat-cell *matCellDef="let contact; let i=index">
                                                                 <button mat-icon-button color="warn"
-                                                                    (click)="Ondeleteschdule(i,row)">
+                                                                    (click)="Ondeleteschdule(i,contact)">
                                                                     <mat-icon>delete_outline</mat-icon>
                                                                 </button>
-
                                                             </mat-cell>
-
                                                         </ng-container>
+
 
                                                         <ng-container matColumnDef="loading">
                                                             <mat-footer-cell *matFooterCellDef colspan="6">loading
@@ -689,7 +688,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div *ngSwitchCase="3" style="height:650px;">
+                            <div *ngSwitchCase="3" style="height:600px;">
                                 <div class="modal-body">
                                     <div class="modal-body-container">
                                         <div fxLayout="column" fxLayoutGap="8px">
@@ -713,32 +712,6 @@
                                                     </div>
                                                 </div>
                                                 <mat-card style="margin-top: 10px;">
-                                                    <!-- <table border="1" style="width: 100%; border-collapse: collapse;">
-                                                        <thead style="font-size: large;color: rgb(7, 69, 94);font-weight: bold;align-items: center;background-color: aliceblue;
-                                                       font-family: 'Times New Roman', Times, serif;">
-                                                            <tr>
-                                                                <th>No</th>
-                                                                <th>AppointmentType</th>
-                                                                <th>GraceDays</th>
-                                                                <th>NoofVisits</th>
-                                                                <th>Charges</th>
-                                                                <th>ServiceName</th>
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let user of Charges; let i = index"
-                                                                style="font-size: large;font-weight: bold;">
-                                                                <td>{{ i + 1 }}</td>
-                                                                <td>{{ user.AppointmentType }}</td>
-                                                                <td>{{ user.GraceDays }}</td>
-                                                                <td>{{ user.NoofVisits }}</td>
-                                                                <td>{{ user.Charges }}</td>
-                                                                <td>{{ user.ServiceName }}</td>
-
-                                                            </tr>
-                                                        </tbody>
-                                                    </table> -->
 
                                                     <mat-table matSort [dataSource]="dataSourcedrcharges"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
@@ -785,15 +758,16 @@
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
                                                             </mat-header-cell>
-                                                            <mat-cell *matCellDef="let row">
+                                                            <mat-cell *matCellDef="let contact; let i=index">
                                                                 <button mat-icon-button color="warn"
-                                                                    (click)="Ondeletecharges(i,row)">
+                                                                    (click)="Ondeletecharges(i,contact)">
                                                                     <mat-icon>delete_outline</mat-icon>
                                                                 </button>
-
                                                             </mat-cell>
-
                                                         </ng-container>
+
+
+
                                                         <ng-container matColumnDef="loading">
                                                             <mat-footer-cell *matFooterCellDef colspan="6">loading
                                                                 data...</mat-footer-cell>
@@ -826,7 +800,7 @@
                                 </div>
 
                             </div>
-                            <div *ngSwitchCase="4" style="height:650px;">
+                            <div *ngSwitchCase="4" style="height:600px;">
                                 <form [formGroup]="signatureForm" (ngSubmit)="onSubmit3()">
 
                                     <h4>Signature Details</h4>
@@ -867,7 +841,7 @@
                                     <button mat-button type="button" (click)="onCancel()">Cancel</button> -->
                                 </form>
                             </div>
-                            <div *ngSwitchCase="5" style="height:650px;">
+                            <div *ngSwitchCase="5" style="height:600px;">
                                 <div class="upload-section">
                                     <input type="file" (change)="onFileSelected($event)" />
                                     <button mat-raised-button color="primary" (click)="upload()">Upload</button>
@@ -906,104 +880,6 @@
 
                         </ng-container>
                     </mat-expansion-panel>
-
-
-
-                    <!-- <mat-expansion-panel expanded class="mt-12">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Visit Details
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
-                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
-                                <input type="hidden" name="RegId" formControlName="regId"
-                                    [(ngModel)]="registerObj.regId">
-
-                                <airmid-dropdown class="w-250" label="Unit Name" formControlName="UnitId"
-                                    [value]="UnitId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeunit"></airmid-dropdown>
-                                <airmid-dropdown class="w-250" label="Class Name" formControlName="ClassId"
-                                    [value]="ClassId" [formGroup]="VisitFormGroup"
-                                    [mode]="autocompleteModeClass"></airmid-dropdown>
-                               
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="patientType" formControlName="PatientTypeId"
-                                        [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().patientTypeId"
-                                        [mode]="autocompleteModepatienttype"
-                                        (selectionChange)="onChangePatient($event)">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Tariff Name" formControlName="TariffId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.tariffId"
-                                        [validations]="getValidationMessages().tariffId"
-                                        [mode]="autocompleteModetariff">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="Company Name" formControlName="CompanyId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.companyId"
-                                        [validations]="getValidationMessages().CompanyId"
-                                        [mode]="autocompleteModecompany">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
-                                        [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().SubCompanyId"
-                                        [mode]="autocompleteModesubcompany">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-
-                                    <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                                        [value]="data?.departmentId" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().departmentId"
-                                        [mode]="autocompletedepartment"
-                                        (selectionChange)="selectChangedepartment($event)">
-                                    </airmid-dropdown>
-
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
-                                        [value]="data?.doctorID" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().DoctorID" #ddlDoctor>
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId"
-                                        [formGroup]="VisitFormGroup" [value]="data?.refDocId"
-                                        [validations]="getValidationMessages().refDocId"
-                                        [mode]="autocompleteModerefdoc">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                    <airmid-dropdown label="Purpose" formControlName="AppPurposeId"
-                                        [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId"
-                                        [mode]="autocompleteModepurpose">
-                                    </airmid-dropdown>
-                                </div>
-
-                            </div>
-                        </form>
-                    </mat-expansion-panel> -->
                 </mat-accordion>
             </div>
         </div>

@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DoctorMasterService } from '../doctor-master.service';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-doctor-schdule',
   templateUrl: './doctor-schdule.component.html',
@@ -23,7 +24,7 @@ export class DoctorSchduleComponent {
   DrschduleForm: FormGroup
   scheduleForm: FormGroup
   DrAdhocschduleForm: FormGroup
-  RadioForm:FormGroup;
+  RadioForm: FormGroup;
   allDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   selectedDays: string[] = [];
@@ -52,53 +53,39 @@ export class DoctorSchduleComponent {
     this.DrschduleForm.markAllAsTouched();
     this.DrAdhocschduleForm = this.createAdhocScheduleGroup();
     this.DrAdhocschduleForm.markAllAsTouched();
-    this.RadioForm=this.createSearch();
+    this.RadioForm = this.createSearch();
   }
 
 
   createDrSchduleForm() {
     return this.formBuilder.group({
 
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      scheduleDays: this.days.value,
-      slot: [''],
-      startTime: [''],
-      endTime: [''],
+      doctorId: [0],
+      scheduleDays: [this.days.value, Validators.required],
+      slot: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
 
     });
   }
- 
+
   createAdhocScheduleGroup(): FormGroup {
     return this.fb.group({
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      scheduleDays: "",
-      startTime: [],
-      endTime: [],
-      slot: [],
+      scheduleDays: ["", Validators.required],
+      startTime: ["", Validators.required],
+      endTime: ["", Validators.required],
+      slot: ["", Validators.required],
 
-      // schRadio: ['adhoc'],
     });
   }
 
   createSearch(): FormGroup {
     return this.fb.group({
-          schRadio: ['adhoc'],
+      schRadio: ['adhoc'],
     });
   }
 
-  //  isDatePckrDisabled: boolean = false;
-  // onChangeTime(event) {
-  // }
-
-
-  // get schedules(): FormArray {
-  //   return this.scheduleForm.get('schedules') as FormArray;
-  // }
-
-
-  // addSchedule() {
-  //   // this.schedules.push(this.createScheduleGroup());
-  // }
 
   schstatus: boolean = false
   onChangeSch(event) {
@@ -115,30 +102,59 @@ export class DoctorSchduleComponent {
     this.selectedDays = this.days.value;
   }
 
-  removeDay(day: string): void {
-    const index = this.selectedDays.indexOf(day);
-    if (index >= 0) {
-      this.selectedDays.splice(index, 1);
-      this.days.setValue(this.selectedDays);
-    }
-  }
+  // removeDay(day: string): void {
+  //   const index = this.selectedDays.indexOf(day);
+  //   if (index >= 0) {
+  //     this.selectedDays.splice(index, 1);
+  //     this.days.setValue(this.selectedDays);
+  //   }
+  // }
   onSubmit() {
+
+
     if (this.schstatus) {
-      console.log(this.DrschduleForm.value)
-      console.log(this.selectedDays)
-      console.log(this.days.value)
-
       this.DrschduleForm.get("scheduleDays").setValue(this.days.value)
-      this.dialogRef.close(this.DrschduleForm.value)
-    }
-    else{
-    // var Payload=this.DrAdhocschduleForm.value
-    //  Payload.delete.schRadio
+      if (!this.DrschduleForm.invalid) {
+        // this.DrschduleForm.get("scheduleDays").setValue(this.days.value)
+        this.dialogRef.close(this.DrschduleForm.value)
+      }
+      else {
+        let invalidFields = [];
+        if (this.DrschduleForm.invalid) {
+          for (const controlName in this.DrschduleForm.controls) {
+            if (this.DrschduleForm.controls[controlName].invalid) { invalidFields.push(`Schdule Form: ${controlName}`); }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+        }
 
+
+      }
+    } else if (!this.schstatus) {
       this.dialogRef.close(this.DrAdhocschduleForm.value)
-  }
-  }
+    } else {
+      let invalidFields = [];
+      if (this.DrAdhocschduleForm.invalid) {
+        for (const controlName in this.DrAdhocschduleForm.controls) {
+          if (this.DrAdhocschduleForm.controls[controlName].invalid) { invalidFields.push(`Adhoc Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+    }
+}
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
   onClear(val: boolean) {
     this.DrschduleForm.reset();
     this.dialogRef.close();
@@ -155,13 +171,20 @@ export class DoctorSchduleComponent {
   endMinute = 0;
   endMeridian = 'PM';
 
+  finalStarttime: any;
+  finalEndtime: any;
+
+
   increment(type: 'start' | 'end', field: 'hour' | 'minute') {
     if (type === 'start') {
       if (field === 'hour') this.startHour = this.startHour === 12 ? 1 : this.startHour + 1;
       else this.startMinute = (this.startMinute + 1) % 60;
+      this.finalStarttime = this.startHour + ":" + this.startMinute + " " + this.sMeridian
+      // Swal.fire( this.finalStarttime)
     } else {
       if (field === 'hour') this.endHour = this.endHour === 12 ? 1 : this.endHour + 1;
       else this.endMinute = (this.endMinute + 1) % 60;
+      this.finalEndtime = this.endHour + ":" + this.endMinute + " " + this.eMeridian
     }
   }
 
@@ -169,17 +192,27 @@ export class DoctorSchduleComponent {
     if (type === 'start') {
       if (field === 'hour') this.startHour = this.startHour === 1 ? 12 : this.startHour - 1;
       else this.startMinute = (this.startMinute - 1 + 60) % 60;
+      this.finalStarttime = this.startHour + ":" + this.startMinute + " " + this.sMeridian
     } else {
       if (field === 'hour') this.endHour = this.endHour === 1 ? 12 : this.endHour - 1;
       else this.endMinute = (this.endMinute - 1 + 60) % 60;
+      this.finalEndtime = this.endHour + ":" + this.endMinute + " " + this.eMeridian
     }
   }
+  sMeridian = ""
+  eMeridian = ""
 
   toggleMeridian(type: 'start' | 'end') {
+    debugger
     if (type === 'start') {
       this.startMeridian = this.startMeridian === 'AM' ? 'PM' : 'AM';
+      this.sMeridian = this.startMeridian
+      this.finalStarttime = this.startHour + ":" + this.startMinute + " " + this.sMeridian
+
     } else {
       this.endMeridian = this.endMeridian === 'AM' ? 'PM' : 'AM';
+      this.eMeridian = this.endMeridian
+      this.finalEndtime = this.endHour + ":" + this.endMinute + " " + this.eMeridian
     }
   }
 

@@ -19,12 +19,12 @@ export class DoctorExperienceComponent {
   autocompleteModecity: string = "City";
 
   registerObj = new ExperienceDetail({})
- duration =0
- expyear=0
- expmonth=0
- expday=0
- start:any
- end:any
+  duration = 0
+  expyear = 0
+  expmonth = 0
+  expday = 0
+  start: any
+  end: any
   constructor(public _DoctorMasterService: DoctorMasterService,
     private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -47,19 +47,15 @@ export class DoctorExperienceComponent {
   createExperienceForm() {
     return this.formBuilder.group({
 
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorId: [0],
 
-      hospitalName: ['', [
-        Validators.required]],
-      designation: ['', [
-        Validators.required]],
+      hospitalName: ['', [Validators.required]],
+      designation: ['', [Validators.required]],
       startDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       endDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      YearsExp: ['', [
-        Validators.required]],
-         MonthExp: [''],
-         DaysExp: [''],
-
+      YearsExp:['', [Validators.required]],
+      MonthExp: [''],
+      DaysExp: ['']
 
     });
   }
@@ -67,36 +63,49 @@ export class DoctorExperienceComponent {
   isDatePckrDisabled: boolean = false;
   onChangeDate() {
 
-    debugger
-  this.start = this.datePipe.transform(this.ExperienceForm.get('startDate').value, "yyyy-MM-dd") || "01/01/1900"
+    
+    this.start = this.datePipe.transform(this.ExperienceForm.get('startDate').value, "yyyy-MM-dd") || "01/01/1900"
     this.end = this.datePipe.transform(this.ExperienceForm.get('endDate').value, "yyyy-MM-dd") || "01/01/1900"
-    
-    
+
+
     const start = new Date(this.ExperienceForm.get("startDate").value);
-     const end = new Date(this.ExperienceForm.get("endDate").value);
+    const end = new Date(this.ExperienceForm.get("endDate").value);
 
-  this.expyear = end.getFullYear() - start.getFullYear();
-  this.expmonth = end.getMonth() - start.getMonth();
-  this.expday = end.getDate() - start.getDate();
+    this.expyear = end.getFullYear() - start.getFullYear();
+    this.expmonth = end.getMonth() - start.getMonth();
+    this.expday = end.getDate() - start.getDate();
 
-  if (this.expday < 0) {
-    this.expmonth--;
-    this.expday += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-  }
+    if (this.expday < 0) {
+      this.expmonth--;
+      this.expday += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+    }
 
-  if (this.expmonth < 0) {
-    this.expyear--;
-    this.expmonth += 12;
-  }
+    if (this.expmonth < 0) {
+      this.expyear--;
+      this.expmonth += 12;
+    }
 
- 
+
   }
 
   onSubmit() {
-
- this.dialogRef.close(this.ExperienceForm.value)
+    if (!this.ExperienceForm.invalid) {
+      this.dialogRef.close(this.ExperienceForm.value)
+    } else {
+      let invalidFields = [];
+      if (this.ExperienceForm.invalid) {
+        for (const controlName in this.ExperienceForm.controls) {
+          if (this.ExperienceForm.controls[controlName].invalid) { invalidFields.push(`Experience Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+    }
   }
-   onClear(val: boolean) {
+
+
+  onClear(val: boolean) {
     this.ExperienceForm.reset();
     this.dialogRef.close();
   }
@@ -108,7 +117,7 @@ export class DoctorExperienceComponent {
 
     };
   }
-  onClose() { 
+  onClose() {
     this.dialogRef.close()
   }
 }

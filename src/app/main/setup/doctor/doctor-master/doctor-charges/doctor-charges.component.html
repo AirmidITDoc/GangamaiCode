@@ -79,7 +79,6 @@
 
                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-
                                     <input type="hidden" name="docChargeId" formControlName="docChargeId"/>
 
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
@@ -93,31 +92,34 @@
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-dropdown label="Tariff Name" formControlName="tariffId"
                                             [formGroup]="DrchargesForm"
-                                            [mode]="autocompleteModetariff"
-                                            (selectionChange)="getSelectedTariffObj($event)" fxFlex>
+                                            [mode]="autocompleteModetariff" fxFlex>
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-dropdown label="Class Name" formControlName="classId"
                                             [formGroup]="DrchargesForm" 
-                                            [mode]="autocompleteModeclass"
-                                            (selectionChange)="getSelectedclassObj($event)" fxFlex>
+                                            [mode]="autocompleteModeclass" fxFlex>
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                       
-                                         <airmid-textbox label="Price" formControlName="price"
+                                         <!-- <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="DrchargesForm" 
                                                 [type]="'number'" >
-                                            </airmid-textbox>
+                                            </airmid-textbox> -->
+                                             <airmid-textbox  label="Price" formControlName="price" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="5" ></airmid-textbox>
+
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="Days" formControlName="days"  [type]="'number'"
+                                        <!-- <airmid-textbox label="Days" formControlName="days"  [type]="'number'"
                                             [formGroup]="DrchargesForm">
-                                        </airmid-textbox>
+                                        </airmid-textbox> -->
+
+                                         <airmid-textbox  label="Days" formControlName="days" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="5" ></airmid-textbox>
+
                                     </div>
 
 

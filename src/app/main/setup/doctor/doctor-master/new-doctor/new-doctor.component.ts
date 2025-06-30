@@ -22,6 +22,8 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { DatePipe } from "@angular/common";
+import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
+import { indexOf } from "lodash";
 
 
 @Component({
@@ -142,13 +144,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this.signatureForm = this.createSignatureForm();
     this.initFilterOptions();
 
-   
+
     this.leaveForm = this.createLeaveForm()
 
     if ((this.data?.doctorId ?? 0) > 0) {
       this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
         this.registerObj = response;
-         console.log(this.registerObj)
+        console.log(this.registerObj)
         this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
         if (this.registerObj.signature) {
           this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
@@ -159,13 +161,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
         this.myForm.controls["RegDate"].setValue(this.registerObj.regDate);
         this.myForm.controls["DateOfBirth"].setValue(this.registerObj.dateofBirth);
-        debugger
-          this.onChangeDateofBirth(this.registerObj.dateofBirth);
+
+        this.onChangeDateofBirth(this.registerObj.dateofBirth);
       }, (error) => {
         this.toastr.error(error.message);
       });
 
-    
+
       this.getdrschduleList()
       this.getDrExperienceList()
       this.getDrEducationList()
@@ -197,17 +199,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       FirstName: ['', [
         Validators.required,
         Validators.maxLength(50),
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        Validators.pattern("^[A-Za-z/() ]*$")
       ]],
       MiddleName: ['', [
         Validators.required,
         Validators.maxLength(50),
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        Validators.pattern("^[A-Za-z/() ]*$")
       ]],
       LastName: ['', [
         Validators.required,
         Validators.maxLength(50),
-        Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+        Validators.pattern("^[A-Za-z/() ]*$")
       ]],
       DateOfBirth: [{ value: new Date() }],
       Address: ["", Validators.required],
@@ -236,7 +238,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       Education: ["",
         [
           Validators.required,
-          Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+          Validators.pattern("^[A-Za-z/() ]*$")
         ]
       ],
       IsConsultant: [true],
@@ -346,8 +348,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       docSchedId: [item.docSchedId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       scheduleDays: [item.scheduleDays || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      startTime: [this.datePipe.transform(item.startTime, 'HH:mm:ss')],
-      endTime: [this.datePipe.transform(item.endTime, 'HH:mm:ss')],
+      startTime: [this.datePipe.transform(item.startTime, 'HH:mm:ss')],//item.startTime,//
+      endTime: [this.datePipe.transform(item.endTime, 'HH:mm:ss')],//item.endTime,// 
       slot: [parseInt(item.slot), [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
@@ -401,7 +403,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
   onSubmit() {
-    debugger
+
     // Qualification detail assign to array
     this.EducationDetailsArray.clear();
     if (this.dataSourceeducation.data.length > 0) {
@@ -436,9 +438,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.ChargesDetailsArray.push(this.createChargesDetail(item));
       });
     }
-    debugger
-
-    // console.log(this.myForm.value)
 
     if (!this.myForm.invalid) {
 
@@ -453,7 +452,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
       data.Signature = this.signature;
-        data.ageYear= String(this.ageYear)
+      data.ageYear = String(this.ageYear)
 
 
       console.log(data)
@@ -683,7 +682,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     'FOLLOWUP CHARGE'
   ];
 
-  
+
 
   initFilterOptions() {
     // this.appointmentGroups.forEach(group => {
@@ -703,7 +702,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   // onSave() {
   //   // console.log('Saved data:', this.appointmentGroups);
   // }
-
+  i = 0
 
   getdrschduleList() {
     var data = {
@@ -729,11 +728,19 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this._doctorService.getSchduleList(data).subscribe((data: any) => {
       console.log(data)
 
+      // data.data.forEach(item => {
+
+      //   data.data[this.i]["startTime"] = this.datePipe.transform(item.startTime, 'HH:mm:ss')
+      //   data.data[this.i]["endTime"] = this.datePipe.transform(item.endTime, 'HH:mm:ss')
+      //   this.i=+1
+      // });
+
       if (this.dataSourceSchdule.data.length > 0) {
         this.chargeschList = []
         this.chargeschList = this.dataSourceSchdule.data
       }
-      this.chargeexpList.push(data.data);
+      console.log(data.data)
+      this.chargeschList.push(data.data);
       this.dataSourceSchdule.data = data.data as SchduleDetail[]
 
 
@@ -777,7 +784,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   }
 
   getDrEducationList() {
-    debugger
+
     var m_data = {
       "first": 0,
       "rows": 10,
@@ -852,10 +859,10 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   }
   //Education detail
   onAddEducation(element) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    this.chargeeduList = []
 
-    let that = this;
     const dialogRef = this.matDialog.open(DoctorEducationComponent,
       {
         maxWidth: "55vw",
@@ -866,8 +873,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
       if (result !== undefined) {
+        debugger
         if (this.dataSourceeducation.data.length > 0) {
-           this.chargeeduList = []
           this.chargeeduList = this.dataSourceeducation.data
         }
         this.chargeeduList.push(result);
@@ -882,7 +889,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   onAddExperience() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-
+    this.chargeexpList = []
     let that = this;
     const dialogRef = this.matDialog.open(DoctorExperienceComponent,
       {
@@ -901,7 +908,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         delete payload.MonthExp;
 
         if (this.dataSourceeexperience.data.length > 0) {
-            this.chargeexpList = []
           this.chargeexpList = this.dataSourceeexperience.data
         }
         this.chargeexpList.push(payload);
@@ -920,27 +926,79 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       {
         maxWidth: "55vw",
         height: '55vh',
-        width: '100%',
-        // data: element
+        width: '100%'
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
+
+      let charge = []
+      charge = result.scheduleDays
+
+
       if (result !== undefined) {
 
         if (this.dataSourceSchdule.data.length > 0) {
-           this.chargeschList = []
+          this.chargeschList = []
           this.chargeschList = this.dataSourceSchdule.data
         }
-        this.chargeschList.push(result);
-        this.dataSourceSchdule.data = this.chargeschList;
+        if (charge.length > 0) {
+          charge.forEach(item => {
+            const newRow = {
+              docSchedId: 0,
+              scheduleDays: item,
+              startTime: result.startTime,
+              endTime: result.endTime,
+              slot: result.slot
+            }
+            this.chargeschList.push(newRow);
+            this.dataSourceSchdule.data = this.chargeschList
+            console.log(this.chargeschList)
+          });
+        }
+        else {
+          this.chargeschList.push(result);
+          this.dataSourceSchdule.data = this.chargeschList;
+        }
       }
-    });
 
+
+    });
+    // console.log(this.dataSourceSchdule.data)
   }
+
+
+
+
+  // onAddSchdule() {
+  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+  //   buttonElement.blur(); // Remove focus from the button
+
+  //   let that = this;
+  //   const dialogRef = this.matDialog.open(DoctorSchduleComponent,
+  //     {
+  //       maxWidth: "55vw",
+  //       height: '55vh',
+  //       width: '100%',
+  //       // data: element
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(result)
+  //     if (result !== undefined) {
+
+  //       if (this.dataSourceSchdule.data.length > 0) {
+  //          this.chargeschList = []
+  //         this.chargeschList = this.dataSourceSchdule.data
+  //       }
+  //       this.chargeschList.push(result);
+  //       this.dataSourceSchdule.data = this.chargeschList;
+  //     }
+  //   });
+
+  // }
   onAddCharges() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-
+    this.chargechargesList = []
     let that = this;
     const dialogRef = this.matDialog.open(DoctorChargesComponent,
       {
@@ -950,14 +1008,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         // data: element
       });
     dialogRef.afterClosed().subscribe(result => {
-       if (result !== undefined) {
-      if (this.dataSourcedrcharges.data.length > 0) {
+      if (result !== undefined) {
+        if (this.dataSourcedrcharges.data.length > 0) {
         this.chargechargesList = this.dataSourcedrcharges.data
+        }
+        this.chargechargesList.push(result);
+        this.dataSourcedrcharges.data = this.chargechargesList;
+
       }
-      this.chargechargesList.push(result);
-      this.dataSourcedrcharges.data = this.chargechargesList;
-      this.chargechargesList = []
-    }
     });
 
   }
@@ -1074,7 +1132,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   minDate = new Date();
   value = this.datePipe.transform(new Date(), "yyyy-MM-dd");
   onChangeDateofBirth(DateOfBirth: Date) {
-    debugger
+
     if (DateOfBirth > this.minDate) {
       Swal.fire("Enter Proper Birth Date.. ")
       return;
@@ -1111,7 +1169,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
   calculateBirthdate(): void {
-    debugger
+
     const age = this.myForm.get("ageYear").value// this.myForm.get("ageYear")?.value;
 
     if (age && age > 0) {
@@ -1139,12 +1197,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   }
 
   Ondeleteschdule(index: number) {
+
     this.chargeschList.splice(index, 1);
     this.dataSourceSchdule.data = this.chargeschList;
 
   }
 
   Ondeletecharges(index: number) {
+
     this.chargechargesList.splice(index, 1);
     this.dataSourcedrcharges.data = this.chargechargesList;
 

@@ -17,91 +17,98 @@ import { fuseAnimations } from '@fuse/animations';
   templateUrl: './doctor-education.component.html',
   styleUrls: ['./doctor-education.component.scss'],
   encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  animations: fuseAnimations,
 })
 export class DoctorEducationComponent {
-EducationForm:FormGroup
- autocompleteModecountry: string = "Country";
- autocompleteModecity: string = "City";
-selectedYear: any;
- registerObj = new EducationDetail({})
+  EducationForm: FormGroup
+  autocompleteModecountry: string = "Country";
+  autocompleteModecity: string = "City";
+  selectedYear: any;
+  registerObj = new EducationDetail({})
 
- 
 
- autocompleteModeQualifiy: string = "Qualification";
-    autocompleteModeInstitute: string = "InstitueName";
 
-constructor(public _DoctorMasterService: DoctorMasterService,
+  autocompleteModeQualifiy: string = "Qualification";
+  autocompleteModeInstitute: string = "InstitueName";
+
+  constructor(public _DoctorMasterService: DoctorMasterService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-     private _FormvalidationserviceService: FormvalidationserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public dialogRef: MatDialogRef<DoctorEducationComponent>,
-    
+
   ) {
   }
 
-   ngOnInit(): void {
-        this.EducationForm = this.createEducationForm();
-        this.EducationForm.markAllAsTouched();
-        if(this.data){
-        this.registerObj=this.data
-        }
-   }
-
-
-    createEducationForm() {
-      return this.formBuilder.group({
-  
-        doctorId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        docQualfiId:[0],
-        qualificationId:[0],
-        passingYear: [(new Date()).toISOString()],
-        institutionNameId: [0, [
-          Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        cityId: [0, [
-          Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        countryId: [0, [
-          Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            
-  
-      });
+  ngOnInit(): void {
+    this.EducationForm = this.createEducationForm();
+    this.EducationForm.markAllAsTouched();
+    if (this.data) {
+      this.registerObj = this.data
     }
+  }
 
-    
+
+  createEducationForm() {
+    return this.formBuilder.group({
+
+      doctorId: [0],
+      docQualfiId: [0],
+      qualificationId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      passingYear: [(new Date()).toISOString()],
+      institutionNameId: ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      cityId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      countryId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]]
+
+    });
+  }
+
 
   chosenYearHandler(normalizedYear: Date, datepicker: any) {
-    this.selectedYear = this.datePipe.transform(new Date(normalizedYear.getFullYear(), 0, 1),'dd/MM/yyyy')
+    this.selectedYear = this.datePipe.transform(new Date(normalizedYear.getFullYear(), 0, 1), 'dd/MM/yyyy')
     datepicker.close();
   }
-  onSubmit(){
-    
-    this.dialogRef.close(this.EducationForm.value)
+  onSubmit() {
+    if (!this.EducationForm.invalid){
+      this.dialogRef.close(this.EducationForm.value)
+    }else {
+      let invalidFields = [];
+      if (this.EducationForm.invalid) {
+        for (const controlName in this.EducationForm.controls) {
+          if (this.EducationForm.controls[controlName].invalid) { invalidFields.push(`Education Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+      }
+
   }
 
-  getValidationMessages(){
-     return {
-    countryId:[],
-    City:[],
+  getValidationMessages() {
+    return {
+      countryId: [],
+      City: [],
 
     };
   }
 
-   onClear() {
+  onClear() {
     this.dialogRef.close()
     this.EducationForm.reset();
-    }
+  }
 
-  onClose(){ this.dialogRef.close()}
+  onClose() { this.dialogRef.close() }
 }
-      
+
 export class EducationDetail {
-   qualificationId: any;
+  qualificationId: any;
   docQualfiId: any;
   // qualification:any;
   // shortName: any;
@@ -109,7 +116,7 @@ export class EducationDetail {
   institutionNameId: any;
   cityId: any;
   countryId: any;
-  
+
   /**
    * Constructor
    *
@@ -126,7 +133,7 @@ export class EducationDetail {
       this.institutionNameId = EducationDetail.institutionNameId || 0;
       this.cityId = EducationDetail.cityId || 0;
       this.countryId = EducationDetail.countryId || '';
-     
+
     }
   }
 }
