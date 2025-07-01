@@ -129,8 +129,11 @@ export class DoctorMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             DoctorNameSearch: [""],
+            lastName:[""],
             IsDeletedSearch: ["2"],
-            IsConsultant: [true]
+            FlagActive:["1"],
+            IsConsultant: [true],
+            IsRef:[false]
         });
     }
 

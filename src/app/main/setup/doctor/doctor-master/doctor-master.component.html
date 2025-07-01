@@ -22,7 +22,9 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content">
+        <!-- <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content"> -->
+
+            <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
 
@@ -35,7 +37,16 @@
                         </button>
                     </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" fxFlex>
+                      <!-- <mat-form-field appearance="outline">
+                            <mat-label>FirstName</mat-label>
+                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myformSearch" formControlName="DoctorNameSearch"  (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field> -->
+
+
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
                             formControlName="lastName" (input)="onChangeFirst()" />
@@ -44,7 +55,7 @@
                         </button>
                     </mat-form-field>
                    
-                    <mat-radio-group value="2" [formGroup]="myformSearch" formControlName="FlagActive"
+                    <mat-radio-group value="1" [formGroup]="myformSearch" formControlName="FlagActive"
                         (change)="onChangeFirst()" fxLayoutAlign="center center">
                         <mat-radio-button value="2">All</mat-radio-button>
                         <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
@@ -54,13 +65,13 @@
                     <div fxLayout="column" class="gap-4 ">
                         <span style="font-weight: bold;">Doctor Type :</span>
                         <mat-slide-toggle name="IsConsultant" (change)="onChangeFirst()" formControlName="IsConsultant">
-                            IsConsultant
+                            IsConsultant /  IsRefDoctor
                         </mat-slide-toggle>
 
-                        <mat-slide-toggle name="IsRef" formControlName="IsRef">
+                        <!-- <mat-slide-toggle name="IsRef" formControlName="IsRef">
                             IsRefDoctor
-                        </mat-slide-toggle>
-                    </div> -->
+                        </mat-slide-toggle> -->
+                    </div>
 
                 </form>
             </ng-container>

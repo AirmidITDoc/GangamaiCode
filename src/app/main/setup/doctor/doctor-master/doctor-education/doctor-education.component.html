@@ -36,7 +36,7 @@
 
                                     <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
                                       
-                                        <airmid-dropdown label="Qualification" formControlName="qualificationId"
+                                        <airmid-dropdown label="Qualification" formControlName="qualificationId"  (selectionChange)="getSelectedqualifiObj($event)"
                                             [formGroup]="EducationForm"  [(value)]="registerObj.qualificationId"
                                             [mode]="autocompleteModeQualifiy"></airmid-dropdown>
                                     </div>
@@ -54,7 +54,7 @@
                                     </div>
 
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                                      <airmid-dropdown label="InstitutionName" formControlName="institutionNameId"
+                                      <airmid-dropdown label="InstitutionName" formControlName="institutionNameId" (selectionChange)="getSelectedInstitueObj($event)"
                                             [formGroup]="EducationForm"  [(value)]="registerObj.institutionNameId"
                                             [mode]="autocompleteModeInstitute"></airmid-dropdown>
 
@@ -62,13 +62,13 @@
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-dropdown label="City" formControlName="cityId"
-                                            [formGroup]="EducationForm" [(value)]="registerObj.cityId"
+                                            [formGroup]="EducationForm" [(value)]="registerObj.cityId"  (selectionChange)="getSelectedcityObj($event)"
                                             [validations]="getValidationMessages().City" [mode]="autocompleteModecity">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-dropdown label="Country" formControlName="countryId"
+                                        <airmid-dropdown label="Country" formControlName="countryId"  (selectionChange)="getSelectedcountryObj($event)"
                                             [value]="registerObj?.countryId" [formGroup]="EducationForm"
                                             [validations]="getValidationMessages().countryId"
                                             [mode]="autocompleteModecountry"> </airmid-dropdown>

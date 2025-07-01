@@ -42,12 +42,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   ageDay = 0;
   displayedColumnsEdu = [
 
-    'qualificationId',
+    // 'qualificationId',
+    'Qualification',
     'passingYear',
+    'InstituteName',
     // 'institutionNameId',
-    'institutionNameId',
-    'cityId',
-    'countryId',
+    'cityName',
+    'countryName',
     'action'
   ];
 
@@ -70,9 +71,10 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
   displayedColumnscharges = [
-    'serviceId',
-    'tariffId',
-    'classId',
+    // 'serviceId',
+    'serviceName',
+    'tariffName',
+    'className',
     'days',
     'price',
     'action'
@@ -1209,6 +1211,16 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this.dataSourcedrcharges.data = this.chargechargesList;
 
   }
+
+      keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 }
 
 

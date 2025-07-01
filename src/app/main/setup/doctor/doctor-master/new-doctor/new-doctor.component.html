@@ -108,12 +108,14 @@
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Aadhar Card No" formControlName="AadharCardNo" [value]="registerObj.aadharCardNo" [formGroup]="myForm" [validations]="getValidationMessages().AadharCardNo" [maxLength]="12">
+                                                        <airmid-textbox label="Aadhar Card No" formControlName="AadharCardNo"  (keypress)="keyPressAlphanumeric($event)" 
+                                                        [value]="registerObj.aadharCardNo" [formGroup]="myForm" [validations]="getValidationMessages().AadharCardNo" [maxLength]="12">
                                                         </airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Phone" formControlName="Phone" [value]="registerObj.phone" [formGroup]="myForm" [validations]="getValidationMessages().Phone" [maxLength]="10">
+                                                        <airmid-textbox label="Phone" formControlName="Phone" (keypress)="keyPressAlphanumeric($event)" 
+                                                         [value]="registerObj.phone" [formGroup]="myForm" [validations]="getValidationMessages().Phone" [maxLength]="10">
                                                         </airmid-textbox>
                                                     </div>
 
@@ -176,7 +178,7 @@
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="Education" formControlName="Education" [value]="registerObj.education" [formGroup]="myForm" [validations]="getValidationMessages().Education" [maxLength]="10">
+                                                    <airmid-textbox label="Education" formControlName="Education" [value]="registerObj.education" [formGroup]="myForm" [validations]="getValidationMessages().Education" [maxLength]="100">
                                                     </airmid-textbox>
                                                 </div>
 
@@ -249,38 +251,38 @@
 
 
                                                     <mat-table matSort [dataSource]="dataSourceeducation" [@animateStagger]="{ value: '50' }" class="airmid-table">
-                                                        <ng-container matColumnDef="qualificationId">
+                                                        <ng-container matColumnDef="Qualification">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>QualificationName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.qualificationId }}</span>
+                                                                <span>{{ element.Qualification }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="passingYear">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>passingYear</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.passingYear }}</span>
+                                                                <span>{{ element.passingYear | date:'shortDate'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="institutionNameId">
+                                                        <ng-container matColumnDef="InstituteName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>InstitutionName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.institutionNameId }}</span>
+                                                                <span>{{ element.InstituteName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="cityId">
+                                                        <ng-container matColumnDef="cityName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>CityName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.cityId }}</span>
+                                                                <span>{{ element.cityName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="countryId">
+                                                        <ng-container matColumnDef="countryName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>CountryName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span>{{ element.countryId }}</span>
+                                                                <span>{{ element.countryName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -409,12 +411,12 @@
 
                                                 <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" fxLayoutGap="4px" class="top-header accent heading-container h-40 border-radius-4">
                                                     <span style="font-size:18px; font-weight: bolder; color:white; padding:7px;">
-                                                        Schdule Details
+                                                        schedule  Details
                                                     </span>
 
                                                     <div fxLayout="row" fxLayoutAlign="end center" class="sales-footer-buttons gap-8">
                                                         <button mat-raised-button (click)="onAddSchdule()">
-                                                            + Add Schdule
+                                                            + Add schedule 
                                                         </button>
                                                     </div>
                                                 </div>
@@ -549,24 +551,24 @@
                                                 <mat-card style="margin-top: 10px;">
 
                                                     <mat-table matSort [dataSource]="dataSourcedrcharges" [@animateStagger]="{ value: '50' }" class="airmid-table">
-                                                        <ng-container matColumnDef="serviceId">
+                                                        <ng-container matColumnDef="serviceName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>ServiceName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.serviceId }}</span>
+                                                                <span>{{ element.serviceName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="tariffId">
+                                                        <ng-container matColumnDef="tariffName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>TariffName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.tariffId }}</span>
+                                                                <span>{{ element.tariffName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="classId">
+                                                        <ng-container matColumnDef="className">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>ClassName</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.classId }}</span>
+                                                                <span>{{ element.className }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 

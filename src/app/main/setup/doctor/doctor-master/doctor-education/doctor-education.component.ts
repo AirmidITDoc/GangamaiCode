@@ -25,8 +25,14 @@ export class DoctorEducationComponent {
   autocompleteModecity: string = "City";
   selectedYear: any;
   registerObj = new EducationDetail({})
-
-
+  QualifyName: any;
+  QualifyId: any;
+  InstituteName: any;
+  InstituteId: any;
+ CityName: any;
+  CityId: any;
+  CountryName: any;
+  CountryId: any;
 
   autocompleteModeQualifiy: string = "Qualification";
   autocompleteModeInstitute: string = "InstitueName";
@@ -60,13 +66,44 @@ export class DoctorEducationComponent {
 
       doctorId: [0],
       docQualfiId: [0],
-      qualificationId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      qualificationId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      Qualification:[''],
+      InstituteName:[''],
       passingYear: [(new Date()).toISOString()],
-      institutionNameId: ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-      cityId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-      countryId:  ["",[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]]
-
+      institutionNameId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      cityId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      cityName:[''],
+      countryId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      countryName:['']  
     });
+  }
+
+
+  getSelectedqualifiObj(obj) {
+    console.log(obj)
+    this.QualifyName = obj.text;
+    this.QualifyId = obj.value;
+
+  }
+
+  getSelectedInstitueObj(obj) {
+    console.log(obj)
+    this.InstituteName = obj.text;
+    this.InstituteId = obj.value;
+
+  }
+getSelectedcityObj(obj) {
+    console.log(obj)
+    this.CityName = obj.text;
+    this.CityId = obj.value;
+
+  }
+
+  getSelectedcountryObj(obj) {
+    console.log(obj)
+    this.CountryName = obj.text;
+    this.CountryId = obj.value;
+
   }
 
 
@@ -74,10 +111,30 @@ export class DoctorEducationComponent {
     this.selectedYear = this.datePipe.transform(new Date(normalizedYear.getFullYear(), 0, 1), 'dd/MM/yyyy')
     datepicker.close();
   }
+
+
+
   onSubmit() {
-    if (!this.EducationForm.invalid){
+
+    this.EducationForm.get("qualificationId").setValue(this.QualifyId)
+    this.EducationForm.get("Qualification").setValue(this.QualifyName)
+
+    this.EducationForm.get("institutionNameId").setValue(this.InstituteId)
+    this.EducationForm.get("InstituteName").setValue(this.InstituteName)
+
+
+      this.EducationForm.get("cityId").setValue(this.CityId)
+    this.EducationForm.get("cityName").setValue(this.CityName)
+
+    this.EducationForm.get("countryId").setValue(this.CountryId)
+    this.EducationForm.get("countryName").setValue(this.CountryName)
+
+
+
+
+    if (!this.EducationForm.invalid) {
       this.dialogRef.close(this.EducationForm.value)
-    }else {
+    } else {
       let invalidFields = [];
       if (this.EducationForm.invalid) {
         for (const controlName in this.EducationForm.controls) {
@@ -87,7 +144,7 @@ export class DoctorEducationComponent {
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
       }
-      }
+    }
 
   }
 
@@ -110,13 +167,15 @@ export class DoctorEducationComponent {
 export class EducationDetail {
   qualificationId: any;
   docQualfiId: any;
-  // qualification:any;
+  qualification: any;
   // shortName: any;
   passingYear: any;
   institutionNameId: any;
+  institutionName: any;
   cityId: any;
+  cityName:any;
   countryId: any;
-
+countryName:any;
   /**
    * Constructor
    *
@@ -127,12 +186,15 @@ export class EducationDetail {
     {
       this.qualificationId = EducationDetail.qualificationId || 0;
       this.docQualfiId = EducationDetail.docQualfiId || 0;
-      //   this.qualification = EducationDetail.qualification || '';
+      this.qualification = EducationDetail.qualification || '';
       // this.shortName = EducationDetail.shortName || '';
       this.passingYear = EducationDetail.passingYear || '';
       this.institutionNameId = EducationDetail.institutionNameId || 0;
+      this.institutionName = EducationDetail.institutionName || 0;
       this.cityId = EducationDetail.cityId || 0;
       this.countryId = EducationDetail.countryId || '';
+       this.cityName = EducationDetail.cityName || 0;
+      this.countryName = EducationDetail.countryName || '';
 
     }
   }

@@ -91,14 +91,14 @@
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-dropdown label="Tariff Name" formControlName="tariffId"
-                                            [formGroup]="DrchargesForm"
+                                            [formGroup]="DrchargesForm" (selectionChange)="getSelectedtariffObj($event)"
                                             [mode]="autocompleteModetariff" fxFlex>
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-dropdown label="Class Name" formControlName="classId"
-                                            [formGroup]="DrchargesForm" 
+                                            [formGroup]="DrchargesForm"  (selectionChange)="getSelectedclassObj($event)"
                                             [mode]="autocompleteModeclass" fxFlex>
                                         </airmid-dropdown>
                                     </div>
