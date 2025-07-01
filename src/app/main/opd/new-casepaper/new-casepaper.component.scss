@@ -4,8 +4,27 @@
     color: #555;
     margin-left: 5px;
 }
-
-
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  padding: 16px;
+  border-top: 1px solid #ccc;
+  z-index: 100;
+}
+.square-box {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  line-height: 24px;
+  text-align: center;
+  border: 2px solid #000;
+  border-radius: 4px;
+  margin-right: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(57, 73, 171);
+}
 
 
 // .header {

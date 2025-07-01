@@ -111,4 +111,15 @@ public doseNameUpdate(Param: any) {
       return this._httpClient1.PutData("OPDPrescriptionMedical/PrescriptionEdit/" + Param.precriptionId, Param);
   }
 }
+
+// certificate part
+ public getCertificateList(param) {
+        return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList",param);
+    }
+  
+  public CertificateInsertUpdate(Param) {
+    if (Param.certificateId) {
+      return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
+    } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
+  }
 }

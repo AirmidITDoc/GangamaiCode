@@ -25,7 +25,7 @@ export class ReportConfigurationService {
         reportSectionId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
 
             reportId: [0],
-            menuId: [1],
+            menuId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
             reportSection: ["",
                 [
                     // Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
@@ -84,7 +84,7 @@ export class ReportConfigurationService {
                     Validators.pattern("^[A-Za-z .,@$&]+$") //.html
                 ]
             ],
-            reportBodyFile: ["",
+            reportBodyFile: ["MultiTotalReportFormat.html",
                 [
                     Validators.required,
                     Validators.maxLength(500),

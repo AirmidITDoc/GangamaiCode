@@ -27,12 +27,17 @@
                         [mode]="autocompleteModedReport">
                     </airmid-dropdown>
 
+                    <!-- <airmid-autocomplete label="Menu Name" [formGroup]="myform" formControlName="MenuName"
+                                    [ApiUrl]="'Dropdown/GetBindDropDown?mode=MenuMaster&Id=1'"
+                                    (selectionChange)="ListView($event)" TextField="text" ValueField="text">
+                                </airmid-autocomplete> -->
+
                     <mat-form-field appearance="outline">
                         <mat-label>Report Name</mat-label>
                         <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
-                            formControlName="reportName" [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="gridConfig.filters[1].fieldValue=''">
+                            formControlName="reportName" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                            (keydown.enter)="$event.preventDefault()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" type="button" (click)="gridConfig.filters[1].fieldValue = ''">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
