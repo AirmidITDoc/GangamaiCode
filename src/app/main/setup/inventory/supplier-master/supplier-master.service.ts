@@ -21,12 +21,13 @@ export class SupplierMasterService {
 
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
-            supplierId: [0],
+            supplierId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             supplierName: ["",
                 [
                     Validators.required,
                    // Validators.pattern("^[A-Za-z ]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             ContactPerson: ["", [

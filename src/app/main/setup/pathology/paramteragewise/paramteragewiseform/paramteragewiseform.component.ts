@@ -235,101 +235,82 @@ export class ParamteragewiseformComponent implements OnInit {
     }
 
 
-    onSubmit1() {
-        ;
-        if (this._ParameterageService.myform.valid) {
-            if (!this._ParameterageService.myform.get("ParameterID").value) {
-              
-               let insertParameterMasterRangeWise={};
+  onSubmit1() {
+  const form = this._ParameterageService.myform;
 
-insertParameterMasterRangeWise["paraId"]=0
-insertParameterMasterRangeWise["sexId"]=0
-insertParameterMasterRangeWise["minValue"]=0
-insertParameterMasterRangeWise["maxvalue"]=0
-insertParameterMasterRangeWise["addedby"]=0
-                var m_data = {
-                 
-                    // insertParameterMasterRangeWise: {
-                    //     paraId:
-                    //         "0" ||
-                    //         this._ParameterageService.myform.get("ParameterID")
-                    //             .value,
-                    //     sexId: this._ParameterageService.myIsNumericform.get("SexID").value.GenderId,
-                    //     minValue:
-                    //         this._ParameterageService.myIsNumericform
-                    //             .get("MinValue")
-                    //             .value || "%",
-                    //     maxvalue:
-                    //         this._ParameterageService.myIsNumericform
-                    //             .get("MaxValue")
-                    //             .value || "%",
-                    //  addedby:  this.accountService.currentUserValue.userId ,
-                    // },
-                    
-                };
+  if (form.valid) {
+    const isInsert = !form.controls['ParameterID'].value;
 
-                this._ParameterageService
-                    .insertParameterMasterAgeWise(m_data)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                        } else {
-                            this.toastr.error('Parameter-Form Master Data not saved !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    }, error => {
-                        this.toastr.error('Parameter-Form not saved !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
-            } else {
-              
-                var m_dataUpdate = {
-                   
-                    insertParameterMasterRangeWise: {
-                         paraId: this._ParameterageService.myform.get("ParameterID")
-                            .value,
-                        sexId:  this._ParameterageService.myform.get("SexIdD").value.GenderId,
-                        minValue:
-                            this._ParameterageService.myform
-                                .get("MinValue")
-                                .value.trim() || "%",
-                        maxvalue:
-                            this._ParameterageService.myform
-                                .get("MaxValue")
-                                .value.trim() || "%",
-                        isDeleted: 0, // Boolean(JSON.parse(this._ParameterageService.myform.get("IsDeleted").value)),
-                        addedby:  this.accountService.currentUserValue.userId ,
-                    },
-                   
-                };
-
-                this._ParameterageService
-                    .updateParameterMasterAgeWise(m_dataUpdate)
-                    .subscribe((data) => {
-                        this.msg = data;
-                        if (data) {
-                            this.toastr.success('Record updated Successfully.', 'updated !', {
-                                toastClass: 'tostr-tost custom-toast-success',
-                            });
-                        } else {
-                            this.toastr.error('Parameter-Form Master Data not updated !, Please check API error..', 'Error !', {
-                                toastClass: 'tostr-tost custom-toast-error',
-                            });
-                        }
-                    }, error => {
-                        this.toastr.error('Parameter-Form not updated !, Please check API error..', 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    });
-            }
-            this.onClear();
+    if (isInsert) {
+     
+      const m_data = {
+        insertParameterMasterRangeWise: {
+          paraId: 0,
+          sexId: 0,
+          minValue: 0,
+          maxvalue: 0,
+          addedby: 0
         }
+      };
+
+      this._ParameterageService.insertParameterMasterAgeWise(m_data).subscribe(
+        (data) => {
+          this.msg = data;
+          if (data) {
+            this.toastr.success('Record Saved Successfully.', 'Saved !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('Parameter-Form Master Data not saved!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        },
+        (error) => {
+          this.toastr.error('Parameter-Form not saved! Please check API error.', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      );
+
+    } else {
+     
+      const m_dataUpdate = {
+        insertParameterMasterRangeWise: {
+          paraId: form.controls['ParameterID'].value,
+          sexId: form.controls['SexIdD'].value?.GenderId || 0,
+          minValue: (form.controls['MinValue'].value || '').trim(),
+          maxvalue: (form.controls['MaxValue'].value || '').trim(),
+          isDeleted: 0,
+          addedby: this.accountService.currentUserValue.userId
+        }
+      };
+
+      this._ParameterageService.updateParameterMasterAgeWise(m_dataUpdate).subscribe(
+        (data) => {
+          this.msg = data;
+          if (data) {
+            this.toastr.success('Record updated Successfully.', 'Updated !', {
+              toastClass: 'tostr-tost custom-toast-success',
+            });
+          } else {
+            this.toastr.error('Parameter-Form Master Data not updated!', 'Error !', {
+              toastClass: 'tostr-tost custom-toast-error',
+            });
+          }
+        },
+        (error) => {
+          this.toastr.error('Parameter-Form not updated! Please check API error.', 'Error !', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      );
     }
+
+    this.onClear();
+  }
+}
+
     // onSubmit() {
     //     if(!this._ParameterageService.myform.get("PathparaRangeId").value){
     //     let insertParameterMasterAgeWiseObj = [];

@@ -33,38 +33,37 @@ export class TariffComponent implements OnInit {
         }
     }
 
-    onSubmit(){
-        
-        if(!this.serviceForm.invalid)
-        {
-            console.log("insert tariff:", this.serviceForm.value);
-            
-            this._ServiceMasterService.SaveTariff(this.serviceForm.value).subscribe((response)=>{
-            this.toastr.success(response.message);
-            this.onClear(true);
-            }, (error)=>{
-            this.toastr.error(error.message);
-            });
-        } 
-        else
-        {
-            let invalidFields = [];
+   onSubmit() {
+  if (this.serviceForm.valid) {
+    console.log('Insert tariff:', this.serviceForm.value);
 
-            if (this.serviceForm.invalid) {
-                for (const controlName in this.serviceForm.controls) {
-                    if (this.serviceForm.controls[controlName].invalid) {
-                        invalidFields.push(`Service Form: ${controlName}`);
-                    }
-                }
-            }
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
-        }   
+    this._ServiceMasterService.SaveTariff(this.serviceForm.value).subscribe({
+      next: (response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      },
+      error: (error) => {
+        this.toastr.error(error.message || 'Failed to save tariff.', 'Error');
+      }
+    });
+
+  } else {
+    const invalidFields: string[] = [];
+
+    Object.keys(this.serviceForm.controls).forEach((controlName) => {
+      if (this.serviceForm.controls[controlName].invalid) {
+        invalidFields.push(controlName);
+      }
+    });
+
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+      });
     }
+  }
+}
+
 
     onClear(val: boolean) {
         this.serviceForm.reset();

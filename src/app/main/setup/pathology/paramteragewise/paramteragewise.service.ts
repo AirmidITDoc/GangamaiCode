@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -16,7 +17,8 @@ export class ParamteragewiseService {
 
     constructor(
         private _httpClient: HttpClient,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
@@ -26,21 +28,24 @@ export class ParamteragewiseService {
 
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
-            ParameterID: [""],
+            ParameterID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ParameterName: [
                 "",
                 [
                     Validators.required,
                     Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
             ParameterShortName: [
                 "",
                 [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                  this._FormvalidationserviceService.allowEmptyStringValidator()
             ],
             PrintParameterName: [
                 "",
                 [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")],
+                  this._FormvalidationserviceService.allowEmptyStringValidator()
             ],
             UnitId: [""],
             UnitName: [""],

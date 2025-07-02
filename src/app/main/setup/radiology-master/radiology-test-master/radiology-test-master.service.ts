@@ -21,8 +21,10 @@ export class RadiologyTestMasterService {
 
     createRadiologytestForm(): FormGroup {
         return this._formBuilder.group({
-            testId: [0],
-            testName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            testId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            testName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$'),
+                          this._FormvalidationserviceService.allowEmptyStringValidator()
+            ]],
             printTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
             categoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             serviceId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

@@ -184,54 +184,50 @@ export class EditpackageComponent implements OnInit {
         Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
     }
 
-    onSubmit() {
-        debugger
-        if (this.dsPackageDet.data.length < 0) {
-            this.toastr.warning('Please add package Service Name in list', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+   onSubmit() {
+  debugger;
 
-        let InsertPackageObj = [];
-        this.dsPackageDet.data.forEach(element => {
-            let InsertPackage = {
-                "packageId": 0,
-                "serviceId": element.ServiceId || 0,
-                "packageServiceId": element.PackageServiceId || 0,
-                "price": 0
-            }
-            InsertPackageObj.push(InsertPackage)
+  if (this.dsPackageDet.data.length === 0) {
+    this.toastr.warning('Please add package service name to the list.', 'Warning !', {
+      toastClass: 'tostr-tost custom-toast-warning',
+    });
+    return;
+  }
+
+  const insertPackageList = this.dsPackageDet.data.map((element: any) => ({
+    packageId: 0,
+    serviceId: element.ServiceId || 0,
+    packageServiceId: element.PackageServiceId || 0,
+    price: 0
+  }));
+
+  const submitData = {
+    packageDetail: insertPackageList
+  };
+
+  console.log("Submitting Package Details:", submitData);
+
+  this._ServiceMasterService.SavePackagedet(submitData).subscribe({
+    next: (response) => {
+      if (response) {
+        this.toastr.success('Record saved successfully.', 'Saved !', {
+          toastClass: 'tostr-tost custom-toast-success',
         });
-
-        // let delete_PackageDetails={
-        //     "serviceId": this.registerObj.serviceId || 0
-        //   }
-
-        let submitData = {
-            "packageDetail": InsertPackageObj,
-            // "delete_PackageDetails":delete_PackageDetails
-        }
-
-        console.log(submitData)
-        this._ServiceMasterService.SavePackagedet(submitData).subscribe(reponse => {
-            if (reponse) {
-                this.toastr.success('Record Saved Successfully.', 'Saved !', {
-                    toastClass: 'tostr-tost custom-toast-success',
-                });
-                this.onClose();
-            } else {
-                this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                });
-                this.onClose();
-            }
-        }, error => {
-            this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
-            });
+      } else {
+        this.toastr.error('Package data not saved. Please check API error.', 'Error !', {
+          toastClass: 'tostr-tost custom-toast-error',
         });
+      }
+      this.onClose();
+    },
+    error: (err) => {
+      this.toastr.error('Package data not saved. Please check API error.', 'Error !', {
+        toastClass: 'tostr-tost custom-toast-error',
+      });
     }
+  });
+}
+
 
     onClose() {
         this._matDialog.closeAll();
