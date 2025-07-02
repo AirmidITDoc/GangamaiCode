@@ -3,12 +3,12 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@a
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import { fuseAnimations } from '@fuse/animations'; 
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { SalesService } from '../../sales/sales.service';
+import { ToastrService } from 'ngx-toastr'; 
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SalesHospitalService } from '../sales-hospital-new.service';
 @Component({
   selector: 'app-prescription',
   templateUrl: './prescription.component.html',
@@ -28,7 +28,7 @@ PrescriptionFrom:FormGroup;
   StoreId: any = 0;
   Reg_No: any = 0;
 
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplateType') actionButtonTemplateType!: TemplateRef<any>;
@@ -44,6 +44,7 @@ PrescriptionFrom:FormGroup;
     },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Time", key: "pTime", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Pre. NO", key: "ipPreId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 110, },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -78,7 +79,7 @@ PrescriptionFrom:FormGroup;
     ]
   }
   constructor(
-    public _SalesService: SalesService,
+    public _SalesService: SalesHospitalService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
@@ -89,7 +90,7 @@ PrescriptionFrom:FormGroup;
 
   ngOnInit(): void { 
       this.PrescriptionFrom = this.CreatePrescriptionFrom();
-    this.ChangeeFilter();
+      this.ChangeeFilter();
   }
      CreatePrescriptionFrom() {
       return this._formBuilder.group({
@@ -116,7 +117,7 @@ PrescriptionFrom:FormGroup;
       sortField: "ItemID",
       sortOrder: 0,
       filters: [
-        { fieldName: "OP_IP_Id", fieldValue: String(Obj.oP_IP_ID), opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Id", fieldValue: String(Obj.ipMedID), opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: String(patientType), opType: OperatorComparer.Equals }
       ]
     }
@@ -127,9 +128,9 @@ PrescriptionFrom:FormGroup;
     debugger
     this.FormDate = this.datePipe.transform(this.PrescriptionFrom.get('start').value, 'yyyy-MM-dd')
     this.ToDate = this.datePipe.transform(this.PrescriptionFrom.get('end').value, 'yyyy-MM-dd')
-    this.IsStatus = this.PrescriptionFrom.get('StatusType').value
-    this.StoreId = this._loggedService.currentUserValue.user.storeId
-    this.Reg_No = this.PrescriptionFrom.get('RegNo').value
+    this.IsStatus = this.PrescriptionFrom.get('StatusType').value || 0
+    this.StoreId = this._loggedService.currentUserValue.user.storeId || 0
+    this.Reg_No = this.PrescriptionFrom.get('RegNo').value || 0
 
     this.getHeaderDate();
   }
@@ -152,28 +153,35 @@ PrescriptionFrom:FormGroup;
   }
   dsItemDetList:any;
   GetPrescrpList() {
-      if(this.dsItemDetList.data.length > 0){
-      let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.SelectedObj.IPMedID + " Order by ItemName "
-      this._SalesService.getchargesList(strSql).subscribe(data => {
-        this.chargelist = data as any;
-
-      });  
+      if(this.SelectedObj?.ipMedID > 0){
+        var vdata = {
+          "first": 0,
+          "rows": 10,
+          "sortField": "ItemId",
+          "sortOrder": 0,
+          "filters": [{ "fieldName": "IPMedID", "fieldValue": String(this.SelectedObj?.ipMedID), "opType": "Contains" }],//"40039"
+          "exportType": "JSON",
+          "columns": [{ "data": "string", "name": "string" }]
+        }
+       this._SalesService.getPrescriptionBalQtyList(vdata).subscribe(reponse => {
+        this.chargelist = reponse.data as any;  
+      });   
       this.chargelist.forEach((element) => { 
         this.Patientlist.push(
           {
-            ItemId :element.ItemId,
-            QtyPerDay :element.QtyPerDay,
-            BalQty :element.BalQty,
-            IsBatchRequired :element.IsBatchRequired,
+            ItemId :element.itemId,
+            QtyPerDay :element.qtyPerDay,
+            BalQty :element.balQty,
+            IsBatchRequired :element.isBatchRequired,
             PatientName :this.SelectedObj.patientName,
             RegNo :this.SelectedObj.regNo,
             WardId :this.SelectedObj.wardId,
-            BedId :  this.SelectedObj.BedNo,
-            AdmissionID :this.SelectedObj.AddmissionId,
-            RegId :this.SelectedObj.RegId,
-            IPMedID:this.SelectedObj.IPMedID,
-            DoctorName: this.SelectedObj.DoctorName,
-            IPDNo : this.SelectedObj.IPDNo
+            BedId :  this.SelectedObj.bedId,
+            AdmissionID :this.SelectedObj.oP_IP_ID,
+            RegId :this.SelectedObj.regId,
+            IPMedID:this.SelectedObj.ipMedID,
+            DoctorName: this.SelectedObj.doctorName,
+            IPDNo : this.SelectedObj.ipdNo
           });
       console.log(this.Patientlist);
       this._dialogRef.close(this.Patientlist);

@@ -130,15 +130,15 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public getBalAvaListStore(Param){
       return this._httpClient1.PostData("Sales/StockavailableList",Param);
     }
-    public getchargesList(data) {
-      return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    public getDraftItemDetailsList(data) {
+      return this._httpClient1.PostData("Sales/SalesDraftBillItemDet",data)
     }
   
-    public getDelDrat(data){
-      return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    public getDeleteDratf(data){
+      return this._httpClient1.PostData("Sales/SalesDraftbillcancel",data)
     }
-   public getDraftBillItem(emp){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
+   public getDraftBillItemBalQty(emp){
+      return this._httpClient1.PostData("Sales/BalqtysalesDraftlist",emp);
     }
     public InsertWhatsappSms(emp){
       return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
@@ -167,6 +167,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   {
     return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
   }
-
+      public getPrescriptionBalQtyList(employee)
+  {
+    return this._httpClient1.PostData("Sales/PrescriptionItemDetList",employee)
+  }
   }
   
