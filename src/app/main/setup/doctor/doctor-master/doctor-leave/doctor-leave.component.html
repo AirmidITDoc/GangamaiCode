@@ -10,7 +10,7 @@
 
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
+                            matTooltip="Close" (click)="onClose()">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -56,12 +56,12 @@
                                         <input matInput type="time" formControlName="toTime">
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Reason</mat-label>
-                                        <input matInput formControlName="reason">
-                                    </mat-form-field>
+                                 
+                                     <airmid-textbox label="Reason" formControlName="reason" Reason
+                                            [formGroup]="leaveForm">
+                                        </airmid-textbox>
 
-                                    <mat-checkbox formControlName="isHoliday">Leave For Holiday</mat-checkbox>
+                                    <!-- <mat-checkbox formControlName="isHoliday">Leave For Holiday</mat-checkbox> -->
 
                                   
                                 </form>
@@ -121,7 +121,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="saveLeave()">Save</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div>

@@ -22,8 +22,7 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <!-- <airmid-table [gridConfig]="gridConfig" (status)="changeStatus($event)" class="content"> -->
-
+        
             <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
@@ -36,15 +35,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
-                      <!-- <mat-form-field appearance="outline">
-                            <mat-label>FirstName</mat-label>
-                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myformSearch" formControlName="DoctorNameSearch"  (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field> -->
-
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Last Name</mat-label>

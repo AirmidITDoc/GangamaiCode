@@ -30,53 +30,7 @@
                                 <span class="h3 font-weight-600">Doctor Charges Information</span>
                             </div>
                             <form [formGroup]="DrchargesForm">
-                                <!-- <div *ngFor="let group of appointmentGroups">
-                                    <h4>{{ group.label }}</h4>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Appointment Type</th>
-                                                <th>Grace Days</th>
-                                                <th>No. of Visits</th>
-                                                <th>Charges</th>
-                                                <th>Service Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let item of group.rows; let i = index">
-                                                <td>
-                                                    <mat-checkbox [(ngModel)]="item.enabled"
-                                                        name="enabled_{{ group.label }}_{{ i }}"></mat-checkbox>
-                                                </td>
-                                                <td>{{ item.type }}</td>
-                                                <td><input matInput type="number" [(ngModel)]="item.graceDays"
-                                                        name="grace_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
-                     border: 1px solid rgb(49, 186, 245) ;" /></td>
-                                                <td><input matInput type="number" [(ngModel)]="item.noOfVisits"
-                                                        name="visits_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
-                     border: 1px solid rgb(49, 186, 245) ;" /></td>
-                                                <td><input matInput type="number" [(ngModel)]="item.charges"
-                                                        name="charges_{{ i }}" [disabled]="!item.enabled" style="border-color: rgb(39, 48, 42);border-radius: 2px;
-                     border: 1px solid rgb(49, 186, 245) ;" /></td>
-                                                <td>
-                                                    <mat-form-field class="full-width">
-                                                        <input type="text" matInput [matAutocomplete]="auto"
-                                                            [(ngModel)]="item.serviceName" name="service_{{ i }}"
-                                                            [disabled]="!item.enabled" (input)="filterService(item)" />
-                                                        <mat-autocomplete #auto="matAutocomplete">
-                                                            <mat-option *ngFor="let option of item.filteredServices"
-                                                                [value]="option">
-                                                                {{ option }}
-                                                            </mat-option>
-                                                        </mat-autocomplete>
-                                                    </mat-form-field>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> -->
-
+                              
                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
                                     <input type="hidden" name="docChargeId" formControlName="docChargeId"/>
@@ -104,21 +58,12 @@
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                      
-                                         <!-- <airmid-textbox label="Price" formControlName="price"
-                                                [formGroup]="DrchargesForm" 
-                                                [type]="'number'" >
-                                            </airmid-textbox> -->
-                                             <airmid-textbox  label="Price" formControlName="price" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="5" ></airmid-textbox>
+                                     <airmid-textbox  label="Price" formControlName="price" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="5" ></airmid-textbox>
 
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <!-- <airmid-textbox label="Days" formControlName="days"  [type]="'number'"
-                                            [formGroup]="DrchargesForm">
-                                        </airmid-textbox> -->
-
-                                         <airmid-textbox  label="Days" formControlName="days" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="5" ></airmid-textbox>
+                                      <airmid-textbox  label="Days" formControlName="days" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrchargesForm"  [maxLength]="3" ></airmid-textbox>
 
                                     </div>
 

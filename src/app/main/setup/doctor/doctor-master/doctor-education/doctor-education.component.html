@@ -34,7 +34,7 @@
                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid" style="padding: 10px;">
 
 
-                                    <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
+                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
                                       
                                         <airmid-dropdown label="Qualification" formControlName="qualificationId"  (selectionChange)="getSelectedqualifiObj($event)"
                                             [formGroup]="EducationForm"  [(value)]="registerObj.qualificationId"
@@ -43,8 +43,8 @@
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <mat-form-field appearance="fill">
                                             <mat-label>Choose Year</mat-label>
-                                            <input matInput [matDatepicker]="picker" [readonly]="true"
-                                                formControlName="passingYear">{{selectedYear}}
+                                            <input matInput [matDatepicker]="picker" [readonly]="true" [ngModel]="selectedYear"
+                                                formControlName="passingYear">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker startView="multi-year"
                                                 (yearSelected)="chosenYearHandler($event, picker)"

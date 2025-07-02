@@ -128,9 +128,9 @@ export class DoctorMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorNameSearch: [""],
-            lastName:[""],
-            IsDeletedSearch: ["2"],
+            DoctorNameSearch: ["",   Validators.pattern("^[A-Za-z/() ]*$")],
+            lastName:["",   Validators.pattern("^[A-Za-z/() ]*$")],
+            // IsDeletedSearch: ["2"],
             FlagActive:["1"],
             IsConsultant: [true],
             IsRef:[false]

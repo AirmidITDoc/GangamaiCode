@@ -36,7 +36,7 @@
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="HospitalName" formControlName="hospitalName"
                                             [value]="registerObj.hospitalName" [formGroup]="ExperienceForm"
-                                            [maxLength]="50">
+                                            [maxLength]="250">
                                         </airmid-textbox>
                                     </div>
 
@@ -44,7 +44,7 @@
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="Designation" formControlName="designation"
                                             [value]="registerObj.designation" [formGroup]="ExperienceForm"
-                                            [maxLength]="50">
+                                            [maxLength]="250">
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
@@ -71,17 +71,17 @@
 
                                     <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="YearsExp" formControlName="YearsExp" [value]="expyear"
-                                            [formGroup]="ExperienceForm" [maxLength]="2">
+                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="MonthExp" formControlName="MonthExp" [value]="expmonth"
-                                            [formGroup]="ExperienceForm" [maxLength]="2">
+                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
                                         </airmid-textbox>
                                     </div>
                                     <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="DaysExp" formControlName="DaysExp" [value]="expday"
-                                            [formGroup]="ExperienceForm" [maxLength]="2">
+                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
                                         </airmid-textbox>
                                     </div>
 

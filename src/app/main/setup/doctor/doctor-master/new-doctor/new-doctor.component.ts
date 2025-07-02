@@ -14,7 +14,7 @@ import { DoctorEducationComponent, EducationDetail } from "../doctor-education/d
 import { DoctorExperienceComponent, ExperienceDetail } from "../doctor-experience/doctor-experience.component";
 import { ChargesDetail, DoctorChargesComponent } from "../doctor-charges/doctor-charges.component";
 import { DoctorSchduleComponent, SchduleDetail } from "../doctor-schdule/doctor-schdule.component";
-import { DoctorLeaveComponent } from "../doctor-leave/doctor-leave.component";
+import { DoctorLeaveComponent, LeaveDetail } from "../doctor-leave/doctor-leave.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
@@ -80,16 +80,32 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     'action'
 
   ];
+
+    displayedColumnsleave = [
+    // 'serviceId',
+    'fromDate',
+    'toDate',
+    'fromTime',
+    'toTime',
+    'reason',
+    'action'
+
+  ];
+
+
   dataSourceeducation = new MatTableDataSource<EducationDetail>();
   dataSourceeexperience = new MatTableDataSource<ExperienceDetail>();
   dataSourceSchdule = new MatTableDataSource<SchduleDetail>();
   dataSourcedrcharges = new MatTableDataSource<ChargesDetail>();
-
+dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
 
   public chargeschList: SchduleDetail[] = [];
   public chargechargesList: ChargesDetail[] = [];
   public chargeexpList: ExperienceDetail[] = [];
   public chargeeduList: EducationDetail[] = [];
+  public chargeleaveList: LeaveDetail[] = [];
+
+
 
   @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -481,7 +497,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     }
 
-    this.myForm.reset();
+    // this.myForm.reset();
     // this.myForm.patchValue(this.createdDoctormasterForm().value);
   }
 
@@ -841,6 +857,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     }
     this._doctorService.getChargesList(data).subscribe((data: any) => {
+        console.log(data)
       if (data !== undefined) {
         if (this.dataSourcedrcharges.data.length > 0) {
           this.chargechargesList = []
@@ -1035,7 +1052,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         // data: element
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      console.log(result)
+       if (result !== undefined) {
+        if (this.dataSourcedrleave.data.length > 0) {
+        this.chargeleaveList = this.dataSourcedrleave.data
+        }
+        this.chargechargesList.push(result);
+        this.dataSourcedrleave.data = this.chargeleaveList;
 
       }
     });
@@ -1212,6 +1235,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   }
 
+  Ondeleteleave(index: number) {
+
+    this.chargeleaveList.splice(index, 1);
+    this.dataSourcedrleave.data = this.chargeleaveList;
+
+  }
+
       keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -1221,6 +1251,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             return false;
         }
     }
+
+   keyPressAlpha(event) {
+    const charCode = event.which ? event.which : event.keyCode;
+    return (charCode >= 65 && charCode <= 90) ||  // A-Z
+           (charCode >= 97 && charCode <= 122) || (charCode == 32) || (charCode == 40) || (charCode == 41);   // a-z
+  }
 }
 
 

@@ -28,7 +28,7 @@ export class DoctorMasterComponent implements OnInit {
 
   f_name: any = ""
   l_name: any = ""
-  active: any = "2"
+  active: any = "1"
   isCon: any = "1"
   isRef: any = "0"
 
@@ -41,37 +41,35 @@ export class DoctorMasterComponent implements OnInit {
     { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width:100, type: 6 },
+    { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA'  ,width: 200,},
+    { heading: "Education", key: "education", sort: true, align: 'left', emptySign: 'NA', width: 150, },
     // { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA'  },
 
     { heading: "IsConsultant", key: "isConsultant", type: gridColumnTypes.status, align: "center" },
-{ heading: "IsRefDoc", key: "isRefDoc", type: gridColumnTypes.status, align: "center" },
+    { heading: "IsRefDoc", key: "isRefDoc", type: gridColumnTypes.status, align: "center" },
 
     { heading: "Doctor Type", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Age Month", key: "ageMonth", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "Age Day", key: "ageDay", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PassportNo", key: "passportNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Esino", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "RegNo",key: "regno", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "ESINO", key: "esino", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "RegNo", key: "regno", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Reg Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
     { heading: "Mah RegNo", key: "mahregno", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-    { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150, },
     { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
 
-
-
     { heading: "Pan CardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Aadhar CardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Aadhar CardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -124,17 +122,18 @@ export class DoctorMasterComponent implements OnInit {
   }
 
   onChangeFirst() {
-    
+
     this.f_name = this.myformSearch.get('DoctorNameSearch').value + "%"
     this.l_name = this.myformSearch.get('lastName').value + "%" || "%"
     this.active = this.myformSearch.get('FlagActive').value
-debugger
+    debugger
     if (this.myformSearch.get('IsConsultant').value == true) {
       this.isCon = "1"
-       this.isRef = "0"
+      this.isRef = "0"
     } else {
       this.isCon = "0"
-       this.isRef = "1"}
+      this.isRef = "1"
+    }
     //  if (this.myformSearch.get('IsConsultant').value == false) {
     //   this.isRef = "1"
     // } else {
@@ -143,23 +142,23 @@ debugger
     this.getfilterdata();
   }
 
- 
+
   getfilterdata() {
-  
+
     this.gridConfig = {
       apiUrl: "Doctor/DoctorList",
       columnsList: this.allColumns,
       sortField: "DoctorId",
-        sortOrder: 0,
-        filters:  [
-          { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "FlagActive", fieldValue:this.active, opType: OperatorComparer.Equals },
+        { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
         { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
         { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
-        
-            ],
-        row: 25
+
+      ],
+      row: 25
     }
     console.log(this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
@@ -178,7 +177,7 @@ debugger
     this.onChangeFirst();
   }
 
-  
+
   // currentStatus = 1;
   // toggle(val: any) {
   //     if (val == "2") {

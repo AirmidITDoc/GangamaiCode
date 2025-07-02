@@ -71,8 +71,8 @@ export class DoctorSchduleComponent {
 
   createAdhocScheduleGroup(): FormGroup {
     return this.fb.group({
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      scheduleDays: ["", Validators.required],
+      doctorId: [0],
+      scheduleDays: [""],
       startTime: ["", Validators.required],
       endTime: ["", Validators.required],
       slot: ["", Validators.required],
@@ -110,14 +110,11 @@ export class DoctorSchduleComponent {
   //   }
   // }
   onSubmit() {
-
-
+debugger
     if (this.schstatus) {
       this.DrschduleForm.get("scheduleDays").setValue(this.days.value)
-      if (!this.DrschduleForm.invalid) {
-        // this.DrschduleForm.get("scheduleDays").setValue(this.days.value)
+      if (!this.DrschduleForm.invalid)
         this.dialogRef.close(this.DrschduleForm.value)
-      }
       else {
         let invalidFields = [];
         if (this.DrschduleForm.invalid) {
@@ -129,22 +126,25 @@ export class DoctorSchduleComponent {
           invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
         }
 
-
       }
     } else if (!this.schstatus) {
-      this.dialogRef.close(this.DrAdhocschduleForm.value)
-    } else {
-      let invalidFields = [];
-      if (this.DrAdhocschduleForm.invalid) {
-        for (const controlName in this.DrAdhocschduleForm.controls) {
-          if (this.DrAdhocschduleForm.controls[controlName].invalid) { invalidFields.push(`Adhoc Form: ${controlName}`); }
+      if (!this.DrAdhocschduleForm.invalid) {
+        this.dialogRef.close(this.DrAdhocschduleForm.value)
+      }
+      else {
+        let invalidFields = [];
+        if (this.DrAdhocschduleForm.invalid) {
+          for (const controlName in this.DrAdhocschduleForm.controls) {
+            if (this.DrAdhocschduleForm.controls[controlName].invalid) { invalidFields.push(`Adhoc Form: ${controlName}`); }
+          }
+        }
+        if (invalidFields.length > 0) {
+          invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
         }
       }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-      }
     }
-}
+  }
+
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

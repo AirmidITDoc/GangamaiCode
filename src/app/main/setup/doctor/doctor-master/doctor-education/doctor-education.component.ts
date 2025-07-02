@@ -23,7 +23,7 @@ export class DoctorEducationComponent {
   EducationForm: FormGroup
   autocompleteModecountry: string = "Country";
   autocompleteModecity: string = "City";
-  selectedYear: any;
+  selectedYear:any;
   registerObj = new EducationDetail({})
   QualifyName: any;
   QualifyId: any;
@@ -58,6 +58,9 @@ export class DoctorEducationComponent {
     if (this.data) {
       this.registerObj = this.data
     }
+    this.selectedYear=this.datePipe.transform(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd')
+
+    
   }
 
 
@@ -108,7 +111,7 @@ getSelectedcityObj(obj) {
 
 
   chosenYearHandler(normalizedYear: Date, datepicker: any) {
-    this.selectedYear = this.datePipe.transform(new Date(normalizedYear.getFullYear(), 0, 1), 'dd/MM/yyyy')
+    this.selectedYear = this.datePipe.transform(new Date(normalizedYear.getFullYear(), 0, 1), 'yyyy-MM-dd')
     datepicker.close();
   }
 
