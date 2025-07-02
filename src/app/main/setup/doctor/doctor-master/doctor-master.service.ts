@@ -236,6 +236,10 @@ export class DoctorMasterService {
        return this._httpClient.PostData("Doctor/DoctorChargesDetailList",employee);
     }
 
+      public getleaveList(employee) {
+       return this._httpClient.PostData("Doctor/DoctorLeaveDetailList",employee);
+    }
+
     public EducationSave(Param: any) {
         if (Param.RegId) {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);

@@ -74,7 +74,7 @@
 
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
                                             style=" margin-left: 20px;margin-right: 20px;">
-                                            <mat-form-field appearance="outline" class="timeField">
+                                            <!-- <mat-form-field appearance="outline" class="timeField">
                                                 <mat-label>Start Time</mat-label>
                                                 <input matTimepicker #t="matTimepicker" mode="12h"
                                                     style="width: 60%;font-weight: bold;font-size: large;"
@@ -82,12 +82,17 @@
                                                     [disableDialogOpenOnClick]="isDatePckrDisabled">
                                                 <mat-icon matSuffix
                                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field> -->
+
+                                             <mat-form-field appearance="fill">
+                                                <mat-label>Start Time</mat-label>
+                                                <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
                                             style="margin-left: 20px;margin-right: 20px;">
-                                            <mat-form-field appearance="outline" class="timeField">
+                                            <!-- <mat-form-field appearance="outline" class="timeField">
                                                 <mat-label>End Time</mat-label>
                                                 <input matTimepicker #t1="matTimepicker" mode="12h"
                                                     style="width: 60%;font-weight: bold;font-size: large;"
@@ -95,6 +100,11 @@
                                                     [disableDialogOpenOnClick]="isDatePckrDisabled">
                                                 <mat-icon matSuffix
                                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field> -->
+
+                                              <mat-form-field appearance="fill">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="endTime"  (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
                                         </div>
 
@@ -114,7 +124,20 @@
 
                                 </div>
                             </form>
+     <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
 
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>From Time</mat-label>
+                                                <input matInput type="time" formControlName="fromTime">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="toTime">
+                                            </mat-form-field>
+                                        </div> -->
                             <div *ngIf="!schstatus">
                                 <form [formGroup]="DrAdhocschduleForm" style="border: blue">
 
@@ -122,7 +145,7 @@
 
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
                                             style=" margin-left: 10px;margin-right: 10px;">
-                                            <mat-form-field appearance="outline" class="timeField">
+                                            <!-- <mat-form-field appearance="outline" class="timeField">
                                                 <mat-label>Start Time</mat-label>
                                                 <input matTimepicker #t="matTimepicker" mode="12h"
                                                     style="width: 60%;font-weight: bold;font-size: large;"
@@ -130,12 +153,17 @@
                                                     [disableDialogOpenOnClick]="isDatePckrDisabled">
                                                 <mat-icon matSuffix
                                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field> -->
+
+                                             <mat-form-field appearance="fill">
+                                                <mat-label>Start Time</mat-label>
+                                                <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
                                             style="margin-left: 20px;margin-right: 20px;">
-                                            <mat-form-field appearance="outline" class="timeField">
+                                            <!-- <mat-form-field appearance="outline" class="timeField">
                                                 <mat-label>End Time</mat-label>
                                                 <input matTimepicker #t="matTimepicker" mode="12h"
                                                     style="width: 60%;font-weight: bold;font-size: large;"
@@ -143,6 +171,11 @@
                                                     [disableDialogOpenOnClick]="isDatePckrDisabled">
                                                 <mat-icon matSuffix
                                                     (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                            </mat-form-field> -->
+
+                                              <mat-form-field appearance="fill">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="endTime"  (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">

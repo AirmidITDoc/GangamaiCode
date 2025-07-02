@@ -40,6 +40,20 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   ageYear = 0;
   ageMonth = 0;
   ageDay = 0;
+
+  //Signature
+  signatureForm: FormGroup;
+  // pagesList = ['Discharge Summary', 'Consent Form', 'Prescription'];
+  uploadedFile: File | null = null;
+
+  //attachment
+  attachments: any[] = [];
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
+
+
+
+  autocompleteModepage: string = "DoctorSignPage";
   displayedColumnsEdu = [
 
     // 'qualificationId',
@@ -81,13 +95,26 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   ];
 
-    displayedColumnsleave = [
-    // 'serviceId',
-    'fromDate',
-    'toDate',
-    'fromTime',
-    'toTime',
-    'reason',
+  displayedColumnsleave = [
+    'leaveType',
+    'leaveOptionName',
+    'startDate',
+    'endDate',
+    // 'reason',
+    'action'
+
+  ];
+
+  displayedColumnsSignImg = [
+     'page',
+    'DocumentName',
+    'action'
+
+  ];
+
+  displayedColumnsdocatt = [
+    'DocumentName',
+    // 'page',
     'action'
 
   ];
@@ -97,13 +124,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   dataSourceeexperience = new MatTableDataSource<ExperienceDetail>();
   dataSourceSchdule = new MatTableDataSource<SchduleDetail>();
   dataSourcedrcharges = new MatTableDataSource<ChargesDetail>();
-dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
+  dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
+  dataSourcedrsign = new MatTableDataSource<SignDetail>();
+  AttachDataSource = new MatTableDataSource<any>();
+
 
   public chargeschList: SchduleDetail[] = [];
   public chargechargesList: ChargesDetail[] = [];
   public chargeexpList: ExperienceDetail[] = [];
   public chargeeduList: EducationDetail[] = [];
   public chargeleaveList: LeaveDetail[] = [];
+  public chargesignList: SignDetail[] = [];
 
 
 
@@ -139,7 +170,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     const dialogRef = this.matDialog.open(SignatureViewComponent,
       {
         width: '900px',
-        height: '400px',
+        height: '500px',
         data: {
 
         }
@@ -157,14 +188,8 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
   ngOnInit(): void {
     this.myForm = this.createdDoctormasterForm();
     this.myForm.markAllAsTouched();
-
-    // this.appointmentForm = this._formBuilder.group({});
-    this.signatureForm = this.createSignatureForm();
-    this.initFilterOptions();
-
-
-    this.leaveForm = this.createLeaveForm()
-
+  this.signatureForm = this.createSignatureForm();
+  
     if ((this.data?.doctorId ?? 0) > 0) {
       this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
         this.registerObj = response;
@@ -190,6 +215,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       this.getDrExperienceList()
       this.getDrEducationList()
       this.getDrchargesList()
+      this.getDrleaveList()
     }
     else {
       this.myForm.reset();
@@ -201,13 +227,10 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     this.ExperienceDetailsArray.push(this.createExperience());
     this.SchduleDetailsArray.push(this.createSchdule());
     this.ChargesDetailsArray.push(this.createExperience());
+    this.leaveDetailsArray.push(this.createLeave());
+    this.signatureDetailsArray.push(this.createsignature());
 
-    // if ((this.data?.doctorId ?? 0) > 0) {
-    //   this.getdrschduleList()
-    //   this.getDrExperienceList()
-    //   this.getDrEducationList()
-    //   this.getDrchargesList()
-    // }
+
   }
   createdDoctormasterForm(): FormGroup {
     return this._formBuilder.group({
@@ -325,7 +348,9 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       mDoctorExperienceDetails: this.formBuilder.array([]),
       mDoctorQualificationDetails: this.formBuilder.array([]),
       mDoctorScheduleDetails: this.formBuilder.array([]),
-      mDoctorChargesDetails: this.formBuilder.array([])
+      mDoctorChargesDetails: this.formBuilder.array([]),
+      mDoctorLeaveDetails: this.formBuilder.array([]),
+      mDoctorSignPageDetails: this.formBuilder.array([])
     });
   }
   //Education
@@ -366,8 +391,8 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       docSchedId: [item.docSchedId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       scheduleDays: [item.scheduleDays || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      startTime: [this.datePipe.transform(item.startTime, 'HH:mm:ss')],//item.startTime,//
-      endTime: [this.datePipe.transform(item.endTime, 'HH:mm:ss')],//item.endTime,// 
+      startTime:[item.startTime ],// [this.datePipe.transform(item.startTime, 'HH:mm:ss')],//item.startTime,//
+      endTime:[item.endTime],// [this.datePipe.transform(item.endTime, 'HH:mm:ss')],//item.endTime,// 
       slot: [parseInt(item.slot), [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
@@ -388,6 +413,38 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     });
   }
 
+  // Leave
+  createLeave(item: any = {}): FormGroup {
+    debugger
+    return this.formBuilder.group({
+      docLeaveId: [item.docLeaveId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [item.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      leaveTypeId: [parseInt(item.leaveTypeId), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      startDate: [item.startDate],
+      endDate: [item.endDate],
+      leaveOption: [parseInt(item.leaveOption), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // reason: [item.reason, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+    });
+  }
+
+  // Signature
+    createsignature(item: any = {}): FormGroup {
+    return this.formBuilder.group({
+      docSignId: [item.docSignId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [item.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pageId: [parseInt(item.pageId), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      page:['']
+    });
+  }
+  createSignatureForm() {
+    return this.formBuilder.group({
+      docSignId: [''],
+      doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pageId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      signature:[''],
+      page:['']
+    });
+  }
 
 
   // FormArray Getters
@@ -407,9 +464,12 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     return this.myForm.get('mDoctorChargesDetails') as FormArray;
   }
 
-  // get mDoctorLeaveDetails(): FormArray {
-  //   return this.myForm.get('mDoctorChargesDetails') as FormArray;
-  // }
+  get leaveDetailsArray(): FormArray {
+    return this.myForm.get('mDoctorLeaveDetails') as FormArray;
+  }
+  get signatureDetailsArray(): FormArray {
+    return this.myForm.get('mDoctorSignPageDetails') as FormArray;
+  }
 
 
 
@@ -422,6 +482,8 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
 
   onSubmit() {
 
+
+    console.log(this.myForm.value)
     // Qualification detail assign to array
     this.EducationDetailsArray.clear();
     if (this.dataSourceeducation.data.length > 0) {
@@ -456,6 +518,24 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
         this.ChargesDetailsArray.push(this.createChargesDetail(item));
       });
     }
+debugger
+    // leave table detail assign to array
+    this.leaveDetailsArray.clear();
+    if (this.dataSourcedrleave.data.length > 0) {
+      this.dataSourcedrleave.data.forEach(item => {
+        console.log(item)
+        this.leaveDetailsArray.push(this.createLeave(item));
+      });
+    }
+
+    // sign table detail assign to array
+    this.signatureDetailsArray.clear();
+    if (this.dataSourcedrsign.data.length > 0) {
+      this.dataSourcedrsign.data.forEach(item => {
+        console.log(item)
+        this.signatureDetailsArray.push(this.createsignature(item));
+      });
+    }
 
     if (!this.myForm.invalid) {
 
@@ -465,8 +545,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       data.IsInHouseDoctor = false
       data.IsOnCallDoctor = false
       data.IsActive = true
-      // data.CreatedBy=this.accountService.currentUserValue.userId
-
+    
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
       data.Signature = this.signature;
@@ -651,54 +730,39 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
   // onChangeJob(event) { }
 
   ///Leave code
-  leaveForm: FormGroup;
-  leaveList: any[] = [];
-  displayedColumns: string[] = ['fromDate', 'toDate', 'startTime', 'endTime', 'availability', 'action'];
+ 
 
+  // // toggleTime(isFullDay: boolean) {
+  // //   if (isFullDay) {
+  // //     this.leaveForm.patchValue({ fromTime: '', toTime: '' });
+  // //   }
+  // // }
 
-  createLeaveForm(): FormGroup {
-    return this._formBuilder.group({
-      fromDate: [null],
-      toDate: [null],
-      reason: [''],
-      fullDay: [true],
-      fromTime: [''],
-      toTime: ['']
-    });
-  }
+  // // onSubmit1() {
+  // //   const formValue = this.leaveForm.value;
+  // //   const leave = {
+  // //     fromDate: formValue.fromDate,
+  // //     toDate: formValue.toDate,
+  // //     startTime: formValue.fullDay ? '00:00:00' : formValue.fromTime,
+  // //     endTime: formValue.fullDay ? '23:59:00' : formValue.toTime
+  // //   };
+  // //   this.leaveList.push(leave);
+  // //   this.leaveForm.reset({ fullDay: true });
+  // // }
 
+  // // editLeave(row: any) {
+  // //   // Optional: populate form for editing
+  // //   console.log('Edit clicked', row);
+  // // }
 
-  toggleTime(isFullDay: boolean) {
-    if (isFullDay) {
-      this.leaveForm.patchValue({ fromTime: '', toTime: '' });
-    }
-  }
+  // //Dr charges
+  // DrchargesForm: FormGroup;
 
-  onSubmit1() {
-    const formValue = this.leaveForm.value;
-    const leave = {
-      fromDate: formValue.fromDate,
-      toDate: formValue.toDate,
-      startTime: formValue.fullDay ? '00:00:00' : formValue.fromTime,
-      endTime: formValue.fullDay ? '23:59:00' : formValue.toTime
-    };
-    this.leaveList.push(leave);
-    this.leaveForm.reset({ fullDay: true });
-  }
-
-  editLeave(row: any) {
-    // Optional: populate form for editing
-    console.log('Edit clicked', row);
-  }
-
-  //Dr charges
-  DrchargesForm: FormGroup;
-
-  allServices = [
-    'Consultation Fee',
-    'FOLEYS INSERTION / REMOVAL',
-    'FOLLOWUP CHARGE'
-  ];
+  // allServices = [
+  //   'Consultation Fee',
+  //   'FOLEYS INSERTION / REMOVAL',
+  //   'FOLLOWUP CHARGE'
+  // ];
 
 
 
@@ -710,12 +774,12 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     // });
   }
 
-  filterService(row: any) {
-    const input = row.serviceName?.toLowerCase() || '';
-    row.filteredServices = this.allServices.filter(service =>
-      service.toLowerCase().includes(input)
-    );
-  }
+  // filterService(row: any) {
+  //   const input = row.serviceName?.toLowerCase() || '';
+  //   row.filteredServices = this.allServices.filter(service =>
+  //     service.toLowerCase().includes(input)
+  //   );
+  // }
 
   // onSave() {
   //   // console.log('Saved data:', this.appointmentGroups);
@@ -857,7 +921,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
 
     }
     this._doctorService.getChargesList(data).subscribe((data: any) => {
-        console.log(data)
+      console.log(data)
       if (data !== undefined) {
         if (this.dataSourcedrcharges.data.length > 0) {
           this.chargechargesList = []
@@ -867,8 +931,40 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
         this.dataSourcedrcharges.data = data.data as ChargesDetail[]
       }
     });
+  }
+  getDrleaveList() {
+    var data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "DoctorId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DoctorId",
+          "fieldValue": String(this.data.doctorId),//"50362",
+          "opType": "13"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
 
-
+    }
+    this._doctorService.getleaveList(data).subscribe((data: any) => {
+      console.log(data)
+      if (data !== undefined) {
+        if (this.dataSourcedrleave.data.length > 0) {
+          this.chargeleaveList = []
+          this.chargeleaveList = this.dataSourcedrleave.data
+        }
+        this.chargeleaveList.push(data.data);
+        this.dataSourcedrleave.data = data.data as LeaveDetail[]
+      }
+    });
 
   }
 
@@ -985,38 +1081,40 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     // console.log(this.dataSourceSchdule.data)
   }
 
+pageId:any;
+page:any;
+  getSelectedqpageObj(obj) {
+    console.log(obj)
+    this.pageId = obj.value;
+    this.page = obj.text;
+
+  }
+
+  
+  onAddImage() {
+    console.log(this.signatureForm.value)
+
+    this.signatureForm.get("signature").setValue(this.signature)
+     this.signatureForm.get("pageId").setValue(this.pageId)
+     this.signatureForm.get("page").setValue(this.page)
 
 
+    if (!this.signatureForm.invalid) {
 
-  // onAddSchdule() {
-  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-  //   buttonElement.blur(); // Remove focus from the button
+      if (this.dataSourcedrsign.data.length > 0) {
+        this.chargesignList = []
+        this.chargesignList = this.dataSourcedrsign.data
+      }
+      this.chargesignList.push(this.signatureForm.value);
+      this.dataSourcedrsign.data = this.chargesignList;
+    }
+    console.log(this.dataSourcedrsign.data)
+  }
 
-  //   let that = this;
-  //   const dialogRef = this.matDialog.open(DoctorSchduleComponent,
-  //     {
-  //       maxWidth: "55vw",
-  //       height: '55vh',
-  //       width: '100%',
-  //       // data: element
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(result)
-  //     if (result !== undefined) {
 
-  //       if (this.dataSourceSchdule.data.length > 0) {
-  //          this.chargeschList = []
-  //         this.chargeschList = this.dataSourceSchdule.data
-  //       }
-  //       this.chargeschList.push(result);
-  //       this.dataSourceSchdule.data = this.chargeschList;
-  //     }
-  //   });
-
-  // }
   onAddCharges() {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
     this.chargechargesList = []
     let that = this;
     const dialogRef = this.matDialog.open(DoctorChargesComponent,
@@ -1029,7 +1127,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         if (this.dataSourcedrcharges.data.length > 0) {
-        this.chargechargesList = this.dataSourcedrcharges.data
+          this.chargechargesList = this.dataSourcedrcharges.data
         }
         this.chargechargesList.push(result);
         this.dataSourcedrcharges.data = this.chargechargesList;
@@ -1040,8 +1138,8 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
   }
 
   onAddLeave() {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
 
     let that = this;
     const dialogRef = this.matDialog.open(DoctorLeaveComponent,
@@ -1052,74 +1150,25 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
         // data: element
       });
     dialogRef.afterClosed().subscribe(result => {
+      debugger
       console.log(result)
-       if (result !== undefined) {
+      if (result !== undefined) {
         if (this.dataSourcedrleave.data.length > 0) {
-        this.chargeleaveList = this.dataSourcedrleave.data
+          this.chargeleaveList = this.dataSourcedrleave.data
         }
-        this.chargechargesList.push(result);
+        this.chargeleaveList.push(result);
         this.dataSourcedrleave.data = this.chargeleaveList;
-
+        console.log(this.dataSourcedrleave.data)
       }
     });
 
   }
-
-  //Signature
-  signatureForm: FormGroup;
-  pagesList = ['Discharge Summary', 'Consent Form', 'Prescription'];
-  uploadedFile: File | null = null;
-
-  @ViewChild('signaturePad') signaturePad!: SignaturePad;
-
-  signaturePadOptions: Object = {
-    minWidth: 1,
-    canvasWidth: 500,
-    canvasHeight: 200,
-    penColor: 'black'
-  };
-
-
-  createSignatureForm(): FormGroup {
-    return this._formBuilder.group({
-      pages: [[]],
-      label: ['']
-    });
-  }
-
-
-
-
-  drawComplete() {
-    const dataURL = this.signaturePad.toDataURL();
-    console.log('Signature:', dataURL);
-  }
-
-  changeColor(color: string) {
-    // this.signaturePad.set('penColor', color);
-  }
-
-  resetPad() {
-    this.signaturePad.clear();
-  }
-
-  onFileChange(event: any) {
-    this.uploadedFile = event.target.files[0];
-  }
-
-  onSubmit3() {
-    const formData = {
-      ...this.signatureForm.value,
-      signature: this.signaturePad.toDataURL(),
-      file: this.uploadedFile
-    };
-    console.log('Form submitted:', formData);
-    // handle backend call here
-  }
-  //attachment
-  attachments: any[] = [];
-  selectedFile: File | null = null;
-  previewUrl: string | null = null;
+ addpagelist: any = [];
+  selectChangeExamination(selectedChips: string[]) {
+      // this.addpagelist = selectedChips;
+      // this.myForm.get('pageId')?.setValue(this.addpagelist);
+    }
+  
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -1130,9 +1179,12 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     reader.readAsDataURL(this.selectedFile!);
   }
 
-  upload() {
+  uploadAttachments() {
     if (this.selectedFile) {
       this.attachments.push({ name: this.selectedFile.name, file: this.selectedFile });
+
+      console.log(this.attachments)
+      this.AttachDataSource.data = this.attachments
       this.selectedFile = null;
       this.previewUrl = null;
     }
@@ -1141,6 +1193,32 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
   view(file: any) {
     window.open(URL.createObjectURL(file.file), '_blank');
   }
+  images: any[] = [];
+  Filename: any;
+
+  deleteImage(element) {
+    let index = this.images.indexOf(element);
+    if (index >= 0) {
+      this.images.splice(index, 1);
+      this.dataSourcedrsign.data = this.images;
+    }
+
+    this.Filename = element.name;
+
+  }
+
+  deletedocattachment(element) {
+    let index = this.images.indexOf(element);
+    if (index >= 0) {
+      this.images.splice(index, 1);
+      this.imgDataSource.data = this.images;
+    }
+
+    this.Filename = element.name;
+
+  }
+
+
 
   download(file: any) {
     const link = document.createElement('a');
@@ -1153,6 +1231,36 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     this.attachments = this.attachments.filter(f => f !== file);
   }
 
+  imgDataSource = new MatTableDataSource<any>();
+  onSubmitImgFiles() {
+    // let data: PatientDocument[] = [];
+    // for (let i = 0; i < this.imgDataSource.data.length; i++) {
+    //     if (this.imgDataSource.data[i].name.endsWith('.pdf')) {
+    //         let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+    //             type: "'application/pdf'"
+    //         });
+    //         data.push({
+    //             Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+    //         });
+    //     }
+    //     else {
+    //         let file = new File([this.dataURItoBlob(this.imgDataSource.data[i].url)], this.imgDataSource.data[i].name, {
+    //             type: "'image/" + this.imgDataSource.data[i].name.split('.')[this.imgDataSource.data[i].name.split('.').length - 1] + "'"
+    //         });
+    //         data.push({
+    //             Id: "0", OPD_IPD_ID: this.VisitId, OPD_IPD_Type: 0, DocFile: file, FileName: this.imgDataSource.data[i].name
+    //         });
+    //     }
+    // }
+    // const formData = new FormData();
+    // let finalData = { Files: data };
+    // this.CreateFormData(finalData, formData);
+    // this._AppointmentSreviceService.documentuploadInsert(formData).subscribe((data) => {
+    //     if (data) {
+    //         Swal.fire("Images uploaded Successfully  ! ");
+    //     }
+    // });
+  }
 
   minDate = new Date();
   value = this.datePipe.transform(new Date(), "yyyy-MM-dd");
@@ -1242,24 +1350,22 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
 
   }
 
-      keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 
-   keyPressAlpha(event) {
+  keyPressAlpha(event) {
     const charCode = event.which ? event.which : event.keyCode;
     return (charCode >= 65 && charCode <= 90) ||  // A-Z
-           (charCode >= 97 && charCode <= 122) || (charCode == 32) || (charCode == 40) || (charCode == 41);   // a-z
+      (charCode >= 97 && charCode <= 122) || (charCode == 32) || (charCode == 40) || (charCode == 41);   // a-z
   }
 }
-
-
 
 
 
@@ -1271,5 +1377,40 @@ export class DepartmenttList {
   constructor(DepartmenttList) {
     this.DeptId = DepartmenttList.DeptId || '';
     this.DeptName = DepartmenttList.DeptName || '';
+  }
+}
+
+export class SignDetail {
+  docSignId: any;
+  doctorId: any;
+  pageId: any;
+  DocumentName: any;
+  page: any;
+  
+
+  constructor(SignDetail) {
+    this.docSignId = SignDetail.docSignId || 0;
+    this.doctorId = SignDetail.doctorId || 0;
+    this.pageId = SignDetail.pageId || 0;
+    this.DocumentName = SignDetail.DocumentName || '';
+    this.page = SignDetail.page || '';
+     
+  }
+}
+
+export class PatientDocument {
+  Id: string;
+  OPD_IPD_ID: Number;
+  OPD_IPD_Type: Number;
+  FileName: string;
+  DocFile: File;
+  constructor(PatientDocument) {
+    {
+      this.Id = PatientDocument.Id || "";
+      this.OPD_IPD_ID = PatientDocument.OPD_IPD_ID || 0;
+      this.OPD_IPD_Type = PatientDocument.opD_IPD_Type || 0;
+      this.FileName = PatientDocument.Filename || "";
+      this.DocFile = PatientDocument.DocFile || null;
+    }
   }
 }

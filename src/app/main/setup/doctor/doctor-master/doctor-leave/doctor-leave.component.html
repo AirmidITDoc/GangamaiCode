@@ -32,38 +32,79 @@
                             <div class="leave-form">
                                 <h3>Leave</h3>
                                 <form [formGroup]="leaveForm">
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>From Date</mat-label>
-                                        <input matInput [matDatepicker]="fromPicker" formControlName="fromDate">
-                                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                                        <mat-datepicker #fromPicker></mat-datepicker>
-                                    </mat-form-field>
+                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>To Date</mat-label>
-                                        <input matInput [matDatepicker]="toPicker" formControlName="toDate">
-                                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                                        <mat-datepicker #toPicker></mat-datepicker>
-                                    </mat-form-field>
+                                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>From Time</mat-label>
-                                        <input matInput type="time" formControlName="fromTime">
-                                    </mat-form-field>
+                                            <airmid-dropdown label="leavetype" formControlName="leaveTypeId"
+                                                (selectionChange)="getSelectedqleaveObj($event)" [formGroup]="leaveForm"
+                                                [mode]="autocompleteModeleave"></airmid-dropdown>
+                                        </div>
+                                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
 
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>To Time</mat-label>
-                                        <input matInput type="time" formControlName="toTime">
-                                    </mat-form-field>
+                                            <!-- <airmid-textbox label="Reason" formControlName="reason" Reason
+                                                [formGroup]="leaveForm">
+                                            </airmid-textbox> -->
+                                        </div>
 
-                                 
-                                     <airmid-textbox label="Reason" formControlName="reason" Reason
-                                            [formGroup]="leaveForm">
-                                        </airmid-textbox>
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
 
-                                    <!-- <mat-checkbox formControlName="isHoliday">Leave For Holiday</mat-checkbox> -->
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>From Date</mat-label>
+                                                <input matInput [matDatepicker]="fromPicker" formControlName="startDate">
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="fromPicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #fromPicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
 
-                                  
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>To Date</mat-label>
+                                                <input matInput [matDatepicker]="toPicker" formControlName="endDate">
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="toPicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #toPicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>From Time</mat-label>
+                                                <input matInput type="time" formControlName="fromTime">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="toTime">
+                                            </mat-form-field>
+                                        </div> -->
+                                       
+                                        <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+
+                                            <airmid-dropdown label="leavetype" formControlName="leavetype"
+                                                (selectionChange)="getSelectedqleaveObj($event)" [formGroup]="leaveForm"
+                                                [mode]="autocompleteModeleave"></airmid-dropdown>
+                                        </div>
+                                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+
+                                            <airmid-textbox label="Reason" formControlName="reason" Reason
+                                                [formGroup]="leaveForm">
+                                            </airmid-textbox>
+                                        </div> -->
+                                    </div>
+
+                                    <div>
+                                        <!-- (change)="onChangeFirst()" -->
+                                        <mat-radio-group value="1" [formGroup]="leaveForm" formControlName="leaveOption"
+                                            fxLayoutAlign="left left">
+                                            <mat-radio-button value="0">Full Day</mat-radio-button>
+                                            <mat-radio-button mat-fab value="1">First Half Day</mat-radio-button>
+                                            <mat-radio-button mat-fab value="2">Second Half Day</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
                                 </form>
                             </div>
 
