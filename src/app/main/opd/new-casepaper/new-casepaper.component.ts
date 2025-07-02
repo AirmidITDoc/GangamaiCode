@@ -28,6 +28,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { setValue } from '@ngx-translate/core';
 import { Console } from 'console';
+import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 // interface Patient {
 //   PHeight: string;
@@ -154,7 +157,32 @@ export class NewCasepaperComponent implements OnInit {
   GenericoriginalValue: string | null = null;
   editingIndex: number | null = null;
   originalValue: string | null = null;
-
+  attachments: any[] = [];
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
+  displayedColumns: string[] = [
+    'CertificateDate',
+    'CertificateName',
+    'CertificateText',
+    'Action'
+  ]
+  mycertificateForm: FormGroup;
+   editorConfig: AngularEditorConfig = {
+      editable: true,
+      spellcheck: true,
+      height: '24rem',
+      minHeight: '24rem',
+      translate: 'yes',
+      placeholder: 'Enter text here...',
+      enableToolbar: true,
+      showToolbar: true,
+    };
+  
+    onBlur(e: any) {
+      this.vcertificateText = e.target.innerHTML;
+      throw new Error('Method not implemented.');
+    }
+    
   dsItemList = new MatTableDataSource<MedicineItemList>();
   dsCopyItemList = new MatTableDataSource<MedicineItemList>();
 
@@ -205,6 +233,9 @@ export class NewCasepaperComponent implements OnInit {
     this.topRequestListArray.push(this.createtopRequestList());
     this.mopCasepaperDignosisArray.push(this.createmopCasepaperDignosis());
 
+    this.mycertificateForm = this.CreatePatientCertiform();
+    this.mycertificateForm.markAllAsTouched()
+
     this.MedicineItemform();
     this.specificDate = new Date();
     this.dateStyle = 'Day'
@@ -235,6 +266,7 @@ export class NewCasepaperComponent implements OnInit {
       this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
       // this.getCheifComplaintList();
+      this.getCertificateList();
     }
 
     setTimeout(() => {
@@ -262,6 +294,23 @@ export class NewCasepaperComponent implements OnInit {
       const updated = currentText ? `${currentText} ${text}` : text;
       this.MedicineItemForm.get('Remark')?.setValue(updated);
     });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(this.selectedFile!);
+  }
+
+  upload() {
+    if (this.selectedFile) {
+      this.attachments.push({ name: this.selectedFile.name, file: this.selectedFile });
+      this.selectedFile = null;
+      this.previewUrl = null;
+    }
   }
 
   removeService(item) {
@@ -302,6 +351,20 @@ export class NewCasepaperComponent implements OnInit {
     this.dateStyle = e.value;
     this.onDaysChange();
   }
+
+  CreatePatientCertiform() {
+    return this._formBuilder.group({
+      certificateId: [0],
+      certificateDate: [new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())).toISOString()],
+      certificateTime: [(new Date()).toISOString()],
+      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      CertificateTemplateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      certificateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      certificateText: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      Language: ['1'],
+    })
+  }
+
   createForm() {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
@@ -316,6 +379,8 @@ export class NewCasepaperComponent implements OnInit {
       Pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       BP: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       Temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      BloodGroup: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(3)]],
+      Allergies: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(50)]],
       ChiefComplaint: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       serviceId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       Diagnosis: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -1227,6 +1292,7 @@ export class NewCasepaperComponent implements OnInit {
 
   onClose() {
     this.caseFormGroup.reset({ LangaugeRadio: ["true"] });
+    this.mycertificateForm.reset({ Language: '1' });
     // this.numericForm.reset();
     this.dialogRef.close();
   }
@@ -1468,7 +1534,7 @@ export class NewCasepaperComponent implements OnInit {
   //datewise visit info and table data
   patients: any[] = []; // Using 'any' type for simplicity
   uniqueDates: string[] = [];
-  displayedColumns: string[] = ['patientName', 'age', 'gender'];
+  // displayedColumns: string[] = ['patientName', 'age', 'gender'];
 
   getnewVisistListDemo(obj) {
     var D_data = {
@@ -1758,6 +1824,111 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
+  // certificate part
+  selectedTabIndex = 0;
+  dsCertficateTemp = new MatTableDataSource<certificateTemp>();
+  certiID = 0;
+  vcertificateText: any;
+  registerObjDet: any;
+  isButtonDisabled: boolean = false;
+  selectedTabIndexHide = 0;
+
+onTabChange(event: MatTabChangeEvent) {
+  this.selectedTabIndexHide = event.index;
+}
+
+  onCertificateSave() {
+    if (!this.mycertificateForm.invalid) {
+      this.mycertificateForm.get('visitId').setValue(this.VisitId)
+      this.mycertificateForm.get('certificateId').setValue(this.certiID ?? 0);
+      const payload = this.mycertificateForm.getRawValue();
+      delete payload.Language;
+      console.log(payload)
+      this._CasepaperService.CertificateInsertUpdate(payload).subscribe((response) => {
+        this.onSubList()
+        this.mycertificateForm.reset();
+        this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
+      });
+    }
+    else {
+      let invalidFields: string[] = [];
+      if (this.mycertificateForm.invalid) {
+        for (const controlName in this.mycertificateForm.controls) {
+          if (this.mycertificateForm.controls[controlName].invalid) {
+            invalidFields.push(`My Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
+
+  onSubList() {
+    this.getCertificateList();
+    this.certiID=0
+    this.mycertificateForm.reset({ Language: '1' });
+  }
+
+  selectChangeTemplate(data) {
+    this.registerObjDet = data.certificateDesc;
+    this.mycertificateForm.get('certificateName').setValue(data.certificateName)
+  }
+
+  addTemplateDescription() {
+    debugger
+    this.isButtonDisabled = false;
+    if (!this.mycertificateForm.get('CertificateTemplateId').value) {
+      this.toastr.warning('Please select Certificate Template ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.registerObjDet) {
+      this.vcertificateText = this.registerObjDet;
+      this.mycertificateForm.get('certificateText')?.setValue(this.vcertificateText);
+      this.registerObjDet = '';
+    }
+  }
+
+  getCertificateList() {
+    const D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitedID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "VisitedID",
+          "fieldValue": String(this.VisitId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._CasepaperService.getCertificateList(D_data).subscribe(Visit => {
+      this.dsCertficateTemp.data = Visit.data as certificateTemp[];
+      this.dsCertficateTemp.sort = this.sort;
+      this.dsCertficateTemp.paginator = this.paginator;
+      console.log('check:', this.dsCertficateTemp.data)
+    })
+  }
+
+  OnEdit(row) {
+    console.log('Row data received:', row);
+    this.certiID = row.certificateId
+    this.mycertificateForm.get('certificateName').setValue(row.certificateName)
+    this.mycertificateForm.patchValue({
+      CertificateTemplateId: row.certificateTemplateId,
+      certificateText: row.certificateText
+    });
+    this.selectedTabIndex = 1;
+  }
 }
 
 export class CasepaperVisitDetails {

@@ -221,6 +221,11 @@ export class PatientcertificateComponent {
     });
     this.selectedTabIndex = 1;
   }
+
+   getWhatsappshareSales(el, vmono) {
+
+    
+  }
 }
 export class certificateTemp {
 

@@ -22,22 +22,13 @@
                 <input type="hidden" name="reportId" formControlName="reportId">
                 <div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <airmid-textbox 
-                                label="ReportSection" 
-                                formControlName="reportSection" 
-                                [value]="data?.reportSection" 
-                                [formGroup]="myform" 
-                                [validations]="getValidationMessages().reportSection" 
-                                [maxLength]="50">
-                            </airmid-textbox> -->
-                        
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Report Section" formControlName="reportSectionId" [formGroup]="myform"
                                 [mode]="autocompleteModedReport" (selectionChange)="ListView($event)">
                             </airmid-dropdown>
                         </div>
 
-                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox 
                                 label="ReportName" 
                                 formControlName="reportName" 
@@ -46,6 +37,12 @@
                                 [validations]="getValidationMessages().reportName" 
                                 [maxLength]="200">
                             </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">                        
+                            <airmid-dropdown label="Menu Name" formControlName="menuId" [formGroup]="myform"
+                                [mode]="autocompleteModedMenu" (selectionChange)="ListView1($event)">
+                            </airmid-dropdown>
                         </div>
 
                         <!-- <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">

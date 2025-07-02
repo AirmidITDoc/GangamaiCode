@@ -17,12 +17,16 @@ export class NewReportConfigurationComponent implements OnInit{
     myform: FormGroup;
     isActive:boolean=true;
     autocompleteModedReport: string = "ReportConfig";
+    autocompleteModedMenu:string ="MenuMaster";
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
-    reportBodyFile: string[] = ["SimpleReportFormat.html","MultiTotalReportFormat.html"];
+    // reportBodyFile: string[] = ["SimpleReportFormat.html","MultiTotalReportFormat.html"];
+    reportBodyFile: string[] = ["MultiTotalReportFormat.html"];
     reportName=''
     reportId=0
+    menuName=''
+    menuId=0
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -61,6 +65,13 @@ export class NewReportConfigurationComponent implements OnInit{
         this.reportId=obj.value
         this.reportName=obj.text
         this.myform.get('parentid')?.setValue(this.reportId)
+    }
+
+     ListView1(obj: any) {
+        console.log(obj)
+        this.menuId=obj.value
+        this.menuName=obj.text
+        this.myform.get('menuId')?.setValue(this.menuId)
     }
 
     onSubmit() {

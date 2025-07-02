@@ -21,13 +21,12 @@ export class ReportConfigurationComponent implements OnInit {
     myform: FormGroup;
     autocompleteModedReport: string = "ReportConfig";
     autocompleteModedMenu:string ="MenuMaster";
+    parentId="";
 
     constructor(public _ReportConfigurationService: ReportConfigurationService, public _matDialog: MatDialog,
         public toastr: ToastrService, private _formBuilder: UntypedFormBuilder,) { }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "ReportConfig/List",
-        columnsList: [
+    allcolumns=[
             { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
             { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -42,9 +41,9 @@ export class ReportConfigurationComponent implements OnInit {
             { heading: "Column Widths", key: "reportColumnWidths", sort: true, align: "left", emptySign: 'NA', width: 250 },
             { heading: "ReportHeaderFile", key: "reportHeaderFile", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "ReportBodyFile", key: "reportBodyFile", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "ReportFileName", key: "reportFileName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "ReportSPName", key: "reportSpname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "ReportFolderName", key: "reportFolderName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "ReportFileName", key: "reportFileName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+            { heading: "ReportSPName", key: "reportSpname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
             { heading: "ReportPageOrientation", key: "reportPageOrientation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ReportPageSize", key: "reportPageSize", sort: true, align: 'left', emptySign: 'NA', width: 120 },
             {
@@ -62,7 +61,11 @@ export class ReportConfigurationComponent implements OnInit {
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
-        ],
+        ]
+
+    gridConfig: gridModel = {
+        apiUrl: "ReportConfig/List",
+        columnsList: this.allcolumns,
         sortField: "ReportId",
         sortOrder: 1,
         filters: [
@@ -74,9 +77,12 @@ export class ReportConfigurationComponent implements OnInit {
 
     ngOnInit(): void {
         this.myform = this.createseacrhform();
-        if(this.myform.get('MenuName').value=="0"){
-            this.gridConfig.filters[0].fieldValue = ""  
-        }
+        // if(this.myform.get('MenuName').value=="0"){
+        //     this.gridConfig.filters[0].fieldValue = ""  
+        // }
+        // this.myform.get('MenuName')?.valueChanges.subscribe(value => {
+        //     this.parentId = value.value || "";
+        // });
     }
 
 
@@ -108,29 +114,30 @@ export class ReportConfigurationComponent implements OnInit {
     }
 
     ListView(obj: any) {
+        debugger
         console.log(obj)
         if(this.myform.get('MenuName').value=="0"){
            this.myform.get('MenuName').setValue("") 
         }
-        this.gridConfig.filters[0].fieldValue = obj.value
+        this.parentId = obj.value
+        // this.getfiltercurrentStock()
     }
-
-    //  ListView1(obj: any) {
-    //     console.log(obj)
-    //     if(this.myform.get('MenuName').value=="0"){
-    //        this.myform.get('MenuName').setValue("") 
+    // getfiltercurrentStock() {
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "ReportConfig/List",
+    //         columnsList: this.allcolumns,
+    //         sortField: "ReportId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "parentid", fieldValue: String(this.parentId), opType: OperatorComparer.Equals },
+    //             { fieldName: "ReportName", fieldValue: "", opType: OperatorComparer.Contains },
+    //             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    //         ]
     //     }
-    //     this.gridConfig.filters[1].fieldValue = obj.text
+    //     console.log(this.gridConfig)
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
     // }
 
-//     ListView(value) {
-//         debugger
-//     console.log(value)
-//      if(value.value!==0)
-//         this.DoctorId=String(value.value)
-//     else
-//     this.DoctorId="0"
-
-//     this.onChangeFirst();
-// }
 }

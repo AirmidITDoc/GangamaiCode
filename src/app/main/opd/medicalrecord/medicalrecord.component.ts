@@ -219,9 +219,10 @@ export class MedicalrecordComponent implements OnInit {
     let that = this;
     const dialogRef = this._matDialog.open(NewCasepaperComponent,
       {
-        maxWidth: "90vw",
-        height: "890px",
-        width: "100%",
+        maxWidth: "95vw",
+        maxHeight: '95vh',
+        height: '95%',
+        width: '90%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
