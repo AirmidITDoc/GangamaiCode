@@ -256,7 +256,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       Education: ["",
         [
           Validators.required,
-          Validators.pattern("^[A-Za-z/() ]*$")
+          // Validators.pattern("^[A-Za-z/() / [ ] ]*$")
         ]
       ],
       IsConsultant: [true],
