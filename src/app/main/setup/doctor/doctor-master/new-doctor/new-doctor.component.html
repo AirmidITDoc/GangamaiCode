@@ -333,11 +333,11 @@
 
                                                     <mat-table matSort [dataSource]="dataSourceeducation"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table">
-                                                        <ng-container matColumnDef="Qualification">
+                                                        <ng-container matColumnDef="qualificationName">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>Qualification Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.Qualification }}</span>
+                                                                <span>{{ element.qualificationName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -349,11 +349,11 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="InstituteName">
+                                                        <ng-container matColumnDef="instituteName">
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>Institution Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.InstituteName }}</span>
+                                                                <span>{{ element.instituteName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 

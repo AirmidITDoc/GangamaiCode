@@ -43,9 +43,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   displayedColumnsEdu = [
 
     // 'qualificationId',
-    'Qualification',
+    'qualificationName',
     'passingYear',
-    'InstituteName',
+    'instituteName',
     // 'institutionNameId',
     'cityName',
     'countryName',
@@ -256,7 +256,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
       Education: ["",
         [
           Validators.required,
-          Validators.pattern("^[A-Za-z/() ]*$")
+          // Validators.pattern("^[A-Za-z/() / [ ] ]*$")
         ]
       ],
       IsConsultant: [true],
