@@ -43,9 +43,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   displayedColumnsEdu = [
 
     // 'qualificationId',
-    'Qualification',
+    'qualificationName',
     'passingYear',
-    'InstituteName',
+    'instituteName',
     // 'institutionNameId',
     'cityName',
     'countryName',

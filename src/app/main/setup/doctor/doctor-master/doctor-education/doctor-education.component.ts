@@ -23,13 +23,13 @@ export class DoctorEducationComponent {
   EducationForm: FormGroup
   autocompleteModecountry: string = "Country";
   autocompleteModecity: string = "City";
-  selectedYear:any;
+  selectedYear: any;
   registerObj = new EducationDetail({})
   QualifyName: any;
   QualifyId: any;
   InstituteName: any;
   InstituteId: any;
- CityName: any;
+  CityName: any;
   CityId: any;
   CountryName: any;
   CountryId: any;
@@ -58,9 +58,9 @@ export class DoctorEducationComponent {
     if (this.data) {
       this.registerObj = this.data
     }
-    this.selectedYear=this.datePipe.transform(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd')
+    this.selectedYear = this.datePipe.transform(new Date(new Date().getFullYear(), 0, 1), 'yyyy-MM-dd')
 
-    
+
   }
 
 
@@ -70,14 +70,14 @@ export class DoctorEducationComponent {
       doctorId: [0],
       docQualfiId: [0],
       qualificationId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      Qualification:[''],
-      InstituteName:[''],
+      Qualification: [''],
+      InstituteName: [''],
       passingYear: [(new Date()).toISOString()],
       institutionNameId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       cityId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      cityName:[''],
+      cityName: [''],
       countryId: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      countryName:['']  
+      countryName: ['']
     });
   }
 
@@ -95,7 +95,7 @@ export class DoctorEducationComponent {
     this.InstituteId = obj.value;
 
   }
-getSelectedcityObj(obj) {
+  getSelectedcityObj(obj) {
     console.log(obj)
     this.CityName = obj.text;
     this.CityId = obj.value;
@@ -126,7 +126,7 @@ getSelectedcityObj(obj) {
     this.EducationForm.get("InstituteName").setValue(this.InstituteName)
 
 
-      this.EducationForm.get("cityId").setValue(this.CityId)
+    this.EducationForm.get("cityId").setValue(this.CityId)
     this.EducationForm.get("cityName").setValue(this.CityName)
 
     this.EducationForm.get("countryId").setValue(this.CountryId)
@@ -171,14 +171,15 @@ export class EducationDetail {
   qualificationId: any;
   docQualfiId: any;
   qualification: any;
-  // shortName: any;
+  qualificationName: any;
+  instituteName: any;
   passingYear: any;
   institutionNameId: any;
   institutionName: any;
   cityId: any;
-  cityName:any;
+  cityName: any;
   countryId: any;
-countryName:any;
+  countryName: any;
   /**
    * Constructor
    *
@@ -196,8 +197,10 @@ countryName:any;
       this.institutionName = EducationDetail.institutionName || 0;
       this.cityId = EducationDetail.cityId || 0;
       this.countryId = EducationDetail.countryId || '';
-       this.cityName = EducationDetail.cityName || 0;
+      this.cityName = EducationDetail.cityName || 0;
       this.countryName = EducationDetail.countryName || '';
+      this.qualificationName = EducationDetail.qualificationName || '';
+      this.instituteName = EducationDetail.instituteName || '';
 
     }
   }
