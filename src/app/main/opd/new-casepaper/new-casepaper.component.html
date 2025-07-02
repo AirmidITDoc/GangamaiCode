@@ -212,13 +212,22 @@
                                                             style="margin-right: 10px; font-size: x-large;">F</span>
                                                     </mat-form-field>
 
-                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                    <!-- <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>B.Group</mat-label>
                                                         <input matInput formControlName="BloodGroup"
                                                             placeholder="BloodGroup" [maxLength]="3">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">BG</span>
+                                                    </mat-form-field> -->
+
+                                                    <mat-form-field appearance="outline" fxFlex="9%">
+                                                        <mat-label>B.Group</mat-label>
+                                                        <mat-select placeholder="BloodGroup" formControlName="BloodGroup"
+                                                            name="BloodGroup">
+                                                            <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
+                                                                {{i}}</mat-option>
+                                                        </mat-select>
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="9%">
@@ -638,13 +647,27 @@
                                             <span style="font-weight: 700;">Attachment</span>
                                         </div>
                                         <hr>
-                                        <div class="upload-section">
-                                            <input type="file" (change)="onFileSelected($event)" />
-                                            <button mat-raised-button color="primary" (click)="upload()">Upload</button>
-                                        </div>
-                                        <div class="file-preview" *ngIf="previewUrl">
-                                            <p><strong>{{ selectedFile?.name }}</strong></p>
-                                            <img [src]="previewUrl" alt="Preview" width="200" />
+                                        <div class="upload-container">
+                                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayout.lt-sm="column" fxLayout.lt-md="column">
+                                    
+                                                <div class="upload-option-div">
+                                                    <div class="img-container gap-12">
+                                                        <input type="file" accept="image/*,application/pdf" multiple id="file" class="inputfile"
+                                                            (change)="onImageFileChange($event)" />
+                                                        <!-- <label class="btn btn-primary-outline btn-with-icon btn-hover btn-xs" for="file">
+                                                            <span class="btn-icon">
+                                                                <mat-icon>cloud_upload</mat-icon>
+                                                            </span>
+                                                            <span>Browse</span>
+                                                        </label> -->
+                                                    </div>
+                                                </div>
+                                    
+                                                <div>
+                                                    <button class="btn btn-primary" type="button" (click)="onSubmitImgFiles()">Upload Image/PDF</button>
+                                                </div>
+                                    
+                                            </div>
                                         </div>
                                     </mat-card>
 
@@ -704,199 +727,159 @@
                                         </button>
                                     </div>
 
-                                    <div *ngFor="let visitId of uniqueDates; let i = index">
-                                        <mat-card style="padding: 6px;">
-                                            <div fxLayout="column" fxLayoutGap="6px">
-
-                                                <!-- Title Header -->
-                                                <div class="visit-info-title" fxLayoutAlign="space-between center">
-                                                    <span style="font-weight: 900; font-size: 16px;">
-                                                        <span class="square-box">{{ i + 1 }}</span> Appointment with
-                                                        <span style="color: rgb(57, 73, 171);">
-                                                            Dr. {{ getFirstPatientForDate(visitId)[0]?.doctorname ||
-                                                            'N/A' }}
-                                                        </span>
-                                                        on {{ getFirstPatientForDate(visitId)[0]?.visitDate |
-                                                        date:'mediumDate' }}
-                                                    </span>
-
-                                                    <div class="gap-12">
-                                                        <button mat-raised-button
-                                                            (click)="OnViewReportWithHeaderPdf(visitId)"
-                                                            matTooltip="Print">
-                                                            <mat-icon>print</mat-icon>LetterHead
-                                                        </button>
-
-                                                        <button mat-raised-button
-                                                            (click)="OnViewReportWithoutHeaderPdf(visitId)"
-                                                            matTooltip="Print">
-                                                            <mat-icon>print</mat-icon>Without LetterHead
-                                                        </button>
-
-                                                        <button mat-raised-button>
-                                                            <img width="25" height="8px"
-                                                                src="assets/images/logos/WhatsApp.png"
-                                                                (click)="getWhatsappshareSales()"
-                                                                matTooltip="Send Prescription Details On WhatsApp" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Tab part -->
-                                                <mat-tab-group>
-                                                    <mat-tab label="Visit Info">
-                                                        <div *ngFor="let patient of getPatientsForDate(visitId)">
-                                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                                                fxLayoutAlign="space-between center"
-                                                                class="patient-info">
-                                                                <div class="patient-sub">
-                                                                    <div class="patient-info-row patient-info-1-111 pt-4"
-                                                                        fxLayout="column" fxLayoutAlign="space-between">
-                                                                        <div fxLayout="row"
-                                                                            fxLayoutAlign="space-between">
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">Height
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.pHeight}}
-                                                                                    <span matSuffix
-                                                                                        style="font-size: 13px;"> |
-                                                                                        cm</span>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">Weight
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.pWeight}}
-                                                                                    <span matSuffix
-                                                                                        style="font-size:13px;">
-                                                                                        | Kg</span>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">BMI</span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.BMI}}</span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">SPO2
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.spO2}}</span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">BSL</span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.bsl}}</span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">Pulse
-                                                                                </span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.pulse}}
-                                                                                    <span matSuffix
-                                                                                        style="font-size: 13px;"> |
-                                                                                        bpm</span>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">BP</span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.bp}}
-                                                                                    <span matSuffix
-                                                                                        style="font-size: 13px;"> |
-                                                                                        mmHg</span>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span
-                                                                                    class="patient-col-key">Temprature</span>
-                                                                                <span>:</span>
-                                                                                <span
-                                                                                    class="patient-col-value">{{patient.temp}}
-                                                                                    <span matSuffix
-                                                                                        style="font-size: 13px;"> |
-                                                                                        F</span>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">B.Group</span>
-                                                                                <span>:</span>
-                                                                                <span class="patient-col-value">
-                                                                                    <!-- {{patient.temp}} -->
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div class="patient-col">
-                                                                                <span class="patient-col-key">Allergy</span>
-                                                                                <span>:</span>
-                                                                                <span class="patient-col-value">
-                                                                                    <!-- {{patient.temp}} -->
-                                                                                </span>
-                                                                            </div>
+                                    <mat-accordion>
+                                        <div *ngFor="let visitId of uniqueDates; let i = index" style="margin-bottom: 16px;">
+                                        <mat-expansion-panel>
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    <span class="square-box">{{ i + 1 }}</span> Appointment with &nbsp;
+                                                    <span style="color: rgb(57, 73, 171);">
+                                                        Dr. {{ getFirstPatientForDate(visitId)[0]?.doctorname || 'N/A' }}
+                                                    </span>&nbsp;
+                                                    on {{ getFirstPatientForDate(visitId)[0]?.visitDate | date: 'mediumDate' }}
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                    
+                                            <!-- Action Buttons -->
+                                            <div fxLayout="row" fxLayoutAlign="end center" class="gap-12" style="margin: 8px 0;">
+                                                <button mat-raised-button (click)="OnViewReportWithHeaderPdf(visitId)" matTooltip="Print">
+                                                    <mat-icon>print</mat-icon>LetterHead
+                                                </button>
+                                    
+                                                <button mat-raised-button (click)="OnViewReportWithoutHeaderPdf(visitId)" matTooltip="Print">
+                                                    <mat-icon>print</mat-icon>Without LetterHead
+                                                </button>
+                                    
+                                                <button mat-raised-button>
+                                                    <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
+                                                        matTooltip="Send Prescription Details On WhatsApp" />
+                                                </button>
+                                            </div>
+                                    
+                                            <!-- Tabs inside expansion -->
+                                            <mat-tab-group (selectedTabChange)="onTabChangeEvent($event, visitId)">
+                                                <!-- Visit Info Tab -->
+                                                <mat-tab label="Visit Info">
+                                                    <div *ngFor="let patient of getPatientsForDate(visitId)">
+                                                        <div class="Ipd-patient-info" fxLayout="row" fxLayoutAlign="space-between center"
+                                                            class="patient-info">
+                                                            <div class="patient-sub">
+                                                                <div class="patient-info-row pt-4" fxLayout="column" fxLayoutAlign="space-between">
+                                                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Height</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">
+                                                                                {{patient.pHeight}} <span style="font-size: 13px;">| cm</span>
+                                                                            </span>
                                                                         </div>
-                                                                        <div
-                                                                            style="border: 1px solid rgb(203, 203, 203);width: 100%;">
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Weight
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.pWeight}}
+                                                                                <span matSuffix style="font-size:13px;">
+                                                                                    | Kg</span>
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BMI</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.BMI}}</span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">SPO2
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.spO2}}</span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BSL</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.bsl}}</span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Pulse
+                                                                            </span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.pulse}}
+                                                                                <span matSuffix style="font-size: 13px;"> |
+                                                                                    bpm</span>
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">BP</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.bp}}
+                                                                                <span matSuffix style="font-size: 13px;"> |
+                                                                                    mmHg</span>
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Temprature</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">{{patient.temp}}
+                                                                                <span matSuffix style="font-size: 13px;"> |
+                                                                                    F</span>
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">B.Group</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col">
+                                                                            <span class="patient-col-key">Allergy</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- </div> -->
+                                    
+                                                                    <div style="border: 1px solid #ccc; width: 100%; margin: 5px 0;"></div>
+                                    
+                                                                    <!-- Visit Data -->
+                                                                    <div *ngFor="let visit of getVisitDataById(visitId)">
+                                                                        <div class="patient-col" fxLayout="row" fxLayoutGap="6px">
+                                                                            <span class="patient-col-key">Chief Complaint</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">
+                                                                                <ng-container *ngIf="visit.complaints?.length > 0; else noComplaints">
+                                                                                    <ng-container
+                                                                                        *ngFor="let complaint of visit.complaints; let last = last">
+                                                                                        {{ complaint }}<span *ngIf="!last">, </span>
+                                                                                    </ng-container>
+                                                                                </ng-container>
+                                                                                <ng-template #noComplaints>N/A</ng-template>
+                                                                            </span>
+                                                                        </div>
+                                    
+                                                                        <div class="patient-col" fxLayout="row" fxLayoutGap="6px">
+                                                                            <span class="patient-col-key">Diagnosis</span>
+                                                                            <span>:</span>
+                                                                            <span class="patient-col-value">
+                                                                                <ng-container *ngIf="visit.diagnoses?.length > 0; else noDiagnosis">
+                                                                                    <ng-container
+                                                                                        *ngFor="let diagnosis of visit.diagnoses; let last = last">
+                                                                                        {{ diagnosis }}<span *ngIf="!last">, </span>
+                                                                                    </ng-container>
+                                                                                </ng-container>
+                                                                                <ng-template #noDiagnosis>N/A</ng-template>
+                                                                            </span>
                                                                         </div>
 
-                                                                        <div
-                                                                            *ngFor="let visit of getVisitDataById(visitId)">
-
-                                                                            <div fxLayout="row" fxLayoutGap="6px"
-                                                                                class="patient-col">
-                                                                                <span class="patient-col-key">Chief
-                                                                                    Complaint</span>
-                                                                                <span>:</span>
-                                                                                <span class="patient-col-value">
-                                                                                    <ng-container
-                                                                                        *ngIf="visit.complaints && visit.complaints.length > 0; else noComplaints">
-                                                                                        <ng-container
-                                                                                            *ngFor="let complaint of visit.complaints; let last = last">
-                                                                                            {{ complaint }}<span
-                                                                                                *ngIf="!last">, </span>
-                                                                                        </ng-container>
-                                                                                    </ng-container>
-                                                                                    <ng-template
-                                                                                        #noComplaints>N/A</ng-template>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div fxLayout="row" fxLayoutGap="6px"
-                                                                                class="patient-col">
-                                                                                <span
-                                                                                    class="patient-col-key">Diagnosis</span>
-                                                                                <span>:</span>
-                                                                                <span class="patient-col-value">
-                                                                                    <ng-container
-                                                                                        *ngIf="visit.diagnoses && visit.diagnoses.length > 0; else noDiagnosis">
-                                                                                        <ng-container
-                                                                                            *ngFor="let diagnosis of visit.diagnoses; let last = last">
-                                                                                            {{ diagnosis }}<span
-                                                                                                *ngIf="!last">, </span>
-                                                                                        </ng-container>
-                                                                                    </ng-container>
-                                                                                    <ng-template
-                                                                                        #noDiagnosis>N/A</ng-template>
-                                                                                </span>
-                                                                            </div>
-
-                                                                            <div fxLayout="row" fxLayoutGap="6px"
+                                                                        <div fxLayout="row" fxLayoutGap="6px"
                                                                                 class="patient-col">
                                                                                 <span
                                                                                     class="patient-col-key">Examination</span>
@@ -915,23 +898,17 @@
                                                                                         #noExam>N/A</ng-template>
                                                                                 </span>
                                                                             </div>
-
-                                                                            <div *ngIf="(visit.complaints && visit.complaints.length > 0) || 
-                                                                                (visit.diagnoses && visit.diagnoses.length > 0) || 
-                                                                                (visit.examinations && visit.examinations.length > 0)"
-                                                                                style="border: 1px solid rgb(203, 203, 203); width: 100%; margin-top: 5px;">
-                                                                            </div>
+                                    
+                                                                        <div *ngIf="visit.complaints?.length || visit.diagnoses?.length || visit.examinations?.length"
+                                                                            style="border: 1px solid #ccc; width: 100%; margin-top: 5px;">
                                                                         </div>
-
-                                                                        <div fxFlex.gt-sm="100%" fxlayout="column"
-                                                                            class="airmid-table-container">
-                                                                            <div class="prescription-title">
-                                                                                <span style="font-weight: 700;">
-                                                                                    Prescription List
-                                                                                </span>
-                                                                            </div>
-                                                                            <hr>
-
+                                                                    </div>
+                                    
+                                                                    <!-- Prescription Table -->
+                                                                    <div class="airmid-table-container">
+                                                                        <div class="prescription-title" style="font-weight: 700;">Prescription List</div>
+                                                                        <hr />
+                                                                        
                                                                             <mat-table matSort
                                                                                 [dataSource]="getFirstPatientForDate(visitId)"
                                                                                 [@animateStagger]="{value:'50'}"
@@ -1000,100 +977,223 @@
                                                                                     class="element"
                                                                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                                             </mat-table>
-                                                                        </div>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </mat-tab>
+                                                    </div>
+                                                </mat-tab>
+                                    
+                                                <!-- Lab Tab -->
+                                                <mat-tab label="Lab">
+                                                    <mat-table class="table2" matSort [dataSource]="LabMap[visitId]" [@animateStagger]="{value:'50'}"
+                                                        style="overflow: auto;height:250px;">
+                                                
+                                                        <ng-container matColumnDef="labDate">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Date </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.pathDate}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="ServiceName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                ServiceName </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.serviceName}} </mat-cell>
+                                                        </ng-container>
 
-                                                    <mat-tab label="Lab">
-                                                        <h2>Lab Tests</h2>
-                                                        <table border="1" cellpadding="8" cellspacing="0">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Test ID</th>
-                                                                    <th>Patient ID</th>
-                                                                    <th>Test Name</th>
-                                                                    <th>Sample Type</th>
-                                                                    <th>Result</th>
-                                                                    <th>Reference Range</th>
-                                                                    <th>Unit</th>
-                                                                    <th>Status</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>101</td>
-                                                                    <td>Complete Blood Count</td>
-                                                                    <td>Blood</td>
-                                                                    <td>13.5</td>
-                                                                    <td>12 - 16</td>
-                                                                    <td>g/dL</td>
-                                                                    <td>Completed</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>102</td>
-                                                                    <td>Urine Routine</td>
-                                                                    <td>Urine</td>
-                                                                    <td>Normal</td>
-                                                                    <td>Normal</td>
-                                                                    <td>-</td>
-                                                                    <td>Pending</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                         <ng-container matColumnDef="PatientType">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                PatientType </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.patientType}} </mat-cell>
+                                                        </ng-container>
 
-                                                    </mat-tab>
+                                                         <ng-container matColumnDef="BillNo">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                BillNo </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.pBillNo}} </mat-cell>
+                                                        </ng-container>
+                                                                                                
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                                Action </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button matTooltip="Print">
+                                                                    <mat-icon>print</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                                
+                                                        <mat-header-row class="accent" *matHeaderRowDef="labColumns; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: labColumns;" class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
+                                                        </mat-footer-row> -->
+                                                    </mat-table>
+                                                    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons>
+                                                    </mat-paginator>
+                                                </mat-tab>
+                                    
+                                                <!-- Radiology Tab -->
+                                                <mat-tab label="Radiology">
+                                                    <mat-table class="table2" matSort [dataSource]="RadMap[visitId]" [@animateStagger]="{value:'50'}"
+                                                        style="overflow: auto;height:250px;">
+                                                
+                                                        <ng-container matColumnDef="labDate">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                Date </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.pathDate}}
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="ServiceName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                ServiceName </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.serviceName}} </mat-cell>
+                                                        </ng-container>
 
-                                                    <mat-tab label="Radiology">
-                                                        <h2>Radiology Tests</h2>
-                                                        <table border="1" cellpadding="8" cellspacing="0">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Test ID</th>
-                                                                    <th>Patient ID</th>
-                                                                    <th>Test Name</th>
-                                                                    <th>Type</th>
-                                                                    <th>Radiologist</th>
-                                                                    <th>Imaging Date</th>
-                                                                    <th>Status</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>101</td>
-                                                                    <td>Chest X-ray</td>
-                                                                    <td>X-ray</td>
-                                                                    <td>Dr. Mehta</td>
-                                                                    <td>2025-07-01</td>
-                                                                    <td>Completed</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>103</td>
-                                                                    <td>Brain MRI</td>
-                                                                    <td>MRI</td>
-                                                                    <td>Dr. Sharma</td>
-                                                                    <td>2025-07-02</td>
-                                                                    <td>Scheduled</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                         <ng-container matColumnDef="PatientType">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                PatientType </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.patientType}} </mat-cell>
+                                                        </ng-container>
 
-                                                    </mat-tab>
-                                                    <mat-tab label="Attachment"></mat-tab>
-                                                    <mat-tab label="Certificate"></mat-tab>
-                                                </mat-tab-group>
-
-
-                                            </div>
-                                        </mat-card>
-                                    </div>
+                                                         <ng-container matColumnDef="BillNo">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                BillNo </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                {{element.pBillNo}} </mat-cell>
+                                                        </ng-container>
+                                                                                                
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                                Action </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <button mat-icon-button matTooltip="Print">
+                                                                    <mat-icon>print</mat-icon>
+                                                                </button>
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="loading">
+                                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                            </mat-header-cell>
+                                                        </ng-container>
+                                                
+                                                        <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                                                
+                                                        <mat-header-row class="accent" *matHeaderRowDef="labColumns; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: labColumns;" class="element"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <!-- <mat-footer-row *matFooterRowDef="['noData']"
+                                                            [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
+                                                        </mat-footer-row> -->
+                                                    </mat-table>
+                                                    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons>
+                                                    </mat-paginator>
+                                                </mat-tab>
+                                    
+                                                <!-- Attachment Tab -->
+                                                <mat-tab label="Attachment">
+                                                    <h2>Attachment</h2>
+                                                    
+                                                </mat-tab>
+                                    
+                                                <!-- Certificate Tab -->
+                                                <mat-tab label="Certificate">
+                                                    <mat-table class="table2" matSort [dataSource]="certificateMap[visitId]" [@animateStagger]="{value:'50'}"
+                                                            style="overflow: auto;height:360px;">
+                                                        
+                                                            <ng-container matColumnDef="CertificateDate">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                    DateTime </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    {{element.certificateTime}}
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                        
+                                                            <ng-container matColumnDef="CertificateName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                    Certificate Name </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    {{element.certificateName}} </mat-cell>
+                                                            </ng-container>
+                                                        
+                                                            <ng-container matColumnDef="CertificateText">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                    Certificate Desc
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                    <span matTooltip="{{element.certificateText}}" matTooltipPosition="above" class="ellipsis-text">
+                                                                        {{ element.certificateText }}
+                                                                    </span>
+                                                                </mat-cell>
+                                                        
+                                                            </ng-container>
+                                                        
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                                    Action </mat-header-cell>
+                                                                <mat-cell *matCellDef="let element">
+                                                                    <button mat-icon-button matTooltip="Print" (click)="viewgetCertificateReportPdf(element)">
+                                                                        <mat-icon>print</mat-icon>
+                                                                    </button>
+                                                                    <button mat-icon-button matTooltip="WhatsApp">
+                                                                        <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
+                                                                            matTooltip="Send Certificate Details On WhatsApp" />
+                                                                    </button>
+                                                                </mat-cell>
+                                                            </ng-container>
+                                                        
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                                </mat-header-cell>
+                                                            </ng-container>
+                                                        
+                                                            <ng-container matColumnDef="noData">
+                                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                no data found...
+                                                            </mat-footer-cell>
+                                                            </ng-container>
+                                                        
+                                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                                            </mat-header-row>
+                                                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                                [ngClass]="{'hide':!(certificateMap[visitId]!=null && certificateMap[visitId].length==0)}">
+                                                            </mat-footer-row>
+                                                        </mat-table>
+                                                </mat-tab>
+                                            </mat-tab-group>
+                                        </mat-expansion-panel>
+                                        </div>
+                                    </mat-accordion>
 
                                 </div>
                             </div>
@@ -1119,14 +1219,14 @@
 
                                             <ng-container matColumnDef="CertificateName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Template Name </mat-header-cell>
+                                                    Certificate Name </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                     {{element.certificateName}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="CertificateText">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                    Template Desc
+                                                    Certificate Desc
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                     <span matTooltip="{{element.certificateText}}"
@@ -1249,6 +1349,7 @@
                             </mat-tab-group>
                         </mat-tab>
                     </mat-tab-group>
+                   
                 </div>
             </div>
         </div>

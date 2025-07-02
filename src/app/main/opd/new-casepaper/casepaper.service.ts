@@ -122,4 +122,9 @@ public doseNameUpdate(Param: any) {
       return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
     } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
   }
+
+  // lab & radiology part
+  public getLabRadList(param) {
+        return this._httpClient1.PostData("OPDPrescriptionMedical/getlabifnormationList",param);
+    }
 }
