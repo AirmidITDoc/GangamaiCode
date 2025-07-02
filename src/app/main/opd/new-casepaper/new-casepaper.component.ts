@@ -31,6 +31,9 @@ import { Console } from 'console';
 import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 // interface Patient {
 //   PHeight: string;
@@ -201,6 +204,8 @@ export class NewCasepaperComponent implements OnInit {
   @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
   @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
 
+  BloodGroupNames: string[] = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+
   constructor(
     private _CasepaperService: CasepaperService,
     private _formBuilder: UntypedFormBuilder,
@@ -262,11 +267,13 @@ export class NewCasepaperComponent implements OnInit {
       this.vClassId = this.regObj.classId
       this.getPrescription(this.regObj);
       this.getnewVisistListDemo(this.regObj);
+      this.getCertificateHistoryTab(this.regObj);
       this.getPrevVisitDiagnosisList(this.regObj);
       this.getRtrvTestServiceList(this.regObj);  //retrive list
       this.getRtrvCheifComplaintList(this.regObj); // retrive list
       // this.getCheifComplaintList();
       this.getCertificateList();
+      // this.getLabdata();
     }
 
     setTimeout(() => {
@@ -670,6 +677,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     this.getPrescription(obj);
     this.getnewVisistListDemo(obj);
+    this.getCertificateHistoryTab(obj);
     this.getPrevVisitDiagnosisList(obj);
     // this.getVitalInfo(obj);
     this.getRtrvTestServiceList(obj); // retrive list
@@ -787,7 +795,7 @@ export class NewCasepaperComponent implements OnInit {
       this.dsItemList.data = filteredItems;
       this.Chargelist = filteredItems;
 
-      console.log(this.dsItemList.data);
+      // console.log(this.dsItemList.data);
     });
   }
 
@@ -1553,9 +1561,9 @@ export class NewCasepaperComponent implements OnInit {
       "exportType": "JSON"
     }
     this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
-      this.patients = Visit?.data as MedicineItemList[];
+      this.patients = Visit?.data as MedicineItemList[];    
+    console.log("patients:",this.patients)
       this.extractUniqueDates();
-      console.log(this.patients)
     });
   }
 
@@ -1584,7 +1592,6 @@ export class NewCasepaperComponent implements OnInit {
     }
     this._CasepaperService.getPrevVisitDiagnosisList(D_data).subscribe(Visit => {
       this.patientDiagnosis = Visit?.data || [];
-      console.log(this.patientDiagnosis)
       // Group by VisitId
       const grouped = {};
 
@@ -1607,7 +1614,7 @@ export class NewCasepaperComponent implements OnInit {
 
       // Convert grouped object to array for ngFor
       this.groupedVisits = Object.values(grouped);
-      console.log('Grouped Visits:', this.groupedVisits);
+      // console.log('Grouped Visits:', this.groupedVisits);
     });
   }
 
@@ -1915,12 +1922,11 @@ onTabChange(event: MatTabChangeEvent) {
       this.dsCertficateTemp.data = Visit.data as certificateTemp[];
       this.dsCertficateTemp.sort = this.sort;
       this.dsCertficateTemp.paginator = this.paginator;
-      console.log('check:', this.dsCertficateTemp.data)
     })
   }
 
   OnEdit(row) {
-    console.log('Row data received:', row);
+    // console.log('Row data received:', row);
     this.certiID = row.certificateId
     this.mycertificateForm.get('certificateName').setValue(row.certificateName)
     this.mycertificateForm.patchValue({
@@ -1929,6 +1935,165 @@ onTabChange(event: MatTabChangeEvent) {
     });
     this.selectedTabIndex = 1;
   }
+
+  // image code
+   selectedFiles: File[] = [];
+
+  onImageFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.selectedFiles = Array.from(input.files);
+      // this.uploadForm.patchValue({ imageFile: this.selectedFiles });
+    }
+  }
+
+  onSubmitImgFiles(): void {
+    if (this.selectedFiles.length === 0) {
+      alert('Please select a file before uploading.');
+      return;
+    }
+
+    const formData = new FormData();
+    this.selectedFiles.forEach(file => {
+      formData.append('files', file);
+    });
+    console.log('Files ready for upload:', this.selectedFiles);
+  }
+
+  // image code end
+
+  // visit histor certificate tab
+
+dsVisitCertficateTemp = new MatTableDataSource<any>();
+certificateMap: { [visitId: string]: certificateTemp[] } = {};
+LabMap: { [visitId: string]: labRadList[] } = {};
+RadMap: { [visitId: string]: labRadList[] } = {};
+
+  getCertificateHistoryTab(obj) {
+    // debugger
+    var D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegID",
+          "fieldValue": String(obj.regId),//"40773",	
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
+      this.patients = Visit?.data as MedicineItemList[];
+      console.log("patients:", this.patients);
+
+      const uniqueVisitIds = [...new Set(this.patients.map(p => p.visitId))];
+
+      uniqueVisitIds.forEach(visitId => {
+        this.getCertificatesByVisitId(visitId);
+        // this.getLabdata(visitId);
+      });
+
+      this.extractUniqueDates();
+    });
+  }
+
+ getCertificatesByVisitId(visitId: string) {
+  // debugger
+  const D_data = {
+    "first": 0,
+    "rows": 10,
+    "sortField": "VisitedID",
+    "sortOrder": 0,
+    "filters": [
+      {
+        "fieldName": "VisitedID",
+        "fieldValue": String(visitId),
+        "opType": "Equals"
+      }
+    ],
+    "exportType": "JSON",
+    "columns": []
+  };
+
+  this._CasepaperService.getCertificateList(D_data).subscribe(Visit => {
+    //  to store certificate data for each visitId separately
+    this.certificateMap[visitId] = Visit.data as certificateTemp[];
+
+    if (this.dsVisitCertficateTemp && visitId === this.patients[0]?.visitId) {
+      this.dsVisitCertficateTemp.data = this.certificateMap[visitId];
+      this.dsVisitCertficateTemp.sort = this.sort;
+      this.dsVisitCertficateTemp.paginator = this.paginator;
+    }
+  });
+}
+// 
+
+// lab tab code
+dsLab = new MatTableDataSource<labRadList>();
+dsRad = new MatTableDataSource<labRadList>();
+labDataLoaded = false;
+labDataLoadedMap: { [visitId: string]: boolean } = {};
+  labColumns: string[] = [
+    'labDate',
+    'ServiceName',
+    'PatientType',
+    'BillNo',
+    'Action'
+  ]
+
+onTabChangeEvent(event: MatTabChangeEvent, visitId: string) {
+  const index = event.index;
+  if ((index === 1 || index === 2) && !this.labDataLoadedMap[visitId]) {
+    this.getLabdata(visitId);
+    this.labDataLoadedMap[visitId] = true;
+  }
+}
+
+
+getLabdata(visitId: string) {
+  const D_data = {
+    first: 0,
+    rows: 10,
+    sortField: "VisitId",
+    sortOrder: 0,
+    filters: [
+      {
+        fieldName: "OPIPId",
+        fieldValue: String(visitId),
+        opType: "Equals"
+      }
+    ],
+    exportType: "JSON",
+    columns: []
+  };
+
+  this._CasepaperService.getLabRadList(D_data).subscribe(Visit => {
+    const allData = Visit.data as labRadList[];
+debugger
+    this.LabMap[visitId] = allData.filter(item => item.patientType === 'PathologyTestList');
+    this.RadMap[visitId] = allData.filter(item => item.patientType === 'RadiologyTestList');
+
+    // Assign to data sources
+    this.dsLab.data = this.LabMap[visitId];
+    this.dsRad.data = this.RadMap[visitId];
+
+    this.dsLab.sort = this.sort;
+    this.dsLab.paginator = this.paginator;
+
+    this.dsRad.sort = this.sort;
+    this.dsRad.paginator = this.paginator;
+
+     console.log('Lab Data for', visitId, this.LabMap[visitId]);
+    console.log('Radiology Data for', visitId, this.RadMap[visitId]);
+  });
+}
+
+
 }
 
 export class CasepaperVisitDetails {
@@ -2338,6 +2503,24 @@ export class PrescriptiondetList {
   constructor(PrescriptiondetList) {
     this.ItemName = PrescriptiondetList.ItemName;
     this.Qty = PrescriptiondetList.Qty;
+  }
+}
+
+export class labRadList {
+
+  labDate: Date;
+  ServiceName: any;
+  PatientType: any;
+  BillNo: any;
+  patientType: any;
+
+  constructor(labRadList) {
+
+    this.labDate = labRadList.labDate || '';
+    this.ServiceName = labRadList.ServiceName || '';
+    this.PatientType = labRadList.PatientType || '';
+    this.BillNo = labRadList.BillNo || '';
+    this.patientType = labRadList.patientType || '';
   }
 }
 

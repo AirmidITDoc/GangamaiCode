@@ -66,6 +66,12 @@ export class NewAdvanceComponent implements OnInit {
   IPAdvacneFormInsert(): FormGroup {
     return this.formBuilder.group({
 
+      pharmacyHeader: this.formBuilder.group({
+        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+
       pharmacyAdvance: this.formBuilder.group({
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         date: '',
@@ -237,7 +243,7 @@ export class NewAdvanceComponent implements OnInit {
     this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
     this.insertForm?.get("pharmacyAdvance.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-    this.insertForm?.get("pharmacyAdvance.refId")?.setValue(this.vRegId ||0);
+    this.insertForm?.get("pharmacyAdvance.refId")?.setValue(this.vRegId || 0);
     this.insertForm?.get("pharmacyAdvance.opdIpdId")?.setValue(this.vAdmissionID || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceDetailId")?.setValue(this.vAdvanceDetailID || 0);
@@ -246,8 +252,8 @@ export class NewAdvanceComponent implements OnInit {
     this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? 0);
-    this.insertForm?.get("pharmacyAdvanceDetails.refId")?.setValue(this.vRegId ||0);
-    this.insertForm?.get("pharmacyAdvanceDetails.opdIpdId")?.setValue(this.vAdmissionID ||0);
+    this.insertForm?.get("pharmacyAdvanceDetails.refId")?.setValue(this.vRegId || 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.opdIpdId")?.setValue(this.vAdmissionID || 0);
 
     if (!this.insertForm?.invalid) {
       const PatientHeaderObj = {
@@ -259,6 +265,7 @@ export class NewAdvanceComponent implements OnInit {
         OPD_IPD_Id: this.vIPDNo,
         Age: this.vAge,
         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
+        AdvanceDetailId: this.vAdvanceDetailID || 0,
       };
 
       if (!this.vAdvanceId) {
@@ -277,6 +284,7 @@ export class NewAdvanceComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result && result.submitDataPay) {
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+            this.insertForm.removeControl('pharmacyHeader');
 
             console.log(this.insertForm?.value);
             this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
@@ -289,10 +297,13 @@ export class NewAdvanceComponent implements OnInit {
 
       }
       else {
-        const pharmacyAdvanceGroup = this.insertForm?.get('pharmacyAdvance') as FormGroup;
-        this.removeControls(pharmacyAdvanceGroup, [
-          'date', 'refId', 'opdIpdType', 'opdIpdId','advanceUsedAmount', 'addedBy', 'isCancelled','isCancelledBy', 'isCancelledDate']);
-
+        // const pharmacyAdvanceGroup = this.insertForm?.get('pharmacyAdvance') as FormGroup;
+        // this.removeControls(pharmacyAdvanceGroup, [
+        //   'date', 'refId', 'opdIpdType', 'opdIpdId','advanceUsedAmount', 'addedBy', 'isCancelled','isCancelledBy', 'isCancelledDate']);
+        this.insertForm.removeControl('pharmacyAdvance');
+        this.insertForm?.get("pharmacyHeader.advanceId")?.setValue(this.vAdvanceId || 0);
+        this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
+        this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",

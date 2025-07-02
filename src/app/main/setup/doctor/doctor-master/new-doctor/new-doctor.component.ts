@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
@@ -1128,6 +1128,7 @@ page:any;
       if (result !== undefined) {
         if (this.dataSourcedrcharges.data.length > 0) {
           this.chargechargesList = this.dataSourcedrcharges.data
+          this.chargechargesList = this.dataSourcedrcharges.data
         }
         this.chargechargesList.push(result);
         this.dataSourcedrcharges.data = this.chargechargesList;
@@ -1188,6 +1189,7 @@ page:any;
       this.selectedFile = null;
       this.previewUrl = null;
     }
+    this.clearFile();
   }
 
   view(file: any) {

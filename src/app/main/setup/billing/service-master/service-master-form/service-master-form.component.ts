@@ -201,136 +201,89 @@ export class ServiceMasterFormComponent implements OnInit {
         this.doctorId=data.value
     }
 
-    onSubmit() {
-        debugger
-        if (this.showEmg) {
-            this.serviceForm.get('EmgAmt').setValidators([Validators.required, Validators.min(0)]);
-            this.serviceForm.get('EmgPer').setValidators([Validators.required, Validators.min(0)]);
+   onSubmit() {
+  debugger;
 
-        } else {
-            this.serviceForm.get('EmgAmt').clearValidators();
-            this.serviceForm.get('EmgPer').clearValidators();
-        }
-        this.serviceForm.get('EmgAmt').updateValueAndValidity();
-        this.serviceForm.get('EmgPer').updateValueAndValidity();
+  const emgAmtCtrl = this.serviceForm.get('EmgAmt');
+  const emgPerCtrl = this.serviceForm.get('EmgPer');
 
-          if (!this.serviceForm.invalid) {
-        if (!this.ServiceId) {
+  if (this.showEmg) {
+    emgAmtCtrl?.setValidators([Validators.required, Validators.min(0)]);
+    emgPerCtrl?.setValidators([Validators.required, Validators.min(0)]);
+  } else {
+    emgAmtCtrl?.clearValidators();
+    emgPerCtrl?.clearValidators();
+  }
 
-            let classDetailsArray = [];
+  emgAmtCtrl?.updateValueAndValidity();
+  emgPerCtrl?.updateValueAndValidity();
 
-            this.DSServicedetailList.data.forEach(element => {
-            let clas_d = {
-                serviceDetailId: 0,
-                serviceId: 0,
-                tariffId: this.tariffId || 0,
-                classId: element.classId || 0,
-                classRate: element.classRate || 0
-            };
+  if (this.serviceForm.valid) {
 
-            classDetailsArray.push(clas_d);
-            });
+    const classDetailsArray = (this.DSServicedetailList?.data || []).map((element: any) => ({
+      serviceDetailId: 0,
+      serviceId: this.ServiceId || 0,
+      tariffId: this.tariffId || 0,
+      classId: element.classId || 0,
+      classRate: element.classRate || 0
+    }));
 
-            console.log("ServiceInsert data1:", classDetailsArray);
+    const formValues = this.serviceForm.value;
 
-            var mdata = {
-                "serviceId": 0,
-                "groupId": this.groupId || 0,
-                "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
-                "serviceName": this.serviceForm.get("ServiceName").value,
-                "price": parseInt(this.serviceForm.get("Price").value),
-                "isEditable": String(this.serviceForm.get("IsEditable").value) == 'false' ? false : true,
-                "creditedtoDoctor": this.serviceForm.get("CreditedtoDoctor").value,
-                "isPathology": String(this.serviceForm.get("IsPathology").value) == 'false' ? 0 : 1,
-                "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0 : 1,
-                "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
-                "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
-                "subGroupId": this.subGroupId || 0,
-                "doctorId": this.doctorId || 0,
-                "isEmergency": this.serviceForm.get("IsEmergency").value,
-                "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
-                "emgPer": this.serviceForm.get("EmgPer").value || 0,
-                "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
-                "serviceDetails": classDetailsArray
-            }
-            console.log("insert mdata:", mdata);
-            this._serviceMasterService.serviceMasterInsert(mdata).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            })
+    const payload = {
+      serviceId: this.ServiceId || 0,
+      groupId: this.groupId || 0,
+      serviceShortDesc: formValues.ServiceShortDesc,
+      serviceName: formValues.ServiceName,
+      price: parseInt(formValues.Price),
+      isEditable: formValues.IsEditable !== false,
+      creditedtoDoctor: formValues.CreditedtoDoctor,
+      isPathology: formValues.IsPathology === 'false' ? 0 : 1,
+      isRadiology: formValues.IsRadiology === 'false' ? 0 : 1,
+      printOrder: parseInt(formValues.PrintOrder),
+      isPackage: formValues.IsPackage === 'false' ? 0 : 1,
+      subGroupId: this.subGroupId || 0,
+      doctorId: this.doctorId || 0,
+      isEmergency: formValues.IsEmergency,
+      emgAmt: formValues.EmgAmt || 0,
+      emgPer: formValues.EmgPer || 0,
+      isDocEditable: formValues.IsDocEditable !== false,
+      serviceDetails: classDetailsArray
+    };
 
-        }
+    console.log(this.ServiceId ? 'Update mdata:' : 'Insert mdata:', payload);
 
-        else {
-            let classDetailsArray = [];
+    const apiCall = this.ServiceId
+      ? this._serviceMasterService.serviceMasterUpdate(payload)
+      : this._serviceMasterService.serviceMasterInsert(payload);
 
-            this.DSServicedetailList.data.forEach(element => {
-            let clas_d = {
-                serviceDetailId: 0,
-                serviceId: 0,
-                tariffId: this.tariffId || 0,
-                classId: element.classId || 0,
-                classRate: element.classRate || 0
-            };
-
-            classDetailsArray.push(clas_d);
-            });
-
-            console.log("ServiceUpdate data1:", classDetailsArray);
-
-            var mdata1 = {
-                "serviceId": this.ServiceId,
-                "groupId": this.groupId || 0,
-                "serviceShortDesc": this.serviceForm.get("ServiceShortDesc").value,
-                "serviceName": this.serviceForm.get("ServiceName").value,
-                "price": parseInt(this.serviceForm.get("Price").value),
-                "isEditable": String(this.serviceForm.get("IsEditable").value) == 'false' ? false : true,
-                "creditedtoDoctor": this.serviceForm.get("CreditedtoDoctor").value,
-                "isPathology": String(this.serviceForm.get("IsPathology").value) == 'false' ? 0 : 1,
-                "isRadiology": String(this.serviceForm.get("IsRadiology").value) == 'false' ? 0 : 1,
-                "printOrder": parseInt(this.serviceForm.get("PrintOrder").value),
-                "isPackage": String(this.serviceForm.get("IsPackage").value) == 'false' ? 0 : 1,
-                "subGroupId": this.subGroupId || 0,
-                "doctorId": this.doctorId || 0,
-                "isEmergency": this.serviceForm.get("IsEmergency").value,
-                "emgAmt": this.serviceForm.get("EmgAmt").value || 0,
-                "emgPer": this.serviceForm.get("EmgPer").value || 0,
-                "isDocEditable": String(this.serviceForm.get("IsDocEditable").value) == 'false' ? false : true,
-                "serviceDetails": classDetailsArray
-            }
-            console.log("Update mdata:", mdata1);
-            this._serviceMasterService.serviceMasterUpdate(mdata1).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            })
-        }
+    apiCall.subscribe(
+      (response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
         this.dialogRef.close();
-    }else{
-        let invalidFields = [];
+      },
+      (error) => {
+        this.toastr.error(error.message);
+      }
+    );
 
-                if (this.serviceForm.invalid) {
-                    for (const controlName in this.serviceForm.controls) {
-                        if (this.serviceForm.controls[controlName].invalid) {
-                            invalidFields.push(`Service Form: ${controlName}`);
-                        }
-                    }
-                }
-                if (invalidFields.length > 0) {
-                    invalidFields.forEach(field => {
-                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                        );
-                    });
-                }
-    }
-        
+  } else {
+    const invalidFields: string[] = [];
 
-        // this.dialogRef.close();
+    Object.keys(this.serviceForm.controls).forEach((controlName) => {
+      const control = this.serviceForm.controls[controlName];
+      if (control.invalid) {
+        invalidFields.push(controlName);
+      }
+    });
 
-    }
+    invalidFields.forEach(field => {
+      this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+    });
+  }
+}
+
 
     @ViewChild('ServiceName') ServiceName: ElementRef;
     @ViewChild('ServiceShortDesc') ServiceShortDesc: ElementRef;

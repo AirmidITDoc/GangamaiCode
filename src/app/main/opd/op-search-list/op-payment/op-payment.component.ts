@@ -436,7 +436,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['CardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
       this.Paymentobj['CardDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['AdvanceUsedAmount'] = 0;
-      this.Paymentobj['AdvanceId'] = 0;
+      this.Paymentobj['AdvanceId'] = this.advanceData.AdvanceDetailId || 0;
       this.Paymentobj['RefundId'] = 0;
       if (this.data.FromName == "IP-Pharma-Advance") {
         this.Paymentobj['TransactionType'] = 8;

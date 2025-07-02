@@ -134,62 +134,63 @@ export class FixSupplierComponent implements OnInit {
     onChangestate(e) {
     }
 
-    onSubmit() {
-        debugger
-        // const isPhar = this.supplierForm.get('isPharStore')?.value;
-                if (this.msmflag=false) {
-                    this.supplierForm.get('MSMNo')?.setValidators([Validators.required]);
-                } else {
-                    this.supplierForm.get('MSMNo')?.clearValidators();
-                }        
-                this.supplierForm.get('MSMNo')?.updateValueAndValidity();
+   onSubmit() {
+  
 
-       if(!this.supplierForm.invalid){
-        const formData = { ...this.supplierForm.value };
-        const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => {
-            return {
-                assignId: 0,
-                StoreId: store.storeId,
-                SupplierId: 0
-            };
-        });
+  const msmNoControl = this.supplierForm.controls['MSMNo'];
+  if (this.msmflag === false) {
+    msmNoControl.setValidators([Validators.required]);
+  } else {
+    msmNoControl.clearValidators();
+  }
+  msmNoControl.updateValueAndValidity();
 
-        formData.mAssignSupplierToStores = transformedStores;
+  if (this.supplierForm.valid) {
+    const formData = { ...this.supplierForm.value };
 
-        // const id=this.supplierForm.get('supplierId').setValue(this.SupplierId)
-        formData.supplierId = this.SupplierId;
-        formData.bankName = this.bankName;
+    const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => ({
+      assignId: 0,
+      StoreId: store.storeId,
+      SupplierId: 0
+    }));
 
-        console.log("After transformation:", formData);
+    formData.mAssignSupplierToStores = transformedStores;
 
-        this._supplierService.SupplierSave(formData).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-        }, (error) => {
-            this.toastr.error(error.message);
-        });
+    formData.supplierId = this.SupplierId;
+    formData.bankName = this.bankName;
 
-        this.onClose();
-       } else {
-        let invalidFields = [];
+    console.log("After transformation:", formData);
 
-        if (this.supplierForm.invalid) {
-            for (const controlName in this.supplierForm.controls) {
-            if (this.supplierForm.controls[controlName].invalid) {
-                invalidFields.push(`My Form: ${controlName}`);
-            }
-            }
-        }
+    this._supplierService.SupplierSave(formData).subscribe(
+      (response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      },
+      (error) => {
+        this.toastr.error(error.message);
+      }
+    );
 
-        if (invalidFields.length > 0) {
-            invalidFields.forEach(field => {
-              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-              );
-            });
-          }
+    this.onClose();
+
+  } else {
+  
+    const invalidFields: string[] = [];
+
+    Object.keys(this.supplierForm.controls).forEach((controlName) => {
+      const control = this.supplierForm.controls[controlName];
+      if (control.invalid) {
+        invalidFields.push(controlName);
+      }
+    });
+
+    if (invalidFields.length > 0) {
+      invalidFields.forEach((field) => {
+        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+      });
     }
-
-    }
+  }
+}
 
     onChangeMode(event) {
 
