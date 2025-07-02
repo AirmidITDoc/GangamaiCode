@@ -173,79 +173,70 @@ export class ItemFormMasterComponent implements OnInit {
         if (!this.validateGST(this.vIGST, 'IGST')) return;
     }    
 
-    onSubmit() {
-debugger
+   onSubmit() {
+  debugger;
 
-        if (!this.itemForm.invalid) {
-            console.log("Item JSON :-", this.itemForm.value);
-        
-            const formData = { ...this.itemForm.value };
-        const transformedStores = (formData.mAssignItemToStores || []).map((store: any) => {
-            return {
-                assignId: 0,
-                StoreId: store.storeId,
-                itemId: 0
-            };
-        });
+  if (this.itemForm.valid) {
+    console.log("Item JSON :-", this.itemForm.value);
 
-        formData.mAssignItemToStores = transformedStores;
+    
+    const formData = { ...this.itemForm.value };
 
-        console.log("Item JSON :-", formData);
+    const transformedStores = (formData.mAssignItemToStores || []).map((store: any) => ({
+      assignId: 0,
+      StoreId: store.storeId,
+      itemId: 0
+    }));
 
-            if (this.ItemId) {
+    formData.mAssignItemToStores = transformedStores;
 
-                formData.itemID=this.ItemId
-                
-                this._itemService.updateItemMaster(formData).subscribe(
-                    (data) => {
-                        this.toastr.success(data.message);
-                        this.onClear(true);
-                    },
-                    (error) => {
-                        this.toastr.error(error.message);
-                    }
-                );
-            } else {
-                formData.drugTypeName=this.drugName
-                this._itemService.insertItemMaster(formData).subscribe(
-                    (data) => {
-                        this.toastr.success(data.message);
-                        this.onClear(true);
-                    },
-                    (error) => {
-                        this.toastr.error(error.message);
-                    }
-                );
-            }
+    console.log("Transformed Item JSON :-", formData);
+
+    if (this.ItemId) {
+      formData.itemID = this.ItemId;
+
+      this._itemService.updateItemMaster(formData).subscribe(
+        (data) => {
+          this.toastr.success(data.message);
+          this.onClear(true);
+        },
+        (error) => {
+          this.toastr.error(error.message);
         }
-        
-        else {
-            let invalidFields = [];
+      );
+    } else {
+      formData.drugTypeName = this.drugName;
 
-            if (this.itemForm.invalid) {
-                for (const controlName in this.itemForm.controls) {
-                if (this.itemForm.controls[controlName].invalid) {
-                    invalidFields.push(`My Form: ${controlName}`);
-                }
-                }
-            }
-
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                  this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                  );
-                });
-              }
-
-            // this.toastr.warning('please check from is invalid', 'Warning !', {
-            //     toastClass: 'tostr-tost custom-toast-warning',
-            // });
-            // return;
+      this._itemService.insertItemMaster(formData).subscribe(
+        (data) => {
+          this.toastr.success(data.message);
+          this.onClear(true);
+        },
+        (error) => {
+          this.toastr.error(error.message);
         }
+      );
     }
+  } else {
+    const invalidFields: string[] = [];
+
+    Object.keys(this.itemForm.controls).forEach((controlName) => {
+      const control = this.itemForm.controls[controlName];
+      if (control.invalid) {
+        invalidFields.push(controlName);
+      }
+    });
+
+    if (invalidFields.length > 0) {
+      invalidFields.forEach((field) => {
+        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+      });
+    }
+  }
+}
+
 
     onClear(val: boolean) {
-        // this.itemForm.reset();
         this.dialogRef.close(val);
     }
 

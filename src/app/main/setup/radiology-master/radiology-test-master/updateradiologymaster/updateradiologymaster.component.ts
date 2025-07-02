@@ -239,61 +239,67 @@ export class UpdateradiologymasterComponent implements OnInit {
 
     invalidFields1 = [];
 
-    onSubmit() {
-        debugger
-        if (!this.testForm.invalid) {
+   onSubmit() {
+  debugger;
 
-            this.invalidFields1 = [];
 
-            if (this.DSTestList.data.length === 0) {
-                this.invalidFields1.push('No data in the Template list!');
-            }
+  if (this.testForm.invalid) {
+    const invalidFields: string[] = [];
 
-            if (this.invalidFields1.length > 0) {
-                this.invalidFields1.forEach(field => {
-                    this.toastr.warning(field, 'Warning!');
-                });
-                return;
-            }
+    Object.keys(this.testForm.controls).forEach(controlName => {
+      const control = this.testForm.controls[controlName];
+      if (control.invalid) {
+        invalidFields.push(`My Form: ${controlName}`);
+      }
+    });
 
-            let mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
-                "ptemplateId": 0,
-                "testId": 0,
-                "templateId": row.templateId || 0
-            }));
-
-            console.log("Insert data1:", mRadiologyTemplateDetails);
-
-            this.testForm.get("testId").setValue(this.testId)
-            this.testForm.get("mRadiologyTemplateDetails").setValue(mRadiologyTemplateDetails)
-
-            console.log(this.testForm.value)
-
-            this._radiologytestService.testMasterSave(this.testForm.value).subscribe(response => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-
-            });
-
-        } else {
-            let invalidFields = [];
-
-            if (this.testForm.invalid) {
-                for (const controlName in this.testForm.controls) {
-                    if (this.testForm.controls[controlName].invalid) {
-                        invalidFields.push(`My Form: ${controlName}`);
-                    }
-                }
-            }
-
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
-        }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+      });
     }
+    return;
+  }
+
+ 
+  this.invalidFields1 = [];
+
+  if (this.DSTestList.data.length === 0) {
+    this.invalidFields1.push('No data in the Template list!');
+  }
+
+  if (this.invalidFields1.length > 0) {
+    this.invalidFields1.forEach(field => {
+      this.toastr.warning(field, 'Warning!');
+    });
+    return;
+  }
+
+  
+  const mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
+    ptemplateId: 0,
+    testId: 0,
+    templateId: row.templateId || 0
+  }));
+
+  console.log("Insert data1:", mRadiologyTemplateDetails);
+
+ 
+  const testIdControl = this.testForm.controls['testId'];
+  const templateDetailsControl = this.testForm.controls['mRadiologyTemplateDetails'];
+
+  testIdControl.setValue(this.testId);
+  templateDetailsControl.setValue(mRadiologyTemplateDetails);
+
+  console.log(this.testForm.value);
+
+ 
+  this._radiologytestService.testMasterSave(this.testForm.value).subscribe(response => {
+    this.toastr.success(response.message);
+    this.onClear(true);
+  });
+}
+
 
     getValidationMessages() {
         return {

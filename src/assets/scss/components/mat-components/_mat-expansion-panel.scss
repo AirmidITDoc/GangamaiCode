@@ -28,4 +28,23 @@
             }
         }
     }
+    .fix-panel-padding{
+        .mat-expansion-panel-body{
+            padding-bottom: 0px;
+        }
+    }
+    .fix-panel{
+        height: 100%;
+        .mat-expansion-panel-spacing{
+            &.mat-expanded{
+                height: 100%;
+                display: flex;
+                flex-flow: column;
+                .mat-expansion-panel-content{
+                    overflow: auto;
+                    flex: 1;
+                }
+            }
+        }
+    }
 }

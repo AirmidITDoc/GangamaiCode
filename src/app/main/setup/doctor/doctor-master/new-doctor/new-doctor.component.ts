@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
@@ -1029,7 +1029,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         if (this.dataSourcedrcharges.data.length > 0) {
-        this.chargechargesList = this.dataSourcedrcharges.data
+          this.chargechargesList = this.dataSourcedrcharges.data
         }
         this.chargechargesList.push(result);
         this.dataSourcedrcharges.data = this.chargechargesList;
@@ -1120,6 +1120,7 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
   attachments: any[] = [];
   selectedFile: File | null = null;
   previewUrl: string | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -1132,16 +1133,20 @@ dataSourcedrleave = new MatTableDataSource<LeaveDetail>();
 
   upload() {
     if (this.selectedFile) {
-      this.attachments.push({ name: this.selectedFile.name, file: this.selectedFile });
-      this.selectedFile = null;
-      this.previewUrl = null;
+      const newFile = { name: this.selectedFile.name, file: this.selectedFile, size: this.selectedFile.size, type: this.selectedFile.type };
+      this.attachments = [...this.attachments, newFile];
     }
+    this.clearFile();
   }
 
   view(file: any) {
     window.open(URL.createObjectURL(file.file), '_blank');
   }
-
+  clearFile() {
+    this.selectedFile = null;
+    this.previewUrl = null;
+    this.fileInput.nativeElement.value = '';
+  }
   download(file: any) {
     const link = document.createElement('a');
     link.href = URL.createObjectURL(file.file);

@@ -7,26 +7,10 @@
                 </span>
             </div>
         </div>
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <span style="margin-right: 40px;">
-                <app-common-date [screenFrom]="screenFromString"
-                    (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-            </span>
-        </div> -->
-
-        <!-- <div class="gap-8" style="margin-top: 10px; padding: 5px;" fxLayout="column" fxLayout.gt-xs="row"
-            fxLayoutAlign="start center">
-        
-            <span style="margin-right: 40px;">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-            </span>
-        
-        </div> -->
-
     </div>
     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" class="px-12 py-4 border-bottom">
         <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                 <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                     <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
@@ -66,18 +50,56 @@
                     <span class="red-orange-fg">Waiting : {{VWaitingCount}}</span>
                 </div>
 
+            </div> -->
+      
+         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                <!-- Registrations -->
+                <div class="dashboard-card registrations">
+                    <div class="card-label">Registrations</div>
+                    <div class="card-value">{{Vtotalcount}}</div>
+                    <mat-icon class="card-icon">person_add</mat-icon>
+                </div>
+                <!-- Appointments -->
+                <div class="dashboard-card appointments">
+                    <div class="card-label">Appointments</div>
+                    <div class="card-value">{{Vtotalcount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+                <!-- Appointments New/Follow-up -->
+                <div class="dashboard-card appointments-split">
+                    <div class="card-label">Appointments</div>
+                    <div class="card-value">
+                        <div>New {{VNewcount}}</div>
+                        <div>Follow-up {{VFollowupcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                <!-- Bills -->
+                <div class="dashboard-card bills">
+                    <div class="card-label">Bills</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+                <!-- EMR Ready -->
+                <div class="dashboard-card emr-ready">
+                    <div class="card-label">EMR Ready</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">assignment_turned_in</mat-icon>
+                </div>
+                <!-- Check-Out -->
+                <div class="dashboard-card checkout">
+                    <div class="card-label">Check-Out</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">exit_to_app</mat-icon>
+                </div>
+                <!-- Waiting -->
+                <div class="dashboard-card waiting">
+                    <div class="card-label">Waiting</div>
+                    <div class="card-value">{{VWaitingCount}}</div>
+                    <mat-icon class="card-icon">groups</mat-icon>
+                </div>
             </div>
-        </div>
-        <!-- <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
-            <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-             [formGroup]="searchFormGroup"
-             formControlName="RegId" placeholderText="Enter Patient Name/RegId.."
-              fxFlex ApiUrl="VisitDetail/search-patient?Keyword=" 
-              (selectionChange)="getSelectedObj($event)" 
-              TextField="formattedText" ValueField="regId">
-            </airmid-autocomplete>
-
-        </form> -->
+              </div>
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">

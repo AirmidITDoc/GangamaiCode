@@ -97,8 +97,9 @@ export class PharAdvanceService {
     return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
   }
   public InsertIpPharmaAdvance(Param: any) {
-    if (Param.advanceID) {
-      return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate/" + Param.advanceID, Param);
+    if (Param.pharmacyHeader.advanceId) {
+      // return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate/" + Param.pharmacyAdvance.advanceId, Param);
+      return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate", Param);
     } else return this._httpClient1.PostData("Sales/PharmacyAdvanceInsert", Param)
   }
   
