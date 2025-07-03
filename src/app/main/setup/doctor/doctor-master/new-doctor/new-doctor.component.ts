@@ -1189,7 +1189,7 @@ page:any;
       this.selectedFile = null;
       this.previewUrl = null;
     }
-    this.clearFile();
+    // this.clearFile();
   }
 
   view(file: any) {
