@@ -104,8 +104,7 @@ PrescriptionFrom:FormGroup;
         
       });
     }
-  getSelectedRow(Obj) {
-    debugger
+  getSelectedRow(Obj) { 
     this.SelectedObj = Obj
     this.isShowDetailTable = true;
     let patientType = 0;
@@ -121,8 +120,8 @@ PrescriptionFrom:FormGroup;
         { fieldName: "OP_IP_Type", fieldValue: String(patientType), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid1.gridConfig = this.gridConfig1;
-    this.grid1.bindGridData();
+    // this.grid1.gridConfig = this.gridConfig1;
+    // this.grid1.bindGridData();
   } 
   ChangeeFilter() {
     debugger
@@ -149,7 +148,7 @@ PrescriptionFrom:FormGroup;
         { fieldName: "IPPreId", fieldValue: "0", opType: OperatorComparer.Equals }
       ]
     } 
-    this.grid.bindGridData();
+    //this.grid.bindGridData();
   }
   dsItemDetList:any;
   GetPrescrpList() {

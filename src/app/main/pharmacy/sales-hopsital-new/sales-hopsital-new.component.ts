@@ -978,7 +978,10 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PharmaSalesForm.get('sales.unitId').setValue(this.HospitalId)
     this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId)
     this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId)
-
+    this.PharmaSalesForm.get('sales.isPrescription').setValue(this.IPMedID || 0)
+    this.PharmaSalesForm.get('prescription.opipid').setValue(this.OP_IP_Id) 
+    this.PharmaSalesForm.get('salesDraft.dSalesId').setValue(this.DraftID || 0) 
+ 
 
     if (formValue.opIpType == 2) {
       this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue?.externalPatientName ?? '')
@@ -1132,14 +1135,15 @@ export class SalesHospitalNewComponent implements OnInit {
   calculateCellNetAmount(item: IndentList): void {
     const formValue = this.ItemSubform.value;
     const discAmt = +item.DiscAmt;
-    const totalMrp = +item.TotalMRP;
+    const totalMrp = +item.TotalMRP; 
+   // let  DiscPer = '0'
 
     const netAmount = (totalMrp - discAmt).toFixed(2);
-    item.NetAmt = netAmount;
-    let DiscPer = ((formValue.discAmount * 100) / formValue.totalAmount).toFixed(2);
-    this.ItemSubform.patchValue({
-      FinalDiscPer: DiscPer,
-    })
+    item.NetAmt = netAmount; 
+    // let DiscPer = ((formValue.discAmount * 100) / totalMrp).toFixed(2);  
+    // this.ItemSubform.patchValue({
+    //   FinalDiscPer: DiscPer,
+    // })
     this.getUpdateNetAmtSum(this.saleSelectedDatasource.data);
   }
   m_getBalAvaListStore(Param) {
@@ -1414,8 +1418,7 @@ export class SalesHospitalNewComponent implements OnInit {
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
     };
-    this._salesService.getDraftBillItemBalQty(m_data).subscribe((draftdata) => {
-          debugger
+    this._salesService.getDraftBillItemBalQty(m_data).subscribe((draftdata) => { 
       this.Tempchargeslist = draftdata.data as any;
       console.log(this.Tempchargeslist);
       if (this.Tempchargeslist.length == 0) {
@@ -1468,7 +1471,7 @@ vExpDate:any;
                 this.vExpDate = `${year}-${this.pad(month)}-${day}`;
                 // console.log(this.vExpDate)
             } 
-
+     // this.ItemAddForm.reset();
       this.saleSelectedDatasource.data = [];
       this.ItemAddForm.patchValue({
         ItemId: contact?.itemId,
@@ -1505,6 +1508,12 @@ vExpDate:any;
     }
     console.log(this.ItemAddForm.value)
     if (this.ItemAddForm.valid) {
+      if(this.saleSelectedDatasource.data.length > 0){
+        if(this.saleSelectedDatasource.data.find(i => i.ItemId == contact?.itemId)){
+          this.toastr.success(`Selected item already added in list`, 'success',);
+        }
+        return
+      }
       this.Itemchargeslist.push(this.ItemAddForm.value)
       this.saleSelectedDatasource.data = this.Itemchargeslist;
     } else {
@@ -1538,8 +1547,7 @@ vExpDate:any;
         height: '95%',
         width: '95%',
       });
-      dialogRef.afterClosed().subscribe((result) => {
-        debugger
+      dialogRef.afterClosed().subscribe((result) => { 
         console.log('The dialog was closed - Insert Action', result);
         console.log(result);
         this.DoctorNamecheck = true;
