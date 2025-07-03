@@ -32,9 +32,9 @@ import { certificateTemp } from '../medicalrecord/patientcertificate/patientcert
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-
+// import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
 //   PWeight: number;
@@ -288,6 +288,8 @@ export class NewCasepaperComponent implements OnInit {
         this.vPulse = data.pulse
       });
     }, 500);
+
+    this.loadGridDataForVisit(this.VisitId);
   }
   onLangChange() {
     if (this.speechService.isListening) {
@@ -2074,11 +2076,10 @@ getLabdata(visitId: string) {
 
   this._CasepaperService.getLabRadList(D_data).subscribe(Visit => {
     const allData = Visit.data as labRadList[];
-debugger
+// debugger
     this.LabMap[visitId] = allData.filter(item => item.patientType === 'PathologyTestList');
     this.RadMap[visitId] = allData.filter(item => item.patientType === 'RadiologyTestList');
 
-    // Assign to data sources
     this.dsLab.data = this.LabMap[visitId];
     this.dsRad.data = this.RadMap[visitId];
 
@@ -2092,8 +2093,51 @@ debugger
     console.log('Radiology Data for', visitId, this.RadMap[visitId]);
   });
 }
+// lab code end
+
+// tryed
+ @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
+AllColumns = [
+    { heading: "labDate", key: "pathDate", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        { action: gridActions.print, callback: (data: any) => { } }]
+    }
+  ]
+  gridConfig: gridModel = {
+    apiUrl: "OPDPrescriptionMedical/getlabifnormationList",
+    columnsList: this.AllColumns,
+    sortField: "VisitId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "OPIPId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+    ],
+    row: 25,
+    localData: []
+  }
+
+loadGridDataForVisit(visitId: string) {
+  debugger
+  this.gridConfig.localData  = this.LabMap[visitId] || [];
+  this.gridConfig.filters = [
+    { fieldName: "OPIPId", fieldValue: String(visitId), opType: OperatorComparer.Equals }
+  ];
+}
+
+}
 
 
+  export interface gridModel {
+  apiUrl?: string;
+  columnsList: any[];
+  sortField?: string;
+  sortOrder?: number;
+  filters?: any[];
+  row?: number;
+  localData?: any[];
 }
 
 export class CasepaperVisitDetails {
@@ -2513,6 +2557,7 @@ export class labRadList {
   PatientType: any;
   BillNo: any;
   patientType: any;
+  PathologyTestList:any[];
 
   constructor(labRadList) {
 
@@ -2521,6 +2566,7 @@ export class labRadList {
     this.PatientType = labRadList.PatientType || '';
     this.BillNo = labRadList.BillNo || '';
     this.patientType = labRadList.patientType || '';
+    this.PathologyTestList = labRadList.PathologyTestList || '';
   }
 }
 

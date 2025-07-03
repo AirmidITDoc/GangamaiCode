@@ -38,7 +38,7 @@ export class ServiceMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            Price: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            Price: [0],
             IsEditable: ["0"],
             CreditedtoDoctor: ["0"],
             IsPathology: ["0"],
@@ -122,14 +122,16 @@ export class ServiceMasterService {
     }
 
     public serviceMasterInsert(Param: any) {
-        return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+         if (Param.serviceId) {
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+        }else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
 
-    public serviceMasterUpdate(Param: any) {
-        if (Param.serviceId) {
-            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
-        }
-    }
+    // public serviceMasterUpdate(Param: any) {
+        // if (Param.serviceId) {
+        //     return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+        // }
+    // }
 
     public getClassMasterListRetrive(param) {
         return this._httpClient.PostData("Billing/ServiceClassdetaillList",param);

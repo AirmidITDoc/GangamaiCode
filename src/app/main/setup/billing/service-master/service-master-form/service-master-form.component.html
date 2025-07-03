@@ -1,14 +1,9 @@
-<ng-template #serviceTable>
+<!-- <ng-template #serviceTable>
     <mat-toolbar class="accent" style="width: 100%; height: 40px; justify-content: space-between">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{ value: '*', params: { delay: '50ms', scale: '0.2' } }" style="color: white">account_box</mat-icon>
             <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Nursing Request list</span>
         </div>
-        <!-- <div class="close-icon">
-        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div> -->
     </mat-toolbar>
 
     <div class="service-table1 p-12" fxFlex="100%">
@@ -56,7 +51,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
@@ -65,7 +60,7 @@
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-                        {{ serviceForm.controls.ServiceId.value ? 'Modify Service Master' : 'NewService Master' }}
+                        {{ serviceForm.controls.serviceId.value ? 'Modify Service Master' : 'NewService Master' }}
                     </span>
                 </div>
                 <div class="modal-header-right">
@@ -86,7 +81,7 @@
                         <mat-card>
                             <mat-card-content class="p-4">
                                 <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px">
-                                    <input type="hidden" name="ServiceId" formControlName="ServiceId" [ngModel]="ServiceId" />
+                                    <input type="hidden" name="serviceId" formControlName="serviceId" [ngModel]="ServiceId" />
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -103,88 +98,33 @@
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown
                                                 label="SubGroup Name"
-                                                formControlName="SubGroupId"
+                                                formControlName="subGroupId"
                                                 [formGroup]="serviceForm"
                                                 (selectionChange)="selectChangesubGroupName($event)"
-                                                [validations]="getValidationMessages().SubGroupId"
                                                 [mode]="autocompleteModesubGroupName"
                                             ></airmid-dropdown>
                                         </div>
                                     </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Service Name</mat-label>
-                                            <input
-                                                name="ServiceName"
-                                                formControlName="ServiceName"
-                                                placeholder="ServiceName"
-                                                matInput
-                                                (keydown)="onEnterServiceName($event)"
-                                                #ServiceName
-                                                [(ngModel)]="vServiceName"
-                                            />
-                                            <mat-error *ngIf="serviceForm.get('ServiceName').invalid && serviceForm.get('ServiceName').touched">
-                                                service Name is required Enter only Alphabets
-                                            </mat-error>
+                                            <input name="ServiceName" formControlName="serviceName" placeholder="ServiceName" matInput
+                                                (keydown)="onEnterServiceName($event)" #ServiceName/>
                                         </mat-form-field>
-                                        &nbsp;&nbsp;
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Price</mat-label>
-                                            <input
-                                                name="Price"
-                                                placeholder="Select Price"
-                                                formControlName="Price"
-                                                OnlyNumber
-                                                (keypress)="keyPressCharater($event)"
-                                                [ngClass]="{ 'is-invalid': submitted && f.Price.errors }"
-                                                matInput
-                                                required
-                                                maxlength="5"
-                                            />
-                                            <mat-error *ngIf="serviceForm.get('Price').invalid && serviceForm.get('Price').touched">Price is required Enter only Digits</mat-error>
-                                        </mat-form-field>
-                                        &nbsp;&nbsp;
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>PrintOrder</mat-label>
-                                            <input
-                                                name="PrintOrder"
-                                                placeholder="Select PrintOrder"
-                                                formControlName="PrintOrder"
-                                                matInput
-                                                required
-                                                OnlyNumber
-                                                (keypress)="keyPressCharater($event)"
-                                                [ngClass]="{ 'is-invalid': submitted && f.PrintOrder.errors }"
-                                                min="0"
-                                                maxlength="5"
-                                            />
-                                            <mat-error *ngIf="serviceForm.get('PrintOrder').invalid && serviceForm.get('PrintOrder').touched">PrintOrder is required Enter only Digits</mat-error>
-                                        </mat-form-field>
-                                        &nbsp;&nbsp;
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>ServiceShortDesc</mat-label>
-                                            <input
-                                                name="Service Short Desc"
-                                                formControlName="ServiceShortDesc"
-                                                placeholder="ServiceShortDesc"
-                                                matInput
-                                                (keydown)="onEnterServiceShortDesc($event)"
-                                                #ServiceShortDesc
-                                                [(ngModel)]="vServiceShortDesc"
-                                            />
-                                            <mat-error *ngIf="serviceForm.get('ServiceShortDesc').invalid && serviceForm.get('ServiceShortDesc').touched">
-                                                ServiceShortDesc is required Enter only Alphabets
-                                            </mat-error>
+                                            <input name="Service Short Desc" formControlName="serviceShortDesc" placeholder="ServiceShortDesc" matInput
+                                                (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc/>
                                         </mat-form-field>
-                                    </div>
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
-                                        <!-- [value]="TariffId" -->
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PrintOrder</mat-label>
+                                            <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="printOrder" matInput required OnlyNumber
+                                                (keypress)="keyPressCharater($event)" min="0" maxlength="5" />
+                                        </mat-form-field>
+                                        
                                             <airmid-dropdown
                                                 label="TariffId"
                                                 formControlName="tariffId"
@@ -193,9 +133,9 @@
                                                 [validations]="getValidationMessages().tariffId"
                                                 [mode]="autocompleteModetariff"
                                             ></airmid-dropdown>
-                                        </div>
 
                                         <mat-form-field appearance="outline" fxFlex>
+                                             <mat-label>Effective Date</mat-label>
                                             <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate" formControlName="EffectiveDate" />
                                             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                             <mat-datepicker #picker3></mat-datepicker>
@@ -205,8 +145,9 @@
                             </mat-card-content>
                         </mat-card>
                     </div>
-                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
-                        <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }">
+                    <div class="modal-card-container airmid-table-container" fxFlex>
+                        <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }"
+                        style="overflow: auto;height:250px;">
                             <ng-container matColumnDef="classId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code</mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>{{ element.classId }}</mat-cell>
@@ -240,34 +181,37 @@
                             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
                         </mat-table>
                     </div>
+
                     <div class="modal-card-container">
                         <form [formGroup]="serviceForm">
                             <div class="p-10 pb-24">
-                                <div fxLayout="row" fxLayoutAlign="space-between" >
-                                    <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="IsDocEditable" [(ngModel)]="IsDocEditable">
-                                        Is Doc Editable For Service
-                                    </mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="IsEditable" formControlName="IsEditable" [(ngModel)]="IsEditable">IsEditable</mat-checkbox>
+                                <div fxLayout="row" fxLayoutGap="12px">
 
-                                    <mat-checkbox class="example-margin" name="IsPackage" formControlName="IsPackage" value="false" [(ngModel)]="IsPackage">IsPackage</mat-checkbox>
+                                    <mat-checkbox class="example-margin" name="IsEditable" formControlName="isEditable" [(ngModel)]="IsEditable">IsEditable</mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="IsRadiology" formControlName="IsRadiology" value="false" [(ngModel)]="IsRadiology">IsRadiology</mat-checkbox>
+                                    <mat-checkbox class="example-margin" name="IsPackage" formControlName="isPackage" value="false" [(ngModel)]="IsPackage">IsPackage</mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="IsPathology" formControlName="IsPathology" value="false" [(ngModel)]="IsPathology">IsPathology</mat-checkbox>
+                                    <mat-checkbox class="example-margin" name="isDiscount" formControlName="isDiscount" value="false">IsDiscount</mat-checkbox>
+
                                 </div>
 
                                 <hr />
 
-                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="12px">
+                                <div fxLayout="row" fxLayoutGap="12px">
+                                                                    
+                                    <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
+                                        Is Doc Editable For Service
+                                    </mat-checkbox>
+                                    
                                     <div fxLayout="row" fxLayoutGap="6px">
-                                        <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="CreditedtoDoctor" value="false" [(ngModel)]="showDoctor">
+                                        <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="creditedtoDoctor" value="false" [(ngModel)]="showDoctor">
                                             CreditedtoDoctor
                                         </mat-checkbox>
 
                                         <airmid-dropdown
                                             label="Doctor Name"
-                                            formControlName="DoctorId"
+                                            formControlName="doctorId"
                                             [value]="data?.doctorId"
                                             [formGroup]="serviceForm"
                                             [validations]="getValidationMessages().DoctorId"
@@ -277,26 +221,62 @@
                                             (selectionChange)="SelectionDoctor($event)"
                                         ></airmid-dropdown>
                                     </div>
+                                
+                                </div>
+
+                                 <hr />
+
+                                <div fxLayout="row" fxLayoutGap="12px">
+                                
+                                    <div fxLayoutGap="8px">
+                                        <mat-checkbox name="IsRadiology" formControlName="isRadiology" value="false"
+                                            [(ngModel)]="IsRadiology">IsRadiology</mat-checkbox>
+                                
+                                        <mat-checkbox name="RadOutSource" formControlName="RadOutSource" value="false"
+                                            *ngIf="showRadOut">OutSource</mat-checkbox>
+                                    </div>
+                                
+                                    <div fxLayoutGap="8px">
+                                        <mat-checkbox name="IsPathology" formControlName="isPathology" value="false"
+                                            [(ngModel)]="IsPathology">IsPathology</mat-checkbox>
+                                            
+                                        <mat-checkbox name="PathOutSource" formControlName="PathOutSource" value="false"
+                                            *ngIf="showPathOut">OutSource</mat-checkbox>
+                                    </div>
+                                
+                                </div>
+                                
+                                <hr />
+
+                                <div fxLayout="row" fxLayoutGap="12px">
 
                                     <div fxLayout="row" fxLayoutGap="6px" fxFlex>
-                                        <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="IsEmergency" (change)="emg_amt = ''; emg_per = ''">
+                                        <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="isEmergency" (change)="emg_amt = ''; emg_per = ''">
                                             IsEmergency
                                         </mat-checkbox>
 
-                                        <div *ngIf="showEmg" class="emg-amt-input w-100-p" >
-                                            <mat-form-field appearance="outline" fxFlex="50%">
-                                                <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="EmgAmt" matInput />
-                                                <mat-error *ngIf="serviceForm.get('EmgAmt').invalid && serviceForm.get('EmgAmt').touched">EmgAmt is required Enter only Digits</mat-error>
+                                        <div *ngIf="showEmg" class="emg-amt-input w-100-p gap-8">
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="emgAmt" matInput />
                                             </mat-form-field>
-                                            &nbsp;
 
-                                            <mat-form-field appearance="outline" fxFlex="50%">
-                                                <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="EmgPer" matInput />
-                                                <mat-error *ngIf="serviceForm.get('EmgPer').invalid && serviceForm.get('EmgPer').touched">EmgAmt is required Enter only Digits</mat-error>
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="emgPer" matInput />
+                                            </mat-form-field>
+
+                                             <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Start Time</mat-label>
+                                                <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>End Time</mat-label>
+                                                <input matInput type="time" formControlName="endTime" (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </form>
                     </div>

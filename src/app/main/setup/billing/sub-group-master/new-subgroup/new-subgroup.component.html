@@ -21,6 +21,16 @@
                 <input type="hidden" name="subGroupId" formControlName="subGroupId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown 
+                            label="Group Name" 
+                            formControlName="groupId"
+                            [formGroup]="subgroupForm"
+                            [validations]="getValidationMessages().groupId"
+                            [mode]="autocompleteModegroupName">
+                        </airmid-dropdown>
+                    </div>
+                    
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox 
                             label="SubGroup Name" 
                             formControlName="subGroupName" 
@@ -29,16 +39,6 @@
                             [validations]="getValidationMessages().subGroupName"
                             [maxLength]="50">
                         </airmid-textbox>
-                    </div>
-
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="Group Name" 
-                            formControlName="groupId"
-                            [formGroup]="subgroupForm"
-                            [validations]="getValidationMessages().groupId"
-                            [mode]="autocompleteModegroupName">
-                        </airmid-dropdown>
                     </div>
                     
                 </div>

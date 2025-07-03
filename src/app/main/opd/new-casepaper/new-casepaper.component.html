@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="content">
+    <div class="content" style="padding: 5px;overflow: auto;">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
 
@@ -736,7 +736,8 @@
                                                     <span style="color: rgb(57, 73, 171);">
                                                         Dr. {{ getFirstPatientForDate(visitId)[0]?.doctorname || 'N/A' }}
                                                     </span>&nbsp;
-                                                    on {{ getFirstPatientForDate(visitId)[0]?.visitDate | date: 'mediumDate' }}
+                                                    on {{ getFirstPatientForDate(visitId)[0]?.visitDate | date: 'mediumDate' }} &nbsp;
+                                                     {{ getFirstPatientForDate(visitId)[0]?.opdNo}}
                                                 </mat-panel-title>
                                             </mat-expansion-panel-header>
                                     
@@ -986,7 +987,7 @@
                                     
                                                 <!-- Lab Tab -->
                                                 <mat-tab label="Lab">
-                                                    <mat-table class="table2" matSort [dataSource]="LabMap[visitId]" [@animateStagger]="{value:'50'}"
+                                                     <mat-table class="table2" matSort [dataSource]="LabMap[visitId]" [@animateStagger]="{value:'50'}"
                                                         style="overflow: auto;height:250px;">
                                                 
                                                         <ng-container matColumnDef="labDate">
@@ -1043,12 +1044,13 @@
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let row; columns: labColumns;" class="element"
                                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        <!-- <mat-footer-row *matFooterRowDef="['noData']"
-                                                            [ngClass]="{'hide':!(dsCertficateTemp!=null && dsCertficateTemp.data.length==0)}">
-                                                        </mat-footer-row> -->
                                                     </mat-table>
                                                     <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10" showFirstLastButtons>
-                                                    </mat-paginator>
+                                                    </mat-paginator> 
+                                               
+                                                    <!-- <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                                    </airmid-table> -->
+
                                                 </mat-tab>
                                     
                                                 <!-- Radiology Tab -->

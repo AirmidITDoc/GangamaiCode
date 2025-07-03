@@ -297,9 +297,6 @@ export class NewAdvanceComponent implements OnInit {
 
       }
       else {
-        // const pharmacyAdvanceGroup = this.insertForm?.get('pharmacyAdvance') as FormGroup;
-        // this.removeControls(pharmacyAdvanceGroup, [
-        //   'date', 'refId', 'opdIpdType', 'opdIpdId','advanceUsedAmount', 'addedBy', 'isCancelled','isCancelledBy', 'isCancelledDate']);
         this.insertForm.removeControl('pharmacyAdvance');
         this.insertForm?.get("pharmacyHeader.advanceId")?.setValue(this.vAdvanceId || 0);
         this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
@@ -320,7 +317,7 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
 
             console.log(this.insertForm?.value);
-            this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
+            this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => {
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.onClose();

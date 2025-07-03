@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 // import { UserList } from '../create-user.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
@@ -8,6 +8,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import Swal from 'sweetalert2';
 import { CreateUserService } from '../create-user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-change-password',
@@ -32,6 +33,7 @@ export class ChangePasswordComponent implements OnInit {
     private dialogRef: MatDialogRef<ChangePasswordComponent>,
     public dialog: MatDialog,
     public _CreateUserService: CreateUserService,
+    public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
     public _matDialog: MatDialog,
     private formBuilder: FormBuilder,) {
@@ -43,26 +45,19 @@ export class ChangePasswordComponent implements OnInit {
 
     console.log("UserDetail:", this.accountService.currentUserValue)
     this.changePasswordFormGroup = this.createchangePasswordForm();
-    // this.fname = this.accountService.currentUserValue.user.firstName;
-    // this.lname = this.accountService.currentUserValue.user.lastName;
-    // this.Uname = this.accountService.currentUserValue.user.userName;
+    this.changePasswordFormGroup.markAllAsTouched()
 
-    this.Uname = this.accountService.currentUserValue.userName;
-
-    const nameParts = this.Uname.split(' '); // Split by space
-    this.fname = nameParts[0] || '';
-    this.lname = nameParts.slice(1).join(' ') || '';
-
+    var mdata = {
+      userName: this.accountService.currentUserValue?.userName,
+    };
+    this.changePasswordFormGroup.patchValue(mdata);
   }
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   onClose() {
     this.dialogRef.close();
-  }
-
-  onClear() {
-    this.changePasswordFormGroup.get("password").reset();
   }
 
   passrulesdisp() {
@@ -77,25 +72,37 @@ export class ChangePasswordComponent implements OnInit {
 
   createchangePasswordForm() {
     return this.formBuilder.group({
-      fname: '',
-      lname: '',
-      Uname: '',
-      password: '',
-    });
+      userId: this.accountService.currentUserValue.userId,
+      userName: this.accountService.currentUserValue.userName,
+      password: ['', Validators.required],
+      confirmpassword: ['']
+    }, { validators: this.passwordMatchValidator }
+    );
+  }
+
+  passwordMatchValidator(formGroup: AbstractControl) {
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmpassword')?.value;
+
+    if (password !== confirmPassword) {
+      formGroup.get('confirmpassword')?.setErrors({ passwordMismatch: true });
+    } else {
+      formGroup.get('confirmpassword')?.setErrors(null);
+    }
+    return null;
   }
 
   onSubmit() {
-  
-    let changePasswordObj = {};
-    changePasswordObj['userId'] = this.UserId
-    changePasswordObj['userName'] = this.Uname;
-    changePasswordObj['password'] = this.changePasswordFormGroup.get('password').value || ''
-
-    let submitData = {
-      "changePassword": changePasswordObj,
+    const confirmPasswordCtrl = this.changePasswordFormGroup.get('confirmpassword');
+    if (confirmPasswordCtrl?.hasError('passwordMismatch')) {
+      this.toastr.warning('Password and Confirm Password do not match');
+      return;
     }
+    if (!this.changePasswordFormGroup.invalid) {
 
-      this._CreateUserService.getpasswwordChange(submitData).subscribe(data => {
+      this.changePasswordFormGroup.removeControl('confirmpassword')
+      console.log(this.changePasswordFormGroup.value)
+      this._CreateUserService.getpasswwordChange(this.changePasswordFormGroup.value).subscribe(data => {
         if (data) {
           Swal.fire('Pasword Changed!', 'Record updated Successfully !', 'success').then((result) => {
             if (result.isConfirmed) {
@@ -105,11 +112,24 @@ export class ChangePasswordComponent implements OnInit {
         } else {
           Swal.fire('Error !', 'Password not Updated', 'error');
         }
-      },
-    (error) => {
-      
+      });
+    } {
+      let invalidFields = [];
+      if (this.changePasswordFormGroup.invalid) {
+        for (const controlName in this.changePasswordFormGroup.controls) {
+          if (this.changePasswordFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     }
-      );
   }
 
   screenFromString = 'OP-billing';

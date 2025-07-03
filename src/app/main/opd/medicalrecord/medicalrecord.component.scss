@@ -14,3 +14,60 @@ app-medicalrecord {
         border-radius: 50%;
     }
 }
+
+.info-badge-top {
+  .dashboard-card {
+    min-width: 140px;
+    border-radius: 12px;
+    padding: 4px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: black; //#fff;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    .card-label {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .card-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .card-icon {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 28px;
+      opacity: 0.7;
+    }
+    &.registrations {
+      background: #e1f0d1;
+    }
+    &.appointments {
+      background: #d9edf4;
+    }
+    &.appointments-split {
+      background: #f2d28a;
+    }
+    &.bills {
+      background: #c9c79c;
+    }
+    &.emr-ready {
+      background: #a5d1c7;
+    }
+    &.checkout {
+      background: #f7f1a3;
+    }
+    &.waiting {
+      background: #e9b8d8;
+    }
+    & .card-value div {
+      font-size: 13px;
+    }
+  }
+
+}
