@@ -19,7 +19,8 @@ export class HospitalService {
 
   createHospitalForm(): FormGroup {
     return this._formBuilder.group({
-      HospitalId: [""],
+      HospitalId: [0],
+      hospitalHeaderLine:[""],
       HospitalName: ["",
                 [
                     Validators.required,
@@ -46,12 +47,25 @@ export class HospitalService {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-      Email: [""],
-      website: [""],
+      emailId: [""],
+      webSiteInfo: [""],
     
       // HospitalHeader: [""]
       header:[""],
-      IsActive:1
+      IsActive:true,
+
+ opdBillingCounterId:'',//[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  opdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  opdRefundBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  opdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdRefundOfBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+  ipdRefundOfAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
     });
   }
 
@@ -66,8 +80,8 @@ export class HospitalService {
    
     public HospitalInsert(Param: any) {
         if (Param.hospitalId) {
-            return this._httpClient.PostData("HospitalMaster/", Param);
-        } else return this._httpClient.PostData("ospitalMaster", Param);
+            return this._httpClient.PutData("HospitalMaster/", Param);
+        } else return this._httpClient.PostData("HospitalMaster", Param);
     }
 
       public HospitalCancle(Id: any) {

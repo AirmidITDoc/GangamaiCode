@@ -574,7 +574,7 @@
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header>End
                                                                 Time</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.endTime  }}</span>
+                                                                <span>{{ element.endTime }}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -670,7 +670,7 @@
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>StartDate</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.startDate}}</span>
+                                                                <span>{{ element.startDate | date:'shortDate'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
@@ -678,19 +678,19 @@
                                                             <mat-header-cell *matHeaderCellDef
                                                                 mat-sort-header>EndDate</mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.endDate }}</span>
+                                                                <span>{{ element.endDate | date:'shortDate'}}</span>
                                                             </mat-cell>
                                                         </ng-container>
 
 
 
-                                                        <!-- <ng-container matColumnDef="reason">
+                                                         <ng-container matColumnDef="reason">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>Reason</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <span>{{ element.reason }}</span>
                                                             </mat-cell>
-                                                        </ng-container> -->
+                                                        </ng-container> 
 
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
@@ -847,37 +847,47 @@
                                 </div>
 
                             </div>
-                            <div *ngSwitchCase="4">
-                                <form [formGroup]="signatureForm">
+                            <div *ngSwitchCase="4" style="height: 600px;">
 
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                        <!-- <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33%">
-                                            <airmid-dropdown label="pageId" formControlName="pageId"
-                                                (selectionChange)="getSelectedqpageObj($event)"
-                                                [formGroup]="signatureForm"
-                                                [mode]="autocompleteModepage"></airmid-dropdown>
-                                        </div> -->
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
+                                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                        fxLayoutGap="4px grid">
+                                        <form [formGroup]="signatureForm">
+                                            <!-- [value]="registerObj.mDoctorDepartmentDets" -->
+                                            <div fxLayoutGap="8px 0px grid">
+                                                <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33%">
+                                                    <div fxLayout="row">
+                                                        <div >
+                                                            <airmid-dropdown label="Pages" formControlName="pageId"
+                                                                [formGroup]="signatureForm" [IsMultiPle]="true" #ddlsignpage
+                                                                ValueField="constantId" TextField="constantType"
+                                                                ApiUrl="Doctor/get-DoctorConstantsList"
+                                                                [ReqFullObj]="true">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                    </div>
+                                                     <div fxLayout="row">
+                                                        <span>Selected Pages:</span>
+                                                        <mat-chip-listbox #chipList>
+                                                            <mat-chip
+                                                                *ngFor="let item of signatureForm.value.pageId">
+                                                                {{ item.constantType }} <mat-icon
+                                                                    (click)="removesignpage(item)">close</mat-icon>
+                                                            </mat-chip>
+                                                        </mat-chip-listbox>
+                                                    </div>
+                                                </div>
 
+                                            </div>
+                                        </form>
 
-                                        <div style="margin-bottom: 16px;" fxLayout="column">
-                                            <span style="font-weight: 700;">
-                                                Page
-                                            </span>
-                                            <hr>
-                                            <app-airmid-chipautocomplete fxFlex [chips]="myForm.get('pageId')?.value"
-                                                [apiUrl]="'Doctor/DoctorLeaveDetailList'" [displayKey]="'leaveType'"
-                                                [allowCustom]="true" (chipsChange)="selectChangeExamination($event)">
-                                            </app-airmid-chipautocomplete>
-                                        </div>
                                     </div>
-                                </form>
-                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="50">
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                        fxLayoutGap="4px grid">
                                         <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                                             <div class="photp-capture-image">
-                                                <img class="h-100-p w-100-p border-radius-4"
-                                                    style="height:100px !important;"
+                                                <img class="h-200-p w-100-p border-radius-4"
+                                                    style="height:200px !important;"
                                                     [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
                                             </div>
                                             <div class="photo-capture-button ">
@@ -891,21 +901,12 @@
                                                 </label>
                                             </div>
                                         </div>
+
                                     </div>
-                                    <!-- <div class="modal-footer" style="margin-top: 20px;">
-                                        <div class="footer-navigation-container">
-                                            <div class="modal-footer-buttons">
-                                                <button class="btn btn-danger-outline"
-                                                    (click)="onClose()">Close</button>
-                                                <button type="button" class="btn btn-primary" (click)="onAddImage()">Add
-                                                    Sign</button>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
-
-
                             </div>
+
+
 
                             <div *ngSwitchCase="5">
                                 <div class="upload-section">
