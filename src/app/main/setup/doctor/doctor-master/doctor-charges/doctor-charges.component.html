@@ -1,94 +1,98 @@
 <div class="modal-wrapper grid-container">
-
-  <!-- Modal Header -->
-  <div class="modal-header accent">
-    <div class="modal-header-content">
-      <div class="modal-header-title">
-        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-          Doctor Charges Detail
-        </span>
-      </div>
-      <div class="modal-header-right">
-        <div class="comman-date-container">
-          <div class="close-icon">
-            <button mat-icon-button matTooltip="Close" [mat-dialog-close]="true" (click)="onClose()">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Body -->
-  <div class="modal-body" fusePerfectScrollbar>
-    <div class="modal-body-container">
-      <mat-card style="padding: 10px;">
-        <div fxLayout="column" fxLayoutGap="16px">
-
-          <!-- Title -->
-          <div class="form-title border-bottom pb-2">
-            <span class="h3 font-weight-600">Doctor Charges Information</span>
-          </div>
-
-          <!-- Form -->
-          <form [formGroup]="DrchargesForm">
-            <input type="hidden" formControlName="docChargeId" />
-
-            <div fxLayout="row wrap" fxLayoutGap="12px">
-
-              <!-- Service Name -->
-              <div fxFlex="100%" fxFlex.gt-sm="80%">
-                <airmid-autocomplete label="Enter Service Name" formControlName="serviceId" [formGroup]="DrchargesForm"
-                  placeholderText="Enter Service Name" [ApiUrl]="ApiURL"
-                  (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText" ValueField="serviceId">
-                </airmid-autocomplete>
-              </div>
-
-              <!-- Tariff Name -->
-              <div fxFlex="100%" fxFlex.gt-sm="20%">
-                <airmid-dropdown label="Tariff Name" formControlName="tariffId" [formGroup]="DrchargesForm"
-                  (selectionChange)="getSelectedtariffObj($event)" [mode]="autocompleteModetariff">
-                </airmid-dropdown>
-              </div>
-
-              <!-- Class Name -->
-              <div fxFlex="100%" fxFlex.gt-sm="20%">
-                <airmid-dropdown label="Class Name" formControlName="classId" [formGroup]="DrchargesForm"
-                  (selectionChange)="getSelectedclassObj($event)" [mode]="autocompleteModeclass">
-                </airmid-dropdown>
-              </div>
-
-              <!-- Price -->
-              <div fxFlex="100%" fxFlex.gt-sm="20%">
-                <airmid-textbox label="Price" formControlName="price" (keypress)="keyPressAlphanumeric($event)"
-                  [formGroup]="DrchargesForm" [maxLength]="5">
-                </airmid-textbox>
-              </div>
-
-              <!-- Days -->
-              <div fxFlex="100%" fxFlex.gt-sm="20%">
-                <airmid-textbox label="Days" formControlName="days" (keypress)="keyPressAlphanumeric($event)"
-                  [formGroup]="DrchargesForm" [maxLength]="3">
-                </airmid-textbox>
-              </div>
-
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Doctor Charges Detail</span>
             </div>
-          </form>
-
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button matTooltip="Close" [mat-dialog-close]="true" (click)="onClose()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </mat-card>
     </div>
-  </div>
 
-  <!-- Modal Footer -->
-  <div class="modal-footer">
-    <div class="footer-navigation-container">
-      <div class="modal-footer-buttons">
-        <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
-      </div>
+    <!-- Modal Body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <mat-accordion multi>
+                <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header class="accent">
+                        <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Doctor Charges Information</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content pt-12">
+                        <!-- Form -->
+                        <form [formGroup]="DrchargesForm">
+                            <input type="hidden" formControlName="docChargeId" />
+    
+                            <div fxLayout="row wrap" fxLayoutGap="12px">
+                                <!-- Service Name -->
+                                <div fxFlex="100%" fxFlex.gt-sm="80%">
+                                    <airmid-autocomplete
+                                        label="Enter Service Name"
+                                        formControlName="serviceId"
+                                        [formGroup]="DrchargesForm"
+                                        placeholderText="Enter Service Name"
+                                        [ApiUrl]="ApiURL"
+                                        (selectionChange)="getSelectedserviceObj($event)"
+                                        TextField="formattedText"
+                                        ValueField="serviceId"
+                                    ></airmid-autocomplete>
+                                </div>
+    
+                                <!-- Tariff Name -->
+                                <div fxFlex="100%" fxFlex.gt-sm="20%">
+                                    <airmid-dropdown
+                                        label="Tariff Name"
+                                        formControlName="tariffId"
+                                        [formGroup]="DrchargesForm"
+                                        (selectionChange)="getSelectedtariffObj($event)"
+                                        [mode]="autocompleteModetariff"
+                                    ></airmid-dropdown>
+                                </div>
+    
+                                <!-- Class Name -->
+                                <div fxFlex="100%" fxFlex.gt-sm="20%">
+                                    <airmid-dropdown
+                                        label="Class Name"
+                                        formControlName="classId"
+                                        [formGroup]="DrchargesForm"
+                                        (selectionChange)="getSelectedclassObj($event)"
+                                        [mode]="autocompleteModeclass"
+                                    ></airmid-dropdown>
+                                </div>
+    
+                                <!-- Price -->
+                                <div fxFlex="100%" fxFlex.gt-sm="20%">
+                                    <airmid-textbox label="Price" formControlName="price" (keypress)="keyPressAlphanumeric($event)" [formGroup]="DrchargesForm" [maxLength]="5"></airmid-textbox>
+                                </div>
+    
+                                <!-- Days -->
+                                <div fxFlex="100%" fxFlex.gt-sm="20%">
+                                    <airmid-textbox label="Days" formControlName="days" (keypress)="keyPressAlphanumeric($event)" [formGroup]="DrchargesForm" [maxLength]="3"></airmid-textbox>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
     </div>
-  </div>
 
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+            </div>
+        </div>
+    </div>
 </div>

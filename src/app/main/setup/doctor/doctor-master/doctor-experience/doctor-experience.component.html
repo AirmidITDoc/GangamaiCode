@@ -7,10 +7,8 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close" (click)="onClose()">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close" (click)="onClose()">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -22,76 +20,65 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12">
-
                 <div class="modal-card-container">
-                    <mat-card>
-                        <div fxLayout="column" class="gap-8">
-                            <div class="form-title mb-2 border-bottom pb-2">
-                                <span class="h3 font-weight-600">Experience Information</span>
-                            </div>
-                            <form [formGroup]="ExperienceForm" style="border: blue">
+                    <mat-accordion multi>
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header class="accent">
+                                <mat-panel-title>Experience Information</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="ExperienceForm" class="pt-12">
                                 <!-- <h3 style="font-weight: bold">Medico Legal Case Information</h3> -->
                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="HospitalName" formControlName="hospitalName"
-                                            [value]="registerObj.hospitalName" [formGroup]="ExperienceForm"
-                                            [maxLength]="250">
-                                        </airmid-textbox>
+                                        <airmid-textbox
+                                            label="HospitalName"
+                                            formControlName="hospitalName"
+                                            [value]="registerObj.hospitalName"
+                                            [formGroup]="ExperienceForm"
+                                            [maxLength]="250"
+                                        ></airmid-textbox>
                                     </div>
 
-
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="Designation" formControlName="designation"
-                                            [value]="registerObj.designation" [formGroup]="ExperienceForm"
-                                            [maxLength]="250">
-                                        </airmid-textbox>
+                                        <airmid-textbox
+                                            label="Designation"
+                                            formControlName="designation"
+                                            [value]="registerObj.designation"
+                                            [formGroup]="ExperienceForm"
+                                            [maxLength]="250"
+                                        ></airmid-textbox>
                                     </div>
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Enter a date range</mat-label>
                                             <mat-date-range-input [rangePicker]="picker">
-                                                <input matStartDate formControlName="startDate"
-                                                    placeholder="Start date">
-                                                <input matEndDate formControlName="endDate" placeholder="End date"
-                                                    (dateChange)="onChangeDate()">
+                                                <input matStartDate formControlName="startDate" placeholder="Start date" />
+                                                <input matEndDate formControlName="endDate" placeholder="End date" (dateChange)="onChangeDate()" />
                                             </mat-date-range-input>
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-date-range-picker #picker></mat-date-range-picker>
                                         </mat-form-field>
-
-
-                                        <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
-                                            formStartControlName="StartDate" formEndControlName="enddate"
-                                            [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                            [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker> -->
-
                                     </div>
 
-                                    <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="YearsExp" formControlName="YearsExp" [value]="expyear"
-                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
-                                        </airmid-textbox>
-                                    </div>
-                                    <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="MonthExp" formControlName="MonthExp" [value]="expmonth"
-                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
-                                        </airmid-textbox>
-                                    </div>
-                                    <div fxFlex="16" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="DaysExp" formControlName="DaysExp" [value]="expday"
-                                            [formGroup]="ExperienceForm" [maxLength]="2" readonly>
-                                        </airmid-textbox>
-                                    </div>
+                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33" fxLayout="row">
 
+                                        <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                            <div fxFlex="33.33" fxFlex.xs="100" fxFlex.sm="33">
+                                                <airmid-textbox label="YearsExp" formControlName="YearsExp" [value]="expyear" [formGroup]="ExperienceForm" [maxLength]="2" readonly></airmid-textbox>
+                                            </div>
+                                            <div fxFlex="33.33" fxFlex.xs="100" fxFlex.sm="33">
+                                                <airmid-textbox label="MonthExp" formControlName="MonthExp" [value]="expmonth" [formGroup]="ExperienceForm" [maxLength]="2" readonly></airmid-textbox>
+                                            </div>
+                                            <div fxFlex="33.33" fxFlex.xs="100" fxFlex.sm="33">
+                                                <airmid-textbox label="DaysExp" formControlName="DaysExp" [value]="expday" [formGroup]="ExperienceForm" [maxLength]="2" readonly></airmid-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
-
-
                             </form>
-                        </div>
-                    </mat-card>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                 </div>
             </div>
         </div>

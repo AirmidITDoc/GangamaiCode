@@ -7,10 +7,8 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close" (click)="onClose()">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close" (click)="onClose()">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -22,63 +20,71 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12">
-
                 <div class="modal-card-container">
-                    <mat-card>
-                        <div fxLayout="column" class="gap-8">
-                            <div class="form-title mb-2 border-bottom pb-2">
-                                <span class="h3 font-weight-600">Education Information</span>
-                            </div>
-                            <form [formGroup]="EducationForm" style="border: blue">
-                             
-                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid" style="padding: 10px;">
-
-
+                    <mat-accordion multi>
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header class="accent">
+                                <mat-panel-title>Education Information</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="EducationForm" class="pt-12">
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                                      
-                                        <airmid-dropdown label="Qualification" formControlName="qualificationId"  (selectionChange)="getSelectedqualifiObj($event)"
-                                            [formGroup]="EducationForm"  [(value)]="registerObj.qualificationId"
-                                            [mode]="autocompleteModeQualifiy"></airmid-dropdown>
+                                        <airmid-dropdown
+                                            label="Qualification"
+                                            formControlName="qualificationId"
+                                            (selectionChange)="getSelectedqualifiObj($event)"
+                                            [formGroup]="EducationForm"
+                                            [(value)]="registerObj.qualificationId"
+                                            [mode]="autocompleteModeQualifiy"
+                                        ></airmid-dropdown>
                                     </div>
-                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <mat-form-field appearance="fill">
+                                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field appearance="fill" fxFlex>
                                             <mat-label>Choose Year</mat-label>
-                                            <input matInput [matDatepicker]="picker" [readonly]="true" [ngModel]="selectedYear"
-                                                formControlName="passingYear">
+                                            <input matInput [matDatepicker]="picker" [readonly]="true" [ngModel]="selectedYear" formControlName="passingYear" />
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker startView="multi-year"
-                                                (yearSelected)="chosenYearHandler($event, picker)"
-                                                panelClass="year-picker">
-                                            </mat-datepicker>
+                                            <mat-datepicker #picker startView="multi-year" (yearSelected)="chosenYearHandler($event, picker)" panelClass="year-picker"></mat-datepicker>
                                         </mat-form-field>
                                     </div>
 
                                     <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                                      <airmid-dropdown label="InstitutionName" formControlName="institutionNameId" (selectionChange)="getSelectedInstitueObj($event)"
-                                            [formGroup]="EducationForm"  [(value)]="registerObj.institutionNameId"
-                                            [mode]="autocompleteModeInstitute"></airmid-dropdown>
-
+                                        <airmid-dropdown
+                                            label="InstitutionName"
+                                            formControlName="institutionNameId"
+                                            (selectionChange)="getSelectedInstitueObj($event)"
+                                            [formGroup]="EducationForm"
+                                            [(value)]="registerObj.institutionNameId"
+                                            [mode]="autocompleteModeInstitute"
+                                        ></airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-dropdown label="City" formControlName="cityId"
-                                            [formGroup]="EducationForm" [(value)]="registerObj.cityId"  (selectionChange)="getSelectedcityObj($event)"
-                                            [validations]="getValidationMessages().City" [mode]="autocompleteModecity">
-                                        </airmid-dropdown>
+                                        <airmid-dropdown
+                                            label="City"
+                                            formControlName="cityId"
+                                            [formGroup]="EducationForm"
+                                            [(value)]="registerObj.cityId"
+                                            (selectionChange)="getSelectedcityObj($event)"
+                                            [validations]="getValidationMessages().City"
+                                            [mode]="autocompleteModecity"
+                                        ></airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-dropdown label="Country" formControlName="countryId"  (selectionChange)="getSelectedcountryObj($event)"
-                                            [value]="registerObj?.countryId" [formGroup]="EducationForm"
+                                        <airmid-dropdown
+                                            label="Country"
+                                            formControlName="countryId"
+                                            (selectionChange)="getSelectedcountryObj($event)"
+                                            [value]="registerObj?.countryId"
+                                            [formGroup]="EducationForm"
                                             [validations]="getValidationMessages().countryId"
-                                            [mode]="autocompleteModecountry"> </airmid-dropdown>
+                                            [mode]="autocompleteModecountry"
+                                        ></airmid-dropdown>
                                     </div>
                                 </div>
-
-
                             </form>
-                        </div>
-                    </mat-card>
+                        </mat-expansion-panel>
+                    </mat-accordion>
                 </div>
             </div>
         </div>

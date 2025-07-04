@@ -998,7 +998,8 @@ if(this.doctorId > 0){
     // reset logic
   }
   //Education detail
-  onAddEducation(element) {
+  onAddEducation(event) {
+    event.stopPropagation();
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
     this.chargeeduList = []
@@ -1008,7 +1009,7 @@ if(this.doctorId > 0){
         maxWidth: "55vw",
         height: '55vh',
         width: '100%',
-        data: element
+        data: event
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
@@ -1026,7 +1027,8 @@ if(this.doctorId > 0){
   }
 
 
-  onAddExperience() {
+  onAddExperience(event) {
+    event.stopPropagation();
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
     this.chargeexpList = []
@@ -1057,7 +1059,8 @@ if(this.doctorId > 0){
 
   }
 
-  onAddSchdule() {
+  onAddSchdule(event) {
+    event.stopPropagation();
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
@@ -1137,7 +1140,8 @@ if(this.doctorId > 0){
   }
 
 
-  onAddCharges() {
+  onAddCharges(event) {
+    event.stopPropagation();
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
     this.chargechargesList = []
@@ -1163,7 +1167,8 @@ if(this.doctorId > 0){
 
   }
 
-  onAddLeave() {
+  onAddLeave(event) {
+    event.stopPropagation();
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
 

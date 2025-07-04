@@ -7,10 +7,8 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close" (click)="onClose()">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close" (click)="onClose()">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -21,250 +19,219 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <div fxLayout="column" class="gap-12">
-
-                <div class="modal-card-container">
-                    <mat-card>
-
-                        <div fxLayout="column" class="gap-8">
-                            <div class="form-title mb-2 border-bottom pb-2">
-                                <span class="h3 font-weight-600">Schedule  Information</span>
+            <mat-accordion multi>
+                <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header class="accent">
+                        <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>Schedule Information</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="panel-content pt-12">
+                        <form [formGroup]="RadioForm" >
+                            <div class="radio-container">
+                                <mat-radio-group aria-label="Select an option" formControlName="schRadio" name="regRadio" (change)="onChangeSch($event)">
+                                    <mat-radio-button value="adhoc">Ad-hoc Availability</mat-radio-button>
+                                    <mat-radio-button value="Sch">Schdule</mat-radio-button>
+                                </mat-radio-group>
                             </div>
-                            <form [formGroup]="RadioForm" style="border: blue">
-                                <div class="radio-container">
-                                    <mat-radio-group aria-label="Select an option" formControlName="schRadio"
-                                        name="regRadio" (change)="onChangeSch($event)">
-                                        <mat-radio-button value="adhoc">Ad-hoc
-                                            Availability</mat-radio-button>
-                                        <mat-radio-button value="Sch">Schdule</mat-radio-button>
-                                    </mat-radio-group>
+                        </form>
+                        <form [formGroup]="DrschduleForm" class="mt-12">
+                            <div *ngIf="schstatus">
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                    <div fxFlex="30" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field class="full-width" appearance="outline">
+                                            <mat-label>Select Days</mat-label>
+                                            <mat-select [formControl]="days" multiple (selectionChange)="onDaySelectionChange()">
+                                                <mat-option *ngFor="let day of allDays" [value]="day">{{ day }}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="70" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-chip-listbox #chipList>
+                                            <mat-chip *ngFor="let day of selectedDays" style="background-color: rgb(81, 243, 243)">
+                                                {{ day }}
+                                                <mat-icon>close</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-listbox>
+                                    </div>
                                 </div>
-                            </form>
-                            <form [formGroup]="DrschduleForm" style="border: blue">
-                                <div *ngIf="schstatus">
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
+                                        <!-- <mat-form-field appearance="outline" class="timeField">
+                                            <mat-label>Start Time</mat-label>
+                                            <input matTimepicker #t="matTimepicker" mode="12h"
+                                                style="width: 60%;font-weight: bold;font-size: large;"
+                                                formControlName="startTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field> -->
 
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="30" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
-                                            <mat-form-field class="full-width" appearance="outline">
-                                                <mat-label>Select Days</mat-label>
-                                                <mat-select [formControl]="days" multiple
-                                                    (selectionChange)="onDaySelectionChange()">
-                                                    <mat-option *ngFor="let day of allDays" [value]="day">{{ day
-                                                        }}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-
-                                        </div>
-
-
-                                        <div fxFlex="70" fxFlex.xs="100" fxFlex.sm="33"
-                                            style="margin-left: 20px;color: blue;">
-                                            <mat-chip-listbox #chipList>
-                                                <mat-chip *ngFor="let day of selectedDays"
-                                                    style="background-color: rgb(81, 243, 243);">
-                                                    {{ day }} <mat-icon>close</mat-icon>
-                                                </mat-chip>
-                                            </mat-chip-listbox>
-
-
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style=" margin-left: 20px;margin-right: 20px;">
-                                            <!-- <mat-form-field appearance="outline" class="timeField">
-                                                <mat-label>Start Time</mat-label>
-                                                <input matTimepicker #t="matTimepicker" mode="12h"
-                                                    style="width: 60%;font-weight: bold;font-size: large;"
-                                                    formControlName="startTime" (timeChange)="onChangeTime($event)"
-                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                                <mat-icon matSuffix
-                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                            </mat-form-field> -->
-
-                                             <mat-form-field appearance="fill">
-                                                <mat-label>Start Time</mat-label>
-                                                <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style="margin-left: 20px;margin-right: 20px;">
-                                            <!-- <mat-form-field appearance="outline" class="timeField">
-                                                <mat-label>End Time</mat-label>
-                                                <input matTimepicker #t1="matTimepicker" mode="12h"
-                                                    style="width: 60%;font-weight: bold;font-size: large;"
-                                                    formControlName="endTime" (timeChange)="onChangeTime($event)"
-                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                                <mat-icon matSuffix
-                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                            </mat-form-field> -->
-
-                                              <mat-form-field appearance="fill">
-                                                <mat-label>To Time</mat-label>
-                                                <input matInput type="time" formControlName="endTime"  (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
-                                            <!-- <airmid-textbox label="Slot" formControlName="slot" [type]="'number'"
-                                                [formGroup]="DrschduleForm">
-                                            </airmid-textbox> -->
-
-                                            <airmid-textbox label="slot" formControlName="slot"
-                                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="DrschduleForm"
-                                                [maxLength]="2"></airmid-textbox>
-
-                                        </div>
-
-
+                                        <mat-form-field appearance="fill" fxFlex class="w-100-p">
+                                            <mat-label>Start Time</mat-label>
+                                            <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)" />
+                                        </mat-form-field>
                                     </div>
 
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
+                                        <!-- <mat-form-field appearance="outline" class="timeField">
+                                            <mat-label>End Time</mat-label>
+                                            <input matTimepicker #t1="matTimepicker" mode="12h"
+                                                style="width: 60%;font-weight: bold;font-size: large;"
+                                                formControlName="endTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="fill" fxFlex class="w-100-p">
+                                            <mat-label>To Time</mat-label>
+                                            <input matInput type="time" formControlName="endTime" (timeChange)="onChangeTime($event)" />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33" >
+                                        <!-- <airmid-textbox label="Slot" formControlName="slot" [type]="'number'"
+                                            [formGroup]="DrschduleForm">
+                                        </airmid-textbox> -->
+
+                                        <airmid-textbox fxFlex class="w-100-p" label="slot" formControlName="slot" (keypress)="keyPressAlphanumeric($event)" [formGroup]="DrschduleForm" [maxLength]="2"></airmid-textbox>
+                                    </div>
                                 </div>
-                            </form>
-     <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                            </div>
+                        </form>
+                        <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
 
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>From Time</mat-label>
-                                                <input matInput type="time" formControlName="fromTime">
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-
-                                            <mat-form-field appearance="fill">
-                                                <mat-label>To Time</mat-label>
-                                                <input matInput type="time" formControlName="toTime">
-                                            </mat-form-field>
-                                        </div> -->
-                            <div *ngIf="!schstatus">
-                                <form [formGroup]="DrAdhocschduleForm" style="border: blue">
-
-                                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style=" margin-left: 10px;margin-right: 10px;">
-                                            <!-- <mat-form-field appearance="outline" class="timeField">
-                                                <mat-label>Start Time</mat-label>
-                                                <input matTimepicker #t="matTimepicker" mode="12h"
-                                                    style="width: 60%;font-weight: bold;font-size: large;"
-                                                    formControlName="startTime" (timeChange)="onChangeTime($event)"
-                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                                <mat-icon matSuffix
-                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                            </mat-form-field> -->
-
-                                             <mat-form-field appearance="fill">
-                                                <mat-label>Start Time</mat-label>
-                                                <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style="margin-left: 20px;margin-right: 20px;">
-                                            <!-- <mat-form-field appearance="outline" class="timeField">
-                                                <mat-label>End Time</mat-label>
-                                                <input matTimepicker #t="matTimepicker" mode="12h"
-                                                    style="width: 60%;font-weight: bold;font-size: large;"
-                                                    formControlName="endTime" (timeChange)="onChangeTime($event)"
-                                                    [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                                <mat-icon matSuffix
-                                                    (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                            </mat-form-field> -->
-
-                                              <mat-form-field appearance="fill">
-                                                <mat-label>To Time</mat-label>
-                                                <input matInput type="time" formControlName="endTime"  (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
-                                        </div>
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
-                                          <airmid-textbox  label="slot" formControlName="slot" (keypress)="keyPressAlphanumeric($event)"  [formGroup]="DrAdhocschduleForm"  [maxLength]="2" ></airmid-textbox>
-
-                                        </div>
-
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>From Time</mat-label>
+                                            <input matInput type="time" formControlName="fromTime">
+                                        </mat-form-field>
                                     </div>
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
 
-
-                                    <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style="margin-left: 20px;margin-right: 20px;">
-                                            <label>Start Time:</label>
-                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-
-                                                <div fxLayout="column" style="align-items: center;">
-                                                    <button (click)="increment('start', 'hour')">▲</button>
-                                                    <input type="text" [value]="formatHour(startHour)" readonly
-                                                         style="width: 40%;">
-                                                    <button (click)="decrement('start', 'hour')">▼</button>
-                                                </div>
-
-                                                <span style="font-size: 20px;">:</span>
-
-                                                <div fxLayout="column" style="align-items: center;">
-                                                    <button (click)="increment('start', 'minute')">▲</button>
-                                                    <input type="text" [value]="formatMinute(startMinute)" readonly>
-                                                    <button (click)="decrement('start', 'minute')">▼</button>
-                                                </div>
-                                               
-                                                <button class="ampm-btn"
-                                                    (click)="toggleMeridian('start')">{{startMeridian }}</button>
-
-
-                                            </div>
-                                        </div>
-
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
-                                            style="margin-left: 20px;margin-right: 20px;">
-                                            <label>End Time:</label>
-                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-
-                                                <div fxLayout="column" style="align-items: center;">
-                                                    <button (click)="increment('end', 'hour')">▲</button>
-                                                    <input type="text" [value]="formatHour(endHour)" readonly>
-                                                    <button (click)="decrement('end', 'hour')">▼</button>
-                                                </div>
-
-
-                                                <span style="font-size: 20px;">:</span>
-
-                                                <div fxLayout="column" style="align-items: center;">
-                                                    <button (click)="increment('end', 'minute')">▲</button>
-                                                    <input type="text" [value]="formatMinute(endMinute)" readonly>
-                                                    <button (click)="decrement('end', 'minute')">▼</button>
-                                                </div>
-                                               
-                                                <button class="ampm-btn" (click)="toggleMeridian('end')">{{ endMeridian}}</button>
-                                            </div>
-                                        </div>
-
-                                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
-                                            <airmid-textbox label="Slot" formControlName="slot"
-                                                [formGroup]="DrAdhocschduleForm">
-                                            </airmid-textbox>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <span style="font-size: large;color: rgb(3, 56, 92);"> Selected Start
-                                            Time:</span> <input name="startTime" formControlName="startTime"
-                                            [(ngModel)]="finalStarttime" style="width: 20%;font-weight: bold;">
-
-                                        <span style="font-size: large;color: rgb(3, 56, 92);">Selected End Time :</span>
-                                        <input name="endTime" formControlName="endTime" [(ngModel)]="finalEndtime"
-                                            style="width: 20%;font-weight: bold;">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>To Time</mat-label>
+                                            <input matInput type="time" formControlName="toTime">
+                                        </mat-form-field>
                                     </div> -->
-                                </form>
+                        <div *ngIf="!schstatus">
+                            <form [formGroup]="DrAdhocschduleForm">
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33" >
+                                        <!-- <mat-form-field appearance="outline" class="timeField">
+                                            <mat-label>Start Time</mat-label>
+                                            <input matTimepicker #t="matTimepicker" mode="12h"
+                                                style="width: 60%;font-weight: bold;font-size: large;"
+                                                formControlName="startTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field> -->
 
-                            </div>
+                                        <mat-form-field appearance="fill" fxFlex>
+                                            <mat-label>Start Time</mat-label>
+                                            <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)" />
+                                        </mat-form-field>
+                                    </div>
 
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33" >
+                                        <!-- <mat-form-field appearance="outline" class="timeField">
+                                            <mat-label>End Time</mat-label>
+                                            <input matTimepicker #t="matTimepicker" mode="12h"
+                                                style="width: 60%;font-weight: bold;font-size: large;"
+                                                formControlName="endTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field> -->
+
+                                        <mat-form-field appearance="fill" fxFlex>
+                                            <mat-label>To Time</mat-label>
+                                            <input matInput type="time" formControlName="endTime" (timeChange)="onChangeTime($event)" />
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33" >
+                                        <airmid-textbox fxFlex label="slot" formControlName="slot" (keypress)="keyPressAlphanumeric($event)" [formGroup]="DrAdhocschduleForm" [maxLength]="2"></airmid-textbox>
+                                    </div>
+                                </div>
+
+                                <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                        style="margin-left: 20px;margin-right: 20px;">
+                                        <label>Start Time:</label>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+
+                                            <div fxLayout="column" style="align-items: center;">
+                                                <button (click)="increment('start', 'hour')">▲</button>
+                                                <input type="text" [value]="formatHour(startHour)" readonly
+                                                     style="width: 40%;">
+                                                <button (click)="decrement('start', 'hour')">▼</button>
+                                            </div>
+
+                                            <span style="font-size: 20px;">:</span>
+
+                                            <div fxLayout="column" style="align-items: center;">
+                                                <button (click)="increment('start', 'minute')">▲</button>
+                                                <input type="text" [value]="formatMinute(startMinute)" readonly>
+                                                <button (click)="decrement('start', 'minute')">▼</button>
+                                            </div>
+                                           
+                                            <button class="ampm-btn"
+                                                (click)="toggleMeridian('start')">{{startMeridian }}</button>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33"
+                                        style="margin-left: 20px;margin-right: 20px;">
+                                        <label>End Time:</label>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+
+                                            <div fxLayout="column" style="align-items: center;">
+                                                <button (click)="increment('end', 'hour')">▲</button>
+                                                <input type="text" [value]="formatHour(endHour)" readonly>
+                                                <button (click)="decrement('end', 'hour')">▼</button>
+                                            </div>
+
+
+                                            <span style="font-size: 20px;">:</span>
+
+                                            <div fxLayout="column" style="align-items: center;">
+                                                <button (click)="increment('end', 'minute')">▲</button>
+                                                <input type="text" [value]="formatMinute(endMinute)" readonly>
+                                                <button (click)="decrement('end', 'minute')">▼</button>
+                                            </div>
+                                           
+                                            <button class="ampm-btn" (click)="toggleMeridian('end')">{{ endMeridian}}</button>
+                                        </div>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33" style="margin-left: 20px;">
+                                        <airmid-textbox label="Slot" formControlName="slot"
+                                            [formGroup]="DrAdhocschduleForm">
+                                        </airmid-textbox>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span style="font-size: large;color: rgb(3, 56, 92);"> Selected Start
+                                        Time:</span> <input name="startTime" formControlName="startTime"
+                                        [(ngModel)]="finalStarttime" style="width: 20%;font-weight: bold;">
+
+                                    <span style="font-size: large;color: rgb(3, 56, 92);">Selected End Time :</span>
+                                    <input name="endTime" formControlName="endTime" [(ngModel)]="finalEndtime"
+                                        style="width: 20%;font-weight: bold;">
+                                </div> -->
+                            </form>
                         </div>
-                    </mat-card>
-                </div>
-            </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </div>
 
