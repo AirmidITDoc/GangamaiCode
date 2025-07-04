@@ -38,6 +38,13 @@ export class ServiceMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
+            TariffName: ["",
+                [
+                    Validators.required,
+                   // Validators.pattern("^[A-Za-z0-9 ]+$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]
+            ],
             Price: [0],
             IsEditable: ["0"],
             CreditedtoDoctor: ["0"],
@@ -105,7 +112,7 @@ export class ServiceMasterService {
     }
 
     public SavePackagedet(param) {
-        return this._httpClient.PostData("Administration/PackageDetailsInsert", param);
+        return this._httpClient.PostData("BillingService/PackageDetailsInsert", param);
     }
 
     public getClassMasterList(param) {

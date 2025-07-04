@@ -43,6 +43,9 @@ export class ServiceMasterComponent implements OnInit {
           @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
 
           allColumns=[
+            { heading: "IsPackage", key: "isPackage", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template, 
+                template: this.iconisPackage  // Assign ng-template to the column
+             },
             { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
             { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -54,15 +57,12 @@ export class ServiceMasterComponent implements OnInit {
             { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
             { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
             { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsPackage", key: "isPackage", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template, 
-                template: this.iconisPackage  // Assign ng-template to the column
-             },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
             {
                 heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                            this.onNew(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -73,7 +73,7 @@ export class ServiceMasterComponent implements OnInit {
                             });
                         }
                     }]
-            } //Action 1-view, 2-Edit,3-delete
+            } 
         ]
 
         allFilters=[
@@ -92,7 +92,6 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     Clearfilter(event) {
-        debugger
         console.log(event)
         if (event == 'ServiceNameSearch')
             this._serviceMasterService.myformSearch.get('ServiceNameSearch').setValue("")
@@ -101,16 +100,12 @@ export class ServiceMasterComponent implements OnInit {
       }
       
     onChangeFirst() {
-        debugger
         this.serviceName = this._serviceMasterService.myformSearch.get('ServiceNameSearch').value + "%"
         this.type = this._serviceMasterService.myformSearch.get('IsDeletedSearch').value
-        // this.groupId="0"
-        // this.tariffId="0"
         this.getfilterdata();
     }
 
     getfilterdata(){
-        debugger
         this.gridConfig = {
             apiUrl: "BillingService/BillingList",
             columnsList:this.allColumns , 
@@ -137,29 +132,8 @@ export class ServiceMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
-    onSearch() {
 
-    }
-
-    onSearchClear() {
-        this._serviceMasterService.myformSearch.reset({
-            ServiceNameSearch: "",
-            IsDeletedSearch: "2",
-        });
-    }
-
-    get f() {
-        return this._serviceMasterService.myform.controls;
-    }
-
-    onClear() {
-        this._serviceMasterService.myform.reset({ IsDeleted: "false" });
-        this._serviceMasterService.initializeFormGroup();
-    }
-
-    ListView2(value) {
-        debugger
-        console.log(value)
+    groupSelection(value) {
          if(value.value!==0)
             this.groupId=value.value
         else
@@ -168,9 +142,7 @@ export class ServiceMasterComponent implements OnInit {
         this.onChangeFirst();
     }
 
-    ListView1(value) {
-        debugger
-        console.log(value)
+    tariffSelection(value) {
          if(value.value!==0)
             this.tariffId=value.value
         else
@@ -179,14 +151,14 @@ export class ServiceMasterComponent implements OnInit {
         this.onChangeFirst();
     }
 
-    onSave(row: any = null) {
+    onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
         const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
             {
                 maxWidth: "95vw",
+                maxHeight: '95vh',
                 height: '95%',
                 width: '70%',
                 data: row
@@ -207,7 +179,8 @@ export class ServiceMasterComponent implements OnInit {
                 maxWidth: "50vw",
                 maxHeight: '50%',
                 width: '70%',
-                data: row
+                // data: row
+                data: { context: 'edit', row }
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -216,7 +189,7 @@ export class ServiceMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
-    EditpackageComponent
+    // EditpackageComponent
 
     onPackageEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -234,26 +207,8 @@ export class ServiceMasterComponent implements OnInit {
             if (result) {
                 that.grid.bindGridData();
             }
-            console.log('The dialog was closed - Action', result);
         });
     }
-
-    getValidationtariffMessages() {
-        return {
-            TariffId: [
-                { name: "required", Message: "Tariff Name is required" }
-            ]
-        };
-    }
-
-    getValidationgroupMessages() {
-        return {
-            GroupId: [
-                { name: "required", Message: "Group Name is required" }
-            ]
-        };
-    }
-
 }
 
 export class ServiceMaster {

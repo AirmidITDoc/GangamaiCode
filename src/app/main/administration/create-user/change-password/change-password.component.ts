@@ -27,6 +27,8 @@ export class ChangePasswordComponent implements OnInit {
   hide = true;
   UserId: any;
   passrule: boolean = false;
+  hidePassword = true;
+hideConfirmPassword = true;
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     private accountService: AuthenticationService,
@@ -69,13 +71,14 @@ export class ChangePasswordComponent implements OnInit {
   changepassflag() {
     this.passrule = false;
   }
+  passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/;
 
   createchangePasswordForm() {
     return this.formBuilder.group({
       userId: this.accountService.currentUserValue.userId,
       userName: this.accountService.currentUserValue.userName,
-      password: ['', Validators.required],
-      confirmpassword: ['']
+      password: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(15),Validators.pattern(this.passwordPattern)]],
+      confirmpassword: ['',[Validators.minLength(8),Validators.maxLength(15)]]
     }, { validators: this.passwordMatchValidator }
     );
   }

@@ -13,7 +13,7 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onTariff()">+ New Tariff
             </button>
-            <button mat-raised-button (click)="onSave()">+ New Service
+            <button mat-raised-button (click)="onNew()">+ New Service
             </button>
         </div>
     </div>
@@ -72,14 +72,12 @@
 
                     <airmid-dropdown label="Tariff Name" formControlName="TariffId"
                         [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        [mode]="autocompleteModetariff" (selectionChange)="ListView1($event)"
-                        (keyup)="ListView1($event)">
+                        [mode]="autocompleteModetariff" (selectionChange)="tariffSelection($event)">
                     </airmid-dropdown>
 
                     <airmid-dropdown label="Group Name" formControlName="GroupId"
                         [formGroup]="_serviceMasterService.myformSearch" [(ngModel)]="gridConfig.filters[2].fieldValue"
-                        [mode]="autocompleteModegroupName" (selectionChange)="ListView2($event)"
-                        (keyup)="ListView2($event)">
+                        [mode]="autocompleteModegroupName" (selectionChange)="groupSelection($event)">
                     </airmid-dropdown>
 
                     <mat-form-field appearance="outline" fxFlex>
