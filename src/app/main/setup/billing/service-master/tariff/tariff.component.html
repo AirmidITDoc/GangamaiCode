@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container" *ngIf="!hideSomeFields">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -57,4 +57,51 @@
             </form>
         </div>
     </div>
+</div>
+
+<!-- saving tariff for all other tariff -->
+<div class="modal-wrapper grid-container" *ngIf="hideSomeFields">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Tariff</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+  <div class="modal-body-container">
+    <form [formGroup]="serviceForm">
+      <div fxLayout="column" fxLayoutGap="16px">
+        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+          <airmid-dropdown 
+            label="New Tariff Name" 
+            formControlName="newTariffId"
+            [formGroup]="serviceForm"
+            [validations]="getValidationMessages().tariffId"
+            [mode]="autocompleteModeName2">
+          </airmid-dropdown>
+        </div>
+
+        <!-- Buttons aligned to the right and placed below -->
+        <div fxLayout="row" fxLayoutAlign="end center" class="button-actions mt-16">
+          <button class="btn btn-danger-outline">Close</button>
+          <button class="btn btn-primary ml-8" color="accent" (click)="onSubmitTariff()">
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+    
 </div>
