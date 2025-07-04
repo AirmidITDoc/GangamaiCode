@@ -256,20 +256,20 @@
                                         </mat-checkbox>
 
                                         <div *ngIf="showEmg" class="emg-amt-input w-100-p gap-8">
-                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-form-field appearance="outline" fxFlex="15%">
                                                 <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="emgAmt" matInput />
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-form-field appearance="outline" fxFlex="15%">
                                                 <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="emgPer" matInput />
                                             </mat-form-field>
 
-                                             <mat-form-field appearance="outline" fxFlex="20%">
+                                             <mat-form-field appearance="outline" fxFlex="15%">
                                                 <mat-label>Start Time</mat-label>
                                                 <input matInput type="time" formControlName="startTime" (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
 
-                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-form-field appearance="outline" fxFlex="15%">
                                                 <mat-label>End Time</mat-label>
                                                 <input matInput type="time" formControlName="endTime" (timeChange)="onChangeTime($event)">
                                             </mat-form-field>
