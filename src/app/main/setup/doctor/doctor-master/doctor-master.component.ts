@@ -205,12 +205,11 @@ export class DoctorMasterComponent implements OnInit {
 
   onEdit(row) {
     console.log(row)
-    // this._doctorService.populateForm(row);
     const dialogRef = this._matDialog.open(
       NewDoctorComponent,
       {
         maxWidth: "95vw",
-        maxHeight: "100vh",
+        maxHeight: "94vh",
         width: "100%",
         data: row
       }

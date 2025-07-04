@@ -28,9 +28,9 @@ leaveForm: FormGroup;
       endDate: ['', [Validators.required]],
       // fromTime: [''],
       // toTime: [''],
-      // reason:  [''],
+      reason:  [''],
       leaveTypeId:["0"],
-      leavetype:[''],
+      leaveType:[''],
       leaveOptionName: [""],
        leaveOption: ["0"]
     });
@@ -40,8 +40,9 @@ leaveForm: FormGroup;
    onSubmit(){
     this.leaveForm.get("startDate").setValue(this.datePipe.transform(this.leaveForm.get('startDate').value, "yyyy-MM-dd") || "01/01/1900")
     this.leaveForm.get("endDate").setValue(this.datePipe.transform(this.leaveForm.get('endDate').value, "yyyy-MM-dd") || "01/01/1900")
-   this.leaveForm.get("leavetype").setValue(this.leave)
+   this.leaveForm.get("leaveType").setValue(this.leave)
   this.leaveForm.get("leaveTypeId").setValue(this.leaveId)
+//  this.leaveForm.get("leaveOption").setValue(this.leaveId)
 
 
     if(this.leaveForm.get("leaveOption").value==0)

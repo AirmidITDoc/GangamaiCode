@@ -10,7 +10,8 @@ import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { HospitalMaster } from '../hospital-master.component';
 import { HospitalService } from '../hospital.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-hospital',
@@ -31,11 +32,26 @@ export class NewHospitalComponent implements OnInit {
   vCityId: any;
   HospitalId = 0;
   HospitalHeader: any = '';
+
+    autocompleteOPDBillingCounterId: string = "CashCounter";
+    autocompleteOPDReceiptCounterId: string = "CashCounter";
+    autocompleteOPDRefundBillCounterId: string = "CashCounter";
+    autocompleteOPDRefundBillReceiptCounterId: string = "CashCounter";
+    autocompleteOPDAdvanceCounterId: string = "CashCounter";
+    autocompleteOPDRefundAdvanceCounterId: string = "CashCounter";
+
+    autocompleteIPDAdvanceCounterId: string = "CashCounter";
+    autocompleteIPDBillingCounterId: string = "CashCounter";
+    autocompleteIPDReceiptCounterId: string = "CashCounter";
+    autocompleteIPDRefundofBillCounterId: string = "CashCounter";
+ autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
+autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
+
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
+    height: '36rem',
+    minHeight: '36rem',
     translate: 'yes',
     placeholder: 'Enter text here...',
     enableToolbar: true,
@@ -51,7 +67,9 @@ export class NewHospitalComponent implements OnInit {
   constructor(public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
     private reportDownloadService: ExcelDownloadService,
+    private _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewHospitalComponent>,
     private _fuseSidebarService: FuseSidebarService,) { }
@@ -69,12 +87,64 @@ export class NewHospitalComponent implements OnInit {
 
   }
 
+  //  createHospitalForm(): FormGroup {
+  //     return this._formBuilder.group({
+  //       HospitalId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+  //       HospitalName: ["",[ this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
+                  
+  //                     Validators.required,
+  //                     Validators.pattern('^[a-zA-Z0-9 ]*$')
+  //                 ]
+  //             ],
+  //       HospitalAddress:["",[ this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
+  //                 [
+  //                     Validators.required,
+  //                     Validators.pattern('^[a-zA-Z0-9 ]*$')
+  //                 ]
+  //             ]],
+  //       City:["",
+  //                       [
+  //                           Validators.required,
+  //                           Validators.pattern('^[a-zA-Z0-9 ]*$')
+  //                       ]
+  //                   ],
+  //       // CityId: [""],
+  //       Pin: ["", Validators.pattern("[0-9]{7}")],
+  //       Phone:['', [Validators.required,
+  //             Validators.minLength(10),
+  //             Validators.maxLength(10),
+  //             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+  //             this._FormvalidationserviceService.onlyNumberValidator()
+  //             ]],
+  //       Email: [""],
+  //       website: [""],
+      
+  //       // HospitalHeader: [""]
+  //       header:[""],
+  //       IsActive:1,
+  
+  // opdBillingCounterId:'',//[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // opdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // opdRefundBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // opdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdRefundOfBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+  // ipdRefundOfAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+  //     });
+  //   }
+
   onSubmit() {
     let hospitalarr = [];
     debugger
-    if (this.HospitalForm.valid) {
+     console.log(this.HospitalForm.value)
+    if (!this.HospitalForm.invalid) {
        console.log(this.HospitalForm.valid)
-      console.log(this.HospitalForm.value)
+     
       this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
          this.onClear(true);
 
@@ -100,6 +170,17 @@ export class NewHospitalComponent implements OnInit {
 
     this._matDialog.closeAll();
   }
+
+  
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
   getValidationMessages() {
     return {

@@ -100,13 +100,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     'leaveOptionName',
     'startDate',
     'endDate',
-    // 'reason',
+    'reason',
     'action'
 
   ];
 
   displayedColumnsSignImg = [
-     'page',
+    'page',
     'DocumentName',
     'action'
 
@@ -139,7 +139,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
   @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
+  @ViewChild('ddlsignpage') ddlsignpage: AirmidDropDownComponent;
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+
   registerObj = new DoctorMaster({});
   signature: any;
   visConsultant = true;
@@ -188,8 +190,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.myForm = this.createdDoctormasterForm();
     this.myForm.markAllAsTouched();
-  this.signatureForm = this.createSignatureForm();
-  
+    this.signatureForm = this.createSignatureForm();
+
     if ((this.data?.doctorId ?? 0) > 0) {
       this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
         this.registerObj = response;
@@ -211,11 +213,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       });
 
 
+
+
       this.getdrschduleList()
       this.getDrExperienceList()
       this.getDrEducationList()
       this.getDrchargesList()
       this.getDrleaveList()
+      this.getSIgnpagelist(this.registerObj);
     }
     else {
       this.myForm.reset();
@@ -391,8 +396,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       docSchedId: [item.docSchedId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       scheduleDays: [item.scheduleDays || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      startTime:[item.startTime ],// [this.datePipe.transform(item.startTime, 'HH:mm:ss')],//item.startTime,//
-      endTime:[item.endTime],// [this.datePipe.transform(item.endTime, 'HH:mm:ss')],//item.endTime,// 
+      startTime: [item.startTime],// [this.datePipe.transform(item.startTime, 'HH:mm:ss')],//item.startTime,//
+      endTime: [item.endTime],// [this.datePipe.transform(item.endTime, 'HH:mm:ss')],//item.endTime,// 
       slot: [parseInt(item.slot), [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
@@ -423,17 +428,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       startDate: [item.startDate],
       endDate: [item.endDate],
       leaveOption: [parseInt(item.leaveOption), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // reason: [item.reason, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      reason: [item.reason, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     });
   }
 
   // Signature
-    createsignature(item: any = {}): FormGroup {
+  createsignature(item: any = {}): FormGroup {
     return this.formBuilder.group({
       docSignId: [item.docSignId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pageId: [parseInt(item.pageId), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      page:['']
+      page: ['']
     });
   }
   createSignatureForm() {
@@ -441,8 +446,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       docSignId: [''],
       doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pageId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      signature:[''],
-      page:['']
+      signature: [''],
+      page: ['']
     });
   }
 
@@ -479,7 +484,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
   }
 
+  removesignpage(item) {
+    let removedIndex = this.signatureForm.value.pageId.findIndex(x => x.constantId == item.constantId);
+    this.signatureForm.value.pageId.splice(removedIndex, 1);
+    this.ddlsignpage.SetSelection(this.signatureForm.value.pageId.map(x => x.constantId));
+  }
 
+  pagelist
   onSubmit() {
 
 
@@ -518,7 +529,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.ChargesDetailsArray.push(this.createChargesDetail(item));
       });
     }
-debugger
+    debugger
     // leave table detail assign to array
     this.leaveDetailsArray.clear();
     if (this.dataSourcedrleave.data.length > 0) {
@@ -528,7 +539,32 @@ debugger
       });
     }
 
-    // sign table detail assign to array
+    //signpage array
+    console.log(this.signatureForm.value)
+    
+    let charge = []
+    charge = this.signatureForm.get("pageId").value
+
+    debugger
+    if (charge.length > 0) {
+      if (this.dataSourceSchdule.data.length > 0) {
+        this.chargesignList = []
+        this.chargesignList = this.dataSourcedrsign.data
+      }
+      if (charge.length > 0) {
+        charge.forEach(item => {
+          const newRow = {
+            docSignId: 0,
+            doctorId: 0,
+            pageId: item.constantId
+          }
+          this.chargesignList.push(newRow);
+          this.dataSourcedrsign.data = this.chargesignList
+          console.log(this.chargesignList)
+        });
+      }
+    }
+
     this.signatureDetailsArray.clear();
     if (this.dataSourcedrsign.data.length > 0) {
       this.dataSourcedrsign.data.forEach(item => {
@@ -545,7 +581,7 @@ debugger
       data.IsInHouseDoctor = false
       data.IsOnCallDoctor = false
       data.IsActive = true
-    
+
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
       data.Signature = this.signature;
@@ -730,7 +766,7 @@ debugger
   // onChangeJob(event) { }
 
   ///Leave code
- 
+
 
   // // toggleTime(isFullDay: boolean) {
   // //   if (isFullDay) {
@@ -1081,8 +1117,8 @@ debugger
     // console.log(this.dataSourceSchdule.data)
   }
 
-pageId:any;
-page:any;
+  pageId: any;
+  page: any;
   getSelectedqpageObj(obj) {
     console.log(obj)
     this.pageId = obj.value;
@@ -1090,13 +1126,13 @@ page:any;
 
   }
 
-  
+
   onAddImage() {
     console.log(this.signatureForm.value)
 
     this.signatureForm.get("signature").setValue(this.signature)
-     this.signatureForm.get("pageId").setValue(this.pageId)
-     this.signatureForm.get("page").setValue(this.page)
+    this.signatureForm.get("pageId").setValue(this.pageId)
+    this.signatureForm.get("page").setValue(this.page)
 
 
     if (!this.signatureForm.invalid) {
@@ -1164,12 +1200,63 @@ page:any;
     });
 
   }
- addpagelist: any = [];
+  addpagelist: any = [];
   selectChangeExamination(selectedChips: string[]) {
-      // this.addpagelist = selectedChips;
-      // this.myForm.get('pageId')?.setValue(this.addpagelist);
+    // this.addpagelist = selectedChips;
+    // this.myForm.get('pageId')?.setValue(this.addpagelist);
+  }
+ signpagelist: any[] = [];
+
+  getSIgnpagelist(obj) {
+    
+    var D_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "DoctorId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DoctorId",
+          "fieldValue": "70393",//obj.DoctorId
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
-  
+    this._doctorService.getsignpageById(D_data).subscribe(data => {
+       console.log(data)
+      this.signpagelist = data?.data || [];
+      this.ddlsignpage.SetSelection(data.data);
+      console.log(data)
+      // const grouped = {};
+
+      // for (let item of this.patientDiagnosis) {
+      //   const visitId = item.visitId;
+
+      //   if (!grouped[visitId]) {
+      //     grouped[visitId] = {
+      //       visitId: visitId,
+      //       complaints: [],
+      //       diagnoses: [],
+      //       examinations: []
+      //     };
+      //   }
+
+      //   if (item.descriptionType === 'Complaint') grouped[visitId].complaints.push(item.descriptionName);
+      //   else if (item.descriptionType === 'Diagnosis') grouped[visitId].diagnoses.push(item.descriptionName);
+      //   else if (item.descriptionType === 'Examination') grouped[visitId].examinations.push(item.descriptionName);
+      // }
+
+
+    });
+  }
+
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -1382,21 +1469,22 @@ export class DepartmenttList {
   }
 }
 
+
 export class SignDetail {
   docSignId: any;
   doctorId: any;
   pageId: any;
-  DocumentName: any;
-  page: any;
-  
+  // DocumentName: any;
+  // page: any;
+
 
   constructor(SignDetail) {
     this.docSignId = SignDetail.docSignId || 0;
     this.doctorId = SignDetail.doctorId || 0;
     this.pageId = SignDetail.pageId || 0;
-    this.DocumentName = SignDetail.DocumentName || '';
-    this.page = SignDetail.page || '';
-     
+    // this.DocumentName = SignDetail.DocumentName || '';
+    // this.page = SignDetail.page || '';
+
   }
 }
 

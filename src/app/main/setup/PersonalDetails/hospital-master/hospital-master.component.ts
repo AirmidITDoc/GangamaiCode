@@ -72,10 +72,9 @@ export class HospitalMasterComponent implements OnInit {
   onAdd() {
 
     const dialogRef = this._matDialog.open(NewHospitalComponent, {
-      maxWidth: "65vw",
-      maxHeight: "85vh",
-      width: "100%",
-      height: "100%",
+      maxWidth: "95vw",
+        maxHeight: "100vh",
+        width: "100%",
     });
     dialogRef.afterClosed().subscribe((result) => {
       console.log("The dialog was closed - Insert Action", result);
@@ -107,10 +106,9 @@ export class HospitalMasterComponent implements OnInit {
     let that = this;
     const dialogRef = this._matDialog.open(NewHospitalComponent,
       {
-        maxWidth: "65vw",
-        maxHeight: "85vh",
+         maxWidth: "95vw",
+        maxHeight: "100vh",
         width: "100%",
-        height: "100%",
         data: obj
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -129,7 +127,7 @@ export class HospitalMaster {
   CityId: any;
   pin: any;
   phone: any;
-  emailID: any;
+  emailId: any;
   webSiteInfo: any;
   header: any;
   isActive: any;
@@ -147,10 +145,10 @@ export class HospitalMaster {
       this.CityId = HospitalMaster.CityId || "";
       this.pin = HospitalMaster.pin || "";
       this.phone = HospitalMaster.phone || "";
-      this.emailID = HospitalMaster.emailID || "";
+      this.emailId = HospitalMaster.emailId || "";
       this.webSiteInfo = HospitalMaster.webSiteInfo || "";
       this.header = HospitalMaster.header || "";
-      this.isActive = HospitalMaster.isActive || 1;
+      this.isActive = HospitalMaster.isActive || true;
     }
   }
 }
