@@ -12,21 +12,19 @@ export class HospitalService {
   myformSearch: FormGroup;
   constructor(private _httpClient: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService,
     private _formBuilder: UntypedFormBuilder) {
-    // this.HospitalForm = this.createHospitalForm();
-    // this.myformSearch = this.createSearchForm();
-  }
+     }
 
 
   createHospitalForm(): FormGroup {
     return this._formBuilder.group({
-      HospitalId: [0],
-      hospitalHeaderLine:[""],
-      HospitalName: ["",
+      HospitalId:  [0],//[ this._FormvalidationserviceService.onlyNumberValidator()]],
+      hospitalHeaderLine:[" "],
+      HospitalName: [" ",
                 [
                     Validators.required,
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
-            ],
+       ],
       HospitalAddress:["",
                 [
                     Validators.required,
@@ -44,17 +42,14 @@ export class HospitalService {
       Phone:['', [Validators.required,
             Validators.minLength(10),
             Validators.maxLength(10),
-            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-            this._FormvalidationserviceService.onlyNumberValidator()
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
       emailId: [""],
       webSiteInfo: [""],
-    
-      // HospitalHeader: [""]
-      header:[""],
+      header:[" "],//, [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
       IsActive:true,
 
- opdBillingCounterId:'',//[0, this._FormvalidationserviceService.onlyNumberValidator()],
+ opdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
   opdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
   opdRefundBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
   opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
@@ -73,7 +68,7 @@ export class HospitalService {
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
       NameSearch: [""],
-      IsDeletedSearch: ["1"],
+      IsActive: ["1"],
     });
   }
 

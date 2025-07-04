@@ -9,7 +9,7 @@
             <div class="modal-header-right">
                 <div class="close-icon">
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close" (click)="onClose()">
+                        matTooltip="Close">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
@@ -18,260 +18,212 @@
     </div>
 
     <!-- Modal body -->
-    <div class="modal-body">
+    <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
 
-            <mat-tab-group class="mat-tab-header-small">
+            <mat-tab-group class="mat-tab-header-small" dynamicHeight>
                 <mat-tab label="Hospital Detail">
-                    <mat-accordion multi>
-                        <mat-expansion-panel expanded class="mt-12">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>Personal Details</mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                <div fxFlex.gt-sm="100%" fxFlex>
-                                    <mat-card>
-                                        <form [formGroup]="HospitalForm" fxLayout="column"
-                                            style="padding: 5px 5px 0px 5px;">
-                                            <input type="hidden" name="HospitalId" formControlName="HospitalId"
-                                                [(ngModel)]="HospitalId">
-                                            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                                                class="top-header accent heading-container h-40 border-radius-4">
-                                                <span
-                                                    style="font-size:15px; font-weight: bolder; color:white;padding:7px;">Hospital
-                                                    Details</span>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card class="py-8">
+                                <div fxLayout="column" fxLayoutGap="4px">
+                                    <div class="detail-container">
+                                        <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
+                                            <span class="title">Hospital Details</span>
+                                        </div>
+
+                                        <input type="hidden" name="HospitalId" formControlName="HospitalId"  [(ngModel)]="registerObj.hospitalId">
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="HospitalName" formControlName="HospitalName"
+                                                    [formGroup]="HospitalForm" [maxLength]="100"
+                                                    [(ngModel)]="registerObj.hospitalName"
+                                                    [validations]="getValidationMessages().HospitalName">
+                                                </airmid-textbox>
                                             </div>
 
-                                            <mat-card>
-
-                                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid"
-                                                    style="padding-top: 10px;">
-                                                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%"
-                                                        fxLayout="row wrap" fxLayoutGap="4px grid">
-
-                                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                            <airmid-textbox label="HospitalName"
-                                                                formControlName="HospitalName"
-                                                                [formGroup]="HospitalForm" [maxLength]="100"
-                                                                [(ngModel)]="registerObj.hospitalName"
-                                                                [validations]="getValidationMessages().HospitalName">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                              <airmid-textbox label="HospitalHeaderLine"
-                                                                formControlName="hospitalHeaderLine"
-                                                                [formGroup]="HospitalForm" [maxLength]="100">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="row" class="gap-8">
-
-                                                        <airmid-textbox label="HospitalAddress"
-                                                            [(ngModel)]="registerObj.hospitalAddress"
-                                                            formControlName="HospitalAddress" [formGroup]="HospitalForm"
-                                                            [maxLength]="100"
-                                                            [validations]="getValidationMessages().HospitalAddress">
-                                                        </airmid-textbox>
-
-                                                        <airmid-dropdown label="City" formControlName="City"
-                                                            [formGroup]="HospitalForm"
-                                                            [validations]="getValidationMessages().cityId"
-                                                            ValueField="cityName" TextField="cityName"
-                                                            ApiUrl="CityMaster/get-cities"></airmid-dropdown>
-
-
-                                                        <airmid-textbox label="Pin" formControlName="Pin" (keypress)="keyPressAlphanumeric($event)"
-                                                            [(ngModel)]="registerObj.pin" [formGroup]="HospitalForm"
-                                                            [maxLength]="7" [validations]="getValidationMessages().Pin">
-                                                        </airmid-textbox>
-
-                                                        <airmid-textbox label="Phone" formControlName="Phone"
-                                                            [formGroup]="HospitalForm" [maxLength]="10"  (keypress)="keyPressAlphanumeric($event)"
-                                                            [(ngModel)]="registerObj.phone"
-                                                            [validations]="getValidationMessages().Phone">
-                                                        </airmid-textbox>
-                                                    </div>
-                                                    <div fxLayout="row" class="gap-20">
-
-                                                     <airmid-textbox label="Email" formControlName="emailId"
-                                                            [formGroup]="HospitalForm" [(ngModel)]="registerObj.emailId"
-                                                            [validations]="getValidationMessages().Email">
-                                                        </airmid-textbox>
-                                                    </div>
-
-
-                                                    <div fxLayout="column" class="gap-8">
-                                                        <airmid-textbox label="website" formControlName="webSiteInfo"
-                                                            [formGroup]="HospitalForm"
-                                                            [(ngModel)]="registerObj.webSiteInfo"
-                                                            [validations]="getValidationMessages().website">
-                                                        </airmid-textbox>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </mat-card>
-                                        </form>
-
-                                    </mat-card>
-
-
-                                </div>
-                            </div>
-                        </mat-expansion-panel>
-
-                        <mat-expansion-panel expanded class="mt-12">
-                            <!-- <mat-expansion-panel-header>
-                                <mat-panel-title>OPD Cash Counter Details</mat-panel-title>
-                            </mat-expansion-panel-header> -->
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                <div fxFlex.gt-sm="100%" fxFlex>
-                                    <mat-card>
-                                        <form [formGroup]="HospitalForm" fxLayout="column"
-                                            style="padding: 5px 5px 0px 5px;">
-
-                                            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                                                class="top-header accent heading-container h-40 border-radius-4">
-                                                <span
-                                                    style="font-size:15px; font-weight: bolder; color:white;padding:7px;">OPD
-                                                    Cash Counter Detail
-                                                </span>
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="HospitalHeaderLine"  [(ngModel)]="registerObj.hospitalHeaderLine"
+                                                    formControlName="hospitalHeaderLine" [formGroup]="HospitalForm"
+                                                    [maxLength]="100">
+                                                </airmid-textbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-container">
+                                        <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
+                                            <span class="title">StoreNumber Details</span>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="HospitalAddress"
+                                                    [(ngModel)]="registerObj.hospitalAddress"
+                                                    formControlName="HospitalAddress" [formGroup]="HospitalForm"
+                                                    [maxLength]="100"
+                                                    [validations]="getValidationMessages().HospitalAddress">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="City" formControlName="City"
+                                                    [formGroup]="HospitalForm"
+                                                    [validations]="getValidationMessages().cityId" ValueField="cityName"
+                                                    TextField="cityName"
+                                                    ApiUrl="CityMaster/get-cities"></airmid-dropdown>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Pin" formControlName="Pin"
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                    [(ngModel)]="registerObj.pin" [formGroup]="HospitalForm"
+                                                    [maxLength]="7" [validations]="getValidationMessages().Pin">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Phone" formControlName="Phone"
+                                                    [formGroup]="HospitalForm" [maxLength]="10"
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                    [(ngModel)]="registerObj.phone"
+                                                    [validations]="getValidationMessages().Phone">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Email" formControlName="emailId"
+                                                    [formGroup]="HospitalForm" [(ngModel)]="registerObj.emailId"
+                                                    [validations]="getValidationMessages().Email">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="website" formControlName="webSiteInfo"
+                                                    [formGroup]="HospitalForm" [(ngModel)]="registerObj.webSiteInfo"
+                                                    [validations]="getValidationMessages().website">
+                                                </airmid-textbox>
                                             </div>
 
-                                            <mat-card>
-                                                <div fxLayout="column" class="gap-12" style="padding: 10px;">
+                                        </div>
+                                    </div>
+                                    <div class="detail-container">
 
-                                                    <div fxLayout="row" class="gap-12">
-                                                        <!-- [value]="registerObj?.doctorId" -->
-                                                        <airmid-dropdown label="OPD_Billing_CounterId" fxFlex
-                                                            formControlName="opdBillingCounterId"
-                                                            [mode]="autocompleteOPDBillingCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
+                                        <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
+                                            <span class="title">OPD Cash Counter Details</span>
+                                        </div>
 
-                                                        <airmid-dropdown label="OPD_Receipt_CounterId" fxFlex
-                                                            formControlName="opdReceiptCounterId"
-                                                            [mode]="autocompleteOPDReceiptCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="OPD_Refund_Bill_CounterId" fxFlex
-                                                            formControlName="opdRefundBillCounterId"
-                                                            [mode]="autocompleteOPDRefundBillCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="OPD_Refund_Bill_Receipt_CounterId"
-                                                            [mode]="autocompleteOPDRefundBillReceiptCounterId" fxFlex
-                                                            formControlName="opdRefundBillReceiptCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-                                                    </div>
-                                                    <div fxLayout="row" class="gap-12">
-
-                                                        <airmid-dropdown label="OPD_Advance_CounterId" fxFlex="25%"
-                                                            formControlName="opdAdvanceCounterId"
-                                                            [mode]="autocompleteOPDAdvanceCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="OPD_Refund_Advance_CounterId"
-                                                            [mode]="autocompleteOPDRefundAdvanceCounterId" fxFlex="25%"
-                                                            formControlName="opdRefundAdvanceCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-                                                    </div>
-
-                                                  
-                                                </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="OPD_Billing_Counter"  [value]="registerObj?.opdBillingCounterId"
+                                                    formControlName="opdBillingCounterId"
+                                                    [mode]="autocompleteOPDBillingCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
 
 
-                                            </mat-card>
-                                        </form>
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="OPD_Receipt_Counter" 
+                                                    formControlName="opdReceiptCounterId" [value]="registerObj?.opdReceiptCounterId"
+                                                    [mode]="autocompleteOPDReceiptCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
 
-                                    </mat-card>
 
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                </div>
-                            </div>
-                        </mat-expansion-panel>
-
-                        <mat-expansion-panel expanded class="mt-12">
-                            <!-- <mat-expansion-panel-header>
-                                <mat-panel-title>IPD Cash Counter Details</mat-panel-title>
-                            </mat-expansion-panel-header> -->
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                                <div fxFlex.gt-sm="100%" fxFlex>
-                                    <mat-card>
-                                        <form [formGroup]="HospitalForm" fxLayout="column"
-                                            style="padding: 5px 5px 0px 5px;">
-
-                                            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                                                class="top-header accent heading-container h-40 border-radius-4">
-                                                <span
-                                                    style="font-size:15px; font-weight: bolder; color:white;padding:7px;">OPD
-                                                    Cash Counter Detail
-                                                </span>
+                                                <airmid-dropdown label="OPD_Refund_Bill_Counter"
+                                                    formControlName="opdRefundBillCounterId" [value]="registerObj?.opdRefundBillCounterId"
+                                                    [mode]="autocompleteOPDRefundBillCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
-                                            <mat-card>
-                                                <div fxLayout="column" class="gap-12" style="padding: 10px;">
+                                            <!-- added as per 8085 -->
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="OPD_Refund_Bill_Receipt_Counter"
+                                                    [mode]="autocompleteOPDRefundBillReceiptCounterId" [value]="registerObj?.opdRefundBillReceiptCounterId"
+                                                    formControlName="opdRefundBillReceiptCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                <airmid-dropdown label="OPD_Advance_Counter" 
+                                                    formControlName="opdAdvanceCounterId" [value]="registerObj?.opdAdvanceCounterId"
+                                                    [mode]="autocompleteOPDAdvanceCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+
+                                            </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                                <airmid-dropdown label="OPD_Refund_Advance_Counter"
+                                                    [mode]="autocompleteOPDRefundAdvanceCounterId" 
+                                                    formControlName="opdRefundAdvanceCounterId" [value]="registerObj?.opdRefundAdvanceCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- demo -->
+                                    <div class="detail-container">
+
+                                        <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
+                                            <span class="title">IPD Cash Counter Details</span>
+                                        </div>
+
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Advance_Counter" 
+                                                    formControlName="ipdAdvanceCounterId" [value]="registerObj?.ipdAdvanceCounterId"
+                                                    [mode]="autocompleteIPDAdvanceCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Billing_Counter" 
+                                                    formControlName="ipdBillingCounterId" [value]="registerObj?.ipdBillingCounterId"
+                                                    [mode]="autocompleteIPDBillingCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Receipt_Counter" [value]="registerObj?.ipdReceiptCounterId"
+                                                    formControlName="ipdReceiptCounterId"
+                                                    [mode]="autocompleteIPDReceiptCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Refund_of_Bill_Counter" 
+                                                    formControlName="ipdRefundOfBillCounterId" [value]="registerObj?.ipdRefundOfBillCounterId"
+                                                    [mode]="autocompleteIPDRefundofBillCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Refund_of_Bill_Receipt_Counter" [value]="registerObj?.ipdRefundOfBillReceiptCounterId"
+                                                     [mode]="autocompleteIPDRefundofBillReceiptCounterId"
+                                                    formControlName="ipdRefundOfBillReceiptCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="IPD_Refund_of_Advance_Counter" 
+                                                    [mode]="autocompleteIPDRefundofAdvanceCounterId"
+                                                    formControlName="ipdRefundOfAdvanceCounterId" [value]="registerObj?.ipdRefundOfAdvanceCounterId"
+                                                    [formGroup]="HospitalForm"></airmid-dropdown>
+                                            </div>
 
 
-                                                    <div fxLayout="row" class="gap-12">
-                                                        
-                                                        <airmid-dropdown label="IPD_Advance_CounterId" fxFlex
-                                                            formControlName="ipdAdvanceCounterId"
-                                                            [mode]="autocompleteIPDAdvanceCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="IPD_Billing_CounterId" fxFlex
-                                                            formControlName="ipdBillingCounterId"
-                                                            [mode]="autocompleteIPDBillingCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="IPD_Receipt_CounterId" fxFlex
-                                                            formControlName="ipdReceiptCounterId"
-                                                            [mode]="autocompleteIPDReceiptCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="IPD_Refund_of_Bill_CounterId" fxFlex
-                                                            formControlName="ipdRefundOfBillCounterId"
-                                                            [mode]="autocompleteIPDRefundofBillCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-                                                    </div>
-                                                    <div fxLayout="row" class="gap-12">
-
-                                                        <airmid-dropdown label="IPD_Refund_of_Bill_Receipt_CounterId"
-                                                            fxFlex="25%"
-                                                            [mode]="autocompleteIPDRefundofBillReceiptCounterId"
-                                                            formControlName="ipdRefundOfBillReceiptCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-
-                                                        <airmid-dropdown label="IPD_Refund_of_Advance_CounterId"
-                                                            fxFlex="25%"
-                                                            [mode]="autocompleteIPDRefundofAdvanceCounterId"
-                                                            formControlName="ipdRefundOfAdvanceCounterId"
-                                                            [formGroup]="HospitalForm"></airmid-dropdown>
-                                                    </div>
-
-
-                                                </div>
-
-
-                                            </mat-card>
-                                        </form>
-
-                                    </mat-card>
-
-
+                                        </div>
+                                    </div>
+                                    <!-- demo end -->
                                 </div>
-                            </div>
-                        </mat-expansion-panel>
-                    </mat-accordion>
+                            </mat-card>
+                        </div>
+                    </div>
                 </mat-tab>
 
 
                 <mat-tab label="Hospital Template Detail">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                        <div fxFlex.gt-sm="100%" style="height:600px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
 
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                 <div fxFlex.gt-sm="100%" fxFlex>
@@ -302,18 +254,15 @@
                 </mat-tab>
 
             </mat-tab-group>
-            <div fxLayoutAlign="end">
-                <div class="sales-footer-buttons gap-8">
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                </div>
-            </div>
+
         </div>
-
     </div>
-
-
-
-    <!-- Modal footer -->
-
+ <div class="modal-footer">
+    <div class="footer-navigation-container">
+      <div class="modal-footer-buttons">
+        <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
 </div>

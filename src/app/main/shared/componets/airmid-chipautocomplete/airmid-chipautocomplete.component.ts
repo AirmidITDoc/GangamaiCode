@@ -17,7 +17,7 @@ export class AirmidChipautocompleteComponent implements OnInit {
   @Input() chips: any[] = [];
   @Input() apiUrl: string = '';
   @Output() chipsChange = new EventEmitter<string[]>();
-  @Input() displayKey: string = 'descriptionName'; // default fallback
+  @Input() displayKey: string = ''; // default fallback
   @Input() allowCustom: boolean = true;
 
   inputValue: string = '';

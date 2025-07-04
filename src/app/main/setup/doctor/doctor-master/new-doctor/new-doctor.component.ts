@@ -48,6 +48,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   //attachment
   attachments: any[] = [];
+  signpage: any[] = [];
   selectedFile: File | null = null;
   previewUrl: string | null = null;
 
@@ -150,6 +151,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   autocompleteModegender: string = "Gender";
   autocompleteModecity: string = "City";
   autocompleteModedoctorty: string = "DoctorType";
+  autocompleteSignpage: string = "DoctorSignPage";
+
+
   sanitizeImagePreview: any;
   constructor(
     public _doctorService: DoctorMasterService, private formBuilder: FormBuilder,
@@ -187,12 +191,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   toggleSelectAll() {
 
   }
+  doctorId = 0
   ngOnInit(): void {
     this.myForm = this.createdDoctormasterForm();
     this.myForm.markAllAsTouched();
     this.signatureForm = this.createSignatureForm();
 
     if ((this.data?.doctorId ?? 0) > 0) {
+      this.doctorId = this.data?.doctorId
       this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
         this.registerObj = response;
         console.log(this.registerObj)
@@ -212,15 +218,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.toastr.error(error.message);
       });
 
-
-
-
       this.getdrschduleList()
       this.getDrExperienceList()
       this.getDrEducationList()
       this.getDrchargesList()
       this.getDrleaveList()
-      this.getSIgnpagelist(this.registerObj);
+      this.getSignpagelist();
     }
     else {
       this.myForm.reset();
@@ -420,7 +423,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   // Leave
   createLeave(item: any = {}): FormGroup {
-    debugger
+
     return this.formBuilder.group({
       docLeaveId: [item.docLeaveId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -434,20 +437,25 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
   // Signature
   createsignature(item: any = {}): FormGroup {
+
+    console.log(item)
     return this.formBuilder.group({
       docSignId: [item.docSignId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pageId: [parseInt(item.pageId), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      page: ['']
+      // page: ['']
     });
   }
+
+
   createSignatureForm() {
     return this.formBuilder.group({
       docSignId: [''],
       doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      pageId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      signature: [''],
-      page: ['']
+      pageId: [[], [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      // signature: [''],
+      page: [''],
+      pagetest: []
     });
   }
 
@@ -485,12 +493,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
   }
 
   removesignpage(item) {
-    let removedIndex = this.signatureForm.value.pageId.findIndex(x => x.constantId == item.constantId);
+    let removedIndex = this.signatureForm.value.pageId.findIndex(x => x.value == item.value);
     this.signatureForm.value.pageId.splice(removedIndex, 1);
-    this.ddlsignpage.SetSelection(this.signatureForm.value.pageId.map(x => x.constantId));
+    this.ddlsignpage.SetSelection(this.signatureForm.value.pageId.map(x => x.value));
   }
 
-  pagelist
+
   onSubmit() {
 
 
@@ -529,7 +537,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.ChargesDetailsArray.push(this.createChargesDetail(item));
       });
     }
-    debugger
+
     // leave table detail assign to array
     this.leaveDetailsArray.clear();
     if (this.dataSourcedrleave.data.length > 0) {
@@ -539,24 +547,23 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       });
     }
 
-    //signpage array
-    console.log(this.signatureForm.value)
-    
-    let charge = []
-    charge = this.signatureForm.get("pageId").value
-
     debugger
+    //sign detail
+    let charge = []
+    console.log(this.signatureForm.value)
+    charge = this.signpage
     if (charge.length > 0) {
-      if (this.dataSourceSchdule.data.length > 0) {
+      if (this.dataSourcedrsign.data.length > 0) {
         this.chargesignList = []
         this.chargesignList = this.dataSourcedrsign.data
       }
       if (charge.length > 0) {
         charge.forEach(item => {
+          console.log(item)
           const newRow = {
             docSignId: 0,
-            doctorId: 0,
-            pageId: item.constantId
+            doctorId: this.doctorId,
+            pageId: item
           }
           this.chargesignList.push(newRow);
           this.dataSourcedrsign.data = this.chargesignList
@@ -573,7 +580,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       });
     }
 
+
+console.log(this.myForm.value)
+
     if (!this.myForm.invalid) {
+      // if(this.doctorId >0 && this.registerObj)
+      //   this.myForm.get("mDoctorDepartmentDets").setValue(this.ddlDepartment)
+      
 
       let data = this.myForm.value;
       data.IsConsultant = true
@@ -584,11 +597,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
       data.RegDate = this.registerObj.regDate;
       data.MahRegDate = this.registerObj.mahRegDate;
-      data.Signature = this.signature;
+      data.signature = this.signature;
       data.ageYear = String(this.ageYear)
+console.log(this.myForm.value)
 
-
+if(this.doctorId > 0){
+   data.MDoctorDepartmentDets.Remove
+  data.signature = this.registerObj.signature
+  //  data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
       console.log(data)
+}
+
 
       this._doctorService.doctortMasterInsert(data).subscribe((response) => {
         this.onClose();
@@ -615,7 +634,42 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     // this.myForm.reset();
     // this.myForm.patchValue(this.createdDoctormasterForm().value);
   }
+  pagetestId = 0
+  onChangeSignpage2(event) {
+    // this.pagetestId = event[0].value
+    // this.signatureForm.get("pagetest").setValue(this.pagetestId)
+    // console.log(this.signatureForm.get("pagetest").value)
 
+    if (event.length > 0) {
+      this.signpage = [];
+      event.forEach(item => {
+        this.signpage.push(item.value)
+      })
+
+    }
+    console.log(this.signpage)
+
+  }
+
+
+  // onChangeSignpage1(event) {
+
+  //   this.signpage.push(event)
+  //   console.log(this.signpage)
+  // }
+
+  //   onChangeSignpage(selectedItems: any[]) {
+  //   console.log('Selected pages:', selectedItems);
+  //   this.signatureForm.get('pageId')?.setValue(selectedItems);
+  //   this.ddlsignpage.SetSelection(selectedItems)
+  // }
+  // addCheiflist: any[] = [];
+  // onChangeSignpage(selectedChips: string[]) {
+
+  //   console.log(selectedChips)
+  //   this.addCheiflist = selectedChips;
+  //   this.signatureForm.get('pageId')?.setValue(selectedChips);
+  // }
 
 
   onTabChange(event: MatTabChangeEvent) {
@@ -742,65 +796,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  // appointmentForm: FormGroup;
-  // departments = ['Diabetology', 'Cardiology', 'Neurology'];
-  // physicians = ['Dr. Jotsna', 'Dr. Arun', 'Dr. Mehta'];
-  // visitTypes = ['Clinic', 'Video', 'Home Visit With Physician', 'Home Visit Without Physician'];
-  // availableSlots =
-  //   [
-  //     '2:45 PM', '3:00 PM', '3:15 PM', '3:30 PM', '3:45 PM',
-  //     '4:00 PM', '4:15 PM', '4:30 PM', '4:45 PM', '5:00 PM',
-  //     '5:15 PM', '5:30 PM', '6:00 PM', '6:15 PM',
-  //     '6:45 PM', '7:00 PM', '7:15 PM'
-  //   ];
-
-
-
-  // selectSlot(time: string) {
-  //   console.log('Selected time slot:', time);
-  //   Swal.fire('Selected time slot:', time)
-  // }
-
-  // JobType: string[] = ['Full Time', 'Visiting', 'Referring', 'Intern', 'Medical Student', 'Trainee Doctor'];
-
-  // onChangeJob(event) { }
-
-  ///Leave code
-
-
-  // // toggleTime(isFullDay: boolean) {
-  // //   if (isFullDay) {
-  // //     this.leaveForm.patchValue({ fromTime: '', toTime: '' });
-  // //   }
-  // // }
-
-  // // onSubmit1() {
-  // //   const formValue = this.leaveForm.value;
-  // //   const leave = {
-  // //     fromDate: formValue.fromDate,
-  // //     toDate: formValue.toDate,
-  // //     startTime: formValue.fullDay ? '00:00:00' : formValue.fromTime,
-  // //     endTime: formValue.fullDay ? '23:59:00' : formValue.toTime
-  // //   };
-  // //   this.leaveList.push(leave);
-  // //   this.leaveForm.reset({ fullDay: true });
-  // // }
-
-  // // editLeave(row: any) {
-  // //   // Optional: populate form for editing
-  // //   console.log('Edit clicked', row);
-  // // }
-
-  // //Dr charges
-  // DrchargesForm: FormGroup;
-
-  // allServices = [
-  //   'Consultation Fee',
-  //   'FOLEYS INSERTION / REMOVAL',
-  //   'FOLLOWUP CHARGE'
-  // ];
-
-
 
   initFilterOptions() {
     // this.appointmentGroups.forEach(group => {
@@ -810,16 +805,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     // });
   }
 
-  // filterService(row: any) {
-  //   const input = row.serviceName?.toLowerCase() || '';
-  //   row.filteredServices = this.allServices.filter(service =>
-  //     service.toLowerCase().includes(input)
-  //   );
-  // }
 
-  // onSave() {
-  //   // console.log('Saved data:', this.appointmentGroups);
-  // }
   i = 0
 
   getdrschduleList() {
@@ -992,6 +978,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     this._doctorService.getleaveList(data).subscribe((data: any) => {
       console.log(data)
+      const allData = data.data as LeaveDetail[];
       if (data !== undefined) {
         if (this.dataSourcedrleave.data.length > 0) {
           this.chargeleaveList = []
@@ -999,6 +986,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         }
         this.chargeleaveList.push(data.data);
         this.dataSourcedrleave.data = data.data as LeaveDetail[]
+
+        console.log(this.chargeleaveList)
       }
     });
 
@@ -1024,7 +1013,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
       if (result !== undefined) {
-        debugger
+
         if (this.dataSourceeducation.data.length > 0) {
           this.chargeeduList = this.dataSourceeducation.data
         }
@@ -1187,7 +1176,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         // data: element
       });
     dialogRef.afterClosed().subscribe(result => {
-      debugger
       console.log(result)
       if (result !== undefined) {
         if (this.dataSourcedrleave.data.length > 0) {
@@ -1205,11 +1193,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     // this.addpagelist = selectedChips;
     // this.myForm.get('pageId')?.setValue(this.addpagelist);
   }
- signpagelist: any[] = [];
+  signpagelist: any[] = [];
+  tempsignidlist: any[] = [];
 
-  getSIgnpagelist(obj) {
-    
-    var D_data = {
+  getSignpagelist() {
+    debugger
+    var data = {
       "first": 0,
       "rows": 10,
       "sortField": "DoctorId",
@@ -1217,8 +1206,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
       "filters": [
         {
           "fieldName": "DoctorId",
-          "fieldValue": "70393",//obj.DoctorId
-          "opType": "Equals"
+          "fieldValue": String(this.doctorId),//"50362",
+          "opType": "13"
         }
       ],
       "exportType": "JSON",
@@ -1228,36 +1217,35 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
           "name": "string"
         }
       ]
+
     }
-    this._doctorService.getsignpageById(D_data).subscribe(data => {
-       console.log(data)
-      this.signpagelist = data?.data || [];
-      this.ddlsignpage.SetSelection(data.data);
-      console.log(data)
-      // const grouped = {};
+   
+    this._doctorService.getsignpageById(data).subscribe(data => {
+      console.log(data.data)
+            this.signpagelist = data?.data || [];
+      this.signpagelist.forEach(item => {
+        const newRow = {
+          value: item.pageId,
+          text:item.name
 
-      // for (let item of this.patientDiagnosis) {
-      //   const visitId = item.visitId;
+        }
+        this.tempsignidlist.push(newRow)
+      });
+      console.log(this.tempsignidlist)
+      if(this.tempsignidlist.length >0){
+        this.tempsignidlist.forEach(item =>{
+        this.signpage.push(item.value)
+        })
+      }
+      // this.signpage= this.tempsignidlist
 
-      //   if (!grouped[visitId]) {
-      //     grouped[visitId] = {
-      //       visitId: visitId,
-      //       complaints: [],
-      //       diagnoses: [],
-      //       examinations: []
-      //     };
-      //   }
-
-      //   if (item.descriptionType === 'Complaint') grouped[visitId].complaints.push(item.descriptionName);
-      //   else if (item.descriptionType === 'Diagnosis') grouped[visitId].diagnoses.push(item.descriptionName);
-      //   else if (item.descriptionType === 'Examination') grouped[visitId].examinations.push(item.descriptionName);
-      // }
-
-
+        setTimeout(() => {
+      this.signatureForm.get("pageId").setValue(this.tempsignidlist)
+      }, 2500)
     });
   }
-
-
+  
+  
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     const reader = new FileReader();

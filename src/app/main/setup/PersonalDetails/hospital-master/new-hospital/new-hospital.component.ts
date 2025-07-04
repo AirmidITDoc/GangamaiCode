@@ -12,6 +12,7 @@ import { HospitalMaster } from '../hospital-master.component';
 import { HospitalService } from '../hospital.service';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-new-hospital',
@@ -23,7 +24,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class NewHospitalComponent implements OnInit {
   Header: string;
   HospitalForm: FormGroup;
-  vTemplateDesc: ''
+  vTemplateDesc: " ";
   registerObj = new HospitalMaster({});
   optionsCity: any[] = [];
   cityList: any = [];
@@ -32,20 +33,21 @@ export class NewHospitalComponent implements OnInit {
   vCityId: any;
   HospitalId = 0;
   HospitalHeader: any = '';
+ isExpanded = false;
+  selectedTabIndex = 0;
+  autocompleteOPDBillingCounterId: string = "CashCounter";
+  autocompleteOPDReceiptCounterId: string = "CashCounter";
+  autocompleteOPDRefundBillCounterId: string = "CashCounter";
+  autocompleteOPDRefundBillReceiptCounterId: string = "CashCounter";
+  autocompleteOPDAdvanceCounterId: string = "CashCounter";
+  autocompleteOPDRefundAdvanceCounterId: string = "CashCounter";
 
-    autocompleteOPDBillingCounterId: string = "CashCounter";
-    autocompleteOPDReceiptCounterId: string = "CashCounter";
-    autocompleteOPDRefundBillCounterId: string = "CashCounter";
-    autocompleteOPDRefundBillReceiptCounterId: string = "CashCounter";
-    autocompleteOPDAdvanceCounterId: string = "CashCounter";
-    autocompleteOPDRefundAdvanceCounterId: string = "CashCounter";
-
-    autocompleteIPDAdvanceCounterId: string = "CashCounter";
-    autocompleteIPDBillingCounterId: string = "CashCounter";
-    autocompleteIPDReceiptCounterId: string = "CashCounter";
-    autocompleteIPDRefundofBillCounterId: string = "CashCounter";
- autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
-autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
+  autocompleteIPDAdvanceCounterId: string = "CashCounter";
+  autocompleteIPDBillingCounterId: string = "CashCounter";
+  autocompleteIPDReceiptCounterId: string = "CashCounter";
+  autocompleteIPDRefundofBillCounterId: string = "CashCounter";
+  autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
+  autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -76,8 +78,8 @@ autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
 
   ngOnInit(): void {
     this.HospitalForm = this._HospitalService.createHospitalForm();
-  this.HospitalForm.markAllAsTouched();
-  
+    this.HospitalForm.markAllAsTouched();
+
     if (this.data) {
       this.registerObj = this.data;
       this.HospitalId = this.registerObj.hospitalId
@@ -87,67 +89,15 @@ autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
 
   }
 
-  //  createHospitalForm(): FormGroup {
-  //     return this._formBuilder.group({
-  //       HospitalId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-  //       HospitalName: ["",[ this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
-                  
-  //                     Validators.required,
-  //                     Validators.pattern('^[a-zA-Z0-9 ]*$')
-  //                 ]
-  //             ],
-  //       HospitalAddress:["",[ this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
-  //                 [
-  //                     Validators.required,
-  //                     Validators.pattern('^[a-zA-Z0-9 ]*$')
-  //                 ]
-  //             ]],
-  //       City:["",
-  //                       [
-  //                           Validators.required,
-  //                           Validators.pattern('^[a-zA-Z0-9 ]*$')
-  //                       ]
-  //                   ],
-  //       // CityId: [""],
-  //       Pin: ["", Validators.pattern("[0-9]{7}")],
-  //       Phone:['', [Validators.required,
-  //             Validators.minLength(10),
-  //             Validators.maxLength(10),
-  //             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-  //             this._FormvalidationserviceService.onlyNumberValidator()
-  //             ]],
-  //       Email: [""],
-  //       website: [""],
-      
-  //       // HospitalHeader: [""]
-  //       header:[""],
-  //       IsActive:1,
-  
-  // opdBillingCounterId:'',//[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // opdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // opdRefundBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // opdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdRefundOfBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-  // ipdRefundOfAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  //     });
-  //   }
 
   onSubmit() {
     let hospitalarr = [];
     debugger
-     console.log(this.HospitalForm.value)
+    console.log(this.HospitalForm.value)
     if (!this.HospitalForm.invalid) {
-       console.log(this.HospitalForm.valid)
-     
-      this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
-         this.onClear(true);
-
+     this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
+        this.onClear(true);
+        this._matDialog.closeAll();
       });
     } else {
       let invalidFields = [];
@@ -168,19 +118,19 @@ autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
 
     }
 
-    this._matDialog.closeAll();
+
   }
 
-  
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 
   getValidationMessages() {
     return {
@@ -210,14 +160,19 @@ autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
     };
   }
 
+    onTabChange(event: MatTabChangeEvent) {
+          this.selectedTabIndex = event.index;
+      }
+  
+
   onClose() {
-      this._matDialog.closeAll();
+    this._matDialog.closeAll();
   }
 
-    onClear(val: boolean) {
-        this.HospitalForm.reset();
-        this.dialogRef.close(val);
-    }
+  onClear(val: boolean) {
+    this.HospitalForm.reset();
+    this.dialogRef.close(val);
+  }
 }
 
 

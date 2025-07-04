@@ -52,10 +52,6 @@ leaveForm: FormGroup;
      else  if(this.leaveForm.get("leaveOption").value==2)
       this.leaveForm.get("leaveOptionName").setValue("Second Half Day")
 
-   
-
-debugger
-
     console.log(this.leaveForm.value)
      if (!this.leaveForm.invalid) {
       this.dialogRef.close(this.leaveForm.value)

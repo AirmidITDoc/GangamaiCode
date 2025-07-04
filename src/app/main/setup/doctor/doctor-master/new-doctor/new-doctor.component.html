@@ -111,8 +111,9 @@
                                                         <!-- <div fxLayout="row" fxLayoutGap="5px"> -->
 
                                                         <airmid-textbox label="Age (Y)" appearance="outline"
-                                                            formControlName="ageYear" [formGroup]="myForm" type="number"
-                                                            (input)="calculateBirthdate()">
+                                                            formControlName="ageYear" [formGroup]="myForm"
+                                                            (keypress)="keyPressAlphanumeric($event)"
+                                                            (input)="calculateBirthdate()" [maxLength]="3">
                                                         </airmid-textbox>
                                                         <!-- <airmid-textbox label="Birthdate" appearance="outline"
                                                             formControllName="DateOfBirth" [(value)]="value"
@@ -684,13 +685,13 @@
 
 
 
-                                                         <ng-container matColumnDef="reason">
+                                                        <ng-container matColumnDef="reason">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>Reason</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <span>{{ element.reason }}</span>
                                                             </mat-cell>
-                                                        </ng-container> 
+                                                        </ng-container>
 
                                                         <ng-container matColumnDef="action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef> Action
@@ -849,137 +850,121 @@
                             </div>
                             <div *ngSwitchCase="4" style="height: 600px;">
 
-                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                        fxLayoutGap="4px grid">
+                                <div fxLayout="row wrap" fxLayoutGap="12px" fxFlexFill>
+
+                                    <!-- LEFT SECTION: Page Selection -->
+                                    <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="column"
+                                        fxLayoutGap="10px">
                                         <form [formGroup]="signatureForm">
-                                            <!-- [value]="registerObj.mDoctorDepartmentDets" -->
-                                            <div fxLayoutGap="8px 0px grid">
-                                                <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33%">
-                                                    <div fxLayout="row">
-                                                        <div >
-                                                            <airmid-dropdown label="Pages" formControlName="pageId"
-                                                                [formGroup]="signatureForm" [IsMultiPle]="true" #ddlsignpage
-                                                                ValueField="constantId" TextField="constantType"
-                                                                ApiUrl="Doctor/get-DoctorConstantsList"
-                                                                [ReqFullObj]="true">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                    </div>
-                                                     <div fxLayout="row">
-                                                        <span>Selected Pages:</span>
-                                                        <mat-chip-listbox #chipList>
-                                                            <mat-chip
-                                                                *ngFor="let item of signatureForm.value.pageId">
-                                                                {{ item.constantType }} <mat-icon
-                                                                    (click)="removesignpage(item)">close</mat-icon>
-                                                            </mat-chip>
-                                                        </mat-chip-listbox>
-                                                    </div>
-                                                </div>
 
-                                            </div>
+                                            <!-- Title -->
+                                            <span style="font-size: 1.2rem; font-weight: 600;padding: 20;">Page
+                                                Selection For
+                                                Signature:</span>
+
+                                            <!-- Multi-select Dropdown -->
+                                            <airmid-dropdown label="Page" formControlName="pageId" 
+                                                [formGroup]="signatureForm" [IsMultiPle]="true" ValueField="value" #ddlsignpage
+                                                TextField="text" [ReqFullObj]="true" [mode]="autocompleteSignpage"
+                                                (selectionChange)="onChangeSignpage2($event)">
+                                            </airmid-dropdown>
+
+                                            <!-- Selected Pages as Chips -->
+                                            <mat-chip-listbox #chipList>
+                                                <mat-chip *ngFor="let item of signatureForm.value.pageId" removable
+                                                    (removed)="removesignpage(item)">
+                                                    {{ item.text }}
+                                                    <mat-icon matChipRemove>close</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-listbox>
+
                                         </form>
-
                                     </div>
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                        fxLayoutGap="4px grid">
-                                        <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+
+                                    <!-- RIGHT SECTION: Signature Preview -->
+                                    <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                        <div class="photo-capture p-16 border border-radius-4" fxLayout="column"
+                                            fxLayoutAlign="start stretch" fxLayoutGap="12px">
+
+                                            <!-- Image Display -->
                                             <div class="photp-capture-image">
-                                                <img class="h-200-p w-100-p border-radius-4"
-                                                    style="height:200px !important;"
-                                                    [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
+                                                <img class="border-radius-4"
+                                                    style="height: 200px; width: 100%; object-fit: contain;"
+                                                    [src]="sanitizeImagePreview ? sanitizeImagePreview : '/assets/images/noimage.jpg'" />
                                             </div>
-                                            <div class="photo-capture-button ">
-                                                <label
-                                                    class="btn btn-primary-outline btn-hover btn-with-icon w-100-p m-0 "
-                                                    (click)="onViewSignature()">
-                                                    <span class="btn-icon">
-                                                        <mat-icon>camera_enhance</mat-icon>
-                                                    </span>
-                                                    <span>Capture Signature</span>
-                                                </label>
-                                            </div>
-                                        </div>
 
+                                            <!-- Capture Button -->
+                                            <div class="photo-capture-button">
+                                                <button mat-raised-button color="primary" class="w-100"
+                                                    (click)="onViewSignature()">
+                                                    <mat-icon>camera_enhance</mat-icon>
+                                                    <span style="margin-left: 8px;width: auto;">Capture Signature</span>
+                                                </button>
+                                            </div>
+
+                                        </div>
                                     </div>
+
                                 </div>
+
                             </div>
 
 
 
-                            <div *ngSwitchCase="5">
-                                <div class="upload-section">
+                            <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
+
+                                <!-- Upload Section -->
+                                <div class="upload-section" fxLayout="row" fxLayoutAlign="start center"
+                                    fxLayoutGap="16px" style="margin-bottom: 20px;">
                                     <input type="file" (change)="onFileSelected($event)" style="font-size: large;" />
                                     <button mat-raised-button color="primary"
                                         (click)="uploadAttachments()">Upload</button>
                                 </div>
 
-                                <div class="file-preview" *ngIf="previewUrl">
+                                <!-- File Preview -->
+                                <div class="file-preview" *ngIf="previewUrl" style="margin-bottom: 20px;">
                                     <p><strong>{{ selectedFile?.name }}</strong></p>
-                                    <img [src]="previewUrl" alt="Preview" width="200" />
+                                    <img [src]="previewUrl" alt="Preview"
+                                        style="max-width: 200px; border: 1px solid #ccc; padding: 4px;" />
                                 </div>
 
+                                <!-- Attachment Table -->
                                 <mat-table #table matSort [dataSource]="AttachDataSource"
-                                    class="table2 auto-height-table h-400" [@animateStagger]="{value:'50'}">
+                                    class="mat-elevation-z2 table2 auto-height-table h-400"
+                                    [@animateStagger]="{value:'50'}" style="width: 100%; overflow: auto;">
 
+                                    <!-- Document Name Column -->
                                     <ng-container matColumnDef="DocumentName">
-                                        <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
-                                            Document Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            {{contact.name}}
-                                        </mat-cell>
+                                        <mat-header-cell *matHeaderCellDef>Document Name</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">{{ contact.name }}</mat-cell>
                                     </ng-container>
 
-                                    <!-- <ng-container matColumnDef="DocumentPath">
-                        <mat-header-cell *matHeaderCellDef>
-                            Document Path
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <img [src]="contact.url" style="width: 80px;height: 40px;margin: 3px;"
-                                (click)="onViewImage(contact.url, 'img')"
-                                *ngIf="!contact.name.endsWith('.pdf');else content" />
-                            <ng-template #content>
-                                <button mat-icon-button (click)="viewPdf(contact)" color="warn">
-                                    <mat-icon>visibility</mat-icon>
-                                </button></ng-template>
-                        </mat-cell>
-                    </ng-container> -->
-
-                                    <!-- <ng-container matColumnDef="page">
-                                        <mat-header-cell *matHeaderCellDef style="margin-right: 5px;">
-                                            Page Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            {{contact.page}}
-                                        </mat-cell>
-                                    </ng-container> -->
-
+                                    <!-- Action Column -->
                                     <ng-container matColumnDef="action" sticky>
-                                        <mat-header-cell *matHeaderCellDef>
-                                            Action
-                                        </mat-header-cell>
+                                        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button (click)="deletedocattachment(contact)" color="warn">
+                                            <button mat-icon-button color="warn" (click)="deletedocattachment(contact)">
                                                 <mat-icon>delete_outline</mat-icon>
                                             </button>
                                         </mat-cell>
                                     </ng-container>
 
+                                    <!-- No Data Footer -->
                                     <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-footer-cell *matFooterCellDef colspan="2">
                                             <span>No Data Found</span>
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsdocatt;">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumnsdocatt;"></mat-row>
+                                    <!-- Header, Rows & Footer -->
+                                    <mat-header-row *matHeaderRowDef="displayedColumnsdocatt"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumnsdocatt"></mat-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(imgDataSource!=null && imgDataSource.data.length==0)}">
+                                        [ngClass]="{ 'hide': !(AttachDataSource && AttachDataSource.data.length === 0) }">
                                     </mat-footer-row>
+
                                 </mat-table>
+
                             </div>
 
                         </ng-container>

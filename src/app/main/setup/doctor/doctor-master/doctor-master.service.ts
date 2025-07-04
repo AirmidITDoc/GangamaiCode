@@ -148,9 +148,7 @@ export class DoctorMasterService {
         return this._httpClient.GetData("Doctor/" + Id);
     }
 
-     public getsignpageById(Id) {
-        return this._httpClient.GetData("Doctor/DoctorSignpagelist" + Id);
-    }
+  
 
     public getSignature(Param) {
         return this._httpClient.GetData("Doctor/get-file?FileName=" + Param);
@@ -244,6 +242,10 @@ export class DoctorMasterService {
        return this._httpClient.PostData("Doctor/DoctorLeaveDetailList",employee);
     }
 
+
+       public getsignpageById(data) {
+        return this._httpClient.PostData("Doctor/DoctorSignpagelist", data);
+    }
     public EducationSave(Param: any) {
         if (Param.RegId) {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);

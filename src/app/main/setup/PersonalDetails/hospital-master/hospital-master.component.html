@@ -15,6 +15,34 @@
             </button>
         </div>
     </div>
-   <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+
+            <button mat-icon-button matTooltip="Edit Hospital" (click)="onSave(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            
+        </div>
+    </ng-template>
+    <airmid-table [gridConfig]="gridConfig" class="content">
+        <ng-container filters>
+            <form [formGroup]="myformSearch">
+                <mat-form-field appearance="outline">
+                    <mat-label>Hospital Name</mat-label>
+                    <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                        formControlName="NameSearch" (input)="onChangeFirst($event)" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('Hospital')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center"
+                    formControlName="IsActive">
+                    <!-- <mat-radio-button value="">All</mat-radio-button> -->
+                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                </mat-radio-group>
+            </form>
+        </ng-container>
     </airmid-table>
 </div>
