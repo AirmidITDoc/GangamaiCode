@@ -558,4 +558,8 @@ export class OPSearhlistService {
     getNewMenuMasterList(emp) {
         return this._httpClient1.PostData("MenuMaster/MenuMasterList",emp)
       }
+            public AdvancePharamcylist(employee)
+  {
+    return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
+  }
 }
