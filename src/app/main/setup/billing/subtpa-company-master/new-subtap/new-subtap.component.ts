@@ -21,40 +21,45 @@ export class NewSubtapComponent implements OnInit {
     autocompleteModetypeName:string="CompanyType";
     autocompleteModecity:string="City";
 
-    registerObj = new SubTpaCompanyMaster({});
+   
 
     constructor(
         public _subTpaServiceMaster: SubtpaCompanyMasterService,
         public toastr: ToastrService,
         @Inject(MAT_DIALOG_DATA) public data: any, 
         public dialogRef: MatDialogRef<NewSubtapComponent>,
+       
     ) { }
 
-    ngOnInit(): void {
-        
-        this.subTpaForm=this._subTpaServiceMaster.createsubtpacompanyForm();
-        this.subTpaForm.markAllAsTouched();
+   ngOnInit(): void {
+   
+    this.subTpaForm = this._subTpaServiceMaster.createsubtpacompanyForm();
+    this.subTpaForm.markAllAsTouched();
 
-        if((this.data?.subCompanyId??0) > 0){
-            console.log(this.data)
-            this.isActive=this.data.isActive
-            
-            if(this.data.city)
-                this.data.city=this.data.city.trim();
+    if ((this.data?.subCompanyId ?? 0) > 0) {
+        console.log(this.data);
+        this.isActive = this.data.isActive;
 
-            this.subTpaForm.get("compTypeId").setValue(this.data.compTypeId)
-            this.subTpaForm.get("city").setValue(this.data.city)
-            this.subTpaForm.get("mobileNo").setValue(this.data.mobileNo)
-            this.subTpaForm.get("phoneNo").setValue(this.data.phoneNo)
-           
-            setTimeout(() => {
-                this._subTpaServiceMaster.getCompanyById(this.data.subCompanyId).subscribe((response) => {
-                    this.registerObj = response;
-                    console.log(this.registerObj)
-                   });
-            }, 500);
+        if (this.data.city) {
+            this.data.city = this.data.city.trim();
         }
+
+        this.subTpaForm.patchValue({
+            
+            compTypeId: this.data.compTypeId,
+            companyName: this.data.companyName,
+            city: this.data.city,
+            mobileNo: this.data.mobileNo,
+            phoneNo: this.data.phoneNo,
+             pinNo: this.data.pinNo,
+              address: this.data.address,
+           
+        });
+
+        
     }
+}
+
 
     onSubmit(){
         
@@ -64,7 +69,7 @@ export class NewSubtapComponent implements OnInit {
         console.log("SubTpa Json:", this.subTpaForm.value);
   
         this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response)=>{
-          this.toastr.success(response.message);
+         
           this.onClear(true);
         }, (error)=>{
           this.toastr.error(error.message);
@@ -72,12 +77,13 @@ export class NewSubtapComponent implements OnInit {
       } 
       else
       {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
+        this.toastr.warning('please check form is invalid', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     }
+
 
   onClear(val: boolean) {
     this.subTpaForm.reset();
@@ -93,7 +99,7 @@ export class NewSubtapComponent implements OnInit {
   }
 
   selectChangecity(obj: any){
-      console.log(obj);
+     
       this.cityId=obj.value
       this.cityName=obj.text
     }
@@ -124,8 +130,8 @@ export class NewSubtapComponent implements OnInit {
             ],
             pinNo:[
                 { name: "required", Message: "PinCode is required" },
-                { name: "maxlength", Message: "Pincode must be between 3 to 10 digits" },
-                { name: "pattern", Message: "Min 3, Only Digits allowed." }
+                { name: "maxlength", Message: "Pincode must be 6. digits" },
+                { name: "pattern", Message: "Only Digits allowed." }
             ],
             phoneNo:[
                 { name: "required", Message: "Phone Number is required" },

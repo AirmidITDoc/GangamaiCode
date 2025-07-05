@@ -37,7 +37,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data)
+                            this.onNew(data)
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -107,7 +107,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     // }
     // }
 
-    onSave(row: any = null) {
+    onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         
