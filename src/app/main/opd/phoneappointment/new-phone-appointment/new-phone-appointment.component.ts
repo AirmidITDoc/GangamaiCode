@@ -58,16 +58,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
         public datePipe: DatePipe) {
 
-        // setInterval(() => {
-        //     this.now = new Date();
-        //     this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-
-        //     if (!this.isTimeChanged) {
-        //         if (this.phoneappForm.get('phAppTime'))
-        //             this.phoneappForm.get('phAppTime').setValue(this.now);
-        //         this.phoneappForm.get('phAppDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-        //     }
-        // }, 1);
+       
     }
 
     ngOnInit(): void {

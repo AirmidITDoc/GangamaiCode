@@ -26,7 +26,7 @@ export class CanteenRequestService {
       return this._formbuilder.group({
         RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         PatientName: '',
-        WardName: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        wardId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         StoreId:  [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         Op_ip_id: ['1'],
         AdmissionID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],

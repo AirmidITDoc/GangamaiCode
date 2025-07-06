@@ -76,9 +76,8 @@ export class MaterialConsumptionComponent implements OnInit {
     NewMatrialCon() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
             {
-                maxWidth: "100%",
-                maxHeight: '90vh',
-                width: '98%',
+                maxHeight: '98vh',
+                width: '95%',
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);

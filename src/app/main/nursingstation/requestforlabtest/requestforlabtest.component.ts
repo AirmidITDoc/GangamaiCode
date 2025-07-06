@@ -215,7 +215,7 @@ export class RequestforlabtestComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRequestforlabComponent,
             {
                 maxHeight: '95vh',
-                width: '80%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

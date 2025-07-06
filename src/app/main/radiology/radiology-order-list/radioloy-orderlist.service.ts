@@ -108,10 +108,8 @@ export class RadioloyOrderlistService {
     }
 
     public RadiologyUpdate(Param:any) {
-      debugger
-      if(Param.radReportId){
-      return this._httpClient1.PutData("RadiologyTest/RadiologyUpdate/"+Param.radReportId, Param)
-      }
+    return this._httpClient1.PutData("RadiologyTest/RadiologyUpdate/"+Param.radReportId, Param)
+      
     }
 
     public gettemplateId(Id){

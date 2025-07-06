@@ -1,22 +1,30 @@
 <div class="modal-wrapper grid-container">
-
-    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                New Request
-            </span>
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> New Request</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div> -->
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
+    </div>
 
-
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container" style="border-radius: 4px;">
-            <form [formGroup]="_CanteenRequestservice.MyForm">
+    <div class="modal-body overflow-hidden">
+        <div class="modal-body-container">
+            <div class="personal-panel fix-panel">
+               <form [formGroup]="_CanteenRequestservice.MyForm">
                 <div fxLayout="column" class="gap-10">
                     <div class="modal-card-container">
 
@@ -27,7 +35,7 @@
                                 </mat-radio-group>
                             </div>
                             <div class="input-container gap-8" fxFlex>
-                                <airmid-autocomplete lbl="RgId" class="w-300"
+                                <airmid-autocomplete lbl="RgId" class="w-400"
                                     label="Search Reg No / Patient Name / Mobile No"
                                     [formGroup]="_CanteenRequestservice.MyForm" formControlName="RegID"
                                     placeholderText="IP-RegNo/FirstName/LastName"
@@ -150,7 +158,7 @@
                                     </airmid-dropdown>
                                 </div>
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Ward Name" formControlName="WardName"
+                                    <airmid-dropdown label="Ward Name" formControlName="wardId"
                                         [formGroup]="_CanteenRequestservice.MyForm"
                                         [validations]="getValidationMessages().WardName"
                                         [mode]="autocompleteModewardName">
@@ -315,13 +323,15 @@
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
+
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSave()" [disabled]="savebtn">Save</button>
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()">Save</button>
             </div>
         </div>
     </div>

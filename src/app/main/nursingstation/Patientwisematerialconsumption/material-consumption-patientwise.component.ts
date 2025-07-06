@@ -129,9 +129,8 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
-                maxWidth: "75vw",
-                maxHeight: '75%',
-                width: '70%',
+               maxHeight: '95vh',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

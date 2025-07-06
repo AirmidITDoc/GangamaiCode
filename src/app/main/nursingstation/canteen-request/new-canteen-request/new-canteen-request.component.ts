@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { CanteenList } from '../canteen-request.component';
 import { CanteenRequestService } from '../canteen-request.service';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-canteen-request',
@@ -25,7 +27,7 @@ export class NewCanteenRequestComponent implements OnInit {
   autocompleteModewardName: string = "Room";
   dsItemList = new MatTableDataSource<CanteenItemList>();
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  
+
   vOPIPId: any = 0;
   vOPDNo: any;
   vTariffId: any = 0;
@@ -43,7 +45,7 @@ export class NewCanteenRequestComponent implements OnInit {
   BedNo: any;
   registerObj: any;
   isRegIdSelected: boolean = false;
-  
+
   PresItemlist: any = [];
   dataArray: any = [];
   filteredOptionsItem: any;
@@ -53,9 +55,9 @@ export class NewCanteenRequestComponent implements OnInit {
   vRemark: any
   Chargelist: any = [];
   vStoredId: any;
-  vOpDId: any;
+  vOpDId: any = 0;
 
-  
+
   PatientType: any;
   RefDocName: any;
   DepartmentName: any;
@@ -65,19 +67,69 @@ export class NewCanteenRequestComponent implements OnInit {
   AdmissionDate: any;
   GenderName: any;
 
-  price=0
-  isBatchRequired:boolean=false;
+  price = 0
+  isBatchRequired: boolean = false;
+
+  CanteenInsertForm: FormGroup;
+  CanteendetailForm: FormGroup;
+
   constructor(
     public _CanteenRequestservice: CanteenRequestService,
     private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public datePipe: DatePipe,
-    
+    private formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-   
+    this.CanteenInsertForm = this.createcanteenInsertForm();
+    this.CanteendetailArray.push(this.createdetailForm());
+
+  }
+
+
+
+  createcanteenInsertForm(): FormGroup {
+    debugger
+    return this.formBuilder.group({
+      reqId: 0,
+      date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      time: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+      reqNo: "",
+      opIpId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opIpType: 1,
+      wardId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      cashCounterId: 0,
+      isFree: true,
+      unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isBillGenerated: true,
+      isPrint: true,
+      tCanteenRequestDetails: this.formBuilder.array([]) // FormArray for details
+    });
+  }
+
+
+  createdetailForm(item: any = {}): FormGroup {
+    debugger
+    console.log(item)
+    return this.formBuilder.group({
+      reqDetId: [item.reqDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqId: [item.reqId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitMRP: [item.Price || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmount: [item.totalamt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isBillGenerated: true,
+      isCancelled: false
+
+    });
+  }
+
+  get CanteendetailArray(): FormArray {
+    return this.CanteenInsertForm.get('tCanteenRequestDetails') as FormArray;
   }
 
   getValidationMessages() {
@@ -151,18 +203,18 @@ export class NewCanteenRequestComponent implements OnInit {
     // }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-debugger
+      debugger
       this.dsItemList.data = [];
       this.Chargelist.push(
         {
           ItemID: this.ItemId,
           ItemName: this.ItemName,
-          Qty:this._CanteenRequestservice.ItemForm.get('Qty').value,
-          Price:this.price || 0,
-          totalamt:parseInt(this._CanteenRequestservice.ItemForm.get('Qty').value) * this.price,
-          Remark:this._CanteenRequestservice.ItemForm.get('Remark').value || ''
+          Qty: this._CanteenRequestservice.ItemForm.get('Qty').value,
+          Price: this.price || 0,
+          totalamt: parseInt(this._CanteenRequestservice.ItemForm.get('Qty').value) * this.price,
+          Remark: this._CanteenRequestservice.ItemForm.get('Remark').value || ''
         });
-        console.log(this.Chargelist);
+      console.log(this.Chargelist);
       this.dsItemList.data = this.Chargelist
       console.log(this.dsItemList.data);
     } else {
@@ -236,8 +288,63 @@ debugger
     }
   }
   savebtn: boolean = false;
+  //   OnSave() {
+
+  //     if ((!this.dsItemList.data.length)) {
+  //       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
+
+  //     if ((this.vAdmissionID ==0)) {
+  //       this.toastr.warning('Please Select Patient', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
+
+
+  //     let canteenRequestDetailsInsert = [];
+
+  //     this.dsItemList.data.forEach(element => {
+  //       let CanteenReqDetObj = {};
+  //       CanteenReqDetObj['reqDetId'] = 0
+  //       CanteenReqDetObj['reqId'] = 0
+  //       CanteenReqDetObj['itemId'] = element.ItemID || 0;
+  //       CanteenReqDetObj['unitMRP'] = element.Price || 0,
+  //       CanteenReqDetObj['qty'] = element.Qty || 0;
+  //       CanteenReqDetObj['totalAmount'] = element.totalamt;
+  //       CanteenReqDetObj['isBillGenerated'] = true;
+  //       CanteenReqDetObj['isCancelled'] = false;
+  //       canteenRequestDetailsInsert.push(CanteenReqDetObj);
+  //     });
+
+  //     let SubmitDataObj = {
+  //       "reqId": 0,
+  //       "date":this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+  //       "time": this.datePipe.transform(new Date(), 'hh:mm:ss a'),
+  //       "reqNo": "string",
+  //       "opIpId": this.vOpDId || 0,
+  //       "opIpType": 1,
+  //       "wardId":this._CanteenRequestservice.MyForm.get('WardName').value || 0,
+  //       "cashCounterId": 0,
+  //       "isFree": true,
+  //       "unitId": 1,
+  //       "isBillGenerated": true,
+  //       "isPrint": true,
+  //       'tCanteenRequestDetails': canteenRequestDetailsInsert
+  //     }
+  //     console.log(SubmitDataObj);
+  //     this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response => {
+  //       this.toastr.success(response.message);
+  //       this._matDialog.closeAll();
+  //     });
+  // }
+
+
   OnSave() {
-    
+
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -245,51 +352,47 @@ debugger
       return;
     }
 
-    if ((this.vAdmissionID ==0)) {
+    if ((this.vAdmissionID == 0)) {
       this.toastr.warning('Please Select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-   
-    
-    let canteenRequestDetailsInsert = [];
 
-    this.dsItemList.data.forEach(element => {
-      let CanteenReqDetObj = {};
-      CanteenReqDetObj['reqDetId'] = 0
-      CanteenReqDetObj['reqId'] = 0
-      CanteenReqDetObj['itemId'] = element.ItemID || 0;
-      CanteenReqDetObj['unitMRP'] = element.Price || 0,
-      CanteenReqDetObj['qty'] = element.Qty || 0;
-      CanteenReqDetObj['totalAmount'] = element.totalamt;
-      CanteenReqDetObj['isBillGenerated'] = true;
-      CanteenReqDetObj['isCancelled'] = false;
-      canteenRequestDetailsInsert.push(CanteenReqDetObj);
+    this.CanteendetailArray.clear();
+    this.dsItemList.data.forEach(item => {
+      console.log(item)
+      this.CanteendetailArray.push(this.createdetailForm(item));
     });
 
-    let SubmitDataObj = {
-      "reqId": 0,
-      "date":this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      "time": this.datePipe.transform(new Date(), 'hh:mm:ss a'),
-      "reqNo": "string",
-      "opIpId": this.vOpDId || 0,
-      "opIpType": 1,
-      "wardId":this._CanteenRequestservice.MyForm.get('WardName').value || 0,
-      "cashCounterId": 0,
-      "isFree": true,
-      "unitId": 1,
-      "isBillGenerated": true,
-      "isPrint": true,
-      'tCanteenRequestDetails': canteenRequestDetailsInsert
+    console.log(this.CanteenInsertForm.value)
+
+    this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
+    this.CanteenInsertForm.get("wardId").setValue(this._CanteenRequestservice.MyForm.get('wardId').value || 0)
+
+    if (!this.CanteenInsertForm.invalid) {
+      this._CanteenRequestservice.CanteenReqSave(this.CanteenInsertForm.value).subscribe(response => {
+        this._matDialog.closeAll();
+      });
+    } else {
+      let invalidFields = [];
+
+      if (this.CanteenInsertForm.invalid) {
+        for (const controlName in this.CanteenInsertForm.controls) {
+          if (this.CanteenInsertForm.controls[controlName].invalid) {
+            invalidFields.push(`Canteen Request Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
     }
-    console.log(SubmitDataObj);
-    this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response => {
-      this.toastr.success(response.message);
-      this._matDialog.closeAll();
-    });
-}
-
+  }
   dsCanteenDateList = new MatTableDataSource<CanteenList>();
 
   onClose() {
@@ -308,8 +411,8 @@ export class CanteenItemList {
   ItemName: string;
   Qty: number;
   Remark: any;
-  Price:any;
-  totalamt:any;
+  Price: any;
+  totalamt: any;
   /**
   * Constructor
   *

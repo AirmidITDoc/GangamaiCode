@@ -111,9 +111,9 @@ export class CanteenRequestComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
             {
-                maxWidth: "90vw",
-                height: '90%',
-                width: '90%',
+                 maxWidth: "95vw",
+                   maxHeight: "98vh",
+               width: "100%",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

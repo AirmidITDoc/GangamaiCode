@@ -336,8 +336,7 @@ export class IPSearchListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
-                    maxWidth: "100%",
-                    height: '60%',
+                    maxHeight: '95vh',
                     width: '90%',
                     data: element
                 });

@@ -132,12 +132,12 @@ export class NewRequestforlabComponent implements OnInit {
           },
           {
             "fieldName": "IsPathRad",
-            "fieldValue": IsPathRad,
+            "fieldValue": String(IsPathRad),
             "opType": "Equals"
           },
           {
             "fieldName": "ClassId",
-            "fieldValue": String(this.vClassId),
+            "fieldValue":"1",// String(this.vClassId),
             "opType": "Equals"
           }
         ],
@@ -198,7 +198,7 @@ export class NewRequestforlabComponent implements OnInit {
         serviceId: [Number(element.ServiceId) ?? 0],
         price: [element.Price ?? 0],
         isStatus: false,
-        addedBillingId: 2,
+        addedBillingId: 0,
         addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
         addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
         charId: [0], //260570
@@ -216,6 +216,7 @@ export class NewRequestforlabComponent implements OnInit {
     console.log(this.labRequestInsert.value)
 
     if(!this.labRequestInsert.invalid){
+
       this.labeRequestArray.clear();
       if (this.dstable1.data.length === 0) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning');
@@ -224,9 +225,11 @@ export class NewRequestforlabComponent implements OnInit {
       this.dstable1.data.forEach(item => {
         this.labeRequestArray.push(this.createlabRequestFormArray(item));
       });
+
     
       this.labRequestInsert.get("opIpId").setValue(this.vAdmissionID)
       this.labRequestInsert.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
+      
       console.log(this.labRequestInsert.value)
       this._RequestforlabtestService.LabRequestSave(this.labRequestInsert.value).subscribe(response => {
               if (response) {
