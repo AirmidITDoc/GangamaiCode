@@ -941,8 +941,7 @@ export class SalesHospitalNewComponent implements OnInit {
     })
 
   }
-  onSave(event) {
-    debugger
+  onSave(event) { 
     const formValue = this.ItemSubform.value
     if (!this.isValidForm()) {
       Swal.fire('Please enter valid table data.');
@@ -1443,11 +1442,12 @@ export class SalesHospitalNewComponent implements OnInit {
     });      
   }
 vExpDate:any;
-  getFinalCalculation(contact, DraftQty) {
-    debugger
-    console.log(contact);
+  getFinalCalculation(contact, DraftQty) { 
+      
     if (DraftQty && contact.unitMrp) {
-      let LandedRateandedTotal, TotalMRP, PurTotAmt, v_marginamt, GSTAmount, CGSTAmt, SGSTAmt, IGSTAmt, NetAmt = '0';
+      this.saleSelectedDatasource.data = []; 
+      let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt= '0',
+       v_marginamt= '0', GSTAmount= '0', CGSTAmt= '0', SGSTAmt= '0', IGSTAmt= '0', NetAmt = '0';
 
       TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
       LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1463,17 +1463,21 @@ vExpDate:any;
       // this.DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
       // NetAmt = (tTotalMRP - this.DiscAmt).toFixed(2);
       // }  
-       if (contact?.batchExpDate) {
-                const day = +contact?.batchExpDate.substring(0, 2);
-                const month = +contact?.batchExpDate.substring(3, 5);
-                const year = +contact?.batchExpDate.substring(6, 10);
-
-                this.vExpDate = `${year}-${this.pad(month)}-${day}`;
-                // console.log(this.vExpDate)
-            } 
-     // this.ItemAddForm.reset();
-      this.saleSelectedDatasource.data = [];
-      this.ItemAddForm.patchValue({
+      if (contact?.batchExpDate) {
+        const day = +contact?.batchExpDate.substring(0, 2);
+        const month = +contact?.batchExpDate.substring(3, 5);
+        const year = +contact?.batchExpDate.substring(6, 10); 
+        this.vExpDate = `${year}-${this.pad(month)}-${day}`; 
+      }  
+    
+      if (this.saleSelectedDatasource.data.length > 0) {
+        if (this.saleSelectedDatasource.data.find(i => i.ItemId == contact?.itemId)) {
+          this.toastr.success(`Selected item already added in list`, 'success',);
+        }
+        return
+      }
+      this.Itemchargeslist.push(
+        {
         ItemId: contact?.itemId,
         ItemName: contact?.itemName,
         BatchNo: contact?.batchNo,  
@@ -1504,37 +1508,12 @@ vExpDate:any;
         BalanceQty: contact?.balanceQty,
         SalesDraftId: 0,
         StoreId: contact?.storeId
-      })
-    }
-    console.log(this.ItemAddForm.value)
-    if (this.ItemAddForm.valid) {
-      if(this.saleSelectedDatasource.data.length > 0){
-        if(this.saleSelectedDatasource.data.find(i => i.ItemId == contact?.itemId)){
-          this.toastr.success(`Selected item already added in list`, 'success',);
         }
-        return
-      }
-      this.Itemchargeslist.push(this.ItemAddForm.value)
-      this.saleSelectedDatasource.data = this.Itemchargeslist;
-    } else {
-      let invalidFields = [];
-      if (this.ItemAddForm.invalid) {
-        for (const controlName in this.ItemAddForm.controls) {
-          if (this.ItemAddForm.controls[controlName].invalid) {
-            invalidFields.push(`${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-          );
-        });
-        return
-      }  
+      )
+      this.saleSelectedDatasource.data = this.Itemchargeslist; 
+       this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
       this.ItemFormreset();
-    }
-
+    } 
   }
 
    private pad(num: number): string {
@@ -1614,53 +1593,32 @@ vExpDate:any;
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
-  }
-
-
-
-
-
-
-
-
-
+  } 
   getBillSummary(admissionID) {
-    // let query;
-    // query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
-    // this._salesService.getBillSummaryQuery(query).subscribe((data) => {
-    //   console.log(data);
-    //   this.TotalCreditAmt = data[0].CreditAmount;
-    // });
+    let query;
+    query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
+    this._salesService.getBillSummaryQuery(query).subscribe((data) => {
+      console.log(data);
+      this.TotalCreditAmt = data[0].CreditAmount;
+    }); 
 
 
     var m_data = {
       "first": 0,
       "rows": 10,
-      "sortField": "AdmissionId",
+      "sortField": "AdmissionID",
       "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(admissionID),
-          "opType": "Equals"
-        }
-
-      ],
+      "filters": [{"fieldName": "AdmissionID",  "fieldValue": String(admissionID),  "opType": "Equals"}],
       "exportType": "JSON",
       "columns": []
     }
     console.log(m_data)
     this._salesService.getAdvanceList(m_data).subscribe(Visit => {
       const advancedetails = Visit.data;
+      this.TotalAdvanceAmt = advancedetails[0].advanceAmount
+      this.TotalBalanceAmt = advancedetails[0].balanceAmount
       console.log(advancedetails)
-    });
-
-    // query = 'select AdvanceAmount,BalanceAmount from T_PHAdvanceHeader where OPD_IPD_Id=' + this.OP_IP_Id;
-    // this._salesService.getBillSummaryQuery(query).subscribe((data) => {
-    //   console.log(data);
-    //   let mdata = (this.TotalAdvanceAmt = data[0].AdvanceAmount);
-    //   this.TotalBalanceAmt = data[0].BalanceAmount;
-    // });
+    }); 
   }
 
 
@@ -1943,9 +1901,7 @@ vExpDate:any;
 
     this.vBarcode = 0;
     this.vBarcodeflag = false;
-  }
-
-
+  } 
   onEnterItemName(item: IndentList): void {
     const itemId = item.ItemId;
     const storeId = item.StoreId;

@@ -161,10 +161,10 @@ export class NewAdvanceComponent implements OnInit {
   gridConfig: gridModel = {
     apiUrl: "Sales/PharAdvanceList",
     columnsList: this.AllColumns,
-    sortField: "AdmissionId",
+    sortField: "AdmissionID",
     sortOrder: 0,
     filters: [
-      { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
+      { fieldName: "AdmissionID", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
     ],
     row: 25
   }
@@ -173,10 +173,10 @@ export class NewAdvanceComponent implements OnInit {
     this.gridConfig = {
       apiUrl: "Sales/PharAdvanceList",
       columnsList: this.AllColumns,
-      sortField: "AdmissionId",
+      sortField: "AdmissionID",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmissionId", fieldValue: String(this.vAdmissionID), opType: OperatorComparer.Equals },
+        { fieldName: "AdmissionID", fieldValue: String(this.vAdmissionID), opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = { ...this.gridConfig };
@@ -189,11 +189,11 @@ export class NewAdvanceComponent implements OnInit {
     var m_data = {
       "first": 0,
       "rows": 10,
-      "sortField": "AdmissionId",
+      "sortField": "AdmissionID",
       "sortOrder": 0,
       "filters": [
         {
-          "fieldName": "AdmissionId",
+          "fieldName": "AdmissionID",
           "fieldValue": String(obj.admissionID),
           "opType": "Equals"
         }

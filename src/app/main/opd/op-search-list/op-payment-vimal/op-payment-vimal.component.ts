@@ -275,19 +275,19 @@ export class OpPaymentVimalComponent implements OnInit {
             "rows": 10,
             "sortField": "AdmissionID",
             "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "AdmissionID",
-                    "fieldValue": String(this.advanceData.OPD_IPD_Id),
-                    "opType": "Equals"
-                }
-            ],
+            "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
             "Columns": [],
             "exportType": "JSON"
         }
+        if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
+        this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
+            this.selectedRow = response.data;
+        });
+        }else{
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
             this.selectedRow = response.data;
         });
+        } 
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
@@ -496,25 +496,19 @@ export class OpPaymentVimalComponent implements OnInit {
     selectedAdvanceData: any = [];
     getAdvcanceDetails(isReset?: any) {
         this.dataSource.data = [];
-        var vdata = {
-            "first": 0,
+        var vdata = {  
+             "first": 0,
             "rows": 10,
             "sortField": "AdmissionID",
             "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "AdmissionID",
-                    "fieldValue": String(this.advanceData.OPD_IPD_Id),
-                    "opType": "Equals"
-                }
-            ],
+            "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
             "Columns": [],
             "exportType": "JSON"
-        }
-
+        } 
         setTimeout(() => {
-            this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-                this.selectedAdvanceData = response.data;
+        if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
+        this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
+             this.selectedAdvanceData = response.data;
                 this.dataSource.data = this.selectedAdvanceData
                 if (this.dataSource.data.length > 0) {
                     this.IsAdv = true
@@ -524,7 +518,21 @@ export class OpPaymentVimalComponent implements OnInit {
                     this.setPaidAmount();
                     this.GetBalanceAmt();
                 }
-            });
+        });
+        }else{
+        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+             this.selectedAdvanceData = response.data;
+                this.dataSource.data = this.selectedAdvanceData
+                if (this.dataSource.data.length > 0) {
+                    this.IsAdv = true
+                    this.AdvanceId = this.dataSource.data[0].advanceId
+                    this.calculateBalance();
+                    this.SetAdvanceRow();
+                    this.setPaidAmount();
+                    this.GetBalanceAmt();
+                }
+        });
+        }  
         }, 500);
     }
     OnAdvAmt(e) {
@@ -535,26 +543,30 @@ export class OpPaymentVimalComponent implements OnInit {
                 "rows": 10,
                 "sortField": "AdmissionID",
                 "sortOrder": 0,
-                "filters": [
-                    {
-                        "fieldName": "AdmissionID",
-                        "fieldValue": String(this.advanceData.OPD_IPD_Id),
-                        "opType": "Equals"
-                    }
-                ],
+                "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals" }],
                 "Columns": [],
                 "exportType": "JSON"
             }
-
             setTimeout(() => {
-                this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-                    this.dataSource.data = response.data;
-                    this.AdvanceId = this.dataSource.data[0].advanceId
-                    this.calculateBalance();
-                    this.SetAdvanceRow();
-                    this.setPaidAmount();
-                    this.GetBalanceAmt();
-                });
+                if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+                    this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
+                        this.dataSource.data = response.data;
+                        this.AdvanceId = this.dataSource.data[0].advanceId
+                        this.calculateBalance();
+                        this.SetAdvanceRow();
+                        this.setPaidAmount();
+                        this.GetBalanceAmt();
+                    });
+                } else {
+                    this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+                        this.dataSource.data = response.data;
+                        this.AdvanceId = this.dataSource.data[0].advanceId
+                        this.calculateBalance();
+                        this.SetAdvanceRow();
+                        this.setPaidAmount();
+                        this.GetBalanceAmt();
+                    });
+                }
             }, 500);
         } else {
             this.Payments.data = [];
