@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: "root",
@@ -12,7 +13,8 @@ export class ServiceMasterService {
     edit_data = {};
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService,
     ) {
         this.myform = this.createServicemasterForm();
         this.myTariffform = this.createTariffmasterForm();
@@ -86,6 +88,14 @@ export class ServiceMasterService {
         return this._formBuilder.group({            
             oldTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
             newTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+        });
+    }
+
+    createAllTariffmasterForm(): FormGroup {
+        return this._formBuilder.group({            
+            TariffId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isAll: [true],
+            isSelected:[false]
         });
     }
 
