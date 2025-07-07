@@ -358,7 +358,7 @@ export class IPBillingComponent implements OnInit {
         chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
         opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        serviceId: [0,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        serviceName: [0,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         price:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
         qty: [1,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
         totalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -389,7 +389,7 @@ export class IPBillingComponent implements OnInit {
         cTotalAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isComServ: [false],
         isPrintCompSer: [false],
-        serviceName:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        serviceName1:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         chPrice:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chQty:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chTotalAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -397,8 +397,7 @@ export class IPBillingComponent implements OnInit {
         salesId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         billNo: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isHospMrk: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-
+        doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]], 
     });
   } 
   //Ip Bill Footer form

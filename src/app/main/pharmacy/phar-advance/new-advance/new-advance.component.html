@@ -12,7 +12,7 @@
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
-                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <button mat-icon-button tabIndex="-1" (click)="OnReset()" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -36,8 +36,8 @@
 
                             <div class="input-container gap-8" fxFlex="50%">
 
-                                <airmid-autocomplete lbl="RgId" [formGroup]="MainForm"
-                                    formControlName="RegID" placeholderText="IP-RegNo/Patient Name/Mobile No"
+                                <airmid-autocomplete lbl="RgId" [formGroup]="MainForm" formControlName="RegID"
+                                    placeholderText="IP-RegNo/Patient Name/Mobile No"
                                     label="Search Reg No / Patient Name / Mobile No"
                                     ApiUrl="Admission/search-patient?Keyword="
                                     (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
@@ -160,44 +160,39 @@
 
                     </div>
                 </div>
-
-                <div class="table-footer mt-8">
-
-                    <form [formGroup]="MainForm" style="padding: 10px;">
-                        <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
-
-                            <!-- Advance Amount -->
-                            <mat-form-field appearance="outline" fxFlex="20%">
-                                <mat-label>Advance Amount</mat-label>
-                                <input matInput [(ngModel)]="vadvanceAmount" formControlName="advanceAmt"
-                                    name="advanceAmt" required type="text" OnlyNumber
-                                    (keypress)="keyPressCharater($event)">
-                            </mat-form-field>
-
-                            <!-- Reason of Advance -->
-                            <mat-form-field appearance="outline" fxFlex="30%">
-                                <mat-label>Reason of Advance</mat-label>
-                                <input matInput formControlName="comment" name="comment">
-                            </mat-form-field>
-
-                            <!-- Spacer to push buttons to the right -->
-                            <div fxFlex></div>
-
-                            <!-- Buttons -->
-                            <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end center"
-                                class="sales-footer-buttons">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" [disabled]="!vadvanceAmount"
-                                    (click)="onSave()">Save</button>
-                            </div>
-
-                        </div>
-                    </form>
-
-                </div>
             </div>
         </div>
-
     </div>
 
+
+
+    <div class="modal-footer  p-12">
+        <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
+            <form [formGroup]="MainForm">
+                <div fxLayout="row" fxLayoutGap="6px">
+                    <!-- Advance Amount -->
+                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Advance Amount" formControlName="advanceAmt" type="number"
+                            [readonly]="true" [formGroup]="MainForm" [(ngModel)]="vadvanceAmount">
+                        </airmid-textbox>
+                    </div>
+                    <!-- Reason of Advance -->
+                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Reason of Advance" formControlName="comment" type="text"
+                            [formGroup]="MainForm"></airmid-textbox>
+                    </div>
+
+                    <!-- Spacer to push buttons to the right -->
+                    <!-- <div fxFlex></div>  -->
+                </div>
+            </form>
+            <div>
+                <div class="modal-footer-buttons" fxLayoutGap="6px">
+                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                    <button class="btn btn-primary" [disabled]="!vadvanceAmount" (click)="onSave()">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

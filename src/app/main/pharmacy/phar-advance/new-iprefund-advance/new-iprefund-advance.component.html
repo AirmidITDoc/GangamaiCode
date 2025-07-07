@@ -1,9 +1,9 @@
-<div class="modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">IP Pharmacy Refund Advance</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Pharmacy Refund Advance</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -12,7 +12,7 @@
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
                     <div class="close-icon">
-                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <button mat-icon-button tabIndex="-1" (click)="OnReset()" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -21,32 +21,28 @@
         </div>
     </div>
 
+
     <div class="modal-body modal-body-light">
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
                 <div class="modal-card-container">
-                    <form [formGroup]="_PharAdvanceService.NewRefundForm">
-
+                    <form [formGroup]="RefundFooterForm"> 
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                             <div class="radio-container">
                                 <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
                                     <mat-radio-button value="1" [checked]="true">IP</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-
                             <div class="input-container gap-8" fxFlex="50%">
-
                                 <airmid-autocomplete lbl="RgId" [formGroup]="_PharAdvanceService.NewRefundForm"
                                     formControlName="RegID" placeholderText="IP-RegNo/Patient Name/Mobile No"
                                     label="Search Reg No / Patient Name / Mobile No"
                                     ApiUrl="Admission/search-patient?Keyword="
                                     (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                     TextField="formattedText">
-                                </airmid-autocomplete>
-
+                                </airmid-autocomplete>  
                             </div>
-                        </div>
-
+                        </div> 
                     </form>
                 </div>
                 <div class="modal-card-container">
@@ -153,187 +149,168 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="10px">
-                
+
                     <div class="airmid-table-container" fxFlex.gt-md="75%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                        <mat-card style="padding: 6px;height: 300px;">
-                
-                            <mat-table matSort [dataSource]="dsIpItemList" class="airmid-table" [@animateStagger]="{value:'50'}">
-                
+
+                        <mat-table matSort [dataSource]="dsIpItemList" class="airmid-table"
+                            [@animateStagger]="{value:'50'}">
+
+                            <ng-container matColumnDef="Date">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.date}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="AdvanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Advance Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.advanceAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="UsedAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Used Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.usedAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BalanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Balance Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.balanceAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="RefundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Refund Amt </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-form-field appearance="fill">
+                                        <input matInput [(ngModel)]="element.refundAmount" onlyNumber
+                                            (keyup)="getCellCalculation(element,element.refundAmount)"
+                                            (keypress)="keyPressCharater($event)">
+                                    </mat-form-field>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PrevRefundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Prev.Ref.Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span> {{element.prevRefundAmount | currency:'INR'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide':dsIpItemList!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsIpItemList!=null && dsIpItemList.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                        <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                            showFirstLastButtons>
+                        </mat-paginator>
+
+                    </div>
+
+                    <div class="airmid-table-container" fxFlex.gt-md="25%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                        <div fxlayout="column">
+                            <mat-table class="h-200" matSort [dataSource]="dsPreRefundList"
+                                [@animateStagger]="{value:'50'}" style="width: 100%;" class="airmid-table">
                                 <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.date}}
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.refundDate |
+                                        date}}
                                     </mat-cell>
                                 </ng-container>
-                
-                                <ng-container matColumnDef="AdvanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Advance Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.advanceAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-                
-                                <ng-container matColumnDef="UsedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Used Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.usedAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-                
-                                <ng-container matColumnDef="BalanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Balance Amt </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.balanceAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-                
+
                                 <ng-container matColumnDef="RefundAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Refund Amt </mat-header-cell>
+                                        Refund Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <mat-form-field appearance="fill">
-                                            <input matInput [(ngModel)]="element.refundAmount" onlyNumber
-                                                (keyup)="getCellCalculation(element,element.refundAmount)"
-                                                (keypress)="keyPressCharater($event)">
-                                        </mat-form-field>
+                                        <span> {{element.refundAmount | currency:'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
-                
-                                <ng-container matColumnDef="PrevRefundAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Prev.Ref.Amount
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.prevRefundAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-                
+
                                 <ng-container matColumnDef="loading">
                                     <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                     </mat-header-cell>
                                 </ng-container>
-                
+
                                 <ng-container matColumnDef="noData">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                         no data found...
                                     </mat-footer-cell>
                                 </ng-container>
-                
-                
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+
+                                <mat-header-row class="accent min" *matHeaderRowDef="displayedColumns1; sticky: true">
                                 </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit(contact)"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsIpItemList!=null}"></mat-footer-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':dsPreRefundList!=null}"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsIpItemList!=null && dsIpItemList.data.length==0)}"></mat-footer-row>
+                                    [ngClass]="{'hide':!(dsPreRefundList!=null && dsPreRefundList.data.length==0)}"></mat-footer-row>
                             </mat-table>
-                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
+                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
+                                showFirstLastButtons>
                             </mat-paginator>
-                
-                            <div class="net-amt">
-                                <span class="net-amt-label">Total Advance Amt:</span>&nbsp;
-                                <span class="net-amt-value" style="font-weight:bold;color: blue;">{{getAdvaceSum(dsIpItemList.data) |
-                                    currency:'INR' }}</span>
-                            </div>
-                        </mat-card>
-                    </div>
-                
-                    <div fxFlex.gt-md="25%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                        <mat-card style="padding: 6px;height: 300px;">
-                            <div fxlayout="column">
-                                <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur"
-                                    style="height: 100%;overflow: auto;">
-                                    <div class="spinner-border text-danger"></div>
-                                </div>
-                                <mat-table class="h-200" matSort [dataSource]="dsPreRefundList" [@animateStagger]="{value:'50'}"
-                                    style="width: 100%;">
-                
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.refundDate | date}}
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="RefundAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Refund Amount </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.refundAmount | currency:'INR'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-                
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-                
-                                    <mat-header-row class="accent min" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide':dsPreRefundList!=null}"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsPreRefundList!=null && dsPreRefundList.data.length==0)}"></mat-footer-row>
-                                </mat-table>
-                                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16" showFirstLastButtons>
-                                </mat-paginator>
-                
-                            </div>
-                        </mat-card>
-                    </div>
-                
-                </div>
-
-                <div class="table-footer mt-8">
-
-                    <form [formGroup]="_PharAdvanceService.NewRefundForm" style="padding: 10px;">
-                        <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
-
-                            <mat-form-field appearance="outline" fxFlex="16%">
-                                <mat-label>Total Refund Amount</mat-label>
-                                 <input matInput formControlName="ToatalRefunfdAmt" name="ToatalRefunfdAmt" required readonly
-                                    [(ngModel)]="vToatalRefunfdAmt">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="16%">
-                                 <mat-label> Balance Amount</mat-label>
-                                <input matInput formControlName="BalanceAmount" name="BalanceAmount" required readonly
-                                    [(ngModel)]="vBalanceAmount">
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" fxFlex="30%">
-                                <mat-label>Remark</mat-label>
-                                <input matInput formControlName="comment" name="comment">
-                            </mat-form-field>
-
-                            <div fxFlex></div>
-
-                            <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end center"
-                                class="sales-footer-buttons">
-                                <button class="btn btn-danger-outline" (click)="onClose()">class</button>
-                                <button class="btn btn-primary" (click)="onSave()">Save</button>
-                            </div>
-
                         </div>
-                    </form>
-
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-</div>
+    <div class="modal-footer  p-12">
+        <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
+            <form [formGroup]="RefundFooterForm">
+                <div fxLayout="row" fxLayoutGap="6px">
 
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Refund Amount" formControlName="ToatalRefunfdAmt" type="number"
+                            [readonly]="true" [formGroup]="RefundFooterForm">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Balance Amt" formControlName="BalanceAmount" type="number"
+                            [readonly]="true" [formGroup]="RefundFooterForm"></airmid-textbox>
+                    </div>
+                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Remark" formControlName="comment" type="text"
+                            [formGroup]="RefundFooterForm"></airmid-textbox>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <div class="modal-footer-buttons" fxLayoutGap="6px">
+                    <button class="btn btn-danger-outline" (click)="OnReset()">class</button>
+                    <button class="btn btn-primary" (click)="onSave()">Save</button>
+                </div>
+            </div>
+           
+        </div>
+    </div> 
+</div>

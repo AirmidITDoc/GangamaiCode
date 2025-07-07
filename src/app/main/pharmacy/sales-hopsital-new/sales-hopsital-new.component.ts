@@ -479,6 +479,10 @@ export class SalesHospitalNewComponent implements OnInit {
       this.bedId = obj.bedId;
     }
     this.getBillSummary(obj?.admissionID);
+      const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+      if (ItemIdElement) {
+        ItemIdElement.focus();
+      }
   }
   getSelectedObjOP(obj) {
     console.log(obj);
@@ -492,6 +496,10 @@ export class SalesHospitalNewComponent implements OnInit {
     this.OPDNo = obj.opdNo;
     this.HospitalId = obj.hospitalId;
     this.DoctorName = obj.doctorName;
+      const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+      if (ItemIdElement) {
+        ItemIdElement.focus();
+      }
   }
   onPatientChange(event: any): void {
     console.log(event);
@@ -842,6 +850,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.ItemSubform.get('concessionReasonId').clearValidators();
     this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
     this.ItemSubform.get('concessionReasonId').disable();
+    this.ItemSubform.get('roundoffAmt').setValue(0);
     this.saleSelectedDatasource.data = [];
     this.getDraftorderList();
     this.TotalAdvanceAmt = 0;
@@ -1520,7 +1529,7 @@ vExpDate:any;
         return num.toString().padStart(2, '0');
     }
   getPRESCRIPTION() {
-    if (this.ItemSubform.get('opIpType').value == '1') {
+    if (this.ItemSubform.get('opIpType').value != '2') {
       const dialogRef = this._matDialog.open(PrescriptionComponent, {
         maxWidth: '100%',
         height: '95%',
@@ -1589,36 +1598,43 @@ vExpDate:any;
         });
       });
     } else {
-      this.toastr.warning('Please Select opIpType IP.', 'Warning !', {
+      this.toastr.warning('Please Select opIpType IP or OP.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
   } 
   getBillSummary(admissionID) {
-    let query;
-    query = 'select  SUM(BalanceAmount) as CreditAmount from t_salesheader where OP_IP_ID=' + this.OP_IP_Id;
-    this._salesService.getBillSummaryQuery(query).subscribe((data) => {
-      console.log(data);
-      this.TotalCreditAmt = data[0].CreditAmount;
-    }); 
-
-
+    //Total Credit Amount
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OP_IP_ID",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "OP_IP_ID", "fieldValue": String(admissionID), "opType": "Contains" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    };
+    this._salesService.getBillSummaryQuery(vdata).subscribe((response) => {
+      console.log(response.data);
+      this.TotalCreditAmt = response?.data[0]?.creditAmount;
+    });
+//Total advance and advance bal Amount
     var m_data = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionID",
       "sortOrder": 0,
-      "filters": [{"fieldName": "AdmissionID",  "fieldValue": String(admissionID),  "opType": "Equals"}],
+      "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(admissionID), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": []
     }
     console.log(m_data)
     this._salesService.getAdvanceList(m_data).subscribe(Visit => {
-      const advancedetails = Visit.data;
-      this.TotalAdvanceAmt = advancedetails[0].advanceAmount
-      this.TotalBalanceAmt = advancedetails[0].balanceAmount
+      const advancedetails = Visit.data; 
+      this.TotalAdvanceAmt = Visit?.data[0]?.advanceAmount
+      this.TotalBalanceAmt = Visit?.data[0]?.balanceAmount
       console.log(advancedetails)
-    }); 
+    });
   }
 
 
