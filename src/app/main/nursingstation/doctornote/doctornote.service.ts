@@ -60,10 +60,10 @@ export class DoctornoteService {
   templateForm(): FormGroup {
     return this._formBuilder.group({
       docNoteTempId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      docsTempName:['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
-      templateDesc: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      addedBy:this._loggedService.currentUserValue.userId,
-      updatedBy:this._loggedService.currentUserValue.userId
+      docsTempName:['',[ Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(100)]],
+      templateDesc: ['',[ Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      addedBy:[this._loggedService.currentUserValue.userId,[ Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      updatedBy:[this._loggedService.currentUserValue.userId,[ Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 

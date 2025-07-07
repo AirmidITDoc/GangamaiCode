@@ -341,7 +341,7 @@ export class NewPrescriptionComponent implements OnInit {
       isClosed: [false],
       isAddBy: [this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
       storeId: [Number(this.vstoreId) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      wardID: [Number(this.myForm.get('WardName').value) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]]
+      wardId: [Number(this.myForm.get('WardName').value) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
@@ -365,10 +365,9 @@ export class NewPrescriptionComponent implements OnInit {
       console.log(this.prescForm.value)
 
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
-        if (response) {
-          this.viewgetIpprescriptionReportPdf(response)
+     this.viewgetIpprescriptionReportPdf(response)
           this._matDialog.closeAll();
-        }
+        
       });
     } else {
       let invalidFields = [];
@@ -376,7 +375,7 @@ export class NewPrescriptionComponent implements OnInit {
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) {
-            invalidFields.push(`My Form: ${controlName}`);
+            invalidFields.push(`Prescription Form: ${controlName}`);
           }
         }
       }

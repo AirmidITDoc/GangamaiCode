@@ -1,9 +1,10 @@
 <div class="dialog-content-wrapper modal-wrapper grid-container">
 
+    <!-- Header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template </span>
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">New Template</span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -15,70 +16,63 @@
         </div>
     </div>
 
+    <!-- Body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
+            <form [formGroup]="Templateform">
+                <div fxLayout="column" fxLayoutGap="20px">
 
-            <div fxLayout="column" class="gap-12">
-                <form [formGroup]="Templateform">
-                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                        <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
-
-                            <airmid-textbox label="TemplateName" fxFlex formControlName="docsTempName"
-                                [value]="data?.docsTempName" [formGroup]="Templateform"
-                                [validations]="getValidationMessages().docsTempName" [maxLength]="100">
+                    <!-- Name & Category -->
+                    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start center">
+                        <!-- Template Name -->
+                        <div fxFlex.xs="100%" fxFlex.sm="50%" fxFlex="70%">
+                            <airmid-textbox
+                                label="Template Name"
+                                formControlName="docsTempName"
+                                [formGroup]="Templateform"
+                                [value]="data?.docsTempName"
+                                [validations]="getValidationMessages().docsTempName"
+                                [maxLength]="100">
                             </airmid-textbox>
+                        </div>
 
-                            <form [formGroup]="myform">
-                                <div fxFlex="20%" fxLayout="row">
-                                    <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
-                                        value="NursNote" class="gap-4">
-                                        <mat-label><b>Category:</b></mat-label>
-                                        <div fxLayout="row">
-                                            <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
-                                            <mat-radio-button value='DoctorNote'>DoctorNote</mat-radio-button>
-                                        </div>
-                                    </mat-radio-group>
-                                </div>
-                            </form>
+                        <!-- Radio Group -->
+                        <div fxFlex.xs="100%" fxFlex.sm="50%" fxFlex="30%">
+                            <mat-label><b>Category:</b></mat-label>
+                            <mat-radio-group
+                                formControlName="Category"
+                                fxLayout="row"
+                                class="gap-16 ml-8">
+                                <mat-radio-button value="NursNote">Nursing Note</mat-radio-button>
+                                <mat-radio-button value="DoctorNote" class="ml-16">Doctor Note</mat-radio-button>
+                            </mat-radio-group>
                         </div>
                     </div>
 
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <airmid-editor label="Template Details" formControlName="templateDesc"
-                                [(value)]="vTemplateDesc" [formGroup]="myform"></airmid-editor> -->
-
-                            <mat-label>Template Details</mat-label>
-                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
-                                [(ngModel)]="vTemplateDesc" required formControlName="templateDesc">
-                            </angular-editor>
-                        </div>
+                    <!-- Editor -->
+                    <div>
+                        <mat-label>Template Details</mat-label>
+                        <angular-editor
+                            [config]="editorConfig"
+                            formControlName="templateDesc"
+                            [(ngModel)]="vTemplateDesc"
+                            (blur)="onBlur($event)"
+                            style="height: 400px;">
+                        </angular-editor>
                     </div>
-                </form>
 
-            </div>
-
+                </div>
+            </form>
         </div>
     </div>
 
-    <div class="modal-footer" style="margin-top: 10px;">
+    <!-- Footer -->
+    <div class="modal-footer mt-10">
         <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
-            <!-- <form [formGroup]="myform">
-                <div>
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="myform"
-                        [(ngModel)]="isActive"></app-airmid-slider>
-                </div>
-                </form> -->
-            <form [formGroup]="Templateform">
-                <div class="modal-footer-buttons">
-                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary" (click)="onSubmit()">
-                        Save
-                    </button>
-                    <!-- [disabled]="myForm.invalid || dsItemList.data.length == 0" -->
-                </div>
-            </form>
-
+            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="12px">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
         </div>
     </div>
 

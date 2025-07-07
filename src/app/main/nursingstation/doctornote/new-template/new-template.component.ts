@@ -59,42 +59,48 @@ export class NewTemplateComponent implements OnInit {
         if (!this.Templateform.invalid) {
             this.Templateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
             this.Templateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
-            console.log("template json:", this.Templateform.value);
+            // console.log("template json:", this.Templateform.value);
 
             this._DoctornoteService.templateMasterSave(this.Templateform.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
+                this.onClose()
             });
-        }
-        else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-    }
+        } else {
+            let invalidFields = [];
 
-    getValidationMessages() {
-        return {
-            docsTempName: [
-                { name: "required", Message: "Template Name is required" },
-                { name: "maxlength", Message: "Template name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
+            if (this.Templateform.invalid) {
+                for (const controlName in this.Templateform.controls) {
+                    if (this.Templateform.controls[controlName].invalid) {
+                        invalidFields.push(`Template Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
         }
     }
+        getValidationMessages() {
+            return {
+                docsTempName: [
+                    { name: "required", Message: "Template Name is required" },
+                    { name: "maxlength", Message: "Template name should not be greater than 50 char." },
+                    { name: "pattern", Message: "Special char not allowed." }
+                ]
+            }
+        }
 
-    onClose() {
-        this.myform.reset();
-        this.Templateform.reset();
-        this.dialogRef.close();
-    }
+        onClose() {
+            this.myform.reset();
+            this.Templateform.reset();
+            this.dialogRef.close();
+        }
 
-    onClear(val: boolean) {
-        this.Templateform.reset();
-        this.myform.reset();
-        this.dialogRef.close(val);
+        onClear(val: boolean) {
+            this.Templateform.reset();
+            this.myform.reset();
+            this.dialogRef.close(val);
+        }
     }
-}

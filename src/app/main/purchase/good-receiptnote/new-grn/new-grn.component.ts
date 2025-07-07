@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -24,6 +24,7 @@ import { GoodReceiptnoteService } from '../good-receiptnote.service';
 import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
 import { NewGRNService } from './new-grn.service';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTType, ToastType } from './types';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 const moment = _rollupMoment || _moment;
@@ -36,6 +37,12 @@ const moment = _rollupMoment || _moment;
 })
 export class NewGrnComponent implements OnInit, OnDestroy {
     vsaveflag: boolean = true;
+
+    GrnInserForm: FormGroup;
+    GrnHeaderForm: FormGroup;
+    GrnDetailForm: FormGroup;
+    GrnItemInserForm: FormGroup;
+
 
     displayedColumns2 = [
         'Status',
@@ -156,7 +163,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     filteredoptionsToStore: Observable<string[]>;
     filteredoptionsSupplier: Observable<string[]>;
     filteredoptionsItemName: Observable<string[]>;
-    @ViewChild('picker') datePickerElement = MatDatepicker; 
+    @ViewChild('picker') datePickerElement = MatDatepicker;
     selectedAdvanceObj: PODetailList;
     optionsToStore: any;
     optionsFrom: any;
@@ -193,12 +200,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     lastDay2: string = '';
     vExpDate: string = '';
     dateTimeObj: any;
-    lastsupplierflag:boolean=false;
-    userFormGroup:FormGroup
+    lastsupplierflag: boolean = false;
+    userFormGroup: FormGroup
     // Make it true when you want to use mock data.
     mock = false;
-    vGRNType:boolean=true;
-    vPaymentType:boolean=false
+    vGRNType: boolean = true;
+    vPaymentType: boolean = false
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -217,38 +224,48 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         private snackBarService: SnackBarService,
         public toastr: ToastrService,
         private advanceDataStored: AdvanceDataStored,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         private newGRNService: NewGRNService,
-            private commonService: PrintserviceService,
-    ) { } 
+        private formBuilder: UntypedFormBuilder,
+        private commonService: PrintserviceService,
+    ) { }
     ngOnInit(): void {
-        // Static data
-        // this.dsItemNameList.data.push(
-        //     new ItemNameList(staticData),
-        // ); 
+
+        // new
+
+        this.GrnInserForm = this.createGrnInsert();
+        this.GrnHeaderForm = this.createGrnHeaderInsert();
+        // this.GrnDetailForm = this.createGrndetailInsert();
+        // this.GrnItemInserForm = this.createGrnItemInsert();
+
+
+        this.GrndetailArray.push(this.createGrndetailInsert());
+        this.ItemArray.push(this.createGrnItemInsert());
+
         this.userFormGroup = this._GRNList.getGRNForm();
-         this.userFormGroup.markAllAsTouched();
-          this._GRNList.GRNFinalForm.markAllAsTouched();
+        this.userFormGroup.markAllAsTouched();
+        this._GRNList.GRNFinalForm.markAllAsTouched();
         if (this.mock) {
-            this.setMockData(); 
+            this.setMockData();
         }
         if (this.data.chkNewGRN == 2) {
             //Edit GRN 
             debugger
             this.registerObj = this.data.Obj;
-            console.log(this.registerObj) 
+            console.log(this.registerObj)
             this.getGRNrtrvItemlist();
             this.selectChangeSupplier(this.registerObj);
-            if(this.registerObj.grntype == true){
-                this.userFormGroup.get('GRNType').setValue('true') 
-            }else{ 
-                this.userFormGroup.get('GRNType').setValue('false') 
-            } 
-              if(this.registerObj.Cash_CreditType == true){
-                this.userFormGroup.get('PaymentType').setValue('true')  
-            }else{ 
-                this.userFormGroup.get('PaymentType').setValue('false') 
-            } 
-  
+            if (this.registerObj.grntype == true) {
+                this.userFormGroup.get('GRNType').setValue('true')
+            } else {
+                this.userFormGroup.get('GRNType').setValue('false')
+            }
+            if (this.registerObj.Cash_CreditType == true) {
+                this.userFormGroup.get('PaymentType').setValue('true')
+            } else {
+                this.userFormGroup.get('PaymentType').setValue('false')
+            }
+
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -257,11 +274,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.dsItemNameList.data = obj.Items as ItemNameList[];
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
-        } 
-       
+        }
+
     }
     //Item selectedObj
-    getSelectedItem(item: GRNItemResponseType): void { 
+    getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
             return;
         }
@@ -279,19 +296,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
     }
-    getchangegstper(rate, GSTTYP): void { 
+    getchangegstper(rate, GSTTYP): void {
         debugger
-        const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
+        const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         const gstValues = [
             { value: 2.5 },
             { value: 6 },
             { value: 9 },
             { value: 14 }
-        ];  
+        ];
         if (rate >= 2.5) {
             const dvalue = gstValues.find(item => item.value == parseFloat(rate))
             if (!dvalue) {
-                 this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+                this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
                 // if (GSTTYP.formControlName == 'CGST') {
                 //     this.userFormGroup.get('CGST').setValue('')
                 // } else if (GSTTYP.formControlName == 'SGST') {
@@ -317,20 +334,20 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this.calculateTotalamt();
     }
-  //supplier det
-    selectChangeSupplier(supplier: any): void { 
+    //supplier det
+    selectChangeSupplier(supplier: any): void {
         let SupplierId = 0
-        if(supplier.value > 0){
-            SupplierId=supplier.value
-        }else if(this.registerObj){
-            SupplierId=this.registerObj.supplierId
+        if (supplier.value > 0) {
+            SupplierId = supplier.value
+        } else if (this.registerObj) {
+            SupplierId = this.registerObj.supplierId
         }
-        this._GRNList.getSupplierdetails(SupplierId).subscribe(response=>{ 
-            if(response){
+        this._GRNList.getSupplierdetails(SupplierId).subscribe(response => {
+            if (response) {
                 this.userFormGroup.patchValue({
                     Contact: response.contactPerson,
-                    Mobile:response.mobile,
-                    SupplierId:response.supplierId
+                    Mobile: response.mobile,
+                    SupplierId: response.supplierId
                 })
             }
         })
@@ -339,9 +356,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     minDate = new Date();
     maxDate = new Date(2024, 4, 1);
     followUpDate: string;
-    NxtMonths:any=3;
+    NxtMonths: any = 3;
     calculateLastDay() {
-        const inputDate = this.userFormGroup.get("ExpDate").value; 
+        const inputDate = this.userFormGroup.get("ExpDate").value;
         // // Reset values if input is empty
         // if (!inputDate) {
         //     this.vlastDay = '';
@@ -384,22 +401,22 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         // } else {
         //     this.resetDateAndShowError('Please enter date in MMYYYY format');
         // } 
-    
-        
-            const numericPattern = /^[0-9]+$/; 
-            const CurrentDate = new Date(); 
-            const Currentmonths = new Date(); 
-            const currentMonth = Currentmonths.getMonth();
-            console.log(currentMonth)
-            const currentYear = CurrentDate.getFullYear();
-            console.log(currentYear)   
-    debugger
-            if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+
+
+        const numericPattern = /^[0-9]+$/;
+        const CurrentDate = new Date();
+        const Currentmonths = new Date();
+        const currentMonth = Currentmonths.getMonth();
+        console.log(currentMonth)
+        const currentYear = CurrentDate.getFullYear();
+        console.log(currentYear)
+        debugger
+        if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);  
-        
-            if (year >= currentYear){
-                if (month <= currentMonth && year == currentYear)  {
+            const year = +inputDate.substring(2, 6);
+
+            if (year >= currentYear) {
+                if (month <= currentMonth && year == currentYear) {
                     Swal.fire({
                         icon: "warning",
                         title: "This item is already expired",
@@ -407,7 +424,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         timer: 1500
                     });
                     this.vlastDay = '';
-                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
                     return
                 }
                 if (month > 12 && month <= 0) {
@@ -422,22 +439,22 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
                 const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-                this.userFormGroup.get('ExpDate').setValue(this.vlastDay) 
-                  const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                        if (QtyElement) {
-                            QtyElement.focus();
-                        } 
+                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                if (QtyElement) {
+                    QtyElement.focus();
+                }
 
             } else {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "This item is already expired",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    this.vlastDay = '';
-                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-                    return
+                Swal.fire({
+                    icon: "warning",
+                    title: "This item is already expired",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                this.vlastDay = '';
+                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                return
                 // if (month > 12 && month <= 0) {
                 //     this.vlastDay = '';
                 //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
@@ -454,8 +471,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 //         if (QtyElement) {
                 //             QtyElement.focus();
                 //         } 
-            } 
-        } else {  
+            }
+        } else {
             this.vlastDay = '';
             this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
             this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
@@ -463,7 +480,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             });
             return;
         }
-    
+
     }
 
     private resetDateAndShowError(message: string): void {
@@ -502,7 +519,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //     this.vlastDay = '';
         // }
 
-        
+
         // const CurrentDate = new Date(); 
         // const Currentmonths = new Date(); 
         // const currentMonth = Currentmonths.getMonth(); 
@@ -548,16 +565,16 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
 
 
-        const numericPattern = /^[0-9]+$/;  
-        const CurrentDate = new Date(); 
-        const Currentmonths = new Date(); 
-        const currentMonth = Currentmonths.getMonth(); 
-        const currentYear = CurrentDate.getFullYear(); 
+        const numericPattern = /^[0-9]+$/;
+        const CurrentDate = new Date();
+        const Currentmonths = new Date();
+        const currentMonth = Currentmonths.getMonth();
+        const currentYear = CurrentDate.getFullYear();
 
         if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);  
-        
+            const year = +inputDate.substring(2, 6);
+
             if (year <= currentYear) {
                 if (month <= currentMonth) {
                     Swal.fire({
@@ -567,7 +584,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         timer: 1500
                     });
                     this.lastDay1 = '';
-                   contact.ExpDate = '';
+                    contact.ExpDate = '';
                     return
                 }
                 if (month > 12 && month <= 0) {
@@ -580,33 +597,33 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 }
                 const lastDay1 = this.getLastDayOfMonth(month, year);
                 this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`; 
-                contact.ExpDate = this.lastDay1; 
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+                contact.ExpDate = this.lastDay1;
             } else {
                 if (month > 12 && month <= 0) {
                     this.lastDay1 = '';
-                   contact.ExpDate = '';
+                    contact.ExpDate = '';
                     this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
                         toastClass: 'tostr-tost custom-toast-warning',
                     });
                     return;
                 }
-                 const lastDay1 = this.getLastDayOfMonth(month, year);
+                const lastDay1 = this.getLastDayOfMonth(month, year);
                 this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`; 
-                contact.ExpDate = this.lastDay1; 
-            } 
-        } else {  
+                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+                contact.ExpDate = this.lastDay1;
+            }
+        } else {
             this.lastDay1 = '';
-             contact.ExpDate = '';
+            contact.ExpDate = '';
             this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-    
-    } 
- //Add item list
+
+    }
+    //Add item list
     onAddGRNItem() {
         if (!this.newGRNService.validateGRNForm(this.userFormGroup)) {
             return;
@@ -631,7 +648,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
                 PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
                 UnitMRP: formValues.MRP / formValues.ConversionFactor,
-                ItemId:formValues.ItemName.itemId
+                ItemId: formValues.ItemName.itemId
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
@@ -659,14 +676,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         form.patchValue({
             ItemName: "a",
             ConversionFactor: 1,
-            Qty:"",
+            Qty: "",
             UOMId: 0,
             HSNCode: "",
             BatchNo: "",
             ExpDate: "",
             FreeQty: 0,
-            Rate:"",
-            MRP:"",
+            Rate: "",
+            MRP: "",
             Disc: 0,
             Disc2: 0,
             DisAmount: 0,
@@ -684,7 +701,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this.userFormGroup.markAsUntouched();
     }
- 
+
     calculateTotalamt() {
         this.validateFormValues();
         const form = this.userFormGroup;
@@ -729,7 +746,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateDiscountAmount();
         this.calculateGSTType();
     }
-    calculateDiscper2Amt(){}
+    calculateDiscper2Amt() { }
     // Calculate discount when discount percentage changes
     calculateDiscountAmount() {
         const form = this.userFormGroup;
@@ -809,13 +826,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
     }
 
-    IsDiscPer2:boolean=false;
-    GSTTypeID:any=0;
-    GSTTypeName:any='';
-    itemlist:any=[];
+    IsDiscPer2: boolean = false;
+    GSTTypeID: any = 0;
+    GSTTypeName: any = '';
+    itemlist: any = [];
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
-        this.GSTTypeName =  event.text
+        this.GSTTypeName = event.text
         this.GSTTypeID = event.value;
         const newGSTType = event.text as GSTType;
         this.calculateGSTType(newGSTType);
@@ -831,19 +848,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             item.GSTType = newGSTType;
             this.getCellCalculation(item);
         })
-    } 
-       
+    }
+
     getCGSTAmt() {
         this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
         return this.CGSTFinalAmount
     }
     getSGSTAmt() {
         this.SGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
-        return  this.SGSTFinalAmount
+        return this.SGSTFinalAmount
     }
     getIGSTAmt() {
         this.IGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
-        return  this.IGSTFinalAmount
+        return this.IGSTFinalAmount
     }
     getTotalAmount() {
         return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
@@ -869,10 +886,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
         this.updateGRNFinalForm();
     }
-    updateCellGstType(){
+    updateCellGstType() {
         const itemList = this.dsGrnItemList
     }
-    updateGRNFinalForm() { 
+    updateGRNFinalForm() {
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
         const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
@@ -890,7 +907,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             ...updatableFormValues
         });
     }
- 
+
     private resetCalculations(contact: any): void {
         const resetValues = {
             TotalAmount: 0,
@@ -940,10 +957,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     }
     onSave() {
-        debugger  
-        const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
+        debugger
+        const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         // Apply save flow here 
-           if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
+        if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
             this.toastr.warning('Please select a supplier name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -969,18 +986,18 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             });
             return;
         }
-           if (!this.isValidForm()) {
-              Swal.fire('Please enter valid table data.');
-              return;
-            }
+        if (!this.isValidForm()) {
+            Swal.fire('Please enter valid table data.');
+            return;
+        }
 
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
             this.toastr.warning('Please enter a ReceivedBy Name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        } 
-       Swal.fire({
+        }
+        Swal.fire({
             title: 'Do you want to Save the GRN ',
             text: "You won't be able to revert this!",
             icon: "warning",
@@ -988,177 +1005,374 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, Save !"
-    
-          }).then((result) => {
+
+        }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                if(!this.registerObj.grnid){
+                if (!this.registerObj.grnid) {
                     this.OnSavenew();
-                }else{
-                    this.OnEditSave();  
+                } else {
+                    this.OnEditSave();
                 }
-              
+
             }
-          })
+        })
     }
-    OnSavenew() {  
+    // OnSavenew() {  
+    //     debugger
+    //     let grnSaveObj = {};
+    //     grnSaveObj['grnid'] = 0;
+    //     grnSaveObj['grnNumber'] = '0';
+    //     grnSaveObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
+    //     grnSaveObj['grntime'] = this.dateTimeObj.time;
+    //     grnSaveObj['storeId'] = this.userFormGroup.get('StoreId').value || 0;
+    //     grnSaveObj['supplierId'] = this.userFormGroup.get('StoreId').value || 0;
+    //     grnSaveObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
+    //     grnSaveObj['deliveryNo'] = '';
+    //     grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
+    //     if(this.userFormGroup.get('PaymentType').value == "true"){
+    //         grnSaveObj['cashCreditType'] =true;
+    //         grnSaveObj['paidAmount'] =  this._GRNList.GRNFinalForm.get('NetPayamt').value;  
+    //         grnSaveObj['balAmount'] = 0;  
+    //     }else{
+    //         grnSaveObj['cashCreditType'] = false; 
+    //         grnSaveObj['paidAmount'] =  0;
+    //         grnSaveObj['balAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;  
+    //     }
+    //     if(this.userFormGroup.get('GRNType').value == "true"){
+    //         grnSaveObj['grntype'] =true;
+    //     }else{
+    //         grnSaveObj['grntype'] = false;  
+    //     } 
+    //     grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
+    //     grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
+    //     grnSaveObj['totalVatamount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
+    //     grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
+    //     grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
+    //     grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
+    //     grnSaveObj['isVerified'] = false;
+    //     grnSaveObj['isClosed'] = false;  
+    //     grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.userId;
+    //     grnSaveObj['updatedBy'] = 0;  
+    //     grnSaveObj['prefix'] = 'GRN';
+    //     grnSaveObj['isCancelled'] = false;  
+    //     grnSaveObj['isPaymentProcess'] = true;
+    //     grnSaveObj['paymentPrcDate'] = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';;  
+    //     grnSaveObj['processDes'] = ''; 
+    //     grnSaveObj['invDate'] = this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01';
+    //     grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
+    //     grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
+    //     grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
+    //     grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
+    //     grnSaveObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
+    //     grnSaveObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
+    //     grnSaveObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
+    //     grnSaveObj['tranProcessId'] =  this.userFormGroup.get('GSTType').value || '';
+    //     grnSaveObj['tranProcessMode'] =this.GSTTypeName || '';
+    //     grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
+    //     grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
+    //     grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0;   
+
+    //     let SavegrnDetailObj = [];
+    //     this.dsItemNameList.data.forEach((element) => {
+    //         console.log(element); 
+    //         let grnDetailSaveObj = {};
+    //         grnDetailSaveObj['grndetId'] = 0;
+    //         grnDetailSaveObj['grnId'] = 0; 
+    //         grnDetailSaveObj['itemId'] = element.ItemId || 0;
+    //         grnDetailSaveObj['uomId'] = element.UOMId || 0;
+    //         grnDetailSaveObj['receiveQty'] = element.Qty || 0;
+    //         grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
+    //         grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
+    //         grnDetailSaveObj['rate'] = element.Rate || 0;
+    //         grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
+    //         grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
+    //         grnDetailSaveObj['vatPercentage'] = element.GST || 0;
+    //         grnDetailSaveObj['vatAmount'] = element.GSTAmount || 0;
+    //         grnDetailSaveObj['discPercentage'] = element.Disc || 0;
+    //         grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
+    //         grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+    //         grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
+    //         grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
+    //         grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
+    //         grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
+    //         grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
+    //         grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
+    //         grnDetailSaveObj['pono'] = 0; //this.IgstAmt;
+    //         grnDetailSaveObj['batchNo'] = element.BatchNo || "";
+
+    //         if (element.ExpDate && element.ExpDate.length === 10) {
+    //             const day = +element.ExpDate.substring(0, 2);
+    //             const month = +element.ExpDate.substring(3, 5);
+    //             const year = +element.ExpDate.substring(6, 10);
+
+    //             this.vExpDate = `${year}-${this.pad(month)}-${day}`;
+    //             // console.log(this.vExpDate)
+    //         } 
+    //         grnDetailSaveObj['batchExpDate'] = this.vExpDate;
+    //         grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
+    //         grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
+    //         grnDetailSaveObj['cgstper'] = element.CGST || 0;
+    //         grnDetailSaveObj['cgstamt'] = element.CGSTAmount || 0;
+    //         grnDetailSaveObj['sgstper'] = element.SGST || 0;
+    //         grnDetailSaveObj['sgstamt'] = element.SGSTAmount || 0;
+    //         grnDetailSaveObj['igstper'] = element.IGST || 0;
+    //         grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
+    //         grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
+    //         grnDetailSaveObj['stkId'] = element.StkID || 0; 
+    //         grnDetailSaveObj['isVerified'] = false; 
+    //         grnDetailSaveObj['isVerifiedDatetime'] =this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';  
+    //         grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+
+    //         SavegrnDetailObj.push(grnDetailSaveObj); 
+    //     }); 
+    //     grnSaveObj['tGrndetails'] = SavegrnDetailObj
+
+    //     let updateItemMasterGSTPerObjarray = [];
+    //     this.dsItemNameList.data.forEach((element) => {
+    //         let updateItemMasterGSTPerObj = {};
+    //         updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
+    //         updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
+    //         updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
+    //         updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
+    //         updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
+
+    //         updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
+    //     }); 
+    //     let submitData = {
+    //         "grn": grnSaveObj,
+    //        //"grnDetailSave": SavegrnDetailObj,
+    //         "grnItems": updateItemMasterGSTPerObjarray
+    //     };
+    //     console.log(submitData); 
+    //     this._GRNList.GRNSave(submitData).subscribe(response => {  
+    //         this._matDialog.closeAll();
+    //         this.viewgetGRNReportPdf(response)
+    //         this.OnReset();
+    //       });
+    // }
+    OnSavenew() {
         debugger
         let grnSaveObj = {};
-        grnSaveObj['grnid'] = 0;
-        grnSaveObj['grnNumber'] = '0';
-        grnSaveObj['grndate'] =this.datePipe.transform(this.dateTimeObj.date ,"yyyy-MM-dd") || '1900-01-01';
-        grnSaveObj['grntime'] = this.dateTimeObj.time;
-        grnSaveObj['storeId'] = this.userFormGroup.get('StoreId').value || 0;
-        grnSaveObj['supplierId'] = this.userFormGroup.get('StoreId').value || 0;
-        grnSaveObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
-        grnSaveObj['deliveryNo'] = '';
-        grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || ''; 
-        if(this.userFormGroup.get('PaymentType').value == "true"){
-            grnSaveObj['cashCreditType'] =true;
-            grnSaveObj['paidAmount'] =  this._GRNList.GRNFinalForm.get('NetPayamt').value;  
-            grnSaveObj['balAmount'] = 0;  
-        }else{
-            grnSaveObj['cashCreditType'] = false; 
-            grnSaveObj['paidAmount'] =  0;
-            grnSaveObj['balAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;  
+        // grnSaveObj['grnid'] = 0;
+        // grnSaveObj['grnNumber'] = '0';
+        // grnSaveObj['grndate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01';
+        // grnSaveObj['grntime'] = this.dateTimeObj.time;
+        // grnSaveObj['storeId'] = this.userFormGroup.get('StoreId').value || 0;
+        // grnSaveObj['supplierId'] = this.userFormGroup.get('StoreId').value || 0;
+        // grnSaveObj['invoiceNo'] = this.userFormGroup.get('InvoiceNo').value || '';
+        // grnSaveObj['deliveryNo'] = '';
+        // grnSaveObj['gateEntryNo'] = this.userFormGroup.get('GateEntryNo').value || '';
+
+        this.GrnHeaderForm.get("grnid").setValue(0)
+        this.GrnHeaderForm.get("grnNumber").setValue('0')
+        this.GrnHeaderForm.get("grndate").setValue(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01')
+        this.GrnHeaderForm.get("grntime").setValue(this.dateTimeObj.time)
+        this.GrnHeaderForm.get("storeId").setValue(this.userFormGroup.get('StoreId').value || 0)
+        this.GrnHeaderForm.get("supplierId").setValue(this.userFormGroup.get('SupplierId').value || 0)
+        this.GrnHeaderForm.get("invoiceNo").setValue(this.userFormGroup.get('InvoiceNo').value || '')
+        this.GrnHeaderForm.get("deliveryNo").setValue('')
+        this.GrnHeaderForm.get("gateEntryNo").setValue(this.userFormGroup.get('GateEntryNo').value || '')
+
+
+
+        if (this.userFormGroup.get('PaymentType').value == "true") {
+            // grnSaveObj['cashCreditType'] = true;
+            this.GrnHeaderForm.get("cashCreditType").setValue(true)
+            // grnSaveObj['paidAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;
+            // grnSaveObj['balAmount'] = 0;
+            this.GrnHeaderForm.get("paidAmount").setValue(this._GRNList.GRNFinalForm.get('NetPayamt').value)
+            this.GrnHeaderForm.get("balAmount").setValue(0)
+
+        } else {
+            // grnSaveObj['cashCreditType'] = false;
+            // grnSaveObj['paidAmount'] = 0;
+            // grnSaveObj['balAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value;
+
+
+            this.GrnHeaderForm.get("cashCreditType").setValue(false)
+            this.GrnHeaderForm.get("paidAmount").setValue(0)
+            this.GrnHeaderForm.get("balAmount").setValue(this._GRNList.GRNFinalForm.get('NetPayamt').value)
+
         }
-        if(this.userFormGroup.get('GRNType').value == "true"){
-            grnSaveObj['grntype'] =true;
-        }else{
-            grnSaveObj['grntype'] = false;  
-        } 
-        grnSaveObj['totalAmount'] = this._GRNList.GRNFinalForm.get('TotalAmt').value || 0;
-        grnSaveObj['totalDiscAmount'] = this._GRNList.GRNFinalForm.get('DiscAmount').value || 0;
-        grnSaveObj['totalVatamount'] = this._GRNList.GRNFinalForm.get('VatAmount').value || 0;
-        grnSaveObj['netAmount'] = this._GRNList.GRNFinalForm.get('NetPayamt').value || 0;
-        grnSaveObj['remark'] = this._GRNList.GRNFinalForm.get('Remark').value || '';
-        grnSaveObj['receivedBy'] = this._GRNList.GRNFinalForm.get('ReceivedBy').value || '';
-        grnSaveObj['isVerified'] = false;
-        grnSaveObj['isClosed'] = false;  
-        grnSaveObj['addedBy'] = this.accountService.currentUserValue.user.userId;
-        grnSaveObj['updatedBy'] = 0;  
-        grnSaveObj['prefix'] = 'GRN';
-        grnSaveObj['isCancelled'] = false;  
-        grnSaveObj['isPaymentProcess'] = true;
-        grnSaveObj['paymentPrcDate'] = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';;  
-        grnSaveObj['processDes'] = ''; 
-        grnSaveObj['invDate'] = this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01';
-        grnSaveObj['debitNote'] = this._GRNList.GRNFinalForm.get('DebitAmount').value || 0;
-        grnSaveObj['creditNote'] = this._GRNList.GRNFinalForm.get('CreditAmount').value || 0;
-        grnSaveObj['otherCharge'] = this._GRNList.GRNFinalForm.get('OtherCharge').value || 0;
-        grnSaveObj['roundingAmt'] = this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0;
-        grnSaveObj['totCgstamt'] = this.CGSTFinalAmount || 0; 
-        grnSaveObj['totSgstamt'] = this.SGSTFinalAmount || 0; 
-        grnSaveObj['totIgstamt'] = this.IGSTFinalAmount || 0; 
-        grnSaveObj['tranProcessId'] =  this.userFormGroup.get('GSTType').value || '';
-        grnSaveObj['tranProcessMode'] =this.GSTTypeName || '';
-        grnSaveObj['ewayBillNo'] = this._GRNList.GRNFinalForm.get('EwayBillNo').value || '';
-        grnSaveObj['ewayBillDate'] = this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099';
-        grnSaveObj['billDiscAmt'] =   this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0;   
-     
-        let SavegrnDetailObj = [];
-        this.dsItemNameList.data.forEach((element) => {
-            console.log(element); 
-            let grnDetailSaveObj = {};
-            grnDetailSaveObj['grndetId'] = 0;
-            grnDetailSaveObj['grnId'] = 0; 
-            grnDetailSaveObj['itemId'] = element.ItemId || 0;
-            grnDetailSaveObj['uomId'] = element.UOMId || 0;
-            grnDetailSaveObj['receiveQty'] = element.Qty || 0;
-            grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
-            grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
-            grnDetailSaveObj['rate'] = element.Rate || 0;
-            grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
-            grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
-            grnDetailSaveObj['vatPercentage'] = element.GST || 0;
-            grnDetailSaveObj['vatAmount'] = element.GSTAmount || 0;
-            grnDetailSaveObj['discPercentage'] = element.Disc || 0;
-            grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
-            grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
-            grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
-            grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
-            grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
-            grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
-            grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
-            grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
-            grnDetailSaveObj['pono'] = 0; //this.IgstAmt;
-            grnDetailSaveObj['batchNo'] = element.BatchNo || "";
+        if (this.userFormGroup.get('GRNType').value == "true") {
+            // grnSaveObj['grntype'] = true;
+            this.GrnHeaderForm.get("grntype").setValue(true)
 
-            if (element.ExpDate && element.ExpDate.length === 10) {
-                const day = +element.ExpDate.substring(0, 2);
-                const month = +element.ExpDate.substring(3, 5);
-                const year = +element.ExpDate.substring(6, 10);
+        } else {
+            // grnSaveObj['grntype'] = false;
+            this.GrnHeaderForm.get("grntype").setValue(false)
 
-                this.vExpDate = `${year}-${this.pad(month)}-${day}`;
-                // console.log(this.vExpDate)
-            } 
-            grnDetailSaveObj['batchExpDate'] = this.vExpDate;
-            grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
-            grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
-            grnDetailSaveObj['cgstper'] = element.CGST || 0;
-            grnDetailSaveObj['cgstamt'] = element.CGSTAmount || 0;
-            grnDetailSaveObj['sgstper'] = element.SGST || 0;
-            grnDetailSaveObj['sgstamt'] = element.SGSTAmount || 0;
-            grnDetailSaveObj['igstper'] = element.IGST || 0;
-            grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
-            grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
-            grnDetailSaveObj['stkId'] = element.StkID || 0; 
-            grnDetailSaveObj['isVerified'] = false; 
-            grnDetailSaveObj['isVerifiedDatetime'] =this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';  
-            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
-          
-            SavegrnDetailObj.push(grnDetailSaveObj); 
-        }); 
-        grnSaveObj['tGrndetails'] = SavegrnDetailObj
+        }
+        this.GrnHeaderForm.get("totalAmount").setValue(this._GRNList.GRNFinalForm.get('TotalAmt').value || 0)
+        this.GrnHeaderForm.get("totalDiscAmount").setValue(this._GRNList.GRNFinalForm.get('DiscAmount').value || 0)
+        this.GrnHeaderForm.get("totalVatamount").setValue(this._GRNList.GRNFinalForm.get('VatAmount').value || 0)
+        this.GrnHeaderForm.get("netAmount").setValue(this._GRNList.GRNFinalForm.get('NetPayamt').value || 0)
+        this.GrnHeaderForm.get("remark").setValue(this._GRNList.GRNFinalForm.get('Remark').value || '')
+        this.GrnHeaderForm.get("receivedBy").setValue(this._GRNList.GRNFinalForm.get('ReceivedBy').value || '')
+        this.GrnHeaderForm.get("isVerified").setValue(false)
+        this.GrnHeaderForm.get("isClosed").setValue(false)
+        this.GrnHeaderForm.get("addedBy").setValue(this.accountService.currentUserValue.user.userId)
+        this.GrnHeaderForm.get("updatedBy").setValue(0)
+        this.GrnHeaderForm.get("prefix").setValue('GRN')
+        this.GrnHeaderForm.get("isCancelled").setValue(false)
+        this.GrnHeaderForm.get("isPaymentProcess").setValue(true)
+        this.GrnHeaderForm.get("paymentPrcDate").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01')
+        this.GrnHeaderForm.get("processDes").setValue('')
+        this.GrnHeaderForm.get("invDate").setValue(this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01')
+        this.GrnHeaderForm.get("debitNote").setValue(this._GRNList.GRNFinalForm.get('DebitAmount').value || 0)
+        this.GrnHeaderForm.get("creditNote").setValue(this._GRNList.GRNFinalForm.get('CreditAmount').value || 0)
+        this.GrnHeaderForm.get("otherCharge").setValue(this._GRNList.GRNFinalForm.get('OtherCharge').value || 0)
+        this.GrnHeaderForm.get("roundingAmt").setValue(this._GRNList.GRNFinalForm.get('RoundingAmt').value || 0)
+        this.GrnHeaderForm.get("totCgstamt").setValue(this.CGSTFinalAmount || 0)
+        this.GrnHeaderForm.get("totSgstamt").setValue(this.SGSTFinalAmount || 0)
+        this.GrnHeaderForm.get("totIgstamt").setValue(this.IGSTFinalAmount || 0)
+        this.GrnHeaderForm.get("tranProcessId").setValue(this.userFormGroup.get('GSTType').value || '')
+        this.GrnHeaderForm.get("tranProcessMode").setValue(this.GSTTypeName || '')
+        this.GrnHeaderForm.get("ewayBillNo").setValue(this._GRNList.GRNFinalForm.get('EwayBillNo').value || '')
+        // this.GrnHeaderForm.get("ewayBillDate").setValue(this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate').value, "yyyy-MM-dd") || '01/01/1099')
 
-        let updateItemMasterGSTPerObjarray = [];
-        this.dsItemNameList.data.forEach((element) => {
-            let updateItemMasterGSTPerObj = {};
-            updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
-            updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
-            updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
-            updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
-            updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
-         
-            updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
-        }); 
-        let submitData = {
-            "grn": grnSaveObj,
-           //"grnDetailSave": SavegrnDetailObj,
-            "grnItems": updateItemMasterGSTPerObjarray
-        };
-        console.log(submitData); 
-        this._GRNList.GRNSave(submitData).subscribe(response => {  
-            this._matDialog.closeAll();
-            this.viewgetGRNReportPdf(response)
-            this.OnReset();
-          });
+        this.GrnHeaderForm.get("ewayBillDate").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd") || '01/01/1099')
+
+        this.GrnHeaderForm.get("billDiscAmt").setValue(this._GRNList.GRNFinalForm.get('DiscAmount2').value || 0)
+
+        // let SavegrnDetailObj = [];
+        // this.dsItemNameList.data.forEach((element) => {
+        //     console.log(element);
+        //     let grnDetailSaveObj = {};
+        //     grnDetailSaveObj['grndetId'] = 0;
+        //     grnDetailSaveObj['grnId'] = 0;
+        //     grnDetailSaveObj['itemId'] = element.ItemId || 0;
+        //     grnDetailSaveObj['uomId'] = element.UOMId || 0;
+        //     grnDetailSaveObj['receiveQty'] = element.Qty || 0;
+        //     grnDetailSaveObj['freeQty'] = element.FreeQty || 0;
+        //     grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
+        //     grnDetailSaveObj['rate'] = element.Rate || 0;
+        //     grnDetailSaveObj['totalAmount'] = element.TotalAmount || 0;
+        //     grnDetailSaveObj['conversionFactor'] = element.ConversionFactor || 0;
+        //     grnDetailSaveObj['vatPercentage'] = element.GST || 0;
+        //     grnDetailSaveObj['vatAmount'] = element.GSTAmount || 0;
+        //     grnDetailSaveObj['discPercentage'] = element.Disc || 0;
+        //     grnDetailSaveObj['discAmount'] = element.DisAmount || 0;
+        //     grnDetailSaveObj['discPerc2'] = element.DiscPer2 || 0;
+        //     grnDetailSaveObj['discAmt2'] = element.DiscAmt2 || 0;
+        //     grnDetailSaveObj['otherTax'] = 0; // this.CgstPer;
+        //     grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
+        //     grnDetailSaveObj['netAmount'] = element.NetAmount || 0;
+        //     grnDetailSaveObj['grossAmount'] = element.NetAmount || 0;
+        //     grnDetailSaveObj['totalQty'] = element.TotalQty || 0;
+        //     grnDetailSaveObj['pono'] = 0; //this.IgstAmt;
+        //     grnDetailSaveObj['batchNo'] = element.BatchNo || "";
+
+        //     if (element.ExpDate && element.ExpDate.length === 10) {
+        //         const day = +element.ExpDate.substring(0, 2);
+        //         const month = +element.ExpDate.substring(3, 5);
+        //         const year = +element.ExpDate.substring(6, 10);
+
+        //         this.vExpDate = `${year}-${this.pad(month)}-${day}`;
+        //         // console.log(this.vExpDate)
+        //     }
+        //     grnDetailSaveObj['batchExpDate'] = this.vExpDate;
+        //     grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
+        //     grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
+        //     grnDetailSaveObj['cgstper'] = element.CGST || 0;
+        //     grnDetailSaveObj['cgstamt'] = element.CGSTAmount || 0;
+        //     grnDetailSaveObj['sgstper'] = element.SGST || 0;
+        //     grnDetailSaveObj['sgstamt'] = element.SGSTAmount || 0;
+        //     grnDetailSaveObj['igstper'] = element.IGST || 0;
+        //     grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
+        //     grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
+        //     grnDetailSaveObj['stkId'] = element.StkID || 0;
+        //     grnDetailSaveObj['isVerified'] = false;
+        //     grnDetailSaveObj['isVerifiedDatetime'] = this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';
+        //     grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+
+        //     SavegrnDetailObj.push(grnDetailSaveObj);
+        // });
+        // grnSaveObj['tGrndetails'] = SavegrnDetailObj
+
+        // let updateItemMasterGSTPerObjarray = [];
+        // this.dsItemNameList.data.forEach((element) => {
+        //     let updateItemMasterGSTPerObj = {};
+        //     updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
+        //     updateItemMasterGSTPerObj['hsNcode'] = element.HSNCode || "";
+        //     updateItemMasterGSTPerObj['cgst'] = element.CGST || 0;
+        //     updateItemMasterGSTPerObj['sgst'] = element.SGST || 0;
+        //     updateItemMasterGSTPerObj['igst'] = element.IGST || 0;
+
+        //     updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
+        // });
+
+        // this.GrnInserForm.get("grn").setValue(this.GrnHeaderForm.value)
+        debugger
+        this.GrndetailArray.clear();
+        this.dsItemNameList.data.forEach(item => {
+            console.log(item)
+            this.GrndetailArray.push(this.createGrndetailInsert(item));
+        });
+
+        this.ItemArray.clear();
+        this.dsItemNameList.data.forEach(item => {
+            console.log(item)
+            this.ItemArray.push(this.createGrnItemInsert(item));
+        });
+
+
+        // let submitData = {
+        //     "grn": grnSaveObj,
+        //     //"grnDetailSave": SavegrnDetailObj,
+        //     "grnItems": updateItemMasterGSTPerObjarray
+        // };
+
+
+        this.GrnInserForm.get("grn").setValue(this.GrnHeaderForm.value)
+        console.log(this.GrnInserForm.value)
+
+        if (!this.GrnInserForm.invalid) {
+            console.log(this.GrnInserForm.value);
+            this._GRNList.GRNSave(this.GrnInserForm.value).subscribe(response => {
+                this._matDialog.closeAll();
+                this.viewgetGRNReportPdf(response)
+                // this.OnReset();
+            });
+        } else {
+            let invalidFields = [];
+            if (this.GrnInserForm.invalid) {
+                for (const controlName in this.GrnInserForm.controls) {
+                    if (this.GrnInserForm.controls[controlName].invalid) { invalidFields.push(`GRN Form: ${controlName}`); }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+
+        }
     }
-    OnEditSave() {  
-        debugger   
-         let PaidAmt = 0;
-         let balAmount = 0;
-         let cashCreditType,grntype
-        if(this.userFormGroup.get('PaymentType').value == true){
-            cashCreditType =true;
-            PaidAmt = this._GRNList.GRNFinalForm.get('NetPayamt').value; 
+    OnEditSave() {
+        debugger
+        let PaidAmt = 0;
+        let balAmount = 0;
+        let cashCreditType, grntype
+        if (this.userFormGroup.get('PaymentType').value == true) {
+            cashCreditType = true;
+            PaidAmt = this._GRNList.GRNFinalForm.get('NetPayamt').value;
             balAmount = 0
-        }else{
-            cashCreditType= false;
-            PaidAmt =  0
+        } else {
+            cashCreditType = false;
+            PaidAmt = 0
             balAmount = this._GRNList.GRNFinalForm.get('NetPayamt').value;
         }
-        if(this.userFormGroup.get('GRNType').value == true){
+        if (this.userFormGroup.get('GRNType').value == true) {
             grntype = true;
-        }else{
-            grntype = false;  
-        } 
+        } else {
+            grntype = false;
+        }
 
         let SavegrnDetailObj = [];
-        this.dsItemNameList.data.forEach((element) => { 
+        this.dsItemNameList.data.forEach((element) => {
             let grnDetailSaveObj = {};
             grnDetailSaveObj['grndetId'] = 0;
-            grnDetailSaveObj['grnId'] = this.registerObj.grnid; 
+            grnDetailSaveObj['grnId'] = this.registerObj.grnid;
             grnDetailSaveObj['itemId'] = element.ItemId || 0;
             grnDetailSaveObj['uomId'] = element.UOMId || 0;
             grnDetailSaveObj['receiveQty'] = element.Qty || 0;
@@ -1188,7 +1402,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
                 this.vExpDate = `${year}-${this.pad(month)}-${day}`;
                 // console.log(this.vExpDate)
-            } 
+            }
             grnDetailSaveObj['batchExpDate'] = this.vExpDate;
             grnDetailSaveObj['purUnitRate'] = element.PurUnitRate || 0;
             grnDetailSaveObj['purUnitRateWF'] = element.PurUnitRateWF || 0;
@@ -1199,13 +1413,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnDetailSaveObj['igstper'] = element.IGST || 0;
             grnDetailSaveObj['igstamt'] = element.IGSTAmount || 0;
             grnDetailSaveObj['mrpStrip'] = element.MRP || 0;
-            grnDetailSaveObj['stkId'] = element.StkID || 0; 
-            grnDetailSaveObj['isVerified'] = element.IsVerified || false; 
-            grnDetailSaveObj['isVerifiedDatetime'] =this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';  
-            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0; 
-            SavegrnDetailObj.push(grnDetailSaveObj); 
-        });  
-        
+            grnDetailSaveObj['stkId'] = element.StkID || 0;
+            grnDetailSaveObj['isVerified'] = element.IsVerified || false;
+            grnDetailSaveObj['isVerifiedDatetime'] = this.datePipe.transform(element.IsVerifiedDatetime, "yyyy-MM-dd") || '1900-01-01';
+            grnDetailSaveObj['isVerifiedUserId'] = element.IsVerifiedUserId || 0;
+            SavegrnDetailObj.push(grnDetailSaveObj);
+        });
+
         let grnUpdateObj = {
             "grnid": this.registerObj.grnid,
             "grnNumber": this.registerObj.grnNumber,
@@ -1229,13 +1443,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             "addedBy": 0,
             "updatedBy": this.accountService.currentUserValue.user.userId,
             "prefix": 'GRN',
-            "isCancelled": false, 
+            "isCancelled": false,
             "isPaymentProcess": true,
             "paymentPrcDate": this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01',
             "processDes": '',
-            'invDate' :this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01',
+            'invDate': this.datePipe.transform(this.userFormGroup.get('DateOfInvoice').value, "yyyy-MM-dd") || '1900-01-01',
             "paidAmount": PaidAmt,
-            "balAmount": balAmount, 
+            "balAmount": balAmount,
             "debitNote": this._GRNList.GRNFinalForm.get('DebitAmount').value || 0,
             "creditNote": this._GRNList.GRNFinalForm.get('CreditAmount').value || 0,
             "otherCharge": this._GRNList.GRNFinalForm.get('OtherCharge').value || 0,
@@ -1261,94 +1475,95 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 "igst": element.IGST || 0
             }
             updateItemMasterGSTPerObjarray1.push(updateItemMasterGSTPerObj);
-        });   
+        });
 
         let submitData = {
-            "grn": grnUpdateObj, 
+            "grn": grnUpdateObj,
             "grnItems": updateItemMasterGSTPerObjarray1
         };
-        console.log(submitData); 
-        this._GRNList.GRNEdit(submitData,this.registerObj.grnid).subscribe(response => {
+        console.log(submitData);
+        this._GRNList.GRNEdit(submitData, this.registerObj.grnid).subscribe(response => {
             if (response) {
                 this.viewgetGRNReportPdf(response)
                 this.OnReset();
             }
-          }); 
+        });
     }
     viewgetGRNReportPdf(data) {
+        console.log(data)
         this.commonService.Onprint("GRNID", data.grnid, "Good Receipt Note");
-      }
- 
+    }
+
     OnReset() {
         this._matDialog.closeAll();
         this.resetForm();
     }
-    getGRNrtrvItemlist() { 
-        var vdata = {  
+    getGRNrtrvItemlist() {
+        var vdata = {
             "first": 0,
             "rows": 10,
             "sortField": "GRNDetID",
             "sortOrder": 0,
             "filters": [
-              {
-                "fieldName": "GRNID",
-                "fieldValue": String(this.registerObj.grnid),
-                "opType": "Equals"
-              }
-            ],
-            "Columns":[],
-            "exportType": "JSON"
-          }  
-        this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
-          this.dsItemNameList.data = response.data 
-          console.log(this.dsItemNameList.data)
-          this.dsItemNameList.data.forEach(element=>{
-            this.chargeslist.push(
-                {  
-                    ItemId:element.itemId,
-                    ItemName: element.itemName,
-                    ConversionFactor: element.conversionFactor, 
-                    UOMId:element.uomId,
-                    BatchNo: element.batchNo,
-                    ExpDate: element.batchExpDate, 
-                    Qty: element.receiveQty,
-                    FreeQty:element.freeQty,
-                    TotalQty: element.totalQty,
-                    MRP: element.mrp,
-                    Rate:element.rate,
-                    TotalAmount: element.totalAmount,
-                    Disc:element.discPercentage,
-                    DisAmount:element.discAmount,
-                    Disc2:0,
-                    DiscAmt2: element.discAmt2,
-                    GST:element.vatPercentage,
-                    GSTAmount: element.vatAmount,
-                    CGST: element.cgstper,
-                    CGSTAmount:element.cgstamt,
-                    SGST: element.sgstper,
-                    SGSTAmount: element.sgstamt, 
-                    IGST:element.igstper,
-                    IGSTAmount: element.igstamt, 
-                    NetAmount: element.netAmount, 
-                    PurchaseId:element.purchaseId,
-                    PurDetId: element.purDetId,
-                    POBalQty: element.poBalQty, 
-                    POQty: element.poQty, 
-                    LandedRate:element.landedRate, 
-                    purUnitRate: element.purUnitRate,      //Purchaserate
-                    PurUnitRateWF: element.purUnitRateWf, 
-                    //unitmrp
-                    unitMRP: element.unitMRP, 
-                    IsVerifiedUserId: element.isVerifiedUserId, 
-                    IsVerified: element.isVerified, 
-                    IsVerifiedDatetime: element.isVerifiedDatetime, 
-                    StkID:element.stkID
+                {
+                    "fieldName": "GRNID",
+                    "fieldValue": String(this.registerObj.grnid),
+                    "opType": "Equals"
                 }
-            )
-          })
-          this.dsItemNameList.data = this.chargeslist; 
-        });  
-      } 
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
+            this.dsItemNameList.data = response.data
+            console.log(this.dsItemNameList.data)
+            this.dsItemNameList.data.forEach(element => {
+                this.chargeslist.push(
+                    {
+                        ItemId: element.itemId,
+                        ItemName: element.itemName,
+                        ConversionFactor: element.conversionFactor,
+                        UOMId: element.uomId,
+                        BatchNo: element.batchNo,
+                        ExpDate: element.batchExpDate,
+                        Qty: element.receiveQty,
+                        FreeQty: element.freeQty,
+                        TotalQty: element.totalQty,
+                        MRP: element.mrp,
+                        Rate: element.rate,
+                        TotalAmount: element.totalAmount,
+                        Disc: element.discPercentage,
+                        DisAmount: element.discAmount,
+                        Disc2: 0,
+                        DiscAmt2: element.discAmt2,
+                        GST: element.vatPercentage,
+                        GSTAmount: element.vatAmount,
+                        CGST: element.cgstper,
+                        CGSTAmount: element.cgstamt,
+                        SGST: element.sgstper,
+                        SGSTAmount: element.sgstamt,
+                        IGST: element.igstper,
+                        IGSTAmount: element.igstamt,
+                        NetAmount: element.netAmount,
+                        PurchaseId: element.purchaseId,
+                        PurDetId: element.purDetId,
+                        POBalQty: element.poBalQty,
+                        POQty: element.poQty,
+                        LandedRate: element.landedRate,
+                        purUnitRate: element.purUnitRate,      //Purchaserate
+                        PurUnitRateWF: element.purUnitRateWf,
+                        //unitmrp
+                        unitMRP: element.unitMRP,
+                        IsVerifiedUserId: element.isVerifiedUserId,
+                        IsVerified: element.isVerified,
+                        IsVerifiedDatetime: element.isVerifiedDatetime,
+                        StkID: element.stkID
+                    }
+                )
+            })
+            this.dsItemNameList.data = this.chargeslist;
+        });
+    }
     // Handlers
     validateFormValues() {
         const form = this.userFormGroup;
@@ -1447,36 +1662,165 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             console.log("The dialog was closed - Insert Action", result);
         });
     }
-    getLastThreeItemInfo(Obj) { 
+    getLastThreeItemInfo(Obj) {
         console.log(Obj.itemId)
-        var vdata={
+        var vdata = {
             "first": 0,
             "rows": 10,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [
-              {
-                "fieldName": "ItemId",
-                "fieldValue": String(Obj.itemId),
-                "opType": "Equals"
-              }
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(Obj.itemId),
+                    "opType": "Equals"
+                }
             ],
             "exportType": "JSON",
             "columns": [
-              {
-                "data": "string",
-                "name": "string"
-              }
+                {
+                    "data": "string",
+                    "name": "string"
+                }
             ]
         }
         this._GRNList.getLastThreeItemInfo(vdata).subscribe(response => {
-            this.dsLastThreeItemList.data = response.data as LastThreeItemList[]; 
-            console.log(response) 
+            this.dsLastThreeItemList.data = response.data as LastThreeItemList[];
+            console.log(response)
         });
     }
     isValidForm(): boolean {
-    return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0  && i.Qty > 0 && i.TotalQty > 0);
-  }
+        return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0 && i.Qty > 0 && i.TotalQty > 0);
+    }
+
+
+    createGrnInsert() {
+        return this.formBuilder.group({
+            grn: "",
+            // tGrndetails: this.formBuilder.array([]),
+            grnItems: this.formBuilder.array([]),
+
+        });
+    }
+    createGrnHeaderInsert(): FormGroup {
+        return this.formBuilder.group({
+            grnid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            grnNumber: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            grndate: [""],
+            grntime: [""],
+            storeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            supplierId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            invoiceNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            deliveryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            gateEntryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+
+            cashCreditType: [true],
+            grntype: [true],
+            totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalDiscAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalVatamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            remark: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            receivedBy: [0],
+            isVerified: [false],
+            isClosed: [true],
+            addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            updatedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            prefix: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isCancelled: [false],
+
+            isPaymentProcess: [true],
+            paymentPrcDate: ["", [this._FormvalidationserviceService.onlyNumberValidator()]],
+            processDes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            invDate: [""],
+            debitNote: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            creditNote: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            otherCharge: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            roundingAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            balAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totCgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totSgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totIgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranProcessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranProcessMode: [""],
+            billDiscAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ewayBillNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            ewayBillDate: "",
+            tGrndetails: this.formBuilder.array([]),
+            // grnItems: this.formBuilder.array([]),
+
+
+        });
+    }
+    createGrndetailInsert(item: any = {}): FormGroup {
+        return this.formBuilder.group({
+            grndetId: [item.grndetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            grnid: [item.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            uomid: [item.UOMId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            receiveQty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            mrp: [item.UnitMRP || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            rate: [item.Rate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            conversionFactor: [item.ConversionFactor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            vatPercentage: [item.GST || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discPercentage: [item.Disc || 0],
+            discAmount: [item.DisAmount || 0],
+            otherTax: [item.otherTax || 0],
+            landedRate: [item.LandedRate || 0],
+            netAmount: [item.NetAmount || 0],
+            grossAmount: [item.GrossAmount || 0],
+            totalQty: [item.TotalQty || 0],
+            pono: [0],
+            batchNo: [item.BatchNo || ""],
+            batchExpDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],//[ this.datePipe.transform(item.vExpDate , "yyyy-MM-dd")],
+            purUnitRate: [item.PurUnitRate || 0],
+            purUnitRateWf: [item.PurUnitRateWF || 0],
+            cgstper: [item.CGST || 0],
+            cgstamt: [item.CGSTAmount || 0],
+            sgstper: [item.SGST || 0],
+            sgstamt: [item.SGSTAmount || 0],
+            igstper: [item.IGST || 0],
+            igstamt: [item.IGSTAmount || 0],
+            mrpStrip: [item.MRP || 0],
+            stkId: [item.StkID || 0],
+
+            discPerc2: [item.DiscPer2 || 0],
+            discAmt2: [item.DiscAmt2 || 0],
+            isVerified: [false],
+
+            isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],//[ this.datePipe.transform(item.isVerifiedDatetime , "yyyy-MM-dd")], //[item.isVerifiedDatetime],
+            isVerifiedUserId: [0],
+
+        });
+    }
+
+
+    createGrnItemInsert(item: any = {}): FormGroup {
+        return this.formBuilder.group({
+            itemId: [item.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            hsncode: [item.HSNCode, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cgst: [item.CGST, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            sgst: [item.SGST, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            igst: [item.IGST, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+        });
+    }
+
+
+    get GrndetailArray(): FormArray {
+        return this.GrnHeaderForm.get('tGrndetails') as FormArray;
+    }
+
+    get ItemArray(): FormArray {
+        return this.GrnInserForm.get('grnItems') as FormArray;
+    }
+
 }
 export class LastThreeItemList {
     ItemID: any;
@@ -1505,5 +1849,3 @@ export class LastThreeItemList {
         }
     }
 }
-
-

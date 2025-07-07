@@ -137,7 +137,7 @@ export class NewRequestforlabComponent implements OnInit {
           },
           {
             "fieldName": "ClassId",
-            "fieldValue":"1",// String(this.vClassId),
+            "fieldValue": String(this.vClassId),
             "opType": "Equals"
           }
         ],

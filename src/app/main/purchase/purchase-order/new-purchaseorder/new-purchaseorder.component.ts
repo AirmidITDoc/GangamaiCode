@@ -235,6 +235,9 @@ export class NewPurchaseorderComponent {
 
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
+    
+   this.PurchaseInsertform = this.getPurchaseInsertForm();
+    this.purchasedetailArray.push(this.createPurchasedetailForm());
 
 
 
@@ -283,9 +286,7 @@ export class NewPurchaseorderComponent {
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
     }
 
-    this.PurchaseInsertform = this.getPurchaseInsertForm();
-    this.purchasedetailArray.push(this.createPurchasedetailForm());
-
+ 
   }
 
   getPurchaseOrderForm() {

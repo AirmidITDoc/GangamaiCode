@@ -334,10 +334,13 @@ export class NursingnoteComponent implements OnInit {
     this.vAgeyear = '';
     this.vAgeMonth = '';
     this.vAgeDay = '';
+     this.vAge = '';
+    this.vGenderName = '';
     this.vRefDocName = '';
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
+    this.vDOA='';
     this.myform.get('RegID').setValue('')
   }
 
@@ -371,11 +374,7 @@ export class NursingnoteComponent implements OnInit {
     this._NursingStationService.getSchedulerlist(param).subscribe(data => {
       this.dsItemList.data = data.data as MedicineItemList[];
       this.Chargelist = data.data as MedicineItemList[];
-      console.log(this.dsItemList.data)
-      console.log(this.Chargelist)
-      // this.dsItemList.sort = this.sort
-      // this.dsItemList.paginator = this.Medicinepaginator
-    })
+         })
   }
 
 deleteTableRow(event, element) {
@@ -425,6 +424,7 @@ deleteTableRow(event, element) {
       console.log(this.myNursingForm.value)
 
       this._NursingStationService.NursingNoteInsert(this.myNursingForm.value).subscribe(response => {
+        this.OP_IP_Id=0
         this.initializeGridConfig()
         this.onClear();
       });
@@ -451,6 +451,7 @@ deleteTableRow(event, element) {
     this.vDoctNoteId = null;
     this.IsAddFlag = true
     this.vDescription = null;
+    this.onClearPatientInfo()
   }
   // patient hand over
   onSubmitHandOver() {

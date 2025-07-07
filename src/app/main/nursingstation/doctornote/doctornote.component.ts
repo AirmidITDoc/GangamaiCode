@@ -272,6 +272,7 @@ export class DoctornoteComponent implements OnInit {
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
+        this.OP_IP_Id=0;
         this.initializeGridConfig()
         this.onClear();
       });
@@ -392,6 +393,7 @@ export class DoctornoteComponent implements OnInit {
     this.IsAddFlag = true
     this.vDoctNoteId = null;
     this.vDescription = null;
+    this.onClearPatientInfo()
   }
 
   onClose() {
@@ -420,11 +422,15 @@ export class DoctornoteComponent implements OnInit {
     this.vAgeyear = '';
     this.vAgeMonth = '';
     this.vAgeDay = '';
+     this.vAge = '';
+    this.vGenderName = '';
     this.vAdmissionDate = '';
     this.vRefDocName = '';
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
+    this.vDOA='';
+
     this.myform.get('RegID').setValue('')
   }
 }

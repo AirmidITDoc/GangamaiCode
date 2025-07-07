@@ -61,12 +61,22 @@ export class NewTemplateComponent implements OnInit {
             this._NursingnoteService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {
                 this.onClear(true);
             });
-        }
-        else {
-            this.toastr.warning('please check from is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+        } else {
+            let invalidFields = [];
+
+            if (this.myTemplateform.invalid) {
+                for (const controlName in this.myTemplateform.controls) {
+                    if (this.myTemplateform.controls[controlName].invalid) {
+                        invalidFields.push(`Template Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
         }
     }
 
