@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { fuseAnimations } from "@fuse/animations";
+import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseConfigService } from "@fuse/services/config.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { EncryptionService } from "app/core/services/encryption.service";
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     captcha: string;
     captchaToken: string;
     obj: any;
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: UntypedFormBuilder,
@@ -32,7 +34,7 @@ export class LoginComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private serverMonitoringService: ServerMonitoringService,
         private _matDialog: MatDialog,
-        private encryptionService:EncryptionService
+        private encryptionService: EncryptionService
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -78,15 +80,41 @@ export class LoginComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
         this.obj = this.loginForm.value;
-        this.obj["CaptchaToken"] = this.captchaToken;
         if (this.loginForm.invalid) {
             return;
         }
-         this.obj.Username=this.encryptionService.encrypt(this.obj.Username);
-         this.obj.Password=this.encryptionService.encrypt(this.obj.Password);
-        this.authenticationService.login(this.obj).subscribe(
+        var data = {
+            CaptchaToken: this.captchaToken, Username: this.encryptionService.encrypt(this.obj.Username),
+            Password: this.encryptionService.encrypt(this.obj.Password),
+            CaptchaCode: this.loginForm.value.CaptchaCode
+        };
+        this.authenticationService.login(data).subscribe(
             (data) => {
-                if ((data?.userId ?? 0) > 0) {
+                debugger
+                if ((data?.status ?? 'Ok') != 'Ok') {
+                    this.confirmDialogRef = this._matDialog.open(
+                        FuseConfirmDialogComponent,
+                        {
+                            disableClose: false,
+                        }
+                    );
+                    this.confirmDialogRef.componentInstance.confirmMessage = data.msg;
+                    this.confirmDialogRef.afterClosed().subscribe((result) => {
+                        if (result) {
+                            this.authenticationService.confirmlogin({ Token: data.token }).subscribe((data) => {
+                                if ((data?.userId ?? 0) > 0) {
+                                    this.router.navigate([this.returnUrl]);
+                                }
+                            }, (error) => {
+                                this.serverMonitoringService.showServerDownMessage();
+                                this.errorMessage = error.error.message;
+                                this.loadCaptcha();
+                            });
+                        }
+                        this.confirmDialogRef = null;
+                    });
+                }
+                else if ((data?.userId ?? 0) > 0) {
                     this.router.navigate([this.returnUrl]);
                 }
                 else {
