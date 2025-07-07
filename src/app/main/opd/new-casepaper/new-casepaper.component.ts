@@ -877,8 +877,10 @@ export class NewCasepaperComponent implements OnInit {
       const heightInMeters = height / 100;
       const bmi = weight / (heightInMeters * heightInMeters);
       this.caseFormGroup.get('BMI')?.setValue(Math.round(bmi));
+
     } else {
       this.caseFormGroup.get('BMI')?.setValue(0);
+      // this.toastr.warning('Please enter valid height (above 30 cm) and weight.');
     }
   }
 
@@ -2043,8 +2045,8 @@ labDataLoadedMap: { [visitId: string]: boolean } = {};
   labColumns: string[] = [
     'labDate',
     'ServiceName',
-    'PatientType',
     'BillNo',
+    'PatientType',
     'Action'
   ]
 

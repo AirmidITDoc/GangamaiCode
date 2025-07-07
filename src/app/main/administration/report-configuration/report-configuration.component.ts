@@ -8,6 +8,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
 import { ReportConfigurationService } from './report-configuration.service';
+import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
 
 @Component({
     selector: 'app-report-configuration',
@@ -51,7 +52,7 @@ export class ReportConfigurationComponent implements OnInit {
                 heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
+                            this.onNew2(data);
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
@@ -94,12 +95,32 @@ export class ReportConfigurationComponent implements OnInit {
         });
     }
 
-    onSave(row: any = null) {
+    onNew2(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
         const dialogRef = this._matDialog.open(NewReportConfigurationComponent,
+            {
+                maxWidth: "80vw",
+                maxHeight: '95vh',
+                height:'95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+     onNew1(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewreportConfigComponent,
             {
                 maxWidth: "80vw",
                 maxHeight: '95vh',

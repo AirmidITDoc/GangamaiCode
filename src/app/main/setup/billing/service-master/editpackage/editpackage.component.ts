@@ -71,9 +71,9 @@ export class EditpackageComponent implements OnInit {
   createPackageDetail(item: any = {}): FormGroup {
     return this._formBuilder.group({
       packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceId:[item.ServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],              
-      packageServiceId: [item.PackageServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item.price ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId:[item.ServiceId ?? item.serviceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],              
+      packageServiceId: [item.PackageServiceId ?? item.packageServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item.price ?? item.Price ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [item.classId ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       classId: [item.tariffId ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
@@ -106,7 +106,6 @@ export class EditpackageComponent implements OnInit {
         this.dsPackageDet.data = data.data as PacakgeList[];
         this.PacakgeList = data.data as PacakgeList
         console.log(this.dsPackageDet.data)
-        console.log(this.PacakgeList)
       });
     }, 1000);
   }
@@ -118,7 +117,7 @@ export class EditpackageComponent implements OnInit {
   classId: any;
 tariffId: any;
   selectChangeService(data) {
-    console.log(data)
+    // console.log(data)
     this.vPackageServiceId = data.serviceId
     this.vPackageServiceName = data.serviceName
     this.classId = data.classId
@@ -155,13 +154,11 @@ tariffId: any;
         tariffId: this.tariffId ?? 0,
       });
 
-    console.log(this.PacakgeList)
-
     this.dsPackageDet.data = this.PacakgeList;
     this.serviceForm.reset();
     this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
     this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
-    console.log(this.dsPackageDet.data)
+    // console.log(this.dsPackageDet.data)
 
     this.vPackageServiceId = null;
     this.classId = null;
