@@ -9,7 +9,9 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
-import { PharAdvanceService } from '../phar-advance.service';
+import { PharAdvanceService } from '../phar-advance.service'; 
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -25,48 +27,23 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     'RefundAmount' 
   ];
   displayedColumns = [
-    'Date', 
-    //'AdvanceNo', 
+    'Date',  
     'AdvanceAmount',
     'UsedAmount',
     'BalanceAmount',
     'RefundAmount', 
     'PrevRefundAmount'
   ];
-
   dateTimeObj: any;
-  sIsLoading: string = ''; 
-  isRegIdSelected: boolean = false;
-  PatientListfilteredOptionsref: any;
-  screenFromString = 'pharma-refund';
-  noOptionFound: any;
-  filteredOptions: any;
-  vToatalRefunfdAmt:any;
-  vBalanceAmount:any;
-  vRegNo: any;
-  vPatienName: any;
-  vMobileNo: any;
-  vAdmissionDate: any;
-  vAdmissionID: any;
-  vIPDNo: any; 
-  vRoomName:any;
-  vTariffName:any;
-  vBedName:any;
-  vCompanyName:any;
-  vDoctorName:any;
-  vGenderName:any;
-  vAge:any;
-  vAgeMonth:any;
-  vAgeDay:any;
-  vRefDocName:any;
-  vDepartment:any;
-  vadvanceAmount:any;
-  vRegId:any;
-  vPatientType:any;
-  dsIpItemList = new MatTableDataSource<IpItemList>(); 
-  dsPreRefundList =  new MatTableDataSource<IpItemList>();
-  vAdmissionTime: any;
+  sIsLoading: string = '';   
+   screenFromString = 'Common-form';
+  vPatienName: any;   
   regObj: any;
+  RefundFooterForm:FormGroup
+   RefundSaveForm:FormGroup 
+dsPreRefundList= new MatTableDataSource<IpItemList>();
+dsIpItemList= new MatTableDataSource<IpItemList>();
+
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -79,109 +56,97 @@ export class NewIPRefundAdvanceComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public formBuilder:FormBuilder,
+    public _FormvalidationserviceService:FormvalidationserviceService,
     public dialogRef: MatDialogRef<NewIPRefundAdvanceComponent>,
   ) { }
 
   ngOnInit(): void {
+     this.RefundFooterForm = this._PharAdvanceService.NewRefundForm
+      this.RefundFooterForm.markAllAsTouched()
+      this.RefundSaveForm = this.IPAdRefundSaveFormInsert();
   }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  getRefSearchList() {
-    var m_data = {
-      "Keyword": `${this._PharAdvanceService.NewRefundForm.get('RegID').value}%`
-    }
-    if (this._PharAdvanceService.NewRefundForm.get('RegID').value.length >= 1) {
-      this._PharAdvanceService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptionsref = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
+    IPAdRefundSaveFormInsert(): FormGroup {
+      return this.formBuilder.group({ 
+        phAdvanceHeader: this.formBuilder.group({
+           advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]] 
+        }),   
+        pharmacyRefund: this.formBuilder.group({
+          refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          refundDate:['',[this._FormvalidationserviceService.validDateValidator()]],
+          refundTime:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+          billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          advanceId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+          opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          opdIpdId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+          refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          remark: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+          transactionId:0,
+          addBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          isCancelled: [false],
+          isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+          strId: [this._loggedService.currentUserValue.user.storeId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]]  
+        }), 
+       phAdvRefundDetail:this.formBuilder.array([]),
+       phAdvanceDetailBalAmount:this.formBuilder.array([]),
+       pharPayment: '' 
       });
     }
+  CreatePhAdvRefundDetail(item: any) {
+    return this.formBuilder.group({
+      advDetailId: [item?.advance, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundDate: this.datePipe.transform(new Date(),'yyyy-MM-dd'),
+      refundTime: this.datePipe.transform(new Date(),'hh:mm'),
+      advRefundAmt: [item?.asas, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    })
   }
+  CreatePhAdvRefundBalDet(item: any) {
+    return this.formBuilder.group({
+      advanceDetailId: [item?.asasas, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.asaas, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [item?.asasas, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    })
+  }
+ get AdvRefundDetailsArray(): FormArray{
+  return this.RefundSaveForm.get('phAdvRefundDetail') as FormArray;
+ }
+  get AdvRefundBalDetArray(): FormArray{
+  return this.RefundSaveForm.get('phAdvanceDetailBalAmount') as FormArray;
+ }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  } 
  getSelectedObjIP(obj) {
     if ((obj.regID ?? 0) > 0) {
       this.regObj = obj
       console.log("Admitted patient:", this.regObj)
-      this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vAdmissionTime = obj.admissionTime
-      this.vAdmissionID = obj.admissionID;
+      this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName 
       this.getRefundAdvanceList(obj);
     }
-  }
-  // getAdvanceOldList(obj) { 
-  //   let strSql = "select AdmissionId,DOA,IPDNo,AdmittedDr from lvwAdmissionListWithRegNoForPhar where RegNo = " + this.vRegNo + " order by AdmissionId desc"
-  //   this._PharAdvanceService.getAdvanceOldList(strSql).subscribe(data => {
-  //     this.dsRefIpItemList.data = data as any;
-  //     console.log(this.dsRefIpItemList.data)
-  //     this.dsRefIpItemList.sort = this.sort;
-  //     this.dsRefIpItemList.paginator = this.Secondpaginator;
-  //   });   
-  // }
-  
+  } 
   getRefundAdvanceList(obj) {
     var m_data = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
       "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue":String(obj.AdmissionID),// "40917"
-          "opType": "Equals"
-        }
-
-      ],
+      "filters": [{"fieldName": "AdmissionId", "fieldValue":String(obj.AdmissionID), "opType": "Equals"}],
       "exportType": "JSON",
       "columns": []
-    }
-    console.log(m_data)
-
+    } 
     this._PharAdvanceService.getRefundAdvanceList(m_data).subscribe(Visit => {
       this.dsIpItemList.data = Visit.data as IpItemList[];
-      console.log(this.dsIpItemList.data)
-      if (this.dsIpItemList.data.length > 0) {
-        this.dsIpItemList.sort = this.sort;
-        this.dsIpItemList.paginator = this.Secondpaginator;
-      }
+      this.dsIpItemList.sort = this.sort;
+      this.dsIpItemList.paginator = this.paginator;
+      console.log(this.dsIpItemList.data) 
     });
-  }
-
-  // shoe 2nd table data
-  onEdit(row) { 
-    console.log(row); 
-     var m_data = {
-  "first": 0,
-  "rows": 10,
-  "sortField": "AdvanceId",
-  "sortOrder": 0,
-  "filters": [
-    {
-      "fieldName": "AdvanceId",
-      "fieldValue": String(row.AdvanceId), //"10086"
-      "opType": "Contains"
-    }
-  ],
-  "exportType": "JSON",
-  "columns": []
-}
-    console.log(m_data)
-    this.advanceId = row.AdvanceId;
-    this._PharAdvanceService.getPreRefundofAdvance(m_data).subscribe(Visit => {
-      this.dsPreRefundList.data =  Visit.data as IpItemList[]; 
-      console.log(this.dsPreRefundList.data); 
-    });  
-  }
-  
+    this.getAdvaceSum(this.dsIpItemList.data)
+  } 
   getCellCalculation(element, RefundAmt) {
-    debugger
-
+    debugger 
     if (RefundAmt > 0 && RefundAmt <= element.netBalAmt) {
       element.balanceAmount = ((element.netBalAmt) - (RefundAmt));
     }
@@ -196,163 +161,108 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       element.refundAmount = ''
       element.balanceAmount = element.netBalAmt;
     }
-  }
-
-
-  getAdvaceSum(element) {
-    let netAmt;
-    netAmt = element.reduce((sum, { advanceAmount }) => sum += +(advanceAmount || 0), 0);
-    this.vBalanceAmount = element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);;
-    this.vToatalRefunfdAmt = element.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2);; 
-    return netAmt;
-  }
- 
-  BalanceAmount:any;
-  advanceId:any; 
+    this.getPreRefundofAdvance(element)
+    this.getAdvaceSum(this.dsIpItemList.data)
+  } 
+  getAdvaceSum(ItemList) { 
+    const Itemlist = ItemList
+    let balAmt = Itemlist.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);
+    let RefundAmt = Itemlist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2); 
+    const advanceid = ItemList[0]?.advanceid
+    this.RefundFooterForm.patchValue({
+      ToatalRefunfdAmt:RefundAmt,
+      BalanceAmount:balAmt,
+      advanceId:advanceid
+    }) 
+  } 
   onSave() { 
-    if(this.vRegNo  == '' || this.vRegNo == null || this.vRegNo == undefined || this.vRegNo == '0'){
-      this.toastr.warning('Please select patient', 'Warning !', {
+    if(this.RefundFooterForm.invalid){
+        this.toastr.warning('Please check Refund Form is Invalid ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
-    if(this.vToatalRefunfdAmt == '' || this.vToatalRefunfdAmt == null || this.vToatalRefunfdAmt == undefined || this.vToatalRefunfdAmt == '0'){
-      this.toastr.warning('Please enter refund amount', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    } 
-      this.sIsLoading = 'submit'; 
-      let insertPharRefundofAdvance = {};
-      insertPharRefundofAdvance['refundDate'] = this.dateTimeObj.date || '01/01/1900'
-      insertPharRefundofAdvance['refundTime'] = this.dateTimeObj.time || '01/01/1900'
-      insertPharRefundofAdvance['billId'] = 0;
-      insertPharRefundofAdvance['advanceId'] = this.advanceId || 0;
-      insertPharRefundofAdvance['opD_IPD_ID'] = this.vAdmissionID;
-      insertPharRefundofAdvance['opD_IPD_Type'] = 1;
-      insertPharRefundofAdvance['refundAmount'] = parseFloat(this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value) || 0;
-      insertPharRefundofAdvance['remark'] =  this._PharAdvanceService.NewRefundForm.get('comment').value || '';
-      insertPharRefundofAdvance['transactionId'] =9;
-      insertPharRefundofAdvance['addedBy'] =  this._loggedService.currentUserValue.userId;
-      insertPharRefundofAdvance['isCancelled'] = false;
-      insertPharRefundofAdvance['isCancelledBy'] = 0;
-      insertPharRefundofAdvance['isCancelledDate'] ='01/01/1900';
-      insertPharRefundofAdvance['strId'] =  this._loggedService.currentUserValue.storeId || 0;
-      insertPharRefundofAdvance['refundId'] = 0; 
- 
-        let updatePharAdvanceHeaderobj = {};
-        updatePharAdvanceHeaderobj['advanceId'] =this.advanceId || 0;
-        updatePharAdvanceHeaderobj['advanceUsedAmount'] = 0;
-        updatePharAdvanceHeaderobj['balanceAmount'] = parseFloat(this.vBalanceAmount) || 0;
- 
 
-      let insertPharRefundofAdvanceDetail = [];
-      this.dsIpItemList.data.forEach((element) =>{
-        let insertPharRefundofAdvanceDetailobj = {};
-        insertPharRefundofAdvanceDetailobj['advDetailId'] =element.advanceDetailId || 0;
-        insertPharRefundofAdvanceDetailobj['refundDate'] = this.dateTimeObj.date || '01/01/1900';
-        insertPharRefundofAdvanceDetailobj['refundTime'] = this.dateTimeObj.time || '01/01/1900';
-        insertPharRefundofAdvanceDetailobj['advRefundAmt'] = element.refundAmount | 0;
-        insertPharRefundofAdvanceDetail.push(insertPharRefundofAdvanceDetailobj) 
-      }); 
+    const formValues = this.RefundFooterForm.value
+    this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.AdmissionID)
+    this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
+    this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(formValues.advanceId)
+    this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(formValues.advanceId)
+    this.RefundSaveForm.get('phAdvanceHeader.balanceAmount').setValue(formValues?.BalanceAmount)
+    if (this.RefundSaveForm.valid) {
 
-      let updatePharAdvanceDetailBalAmount = [];
-      this.dsIpItemList.data.forEach((element) =>{
-        let updatePharAdvanceDetailBalAmountobj = {}; 
-        updatePharAdvanceDetailBalAmountobj['advanceDetailID'] =element.advanceDetailId || 0;
-        updatePharAdvanceDetailBalAmountobj['balanceAmount'] = element.balanceAmount || 0;
-        updatePharAdvanceDetailBalAmountobj['refundAmount'] = element.refundAmount || 0;
-        updatePharAdvanceDetailBalAmount.push(updatePharAdvanceDetailBalAmountobj) 
-      }); 
-
+      this.AdvRefundDetailsArray.clear()
+      this.AdvRefundBalDetArray.clear()
+      this.dsIpItemList.data.forEach((element) => {
+        this.AdvRefundDetailsArray.push(this.CreatePhAdvRefundDetail(element))
+        this.AdvRefundBalDetArray.push(this.CreatePhAdvRefundBalDet(element))
+      })
       let PatientHeaderObj = {};
-      // PatientHeaderObj['Date'] = this.dateTimeObj.date || '01/01/1900'
-      // PatientHeaderObj['OPD_IPD_Id'] = this.vAdmissionID;
-      // PatientHeaderObj['PatientName'] =  this.vPatienName
-      // PatientHeaderObj['NetPayAmount'] = this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value || 0;
-      // PatientHeaderObj['BillId'] = 0;
-      // PatientHeaderObj['UHIDNO'] = this.vRegNo;
-      // PatientHeaderObj['DoctorName'] = this.vDoctorName;
-      // PatientHeaderObj['OPD_IPD_Id'] = this.vIPDNo;
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['PatientName'] = this.vPatienName
+      PatientHeaderObj['RegNo'] = this.regObj?.regNo;
+      PatientHeaderObj['DoctorName'] = this.regObj?.doctorName;
+      PatientHeaderObj['CompanyName'] = this.regObj?.companyName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.regObj?.ipdNo;
+      PatientHeaderObj['Age'] = this.regObj?.age;
+      PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundFooterForm.get('ToatalRefunfdAmt').value) || 0;
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Pharma-Refund",
+            advanceObj: PatientHeaderObj,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('==============================  Refung Amount ===========', result);
+        this.RefundSaveForm.get('pharPayment').setValue(result.submitDataPay.ipPaymentInsert)
+        result.submitDataPay.ipPaymentInsert
+        console.log(this.RefundSaveForm.value);
+        this._PharAdvanceService.InsertRefundOfAdv(this.RefundSaveForm.value).subscribe(response => {
+          this.viewgetRefundofAdvanceReportPdf(response);
+          this.OnReset();
+        });
+      });
+    } else {
+      let invalidFields: string[] = [];
+      // checks nested error 
+      if (this.RefundSaveForm?.invalid) {
+        for (const controlName in this.RefundSaveForm.controls) {
+          const control = this.RefundSaveForm.get(controlName);
 
-      //   const dialogRef = this._matDialog.open(OPAdvancePaymentComponent,
-      //     {
-      //       maxWidth: "90vw",
-      //       height: '640px',
-      //       width: '70%', 
-      //       data: {
-      //         //vPatientHeaderObj: PatientHeaderObj,
-      //         FromName: "IP-Pharma-Refund",
-      //         advanceObj: PatientHeaderObj,
-      //       }
-      //     });
-
-        PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['PatientName'] =  this.vPatienName
-        PatientHeaderObj['RegNo'] =this.vRegNo;
-        PatientHeaderObj['DoctorName'] =this.vDoctorName;
-        PatientHeaderObj['CompanyName'] = this.vCompanyName; 
-        PatientHeaderObj['OPD_IPD_Id'] =  this.vIPDNo;
-        PatientHeaderObj['Age'] =   this.vAge ;
-        PatientHeaderObj['NetPayAmount'] =parseInt(this._PharAdvanceService.NewRefundForm.get('ToatalRefunfdAmt').value) || 0;
-          const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-              maxWidth: "80vw",
-              height: '650px',
-              width: '80%',
-              data: {
-                vPatientHeaderObj: PatientHeaderObj,
-                FromName: "IP-Pharma-Refund",
-                advanceObj: PatientHeaderObj,
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Advance Refund Data : ${controlName}.${nestedKey}`);
               }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('==============================  Refung Amount ===========',result);
-          // console.log(result.submitDataPay.ipPaymentInsert);
-          // console.log(result.submitDataPay);
-          let submitData = {
-            "insertPharRefundofAdvance": insertPharRefundofAdvance,
-            "updatePharAdvanceHeader": updatePharAdvanceHeaderobj,
-            "insertPharRefundofAdvanceDetail":insertPharRefundofAdvanceDetail,
-            "updatePharAdvanceDetailBalAmount":updatePharAdvanceDetailBalAmount,
-            "insertPharPayment":  result.submitDataPay.ipPaymentInsert
- 
-          };
-          console.log(submitData);
-          this._PharAdvanceService.InsertRefundOfAdv(submitData).subscribe(response => {
-
-            if (response) {
-              this.toastr.success('IP Pharma Refund Of Advance data Saved Successfully !', 'Saved !', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });  
-                  this.viewgetRefundofAdvanceReportPdf(response);
-                  this.OnReset();
-                  this._matDialog.closeAll();  
-            } else {
-              this.toastr.success('IP Pharma Refund Of Advance data not Saved!', 'Error!', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });    
-            } 
-          });
-
-        });  
-        
-  }
-
-  onClose() {
-    this._matDialog.closeAll();
-    this.OnReset();
-  }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Advance Refund Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }  
   OnReset() {
-    this._PharAdvanceService.NewRefundForm.reset();
-    this._PharAdvanceService.NewRefundForm.get('Op_ip_id').setValue(1);
+    this.RefundFooterForm.reset();
+    this.RefundFooterForm.get('Op_ip_id').setValue(1); 
+    this.RefundFooterForm.get('RegID').setValue('');
     this.dsIpItemList.data = [];
-    this._PharAdvanceService.NewRefundForm.get('RegID').setValue('')
-  }
-
-  viewgetRefundofAdvanceReportPdf(contact) {
-       
+    this.dsPreRefundList.data = [];
+    this._matDialog.closeAll();
+  } 
+  viewgetRefundofAdvanceReportPdf(contact) { 
     this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-     
+    setTimeout(() => { 
     this._PharAdvanceService.getViewPahrmaRefundAdvanceReceipt(
    contact
     ).subscribe(res => {
@@ -373,9 +283,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
    
     },100)
     
-  }
- 
-
+  } 
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -385,9 +293,24 @@ export class NewIPRefundAdvanceComponent implements OnInit {
       return false;
     }
   }
+    // shoe 2nd table data
+  getPreRefundofAdvance(row) {  
+     var m_data = {
+  "first": 0,
+  "rows": 10,
+  "sortField": "AdvanceId",
+  "sortOrder": 0,
+  "filters": [ { "fieldName": "AdvanceId", "fieldValue": String(row.AdvanceId),  "opType": "Contains" }],
+  "exportType": "JSON",
+  "columns": []
+}  
+    this._PharAdvanceService.getPreRefundofAdvance(m_data).subscribe(Visit => {
+      this.dsPreRefundList.data =  Visit.data as IpItemList[]; 
+      console.log(this.dsPreRefundList.data); 
+    });  
+  }
 }
-  export class IpItemList {
-   
+  export class IpItemList { 
     AdvanceNo: number;
     PreviousRef: number;
     BalanceAmount: any;

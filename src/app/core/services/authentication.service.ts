@@ -29,36 +29,48 @@ export class AuthenticationService {
     }
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
-    }p
+    } p
     getCaptcha(): Observable<any> {
         return this.http.GetData('Login/GetCaptcha');
     }
-    
+
     login(data: any): Observable<any> {
         return (this.http.PostData('Login/Authenticate', data).pipe(map((user) => {
-            if (user) {
+            if (user.status == "Ok") {
                 localStorage.setItem("currentUser", JSON.stringify(user));
                 this.currentUserSubject.next(user);
             }
             return user;
         })));
     }
-    
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem("currentUser");
-        this.currentUserSubject.next(null);
-        this.router.navigate(["auth/login"]);
+    confirmlogin(data: any): Observable<any> {
+        return (this.http.PostData('Login/ConfirmAuthenticate', data).pipe(map((user) => {
+            if (user.status == "Ok") {
+                localStorage.setItem("currentUser", JSON.stringify(user));
+                this.currentUserSubject.next(user);
+            }
+            return user;
+        })));
     }
-    
+
+    logout(): Observable<any> {
+        // remove user from local storage to log user out
+        return (this.http.PostData('Login/logout', null).pipe(map((user) => {
+            localStorage.removeItem("currentUser");
+            this.currentUserSubject.next(null);
+            this.router.navigate(["auth/login"]);
+            return user;
+        })));
+    }
+
     preventBackButton() {
         history.pushState(null, null, window.location.href);
         this.locationStrategy.onPopState(() => {
             history.pushState(null, null, window.location.href);
         });
     }
-    
-    
+
+
     getNavigationData() {
         // if (this._fuseNavigationService.getNavigation("main1")) {
         //     return;
@@ -68,11 +80,11 @@ export class AuthenticationService {
             try {
                 this._fuseNavigationService.unregister('main1');
             } catch {
-    
+
             }
             this._fuseNavigationService.register("main1", this.navigation);
             this._fuseNavigationService.setCurrentNavigation("main1");
         });
-    
+
     }
 }

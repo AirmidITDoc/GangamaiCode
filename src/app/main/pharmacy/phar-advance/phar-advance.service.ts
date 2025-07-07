@@ -67,12 +67,11 @@ export class PharAdvanceService {
    }
    CreaterNewRefundForm(){
     return this._formbuilder.group({
-      RegID: [''],
-      Op_ip_id: ['1'],
-      advanceAmt:[''],
-      comment:[''],
-      ToatalRefunfdAmt:[''], 
-      BalanceAmount:[''],
+      RegID: ['',[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Op_ip_id: ['1'], 
+      comment:['',this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+      ToatalRefunfdAmt:['',[this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
+      BalanceAmount:['',this._FormvalidationserviceService.AllowDecimalNumberValidator()],
     });
    }
    

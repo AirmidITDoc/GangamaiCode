@@ -39,6 +39,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { NewReportConfigurationComponent } from "./new-report-configuration/new-report-configuration.component";
 import { ReportConfigurationComponent } from "./report-configuration.component";
 import { ReportConfigurationService } from "./report-configuration.service";
+import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
     {
@@ -48,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ReportConfigurationComponent,NewReportConfigurationComponent],
+    declarations: [ReportConfigurationComponent,NewReportConfigurationComponent, NewreportConfigComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -88,7 +90,8 @@ const routes: Routes = [
         MatSidenavModule,
         //NgxQRCodeModule,
         //NgxPrintModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        DragDropModule
     ],
     providers: [ReportConfigurationService, DatePipe]
 })

@@ -17,41 +17,33 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="serviceForm">
-                
+
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="Old Tariff Name" 
-                            formControlName="oldTariffId"
-                            [formGroup]="serviceForm"
-                            [validations]="getValidationMessages().tariffId"
+                        <airmid-dropdown label="Old Tariff Name" formControlName="oldTariffId" [formGroup]="serviceForm"
                             [mode]="autocompleteModeName1">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="New Tariff Name" 
-                            formControlName="newTariffId"
-                            [formGroup]="serviceForm"
-                            [validations]="getValidationMessages().tariffId"
+                        <airmid-dropdown label="New Tariff Name" formControlName="newTariffId" [formGroup]="serviceForm"
                             [mode]="autocompleteModeName2">
                         </airmid-dropdown>
                     </div>
                 </div>
-                
+
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
+
                     <div>
                         <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="serviceForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
                     </div>
-         
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-         
+
                 </div>
 
             </form>
@@ -78,30 +70,37 @@
     </div>
 
     <div class="modal-body">
-  <div class="modal-body-container">
-    <form [formGroup]="serviceForm">
-      <div fxLayout="column" fxLayoutGap="16px">
-        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-          <airmid-dropdown 
-            label="New Tariff Name" 
-            formControlName="newTariffId"
-            [formGroup]="serviceForm"
-            [validations]="getValidationMessages().tariffId"
-            [mode]="autocompleteModeName2">
-          </airmid-dropdown>
-        </div>
+        <div class="modal-body-container">
+            <form [formGroup]="serviceTariffForm">
+                <div fxLayout="column" fxLayoutGap="16px">
+                    <div fxLayout="row" fxLayoutGap="12px">
 
-        <!-- Buttons aligned to the right and placed below -->
-        <div fxLayout="row" fxLayoutAlign="end center" class="button-actions mt-16">
-          <button class="btn btn-danger-outline">Close</button>
-          <button class="btn btn-primary ml-8" color="accent" (click)="onSubmitTariff()">
-            <span>Save</span>
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+                        <div fxLayoutGap="8px">
+                            <mat-checkbox name="IsRadiology" formControlName="isAll" value="false">
+                                Select All</mat-checkbox>
 
-    
+                            <mat-checkbox name="IsPathology" formControlName="isSelected" value="false">
+                                Select Particular</mat-checkbox>
+                        </div>
+
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isSelectedCheck">
+                        <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="serviceTariffForm"
+                          [mode]="autocompleteModeName2">
+                        </airmid-dropdown>
+                    </div>
+
+                    <!-- Buttons aligned to the right and placed below -->
+                    <div fxLayout="row" fxLayoutAlign="end center" class="button-actions">
+                        <button class="btn btn-danger-outline">Close</button>
+                        <button class="btn btn-primary ml-8" color="accent" (click)="onSubmitTariff()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </div>

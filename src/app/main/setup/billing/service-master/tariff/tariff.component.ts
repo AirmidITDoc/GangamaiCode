@@ -1,18 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceMasterService } from '../service-master.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-tariff',
   templateUrl: './tariff.component.html',
-  styleUrls: ['./tariff.component.scss']
+  styleUrls: ['./tariff.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class TariffComponent implements OnInit {
 
-  serviceForm: FormGroup;;
-  // isActive:boolean=true;
+  serviceForm: FormGroup;
+  serviceTariffForm: FormGroup;
+  isSelectedCheck: boolean = false;
 
   autocompleteModeName1: string = "Tariff";
   autocompleteModeName2: string = "Tariff";
@@ -27,6 +31,9 @@ export class TariffComponent implements OnInit {
   ngOnInit(): void {
     this.serviceForm = this._ServiceMasterService.createTariffmasterForm();
     this.serviceForm.markAllAsTouched();
+    this.serviceTariffForm = this._ServiceMasterService.createAllTariffmasterForm();
+    this.serviceTariffForm.markAllAsTouched();
+
     if ((this.data?.tariffId ?? 0) > 0) {
       // this.isActive=this.data.isActive
       this.serviceForm.patchValue(this.data);
@@ -36,6 +43,20 @@ export class TariffComponent implements OnInit {
     } else {
       this.hideSomeFields = false;
     }
+
+    this.serviceTariffForm.get('isAll')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.serviceTariffForm.get('isSelected')?.setValue(0, { emitEvent: false });
+        this.isSelectedCheck = false;
+      }
+    });
+
+    this.serviceTariffForm.get('isSelected')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.serviceTariffForm.get('isAll')?.setValue(0, { emitEvent: false });
+        this.isSelectedCheck = true;
+      }
+    });
   }
 
   onSubmit() {
@@ -71,17 +92,47 @@ export class TariffComponent implements OnInit {
     this.dialogRef.close(val);
   }
 
-  getValidationMessages() {
-    return {
-      tariffId: [
-        { name: "required", Message: "Tariff Name is required" },
-        { name: "maxlength", Message: "Tariff Name should not be greater than 50 char." },
-        { name: "pattern", Message: "Special char not allowed." }
-      ]
-    }
-  }
-
   onSubmitTariff() {
+    const isSelected = this.serviceTariffForm.get('isSelected')?.value;
+    const isAll = this.serviceTariffForm.get('isAll')?.value;
 
+    if (isSelected === true) {
+      this.serviceTariffForm.get('TariffId')?.setValidators([Validators.required]);
+
+      if (!this.serviceTariffForm.get('TariffId')?.value || this.serviceTariffForm.get('TariffId')?.value === false) {
+        this.toastr.warning('Select Tariff');
+        return;
+      }
+    }
+    if (isAll === true) {
+      this.serviceTariffForm.get('TariffId')?.clearValidators();
+      // this.serviceTariffForm.get('TariffId')?.setValue(0);
+    }
+    this.serviceTariffForm.get('TariffId')?.updateValueAndValidity();
+
+    if (!this.serviceTariffForm.invalid) {
+      console.log('Insert tariff:', this.serviceTariffForm.value);
+
+      // this._ServiceMasterService.SaveTariff(this.serviceTariffForm.value).subscribe(response => {
+      //   this.onClear(true);
+      // });
+
+    } else {
+      let invalidFields = [];
+
+      if (this.serviceTariffForm.invalid) {
+        for (const controlName in this.serviceTariffForm.controls) {
+          if (this.serviceTariffForm.controls[controlName].invalid) {
+            invalidFields.push(`Service Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
   }
 }

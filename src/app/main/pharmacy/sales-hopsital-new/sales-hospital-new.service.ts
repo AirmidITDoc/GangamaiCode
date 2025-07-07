@@ -113,7 +113,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
       return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
     } 
     public getBillSummaryQuery(query) {
-      return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+      return this._httpClient1.PostData("Sales/SalesPatientWiseCreditAmountList",query)
     } 
     public getSalesPrint(emp){
       return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);

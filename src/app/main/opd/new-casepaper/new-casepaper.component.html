@@ -212,15 +212,6 @@
                                                             style="margin-right: 10px; font-size: x-large;">F</span>
                                                     </mat-form-field>
 
-                                                    <!-- <mat-form-field appearance="outline" fxFlex="9%">
-                                                        <mat-label>B.Group</mat-label>
-                                                        <input matInput formControlName="BloodGroup"
-                                                            placeholder="BloodGroup" [maxLength]="3">
-                                                        <span matSuffix style="font-size: x-large;">|</span>
-                                                        <span matSuffix
-                                                            style="margin-right: 10px; font-size: x-large;">BG</span>
-                                                    </mat-form-field> -->
-
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>B.Group</mat-label>
                                                         <mat-select placeholder="BloodGroup" formControlName="BloodGroup"
@@ -1005,25 +996,27 @@
                                                                 {{element.serviceName}} </mat-cell>
                                                         </ng-container>
 
-                                                         <ng-container matColumnDef="PatientType">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                PatientType </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.patientType}} </mat-cell>
-                                                        </ng-container>
-
                                                          <ng-container matColumnDef="BillNo">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                 BillNo </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 {{element.pBillNo}} </mat-cell>
                                                         </ng-container>
+
+                                                        <ng-container matColumnDef="PatientType">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                PatientType </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-icon *ngIf="element.isCompleted" matTooltip="Completed" class="pill green-600 s-16">circle</mat-icon>
+                                                                <mat-icon *ngIf="!element.isCompleted" matTooltip="Pending" class="pill red-500 s-16">circle</mat-icon>
+                                                            </mat-cell>
+                                                        </ng-container>
                                                                                                 
                                                         <ng-container matColumnDef="Action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                                 Action </mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <button mat-icon-button matTooltip="Print">
+                                                                <button mat-icon-button matTooltip="Print" [disabled]="!element.isCompleted">
                                                                     <mat-icon>print</mat-icon>
                                                                 </button>
                                                             </mat-cell>
@@ -1073,25 +1066,27 @@
                                                                 {{element.serviceName}} </mat-cell>
                                                         </ng-container>
 
-                                                         <ng-container matColumnDef="PatientType">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                                PatientType </mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                {{element.patientType}} </mat-cell>
-                                                        </ng-container>
-
                                                          <ng-container matColumnDef="BillNo">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                                 BillNo </mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 {{element.pBillNo}} </mat-cell>
                                                         </ng-container>
+
+                                                         <ng-container matColumnDef="PatientType">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                PatientType </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <mat-icon *ngIf="element.isCompleted" matTooltip="Completed" class="pill green-600 s-16">circle</mat-icon>
+                                                                <mat-icon *ngIf="!element.isCompleted" matTooltip="Pending" class="pill red-500 s-16">circle</mat-icon>
+                                                            </mat-cell>
+                                                        </ng-container>
                                                                                                 
                                                         <ng-container matColumnDef="Action" stickyEnd>
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                                 Action </mat-header-cell>
                                                             <mat-cell *matCellDef="let element">
-                                                                <button mat-icon-button matTooltip="Print">
+                                                                <button mat-icon-button matTooltip="Print" [disabled]="!element.isCompleted">
                                                                     <mat-icon>print</mat-icon>
                                                                 </button>
                                                             </mat-cell>

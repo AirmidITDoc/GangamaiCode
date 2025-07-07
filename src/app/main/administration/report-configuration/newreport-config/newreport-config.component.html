@@ -1,0 +1,277 @@
+<!-- New -->
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Report Configuration</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <form [formGroup]="myform">
+                <input type="hidden" name="reportId" formControlName="reportId">
+                <div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Report Section" formControlName="reportSectionId"
+                                [formGroup]="myform" [mode]="autocompleteModedReport"
+                                (selectionChange)="ListView($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportName" formControlName="reportName" [value]="data?.reportName"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportName"
+                                [maxLength]="200">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Menu Name" formControlName="menuId" [formGroup]="myform"
+                                [mode]="autocompleteModedMenu" (selectionChange)="ListView1($event)">
+                            </airmid-dropdown>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportMode" formControlName="reportMode" [value]="data?.reportMode"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportMode"
+                                [maxLength]="500">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportTitle" formControlName="reportTitle"
+                                [value]="data?.reportTitle" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportTitle" [maxLength]="200">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportHeaderFile" formControlName="reportHeaderFile"
+                                [value]="data?.reportHeaderFile" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportHeaderFile" [maxLength]="1000">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <!-- add table -->
+
+                    <div fxLayout="row" fxLayoutAlign="end" style="margin-bottom: 5px;">
+                        <button class="btn btn-primary" (click)="getData()">GetList</button>
+                    </div>
+
+                    <div class="modal-card-container table-container fusePerfectScrollbar">
+                        <div class="table" fxFlex="100%">
+
+                            <div class="airmid-table-container">
+                                <mat-table matSort [dataSource]="dsReportList" [@animateStagger]="{value:'50'}"
+                                    class="airmid-table"  cdkDropList (cdkDropListDropped)="drop($event)">
+
+                                    <ng-container matColumnDef="isDisplay">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            IsDisplay</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
+                                                                    </mat-checkbox> -->
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportHeader">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            ReportHeader
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-form-field appearance="fill">
+                                                <!-- <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                                            (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" /> -->
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportColumn">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                            ReportColumn
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <!-- <span> {{element.reportName}}</span> -->
+                                        </mat-cell>
+                                        <!-- <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
+                                            <div cdkDrag cdkDragLockAxis="y" class="drag-cell">
+                                                {{ element.reportName }}
+                                            </div>
+                                        </mat-cell> -->
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportColumnWidth">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>ReportColumnWidth</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-form-field appearance="fill">
+                                                <!-- <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                                            (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" /> -->
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportAlign">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>ReportAlign</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <mat-form-field appearance="fill" class="report-align-select">
+                                                <mat-select [(ngModel)]="element.ReportAlign"
+                                                    (selectionChange)="onAlignChange(element)">
+                                                    <mat-option value="Left">Left</mat-option>
+                                                    <mat-option value="Center">Center</mat-option>
+                                                    <mat-option value="Right">Right</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReporttotalField">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReportTotalField
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
+                                                                    </mat-checkbox> -->
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportgroupByLabel">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                            fxShow.gt-sm>ReportgroupByLabel
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
+                                                                    </mat-checkbox> -->
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="summaryLabel">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>summaryLabel
+                                        </mat-header-cell>
+                                        <!-- <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                    <mat-form-field appearance="fill"
+                                                                        floatLabel="never">
+                                                                        <input matInput [maxLength]="200"
+                                                                            [(ngModel)]="element.Instruction || element.instruction"
+                                                                            type="text">
+                                                                    </mat-form-field>
+                                                                </mat-cell> -->
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sequence
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent min-width-2200"
+                                        *matHeaderRowDef="displayedColumn; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row class=" min-width-2200" #table1Row
+                                        *matRowDef="let contact; columns: displayedColumn;"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag>
+                                    </mat-row>
+                                    
+                                </mat-table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- table end -->
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="ReportFilter" formControlName="reportFilter"
+                                [value]="data?.reportFilter" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportFilter" [maxLength]="100">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>reportBodyFile</mat-label>
+                                <input matInput value="MultiTotalReportFormat.html" readonly />
+                            </mat-form-field>
+
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportFolderName" formControlName="reportFolderName"
+                                [value]="data?.reportFolderName" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportFolderName" [maxLength]="200">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportFileName" formControlName="reportFileName"
+                                [value]="data?.reportFileName" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportFileName" [maxLength]="200">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportSPName" formControlName="reportSpname"
+                                [value]="data?.reportSpname" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportSpname" [maxLength]="500">
+                            </airmid-textbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>ReportPageOrientation</mat-label>
+                                <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation"
+                                    name="reportPageOrientation">
+                                    <mat-option *ngFor="let i of reportPageOrientation" [value]="i">{{
+                                        i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>ReportPageSize</mat-label>
+                                <mat-select placeholder="reportPageSize" formControlName="reportPageSize"
+                                    name="reportPageSize">
+                                    <mat-option *ngFor="let i of reportPageSize" [value]="i">{{
+                                        i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal footer -->
+    <div class="modal-footer">
+        <div fxLayoutAlign="end">
+            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
