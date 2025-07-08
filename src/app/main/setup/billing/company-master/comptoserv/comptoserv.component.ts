@@ -107,7 +107,7 @@ export class ComptoservComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.companyForm = this._CompanyMasterService.createCompanymasterForm();  
+        this.companyForm = this._CompanyMasterService.createCompanymasterFormDemo();  
         this.companyForm.markAllAsTouched();          
     }
 
