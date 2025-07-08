@@ -441,7 +441,7 @@ export class OpPaymentComponent implements OnInit {
       if (this.data.FromName == "IP-Pharma-Advance") {
         this.Paymentobj['transactionType'] = 8;
       } else if (this.data.FromName == "IP-Pharma-Refund") {
-        this.Paymentobj['TtransactionTyperansactionType'] = 9;
+        this.Paymentobj['transactionType'] = 9;
       }
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
@@ -449,7 +449,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-      this.Paymentobj['eftno'] = String(this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo || 0);
+      this.Paymentobj['neftno'] = String(this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo || 0);
       this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
       this.Paymentobj['neftdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;

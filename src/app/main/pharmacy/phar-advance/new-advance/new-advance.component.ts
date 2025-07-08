@@ -88,8 +88,8 @@ export class NewAdvanceComponent implements OnInit {
     return this.formBuilder.group({
 
       pharmacyHeader: this.formBuilder.group({
-        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
@@ -99,9 +99,9 @@ export class NewAdvanceComponent implements OnInit {
         refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
+        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.AllowDecimalNumberValidator(), Validators.minLength(1),
         this._FormvalidationserviceService.notEmptyOrZeroValidator()
         ]],
         addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -119,12 +119,12 @@ export class NewAdvanceComponent implements OnInit {
         transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        advanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        usedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        usedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
         this._FormvalidationserviceService.notEmptyOrZeroValidator()
         ]],
-        refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         reasonOfAdvanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelled: [false],
@@ -188,13 +188,7 @@ export class NewAdvanceComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-    if (this.vadvanceAmount == '' || this.vadvanceAmount == null || this.vadvanceAmount == undefined || this.vadvanceAmount == 0) {
-      this.toastr.warning('Please enter advance amount', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
- 
+    } 
     this.insertForm?.get("pharmacyAdvance.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
@@ -207,7 +201,7 @@ export class NewAdvanceComponent implements OnInit {
     this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'shortTime'));
     this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-    this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? 0);
+    this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? '');
     this.insertForm?.get("pharmacyAdvanceDetails.refId")?.setValue(this.regObj?.regID || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.opdIpdId")?.setValue(this.regObj?.admissionID || 0);
 
@@ -221,10 +215,8 @@ export class NewAdvanceComponent implements OnInit {
         OPD_IPD_Id: this.regObj.ipdNo,
         Age: this.regObj.age,
         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
-        AdvanceDetailId: this.vAdvanceDetailID || 0, 
-      };
-
-      if (!this.vAdvanceId) { 
+        AdvanceDetailId: 0, 
+      }; 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
@@ -237,8 +229,9 @@ export class NewAdvanceComponent implements OnInit {
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          if (result && result.submitDataPay) {
-            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+          if (result && result.submitDataPay) { 
+             if (!this.vAdvanceId){
+             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
             this.insertForm.removeControl('pharmacyHeader'); 
             console.log(this.insertForm?.value);
             this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
@@ -246,39 +239,21 @@ export class NewAdvanceComponent implements OnInit {
               this._matDialog.closeAll();
               this.OnReset();
             });
-          }
-        });
-
-      }
-      else {
-        this.insertForm.removeControl('pharmacyAdvance');
-        this.insertForm?.get("pharmacyHeader.advanceId")?.setValue(this.vAdvanceId || 0);
-        this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
-        this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-          {
-            maxWidth: "80vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "IP-Pharma-Advance",
-              advanceObj: PatientHeaderObj,
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result && result.submitDataPay) {
-            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
-
+             }else{
+            this.insertForm.removeControl('pharmacyAdvance');
+            this.insertForm?.get("pharmacyHeader.advanceId")?.setValue(this.vAdvanceId || 0);
+           this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+           this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+           this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert); 
             console.log(this.insertForm?.value);
             this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => {
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
             });
+             } 
           }
-        });
-      }
+        }); 
     } else {
       let invalidFields: string[] = []; 
       if (this._PharAdvanceService.CreaterNewAdvanceForm().invalid) {
@@ -317,6 +292,8 @@ export class NewAdvanceComponent implements OnInit {
     this.MainForm.get('Op_ip_id').setValue('1');
     this.MainForm.get('RegID').setValue('')
     this.dsIpItemList.data = [];
+    this.vAdvanceId = 0;
+    this.vAdvanceDetailID = 0;
     this._matDialog.closeAll(); 
   } 
   viewgetIPAdvanceReportPdf(contact) { 

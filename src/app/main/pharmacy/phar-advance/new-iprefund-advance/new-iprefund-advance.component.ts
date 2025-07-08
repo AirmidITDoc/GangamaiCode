@@ -67,12 +67,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
       this.RefundSaveForm = this.IPAdRefundSaveFormInsert();
   }
     IPAdRefundSaveFormInsert(): FormGroup {
-      return this.formBuilder.group({ 
-        phAdvanceHeader: this.formBuilder.group({
-           advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]] 
-        }),   
+      return this.formBuilder.group({  
         pharmacyRefund: this.formBuilder.group({
           refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
           refundDate:['',[this._FormvalidationserviceService.validDateValidator()]],
@@ -81,14 +76,19 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
           advanceId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
           opdIpdId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-          refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          remark: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+          refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
           transactionId:0,
           addBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           isCancelled: [false],
           isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
           isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
           strId: [this._loggedService.currentUserValue.user.storeId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]]  
+        }), 
+        phAdvanceHeader: this.formBuilder.group({
+           advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]] 
         }), 
        phAdvRefundDetail:this.formBuilder.array([]),
        phAdvanceDetailBalAmount:this.formBuilder.array([]),
@@ -97,17 +97,17 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     }
   CreatePhAdvRefundDetail(item: any) {
     return this.formBuilder.group({
-      advDetailId: [item?.advance, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advDetailId: [item?.advanceDetailId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       refundDate: this.datePipe.transform(new Date(),'yyyy-MM-dd'),
       refundTime: this.datePipe.transform(new Date(),'hh:mm'),
-      advRefundAmt: [item?.asas, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      advRefundAmt: [item?.refundAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
   CreatePhAdvRefundBalDet(item: any) {
     return this.formBuilder.group({
-      advanceDetailId: [item?.asasas, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.asaas, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [item?.asasas, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      advanceDetailId: [item?.advanceDetailId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      refundAmount: [item?.refundAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
  get AdvRefundDetailsArray(): FormArray{
@@ -133,7 +133,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
       "rows": 10,
       "sortField": "AdmissionId",
       "sortOrder": 0,
-      "filters": [{"fieldName": "AdmissionId", "fieldValue":String(obj.AdmissionID), "opType": "Equals"}],
+      "filters": [{"fieldName": "AdmissionId", "fieldValue":String(obj.admissionID), "opType": "Equals"}],
       "exportType": "JSON",
       "columns": []
     } 
@@ -160,19 +160,18 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == undefined || RefundAmt == null) {
       element.refundAmount = ''
       element.balanceAmount = element.netBalAmt;
-    }
-    this.getPreRefundofAdvance(element)
+    } 
     this.getAdvaceSum(this.dsIpItemList.data)
   } 
   getAdvaceSum(ItemList) { 
     const Itemlist = ItemList
     let balAmt = Itemlist.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);
     let RefundAmt = Itemlist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2); 
-    const advanceid = ItemList[0]?.advanceid
+    const advanceId = ItemList[0]?.advanceId
     this.RefundFooterForm.patchValue({
       ToatalRefunfdAmt:RefundAmt,
       BalanceAmount:balAmt,
-      advanceId:advanceid
+      advanceId:advanceId
     }) 
   } 
   onSave() { 
@@ -183,7 +182,10 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     }
 
     const formValues = this.RefundFooterForm.value
-    this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.AdmissionID)
+       this.RefundSaveForm.get('pharmacyRefund.refundDate').setValue(this.dateTimeObj.date)
+       this.RefundSaveForm.get('pharmacyRefund.refundTime').setValue(this.dateTimeObj.time)
+      this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
+    this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
     this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(formValues.advanceId)
     this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(formValues.advanceId)
@@ -300,7 +302,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
   "rows": 10,
   "sortField": "AdvanceId",
   "sortOrder": 0,
-  "filters": [ { "fieldName": "AdvanceId", "fieldValue": String(row.AdvanceId),  "opType": "Contains" }],
+  "filters": [ { "fieldName": "AdvanceId", "fieldValue": String(row.advanceId),  "opType": "Contains" }],
   "exportType": "JSON",
   "columns": []
 }  

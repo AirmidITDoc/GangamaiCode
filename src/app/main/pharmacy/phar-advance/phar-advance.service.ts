@@ -46,7 +46,7 @@ export class PharAdvanceService {
     return this._formbuilder.group({
       RegID: [''],
       Op_ip_id: ['1'],
-      advanceAmt:['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator(),Validators.minLength(1),
+      advanceAmt:['',[this._FormvalidationserviceService.onlyNumberValidator(),Validators.minLength(1),
           this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       comment:['']
     });
@@ -67,11 +67,12 @@ export class PharAdvanceService {
    }
    CreaterNewRefundForm(){
     return this._formbuilder.group({
-      RegID: ['',[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      RegID: [''],
       Op_ip_id: ['1'], 
       comment:['',this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
       ToatalRefunfdAmt:['',[this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
       BalanceAmount:['',this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+      advanceId:0
     });
    }
    
@@ -109,7 +110,7 @@ export class PharAdvanceService {
     if (loader) {
       this._loaderService.show();
   }
-    return this._httpClient.post("Pharmacy/InsertPharRefundofAdvance",data)
+    return this._httpClient1.PostData("Sales/PharmacyRefundInsert",data)
   }
   public getPreRefundofAdvance(data) {
     return this._httpClient1.PostData("Sales/GetRefundByAdvanceList",data)

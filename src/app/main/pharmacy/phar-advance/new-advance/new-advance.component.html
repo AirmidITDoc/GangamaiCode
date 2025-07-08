@@ -171,9 +171,9 @@
             <form [formGroup]="MainForm">
                 <div fxLayout="row" fxLayoutGap="6px">
                     <!-- Advance Amount -->
-                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Advance Amount" formControlName="advanceAmt" type="number"
-                            [readonly]="true" [formGroup]="MainForm" [(ngModel)]="vadvanceAmount">
+                          min="1" [formGroup]="MainForm">
                         </airmid-textbox>
                     </div>
                     <!-- Reason of Advance -->
@@ -189,7 +189,7 @@
             <div>
                 <div class="modal-footer-buttons" fxLayoutGap="6px">
                     <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                    <button class="btn btn-primary" [disabled]="!vadvanceAmount" (click)="onSave()">Save</button>
+                    <button class="btn btn-primary"   (click)="onSave()">Save</button>
                 </div>
             </div>
 

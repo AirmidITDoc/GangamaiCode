@@ -83,11 +83,11 @@ export class PharAdvanceComponent implements OnInit {
   ]
 
   allColumns1 = [
-    { heading: "RefundDate", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 9 },
-    { heading: "RefundNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 9 },
+    { heading: "Adv.No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Refund Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CashPay Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "ChequePay Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CardPay Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
