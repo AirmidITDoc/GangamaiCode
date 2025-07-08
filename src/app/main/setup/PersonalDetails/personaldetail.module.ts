@@ -17,6 +17,13 @@ const appRoutes: Routes = [
             ),
     },
     {
+        path: "camp-master",
+        loadChildren: () =>
+            import("./camp-master/camp-master.module").then(
+                (m) => m.CampMasterModule
+            ),
+    },
+    {
         path: "gender-master",
         loadChildren: () =>
             import("./gender-master/gender-master.module").then(

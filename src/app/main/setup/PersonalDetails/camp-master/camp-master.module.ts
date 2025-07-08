@@ -20,7 +20,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { CampMasterComponent } from "./camp-master.component";
 import { NewCampMasterComponent } from "./new-camp-master/new-camp-master.component";
-import { CamMasterService } from "./cam-master.service";
+import { CampMasterService } from "./camp-master.service";
 
 const routes: Routes = [
     {
@@ -51,6 +51,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [CamMasterService, DatePipe]
+    providers: [CampMasterService, DatePipe]
 })
 export class CampMasterModule { }
