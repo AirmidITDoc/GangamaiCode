@@ -5,9 +5,9 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
-import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { CompanyMasterService } from "./company-master.service";
 import { ComptoservComponent } from "./comptoserv/comptoserv.component";
+import { CompanyMasterListComponent } from "./newcompany-master/company-master-list.component";
 
 @Component({
     selector: "app-company-master",
@@ -144,9 +144,14 @@ export class CompanyMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
-                maxWidth: "60vw",
-                maxHeight: '60%',
-                width: '70%',
+                // maxWidth: "60vw",
+                // maxHeight: '60%',
+                // width: '70%',
+                // data: row
+                maxWidth: "95vw",
+                maxHeight: '95%',
+                // height: '95%',
+                width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

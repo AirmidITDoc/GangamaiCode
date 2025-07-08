@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { CompanyMaster } from "../company-master.component";
 import { CompanyMasterService } from "../company-master.service";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 
 @Component({
     selector: "app-company-master-list",
@@ -16,11 +17,15 @@ import { CompanyMasterService } from "../company-master.service";
 export class CompanyMasterListComponent implements OnInit {
   
     companyForm: FormGroup;
+    companyFormDemo: FormGroup;
     isActive:boolean=true;
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
     autocompleteModecity: string = "City";
     registerObj = new CompanyMaster({});
+    @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
+    CityName = ""
+    autocompleteModecountry: string = "Country";
 
     constructor(
         public _CompanyMasterService: CompanyMasterService,
@@ -33,6 +38,9 @@ export class CompanyMasterListComponent implements OnInit {
         
         this.companyForm = this._CompanyMasterService.createCompanymasterForm();
         this.companyForm.markAllAsTouched();
+
+        this.companyFormDemo = this._CompanyMasterService.createCompanymasterFormDemo();
+        this.companyFormDemo.markAllAsTouched();
 
         if ((this.data?.companyId?? 0) > 0) {
 
@@ -49,15 +57,25 @@ export class CompanyMasterListComponent implements OnInit {
                     this.registerObj = response;
                     console.log(this.registerObj)
                     
-                    if(response){
-                        
- 
+                    if(response){                    
                         this.companyForm.get("traiffId").setValue(this.registerObj.traiffId)
                         this.companyForm.get("companyId").setValue(this.registerObj.companyId)
                     }
                    });
             }, 500);
         }
+    }
+
+     onChangecity(e) {
+        this.CityName = e.cityName
+        // this.registerObj.stateId = e.stateId
+        this._CompanyMasterService.getstateId(e.stateId).subscribe((Response) => {
+            // console.log(Response)
+            this.ddlCountry.SetSelection(Response.countryId);
+        });
+    }
+
+    onChangestate(e) {
     }
     
     onSubmit() {  
@@ -100,6 +118,11 @@ export class CompanyMasterListComponent implements OnInit {
     getValidationMessages() {
         return {
                 companyName: [
+                    { name: "required", Message: "Company Name is required" },
+                    { name: "maxlength", Message: "Company name should not be greater than 50 char." },
+                    { name: "pattern", Message: "Special char not allowed." }
+                ],
+                shortName: [
                     { name: "required", Message: "Company Name is required" },
                     { name: "maxlength", Message: "Company name should not be greater than 50 char." },
                     { name: "pattern", Message: "Special char not allowed." }

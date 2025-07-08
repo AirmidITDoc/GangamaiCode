@@ -15,7 +15,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatButtonModule } from "@angular/material/button";
-import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatCardModule } from "@angular/material/card";
 import { CompanywiseComponent } from './companywise/companywise.component';
@@ -53,6 +52,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { ComptoservComponent } from './comptoserv/comptoserv.component';
+import { CompanyMasterListComponent } from "./newcompany-master/company-master-list.component";
 
 const routes: Routes = [
     {
