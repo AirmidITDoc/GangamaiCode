@@ -12,7 +12,8 @@
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div> -->
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -28,7 +29,8 @@
                     <mat-expansion-panel expanded class="mt-12">
                         <mat-expansion-panel-header>
                             <div (click)="$event.stopPropagation()">
-                                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header" (selectedTabChange)="onTabChange($event)">
+                                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
+                                    (selectedTabChange)="onTabChange($event)">
                                     <mat-tab label="Personal Detail"></mat-tab>
                                     <mat-tab label="Qualification Details"></mat-tab>
                                     <mat-tab label="Schedule Details"></mat-tab>
@@ -46,23 +48,19 @@
                                             <mat-panel-title>Personal Details</mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <form [formGroup]="myForm" fxLayout="column" class="pt-12">
-                                            <input type="hidden" name="DoctorId" formControlName="DoctorId" [(ngModel)]="registerObj.doctorId" />
+                                            <input type="hidden" name="DoctorId" formControlName="DoctorId"
+                                                [(ngModel)]="registerObj.doctorId" />
 
                                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                                                <div fxFlex="99" fxFlex.xs="100" fxFlex.sm="90" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                                <div fxFlex="99" fxFlex.xs="100" fxFlex.sm="90" fxLayout="row wrap"
+                                                    fxLayoutGap="12px 0px grid">
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                                        <airmid-dropdown
-                                                            label="Prefix"
-                                                            formControlName="PrefixID"
-                                                            [formGroup]="myForm"
-                                                            [(value)]="registerObj.prefixId"
+                                                        <airmid-dropdown label="Prefix" formControlName="PrefixID"
+                                                            [formGroup]="myForm" [(value)]="registerObj.prefixId"
                                                             [validations]="getValidationMessages().PrefixID"
-                                                            ValueField="prefixId"
-                                                            TextField="prefixName"
+                                                            ValueField="prefixId" TextField="prefixName"
                                                             (selectionChange)="onChangePrefix($event)"
-                                                            ApiUrl="Prefix/get-prefixs"
-                                                            #ddlPrefix
-                                                        ></airmid-dropdown>
+                                                            ApiUrl="Prefix/get-prefixs" #ddlPrefix></airmid-dropdown>
 
                                                         <!-- <airmid-dropdown label="Gender" formControlName="GenderId"
                                                             [formGroup]="myForm" [(value)]="registerObj.genderId"
@@ -73,51 +71,34 @@
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="First Name"
-                                                            formControlName="FirstName"
-                                                            [value]="registerObj.firstName"
-                                                            [formGroup]="myForm"
+                                                        <airmid-textbox label="First Name" formControlName="FirstName"
+                                                            [value]="registerObj.firstName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().FirstName"
                                                             [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"
-                                                        ></airmid-textbox>
+                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Middle Name"
-                                                            formControlName="MiddleName"
-                                                            [value]="registerObj.middleName"
-                                                            [formGroup]="myForm"
+                                                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                                            [value]="registerObj.middleName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().MiddleName"
                                                             [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"
-                                                        ></airmid-textbox>
+                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Last Name"
-                                                            formControlName="LastName"
-                                                            [value]="registerObj.lastName"
-                                                            [formGroup]="myForm"
+                                                        <airmid-textbox label="Last Name" formControlName="LastName"
+                                                            [value]="registerObj.lastName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().LastName"
                                                             [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"
-                                                        ></airmid-textbox>
+                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
                                                     </div>
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-dropdown
-                                                            label="Gender"
-                                                            formControlName="GenderId"
-                                                            [formGroup]="myForm"
-                                                            [(value)]="registerObj.genderId"
+                                                        <airmid-dropdown label="Gender" formControlName="GenderId"
+                                                            [formGroup]="myForm" [(value)]="registerObj.genderId"
                                                             [validations]="getValidationMessages().GenderId"
-                                                            [mode]="autocompleteModegender"
-                                                            [disabled]="true"
-                                                            #ddlGender
-                                                        ></airmid-dropdown>
+                                                            [mode]="autocompleteModegender" [disabled]="true"
+                                                            #ddlGender></airmid-dropdown>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -136,60 +117,40 @@
                                                         <!-- </div> -->
                                                     </div>
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Birthdate"
-                                                            appearance="outline"
-                                                            formControllName="DateOfBirth"
-                                                            [(value)]="value"
-                                                            [formGroup]="myForm"
-                                                            placeholder="yyyy/mm/dd"
-                                                            (input)="onChangeDateofBirth()"
-                                                        ></airmid-textbox>
+                                                        <airmid-textbox label="Birthdate" appearance="outline"
+                                                            formControllName="DateOfBirth" [(value)]="value"
+                                                            [formGroup]="myForm" placeholder="yyyy/mm/dd"
+                                                            (input)="onChangeDateofBirth()"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Pan Card No"
-                                                            formControlName="Pancardno"
-                                                            [value]="registerObj.panCardNo"
-                                                            [formGroup]="myForm"
+                                                        <airmid-textbox label="Pan Card No" formControlName="Pancardno"
+                                                            [value]="registerObj.panCardNo" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().Pancardno"
-                                                            [maxLength]="10"
-                                                        ></airmid-textbox>
+                                                            [maxLength]="10"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Aadhar Card No"
+                                                        <airmid-textbox label="Aadhar Card No"
                                                             formControlName="AadharCardNo"
                                                             (keypress)="keyPressAlphanumeric($event)"
-                                                            [value]="registerObj.aadharCardNo"
-                                                            [formGroup]="myForm"
+                                                            [value]="registerObj.aadharCardNo" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().AadharCardNo"
-                                                            [maxLength]="12"
-                                                        ></airmid-textbox>
+                                                            [maxLength]="12"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Phone"
-                                                            formControlName="Phone"
+                                                        <airmid-textbox label="Phone" formControlName="Phone"
                                                             (keypress)="keyPressAlphanumeric($event)"
-                                                            [value]="registerObj.phone"
-                                                            [formGroup]="myForm"
+                                                            [value]="registerObj.phone" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().Phone"
-                                                            [maxLength]="10"
-                                                        ></airmid-textbox>
+                                                            [maxLength]="10"></airmid-textbox>
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox
-                                                            label="Address"
-                                                            formControlName="Address"
-                                                            [value]="registerObj.address"
-                                                            [formGroup]="myForm"
-                                                            [validations]="getValidationMessages().Address"
-                                                        ></airmid-textbox>
+                                                        <airmid-textbox label="Address" formControlName="Address"
+                                                            [value]="registerObj.address" [formGroup]="myForm"
+                                                            [validations]="getValidationMessages().Address"></airmid-textbox>
                                                     </div>
                                                 </div>
 
@@ -224,90 +185,70 @@
                                         <form [formGroup]="myForm" fxLayout="column" class="pt-12">
                                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown
-                                                        label="City"
-                                                        formControlName="City"
-                                                        [formGroup]="myForm"
-                                                        [(value)]="registerObj.city"
+                                                    <airmid-dropdown label="City" formControlName="City"
+                                                        [formGroup]="myForm" [(value)]="registerObj.city"
                                                         [validations]="getValidationMessages().City"
-                                                        [mode]="autocompleteModecity"
-                                                    ></airmid-dropdown>
+                                                        [mode]="autocompleteModecity"></airmid-dropdown>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox
-                                                        label="Education"
-                                                        formControlName="Education"
-                                                        [value]="registerObj.education"
-                                                        [formGroup]="myForm"
+                                                    <airmid-textbox label="Education" formControlName="Education"
+                                                        [value]="registerObj.education" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().Education"
-                                                        [maxLength]="100"
-                                                    ></airmid-textbox>
+                                                        [maxLength]="100"></airmid-textbox>
                                                 </div>
 
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox
-                                                        label="Hospital Name"
+                                                    <airmid-textbox label="Hospital Name"
                                                         formControlName="RefDocHospitalName"
-                                                        [value]="registerObj.refDocHospitalName"
-                                                        [formGroup]="myForm"
+                                                        [value]="registerObj.refDocHospitalName" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().RefDocHospitalName"
-                                                        [maxLength]="100"
-                                                    ></airmid-textbox>
+                                                        [maxLength]="100"></airmid-textbox>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown
-                                                        label="DoctorTypeId"
-                                                        formControlName="DoctorTypeId"
-                                                        [formGroup]="myForm"
-                                                        [(value)]="registerObj.doctorTypeId"
+                                                    <airmid-dropdown label="DoctorTypeId" formControlName="DoctorTypeId"
+                                                        [formGroup]="myForm" [(value)]="registerObj.doctorTypeId"
                                                         [validations]="getValidationMessages().DoctorTypeId"
-                                                        [mode]="autocompleteModedoctorty"
-                                                    ></airmid-dropdown>
+                                                        [mode]="autocompleteModedoctorty"></airmid-dropdown>
                                                 </div>
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox
-                                                        label="ESINO"
-                                                        formControlName="esino"
-                                                        [value]="registerObj.esino"
-                                                        [formGroup]="myForm"
+                                                    <airmid-textbox label="ESINO" formControlName="esino"
+                                                        [value]="registerObj.esino" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().esino"
-                                                        [maxLength]="10"
-                                                    ></airmid-textbox>
+                                                        [maxLength]="10"></airmid-textbox>
                                                 </div>
 
-                                                <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%" fxLayoutGap="12px 0px grid">
-                                                    <airmid-textbox
-                                                        label="RegNo"
-                                                        formControlName="RegNo"
-                                                        [value]="registerObj.regNo"
-                                                        [formGroup]="myForm"
+                                                <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%"
+                                                    fxLayoutGap="12px 0px grid">
+                                                    <airmid-textbox label="RegNo" formControlName="RegNo"
+                                                        [value]="registerObj.regNo" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().RegNo"
-                                                        [maxLength]="10"
-                                                    ></airmid-textbox>
+                                                        [maxLength]="10"></airmid-textbox>
                                                     <!-- </div> -->
 
                                                     <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>Reg date</mat-label>
-                                                        <input name="RegDate" matInput [matDatepicker]="picker1" formControllName="RegDate" [value]="registerObj.regDate" />
-                                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                        <input name="RegDate" matInput [matDatepicker]="picker1"
+                                                            formControllName="RegDate" [value]="registerObj.regDate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="picker1"></mat-datepicker-toggle>
                                                         <mat-datepicker #picker1></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%" fxLayoutGap="12px 0px grid">
-                                                    <airmid-textbox
-                                                        label="MahRegNo"
-                                                        formControlName="MahRegNo"
-                                                        [value]="registerObj.mahRegNo"
-                                                        [formGroup]="myForm"
+                                                <div fxFlex="37%" fxFlex.xs="100%" fxFlex.sm="98%"
+                                                    fxLayoutGap="12px 0px grid">
+                                                    <airmid-textbox label="MahRegNo" formControlName="MahRegNo"
+                                                        [value]="registerObj.mahRegNo" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().mahRegNo"
-                                                        [maxLength]="10"
-                                                    ></airmid-textbox>
+                                                        [maxLength]="10"></airmid-textbox>
                                                     <mat-form-field appearance="outline" fxFlex>
                                                         <mat-label>MahReg date</mat-label>
-                                                        <input name="MahRegDate" matInput [matDatepicker]="picker2" formControllName="MahRegDate" [value]="registerObj.mahRegDate" />
-                                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                                        <input name="MahRegDate" matInput [matDatepicker]="picker2"
+                                                            formControllName="MahRegDate"
+                                                            [value]="registerObj.mahRegDate" />
+                                                        <mat-datepicker-toggle matSuffix
+                                                            [for]="picker2"></mat-datepicker-toggle>
                                                         <mat-datepicker #picker2></mat-datepicker>
                                                     </mat-form-field>
                                                 </div>
@@ -334,19 +275,14 @@
                                         <form [formGroup]="myForm" fxLayout="column" class="pt-12">
                                             <div fxLayout="row">
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown
-                                                        label="Department"
-                                                        formControlName="MDoctorDepartmentDets"
-                                                        [formGroup]="myForm"
-                                                        [IsMultiPle]="true"
-                                                        [value]="registerObj.mDoctorDepartmentDets"
+                                                    <airmid-dropdown label="Department"
+                                                        formControlName="MDoctorDepartmentDets" [formGroup]="myForm"
+                                                        [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                                         [validations]="getValidationMessages().Departmentid"
-                                                        #ddlDepartment
-                                                        ValueField="departmentId"
+                                                        #ddlDepartment ValueField="departmentId"
                                                         TextField="departmentName"
                                                         ApiUrl="DepartmentMaster/get-departments"
-                                                        [ReqFullObj]="true"
-                                                    ></airmid-dropdown>
+                                                        [ReqFullObj]="true"></airmid-dropdown>
                                                 </div>
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
@@ -366,41 +302,48 @@
                                         <mat-expansion-panel-header class="accent">
                                             <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                                                 <span>Qualification Details</span>
-                                                <button mat-raised-button (click)="onAddEducation($event)">+ Add Education</button>
+                                                <button mat-raised-button (click)="onAddEducation($event)">+ Add
+                                                    Education</button>
                                             </mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <div class="airmid-table-container pt-12">
-                                            <mat-table matSort [dataSource]="dataSourceeducation" [@animateStagger]="{ value: '50' }" class="airmid-table">
+                                            <mat-table matSort [dataSource]="dataSourceeducation"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                 <ng-container matColumnDef="qualificationName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Qualification Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Qualification
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.qualificationName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="passingYear">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Passing Year</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Passing
+                                                        Year</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.passingYear | date : 'shortDate' }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="instituteName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Institution Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Institution
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.instituteName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="cityName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>City Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>City
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.cityName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="countryName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Country Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm>Country Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                         <span>{{ element.countryName }}</span>
                                                     </mat-cell>
@@ -409,30 +352,35 @@
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact; let i = index">
-                                                        <button mat-icon-button color="warn" (click)="Ondeletequalification(i, contact)">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="Ondeletequalification(i, contact)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                        data...</mat-footer-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'"
+                                                            [diameter]="30"></mat-spinner>
                                                         <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumnsEdu; sticky: true"></mat-header-row>
-                                                <mat-row *matRowDef="let row; columns: displayedColumnsEdu" class="element min-width-1100" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSourceeducation != null }"></mat-footer-row>
-                                                <mat-footer-row
-                                                    *matFooterRowDef="['noData']"
-                                                    [ngClass]="{ hide: !(dataSourceeducation != null && dataSourceeducation.data.length == 0) }"
-                                                ></mat-footer-row>
+                                                <mat-header-row class="accent min-width-1100"
+                                                    *matHeaderRowDef="displayedColumnsEdu; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnsEdu"
+                                                    class="element min-width-1100"
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{ hide: dataSourceeducation != null }"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{ hide: !(dataSourceeducation != null && dataSourceeducation.data.length == 0) }"></mat-footer-row>
                                             </mat-table>
                                         </div>
                                     </mat-expansion-panel>
@@ -440,34 +388,40 @@
                                         <mat-expansion-panel-header class="accent">
                                             <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                                                 <span>Experience Details</span>
-                                                <button mat-raised-button (click)="onAddExperience($event)">+ Add Experience</button>
+                                                <button mat-raised-button (click)="onAddExperience($event)">+ Add
+                                                    Experience</button>
                                             </mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <div class="airmid-table-container pt-12">
-                                            <mat-table matSort [dataSource]="dataSourceeexperience" [@animateStagger]="{ value: '50' }" class="airmid-table">
+                                            <mat-table matSort [dataSource]="dataSourceeexperience"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                 <ng-container matColumnDef="hospitalName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Hospital Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Hospital
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.hospitalName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="designation">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Designation</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>Designation</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.designation }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="startDate">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start
+                                                        Date</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.startDate | date : 'shortDate' }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="endDate">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>End Date</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>End
+                                                        Date</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.endDate | date : 'shortDate' }}</span>
                                                     </mat-cell>
@@ -476,30 +430,35 @@
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact; let i = index">
-                                                        <button mat-icon-button color="warn" (click)="Ondeleteexperience(i, contact)">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="Ondeleteexperience(i, contact)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                        data...</mat-footer-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'"
+                                                            [diameter]="30"></mat-spinner>
                                                         <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumnsExp; sticky: true"></mat-header-row>
-                                                <mat-row *matRowDef="let row; columns: displayedColumnsExp" class="element min-width-1100" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSourceeexperience != null }"></mat-footer-row>
-                                                <mat-footer-row
-                                                    *matFooterRowDef="['noData']"
-                                                    [ngClass]="{ hide: !(dataSourceeexperience != null && dataSourceeexperience.data.length == 0) }"
-                                                ></mat-footer-row>
+                                                <mat-header-row class="accent min-width-1100"
+                                                    *matHeaderRowDef="displayedColumnsExp; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnsExp"
+                                                    class="element min-width-1100"
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{ hide: dataSourceeexperience != null }"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{ hide: !(dataSourceeexperience != null && dataSourceeexperience.data.length == 0) }"></mat-footer-row>
                                             </mat-table>
                                         </div>
                                     </mat-expansion-panel>
@@ -511,35 +470,40 @@
                                         <mat-expansion-panel-header class="accent">
                                             <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                                                 <span>Schedule Details</span>
-                                                <button mat-raised-button (click)="onAddSchdule($event)">+ Add Schedule</button>
+                                                <button mat-raised-button (click)="onAddSchdule($event)">+ Add
+                                                    Schedule</button>
                                             </mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <div class="airmid-table-container pt-12">
-                                            <mat-table matSort [dataSource]="dataSourceSchdule" [@animateStagger]="{ value: '50' }" class="airmid-table">
+                                            <mat-table matSort [dataSource]="dataSourceSchdule"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                 <ng-container matColumnDef="scheduleDays">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Schedule Days</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Schedule
+                                                        Days</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.scheduleDays }}</span>
                                                     </mat-cell>
                                                 </ng-container>
                                                 <!-- | date:'shortTime'  -->
                                                 <ng-container matColumnDef="startTime">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Time</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Start
+                                                        Time</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.startTime }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                        <ng-container matColumnDef="endTime">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header>End
-                                                                Time</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.endTime }}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                <ng-container matColumnDef="endTime">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>End
+                                                        Time</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element">
+                                                        <span>{{ element.endTime }}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
                                                 <ng-container matColumnDef="slot">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Slot</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>Slot</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.slot }}</span>
                                                     </mat-cell>
@@ -548,27 +512,35 @@
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact; let i = index">
-                                                        <button mat-icon-button color="warn" (click)="Ondeleteschdule(i, contact)">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="Ondeleteschdule(i, contact)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                        data...</mat-footer-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'"
+                                                            [diameter]="30"></mat-spinner>
                                                         <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumnssch; sticky: true"></mat-header-row>
-                                                <mat-row *matRowDef="let row; columns: displayedColumnssch" class="element min-width-1100" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSourceSchdule != null }"></mat-footer-row>
-                                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSourceSchdule != null && dataSourceSchdule.data.length == 0) }"></mat-footer-row>
+                                                <mat-header-row class="accent min-width-1100"
+                                                    *matHeaderRowDef="displayedColumnssch; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnssch"
+                                                    class="element min-width-1100"
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{ hide: dataSourceSchdule != null }"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{ hide: !(dataSourceSchdule != null && dataSourceSchdule.data.length == 0) }"></mat-footer-row>
                                             </mat-table>
                                         </div>
                                     </mat-expansion-panel>
@@ -576,79 +548,87 @@
                                         <mat-expansion-panel-header class="accent">
                                             <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                                                 <span>Leave Details</span>
-                                                <button mat-raised-button (click)="onAddLeave($event)">+ Add Leave</button>
+                                                <button mat-raised-button (click)="onAddLeave($event)">+ Add
+                                                    Leave</button>
                                             </mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <div class="airmid-table-container pt-12">
-                                            <mat-table matSort [dataSource]="dataSourcedrleave" [@animateStagger]="{ value: '50' }" class="airmid-table">
+                                            <mat-table matSort [dataSource]="dataSourcedrleave"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                 <ng-container matColumnDef="leaveType">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>LeaveType</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>LeaveType</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.leaveType }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="leaveOptionName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Leave Status</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Leave
+                                                        Status</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.leaveOptionName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
-                                                        <ng-container matColumnDef="startDate">
-                                                            <mat-header-cell *matHeaderCellDef
-                                                                mat-sort-header>StartDate</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.startDate | date:'shortDate'}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                <ng-container matColumnDef="startDate">
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>StartDate</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element">
+                                                        <span>{{ element.startDate | date:'shortDate'}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                        <ng-container matColumnDef="endDate">
-                                                            <mat-header-cell *matHeaderCellDef
-                                                                mat-sort-header>EndDate</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element">
-                                                                <span>{{ element.endDate | date:'shortDate'}}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                <ng-container matColumnDef="endDate">
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>EndDate</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element">
+                                                        <span>{{ element.endDate | date:'shortDate'}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
 
 
-                                                        <ng-container matColumnDef="reason">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>Reason</mat-header-cell>
-                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                <span>{{ element.reason }}</span>
-                                                            </mat-cell>
-                                                        </ng-container>
+                                                <ng-container matColumnDef="reason">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-sm>Reason</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                        <span>{{ element.reason }}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact; let i = index">
-                                                        <button mat-icon-button color="warn" (click)="Ondeleteleave(i, contact)">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="Ondeleteleave(i, contact)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                        data...</mat-footer-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'"
+                                                            [diameter]="30"></mat-spinner>
                                                         <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumnsleave; sticky: true"></mat-header-row>
-                                                <mat-row
-                                                    *matRowDef="let row; columns: displayedColumnsleave"
+                                                <mat-header-row class="accent min-width-1100"
+                                                    *matHeaderRowDef="displayedColumnsleave; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnsleave"
                                                     class="element min-width-1100"
-                                                    [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                ></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSourcedrleave != null }"></mat-footer-row>
-                                                <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSourcedrleave != null && dataSourcedrleave.data.length == 0) }"></mat-footer-row>
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{ hide: dataSourcedrleave != null }"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{ hide: !(dataSourcedrleave != null && dataSourcedrleave.data.length == 0) }"></mat-footer-row>
                                             </mat-table>
                                         </div>
                                     </mat-expansion-panel>
@@ -660,41 +640,48 @@
                                         <mat-expansion-panel-header class="accent">
                                             <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                                                 <span>Doctor Charges Details</span>
-                                                <button mat-raised-button (click)="onAddCharges($event)">+ Add Charges</button>
+                                                <button mat-raised-button (click)="onAddCharges($event)">+ Add
+                                                    Charges</button>
                                             </mat-panel-title>
                                         </mat-expansion-panel-header>
                                         <div class="airmid-table-container pt-12">
-                                            <mat-table matSort [dataSource]="dataSourcedrcharges" [@animateStagger]="{ value: '50' }" class="airmid-table">
+                                            <mat-table matSort [dataSource]="dataSourcedrcharges"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table">
                                                 <ng-container matColumnDef="serviceName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Service
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.serviceName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="tariffName">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.tariffName }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="className">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class
+                                                        Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.className }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="days">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Days</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>Days</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.days }}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="price">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header>Price</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
                                                         <span>{{ element.price }}</span>
                                                     </mat-cell>
@@ -703,34 +690,35 @@
                                                 <ng-container matColumnDef="action" stickyEnd>
                                                     <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                     <mat-cell *matCellDef="let contact; let i = index">
-                                                        <button mat-icon-button color="warn" (click)="Ondeletecharges(i, contact)">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="Ondeletecharges(i, contact)">
                                                             <mat-icon>delete_outline</mat-icon>
                                                         </button>
                                                     </mat-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                        data...</mat-footer-cell>
                                                 </ng-container>
 
                                                 <ng-container matColumnDef="noData">
                                                     <mat-footer-cell *matFooterCellDef colspan="6">
-                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                                        <mat-spinner *ngIf="isLoadingStr == 'loading'"
+                                                            [diameter]="30"></mat-spinner>
                                                         <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                                                     </mat-footer-cell>
                                                 </ng-container>
 
-                                                <mat-header-row class="accent min-width-1100" *matHeaderRowDef="displayedColumnscharges; sticky: true"></mat-header-row>
-                                                <mat-row
-                                                    *matRowDef="let row; columns: displayedColumnscharges"
+                                                <mat-header-row class="accent min-width-1100"
+                                                    *matHeaderRowDef="displayedColumnscharges; sticky: true"></mat-header-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumnscharges"
                                                     class="element min-width-1100"
-                                                    [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                ></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSourcedrcharges != null }"></mat-footer-row>
-                                                <mat-footer-row
-                                                    *matFooterRowDef="['noData']"
-                                                    [ngClass]="{ hide: !(dataSourcedrcharges != null && dataSourcedrcharges.data.length == 0) }"
-                                                ></mat-footer-row>
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                <mat-footer-row *matFooterRowDef="['loading']"
+                                                    [ngClass]="{ hide: dataSourcedrcharges != null }"></mat-footer-row>
+                                                <mat-footer-row *matFooterRowDef="['noData']"
+                                                    [ngClass]="{ hide: !(dataSourcedrcharges != null && dataSourcedrcharges.data.length == 0) }"></mat-footer-row>
                                             </mat-table>
                                         </div>
                                     </mat-expansion-panel>
@@ -751,9 +739,10 @@
                                                 Signature:</span>
 
                                             <!-- Multi-select Dropdown -->
-                                            <airmid-dropdown label="Page" formControlName="pageId" 
-                                                [formGroup]="signatureForm" [IsMultiPle]="true" ValueField="value" #ddlsignpage
-                                                TextField="text" [ReqFullObj]="true" [mode]="autocompleteSignpage"
+                                            <airmid-dropdown label="Page" formControlName="pageId"
+                                                [formGroup]="signatureForm" [IsMultiPle]="true" ValueField="value"
+                                                #ddlsignpage TextField="text" [ReqFullObj]="true"
+                                                [mode]="autocompleteSignpage"
                                                 (selectionChange)="onChangeSignpage2($event)">
                                             </airmid-dropdown>
 
@@ -796,63 +785,10 @@
                                 </div>
 
                             </div>
-
-
-
                             <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
-
+                                <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"></airmid-fileupload>
                                 <!-- Upload Section -->
-                                <div class="upload-section" fxLayout="row" fxLayoutAlign="start center"
-                                    fxLayoutGap="16px" style="margin-bottom: 20px;">
-                                    <input type="file" (change)="onFileSelected($event)" style="font-size: large;" />
-                                    <button mat-raised-button color="primary"
-                                        (click)="uploadAttachments()">Upload</button>
-                                </div>
-
-                                <!-- File Preview -->
-                                <div class="file-preview" *ngIf="previewUrl" style="margin-bottom: 20px;">
-                                    <p><strong>{{ selectedFile?.name }}</strong></p>
-                                    <img [src]="previewUrl" alt="Preview"
-                                        style="max-width: 200px; border: 1px solid #ccc; padding: 4px;" />
-                                </div>
-
-                                <!-- Attachment Table -->
-                                <mat-table #table matSort [dataSource]="AttachDataSource"
-                                    class="mat-elevation-z2 table2 auto-height-table h-400"
-                                    [@animateStagger]="{value:'50'}" style="width: 100%; overflow: auto;">
-
-                                    <!-- Document Name Column -->
-                                    <ng-container matColumnDef="DocumentName">
-                                        <mat-header-cell *matHeaderCellDef>Document Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">{{ contact.name }}</mat-cell>
-                                    </ng-container>
-
-                                    <!-- Action Column -->
-                                    <ng-container matColumnDef="action" sticky>
-                                        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <button mat-icon-button color="warn" (click)="deletedocattachment(contact)">
-                                                <mat-icon>delete_outline</mat-icon>
-                                            </button>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <!-- No Data Footer -->
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="2">
-                                            <span>No Data Found</span>
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <!-- Header, Rows & Footer -->
-                                    <mat-header-row *matHeaderRowDef="displayedColumnsdocatt"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumnsdocatt"></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{ 'hide': !(AttachDataSource && AttachDataSource.data.length === 0) }">
-                                    </mat-footer-row>
-
-                                </mat-table>
-
+                              
                             </div>
                         </ng-container>
                     </mat-expansion-panel>

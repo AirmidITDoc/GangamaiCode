@@ -61,11 +61,12 @@ import { ToasterService } from './services/toaster.service';
 import { AirmidChipautocompleteComponent } from './componets/airmid-chipautocomplete/airmid-chipautocomplete.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicker/airmid-full-datepicker.component';
+import { AirmidFileuploadComponent } from './componets/airmid-fileupload/airmid-fileupload.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent],
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -113,6 +114,7 @@ import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicke
         AirmidTextboxComponent,
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
+        AirmidFileuploadComponent,
         AirmidDateofbirthComponent,
         AirmidEditorComponent,
         AirmidSliderComponent,
