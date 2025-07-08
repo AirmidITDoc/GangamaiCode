@@ -123,6 +123,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModepurpose: string = "Purpose";
     autocompleteModeClass: string = "Class";
     autocompleteModerelationship: string = "Relationship";
+    autocompleteModecamp:string="CampMaster";
     selectedTabIndex = 0;
     imagePreview!: string;
     sidebarName = 'patient-sidebar';

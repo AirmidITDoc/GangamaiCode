@@ -137,7 +137,17 @@ export class ReportConfigurationService {
         } else return this._httpClient.PostData("ReportConfig", Param);
     }
 
+     public insertNewReportConfig(Param: any) {
+        if (Param.reportId) {
+            return this._httpClient.PutData("ReportConfig/ReportConfig/" + Param.reportId, Param);
+        } else return this._httpClient.PostData("ReportConfig/ReportConfigsave", Param);
+    }
+
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ReportConfig?Id=" + m_data.toString());
     }
+
+    public getReportList(param){
+    return this._httpClient.PostData("Common",param)
+  }
 }

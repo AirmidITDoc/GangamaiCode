@@ -67,23 +67,33 @@
                     </div>
                     <!-- add table -->
 
-                    <div fxLayout="row" fxLayoutAlign="end" style="margin-bottom: 5px;">
-                        <button class="btn btn-primary" (click)="getData()">GetList</button>
+                    <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start" style="margin-bottom: 5px;">
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportSPName" formControlName="reportSpname"
+                                [value]="data?.reportSpname" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportSpname" [maxLength]="500">
+                            </airmid-textbox>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" (click)="getData()">GetList</button>
+                        </div>
                     </div>
 
-                    <div class="modal-card-container table-container fusePerfectScrollbar">
+                    <div class="modal-card-container airmid-table-container">
                         <div class="table" fxFlex="100%">
 
-                            <div class="airmid-table-container">
+                            <div class="airmid-table-container" style="max-height: 500px; overflow-y: auto;">
                                 <mat-table matSort [dataSource]="dsReportList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table"  cdkDropList (cdkDropListDropped)="drop($event)">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop($event)">
 
                                     <ng-container matColumnDef="isDisplay">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             IsDisplay</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
-                                                                    </mat-checkbox> -->
+                                            <mat-checkbox [(ngModel)]="element.IsDisplayColumn" name="isDisplay{{i}}"
+                                                (change)="element.IsDisplayColumn = $event.checked ? true : false">
+                                            </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
 
@@ -93,8 +103,12 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-form-field appearance="fill">
-                                                <!-- <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                                                            (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" /> -->
+                                                <!-- <mat-checkbox [(ngModel)]="element.ReportHeaderName" name="ReportHeaderName{{i}}"
+                                                (change)="changefunction(element)">
+                                            </mat-checkbox> -->
+                                            <!-- element.ReportHeaderName = $event.checked ? true : false -->
+                                                <input matInput [(ngModel)]="element.ReportHeaderName" (change)="changefunction(element)"
+                                                name="ReportHeaderName{{i}}"/>
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
@@ -104,11 +118,11 @@
                                             ReportColumn
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <!-- <span> {{element.reportName}}</span> -->
+                                            <span> {{element.ReportColumn}}</span>
                                         </mat-cell>
                                         <!-- <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
                                             <div cdkDrag cdkDragLockAxis="y" class="drag-cell">
-                                                {{ element.reportName }}
+                                                {{ element.ReportColumn }}
                                             </div>
                                         </mat-cell> -->
                                     </ng-container>
@@ -118,8 +132,8 @@
                                             fxShow.gt-sm>ReportColumnWidth</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                             <mat-form-field appearance="fill">
-                                                <!-- <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                                                            (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" /> -->
+                                                <input matInput [(ngModel)]="element.ReportColumnWidth" name="reportColumnWidth{{i}}" type="number"
+                                                (keypress)="keyPressCharater($event)" (change)="ReportColumnWidthfunction(element)"/>
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
@@ -128,8 +142,8 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                             fxShow.gt-sm>ReportAlign</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <mat-form-field appearance="fill" class="report-align-select">
-                                                <mat-select [(ngModel)]="element.ReportAlign"
+                                            <mat-form-field appearance="fill" class="report-align-select" fxFlex="45%">
+                                                <mat-select [(ngModel)]="element.ReportColumnAligment" name="reportAlign{{i}}"
                                                     (selectionChange)="onAlignChange(element)">
                                                     <mat-option value="Left">Left</mat-option>
                                                     <mat-option value="Center">Center</mat-option>
@@ -143,8 +157,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReportTotalField
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
-                                                                    </mat-checkbox> -->
+                                            <mat-checkbox [(ngModel)]="element.ReportTotalField" name="reportTotalField{{i}}"
+                                                (change)="onIsDisplayChange(element)">
+                                            </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
 
@@ -153,22 +168,22 @@
                                             fxShow.gt-sm>ReportgroupByLabel
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <!-- <mat-checkbox [(ngModel)]="element.isDisplay" (change)="onIsDisplayChange(element)">
-                                                                    </mat-checkbox> -->
+                                            <mat-checkbox [(ngModel)]="element.ReportGroupByLabel" name="reportGroupByLabel{{i}}"
+                                                (change)="onIsDisplayChange(element)">
+                                            </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="summaryLabel">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>summaryLabel
                                         </mat-header-cell>
-                                        <!-- <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    <mat-form-field appearance="fill"
-                                                                        floatLabel="never">
-                                                                        <input matInput [maxLength]="200"
-                                                                            [(ngModel)]="element.Instruction || element.instruction"
-                                                                            type="text">
-                                                                    </mat-form-field>
-                                                                </mat-cell> -->
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                            <mat-form-field appearance="fill" floatLabel="never">
+                                                <input matInput [maxLength]="200" name="summaryLabel{{i}}"
+                                                    [(ngModel)]="element.SummaryLabel"
+                                                    type="text">
+                                            </mat-form-field>
+                                        </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="sequence">
@@ -186,7 +201,7 @@
                                         *matRowDef="let contact; columns: displayedColumn;"
                                         [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag>
                                     </mat-row>
-                                    
+
                                 </mat-table>
                             </div>
                         </div>
@@ -205,7 +220,7 @@
 
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>reportBodyFile</mat-label>
@@ -214,26 +229,26 @@
 
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportFolderName" formControlName="reportFolderName"
                                 [value]="data?.reportFolderName" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportFolderName" [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportFileName" formControlName="reportFileName"
                                 [value]="data?.reportFileName" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportFileName" [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportSPName" formControlName="reportSpname"
                                 [value]="data?.reportSpname" [formGroup]="myform"
                                 [validations]="getValidationMessages().reportSpname" [maxLength]="500">
                             </airmid-textbox>
-                        </div>
+                        </div> -->
                     </div>
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
