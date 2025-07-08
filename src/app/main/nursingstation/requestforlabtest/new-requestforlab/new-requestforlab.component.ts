@@ -179,7 +179,7 @@ export class NewRequestforlabComponent implements OnInit {
       reqDate:[(new Date()).toISOString().split('T')[0]],
       reqTime:[(new Date()).toISOString()],
       opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       isAddedBy:this._loggedService.currentUserValue.userId,
       isCancelled:false,
       isCancelledBy:0,

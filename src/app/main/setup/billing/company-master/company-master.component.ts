@@ -19,51 +19,62 @@ import { CompanyMasterListComponent } from "./newcompany-master/company-master-l
 export class CompanyMasterComponent implements OnInit {
 
     @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
-    
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'assigntoserv')!.template = this.actionsisTemplateTest;
     }
-    
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- companyName: any = "";
-   
+    companyName: any = "";
+
     allcolumns = [
-            { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "City Name", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            {
-                heading: "AssignToServ", key: "assigntoserv", align: "left", width: 100, sticky: true, type: gridColumnTypes.template,
-                template: this.actionsisTemplateTest  // Assign ng-template to the column
-            },
-            { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-         allfilters = [
-            { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+        { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "City Name", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mobile No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Phone No", key: "contactNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "EmailId", key: "emailId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Website", key: "website", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Pan No", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "Tan No", key: "tanno", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "GSTIN", key: "gstin", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "Admin Charges", key: "adminCharges", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "Credit Days", key: "creditDays", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+
+        {
+            heading: "AssignToServ", key: "assigntoserv", align: "left", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionsisTemplateTest  // Assign ng-template to the column
+        },
+        { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+         { heading: "IsSubCompany", key: "isSubCompany", type: gridColumnTypes.status, align: "center", width: 100 },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
         apiUrl: "CompanyMaster/List",
         columnsList: this.allcolumns,
@@ -80,7 +91,7 @@ export class CompanyMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
-//filters addedby avdhoot vedpathak date-28/05/2025
+    //filters addedby avdhoot vedpathak date-28/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'CompanyNameSearch')
@@ -121,7 +132,7 @@ export class CompanyMasterComponent implements OnInit {
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(ComptoservComponent,
             {
@@ -140,24 +151,19 @@ export class CompanyMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
-                // maxWidth: "60vw",
-                // maxHeight: '60%',
-                // width: '70%',
-                // data: row
+
                 maxWidth: "95vw",
-                maxHeight: '95%',
-                // height: '95%',
-                width: '80%',
+                width: '100%',
+                height: "98vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            that.grid.bindGridData();
+
         });
     }
 }
@@ -165,25 +171,38 @@ export class CompanyMasterComponent implements OnInit {
 
 
 export class CompanyMaster {
-    
+
     companyId: number;
     compTypeId: number;
     companyName: string;
     address: string;
-    city: String;
+    cityId: String;
     pinNo: String;
     phoneNo: String;
     mobileNo: String;
     faxNo: String;
-    traiffId: any; 
+    traiffId: any;
     isDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-    // companyId: number;
-    // AddedByName: string;
+    countryId: any;
+    stateId: any;
+    contactNumber: any;
+    contactPerson: string;
+    adminCharges: any;
+    website: any;
+    tanno: any;
+    creditDays: any;
+    gstin: any;
+    panNo: any;
+    paymodeOfPayId: any;
+    loginWebsiteUser: any;
+    loginWebsitePassword: any;
+    companyShortName: any;
+    emailId: any;
     /**
    * Constructor
    *
@@ -193,23 +212,39 @@ export class CompanyMaster {
    */
     constructor(CompanyMaster) {
         {
-            this.companyId = CompanyMaster.CompanyId || "";
-            this.compTypeId = CompanyMaster.CompTypeId || "";
+            this.companyId = CompanyMaster.CompanyId || 0;
+            this.compTypeId = CompanyMaster.CompTypeId || 0;
             this.companyName = CompanyMaster.CompanyName || "";
             this.address = CompanyMaster.Address || "";
-            this.city = CompanyMaster.City || "";
-            this.pinNo = CompanyMaster.PinNo || "";
+            this.cityId = CompanyMaster.cityId || 0;
+            this.pinNo = CompanyMaster.pinNo || "";
             this.phoneNo = CompanyMaster.PhoneNo || "";
             this.mobileNo = CompanyMaster.MobileNo || "";
             this.faxNo = CompanyMaster.FaxNo || "";
-            this.traiffId = CompanyMaster.traiffId || "";
-            this.AddedBy = CompanyMaster.AddedBy || "";
+            this.traiffId = CompanyMaster.traiffId || 0;
+            this.AddedBy = CompanyMaster.AddedBy || 0;
             this.isDeleted = CompanyMaster.IsDeleted || "false";
-            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+            this.UpdatedBy = CompanyMaster.UpdatedBy || 0;
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-            // this.AddedByName = CompanyMaster.AddedByName || "";
+            this.countryId = CompanyMaster.countryId || 0;
+            this.stateId = CompanyMaster.stateId || 0;
+            this.contactNumber = CompanyMaster.contactNumber || 0;
+            this.contactPerson = CompanyMaster.contactPerson || '';
+            this.adminCharges = CompanyMaster.adminCharges || 0;
+            this.website = CompanyMaster.website || "";
+            this.tanno = CompanyMaster.tanno || 0;
+            this.creditDays = CompanyMaster.creditDays || 0;
+            this.gstin = CompanyMaster.gstin || "";
+            this.panNo = CompanyMaster.panNo || "";
+            this.paymodeOfPayId = CompanyMaster.paymodeOfPayId || 0;
+            this.loginWebsiteUser = CompanyMaster.loginWebsiteUser || "";
+            this.loginWebsitePassword = CompanyMaster.loginWebsitePassword || 0;
+            this.emailId = CompanyMaster.emailId || "";
+            this.companyShortName = CompanyMaster.companyShortName || "";
+
+
         }
     }
 }
