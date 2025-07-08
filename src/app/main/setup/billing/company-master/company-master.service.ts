@@ -115,9 +115,14 @@ export class CompanyMasterService {
             panNo: [''],
             tanNo: [''],
             gstin: [''],
-            billReportFormat: [''],
+            // billReportFormat: [''],
             adminCharges: [0],
-            isActive: [true]
+            isActive: [true],
+            pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+                            Validators.minLength(6),
+                            Validators.maxLength(6),]],
+            faxNo: ["0"],
+            traiffId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         });
     }
 

@@ -175,6 +175,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isRadiology: [0],
             isRadOutSource: [false],
             isDiscount: [false],
+            isProcedure:[false],
             isPackage: [0],
             subGroupId: [0],
             doctorId: 0,

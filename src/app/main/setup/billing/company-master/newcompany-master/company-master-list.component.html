@@ -29,14 +29,15 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Short Name" formControlName="shortName"
-                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().shortName" [maxLength]="50">
+                        <airmid-textbox label="Short Name" formControlName="shortName" [formGroup]="companyFormDemo"
+                            [validations]="getValidationMessages().shortName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Address" formControlName="address" [value]="registerObj?.address"
-                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().address" [maxLength]="100">
+                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().address"
+                            [maxLength]="100">
                         </airmid-textbox>
                     </div>
 
@@ -52,26 +53,27 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="State" formControlName="state" [formGroup]="companyFormDemo" [readonly]="true"
-                            ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)" ApiUrl="StateMaster/get-state">
+                        <airmid-dropdown label="State" formControlName="state" [formGroup]="companyFormDemo"
+                            [readonly]="true" ValueField="stateId" TextField="stateName"
+                            (selectionChange)="onChangestate($event)" ApiUrl="StateMaster/get-state">
                         </airmid-dropdown>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Country" formControlName="country" [formGroup]="companyFormDemo"
-                            #ddlCountry [mode]="autocompleteModecountry" [readonly]="true">
+                            #ddlCountry [mode]="autocompleteModecountry" [readonly]="true" [disabled]="true">
                         </airmid-dropdown>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Contact Person" formControlName="contactPerson"
+                        <airmid-textbox label="Contact Person" formControlName="contactPerson"
                             [formGroup]="companyFormDemo" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Designation" formControlName="designation"
-                            [formGroup]="companyFormDemo" [maxLength]="100">
+                        <airmid-textbox label="Designation" formControlName="designation" [formGroup]="companyFormDemo"
+                            [maxLength]="100">
                         </airmid-textbox>
                     </div>
 
@@ -80,7 +82,8 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Contact Number" formControlName="phoneNo" [value]="registerObj?.phoneNo"
-                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().phoneNo" [maxLength]="10">
+                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().phoneNo"
+                            [maxLength]="10">
                         </airmid-textbox>
                     </div>
 
@@ -91,14 +94,13 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Email ID" formControlName="email"
-                            [formGroup]="companyFormDemo" [validations]="getValidationMessages().phoneNo">
+                        <airmid-textbox label="Email ID" formControlName="email" [formGroup]="companyFormDemo"
+                            [validations]="getValidationMessages().phoneNo">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Website" formControlName="website"
-                            [formGroup]="companyFormDemo">
+                        <airmid-textbox label="Website" formControlName="website" [formGroup]="companyFormDemo">
                         </airmid-textbox>
                     </div>
 
@@ -125,41 +127,35 @@
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Payment Mode" formControlName="paymentMode" [formGroup]="companyFormDemo"
-                            [validations]="getValidationMessages().traiffId" [mode]="autocompleteModetariff">
+                        <airmid-dropdown label="Payment Mode" formControlName="paymentMode"
+                            [formGroup]="companyFormDemo" [mode]="autocompleteModeofpayment">
                         </airmid-dropdown>
                     </div>
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Sub Company" formControlName="isSubCompany"
-                            [formGroup]="companyFormDemo">
-                        </airmid-textbox>
-                    </div> -->
-
                 </div>
 
-                <div fxLayout="row wrap" fxLayoutGap="12px grid">                    
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Credit Days" formControlName="creditDays"
-                            [formGroup]="companyFormDemo" [maxLength]="10">
+                        <airmid-textbox label="Credit Days" formControlName="creditDays" [formGroup]="companyFormDemo"
+                            [maxLength]="10">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="PAN No" formControlName="panNo"
-                            [formGroup]="companyFormDemo" [maxLength]="10">
+                        <airmid-textbox label="PAN No" formControlName="panNo" [formGroup]="companyFormDemo"
+                            [maxLength]="10">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="TAN No" formControlName="tanNo"
-                            [formGroup]="companyFormDemo" [maxLength]="10">
+                        <airmid-textbox label="TAN No" formControlName="tanNo" [formGroup]="companyFormDemo"
+                            [maxLength]="10">
                         </airmid-textbox>
                     </div>
-                    
+
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="GSTIN" formControlName="gstin"
-                            [formGroup]="companyFormDemo" [maxLength]="10">
+                        <airmid-textbox label="GSTIN" formControlName="gstin" [formGroup]="companyFormDemo"
+                            [maxLength]="10">
                         </airmid-textbox>
                     </div>
 
@@ -168,14 +164,25 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Final Bill Report Format" formControlName="billReportFormat"
+                        <airmid-textbox label="FAdministrative Charges %" formControlName="adminCharges"
                             [formGroup]="companyFormDemo">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="FAdministrative Charges %" formControlName="adminCharges"
-                            [formGroup]="companyFormDemo">
+                        <airmid-textbox label="PinCode" formControlName="pinNo" [value]="registerObj?.pinNo"
+                            [formGroup]="companyForm" [validations]="getValidationMessages().pinNo" [maxLength]="6">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Tariff" formControlName="traiffId" [formGroup]="companyFormDemo"
+                            [validations]="getValidationMessages().traiffId" [mode]="autocompleteModetariff">
+                        </airmid-dropdown>
+                    </div>
+                    
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Fax No" formControlName="faxNo" [formGroup]="companyFormDemo">
                         </airmid-textbox>
                     </div>
                 </div>
@@ -184,14 +191,14 @@
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
                         <div>
-                            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="companyFormDemo"
-                            [(ngModel)]="isActive"></app-airmid-slider>
+                            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                                [formGroup]="companyFormDemo" [(ngModel)]="isActive"></app-airmid-slider>
                         </div>
-                    
+
                         <div>
-                            <mat-checkbox name="isSubCompany" formControlName="isSubCompany" value="false">
-                            Sub Company
-                        </mat-checkbox>
+                            <app-airmid-slider label="Sub Company" formControlName="isSubCompany"
+                                [formGroup]="companyFormDemo">
+                            </app-airmid-slider>
                         </div>
                     </div>
 
@@ -209,25 +216,3 @@
     </div>
 </div>
 
-
-<!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="PinCode" 
-                        formControlName="pinNo" 
-                        [value]="registerObj?.pinNo" 
-                        [formGroup]="companyForm"
-                        [validations]="getValidationMessages().pinNo" 
-                        [maxLength]="6">
-                    </airmid-textbox> 
-                </div>
-
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="MobileNumber" 
-                        formControlName="mobileNo" 
-                        [value]="" 
-                        [formGroup]="companyForm"
-                        [validations]="getValidationMessages().mobileNo" 
-                        [maxLength]="10">
-                    </airmid-textbox> 
-                </div> -->

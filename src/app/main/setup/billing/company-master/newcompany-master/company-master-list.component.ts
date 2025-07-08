@@ -21,6 +21,7 @@ export class CompanyMasterListComponent implements OnInit {
     isActive:boolean=true;
     autocompleteModetypeName:string="CompanyType";
     autocompleteModetariff: string = "Tariff";
+    autocompleteModeofpayment: string = "PaymentMode";
     autocompleteModecity: string = "City";
     registerObj = new CompanyMaster({});
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -66,12 +67,14 @@ export class CompanyMasterListComponent implements OnInit {
         }
     }
 
-     onChangecity(e) {
-        this.CityName = e.cityName
-        // this.registerObj.stateId = e.stateId
+    onChangecity(e) {
+        this.CityName = e.cityName;
         this._CompanyMasterService.getstateId(e.stateId).subscribe((Response) => {
-            // console.log(Response)
-            this.ddlCountry.SetSelection(Response.countryId);
+            console.log(Response);
+            setTimeout(() => {
+                this.ddlCountry.SetSelection(Response.countryId); // Country dropdown
+                this.companyFormDemo.get('state')?.setValue(Response.stateId); // State form control
+            });
         });
     }
 
