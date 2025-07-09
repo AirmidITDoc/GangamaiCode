@@ -53,7 +53,8 @@ export class ReportService {
     }
 
     public getAllReporConfig(Param) {
-        return this._httpClient1.PostData("Report/ReportList", Param);
+        return this._httpClient1.PostData("Report/NewList", Param);
+        // return this._httpClient1.PostData("Report/ReportList", Param);
     }
     public getReportView(Param){
         return this._httpClient1.PostData("Report/NewViewReport",Param);   

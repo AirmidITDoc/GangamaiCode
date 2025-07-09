@@ -20,7 +20,7 @@
         </div>
        
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+    <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"> -->
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myform">
@@ -30,12 +30,17 @@
                         [mode]="autocompleteModedReport">
                     </airmid-dropdown>
 
-                    <!-- <airmid-autocomplete label="Menu Name" [formGroup]="myform" formControlName="MenuName"
-                                    [ApiUrl]="'Dropdown/GetBindDropDown?mode=MenuMaster&Id=1'"
-                                    (selectionChange)="ListView($event)" TextField="text" ValueField="text">
-                                </airmid-autocomplete> -->
-
                     <mat-form-field appearance="outline">
+                        <mat-label>Report Name</mat-label>
+                        <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
+                            formControlName="reportName" (input)="onChangeFirst()"
+                            (keydown.enter)="$event.preventDefault()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" type="button" (click)="Clearfilter('reportName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline">
                         <mat-label>Report Name</mat-label>
                         <input matInput placeholder="Search Report Name" autocomplete="off" [formGroup]="myform"
                             formControlName="reportName" [(ngModel)]="gridConfig.filters[1].fieldValue"
@@ -43,17 +48,12 @@
                         <button matSuffix mat-icon-button aria-label="Clear" type="button" (click)="gridConfig.filters[1].fieldValue = ''">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field>
-
-                    <!-- <airmid-dropdown label="Menu Name" formControlName="MenuName" [formGroup]="myform"
-                        [(ngModel)]="gridConfig.filters[1].fieldValue" (selectionChange)="ListView1($event)"
-                        [mode]="autocompleteModedMenu">
-                    </airmid-dropdown> -->
+                    </mat-form-field> -->
 
                 </form>
             </ng-container>
         </airmid-table>
-    </div>
+    <!-- </div> -->
 
 
 </div>

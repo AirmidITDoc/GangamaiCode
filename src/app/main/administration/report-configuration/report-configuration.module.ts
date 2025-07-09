@@ -1,5 +1,5 @@
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -29,7 +29,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterModule, Routes } from "@angular/router";
-import { FuseSidebarModule } from "@fuse/components";
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
@@ -41,6 +41,9 @@ import { ReportConfigurationComponent } from "./report-configuration.component";
 import { ReportConfigurationService } from "./report-configuration.service";
 import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatRippleModule } from "@angular/material/core";
+import { MatTimepickerModule } from "mat-timepicker";
+import { FormsModule } from "@angular/forms";
 
 const routes: Routes = [
     {
@@ -88,10 +91,13 @@ const routes: Routes = [
         //WebcamModule,
         ScrollingModule,
         MatSidenavModule,
-        //NgxQRCodeModule,
-        //NgxPrintModule,
+        MatRippleModule,
+        MatTimepickerModule,
         MatButtonToggleModule,
-        DragDropModule
+        DragDropModule,
+        CommonModule,
+        FuseConfirmDialogModule,
+        FormsModule
     ],
     providers: [ReportConfigurationService, DatePipe]
 })

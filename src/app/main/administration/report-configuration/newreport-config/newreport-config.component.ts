@@ -80,89 +80,92 @@ export class NewreportConfigComponent {
     });
 
     this.reportDetailsArray.push(this.createReportDetail());
+    this.retriveData(this.data)
   }
 
   createReportForm(): FormGroup {
-          return this.formBuilder.group({
-          reportSectionId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-  
-              reportId: [0],
-              reportSection: ["",[]],
+    return this.formBuilder.group({
+      reportSectionId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
 
-              reportName: ["", [Validators.required,Validators.maxLength(500),
-                      Validators.pattern("^[A-Za-z @#&]+$")]],
+      reportId: [0],
+      reportSection: ["", []],
 
-              parentid: ["",[Validators.required,Validators.maxLength(10), 
-                  Validators.pattern('^[0-9]*$')]],
+      reportName: ["", [Validators.required, Validators.maxLength(500),
+      Validators.pattern("^[A-Za-z @#&]+$")]],
 
-              reportMode: ["",[Validators.required,Validators.maxLength(500),
-                      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
+      parentid: [0, [Validators.required, Validators.maxLength(10),
+      Validators.pattern('^[0-9]*$')]],
 
-              reportTitle: ["",[Validators.required,Validators.maxLength(500),
-                      Validators.pattern("^[A-Za-z @#&]+$")]],
+      reportMode: ["", [Validators.required, Validators.maxLength(500),
+      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")]],
 
-              reportHeader: ["",[]],
+      reportTitle: ["", [Validators.required, Validators.maxLength(500),
+      Validators.pattern("^[A-Za-z @#&]+$")]],
 
-              reportColumn: ["",[]],
-  
-              reportTotalField: [""],
+      reportHeader: ["string", []],
 
-              reportGroupByLabel: [""],
+      reportColumn: ["", []],
 
-              summaryLabel:[""],
+      reportTotalField: [""],
 
-              reportHeaderFile: ["",[Validators.required,Validators.maxLength(500),
-                      Validators.pattern("^[A-Za-z .,@$&]+$") ]],
+      reportGroupByLabel: [""],
 
-              reportBodyFile: ["MultiTotalReportFormat.html",[Validators.required,Validators.maxLength(500)]],
+      summaryLabel: [""],
 
-              reportFolderName: ["",[Validators.required,Validators.maxLength(500)]],
+      reportHeaderFile: ["", [Validators.required, Validators.maxLength(500),
+      Validators.pattern("^[A-Za-z .,@$&]+$")]],
 
-              reportFileName: ["",[Validators.required,Validators.maxLength(500)]],
-              
-              reportSpname: ["",[Validators.required,Validators.maxLength(500)]],
+      reportBodyFile: ["MultiTotalReportFormat.html", [Validators.required, Validators.maxLength(500)]],
 
-              reportPageOrientation: ["", [Validators.required]],
+      reportFolderName: ["", [Validators.required, Validators.maxLength(500)]],
 
-              reportPageSize: ["", [Validators.required]],
+      reportFileName: ["", [Validators.required, Validators.maxLength(500)]],
 
-              reportColumnWidths: [""],
+      reportSpname: ["", [Validators.required, Validators.maxLength(500)]],
 
-              reportFilter: ["",[ Validators.maxLength(500)]],
+      reportPageOrientation: ["", [Validators.required]],
 
-              isActive:[true,[Validators.required]],
+      reportPageSize: ["", [Validators.required]],
 
-              menuId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      reportColumnWidths: [""],
 
-              mReportConfigDetails:this.formBuilder.array([]),
+      reportFilter: ["", [Validators.maxLength(500)]],
 
-          });
-      }
+      isActive: [true, [Validators.required]],
 
-  createReportDetail(item: any = {}): FormGroup {
+      menuId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+
+      mReportConfigDetails: this.formBuilder.array([]),
+
+    });
+  }
+
+  createReportDetail(item: any = {}, index: number = 0): FormGroup {
     return this.formBuilder.group({
       reportColId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       reportId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isDisplayColumn: [item.isDisplay ?? false],
-      reportHeader: [item.reportHeader ?? ''],
+      // isDisplayColumn: [item.IsDisplayColumn ?? false],
+       isDisplayColumn: [!!item.IsDisplayColumn],
+      reportHeader: [item.ReportHeaderName ?? item.ReportHeader ?? '', [Validators.maxLength(100)]],
       reportColumn: [item.ReportColumn ?? ''],
-      reportColumnWidth: [item.reportColumnWidth ?? ''],
-      reportColumnAligment: [item.reportAlign ?? ''],
-      reportTotalField: [item.reportTotalField ?? '0'],
-      reportGroupByLabel: [item.reportGroupByLabel ?? '0'],
-      summaryLabel: [item.summaryLabel ?? ''],
-      sequenceNo: [item.sequence ?? 0],
+      reportColumnWidth: [String(item.ReportColumnWidth) ?? '', [Validators.maxLength(50)]],
+      reportColumnAligment: [item.ReportColumnAligment ?? ''],
+      reportTotalField: [String(item.ReportTotalField) ?? '0'],
+      reportGroupByLabel: [String(item.ReportGroupByLabel) ?? '0'],
+      summaryLabel: [item.SummaryLabel ?? '', [Validators.maxLength(50)]],
+      sequenceNo: [index + 1],
+      // sequenceNo: [item.SequenceNo ?? index + 1],
       procedureName: [item.procedureName ?? '']
     });
   }
 
-   get reportDetailsArray(): FormArray {
-      return this.myform.get('mReportConfigDetails') as FormArray;
-    }
-      
+  get reportDetailsArray(): FormArray {
+    return this.myform.get('mReportConfigDetails') as FormArray;
+  }
+
   getData() {
     // debugger
-    if(!this.myform.get('reportSpname').value){
+    if (!this.myform.get('reportSpname').value) {
       this.toastr.warning('Enter Procedure to Retrive List')
     }
     let Procedure = this.myform.get('reportSpname').value
@@ -180,17 +183,38 @@ export class NewreportConfigComponent {
     console.log(SelectQuery);
     this._ReportConfigurationService.getReportList(SelectQuery).subscribe(Visit => {
       this.dsReportList.data = Visit as ReportList[];
-      console.log(this.dsReportList.data)
+      console.log("Get data:",this.dsReportList.data)
       this.dsReportList.sort = this.sort;
       this.dsReportList.paginator = this.paginator;
     });
   }
 
-onIsDisplayChange(row,event){
-  console.log(row)
-  console.log(event)
-  console.log(this.dsReportList.data)
-}
+  retriveData(row){
+    // debugger
+    var SelectQuery = {
+      "searchFields": [
+        {
+          "fieldName": "ReportId",
+          "fieldValue": String(row.reportId), //"ps_rptListofRegistration", //"ps_rptopappointmentlistreport",
+          "opType": "Equals"
+        }
+      ],
+      "mode": "GetReportDetailList"
+    }
+    console.log(SelectQuery);
+    this._ReportConfigurationService.getReportList(SelectQuery).subscribe(Visit => {
+      this.dsReportList.data = Visit as ReportList[];
+      console.log("Retrive data:",this.dsReportList.data)
+      this.dsReportList.sort = this.sort;
+      this.dsReportList.paginator = this.paginator;
+    });
+  }
+
+  onIsDisplayChange(row, event) {
+    console.log(row)
+    console.log(event)
+    console.log(this.dsReportList.data)
+  }
 
   drop(event: CdkDragDrop<any[]>) {
     const data = this.dsReportList.data; // Extract raw array from MatTableDataSource
@@ -212,44 +236,49 @@ onIsDisplayChange(row,event){
     this.myform.get('menuId')?.setValue(this.menuId)
   }
 
-  changefunction(element){
-    console.log(element)
-  }
-
-  ReportColumnWidthfunction(element){
+  ReportColumnWidthfunction(element) {
     console.log(element)
   }
 
   onSubmit() {
     for (let i = 0; i < this.dsReportList.data.length; i++) {
-  const row = this.dsReportList.data[i];
+      const row = this.dsReportList.data[i];
 
-  if (row.IsDisplayColumn === true) {
-    if (
-      row.ReportHeaderName === "" ||
-      row.ReportColumnWidth === 0 //||
-      // row.ReportColumnAligment === ""
-    ) {
-      this.toastr.warning(
-        `Row ${i + 1}: Please fill Report Header, Report Column Width, and Report Alignment`
-      );
-      return;
+      if (row.IsDisplayColumn === true) {
+        if (
+          row.ReportHeaderName === "" ||
+          row.ReportColumnWidth === 0 ||
+          row.ReportColumnAligment === ""
+        ) {
+          this.toastr.warning(
+            `Row ${i + 1}: Please fill Report Header, Report Column Width, and Report Alignment`
+          );
+          return;
+        }
+      }
     }
-  }
-}
 
     if (!this.myform.invalid) {
+
+      if (this.dsReportList.data.length === 0) {
+        this.toastr.warning('Table is Empty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      this.myform.get('menuId')?.setValue(Number(this.myform.get('menuId').value))
+      this.myform.get('parentid')?.setValue(Number(this.myform.get('parentid').value))
       this.myform.get('reportSection')?.setValue(this.reportName)
       this.myform.removeControl('reportSectionId')
-debugger
+      debugger
       this.reportDetailsArray.clear();
-      this.dsReportList.data.forEach(item => {
-        this.reportDetailsArray.push(this.createReportDetail(item));
+      this.dsReportList.data.forEach((item, i) => {
+        this.reportDetailsArray.push(this.createReportDetail(item,i));
       });
 
       console.log("Report-Config JSON :-", this.myform.value);
       this._ReportConfigurationService.insertNewReportConfig(this.myform.value).subscribe((data) => {
-          this.onClear(true);
+        this.onClear(true);
       });
     }
     else {
@@ -361,15 +390,15 @@ debugger
     this.dialogRef.close(val);
   }
 
-   keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/^\d*\.?\d*$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 }
 
 export class ReportList {
@@ -382,12 +411,12 @@ export class ReportList {
   groupBy: any;
   summery: any;
   sequence: any;
-  FieldColumnName:any;
-  ValueColumnName:any;
-IsDisplayColumn:any;
-ReportHeaderName:any;
-ReportColumnWidth:any;
-ReportColumnAligment:any;
+  FieldColumnName: any;
+  ValueColumnName: any;
+  IsDisplayColumn: any;
+  ReportHeaderName: any;
+  ReportColumnWidth: any;
+  ReportColumnAligment: any;
 
   /**
   * Constructor

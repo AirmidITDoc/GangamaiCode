@@ -142,6 +142,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isPathOutSource: this.data?.isPathOutSource,
             isRadOutSource: this.data?.isRadOutSource,
             isDiscount: this.data?.isDiscount,
+            isProcedure: this.data?.isProcedure,
             emgStartTime: formatTime(this.data?.emgStartTime),
             emgEndTime: formatTime(this.data?.emgEndTime),
         };

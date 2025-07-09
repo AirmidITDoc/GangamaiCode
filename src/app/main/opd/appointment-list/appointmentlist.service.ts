@@ -139,7 +139,7 @@ export class AppointmentlistService {
             patientOldNew: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             firstFollowupVisit: 0,
             AppPurposeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            campId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            campId: [0],
             followupDate: [(new Date()).toISOString()],
             crossConsulFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],

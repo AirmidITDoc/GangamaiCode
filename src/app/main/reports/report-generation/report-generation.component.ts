@@ -148,7 +148,7 @@ export class ReportGenerationComponent implements OnInit {
     }
     GetAllReporConfig() {
         let paramFilter = [{
-            "fieldName": "menuId",
+            "fieldName": "MenuId",
             "fieldValue": this.rid.toString(),
             "opType": OperatorComparer.Equals
         }];

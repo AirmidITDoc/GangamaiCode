@@ -294,7 +294,7 @@
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Camp" formControlName="campId" [formGroup]="VisitFormGroup" [mode]="autocompleteModecamp"></airmid-dropdown>
+                          <airmid-dropdown label="Camp" formControlName="campId" [value]="registerObj?.campId" [formGroup]="VisitFormGroup" [mode]="autocompleteModecamp"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
