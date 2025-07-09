@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -8,21 +8,19 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./airmid-fileupload.component.scss']
 })
 export class AirmidFileuploadComponent {
-    @Input() multiple:boolean=false;
+    @Input() multiple: boolean = false;
     @Input() accept
     @Input() auto = true
     @Input() chooseLabel = 'Choose'
     @Input() uploadLabel = 'Upload'
     @Input() cancelLabel = 'Cance'
     @Input() deleteButtonIcon = 'delete'
+    @Input() refType: PageNames
+    @Input() files: AirmidFileModel[] = [];
+    @Output() filesChange = new EventEmitter<AirmidFileModel[]>();
     @ViewChild('fileUpload')
     fileUpload: ElementRef
-
     inputFileName: string
-
-    @Input()
-    files: File[] = []
-
     constructor(private sanitizer: DomSanitizer) {
 
     }
@@ -37,54 +35,64 @@ export class AirmidFileuploadComponent {
     }
 
     onFileSelected(event) {
-        let files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-        console.log('event::::::', event)
-        for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-
-            //if(!this.isFileSelected(file)){
-            if (this.validate(file)) {
-                //      if(this.isImage(file)) {
-                file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(files[i])));
-                //      }
-                if (!this.isMultiple()) {
-                    this.files = []
-                }
-                this.files.push(files[i]);
-                //  }
-            }
-            //}
+        let selectedFiles = event.dataTransfer ? event.dataTransfer.files : event.target.files;
+        if (!this.multiple) {
+            this.files = []
         }
+        for (let i = 0; i < selectedFiles.length; i++) {
+            let selectedFile = selectedFiles[i];
+            var nextSrNo = (this.files.length > 0) ? Math.max(...this.files.map((x: { srNo: any; }) => x.srNo)) + 1 : 1;
+            this.files.push({
+                srNo: nextSrNo, file: selectedFile, refId: 0, refType: PageNames.Doctor,
+                id: 0,
+                docName: selectedFile.name,
+                docSavedName: '',
+                isDelete: false
+            });
+        }
+        this.filesChange.emit(this.files);
     }
 
-    removeFile(event, file) {
+    removeFile(event, srNO) {
         let ix
-        if (this.files && -1 !== (ix = this.files.indexOf(file))) {
-            this.files.splice(ix, 1)
+        if (this.files && -1 !== (ix = this.files.findIndex(x => x.srNo == srNO))) {
+            if (this.files[ix].docSavedName)
+                this.files[ix].isDelete = true;
+            else
+                this.files.splice(ix, 1)
             this.clearInputElement()
+            this.filesChange.emit(this.files);
         }
-    }
-
-    validate(file: File) {
-        for (const f of this.files) {
-            if (f.name === file.name
-                && f.lastModified === file.lastModified
-                && f.size === f.size
-                && f.type === f.type
-            ) {
-                return false
-            }
-        }
-        return true
     }
 
     clearInputElement() {
         this.fileUpload.nativeElement.value = ''
     }
-
-
-    isMultiple(): boolean {
-        return this.multiple
+    get filteredFiles() {
+        return this.files?.filter(x => !x.isDelete) || [];
     }
 
+}
+export class AirmidFileModel {
+    srNo: Number;
+    id: Number;
+    refId: Number;
+    refType: Number;
+    docName: string;
+    docSavedName: string;
+    file: File;
+    isDelete: boolean;
+    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: number; docName: string; docSavedName: string; file: File, isDelete: boolean }) {
+        this.srNo = AirmidFileModel.srNo || 0;
+        this.id = AirmidFileModel.id || 0;
+        this.refId = AirmidFileModel.refId || 0;
+        this.refType = AirmidFileModel.refType || 0;
+        this.docName = AirmidFileModel.docName || '';
+        this.docSavedName = AirmidFileModel.docSavedName || '';
+        this.file = AirmidFileModel.file || null;
+        this.isDelete = AirmidFileModel.isDelete || false;
+    }
+}
+export enum PageNames {
+    Doctor = 1
 }
