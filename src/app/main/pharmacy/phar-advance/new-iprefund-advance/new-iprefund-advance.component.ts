@@ -145,6 +145,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     });
     this.getAdvaceSum(this.dsIpItemList.data)
   } 
+  AdvanceId:any=0;
   getCellCalculation(element, RefundAmt) {
     debugger 
     if (RefundAmt > 0 && RefundAmt <= element.netBalAmt) {
@@ -161,17 +162,17 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
       element.refundAmount = ''
       element.balanceAmount = element.netBalAmt;
     } 
+    this.AdvanceId = element?.advanceId || 0
     this.getAdvaceSum(this.dsIpItemList.data)
   } 
   getAdvaceSum(ItemList) { 
     const Itemlist = ItemList
     let balAmt = Itemlist.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);
     let RefundAmt = Itemlist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2); 
-    const advanceId = ItemList[0]?.advanceId
+   
     this.RefundFooterForm.patchValue({
       ToatalRefunfdAmt:RefundAmt,
-      BalanceAmount:balAmt,
-      advanceId:advanceId
+      BalanceAmount:balAmt, 
     }) 
   } 
   onSave() { 
@@ -182,13 +183,13 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     }
 
     const formValues = this.RefundFooterForm.value
-       this.RefundSaveForm.get('pharmacyRefund.refundDate').setValue(this.dateTimeObj.date)
+       this.RefundSaveForm.get('pharmacyRefund.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date ,'yyyy-MM-dd'))
        this.RefundSaveForm.get('pharmacyRefund.refundTime').setValue(this.dateTimeObj.time)
       this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
-    this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(formValues.advanceId)
-    this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(formValues.advanceId)
+    this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.AdvanceId)
+    this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(this.AdvanceId)
     this.RefundSaveForm.get('phAdvanceHeader.balanceAmount').setValue(formValues?.BalanceAmount)
     if (this.RefundSaveForm.valid) {
 
@@ -260,6 +261,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     this.RefundFooterForm.get('RegID').setValue('');
     this.dsIpItemList.data = [];
     this.dsPreRefundList.data = [];
+    this.AdvanceId = 0;
     this._matDialog.closeAll();
   } 
   viewgetRefundofAdvanceReportPdf(contact) { 

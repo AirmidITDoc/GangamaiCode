@@ -163,8 +163,8 @@ export class NewAdvanceComponent implements OnInit {
     this.grid.gridConfig = { ...this.gridConfig };
     this.grid.bindGridData();
   } 
-  vAdvanceId: any;
-  vAdvanceDetailID: any;
+  vAdvanceId: any = 0;
+  vAdvanceDetailID: any = 0;
   getAdvanceList(obj) {
     var m_data = {
       "first": 0,
@@ -177,8 +177,8 @@ export class NewAdvanceComponent implements OnInit {
     } 
     this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => { 
       this.dsIpItemList.data = Visit.data as IpItemList[];
-      this.vAdvanceId = this.dsIpItemList.data[0].advanceId;
-      this.vAdvanceDetailID = this.dsIpItemList.data[0].advanceDetailId;
+      this.vAdvanceId = this.dsIpItemList.data[0]?.advanceId || 0;
+      this.vAdvanceDetailID = this.dsIpItemList.data[0]?.advanceDetailId || 0;
       console.log(this.dsIpItemList.data)
     });
   } 
@@ -190,7 +190,7 @@ export class NewAdvanceComponent implements OnInit {
       return;
     } 
     this.insertForm?.get("pharmacyAdvance.advanceId")?.setValue(this.vAdvanceId || 0);
-    this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('date')?.value ?? 0));
+    this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
     this.insertForm?.get("pharmacyAdvance.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.refId")?.setValue(this.regObj?.regID || 0);
