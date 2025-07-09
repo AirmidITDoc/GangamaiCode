@@ -16,6 +16,7 @@ export class AirmidFileuploadComponent {
     @Input() cancelLabel = 'Cance'
     @Input() deleteButtonIcon = 'delete'
     @Input() refType: PageNames
+    @Input() refId: Number = 0;
     @Input() files: AirmidFileModel[] = [];
     @Output() filesChange = new EventEmitter<AirmidFileModel[]>();
     @ViewChild('fileUpload')
@@ -43,7 +44,7 @@ export class AirmidFileuploadComponent {
             let selectedFile = selectedFiles[i];
             var nextSrNo = (this.files.length > 0) ? Math.max(...this.files.map((x: { srNo: any; }) => x.srNo)) + 1 : 1;
             this.files.push({
-                srNo: nextSrNo, file: selectedFile, refId: 0, refType: PageNames.Doctor,
+                srNo: nextSrNo, file: selectedFile, refId: this.refId, refType: this.refType,
                 id: 0,
                 docName: selectedFile.name,
                 docSavedName: '',
