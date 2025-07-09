@@ -725,8 +725,7 @@ export class SalesHospitalNewComponent implements OnInit {
       StoreId: [this.selectedItem?.storeId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
-  OnAddItem() {
-    debugger;
+  OnAddItem() { 
     if (this.saleSelectedDatasource.data.length > 0) {
       this.saleSelectedDatasource.data.forEach((element) => {
         if (element.StockId == this.StockId) {
@@ -1273,8 +1272,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
         return;
       }
-    }
-    debugger
+    } 
     this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
     this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.Patientdetails?.admissionID)
@@ -1627,12 +1625,14 @@ vExpDate:any;
       "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(admissionID), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": []
-    }
-    console.log(m_data)
+    } 
     this._salesService.getAdvanceList(m_data).subscribe(Visit => {
-      const advancedetails = Visit.data; 
-      this.TotalAdvanceAmt = Visit?.data[0]?.advanceAmount
-      this.TotalBalanceAmt = Visit?.data[0]?.balanceAmount
+      let advancedetails = [];
+      advancedetails = Visit.data; 
+      advancedetails.forEach(element => {
+      this.TotalAdvanceAmt += element?.advanceAmount || 0
+      this.TotalBalanceAmt += element?.balanceAmount || 0
+      }); 
       console.log(advancedetails)
     });
   }
