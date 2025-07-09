@@ -1,6 +1,8 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
+import { CompanyMasterListComponent } from './company-master-list/company-master-list.component';
+import { NewCompanyMasterComponent } from './company-master-list/new-company-master/new-company-master.component';
 
 
 const appRoutes: Routes = [
@@ -56,7 +58,7 @@ const appRoutes: Routes = [
     {
         path: "company-master",
         loadChildren: () =>
-            import("./company-master/company-master.module").then(
+            import("./company-master-list/company-master.module").then(
                 (m) => m.CompanyMasterModule
             ),
     },
@@ -91,7 +93,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+   
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class BillingModule {}

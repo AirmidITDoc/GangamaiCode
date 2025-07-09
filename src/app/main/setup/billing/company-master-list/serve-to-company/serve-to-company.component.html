@@ -1,0 +1,434 @@
+<div class="modal-wrapper grid-container">
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Company Master</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="modal-body-container">
+      <div class="main-content h-100-p overflow-auto ml-8">
+        <div>
+
+          <div class="personal-panel">
+            <mat-accordion multi>
+              <mat-expansion-panel expanded class="mt-12">
+                <mat-expansion-panel-header>
+
+                  <div (click)="$event.stopPropagation()">
+                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
+                      (selectedTabChange)="onTabChange($event)">
+                      <mat-tab label="Service To Company Detail"></mat-tab>
+                      <mat-tab label="Group Discount"></mat-tab>
+                      <mat-tab label="Service Discount"></mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </mat-expansion-panel-header>
+                <ng-container [ngSwitch]="selectedTabIndex">
+                  <div *ngSwitchCase="0">
+                    <form [formGroup]="companyForm">
+                      <!-- <mat-card> -->
+                      <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                        <!--  -->
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="CompanyName" formControlName="companyName" [formGroup]="companyForm"
+                            [validations]="getValidationMessages().companyName" [maxLength]="50"
+                            [value]="compobj?.companyName">
+                          </airmid-textbox>
+                        </div>
+                        <!-- [value]="data?.compTypeId" -->
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="ClassName" formControlName="ClassId1" [formGroup]="companyForm"
+                            (selectionChange)="selectChangemainclass($event)" [value]="compobj?.classId"
+                            [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass1">
+                          </airmid-dropdown>
+                        </div>
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="TariffName" formControlName="TariffId1" [formGroup]="companyForm"
+                            [value]="compobj?.traiffId" (selectionChange)="selectChangemainclass($event)"
+                            [validations]="getValidationMessages().TariffId1" [mode]="autocompleteModetariff1">
+                          </airmid-dropdown>
+                        </div>
+                      </div>
+
+                      <div fxLayout="column">
+                        <div class="radio-container gap-8" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                          <mat-radio-group aria-label="Select an option" formControlName="IsPathRad" name="IsPathRad"
+                            (change)="getServiceList()">
+                            <mat-radio-button value="1">Pathology </mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-radio-button value="2">Radiology</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <mat-radio-button value="3">Other Services</mat-radio-button>&nbsp;&nbsp;&nbsp;
+                          </mat-radio-group>
+                        </div>
+                      </div>
+
+                      <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                        <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <!-- [value]="data?.compTypeId" -->
+                          <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
+                            (selectionChange)="selectChangeclass($event)"
+                            [validations]="getValidationMessages().compTypeId" [mode]="autocompleteModetypeName">
+                          </airmid-dropdown>
+                        </div>
+                        <div fxFlex="14%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
+                            (selectionChange)="selectChangeclass($event)"
+                            [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
+                          </airmid-dropdown>
+                        </div>
+                        <div fxFlex="14%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="TariffName" formControlName="TariffId2" [formGroup]="companyForm"
+                            (selectionChange)="selectChangeclass($event)"
+                            [validations]="getValidationMessages().TariffId1" [mode]="autocompleteModetariff2">
+                          </airmid-dropdown>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- <div fxLayout="table-row wrap" fxLayoutGap="12px grid"> -->
+                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+                      <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="45%">
+
+                        <div fusePerfectScrollbar
+                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                          dynamicTableHeight>
+
+                          <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
+                            [@animateStagger]="{ value: '50' }">
+
+                            <ng-container matColumnDef="ServiceName">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                              <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="w-80">
+                                <button mat-icon-button color="warn"
+                                  (click)="onSaveEntry(element)"><mat-icon>add</mat-icon></button>
+                              </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="loading">
+                              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent"
+                              *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                              [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                              [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                              [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
+                          </mat-table>
+
+                        </div>
+                      </div>
+                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="55%">
+                        <div fusePerfectScrollbar
+                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                          dynamicTableHeight>
+
+                          <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
+                            [@animateStagger]="{ value: '50' }">
+
+                            <ng-container matColumnDef="ServiceName">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
+                            </ng-container>
+
+
+                            <!-- <ng-container matColumnDef="qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.qty}}</mat-cell>
+                                </ng-container> -->
+
+                            <ng-container matColumnDef="qty">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                <mat-form-field appearance="fill">
+                                  <input matInput [(ngModel)]="element.qty" OnlyNumber
+                                    (keyup)="gettableclassrate(element, $event.value)"
+                                    (keypress)="keyPressCharater($event)" />
+                                </mat-form-field>
+                              </mat-cell>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="price">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.price}}</mat-cell>
+                                </ng-container> -->
+
+                            <ng-container matColumnDef="price">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                <mat-form-field appearance="fill">
+                                  <input matInput [(ngModel)]="element.price" OnlyNumber
+                                    (keyup)="gettableclassrate(element, $event.value)"
+                                    (keypress)="keyPressCharater($event)" />
+                                </mat-form-field>
+                              </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                              <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="w-80">
+                                <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                  <mat-icon>delete_outline</mat-icon>
+                                </button>
+                              </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="loading">
+                              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent"
+                              *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                              [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                              [ngClass]="{ hide: DSServicedetailMainList != null }"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                              [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+                          </mat-table>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- </mat-card> -->
+
+                  </div>
+                  <div *ngSwitchCase="1">
+                    <ng-container [ngSwitch]="selectedTabIndex">
+
+                      <form [formGroup]="companyForm">
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 20px;">
+                          <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                            <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().compTypeId" [mode]="autocompleteModetypeName">
+                            </airmid-dropdown>
+                          </div>
+                          <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
+                            </airmid-dropdown>
+                          </div>
+                          <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="TariffName" formControlName="TariffId2" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().TariffId1" [mode]="autocompleteModetariff2">
+                            </airmid-dropdown>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row"
+                        style="max-height: 400px; overflow-y: auto;">
+
+                        <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="95%">
+                          <div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                            dynamicTableHeight>
+
+                            <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
+                              [@animateStagger]="{ value: '50' }">
+
+                              <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                  element.ServiceName}}</mat-cell>
+                              </ng-container>
+
+
+                              <!-- <ng-container matColumnDef="qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.qty}}</mat-cell>
+                                </ng-container> -->
+
+                              <ng-container matColumnDef="qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                  <mat-form-field appearance="fill">
+                                    <input matInput [(ngModel)]="element.qty" OnlyNumber
+                                      (keyup)="gettableclassrate(element, $event.value)"
+                                      (keypress)="keyPressCharater($event)" />
+                                  </mat-form-field>
+                                </mat-cell>
+                              </ng-container>
+
+
+                              <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="w-80">
+                                  <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                    <mat-icon>delete_outline</mat-icon>
+                                  </button>
+                                </mat-cell>
+                              </ng-container>
+
+
+                              <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                              </ng-container>
+
+                              <mat-header-row class="accent"
+                                *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                              <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{ hide: DSServicedetailMainList != null }"></mat-footer-row>
+                              <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                    </ng-container>
+                  </div>>
+                  <div *ngSwitchCase="2">
+                    <ng-container [ngSwitch]="selectedTabIndex">
+
+                      <form [formGroup]="companyForm">
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 20px;">
+                          <div fxFlex="16%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                            <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().compTypeId" [mode]="autocompleteModetypeName">
+                            </airmid-dropdown>
+                          </div>
+                          <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
+                            </airmid-dropdown>
+                          </div>
+                          <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="TariffName" formControlName="TariffId2" [formGroup]="companyForm"
+                              (selectionChange)="selectChangeclass($event)"
+                              [validations]="getValidationMessages().TariffId1" [mode]="autocompleteModetariff2">
+                            </airmid-dropdown>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+
+                        <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="60%">
+                          <div fusePerfectScrollbar
+                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                            dynamicTableHeight>
+
+                            <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
+                              [@animateStagger]="{ value: '50' }">
+
+                              <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                  element.ServiceName}}</mat-cell>
+                              </ng-container>
+
+
+                              <!-- <ng-container matColumnDef="qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.qty}}</mat-cell>
+                                </ng-container> -->
+
+                              <ng-container matColumnDef="qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                  <mat-form-field appearance="fill">
+                                    <input matInput [(ngModel)]="element.qty" OnlyNumber
+                                      (keyup)="gettableclassrate(element, $event.value)"
+                                      (keypress)="keyPressCharater($event)" />
+                                  </mat-form-field>
+                                </mat-cell>
+                              </ng-container>
+
+
+                              <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="w-80">
+                                  <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                    <mat-icon>delete_outline</mat-icon>
+                                  </button>
+                                </mat-cell>
+                              </ng-container>
+
+
+                              <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                              </ng-container>
+
+                              <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                              </ng-container>
+
+                              <mat-header-row class="accent"
+                                *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                              <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{ hide: DSServicedetailMainList != null }"></mat-footer-row>
+                              <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                          </div>
+                        </div>
+                      </div>
+
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </mat-expansion-panel>
+
+            </mat-accordion>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+      <div class="modal-footer-buttons">
+        <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
