@@ -83,7 +83,8 @@
 
                 <!-- add table -->
 
-                <div class="modal-card-container airmid-table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 10px;">
+                <div class="modal-card-container airmid-table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 10px;"
+                cdkScrollable>
                     <mat-table #table matSort [dataSource]="dsReportList" class="airmid-table"
                         [@animateStagger]="{ value: '50' }" cdkDropList (cdkDropListDropped)="drop($event)">
 
@@ -187,7 +188,8 @@
 
                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumn;"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumn" class="element"
-                            [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag></mat-row>
+                            [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag (cdkDragMoved)="onDragMoved($event)"></mat-row>
+                            <!-- (cdkDragMoved)="onDragMoved($event)" -->
                         <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{ hide: dsReportList != null }"></mat-footer-row>
                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -206,6 +208,20 @@
                                 [validations]="getValidationMessages().reportFilter" [maxLength]="100">
                             </airmid-textbox>
                         </div>
+                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Department"
+                                formControlName="reportFilter" [formGroup]="myform"
+                                [IsMultiPle]="true"
+                                #ddlDepartment ValueField="departmentId" TextField="departmentName"
+                                ApiUrl="DepartmentMaster/get-departments"
+                                [ReqFullObj]="true"></airmid-dropdown>
+                        </div>
+                        <mat-chip-listbox #chipList>
+                            <mat-chip *ngFor="let item of myform.value.reportFilter">
+                                {{ item.departmentName }}
+                                <mat-icon (click)="removeDepartment(item)">close</mat-icon>
+                            </mat-chip>
+                        </mat-chip-listbox> -->
                     </div>
 
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">

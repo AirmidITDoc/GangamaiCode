@@ -449,7 +449,8 @@ export class ReportGenerationComponent implements OnInit {
                 "columnWidths": this.reportDetail?.columnWidths?.split(",") || this.reportDetail?.reportColumnWidths?.split(",") || [],
                 "htmlFilePath": this.reportDetail?.reportBodyFile,
                 "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
-                "spName": this.reportDetail?.reportSpname,
+                "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
+                // "spName": this.reportDetail?.reportSpname,
                 "folderName": this.reportDetail?.reportFolderName,
                 "fileName": this.reportDetail?.reportFileName,
                 "vPageOrientation": this.reportDetail?.reportPageOrientation

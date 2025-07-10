@@ -44,6 +44,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTimepickerModule } from "mat-timepicker";
 import { FormsModule } from "@angular/forms";
+import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
     {
@@ -97,7 +98,8 @@ const routes: Routes = [
         DragDropModule,
         CommonModule,
         FuseConfirmDialogModule,
-        FormsModule
+        FormsModule,
+        MatChipsModule
     ],
     providers: [ReportConfigurationService, DatePipe]
 })

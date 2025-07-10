@@ -5,11 +5,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { ReportConfigurationService } from '../report-configuration.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { element } from 'protractor';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 
 @Component({
@@ -62,6 +64,7 @@ export class NewreportConfigComponent {
     this.myform.markAllAsTouched();
     if ((this.data?.reportId ?? 0) > 0) {
       this.myform.get('reportSectionId').setValue(this.data.parentid)
+      // this.myform.get('reportSpname').setValue(this.data.reportSPName)
       this.reportName = this.data.reportSection
       this.isActive = this.data.isActive
       this.myform.patchValue(this.data);
@@ -276,6 +279,12 @@ export class NewreportConfigComponent {
         this.reportDetailsArray.push(this.createReportDetail(item,i));
       });
 
+      // tried
+      // const selectedDepartments = this.myform.get('reportFilter').value || [];
+      // const departmentNames = selectedDepartments.map(dep => dep.departmentName).join(',');
+      // console.log('Comma-separated department names:', departmentNames);
+      // this.myform.get('reportFilter')?.setValue(departmentNames)
+
       console.log("Report-Config JSON :-", this.myform.value);
       this._ReportConfigurationService.insertNewReportConfig(this.myform.value).subscribe((data) => {
         this.onClear(true);
@@ -399,6 +408,29 @@ export class NewreportConfigComponent {
       return false;
     }
   }
+
+  @ViewChild(CdkScrollable, { static: true }) scrollable!: CdkScrollable;
+  onDragMoved(event: CdkDragMove) {
+  const scrollContainer = this.scrollable.getElementRef().nativeElement;
+  const scrollRect = scrollContainer.getBoundingClientRect();
+  const pointerY = event.pointerPosition.y;
+
+  const edgeMargin = 60; // px from top/bottom where scrolling starts
+  const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+  if (pointerY < scrollRect.top + edgeMargin) {
+    scrollContainer.scrollTop -= scrollSpeed;
+  } else if (pointerY > scrollRect.bottom - edgeMargin) {
+    scrollContainer.scrollTop += scrollSpeed;
+  }
+}
+
+//     @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
+// removeDepartment(item) {
+//         let removedIndex = this.myform.value.reportFilter.findIndex(x => x.departmentId == item.departmentId);
+//         this.myform.value.reportFilter.splice(removedIndex, 1);
+//         this.ddlDepartment.SetSelection(this.myform.value.reportFilter.map(x => x.departmentId));
+//     }
 }
 
 export class ReportList {
