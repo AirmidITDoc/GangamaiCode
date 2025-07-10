@@ -37,6 +37,7 @@ import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from './tariff/tariff.component';
 import { MatTimepickerModule } from "mat-timepicker";
+import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
     {
@@ -81,7 +82,8 @@ const routes: Routes = [
         MatExpansionModule,
         MatListModule,
         MatTooltipModule,
-        MatTimepickerModule
+        MatTimepickerModule,
+        MatChipsModule
     ],
     providers: [ServiceMasterService, DatePipe]
 })

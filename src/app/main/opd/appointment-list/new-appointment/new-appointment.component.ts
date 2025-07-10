@@ -456,7 +456,6 @@ export class NewAppointmentComponent implements OnInit {
             //   console.log('The dialog was closed - Insert Action', result);
             this.PrevregisterObj = result
             this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
-            this.VisitFormGroup.get("campId").setValue(this.PrevregisterObj.campId)
             this.selectChangedepartment(this.PrevregisterObj)
 
         });

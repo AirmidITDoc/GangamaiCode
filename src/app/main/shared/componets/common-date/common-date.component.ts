@@ -102,6 +102,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'OPDEMR Time';
             this.isDatePckrDisabled = false;
         }
+         else if (this.screenFromString == 'Emergency') {
+            this.dateLabel = 'Emergency Date';
+            this.timeLabel = 'Emergency Time';
+            this.isDatePckrDisabled = false;
+        }
         else if (this.screenFromString == 'Common-form') {
             this.dateLabel = 'Date';
             this.timeLabel = 'Time';
