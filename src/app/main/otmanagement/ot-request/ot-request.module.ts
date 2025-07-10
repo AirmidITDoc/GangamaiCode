@@ -27,6 +27,7 @@ import { CommonModule, DatePipe } from "@angular/common";
 import { OTManagementServiceService } from "../ot-management-service.service";
 import { NewRequestComponent } from "./new-request/new-request.component";
 import { OTRequestComponent } from "./ot-request.component";
+import { OtRequestService } from "./ot-request.service";
 
 
 const routes: Routes = [
@@ -65,6 +66,6 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule
     ],
-    providers: [DatePipe, OTManagementServiceService]
+    providers: [DatePipe, OtRequestService]
 })
 export class OtRequestModule { }

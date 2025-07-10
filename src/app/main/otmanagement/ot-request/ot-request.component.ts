@@ -1,15 +1,14 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { NewRequestComponent } from './new-request/new-request.component';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+import { OtRequestService } from "./ot-request.service";
+import { NewRequestComponent } from "./new-request/new-request.component";
+import { DatePipe } from "@angular/common";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-ot-request',
@@ -19,312 +18,154 @@ import { NewRequestComponent } from './new-request/new-request.component';
   animations: fuseAnimations
 })
 export class OTRequestComponent implements OnInit {
-
-  
-  sIsLoading: string = '';
-  searchFormGroup: FormGroup;
-  click: boolean = false;
-  MouseEvent = true;
-  patientName: any;
-  OPIPNo: any;
-  D_data1: any;
-  dataArray = {};
-
-  
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  
-  displayedColumns: string[] = [
-
-    'RegNo',
-    'PatientName',
-    'GenderName',
-    // 'OTbookingDate',
-    'OTbookingTime',
-    'RoomName',
-    'BedName',
-    'OP_IP_Id',
-    // 'OP_IP_Type',
-    'AdmittingDoctor',
-    'SurgeonName',
-    'SurgeryCategoryName',
-    'SurgeryType',
-    'DepartmentName',
-    'AddedBy',
-    // 'UpdateBy',
-    'IsCancelled',
-    'IsCancelledBy',
-
-
-    'action'
-  ];
-  dataSource = new MatTableDataSource<Requestlist>();
-
-  // @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
-
-  constructor(private formBuilder: UntypedFormBuilder,
-    // public _nursingStationService: NursingStationService,
-    // private _IpSearchListService: IpSearchListService,
-    private _ActRoute: Router,
-    public _OtManagementService: OTManagementServiceService,
-    // public dialogRef: MatDialogRef<OTRequestComponent>,
-    public datePipe: DatePipe,
-    public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
-    private accountService: AuthenticationService,
-    private _fuseSidebarService: FuseSidebarService,) {
-    console.log("Line 77")
-  }
-
-  ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
-
-    var D_data= {
+ myFilterform: FormGroup
+   msg: any;
+      RequestName: any = "";
       
-      "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "L_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
-    
-  } 
-   console.log(D_data);
-    this.D_data1=D_data;
-    this._OtManagementService.getOTRequestList(this.D_data1).subscribe(Visit => {
-      this.dataArray =  Visit as Requestlist[];
-      this.dataSource.data = Visit as Requestlist[];
-      console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = '';
-      this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-
-
-    this.getRequestList();
-    // this.onEdit();
-  }
-
-  createSearchForm() {
-    return this.formBuilder.group({
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-      Reg_No: [''],
-      F_Name: '',
-      L_Name: ''
-    });
-  }
-
-
-  getRequestList() {
-
-    
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "F_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "L_Name": this.searchFormGroup.get('F_Name').value || "%",
-      "From_Dt": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "To_Dt": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '2022-03-28 00:00:00.000',
-      "Reg_No": this.searchFormGroup.get("Reg_No").value || 0
-    }
-    console.log(m_data);
-    this._OtManagementService.getOTRequestList(m_data).subscribe(Visit => {
-       this.dataSource.data = Visit as Requestlist[];
-      console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = '';
-      this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-
-
-  getPrint() {
-
-  }
-
-  NewTestRequest() {
-    const dialogRef = this._matDialog.open(NewRequestComponent,
-      {
-        maxWidth: '70%',
-        height: '85%',
-        width: '100%',
-        // height: "100%"
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this._OtManagementService.getOTRequestList(this.D_data1).subscribe(Visit => {
-        this.dataArray =  Visit as Requestlist[];
-        this.dataSource.data = Visit as Requestlist[];
-        console.log(this.dataSource.data);
-        //  this.dataSource.sort = this.sort;
-        //  this.dataSource.paginator = this.paginator;
-
-        this.sIsLoading = '';
-        this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    });
-  }
-
-  onShow(event: MouseEvent) {
-    // this.click = false;// !this.click;
-    this.click = !this.click;
-    // this. showSpinner = true;
-
-    setTimeout(() => {
-      {
-        this.sIsLoading = 'loading-data';
-
-        this.getRequestList();
-      }
-
-    }, 50);
-    this.MouseEvent = true;
-    this.click = true;
-
-  }
-  onEdit(contact) {
-    // ;
-    console.log(contact);
-    let PatInforObj = {};
-    PatInforObj['RegNo'] = contact.RegNo,
-
-      PatInforObj['PatientName'] = contact.PatientName,
-      PatInforObj['GenderName'] = contact.GenderName,
-
-      PatInforObj['OTbookingDate'] = contact.OTbookingDate,
-      PatInforObj['OTbookingTime'] = contact.OTbookingTime,
-      PatInforObj['RoomName'] = contact.RoomName,
-      PatInforObj['BedId'] = contact.BedId,
-      PatInforObj['OP_IP_Id'] = contact.OP_IP_Id,
-      PatInforObj['AdmittingDoctor'] = contact.AdmittingDoctor,
-
-      PatInforObj['SurgeonName'] = contact.SurgeonName,
-      PatInforObj['SurgeryCategoryName'] = contact.SurgeryCategoryName,
-      PatInforObj['SurgeryType'] = contact.SurgeryType,
-      PatInforObj['DepartmentId'] = contact.DepartmentId,
-      //  PatInforObj['DepartmentId'] = contact.CategoryId,
-      PatInforObj['SurgeonId'] = contact.SurgeonId,
-      PatInforObj['RoomId'] = contact.RoomId,
-      PatInforObj['OTBookingId'] = contact.OTBookingId,
-      PatInforObj['SurgeryId'] = contact.SurgeryId,
-      PatInforObj['CategoryId'] = contact.SurgeryCategoryId,
-
-
-      console.log(PatInforObj);
-
-
-    this._OtManagementService.populateFormpersonal(PatInforObj);
-
-    this.advanceDataStored.storage = new Requestlist(PatInforObj);
-
-    const dialogRef = this._matDialog.open(NewRequestComponent,
-      {
-        maxWidth: "70%",
-        height: '70%',
-        width: '100%',
-        data: {
-          PatObj: PatInforObj
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    mobileno: any = "%"
+  
+      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  
+       allcolumns = [
+        { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
+        { heading: "Date&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Surgeon Name", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Category Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Site Description", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Surgery Name", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Department Name", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        {
+            heading: "AddedBy", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+           // template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
 
-    });
-    // if (contact) this.dialogRef.close(PatInforObj);
-  }
+        // {
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.onEdit(data);
+        //                 this.grid.bindGridData();
+        //             }},]
+        // }
+    ];
+  
+      allFilters = [
+          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+          //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
+      ]
+      gridConfig: gridModel = {
+          apiUrl: "CityMaster/List",
+          columnsList: this.allcolumns,
+          sortField: "cityId",
+          sortOrder: 0,
+          filters: this.allFilters
+      }
+      autocompleteMode: string = "CityMaster";
+  
+      constructor(
+          public _OtRequestService: OtRequestService,
+          public toastr: ToastrService, public _matDialog: MatDialog,
+          public datePipe: DatePipe
+      ) { }
+  
+      ngOnInit(): void { }
+  
+      onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+  onNewotrequest(row: any = null) {
+          const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+          buttonElement.blur(); // Remove focus from the button
+          let that = this;
+          const dialogRef = this._matDialog.open(NewRequestComponent,
+              {
+                  maxWidth: "90vw",
+                  maxHeight: '90%',
+                  width: '90%',
+  
+              });
+          dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                  this.grid.bindGridData();
+              }
+          });
+      }
+  
+      // onSave(row: any = null) {
+      //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      //     buttonElement.blur(); // Remove focus from the button
+  
+  
+      //     let that = this;
+      //     const dialogRef = this._matDialog.open(NewRequestComponent,
+      //         {
+      //             maxWidth: "50vw",
+      //             maxHeight: '50%',
+      //             width: '70%',
+      //             data: row
+      //         });
+      //     dialogRef.afterClosed().subscribe(result => {
+      //         if (result) {
+      //             that.grid.bindGridData();
+      //         }
+      //     });
+      // }
+       onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.getfilterdata();
+    }
+     getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "OutPatient/RegistrationList",
+            columnsList: this.allcolumns,
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+   Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterform.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterform.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterform.get('RegNo').setValue("")
+        // if (event == 'MobileNo')
+        //     this.myFilterform.get('MobileNo').setValue("")
 
-
-  onClear() {
-
-    this.searchFormGroup.get('start').reset();
-    this.searchFormGroup.get('end').reset();
-    this.searchFormGroup.get('Reg_No').reset();
-
-  }
+        this.onChangeFirst();
+    }
+      selectChange(obj: any) {
+          console.log(obj);
+      }
 }
-
-
-
-export class Requestlist {
-  OTBookingId: any;
-  RegNo: any;
-  PatientName: String;
-  RoomName: any;
-  OTbookingDate: any;
-  BedName: any;
-  OP_IP_Id: any;
-  OP_IP_Type: any;
-  SurgeonId: any;
-  SurgeryId: any;
-  DoctorId: any;
-  DepartmentId: any;
-  CategoryId: any;
-  RoomId: any;
-  BedId: any;
-  GenderId: any;
-  AdmittingDoctor: any;
-  SurgeonName: any;
-  SurgeryCategoryName: any;
-  SurgeryType: any;
-  DepartmentName: any;
-  AddedBy: any;
-  UpdateBy: any;
-  IsCancelled: any;
-  GenderName: any;
-  OTbookingTime: any;
-  IsCancelledBy: any;
-
-  constructor(Requestlist) {
-    this.OTBookingId = Requestlist.OTBookingId || 0;
-    this.RegNo = Requestlist.RegNo || '';
-    this.PatientName = Requestlist.PatientName || '';
-    this.RoomName = Requestlist.RoomName || '';
-    this.OTbookingDate = Requestlist.OTbookingDate || '';
-    this.BedName = Requestlist.BedName || 0;
-    this.OP_IP_Id = Requestlist.OP_IP_Id || 0;
-    this.OP_IP_Type = Requestlist.OP_IP_Type || '';
-    this.SurgeonId = Requestlist.SurgeonId || '';
-    this.SurgeryId = Requestlist.SurgeryId || 0;
-    this.DoctorId = Requestlist.DoctorId || 0;
-    this.DepartmentId = Requestlist.DepartmentId || '';
-    this.CategoryId = Requestlist.CategoryId || '';
-    this.RoomId = Requestlist.RoomId || '';
-    this.BedId = Requestlist.BedId || 0;
-    this.GenderId = Requestlist.GenderId || 0;
-    this.AdmittingDoctor = Requestlist.AdmittingDoctor || '';
-    this.SurgeonName = Requestlist.SurgeonName || '';
-    this.SurgeryCategoryName = Requestlist.SurgeryCategoryName || '';
-    this.SurgeryType = Requestlist.SurgeryType || 0;
-    this.AddedBy = Requestlist.AddedBy || 0;
-    this.UpdateBy = Requestlist.UpdateBy || '';
-    this.IsCancelled = Requestlist.IsCancelled || '';
-    this.GenderName = Requestlist.GenderName || '';
-    this.SurgeryType = Requestlist.SurgeryType || 0;
-    this.OTbookingTime = Requestlist.OTbookingTime || 0;
-    this.IsCancelledBy = Requestlist.IsCancelledBy || 0;
-
-  }
-}
-
-
-
-function ViewChild(MatSort: any) {
-  throw new Error('Function not implemented.');
-}
-
-
-// export NODE_OPTIONS="--max-old-space-size=7168" # Increases to 7 GB
-// export NODE_OPTIONS="--max-old-space-size=8192" # Increases to 8 GB
