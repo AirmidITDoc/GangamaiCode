@@ -786,9 +786,10 @@
 
                             </div>
                             <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
-                                <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"></airmid-fileupload>
+                                <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"
+                                    [(files)]="attachedFiles" [refId]="doctorId"></airmid-fileupload>
                                 <!-- Upload Section -->
-                              
+
                             </div>
                         </ng-container>
                     </mat-expansion-panel>

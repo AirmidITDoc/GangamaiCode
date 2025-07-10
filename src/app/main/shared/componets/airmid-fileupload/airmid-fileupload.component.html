@@ -4,10 +4,9 @@
 <input #fileUpload type="file" class="input_fileupload--hidden" (input)="onInput($event)"
     (change)="onFileSelected($event)" [multiple]="multiple" [(ngModel)]="inputFileName" [accept]="accept">
 
-<div *ngFor="let f of files">
-    <span>{{f.name}}</span>
-    <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
-        (click)="removeFile(event,f)">
+<div *ngFor="let f of filteredFiles">
+    <span>{{f.docName}}</span>
+    <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel||''" (click)="removeFile($event,f.srNo)">
         <mat-icon>{{deleteButtonIcon}}</mat-icon>
     </button>
 </div>
