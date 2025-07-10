@@ -1,379 +1,53 @@
-
-<div class="content-card">
-    <div class="dialog-content-wrapper">
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 40px;width: 100%;">
-
-            <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 70%; font-weight: 400;">
-                    New OT Request
-                </span>
-
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                        style="border-color: red;"></app-common-date>
-                    <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
-                        (click)="onClose()">
-                        close
-                    </span>
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Booking Request</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button> -->
                 </div>
             </div>
-            <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display:none;">
-                Show
-             </button>
         </div>
-        <br/>
-
-        <div>
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                        <!-- ================================ LABEL HEADER  -->
-                        <form [formGroup]="myForm">
-                            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutAlign="space-between"
-                                style="align-items: baseline;">
-                                <div>
-                                <mat-form-field appearance="outline"
-                                    style="width:40%;margin-left:20px; margin-right: 400px;"
-                                    disabled="isRegSearchDisabled">
-                                    <input type="text" name="RegID" formControlName="RegID"
-                                        placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                        [matAutocomplete]="auto1" (input)="getSearchList()">
-                                    <span matSuffix style="display: flex;">
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                        <mat-icon class="mat-icon-close"
-                                            (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                    </span>
-                                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
-                                        (optionSelected)='getSelectedObj($event.option.value)'>
-                                        <mat-option *ngFor="let option of PatientListfilteredOptions"
-                                            [value]="option">
-                                            {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                            {{option.RegNo}} |
-                                            {{option.MobileNo}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                    <mat-error *ngIf="myForm.get('RegID').hasError('required')">
-                                        Required field cannot be left blank
-                                    </mat-error>
-                                </mat-form-field>
-                                 </div>
-    
-                                <div>
-    
-                                    <span style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
-                                        Name :{{PatientName}} <span style="margin-left: 20px;">RegId
-                                            :{{RegId}}</span><span style="margin-left: 20px;">Admission Id
-                                            :{{vAdmissionID}}</span>
-                                        <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
-                                        <span style="margin-left: 20px;">Tariif :{{RegId}}</span>
-                                    </span>
-    
-                                </div>
-    
-                               
-                            </div>
-                        </form>
-                        <!-- ================================ LABEL HEADER  -->
-                    </div>
-
-                </div>
-                <!-- </form> -->
-            </div>
-        </div>
-
-
     </div>
-
-    
-    <div style="padding:5px; height: 100%;" fxLayoutGap="55px">
-        <div >
-           
-            <br>
-
-            <form [formGroup]="_OtManagementService.otreservationFormGroup" style="margin-left:50px;margin-right: 50px;">
-
-                <ng-template matStepLabel>Surgery Detail</ng-template>
-
-                <!-- <h3 style="font-weight: bold;font-size: large;padding-left: 30px;;">Surgery Detail</h3> -->
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px;" style="margin-left:20px;margin-right:20px ;">
-
-<!-- 
-                    <mat-form-field appearance="outline" fxFlex 
-                    [floatLabel]="isLoading || (!isOpen && departmentFilterCtrl.value === null) ? 'never' : 'auto'">
-                    <mat-label>Department</mat-label>
-                    <mat-select formControlName="DepartmentId" placeholder="Bank" #singleSelect required
-                      (selectionChange)="OnChangeDoctorList($event.value)" (openedChange)="openChanged($event)"
-                      [panelClass]="isLoadings || !isOpen ? 'hide-dummy-option' : ''">
-                      <mat-option *ngIf="filteredDepartment === null || !filteredDepartment" disabled>
-                        <ngx-mat-select-search [formControl]="departmentFilterCtrl" [placeholderLabel]="'Search'"
-                          [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                      </mat-option>
-                      <mat-option *ngFor="let element of filteredDepartment | async" [value]="element">
-                        {{element.departmentName}}
-                      </mat-option>
-
-                    </mat-select>
-                    <mat-label *ngIf="isLoadings">
-                      <div class="select-placeholder-container">
-                        <span>Loading...</span>
-                        <mat-spinner class="spinner internal-spinner" diameter="20"></mat-spinner>
-                      </div>
-                    </mat-label>
-
-                  </mat-form-field> -->
-
-                  <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                    <mat-label>Department Name</mat-label>
-                    <input matAutocompletePosition="below" type="text" placeholder="Select DepartmentId" matInput
-                      (keydown)="onEnterDepartmentId($event)" formControlName="DepartmentId" [matAutocomplete]="autoDepartment" required>
-                    <span matSuffix style="display: flex;">
-                      <mat-icon class="mat-icon-close"
-                        (click)="_OtManagementService.otreservationFormGroup.get('DepartmentId').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                      <mat-icon class="mat-icon-close"
-                        (click)="_OtManagementService.otreservationFormGroup.get('DepartmentId').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                    </span>
-                    <mat-autocomplete #autoDepartment="matAutocomplete" [displayWith]="getOptionTextautoDepartment">
-                      <mat-option *ngFor="let option of filteredOptionautoDepartment | async" [value]="option">
-                        {{option.departmentName}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-
-                
-
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="countryForm">
+                <input type="hidden" name="countryId" formControlName="countryId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex>
+                        <airmid-textbox 
+                            label="Department Name" 
+                            formControlName="countryName" 
+                            [value]="data?.countryName"
+                            [formGroup]="countryForm"
+                            [validations]="getValidationMessages().countryName" 
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
                 </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="24px" style="margin-left:20px;margin-right:20px ;">
-                    
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Procedure Name (category)</mat-label>
-                        <mat-select formControlName="SurgeryCategoryId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="CategoryFilterCtrl1"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredCategory | async" [value]="element">
-                                {{element.SurgeryCategoryName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
-
-                    
-                  <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                    <mat-label>Procedure Name (category)</mat-label>
-                    <input matAutocompletePosition="below" type="text" placeholder="Select SurgeryCategoryId" matInput #SurgeryCategory
-                      (keydown)="onEnterSurgeryCategory($event)" formControlName="SurgeryCategoryId" [matAutocomplete]="autoSurgeryCategory" required>
-                    <span matSuffix style="display: flex;">
-                      <mat-icon class="mat-icon-close"
-                        (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                      <mat-icon class="mat-icon-close"
-                        (click)="_OtManagementService.otreservationFormGroup.get('SurgeryCategoryId').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                    </span>
-                    <mat-autocomplete #autoSurgeryCategory="matAutocomplete" [displayWith]="getOptionTextautoSurgeryCategory">
-                      <mat-option *ngFor="let option of filteredOptionsSurgeryCategory | async" [value]="option">
-                        {{option.SurgeryCategoryName}}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-
-                
-
+               
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="countryForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                    </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+         
                 </div>
-          
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                style="border-style:groove" style="margin-left:20px;margin-right:20px ;">
-              
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>System </mat-label>
-                        <mat-select formControlName="SurgeonId1" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field> -->
-
-                    <!-- <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                        <mat-label>System</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select SurgeonId1" matInput #SurgeonId1
-                          (keydown)="onEnterSurgeonId1($event)" formControlName="SurgeonId1" [matAutocomplete]="autoSurgeonId1" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeonId1').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeonId1').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSurgeonId1="matAutocomplete" [displayWith]="getOptionTextautoSurgeonId1">
-                          <mat-option *ngFor="let option of filteredOptionautoSurgeonId1| async" [value]="option">
-                            {{option.DoctorName}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field> -->
-
-                      <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                        <mat-label>System</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select SurgeonId1" matInput #SurgeonId1
-                          (keydown)="onEnterSystem($event)" formControlName="SurgeonId1" [matAutocomplete]="autoSurgeonId1" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeonId1').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeonId1').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSurgeonId1="matAutocomplete" [displayWith]="getOptionTextSurgeonId1">
-                          <mat-option *ngFor="let option of filteredOptionsSurgeon | async" [value]="option">
-                            {{option.DoctorName}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-
-
-                   
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                style="border-style:groove" style="margin-left:20px;margin-right:20px ;">
-              
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Site </mat-label>
-                        <mat-select formControlName="SiteDescId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="SitetFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredSite | async" [value]="element">
-                                {{element.SiteDescriptionName}}
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field> -->
-
-
-                    <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                        <mat-label>Site</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Site" matInput #Site
-                          (keydown)="onEnterSite($event)" formControlName="SiteDescId" [matAutocomplete]="autoSite" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SiteDescId').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSite="matAutocomplete" [displayWith]="getOptionTextautoSiteDesc">
-                          <mat-option *ngFor="let option of filteredOptionsSite | async" [value]="option">
-                            {{option.SiteDescriptionName}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-
-                </div>
-
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                    style="border-style:groove" style="margin-left:20px;margin-right:20px ;">
-                  
-                    <!-- <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Surgeon Name</mat-label>
-                        <mat-select formControlName="DoctorId" placeholder="Bank" #singleSelect>
-                          <mat-option>
-                            <ngx-mat-select-search [formControl]="doctorFilterCtrl" [placeholderLabel]="'Search'"
-                              [noEntriesFoundLabel]="'No matching found'"></ngx-mat-select-search>
-                          </mat-option>
-                          <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                            {{element.Doctorname }}  <b>|</b> {{element.DepartmentName }} <b>|</b> {{element.DoctorId }}
-                          </mat-option>
-    
-                        </mat-select>
-    
-                      </mat-form-field> -->
-
-
-                      <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                        <mat-label>Surgeon Name 1</mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name" matInput #SurgeonName
-                          (keydown)="onEnterSurgeonName($event)" formControlName="DoctorId" [matAutocomplete]="autoSurgeonName" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('DoctorId').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('DoctorId').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSurgeonName="matAutocomplete" [displayWith]="getOptionTextautoSurgeonName">
-                          <mat-option *ngFor="let option of filteredOptionsSurgeon | async" [value]="option">
-                            {{option.DoctorName}} 
-                             <!-- <b>|</b> {{element.DepartmentName }} <b>|</b> {{element.DoctorId }} -->
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-
-                </div>
-              
-                
-                <br/>
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;" >
-                    <!-- <mat-form-field appearance="outline"  style="width:60% ;">
-                        <mat-label>Surgery Name </mat-label>
-                        <mat-select formControlName="SurgeryId" required>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of SurgeryList" [value]="m">
-                                {{m.SurgeryName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
-
-                    
-                    <mat-form-field appearance="outline" fxFlex="60%" fxFlex.xs="100%">
-                        <mat-label>Surgery Name </mat-label>
-                        <input matAutocompletePosition="below" type="text" placeholder="Select Surgeon Name" matInput #SurgeryId
-                          (keydown)="onEnterSurgery($event)" formControlName="SurgeryId" [matAutocomplete]="autoSurgeryId" required>
-                        <span matSuffix style="display: flex;">
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(''); isSurgerySelected = false;">close</mat-icon>
-                          <mat-icon class="mat-icon-close"
-                            (click)="_OtManagementService.otreservationFormGroup.get('SurgeryId').setValue(''); isSurgerySelected = false;">search</mat-icon>
-                        </span>
-                        <mat-autocomplete #autoSurgeryId="matAutocomplete" [displayWith]="getOptionTextautoSurgery">
-                          <mat-option *ngFor="let option of filteredOptionsSurgery | async" [value]="option">
-                            {{option.SurgeryName }}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-
-                    <mat-radio-group aria-label="Select an option" style="width:50%;padding-left:10px;font-weight: bold;height: 30px;align-items: center;margin-right: 20px;"
-                        formControlName="SurgeryType">Surgery Type
-                        <mat-radio-button value="1" [checked]="true"> Normal </mat-radio-button>
-                        <mat-radio-button value="0" > Emargency</mat-radio-button>
-                    </mat-radio-group>
-
-
-                </div>
-
-
-                <div class="footer-navigation-container">
-           
-                  <div class="modal-footer-buttons">
-                      
-                      <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
-                      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
-                  </div>
-              </div>
+            
             </form>
         </div>
-    </div>
 
+    </div>
+</div>
