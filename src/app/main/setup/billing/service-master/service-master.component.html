@@ -66,6 +66,18 @@
 
         </ng-template>
 
+         <ng-template #iconisProcedure let-element>
+            <div>
+                <mat-icon *ngIf="element.isProcedure === true" matTooltip="IsSurgery">
+                    <img width="28px" height="24px" src="assets/images/logos/surgery.png">
+                </mat-icon>
+
+                <mat-icon *ngIf="element.isProcedure === false" class="active-icon red-500 s-16">close
+                </mat-icon>
+            </div>
+
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="_serviceMasterService.myformSearch" fxLayout="column">
@@ -94,6 +106,11 @@
                         <mat-radio-button value="2">All</mat-radio-button>
                         <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-radio-group value="" [formGroup]="_serviceMasterService.myformSearch"
+                        formControlName="IsRadPath" fxLayoutAlign="center center" (change)="onChangeFirst()">
+                        <mat-radio-button mat-fab value="1">IsRadiology</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsPathology</mat-radio-button>
                     </mat-radio-group>
                 </form>
 

@@ -25,9 +25,25 @@
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="New Tariff Name" formControlName="newTariffId" [formGroup]="serviceForm"
+                        <!-- <airmid-dropdown label="New Tariff Name" formControlName="newTariffId" [formGroup]="serviceForm"
                             [mode]="autocompleteModeName2">
+                        </airmid-dropdown> -->
+
+                         <airmid-dropdown label="New Tariff Name" formControlName="newTariffId"
+                            [formGroup]="serviceForm" [IsMultiPle]="true" ValueField="value"
+                            #ddltariff TextField="text" [ReqFullObj]="true"
+                            [mode]="autocompleteModeName2"
+                            (selectionChange)="onChangeTariff($event)">
                         </airmid-dropdown>
+
+                        <!-- Selected Pages as Chips -->
+                        <mat-chip-listbox #chipList>
+                            <mat-chip *ngFor="let item of serviceForm.value.newTariffId" removable
+                                (removed)="removeTariff(item)">
+                                {{ item.text }}
+                                <mat-icon matChipRemove>close</mat-icon>
+                            </mat-chip>
+                        </mat-chip-listbox>
                     </div>
                 </div>
 

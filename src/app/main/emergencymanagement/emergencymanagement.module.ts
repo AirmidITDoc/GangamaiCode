@@ -4,12 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [ 
   {
     path:"emergencylist", 
-    loadChildren :() =>import("./emergency-list/emergency-list.module").then ((m)=>m.EmergencyListModule),
+    loadChildren :() =>import("./emergency/emergency.module").then ((m)=>m.EmergencyModule),
+    // loadChildren :() =>import("./emergency-list/emergency-list.module").then ((m)=>m.EmergencyListModule),
   },
 ];
 
 @NgModule({
-  declarations: [ ],
+  declarations: [],
   imports: [
       RouterModule.forChild(appRoutes),
   ]

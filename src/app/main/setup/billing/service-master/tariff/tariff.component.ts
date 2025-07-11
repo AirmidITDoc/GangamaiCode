@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ServiceMasterService } from '../service-master.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-tariff',
@@ -57,6 +58,25 @@ export class TariffComponent implements OnInit {
         this.isSelectedCheck = true;
       }
     });
+  }
+
+  @ViewChild('ddltariff') ddltariff: AirmidDropDownComponent;
+  tariffName: any[] = [];
+
+  onChangeTariff(event) {
+    if (event.length > 0) {
+      this.tariffName = [];
+      event.forEach(item => {
+        this.tariffName.push(item.value)
+      })
+    }
+    console.log(this.tariffName)
+  }
+
+  removeTariff(item) {
+    let removedIndex = this.serviceForm.value.newTariffId.findIndex(x => x.value == item.value);
+    this.serviceForm.value.newTariffId.splice(removedIndex, 1);
+    this.ddltariff.SetSelection(this.serviceForm.value.newTariffId.map(x => x.value));
   }
 
   onSubmit() {
