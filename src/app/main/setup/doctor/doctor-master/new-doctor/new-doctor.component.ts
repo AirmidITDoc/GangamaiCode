@@ -503,7 +503,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     onSubmit() {
         debugger
-        let a = this.attachedFiles;
 
         console.log(this.myForm.value)
         // Qualification detail assign to array
@@ -612,6 +611,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             }
 
 
+            data.MDoctorFiles = this.attachedFiles;
             this._doctorService.doctortMasterInsert(data).subscribe((response) => {
                 this.onClose();
             });

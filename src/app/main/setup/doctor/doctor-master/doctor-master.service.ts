@@ -193,9 +193,9 @@ export class DoctorMasterService {
     public doctortMasterInsert(Param: any) {
         debugger
         if (Param.DoctorId) {
-            return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
+            return this._httpClient.PutFromData("Doctor/Edit/" + Param.DoctorId, Param);
         } else 
-        return this._httpClient.PostData("Doctor/InsertEDMX", Param);
+        return this._httpClient.PostFromData("Doctor/InsertEDMX", Param);
     }
 
     public doctortMasterUpdate(param) {
