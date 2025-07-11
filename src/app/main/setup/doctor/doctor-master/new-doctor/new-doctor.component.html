@@ -313,7 +313,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Qualification
                                                         Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
-                                                        <span>{{ element.qualificationName }}</span>
+                                                        <span>{{ element.qualificationName || element.Qualification}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -329,7 +329,7 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Institution
                                                         Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
-                                                        <span>{{ element.instituteName }}</span>
+                                                        <span>{{ element.instituteName || element.InstituteName}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
