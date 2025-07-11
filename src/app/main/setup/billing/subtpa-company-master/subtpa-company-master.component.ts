@@ -27,9 +27,10 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "State", key: "state", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Country", key: "country", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
@@ -69,7 +70,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-   
+
     onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -92,9 +93,9 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 export class SubTpaCompanyMaster {
 
     compTypeId: number;
-    companyId:any;
+    companyId: any;
     companyName: string;
-    companyShortName:any;
+    companyShortName: any;
     subCompanyId: any;
     address: string;
     cityId: any;
@@ -122,14 +123,14 @@ export class CompanyMaster {
     constructor(CompanyMaster) {
         {
             this.subCompanyId = CompanyMaster.subCompanyId || 0;
-             this.companyId = CompanyMaster.companyId || 0;
+            this.companyId = CompanyMaster.companyId || 0;
             this.compTypeId = CompanyMaster.CompTypeId || 0;
             this.companyName = CompanyMaster.CompanyName || "";
-            this.companyShortName== CompanyMaster.CompanyName || "";
+            this.companyShortName == CompanyMaster.CompanyName || "";
             this.address = CompanyMaster.Address || "";
             this.cityId = CompanyMaster.cityId || 0;
-             this.stateId = CompanyMaster.stateId || 0;
-              this.countryId = CompanyMaster.countryId || 0;
+            this.stateId = CompanyMaster.stateId || 0;
+            this.countryId = CompanyMaster.countryId || 0;
             this.pinNo = CompanyMaster.PinNo || "";
             this.phoneNo = CompanyMaster.phoneNo || "";
             this.mobileNo = CompanyMaster.MobileNo || "";

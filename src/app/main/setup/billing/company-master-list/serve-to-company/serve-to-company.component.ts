@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { CompanyMasterService } from '../company-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { SubTpaCompanyMaster } from '../../subtpa-company-master/subtpa-company-master.component';
 
 @Component({
     selector: 'app-serve-to-company',
@@ -33,7 +35,8 @@ export class ServeToCompanyComponent {
     servFormGroup: FormGroup;
     groupFormGroup: FormGroup;
     subgropFormGroup: FormGroup;
- servlist: any = [];
+    serviceForm: FormGroup;
+    servlist: any = [];
     ServiceId1 = 0
     ServiceId2 = 0
     tariffId = 0
@@ -74,7 +77,7 @@ export class ServeToCompanyComponent {
     ];
     displayedColumnsubtpa: string[] = [
         'TypeName',
-        'CompanyName',
+        'companyName',
         'Action'
     ];
 
@@ -85,7 +88,7 @@ export class ServeToCompanyComponent {
     discServiceList = new MatTableDataSource<Servicedetail>();
     discgroupList = new MatTableDataSource<Servicedetail>();
     discsubgroupList = new MatTableDataSource<Servicedetail>();
-    subtpaList = new MatTableDataSource<CompanyMaster>();
+    subtpaList = new MatTableDataSource<SubTpaCompanyMaster>();
 
 
 
@@ -96,15 +99,18 @@ export class ServeToCompanyComponent {
 
     dstable1 = new MatTableDataSource<Servicedetail>();
     dsLabRequest2 = new MatTableDataSource<Servicedetail>();
-    chargeslist: any = [];
+    // chargeslist: any = [];
+    public chargeList: any[] = [];
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
- 
+
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public dialogRef: MatDialogRef<ServeToCompanyComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         private formBuilder: UntypedFormBuilder,
+        private _formBuilder: FormBuilder,
         private accountService: AuthenticationService,
         public toastr: ToastrService
     ) { }
@@ -116,19 +122,70 @@ export class ServeToCompanyComponent {
         this.servFormGroup = this._CompanyMasterService.createservSearchForm();
         this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
         this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
+        this.serviceForm = this.createServicemasterForm();
+        this.serviceDetailsArray.push(this.createserviceDetails());
 
 
-        this.getServiceList()
-        this.getsubtpaList()
-        this.getServiceListMain()
+        this.serviceForm.markAllAsTouched();
         if (this.data) {
             this.compobj = this.data
             console.log(this.compobj.traiffId)
             this.CompanyId = this.compobj.companyId
-            this.tariffId=this.compobj.traiffId
+            this.tariffId = this.compobj.traiffId
             this.companyForm.get("TariffId1").setValue(this.compobj.traiffId)
             this.companyForm.get("companyName").setValue(this.compobj.companyName)
         }
+
+        this.getServiceList()
+        this.getsubtpaList()
+        this.getServiceListMain()
+    }
+    createServicemasterForm(): FormGroup {
+        const now = new Date();
+        const defaultTime = now.toTimeString().slice(0, 5);
+        return this._formBuilder.group({
+            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            groupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            serviceShortDesc: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            serviceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            price: 0,
+            isEditable: [false],
+            creditedtoDoctor: [false],
+            isPathology: [0],
+            isPathOutSource: [false],
+            isRadiology: [0],
+            isRadOutSource: [false],
+            isDiscount: [false],
+            isProcedure: [false],
+            isPackage: [0],
+            subGroupId: [0],
+            doctorId: 0,
+            isEmergency: false,
+            emgAmt: [0, [Validators.required, Validators.pattern("[0-9]+")]],
+            emgPer: [0, [Validators.required, Validators.pattern("[0-9]+")]],
+            emgStartTime: [defaultTime, [Validators.required]],
+            emgEndTime: [defaultTime, [Validators.required]],
+            printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isActive: true,
+            isDocEditable: false,
+            serviceDetails: this._formBuilder.array([]),
+
+            // extra field which we not insert
+            EffectiveDate: [""],
+            tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
+    createserviceDetails(item: any = {}): FormGroup {
+        return this._formBuilder.group({
+            serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [item.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+    get serviceDetailsArray(): FormArray {
+        return this.serviceForm.get('serviceDetails') as FormArray;
     }
 
 
@@ -160,9 +217,10 @@ export class ServeToCompanyComponent {
         this.getServiceListMain()
     }
 
-    
+
     getServiceListMain() {
-        let tariffId = this.companyForm.get("TariffId1").value || 1
+
+        // let tariffId = this.companyForm.get("TariffId1").value || 1
         let classId = this.companyForm.get("ClassId1").value || 1
         let serviceName = "%"//this.companyForm.get("ServiceName").value || "%"
         debugger
@@ -176,7 +234,7 @@ export class ServeToCompanyComponent {
                 },
                 {
                     "fieldName": "TariffId",
-                    "fieldValue": String(tariffId),
+                    "fieldValue": String(this.compobj.traiffId),
                     "opType": "Equals"
                 },
                 {
@@ -195,7 +253,6 @@ export class ServeToCompanyComponent {
 
         console.log(param)
         this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-            console.log(data)
             this.DSServicedetailMainList.data = data as Servicedetail[];
             console.log(this.DSServicedetailMainList.data)
         });
@@ -236,7 +293,6 @@ export class ServeToCompanyComponent {
         }
         console.log(param)
         this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-            console.log(data)
             this.DSServicedetailList.data = data as Servicedetail[];;
             console.log(this.DSServicedetailList.data)
         });
@@ -245,27 +301,30 @@ export class ServeToCompanyComponent {
 
     getsubtpaList() {
 
-        var param = {
-            "searchFields": [
-                {
-                    "fieldName": "CompanyId",
-                    "fieldValue": String(this.CompanyId),
-                    "opType": "Equals"
-                }
+        var param1 = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "subCompanyId",
+            "sortOrder": 0,
+            "filters": [
+                { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
             ],
-            "mode": "CompanyWiseTraiffList"
+            "exportType": "JSON",
+            "columns": [
+            ]
         }
-        console.log(param)
-        this._CompanyMasterService.getsubtpaListRetrive(param).subscribe(data => {
+        console.log(param1)
+        this._CompanyMasterService.getsubtpaListRetrive(param1).subscribe(data => {
             console.log(data)
-            this.DSServicedetailList.data = data as Servicedetail[];;
-            console.log(this.DSServicedetailList.data)
+            this.subtpaList.data = data.data as SubTpaCompanyMaster[];
+            console.log(this.subtpaList.data)
         });
 
     }
 
-    selectService(event){
-        this.serviceName=event.text
+    selectService(event) {
+        this.serviceName = event.text
         this.selectdiscservicelist(event)
     }
 
@@ -278,7 +337,7 @@ export class ServeToCompanyComponent {
 
             if (this.Regflag == 0) {
                 classId = this.servFormGroup.get("ClassId2").value || 1
-                serviceName =this.serviceName || "%"
+                serviceName = this.serviceName || "%"
                 type = 1
             } else if (this.Regflag == 1) {
                 classId = this.groupFormGroup.get("ClassId2").value || 1
@@ -286,7 +345,7 @@ export class ServeToCompanyComponent {
                 type = 2
             } else if (this.Regflag == 2) {
                 classId = this.subgropFormGroup.get("ClassId2").value || 1
-                serviceName =  this.serviceName|| "%"
+                serviceName = this.serviceName || "%"
                 type = 3
             }
 
@@ -333,33 +392,38 @@ export class ServeToCompanyComponent {
 
     onSaveEntry(row) {
 
-        // this.isLoading = 'save';
+        debugger
         this.dstable1.data = [];
-        if (this.chargeslist && this.chargeslist.length > 0) {
-            let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId && ele.tariffId === row.tariffId && ele.classId == row.classId);
-            if (duplicateItem && duplicateItem.length == 0) {
-                this.addChargList(row);
-                return;
-            }
-            //   this.isLoading = '';
-            this.DSServicedetailMainList.data = this.chargeslist;
-            this.DSServicedetailMainList.sort = this.sort;
-            this.DSServicedetailMainList.paginator = this.paginator;
-        } else if (this.chargeslist && this.chargeslist.length == 0) {
-            this.addChargList(row);
-        }
-        else {
-            this.toastr.warning('Selected Service already added in the list ', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // if (this.DSServicedetailMainList.data.length > 0) {
+        // let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId)// && ele.tariffId === row.tariffId && ele.classId == row.classId);
+        // if (duplicateItem && duplicateItem.length == 0) {
+        this.addChargList(row);
+        //     return;
+        // }
+        // this.DSServicedetailMainList.data = this.chargeslist;
+        //     this.chargeslist =this.DSServicedetailMainList.data 
+        //     this.DSServicedetailMainList.sort = this.sort;
+        //     this.DSServicedetailMainList.paginator = this.paginator;
+        // } else if (this.chargeslist && this.chargeslist.length == 0) {
+        //     this.addChargList(row);
+        // }
+        // else {
+        //     this.toastr.warning('Selected Service already added in the list ', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
     }
 
     addChargList(row) {
         debugger
+        this.chargeList = []
+        if (this.DSServicedetailMainList.data.length > 0) {
+            this.chargeList=this.DSServicedetailMainList.data
+        }
+
         let Serv = row.ServiceName
-        this.chargeslist.push(
+        const newRow = (
             {
                 GroupId: row.GroupId,
                 GroupName: row.GroupName,
@@ -368,38 +432,93 @@ export class ServeToCompanyComponent {
                 ClassId: row.ClassId,
                 ClassName: row.ClassName,
                 classRate: row.classRate
-            });
-        // this.isLoading = '';
-        console.log(this.chargeslist);
-        // this.dstable1.data = this.chargeslist;
-        // this.dstable1.sort = this.sort;
-        // this.dstable1.paginator = this.paginator;
 
-        this.DSServicedetailMainList.data.push(this.chargeslist)
-        Swal.fire("Added This Service To Company :", Serv)
+
+            });
+
+        console.log(this.chargeList);
+        const newCharge = new ChargesList(newRow);
+        this.chargeList.push(newCharge);
+        this.DSServicedetailMainList.data = this.chargeList;
+        console.log(this.DSServicedetailMainList.data);
     }
 
 
 
+    // onSubmit() {
+
+    //     if (!this.companyForm.invalid) {
+
+    //         console.log("Company Insert:-", this.companyForm.value);
+
+    //         this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
+    //             this.toastr.success(response.message);
+    //             this.onClear(true);
+    //         }, (error) => {
+    //             this.toastr.error(error.message);
+    //         });
+    //     }
+    //     else {
+    //         this.toastr.warning('please check form is invalid', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    // }
+
     onSubmit() {
 
-        if (!this.companyForm.invalid) {
+        // if (!this.serviceForm.invalid) {
 
-            console.log("Company Insert:-", this.companyForm.value);
+        this.serviceDetailsArray.clear();
+        this.DSServicedetailMainList.data.forEach(item => {
+            console.log(item)
+            this.serviceDetailsArray.push(this.createserviceDetails(item));
+        });
 
-            this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        }
-        else {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        const controlsToRemove = ['EffectiveDate', 'tariffId'];
+        controlsToRemove.forEach(control => {
+            this.serviceForm.removeControl(control);
+        });
+        this.serviceForm.get('price').setValue(0)
+        // this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
+        // this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
+        // this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
+        // this.serviceForm.get("isPackage")?.setValue(this.serviceForm.get("isPackage")?.value ? 1 : 0);
+        // this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
+        // this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
+        // this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
+        // this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
+        // this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
+        // this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
+        // this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
+
+        // this.serviceForm.get("serviceShortDes")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
+        // this.serviceForm.get("serviceName")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
+
+
+        console.log("FormValue", this.serviceForm.value)
+        this._CompanyMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {
+            this.onClose();
+        })
+
+        //  } else {
+        //     let invalidFields = [];
+
+        //     if (this.serviceForm.invalid) {
+        //         for (const controlName in this.serviceForm.controls) {
+        //             if (this.serviceForm.controls[controlName].invalid) {
+        //                 invalidFields.push(`Service Form: ${controlName}`);
+        //             }
+        //         }
+        //     }
+        //     if (invalidFields.length > 0) {
+        //         invalidFields.forEach(field => {
+        //             this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+        //             );
+        //         });
+        //     }
+        // }
     }
 
     onSave(row: any = null) {
@@ -475,18 +594,18 @@ export class ServeToCompanyComponent {
         };
     }
 
-      maindeleteTableRow(element) {
+    maindeleteTableRow(element) {
         this.servlist = this.DSServicedetailMainList.data;
         let index = this.servlist.indexOf(element);
         if (index >= 0) {
-          this.servlist.splice(index, 1);
-          this.DSServicedetailMainList.data = [];
-          this.DSServicedetailMainList.data = this.servlist;
+            this.servlist.splice(index, 1);
+            this.DSServicedetailMainList.data = [];
+            this.DSServicedetailMainList.data = this.servlist;
         }
         Swal.fire('Success !', 'Service List Row Deleted Successfully', 'success');
-    
+
         // }
-      }
+    }
 
 
     keyPressCharater(event) {
@@ -499,4 +618,28 @@ export class ServeToCompanyComponent {
         }
     }
 
+}
+
+
+
+export class ChargesList {
+    GroupId: any;
+    GroupName: any;
+    ServiceName: any;
+    TariffName: any;
+    ClassId: any;
+    ClassName: any;
+    classRate: any;
+
+
+    constructor(ChargesList) {
+        this.GroupId = ChargesList.GroupId || '';
+        this.GroupName = ChargesList.GroupName || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.TariffName = ChargesList.TariffName || '';
+        this.ClassId = ChargesList.ClassId || '';
+        this.ClassName = ChargesList.ClassName || '';
+        this.classRate = ChargesList.classRate || '';
+
+    }
 }

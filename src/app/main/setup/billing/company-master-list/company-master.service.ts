@@ -250,8 +250,12 @@ export class CompanyMasterService {
     }
 
      public getsubtpaListRetrive(data) {
-        return this._httpClient.PostData("StateMaster/" ,data);
+        return this._httpClient.PostData("SubTpaCompany/List" ,data);
     }
 
-
+   public serviceMasterInsert(Param: any) {
+         if (Param.serviceId) {
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+        }else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+    }
 }

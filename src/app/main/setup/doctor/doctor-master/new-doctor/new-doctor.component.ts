@@ -205,10 +205,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.registerObj = response;
                 console.log(this.registerObj)
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
+                debugger
                 if (this.registerObj.signature) {
+                    
                     this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                         this.sanitizeImagePreview = data;
+                        console.log(data)
                         this.myForm.value.signature = data;
+                        
                     });
                 }
                 this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
@@ -361,9 +365,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             mDoctorSignPageDetails: this.formBuilder.array([]),
 
             // used during update
-            
-            createdBy: [this.accountService.currentUserValue.userId],
-            createdDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+
+            // createdBy: [this.accountService.currentUserValue.userId],
+            // createdDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
         });
     }
     //Education
@@ -505,7 +509,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
     onSubmit() {
-        debugger
+        
         let a = this.attachedFiles;
 
         console.log(this.myForm.value)
@@ -553,7 +557,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             });
         }
 
-        debugger
+        
         //sign detail
         let charge = []
         console.log(this.signatureForm.value)
@@ -588,11 +592,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
         console.log(this.myForm.value)
-
+debugger
         if (!this.myForm.invalid) {
-            // if(this.doctorId >0 && this.registerObj)
-            //   this.myForm.get("mDoctorDepartmentDets").setValue(this.ddlDepartment)
-
 
             let data = this.myForm.value;
             data.IsConsultant = true
@@ -605,17 +606,22 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             data.MahRegDate = this.registerObj.mahRegDate;
             data.signature = this.signature;
             data.ageYear = String(this.ageYear)
-             if (this.doctorId === 0) {
-                this.myForm.removeControl('createdBy');
-                this.myForm.removeControl('createdDate');
-            }
+
             console.log(this.myForm.value)
 
             if (this.doctorId > 0) {
                 data.MDoctorDepartmentDets.Remove
-                data.signature = this.registerObj.signature
+                data.signature = this.registerObj.signature || this.signature
                 //  data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
                 console.log(data)
+                  data.signature = this.registerObj.signature || this.signature
+
+                //    data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
+
+                // console.log(data)
+                // const payload = data;
+                // delete payload.MDoctorDepartmentDets;
+                // data = payload
             }
 
 
@@ -1212,7 +1218,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     tempsignidlist: any[] = [];
 
     getSignpagelist() {
-        debugger
+        
         var data = {
             "first": 0,
             "rows": 10,

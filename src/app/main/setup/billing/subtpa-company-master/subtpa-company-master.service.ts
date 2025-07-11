@@ -14,13 +14,14 @@ export class SubtpaCompanyMasterService {
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
-        this.myform = this.createsubtpacompanyForm();
-        this.myformSearch = this.createSearchForm();
+        // this.myform = this.createsubtpacompanyForm();
+        // this.myformSearch = this.createSearchForm();
     }
     createsubtpacompanyForm(): FormGroup {
         return this._formBuilder.group({
            
             subCompanyId: [0],
+            companyId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],],
             compTypeId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],],
             companyName:["",[Validators.required, Validators.maxLength(50),
                     Validators.pattern('^[a-zA-Z0-9 ]*$')]

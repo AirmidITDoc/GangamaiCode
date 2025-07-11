@@ -34,9 +34,7 @@
                             formControlName="companyShortName" [formGroup]="subTpaForm"
                             [validations]="getValidationMessages().companyShortName" [maxLength]="50">
                         </airmid-textbox>
-                        <!-- <airmid-dropdown label="CompanyName" [(ngModel)]="regobj.companyId"
-                            formControlName="CompanyName" [formGroup]="subTpaForm" [mode]="autocompleteModecompanyName">
-                        </airmid-dropdown> -->
+                       
 
                     </div>
                 </div>
@@ -45,7 +43,14 @@
 
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="CompanyName" [(ngModel)]="regobj.companyId"
+                            formControlName="companyId" [formGroup]="subTpaForm" [mode]="autocompleteModecompanyName">
+                        </airmid-dropdown>
+                    </div>
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="CompanyTypeName" formControlName="compTypeId"
                             [(ngModel)]="regobj.compTypeId" [formGroup]="subTpaForm" [mode]="autocompleteModetypeName">
                         </airmid-dropdown>

@@ -40,32 +40,18 @@ export class NewCompanyMasterComponent {
      ) { }
  
      ngOnInit(): void {
- 
-         // this.companyForm = this._CompanyMasterService.createCompanymasterForm();
-         // this.companyForm.markAllAsTouched();
- 
-         this.companyFormDemo = this._CompanyMasterService.createCompanymasterFormDemo();
+        this.companyFormDemo = this._CompanyMasterService.createCompanymasterFormDemo();
          this.companyFormDemo.markAllAsTouched();
  
          if ((this.data?.companyId ?? 0) > 0) {
  
              this.isActive = this.data.isActive
              if (this.data.city)
-                 // this.data.city=this.data.city.trim();
- 
-                 // this.companyForm.get("cityId").setValue(this.data.cityId)
-                 // this.companyForm.get("mobileNo").setValue(this.data.mobileNo)
-                 debugger
-             setTimeout(() => {
+              setTimeout(() => {
                  this._CompanyMasterService.getCompanyById(this.data.companyId).subscribe((response) => {
                      this.registerObj = response;
                      console.log(this.registerObj)
- 
-                     // if (response) {
-                     //     this.companyForm.get("traiffId").setValue(this.registerObj.traiffId)
-                     //     this.companyForm.get("companyId").setValue(this.registerObj.companyId)
-                     // }
-                 });
+               });
              }, 500);
          }
      }
