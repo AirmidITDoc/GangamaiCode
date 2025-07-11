@@ -18,12 +18,12 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class CompanyMasterListComponent {
 
- @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'assigntoserv')!.template = this.actionsisTemplateTest;
-    }
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
+    }
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     companyName: any = "";
 
@@ -50,26 +50,10 @@ export class CompanyMasterListComponent {
 
         { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:70 },
-         { heading: "IsSubCompany", key: "isSubCompany", type: gridColumnTypes.status, align: "center", width: 100 },
-       {
-            heading: "AssignToServ", key: "assigntoserv", align: "left", width: 100, sticky: true, type: gridColumnTypes.template,
-            template: this.actionsisTemplateTest  // Assign ng-template to the column
-        },
-         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width:70, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
-                            this.grid.bindGridData();
-                        });
-                    }
-                }]
-        } //Action 1-view, 2-Edit,3-delete
+        {
+              heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+              template: this.actionButtonTemplate  // Assign ng-template to the column
+            }
     ]
 
     allfilters = [
@@ -92,44 +76,7 @@ export class CompanyMasterListComponent {
     ngOnInit(): void {
 
     }
-    //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'CompanyNameSearch')
-    //         this._CompanyMasterService.myformSearch.get('CompanyNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.companyName = this._CompanyMasterService.myformSearch.get('CompanyNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "CompanyMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "companyId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+    
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -205,6 +152,8 @@ export class CompanyMaster {
     loginWebsitePassword: any;
     companyShortName: any;
     emailId: any;
+     TypeName: any;
+    CompanyName: string;
     /**
    * Constructor
    *
@@ -248,7 +197,8 @@ export class CompanyMaster {
             this.emailId = CompanyMaster.emailId || "";
             this.companyShortName = CompanyMaster.companyShortName || "";
 
-
+            this.TypeName = CompanyMaster.TypeName || "";
+            this.CompanyName = CompanyMaster.CompanyName || "";
         }
     }
 }

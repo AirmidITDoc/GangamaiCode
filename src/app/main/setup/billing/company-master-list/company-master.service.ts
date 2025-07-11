@@ -185,6 +185,28 @@ export class CompanyMasterService {
         });
     }
 
+    createservSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            ServiceName: [""],
+            ClassId2: [""],
+        });
+    }
+
+    creategroupSearchForm(): FormGroup {
+        return this._formBuilder.group({
+           ServiceName: [""],
+            ClassId2: [""],
+        });
+    }
+
+    createsubgroupSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            ServiceName: [""],
+            ClassId2: [""],
+        });
+    }
+
+
     createCompanysearchFormDemo(): FormGroup {
         return this._formBuilder.group({
             companyName:[""],
@@ -227,9 +249,9 @@ export class CompanyMasterService {
         return this._httpClient.PostData("Common",data);
     }
 
-    //  public getservicMasterListRetrive(data) {
-    //     return this._httpClient.PostData("StateMaster/" ,data);
-    // }
+     public getsubtpaListRetrive(data) {
+        return this._httpClient.PostData("StateMaster/" ,data);
+    }
 
 
 }

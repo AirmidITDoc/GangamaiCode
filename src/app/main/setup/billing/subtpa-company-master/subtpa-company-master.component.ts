@@ -20,41 +20,41 @@ import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
 export class SubtpaCompanyMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-     companyName: any = "";
-         allcolumns = [
-            { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
+    companyName: any = "";
+    allcolumns = [
+        { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
 
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onNew(data)
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
-                                this.toastr.success(response.Message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters = [
-            { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onNew(data)
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
+                            this.toastr.success(response.Message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
         apiUrl: "SubTpaCompany/List",
         columnsList: this.allcolumns,
         sortField: "subCompanyId",
@@ -68,49 +68,12 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-    //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'CompanyNameSearch')
-    //         this._subtpacompanyService.myformSearch.get('CompanyNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.companyName = this._subtpacompanyService.myformSearch.get('CompanyNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._subtpacompanyService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "SubTpaCompany/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "subCompanyId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "companyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
-
+   
     onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewSubtapComponent,
             {
@@ -120,33 +83,35 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            that.grid.bindGridData();
+
         });
     }
 }
 
 export class SubTpaCompanyMaster {
-    
+
     compTypeId: number;
+    companyId:any;
     companyName: string;
+    companyShortName:any;
     subCompanyId: any;
     address: string;
-    city: String;
+    cityId: any;
+    stateId: any;
+    countryId: any;
     pinNo: String;
     phoneNo: String;
     mobileNo: String;
     faxNo: String;
-    traiffId: any; 
+    traiffId: any;
     isDeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-    // companyId: number;
-    // AddedByName: string;
+
     /**
    * Constructor
    *
@@ -156,23 +121,27 @@ export class CompanyMaster {
    */
     constructor(CompanyMaster) {
         {
-            this.subCompanyId = CompanyMaster.subCompanyId || "";
-            this.compTypeId = CompanyMaster.CompTypeId || "";
+            this.subCompanyId = CompanyMaster.subCompanyId || 0;
+             this.companyId = CompanyMaster.companyId || 0;
+            this.compTypeId = CompanyMaster.CompTypeId || 0;
             this.companyName = CompanyMaster.CompanyName || "";
+            this.companyShortName== CompanyMaster.CompanyName || "";
             this.address = CompanyMaster.Address || "";
-            this.city = CompanyMaster.City || "";
+            this.cityId = CompanyMaster.cityId || 0;
+             this.stateId = CompanyMaster.stateId || 0;
+              this.countryId = CompanyMaster.countryId || 0;
             this.pinNo = CompanyMaster.PinNo || "";
-            this.phoneNo = CompanyMaster.PhoneNo || "";
+            this.phoneNo = CompanyMaster.phoneNo || "";
             this.mobileNo = CompanyMaster.MobileNo || "";
             this.faxNo = CompanyMaster.FaxNo || "";
-            this.traiffId = CompanyMaster.traiffId || "";
-            this.AddedBy = CompanyMaster.AddedBy || "";
+            this.traiffId = CompanyMaster.traiffId || 0;
+            this.AddedBy = CompanyMaster.AddedBy || 0;
             this.isDeleted = CompanyMaster.IsDeleted || "false";
-            this.UpdatedBy = CompanyMaster.UpdatedBy || "";
+            this.UpdatedBy = CompanyMaster.UpdatedBy || 0;
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
-            // this.AddedByName = CompanyMaster.AddedByName || "";
+
         }
     }
 }

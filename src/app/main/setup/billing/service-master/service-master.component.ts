@@ -282,18 +282,29 @@ export class Servicedetail {
     ClassName: any;
     className: any;
     tariffId:any;
+     GroupId:any;
+     GroupName:any;
+     ServiceName:any;
+     TariffName:any;
+   
+
     constructor(Servicedetail) {
         {
             this.ServiceDetailId = Servicedetail.ServiceDetailId || "";
-            this.ServiceId = Servicedetail.ServiceId || "";
-            this.TariffId = Servicedetail.TariffId || "";
-            this.ClassId = Servicedetail.ClassId || "";
+            this.ServiceId = Servicedetail.ServiceId || 0;
+            this.TariffId = Servicedetail.TariffId || 0;
+            this.ClassId = Servicedetail.ClassId || 0;
             this.ClassRate = Servicedetail.ClassRate || 0;
             this.classRate = Servicedetail.classRate || 0;
             this.ClassName = Servicedetail.ClassName || "";
             this.className = Servicedetail.className || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
-            this.tariffId=Servicedetail.tariffId || ""
+            this.tariffId=Servicedetail.tariffId || 0;
+
+             this.GroupId = Servicedetail.GroupId || 0;
+            this.GroupName = Servicedetail.GroupName || "";
+            this.ServiceName = Servicedetail.ServiceName || "";
+            this.TariffName=Servicedetail.TariffName || ""
         }
     }
 }

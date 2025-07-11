@@ -1,5 +1,5 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { CompanyMasterService } from '../company-master.service';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -14,6 +14,7 @@ import { CompanyMaster } from '../company-master-list.component';
 import Swal from 'sweetalert2';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-serve-to-company',
@@ -25,9 +26,23 @@ import { fuseAnimations } from '@fuse/animations';
 export class ServeToCompanyComponent {
 
     companyForm: FormGroup;
-    autocompleteModetypeName: string = "CompanyType";
+    autocompleteModetypeName: string = "Service";
     isExpanded = false;
     selectedTabIndex = 0;
+    searchFormGroup: FormGroup;
+    servFormGroup: FormGroup;
+    groupFormGroup: FormGroup;
+    subgropFormGroup: FormGroup;
+ servlist: any = [];
+    ServiceId1 = 0
+    ServiceId2 = 0
+    tariffId = 0
+    classId = 0
+    serviceName: "%"
+    compobj = new CompanyMaster({});
+    Regflag = 0;
+    CompanyId = 0
+
 
     displayedColumns1: string[] = [
         'ServiceName',
@@ -37,14 +52,41 @@ export class ServeToCompanyComponent {
 
     displayedColumns2: string[] = [
         'ServiceName',
-        'qty',
-        'price',
-        // 'Exclusion',
+        'ClassName',
+        'TariffName',
+        // 'qty',
+        'classRate',
+        'checkbox',
         'Action'
     ];
 
+    displayedColumnsser: string[] = [
+        'ServiceName',
+        'disc'
+    ];
+    displayedColumnsgrp: string[] = [
+        'ServiceName',
+        'disc'
+    ];
+    displayedColumnssubgrp: string[] = [
+        'ServiceName',
+        'disc'
+    ];
+    displayedColumnsubtpa: string[] = [
+        'TypeName',
+        'CompanyName',
+        'Action'
+    ];
+
+
     DSServicedetailMainList = new MatTableDataSource<Servicedetail>();
     DSServicedetailList = new MatTableDataSource<Servicedetail>();
+
+    discServiceList = new MatTableDataSource<Servicedetail>();
+    discgroupList = new MatTableDataSource<Servicedetail>();
+    discsubgroupList = new MatTableDataSource<Servicedetail>();
+    subtpaList = new MatTableDataSource<CompanyMaster>();
+
 
 
     autocompleteModeclass1: string = "Class";
@@ -57,52 +99,58 @@ export class ServeToCompanyComponent {
     chargeslist: any = [];
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    ServiceId1 = 0
-    ServiceId2 = 0
-    tariffId = 0
-    classId = 0
-    serviceName: "%"
-    compobj = new CompanyMaster({});
+ 
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public dialogRef: MatDialogRef<ServeToCompanyComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
+        private formBuilder: UntypedFormBuilder,
+        private accountService: AuthenticationService,
         public toastr: ToastrService
     ) { }
 
     ngOnInit(): void {
         this.companyForm = this._CompanyMasterService.createCompanysearchFormDemo();
         this.companyForm.markAllAsTouched();
+        this.searchFormGroup = this.createSearchForm();
+        this.servFormGroup = this._CompanyMasterService.createservSearchForm();
+        this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
+        this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
+
+
         this.getServiceList()
+        this.getsubtpaList()
         this.getServiceListMain()
         if (this.data) {
             this.compobj = this.data
             console.log(this.compobj.traiffId)
+            this.CompanyId = this.compobj.companyId
+            this.tariffId=this.compobj.traiffId
             this.companyForm.get("TariffId1").setValue(this.compobj.traiffId)
             this.companyForm.get("companyName").setValue(this.compobj.companyName)
         }
     }
 
 
+    createSearchForm() {
+        return this.formBuilder.group({
+            regRadio: ['Service']
 
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        // let that = this;
-        // const dialogRef = this._matDialog.open(NewCompanyTypeComponent,
-        //     {
-        //         maxWidth: "45vw",
-        //         height: '35%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
+        });
     }
+
+    onChangeRadio(event) {
+        if (event.value === 'Service')
+            this.Regflag = 0
+        else if (event.value === 'Group')
+            this.Regflag = 1
+        else if (event.value === 'SubGroup')
+            this.Regflag = 2
+
+    }
+
+
+
 
     selectChangeclass(event) {
         this.getServiceList();
@@ -112,6 +160,7 @@ export class ServeToCompanyComponent {
         this.getServiceListMain()
     }
 
+    
     getServiceListMain() {
         let tariffId = this.companyForm.get("TariffId1").value || 1
         let classId = this.companyForm.get("ClassId1").value || 1
@@ -120,11 +169,11 @@ export class ServeToCompanyComponent {
         var param =
         {
             "searchFields": [
-                // {
-                //     "fieldName": "ServiceName",
-                //     "fieldValue": String(serviceName),
-                //     "opType": "Equals"
-                // },
+                {
+                    "fieldName": "ServiceName",
+                    "fieldValue": String(serviceName),
+                    "opType": "Equals"
+                },
                 {
                     "fieldName": "TariffId",
                     "fieldValue": String(tariffId),
@@ -133,6 +182,11 @@ export class ServeToCompanyComponent {
                 {
                     "fieldName": "ClassId",
                     "fieldValue": String(classId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "type",
+                    "fieldValue": "1",
                     "opType": "Equals"
                 }
             ],
@@ -150,17 +204,18 @@ export class ServeToCompanyComponent {
 
 
     getServiceList() {
+        debugger
         let tariffId = this.companyForm.get("TariffId2").value || 1
         let classId = this.companyForm.get("ClassId2").value || 1
         let serviceName = this.companyForm.get("ServiceName").value || "%"
 
         var param = {
             "searchFields": [
-                // {
-                //     "fieldName": "ServiceName",
-                //     "fieldValue": String(serviceName),
-                //     "opType": "Equals"
-                // },
+                {
+                    "fieldName": "ServiceName",
+                    "fieldValue": String(serviceName),
+                    "opType": "Equals"
+                },
                 {
                     "fieldName": "TariffId",
                     "fieldValue": String(tariffId),
@@ -169,6 +224,11 @@ export class ServeToCompanyComponent {
                 {
                     "fieldName": "ClassId",
                     "fieldValue": String(classId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "type",
+                    "fieldValue": "1",
                     "opType": "Equals"
                 }
             ],
@@ -181,6 +241,93 @@ export class ServeToCompanyComponent {
             console.log(this.DSServicedetailList.data)
         });
 
+    }
+
+    getsubtpaList() {
+
+        var param = {
+            "searchFields": [
+                {
+                    "fieldName": "CompanyId",
+                    "fieldValue": String(this.CompanyId),
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "CompanyWiseTraiffList"
+        }
+        console.log(param)
+        this._CompanyMasterService.getsubtpaListRetrive(param).subscribe(data => {
+            console.log(data)
+            this.DSServicedetailList.data = data as Servicedetail[];;
+            console.log(this.DSServicedetailList.data)
+        });
+
+    }
+
+    selectService(event){
+        this.serviceName=event.text
+        this.selectdiscservicelist(event)
+    }
+
+    selectdiscservicelist(event) {
+        debugger
+        {
+            let classId;
+            let serviceName
+            let type = 0
+
+            if (this.Regflag == 0) {
+                classId = this.servFormGroup.get("ClassId2").value || 1
+                serviceName =this.serviceName || "%"
+                type = 1
+            } else if (this.Regflag == 1) {
+                classId = this.groupFormGroup.get("ClassId2").value || 1
+                serviceName = this.serviceName || "%"
+                type = 2
+            } else if (this.Regflag == 2) {
+                classId = this.subgropFormGroup.get("ClassId2").value || 1
+                serviceName =  this.serviceName|| "%"
+                type = 3
+            }
+
+            var param = {
+                "searchFields": [
+                    {
+                        "fieldName": "ServiceName",
+                        "fieldValue": String(serviceName),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "TariffId",
+                        "fieldValue": String(this.tariffId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "ClassId",
+                        "fieldValue": String(classId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "type",
+                        "fieldValue": String(type),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "CompanyWiseTraiffList"
+            }
+            console.log(param)
+            this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
+                console.log(data)
+                if (this.Regflag == 0)
+                    this.discServiceList.data = data as Servicedetail[];
+                if (this.Regflag == 1)
+                    this.discgroupList.data = data as Servicedetail[];
+                if (this.Regflag == 2)
+                    this.discsubgroupList.data = data as Servicedetail[];
+                console.log(this.discServiceList.data)
+            });
+
+        }
     }
 
 
@@ -214,9 +361,13 @@ export class ServeToCompanyComponent {
         let Serv = row.ServiceName
         this.chargeslist.push(
             {
-                // ServiceId: row.ServiceId,
+                GroupId: row.GroupId,
+                GroupName: row.GroupName,
                 ServiceName: row.ServiceName,
-                // Price:11,// row.price || 0
+                TariffName: row.TariffName,
+                ClassId: row.ClassId,
+                ClassName: row.ClassName,
+                classRate: row.classRate
             });
         // this.isLoading = '';
         console.log(this.chargeslist);
@@ -249,6 +400,25 @@ export class ServeToCompanyComponent {
             });
             return;
         }
+    }
+
+    onSave(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        // let that = this;
+        // const dialogRef = this._matDialog.open(NewCompanyTypeComponent,
+        //     {
+        //         maxWidth: "45vw",
+        //         height: '35%',
+        //         width: '70%',
+        //         data: row
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         that.grid.bindGridData();
+        //     }
+        // });
     }
 
     onTabChange(event: MatTabChangeEvent) {
@@ -301,8 +471,32 @@ export class ServeToCompanyComponent {
             compTypeId: [
                 { name: "required", Message: "Company Type Name is required" }
             ],
+            ServiceName: []
         };
     }
 
+      maindeleteTableRow(element) {
+        this.servlist = this.DSServicedetailMainList.data;
+        let index = this.servlist.indexOf(element);
+        if (index >= 0) {
+          this.servlist.splice(index, 1);
+          this.DSServicedetailMainList.data = [];
+          this.DSServicedetailMainList.data = this.servlist;
+        }
+        Swal.fire('Success !', 'Service List Row Deleted Successfully', 'success');
+    
+        // }
+      }
+
+
+    keyPressCharater(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
 }

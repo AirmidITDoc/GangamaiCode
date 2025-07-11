@@ -418,6 +418,18 @@ export class ServiceMasterFormComponent implements OnInit {
 
     // }
 
+      tableElementChecked(event, element) {
+    // if (event.checked) {
+    //   this.interimArray.push(element);
+    // } else if (this.interimArray.length > 0) {
+    //   let index = this.interimArray.indexOf(element);
+    //   if (index !== -1) {
+    //     this.interimArray.splice(index, 1);
+    //   }
+    // }
+  }
+
+
     onChangeTime(event: any): void {
         const timeValue = event.target.value;
         console.log('Selected time:', timeValue);
