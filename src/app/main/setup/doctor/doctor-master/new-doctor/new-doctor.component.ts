@@ -353,14 +353,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 ]
             ],
             signature: "",
-            // createdBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-            // createdDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             mDoctorExperienceDetails: this.formBuilder.array([]),
             mDoctorQualificationDetails: this.formBuilder.array([]),
             mDoctorScheduleDetails: this.formBuilder.array([]),
             mDoctorChargesDetails: this.formBuilder.array([]),
             mDoctorLeaveDetails: this.formBuilder.array([]),
-            mDoctorSignPageDetails: this.formBuilder.array([])
+            mDoctorSignPageDetails: this.formBuilder.array([]),
+
+            // used during update
+            
+            createdBy: [this.accountService.currentUserValue.userId],
+            createdDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
         });
     }
     //Education
@@ -601,6 +604,10 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             data.MahRegDate = this.registerObj.mahRegDate;
             data.signature = this.signature;
             data.ageYear = String(this.ageYear)
+             if (this.doctorId === 0) {
+                this.myForm.removeControl('createdBy');
+                this.myForm.removeControl('createdDate');
+            }
             console.log(this.myForm.value)
 
             if (this.doctorId > 0) {

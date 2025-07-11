@@ -92,7 +92,7 @@ export class CompanyMasterListComponent implements OnInit {
             this._CompanyMasterService.companyMasterSave(this.companyFormDemo.value).subscribe((response) => {
                 this.dialogRef.close()
             });
-        } {
+        }else {
             let invalidFields = [];
             if (this.companyFormDemo.invalid) {
                 for (const controlName in this.companyFormDemo.controls) {

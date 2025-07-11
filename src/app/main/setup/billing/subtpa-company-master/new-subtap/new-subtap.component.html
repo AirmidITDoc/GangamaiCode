@@ -1,5 +1,4 @@
-
-<div class="modal-wrapper grid-container"> 
+<div class="modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -15,107 +14,107 @@
             </div>
         </div>
     </div>
-<div class="modal-body" fusePerfectScrollbar>
-    <div class="modal-body-container">
-        <form [formGroup]="subTpaForm">
-            <input type="hidden" name="SubCompanyId" formControlName="SubCompanyId">
-            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="CompanyName" 
-                        formControlName="companyName" 
-                       
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().companyName" 
-                        [maxLength]="50">
-                    </airmid-textbox>       
-                </div>
-                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-dropdown 
-                        label="CompanyTypeName" 
-                        formControlName="compTypeId" 
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().compTypeId" 
-                        [mode]="autocompleteModetypeName">
-                    </airmid-dropdown>       
-                </div>
-            </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="subTpaForm">
+                <input type="hidden" name="SubCompanyId" formControlName="subCompanyId"
+                    [(ngModel)]="regobj.subCompanyId">
 
-            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                
-                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="EnterAddress" 
-                        formControlName="address" 
-                       
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().address" 
-                        [maxlength]="100">
-                    </airmid-textbox> 
-                </div>
-                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-dropdown 
-                        label="CityName" 
-                        formControlName="city" 
-                        [value]="data?.city" 
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().city" 
-                        [mode]="autocompleteModecity">
-                    </airmid-dropdown>       
-                </div>
-                
-            </div>
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="PinCode" 
-                        formControlName="pinNo" 
-                         
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().pinNo" 
-                        [maxLength]="6">
-                    </airmid-textbox> 
-                </div>
-                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="PhoneNumber" 
-                        formControlName="phoneNo" 
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().phoneNo" 
-                        [maxLength]="10">
-                    </airmid-textbox>       
-                </div>
-                <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <airmid-textbox 
-                        label="MobileNumber" 
-                        formControlName="mobileNo" 
-                        [formGroup]="subTpaForm"
-                        [validations]="getValidationMessages().mobileNo" 
-                        [maxLength]="10">
-                    </airmid-textbox> 
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="CompanyName" [(ngModel)]="regobj.companyName"
+                            formControlName="companyName" [formGroup]="subTpaForm"
+                            [validations]="getValidationMessages().companyName" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="companyShortName" [(ngModel)]="regobj.companyShortName"
+                            formControlName="companyShortName" [formGroup]="subTpaForm"
+                            [validations]="getValidationMessages().companyShortName" [maxLength]="50">
+                        </airmid-textbox>
+                        <!-- <airmid-dropdown label="CompanyName" [(ngModel)]="regobj.companyId"
+                            formControlName="CompanyName" [formGroup]="subTpaForm" [mode]="autocompleteModecompanyName">
+                        </airmid-dropdown> -->
+
+                    </div>
                 </div>
 
-            </div>
 
-            <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-                <div>
-                    <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="subTpaForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                </div>
-     
-                <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                        <span>Save</span>
-                    </button>
-                </div>
-     
-            </div>
 
-        </form>
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="CompanyTypeName" formControlName="compTypeId"
+                            [(ngModel)]="regobj.compTypeId" [formGroup]="subTpaForm" [mode]="autocompleteModetypeName">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="EnterAddress" formControlName="address" [(ngModel)]="regobj.address"
+                            [formGroup]="subTpaForm" [validations]="getValidationMessages().address" [maxlength]="100">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                        <airmid-dropdown label="CityName" formControlName="cityId" [formGroup]="subTpaForm"
+                          [value]="regobj?.cityId"
+                            (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities" ValueField="cityId"
+                            TextField="cityName">
+                        </airmid-dropdown>
+
+                    </div>
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="State" formControlName="stateId" [value]="regobj?.stateId"
+                            [formGroup]="subTpaForm" [disabled]="true" #ddlState [mode]="autocompleteModestate"
+                            (optionSelected)="onChangestate($event)" [readonly]="true">
+                        </airmid-dropdown>
+
+                    </div>
+                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Country" formControlName="countryId" [value]="regobj?.countryId"
+                            [formGroup]="subTpaForm" [disabled]="true" #ddlCountry [mode]="autocompleteModecountry"
+                            [readonly]="true">
+                        </airmid-dropdown>
+                    </div>
+
+                </div>
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                   
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="PhoneNumber" [(ngModel)]="regobj.phoneNo" formControlName="phoneNo"
+                            (keypress)="keyPressCharater($event)" [formGroup]="subTpaForm"
+                            [validations]="getValidationMessages().phoneNo" [maxLength]="10">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="faxNo" [(ngModel)]="regobj.faxNo" formControlName="faxNo"
+                            (keypress)="keyPressCharater($event)" [formGroup]="subTpaForm"
+                            [validations]="getValidationMessages().faxNo" [maxLength]="10">
+                        </airmid-textbox>
+                    </div>
+
+                </div>
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="subTpaForm"
+                            [(ngModel)]="isActive"></app-airmid-slider>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
-</div>
-
-  

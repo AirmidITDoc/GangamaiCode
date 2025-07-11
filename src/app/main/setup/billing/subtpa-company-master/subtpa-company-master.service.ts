@@ -21,30 +21,29 @@ export class SubtpaCompanyMasterService {
         return this._formBuilder.group({
            
             subCompanyId: [0],
-            compTypeId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            compTypeId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],],
+            companyName:["",[Validators.required, Validators.maxLength(50),
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')]
             ],
-            companyName: ["",
-                [
-                    Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ]
+            companyShortName: ["",[Validators.required, Validators.maxLength(50),
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')]
             ],
             address: ["", 
                 Validators.required,Validators.maxLength(100),
-                //Validators.pattern("^[a-zA-Z0-9\s,.'-]+$")
                 Validators.pattern('^[a-zA-Z0-9 ]*$')
             ],
-            city: [
-                0,
-                [
-                    Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
+            cityId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],
             ],
-            pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
-                Validators.minLength(6),
-                Validators.maxLength(6),]],
+             stateId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                ],
+            ],
+             countryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                ],
+            ],
+            // pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+            //     Validators.minLength(6),
+            //     Validators.maxLength(6),]],
             phoneNo: [
                 "",
                 [
@@ -53,14 +52,14 @@ export class SubtpaCompanyMasterService {
                     Validators.maxLength(10),
                 ],
             ],
-            mobileNo: [
-                "",
-                [
-                    Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.maxLength(10),
-                ],
-            ],
+            // mobileNo: [
+            //     "",
+            //     [
+            //         Validators.required,
+            //         Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+            //         Validators.maxLength(10),
+            //     ],
+            // ],
             faxNo: ["0"],
             isActive:[true,[Validators.required]]
         });
@@ -89,5 +88,9 @@ export class SubtpaCompanyMasterService {
 
     getCompanyById(subCompanyId: any) {
         return this._httpClient.GetData("SubTpaCompany/" + subCompanyId);
+    }
+
+     public getstateId(Id) {
+        return this._httpClient.GetData("StateMaster/" + Id);
     }
 }
