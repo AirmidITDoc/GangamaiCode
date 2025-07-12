@@ -13,6 +13,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-emergency',
@@ -27,6 +28,11 @@ export class EmergencyComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   myFilterform: FormGroup;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+   f_name: any = ""
+    l_name: any = ""
+   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
@@ -59,42 +65,49 @@ export class EmergencyComponent implements OnInit {
   ]
 
   allfilters = [
-    { fieldName: "BankName", fieldValue: "", opType: OperatorComparer.Contains },
-    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith }
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "Emergency/Emergencylist",
     columnsList: this.allcolumns,
-    sortField: "",
+    sortField: "EmgId",
     sortOrder: 0,
     filters: this.allfilters
   }
 
   Clearfilter(event) {
     console.log(event)
-    // if (event == 'BankNameSearch')
-    //     this._bankService.myformSearch.get('BankNameSearch').setValue("")
-
+    if (event == 'F_Name')
+        this._EmergencyService.myFilterform.get('F_Name').setValue("")
+    if (event == 'L_Name')
+        this._EmergencyService.myFilterform.get('L_Name').setValue("")
     this.onChangeFirst();
   }
 
   onChangeFirst() {
-    // this.bankName = this._bankService.myformSearch.get('BankNameSearch').value
-    // this.getfilterdata();
+     this.fromDate = this.datePipe.transform(this._EmergencyService.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this._EmergencyService.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this._EmergencyService.myFilterform.get('F_Name').value + "%"
+    this.l_name = this._EmergencyService.myFilterform.get('L_Name').value + "%"
+    this.getfilterdata();
   }
 
   getfilterdata() {
     debugger
-    // let isActive = this._bankService.myformSearch.get("IsDeletedSearch").value || "";
     this.gridConfig = {
-      apiUrl: "",
+      apiUrl: "Emergency/Emergencylist",
       columnsList: this.allcolumns,
-      sortField: "",
+      sortField: "EmgId",
       sortOrder: 0,
       filters: [
-        // { fieldName: "bankName", fieldValue: this.bankName, opType: OperatorComparer.Contains },
-        // { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
+         { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+    { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -110,10 +123,27 @@ export class EmergencyComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-
+      this.grid.bindGridData();
     });
   }
 
+  EmergencyCancel(data){
+    Swal.fire({
+      title:'Do You want to cancel Emergency?',
+      text:"You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag)=>{
+      if(flag.isConfirmed){
+        this._EmergencyService.EmgCancel(data.emgId).subscribe((res)=>{
+          this.grid.bindGridData();
+        })
+      }
+    })
+  }
 }
 
 export class EmergencyList {
