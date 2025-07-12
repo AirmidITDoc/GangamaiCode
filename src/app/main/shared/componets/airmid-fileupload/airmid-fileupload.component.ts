@@ -44,7 +44,7 @@ export class AirmidFileuploadComponent {
             let selectedFile = selectedFiles[i];
             var nextSrNo = (this.files.length > 0) ? Math.max(...this.files.map((x: { srNo: any; }) => x.srNo)) + 1 : 1;
             this.files.push({
-                srNo: nextSrNo, file: selectedFile, refId: this.refId, refType: this.refType,
+                srNo: nextSrNo, Document: selectedFile, refId: this.refId, refType: this.refType,
                 id: 0,
                 docName: selectedFile.name,
                 docSavedName: '',
@@ -81,16 +81,16 @@ export class AirmidFileModel {
     refType: Number;
     docName: string;
     docSavedName: string;
-    file: File;
+    Document: File;
     isDelete: boolean;
-    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: number; docName: string; docSavedName: string; file: File, isDelete: boolean }) {
+    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: number; docName: string; docSavedName: string; document: File, isDelete: boolean }) {
         this.srNo = AirmidFileModel.srNo || 0;
         this.id = AirmidFileModel.id || 0;
         this.refId = AirmidFileModel.refId || 0;
         this.refType = AirmidFileModel.refType || 0;
         this.docName = AirmidFileModel.docName || '';
         this.docSavedName = AirmidFileModel.docSavedName || '';
-        this.file = AirmidFileModel.file || null;
+        this.Document = AirmidFileModel.document || null;
         this.isDelete = AirmidFileModel.isDelete || false;
     }
 }

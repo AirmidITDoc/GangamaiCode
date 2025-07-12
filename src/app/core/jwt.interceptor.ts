@@ -22,13 +22,21 @@ export class JwtInterceptor implements HttpInterceptor {
         // add authorization header with jwt token if available
         let currentUser = this.authenticationService.currentUserValue;
         if (currentUser && currentUser.token) {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${currentUser.token}`,
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json; charset=utf-8"
-                },
-            });
+            if (request.body instanceof FormData)
+                request = request.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${currentUser.token}`,
+                        "Access-Control-Allow-Origin": "*",
+                    },
+                });
+            else
+                request = request.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${currentUser.token}`,
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "application/json; charset=utf-8"
+                    },
+                });
         }
         this._ls.show();
         return next.handle(request).pipe(
