@@ -289,7 +289,7 @@ export class Servicedetail {
      GroupName:any;
      ServiceName:any;
      TariffName:any;
-   
+     SubGroupName:any;
 
     constructor(Servicedetail) {
         {
@@ -308,6 +308,7 @@ export class Servicedetail {
             this.GroupName = Servicedetail.GroupName || "";
             this.ServiceName = Servicedetail.ServiceName || "";
             this.TariffName=Servicedetail.TariffName || ""
+            this.SubGroupName=Servicedetail.SubGroupName || ""
         }
     }
 }
