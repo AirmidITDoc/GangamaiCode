@@ -50,11 +50,11 @@ export class OtRequestService {
 
     public requestSave(Param: any) {
         if (Param.cityId) {
-            return this._httpClient.PutData("CityMaster/" + Param.cityId, Param);
-        } else return this._httpClient.PostData("CityMaster", Param);
+            return this._httpClient.PutData("OTBooking/Edit/" + Param.cityId, Param);
+        } else return this._httpClient.PostData("OTBooking/InsertEDMX", Param);
     }
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("CityMaster?Id=" + m_data.toString());
-    }
+    // public deactivateTheStatus(m_data) {
+    //     return this._httpClient.DeleteData("CityMaster?Id=" + m_data.toString());
+    // }
 }

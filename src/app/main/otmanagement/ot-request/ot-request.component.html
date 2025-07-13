@@ -17,26 +17,30 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-          <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- Button 1: Edit Patient Registration  -->
-                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-
-                <!-- Button 2: Print Registration  -->
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
-                    <mat-icon> print</mat-icon>
-                </button>
-
-                <!-- Button 3: Appointment Page  -->
-                <button mat-icon-button matTooltip="Visit Mark or Appointment" (click)="OnNewAppointment(element)">
-                    <mat-icon>perm_identity</mat-icon>
-                </button>
+          
+ <div class="info-badge-top p-12 border-bottom">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+            
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg"> IP </span>
             </div>
-        </ng-template>
-
+        
+            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">OP
+                   </span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="red-600-fg">Emergency </span>
+            </div>
+             <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                <span class="blue-600-fg">normal </span>
+            </div>
+        </div>
+    </div>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
@@ -75,16 +79,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-<!--                    
-                    <mat-form-field appearance="outline">
-                        <mat-label>MobileNo</mat-label>
-                        <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                            [maxLength]="10" (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('MobileNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field> -->
 
                 </form>
             </ng-container>

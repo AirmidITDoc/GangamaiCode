@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { OtRequestService } from '../ot-request.service';
+import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 
 
 @Component({
@@ -14,37 +15,115 @@ import { OtRequestService } from '../ot-request.service';
   animations: fuseAnimations
 })
 export class NewRequestComponent implements OnInit {
-  countryForm: FormGroup;
+  requestForm: FormGroup;
+
+   personalFormGroup: FormGroup;
+    Regflag: boolean = false;
+     Patientnewold: any = 1;
+     admissionFormGroup: FormGroup;
+      Regdisplay: boolean = false;
+       searchFormGroup: FormGroup;
+
+
+       vSelectedOption: any = 'OP';
+    
    isActive:boolean=true;
  
+ autocompleteModestatus: string = "State";
+   // vClassId: any = 0;
+  vRegNo: any;
+  vPatientName: any;
+  //vAdmissionDate: any;
+  vOPDNo: any;
+  vTariffName: any;
+  vCompanyName: any;
+  vDoctorName: any;
+  //vRoomName: any;
+  //vBedName: any;
+  vAge: any;
+  //vGenderName: any;
+  //vAdmissionTime: any;
+  //vAgeMonth: any;
+  //vAgeDay: any;
+  vDepartment: any;
+  vMobNo: any;
+  //vPatientType: any;
+  //vDOA: any;
+  //vstoreId: any = '';
+  //vAdmissionID: any;
+
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
      @Inject(MAT_DIALOG_DATA) public data: any,
+     private ref: MatDialogRef<NewRequestComponent>,
+     public _AdmissionService: AdmissionService,
      public toastr: ToastrService) { }
+    
  
    ngOnInit(): void {
-     this.countryForm = this._OtRequestService.createRequestForm();
-     this.countryForm.markAllAsTouched();
+     this.requestForm = this._OtRequestService.createRequestForm();
+     this.requestForm.markAllAsTouched();
      
      if ((this.data?.countryId??0) > 0) 
          {
              this.isActive=this.data.isActive
-             this.countryForm.patchValue(this.data);
+             this.requestForm.patchValue(this.data);
          }
  }
  
+ onChangeReg(event) {
+     if (event.value == 'registration') {
+       this.Regflag = false;
+       this.personalFormGroup.get('RegId').reset();
+       this.personalFormGroup.get('RegId').disable();
+       // this.isRegSearchDisabled = true;
+      // this.registerObj1 = new AdmissionPersonlModel({});
+       this.personalFormGroup.reset();
+       this.Patientnewold = 1;
  
+       this.personalFormGroup = this._AdmissionService.createPesonalForm();
+       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+       this.Regdisplay = false;
+ 
+     } else {
+       this.Regdisplay = true;
+       this.Regflag = true;
+       this.searchFormGroup.get('RegId').enable();
+       this.personalFormGroup = this._AdmissionService.createPesonalForm();
+       this.Patientnewold = 2;
+ 
+     }
+ 
+     this.personalFormGroup.markAllAsTouched();
+     this.admissionFormGroup.markAllAsTouched();
+   }
+  getSelectedObjIP(obj) {
+
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment = obj.departmentName
+      this.vOPDNo = obj.ipdNo
+      this.vAge = obj.age
+      this.vMobNo = obj.refDocName
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+     
+    }
+  }
    onSubmit() {
-     if (!this.countryForm.invalid) {
-             console.log(this.countryForm.value)
-             this._OtRequestService.requestSave(this.countryForm.value).subscribe((response) => {
+     if (!this.requestForm.invalid) {
+             console.log(this.requestForm.value)
+             this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
                  this.onClear(true);
              });
          } {
              let invalidFields = [];
-             if (this.countryForm.invalid) {
-                 for (const controlName in this.countryForm.controls) {
-                     if (this.countryForm.controls[controlName].invalid) {
+             if (this.requestForm.invalid) {
+                 for (const controlName in this.requestForm.controls) {
+                     if (this.requestForm.controls[controlName].invalid) {
                          invalidFields.push(`request Form: ${controlName}`);
                      }
                  }
@@ -68,9 +147,11 @@ export class NewRequestComponent implements OnInit {
            ]
        };
    }
- 
+ onClose() {
+    this.ref.close();
+  }
  onClear(val: boolean) {
-     this.countryForm.reset();
+     this.requestForm.reset();
      this.dialogRef.close(val);
  }
 }

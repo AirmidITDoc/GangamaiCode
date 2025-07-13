@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="dialog-content-wrapper modal-wrapper grid-container">
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -6,48 +6,245 @@
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
-                    <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button> -->
-                </div>
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
-    <div class="modal-body" fusePerfectScrollbar>
+
+       <div class="modal-body" fusePerfectScrollbar>
+         <div class="modal-body-container">
+          <div fxLayout="column" class="gap-12"></div>
+           <form  [formGroup]="requestForm">
+               <div class="modal-card-container">
+
+                        
+                      
+                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
+                             <!-- <div class="radio-container">
+                                        <mat-radio-group aria-label="Select an option" formControlName="regRadio"
+                                            name="regRadio" (change)="onChangeReg($event)">
+                                            <mat-radio-button value="registration">OP </mat-radio-button>
+                                            <mat-radio-button value="registrered">IP</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div> -->
+                                     <div class="radio-container">
+                                    <mat-radio-group aria-label="Select an option" formControlName="requestForm"
+                                        name="regRadio" (change)="onChangeReg($event)"
+                                        (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
+                                        <mat-radio-button value="OP">OP</mat-radio-button>
+                                        <mat-radio-button value="IP">IP</mat-radio-button>
+                                    </mat-radio-group>
+
+                                </div>
+                             <div class="input-container gap-8" fxFlex>
+
+                                <airmid-autocomplete lbl="RegId" [formGroup]="requestForm" formControlName="RegID"
+                                    placeholderText="Op-RegNo/First Name/Last Name/Mobile No" label="Search Op-RegNo / First Name / Last Name / Mobile No"
+                                    ApiUrl="Admission/search-patient?Keyword="
+                                    (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                    TextField="formattedText">
+                                </airmid-autocomplete>
+                               
+                            </div>
+                            
+                                <div class="input-container gap-8" fxFlex>
+
+                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'OP'"
+                                        [formGroup]="requestForm" formControlName="RegID"
+                                        placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="VisitDetail/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete> -->
+
+                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'IP'"
+                                        [formGroup]="requestForm" formControlName="RegID"
+                                        placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="Admission/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                        TextField="formattedText">
+                                    </airmid-autocomplete> -->
+                                </div>
+                        </div>
+                       
+                      
+                    </div>
+                    <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                        <div class="patient-info-sales my-8">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                fxLayoutAlign="space-between center" class="patient-info">
+                                                <div class="patient-sub">
+                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                        fxLayoutAlign="space-between">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">UHID No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vRegNo}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">OPD No</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vOPDNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{ vPatientName
+                                                                    }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                             <div class="patient-col">
+                                                                  <span class="patient-col-key">Age 
+                                                                 </span>
+                                                                  <span>:</span>
+                                                                 <span
+                                                                    class="patient-col-value">{{vAge}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">Department</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDepartment}}</span>
+                                                            </div>
+                                                                  <div class="patient-col">
+                                                                <span class="patient-col-key">Mobile No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vMobNo}}</span>
+                                                            </div>
+                                                        </div>
+                                                         <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDoctorName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">terrif</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vTariffName}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">Company Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vCompanyName}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+ <div  class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
+</span>
+            </div>
+           
+        </div>
+    </div>
+ </div>
+        <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="countryForm">
-                <input type="hidden" name="countryId" formControlName="countryId">
+           
+                <input type="hidden" name="cityId" formControlName="cityId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex>
-                        <airmid-textbox 
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                       <airmid-dropdown 
                             label="Department Name" 
-                            formControlName="countryName" 
-                            [value]="data?.countryName"
-                            [formGroup]="countryForm"
-                            [validations]="getValidationMessages().countryName" 
-                            [maxLength]="50">
-                        </airmid-textbox>
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
+                            label="Surgery Category" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
+                            label="Site" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
+                            label="Surgery Procedure" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown 
+                            label="Surgeon Name" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
                     </div>
                 </div>
-               
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
- 
-                    <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="countryForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                    </div>
-         
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+
+                
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                          <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
+                            <span>surgery Type:</span>
+                            <mat-radio-button value="Normal">Normal</mat-radio-button>
+                            <mat-radio-button value="Emergency">Emergency</mat-radio-button>
+                          </mat-radio-group>
+                        </div>
+                <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
-                    </div>
-         
-                </div>
-            
-            </form>
+            </div>
         </div>
-
     </div>
-</div>
+            </div>
+         </div>
+
+     </form>
+
+         </div>
+        </div>
+     </div>
+    

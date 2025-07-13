@@ -29,6 +29,11 @@ export class OTRequestComponent implements OnInit {
     l_name: any = ""
     mobileno: any = "%"
   
+  //   VBillcount = 0;
+  // VOPtoIPcount = 0;
+  // vIsDischarg = 0;
+  // VAdmissioncount = 0;
+  //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   
        allcolumns = [
@@ -64,9 +69,9 @@ export class OTRequestComponent implements OnInit {
           //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
       ]
       gridConfig: gridModel = {
-          apiUrl: "CityMaster/List",
+          apiUrl: "OT/OTBookinglist",
           columnsList: this.allcolumns,
-          sortField: "cityId",
+          sortField: "OTBookingID",
           sortOrder: 0,
           filters: this.allFilters
       }
@@ -104,25 +109,7 @@ export class OTRequestComponent implements OnInit {
           });
       }
   
-      // onSave(row: any = null) {
-      //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-      //     buttonElement.blur(); // Remove focus from the button
-  
-  
-      //     let that = this;
-      //     const dialogRef = this._matDialog.open(NewRequestComponent,
-      //         {
-      //             maxWidth: "50vw",
-      //             maxHeight: '50%',
-      //             width: '70%',
-      //             data: row
-      //         });
-      //     dialogRef.afterClosed().subscribe(result => {
-      //         if (result) {
-      //             that.grid.bindGridData();
-      //         }
-      //     });
-      // }
+     
        onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
