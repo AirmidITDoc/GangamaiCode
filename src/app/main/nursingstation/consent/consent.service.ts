@@ -45,14 +45,15 @@ export class ConsentService {
       consentId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       consentDate: [(new Date()).toISOString()],
       consentTime: [(new Date()).toISOString()],
-      opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opipid:[0,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
       opiptype: [1],
       consentDeptId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       consentTempId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ConsentName: ['string',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(500)]],
+      ConsentName: ['%',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       // after creating dd need to change above
       ConsentText: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      // createdBy: this._loggedService.currentUserValue.userId,
+      createdBy: [this._loggedService.currentUserValue.userId,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      modifiedBy: [this._loggedService.currentUserValue.userId,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]]
     })
   }
 

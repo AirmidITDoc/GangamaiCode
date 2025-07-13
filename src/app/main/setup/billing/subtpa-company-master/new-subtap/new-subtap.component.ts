@@ -47,6 +47,11 @@ export class NewSubtapComponent implements OnInit {
             console.log(this.data);
             this.isActive = this.data.isActive;
             this.regobj = this.data
+            this.regobj.phoneNo=this.data.phoneNo.trim()
+             this.regobj.faxNo=this.data.faxNo.trim()
+             this.subTpaForm.get("cityId").setValue(this.regobj.cityId)
+             this.subTpaForm.get("stateId").setValue(this.regobj.stateId)
+             this.subTpaForm.get("countryId").setValue(this.regobj.countryId)
         }
     }
 
@@ -66,7 +71,8 @@ export class NewSubtapComponent implements OnInit {
     }
 
     onSubmit() {
-
+debugger
+console.log(this.subTpaForm.value)
         if (!this.subTpaForm.invalid) {
             console.log("SubTpa Json:", this.subTpaForm.value);
 

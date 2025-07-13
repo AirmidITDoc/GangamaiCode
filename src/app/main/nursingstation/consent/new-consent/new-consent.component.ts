@@ -94,10 +94,10 @@ export class NewConsentComponent {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if ((this.data?.consentId ?? 0) > 0) {
       this.vConsentText = this.data.consentText
-      this.OP_IP_Id=this.data.opipid
-      this.OP_IPType=this.data.opipType
-      this.vdepartmentId=this.data.consentDeptId
-      this.templateId=this.data.consentTempId
+      this.OP_IP_Id = this.data.opipid
+      this.OP_IPType = this.data.opipType
+      this.vdepartmentId = this.data.consentDeptId
+      this.templateId = this.data.consentTempId
       this.ConsentinsertForm.patchValue(this.data);
       console.log(this.data)
       this.getSelectedObjOP(this.data)
@@ -202,24 +202,42 @@ export class NewConsentComponent {
   }
 
   onSave() {
-    if (!this.ConsentinsertForm.invalid) {
-      let data = this.ConsentinsertForm.value;
-      data.consentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      data.consentTime = this.datePipe.transform(new Date(), 'shortTime');
-      data.opipid = this.OP_IP_Id
-      data.opiptype = this.OP_IPType
-      data.consentDeptId = Number(this.vdepartmentId)
-      data.consentTempId = Number(this.templateId)
 
-      const isUpdate = data.consentId && data.consentId > 0;
+    if (this.ConsentinsertForm.get("consentId").value > 0) {
+        this.ConsentinsertForm.get("modifiedBy").setValue(this._loggedService.currentUserValue.userId)
+         this.ConsentinsertForm.removeControl('createdBy');
 
-      if (isUpdate) {
-        data.modifiedBy = this._loggedService.currentUserValue.userId;
       } else {
-        data.createdBy = this._loggedService.currentUserValue.userId;
-      }
+        this.ConsentinsertForm.get("createdBy").setValue(this._loggedService.currentUserValue.userId)
+         this.ConsentinsertForm.removeControl('modifiedBy');
 
-      this._ConsentService.ConsentSave(data).subscribe((response) => {
+      }
+    if (!this.ConsentinsertForm.invalid) {
+      // let data = this.ConsentinsertForm.value;
+      // data.consentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      // data.consentTime = this.datePipe.transform(new Date(), 'shortTime');
+      // data.opipid = this.OP_IP_Id
+      // data.opiptype = this.OP_IPType
+      // data.consentDeptId = Number(this.vdepartmentId)
+      // data.consentTempId = Number(this.templateId)
+
+      console.log(this.ConsentinsertForm.value)
+      this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+      this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+      this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
+      this.ConsentinsertForm.get("opiptype").setValue(Number(this.OP_IPType))
+      this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
+
+      // const isUpdate = data.consentId && data.consentId > 0;
+      
+
+      // if (isUpdate) {
+      //   data.modifiedBy = this._loggedService.currentUserValue.userId;
+      // } else {
+      //   data.createdBy = this._loggedService.currentUserValue.userId;
+      // }
+  console.log(this.ConsentinsertForm.value)
+      this._ConsentService.ConsentSave(this.ConsentinsertForm.value).subscribe((response) => {
         this.onClose();
       });
     } else {
@@ -258,7 +276,7 @@ export class NewConsentComponent {
       });
       return;
     }
-    const tempId=this.ConsentinsertForm.get('consentTempId')?.value ;
+    const tempId = this.ConsentinsertForm.get('consentTempId')?.value;
     if (tempId === null || tempId === 0 || tempId === '' || tempId === "0") {
       this.toastr.warning('Please select Template ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

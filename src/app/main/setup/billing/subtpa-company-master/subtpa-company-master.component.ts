@@ -26,9 +26,9 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "State", key: "state", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Country", key: "country", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "State", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -52,11 +52,11 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     ]
 
     allfilters = [
-        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-        apiUrl: "SubTpaCompany/List",
+        apiUrl: "SubTpaCompany/SubTpacompanyMasterList",
         columnsList: this.allcolumns,
         sortField: "subCompanyId",
         sortOrder: 0,

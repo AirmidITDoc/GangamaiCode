@@ -45,9 +45,7 @@ export class SubtpaCompanyMasterService {
             // pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
             //     Validators.minLength(6),
             //     Validators.maxLength(6),]],
-            phoneNo: [
-                "",
-                [
+            phoneNo: ["",[
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.maxLength(10),

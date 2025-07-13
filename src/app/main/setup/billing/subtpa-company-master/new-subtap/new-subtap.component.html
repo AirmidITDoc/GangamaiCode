@@ -64,21 +64,21 @@
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                         <airmid-dropdown label="CityName" formControlName="cityId" [formGroup]="subTpaForm"
-                          [value]="regobj?.cityId"
+                           [(value)]="regobj.cityId"
                             (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities" ValueField="cityId"
                             TextField="cityName">
                         </airmid-dropdown>
 
                     </div>
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="State" formControlName="stateId" [value]="regobj?.stateId"
+                        <airmid-dropdown label="State" formControlName="stateId"  [(value)]="regobj.stateId"
                             [formGroup]="subTpaForm" [disabled]="true" #ddlState [mode]="autocompleteModestate"
                             (optionSelected)="onChangestate($event)" [readonly]="true">
                         </airmid-dropdown>
 
                     </div>
                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown label="Country" formControlName="countryId" [value]="regobj?.countryId"
+                        <airmid-dropdown label="Country" formControlName="countryId"  [(value)]="regobj.countryId"
                             [formGroup]="subTpaForm" [disabled]="true" #ddlCountry [mode]="autocompleteModecountry"
                             [readonly]="true">
                         </airmid-dropdown>
