@@ -29,7 +29,7 @@
             <div fxLayout="column" fxLayoutGap="8px">
                 <!-- Search section -->
                 <div class="detail-container input-error-hidden">
-                    <form [formGroup]="searchFormGroup">
+                    <form [formGroup]="myForm">
                         <mat-card>
                             <mat-card-content>
 
@@ -39,7 +39,7 @@
                                     <div class="input-container gap-8" fxFlex="80%">
 
                                         <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-                                            [formGroup]="searchFormGroup" formControlName="RegId"
+                                            [formGroup]="myForm" formControlName="regId"
                                             placeholderText="RegNo/Patient Name/Mobile No"
                                             ApiUrl="OutPatient/auto-complete?Keyword="
                                             (selectionChange)="getSelectedObj($event)">
@@ -62,7 +62,7 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Prefix" formControlName="PrefixID"
+                                        <airmid-dropdown label="Prefix" formControlName="prefixId"
                                             [formGroup]="myForm" [value]="registerObj?.prefixId"
                                             ValueField="prefixId" TextField="prefixName" 
                                             (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
@@ -70,28 +70,28 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="First Name" formControlName="FirstName"
+                                        <airmid-textbox label="First Name" formControlName="firstName"
                                             [value]="registerObj.firstName" [formGroup]="myForm"
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                        <airmid-textbox label="Middle Name" formControlName="middleName"
                                             [value]="registerObj.middleName" [formGroup]="myForm"
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Last Name" formControlName="LastName"
+                                        <airmid-textbox label="Last Name" formControlName="lastName"
                                             [value]="registerObj.lastName" [formGroup]="myForm"
                                             [maxLength]="50">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Gender" formControlName="GenderId"
+                                        <airmid-dropdown label="Gender" formControlName="genderId"
                                             [formGroup]="myForm" [value]="registerObj?.genderId"
                                              #ddlGender [disabled]="true" [mode]="autocompleteModegender">
                                          </airmid-dropdown>
@@ -104,7 +104,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Address" formControlName="Address"
+                                        <airmid-textbox label="Address" formControlName="address"
                                             [value]="registerObj?.address" [formGroup]="myForm">
                                          </airmid-textbox>
                                     </div>
@@ -116,7 +116,7 @@
                                     </div>
 
                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myForm" 
+                                        <airmid-dropdown label="City" formControlName="cityId" [formGroup]="myForm" 
                                             [value]="registerObj?.cityId" ValueField="cityId" TextField="cityName"
                                              (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
                                         </airmid-dropdown>
@@ -137,7 +137,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="MobileNo" formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)"
+                                        <airmid-textbox label="MobileNo" formControlName="mobileNo" (keypress)="keyPressAlphanumeric($event)"
                                             [value]="registerObj?.mobileNo" [formGroup]="myForm" [maxLength]="10">
                                         </airmid-textbox>
                                     </div>
@@ -164,7 +164,7 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                                        <airmid-dropdown label="Department Name" formControlName="departmentId"
                                             [value]="registerObj?.departmentId" [formGroup]="myForm"
                                             [mode]="autocompleteModeDepartment"
                                             (selectionChange)="selectChangedepartment($event)">
@@ -172,7 +172,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Doctor Name" formControlName="DoctorId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"
                                             [value]="registerObj?.docNameId" [formGroup]="myForm"
                                             #ddlDoctor>
                                         </airmid-dropdown>

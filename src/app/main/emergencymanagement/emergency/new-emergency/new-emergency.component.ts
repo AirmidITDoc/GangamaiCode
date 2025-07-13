@@ -42,14 +42,10 @@ export class NewEmergencyComponent {
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   constructor(public _EmergencyService: EmergencyService,
-    private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewEmergencyComponent>,
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
-    private router: Router,
-    private commonService: PrintserviceService,
-    private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -58,61 +54,95 @@ export class NewEmergencyComponent {
     this.myForm = this._EmergencyService.CreateMyForm();
     this.myForm.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
+    if((this.data?.emgId ?? 0) > 0){
+      this.registerObj=this.data
+      console.log("Retrived data:",this.registerObj)
+    }
   }
 
-   createSearchForm() {
+  createSearchForm() {
     return this.formBuilder.group({
-      RegId: [],
+      regId: [],
     });
   }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
-    getSelectedObj(obj) {
-    console.log(obj)
+  getSelectedObj(obj) {
     this.RegId = obj.value;
     if ((obj.value ?? 0) > 0) {
-
-      console.log(this.data)
       setTimeout(() => {
         this._EmergencyService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
-          console.log(this.registerObj)
+          console.log("Searched data:",this.registerObj)
         });
       }, 500);
     }
   }
 
- onChangePrefix(e) {
+  onChangePrefix(e) {
     this.ddlGender.SetSelection(e.sexId);
   }
 
-   onChangecity(e) {
+  onChangecity(e) {
     this.CityName = e.cityName
     this.registerObj.stateId = e.stateId
     this._EmergencyService.getstateId(e.stateId).subscribe((Response) => {
-      console.log(Response)
       this.ddlCountry.SetSelection(Response.countryId);
     });
   }
 
-   selectChangedepartment(obj: any) {
+  selectChangedepartment(obj: any) {
     this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
       this.ddlDoctor.options = data;
       this.ddlDoctor.bindGridAutoComplete();
     });
   }
 
-  onNewSave(){
+  onNewSave() {
+    if (!this.myForm.invalid) {
+      const dateOfBirthValue = this.myForm.get('DateOfBirth')?.value;
 
+      if (dateOfBirthValue) {
+        const today = new Date();
+        const dob = new Date(dateOfBirthValue);
+        let ageYear = today.getFullYear() - dob.getFullYear();
+        this.myForm.get('ageYear')?.setValue(ageYear, { emitEvent: false });
+      }
+
+      this.myForm.get('regId')?.setValue(this.RegId);
+      this.myForm.get('emgDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+      ['PinNo', 'PhoneNo', 'StateId', 'CountryId', 'DateOfBirth'].forEach(control => {
+        this.myForm.removeControl(control)
+      })
+      console.log(this.myForm.value)
+      this._EmergencyService.EmgSaveUpdate(this.myForm.value).subscribe((res) => {
+        this.onClose()
+      })
+    } else {
+      let invalidfields = [];
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) {
+            invalidfields.push(`Emergency Form: ${controlName}`)
+          }
+        }
+      }
+      if (invalidfields.length > 0) {
+        invalidfields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
   }
 
-  onClose(){
-
+  onClose() {
+    this.myForm.reset();
+    this.dialogRef.close();
   }
 
   keyPressAlphanumeric(event) {
