@@ -22,17 +22,18 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 
     companyName: any = "";
     allcolumns = [
-        { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Type Name", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Main Company Name", key: "mainCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "State", key: "stateName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "State", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "User Name", key: "CreatedBy", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
 
@@ -56,7 +57,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-        apiUrl: "SubTpaCompany/SubTpacompanyMasterList",
+        apiUrl: "SubTpaCompany/List",
         columnsList: this.allcolumns,
         sortField: "subCompanyId",
         sortOrder: 0,

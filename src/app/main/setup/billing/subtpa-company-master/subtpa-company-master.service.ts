@@ -14,8 +14,6 @@ export class SubtpaCompanyMasterService {
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
-        // this.myform = this.createsubtpacompanyForm();
-        // this.myformSearch = this.createSearchForm();
     }
     createsubtpacompanyForm(): FormGroup {
         return this._formBuilder.group({
@@ -42,23 +40,12 @@ export class SubtpaCompanyMasterService {
              countryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],
             ],
-            // pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
-            //     Validators.minLength(6),
-            //     Validators.maxLength(6),]],
             phoneNo: ["",[
                     Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.maxLength(10),
                 ],
             ],
-            // mobileNo: [
-            //     "",
-            //     [
-            //         Validators.required,
-            //         Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-            //         Validators.maxLength(10),
-            //     ],
-            // ],
             faxNo: ["0"],
             isActive:[true,[Validators.required]]
         });

@@ -75,7 +75,6 @@ debugger
 console.log(this.subTpaForm.value)
         if (!this.subTpaForm.invalid) {
             console.log("SubTpa Json:", this.subTpaForm.value);
-
             this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response) => {
                 this.dialogRef.close()
             });
