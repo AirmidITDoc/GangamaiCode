@@ -51,7 +51,7 @@ export class CompanyMasterComponent implements OnInit {
         },
         { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
          { heading: "IsSubCompany", key: "isSubCompany", type: gridColumnTypes.status, align: "center", width: 100 },
         {

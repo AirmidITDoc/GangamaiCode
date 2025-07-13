@@ -49,6 +49,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
 
 const routes: Routes = [
     {
@@ -58,7 +59,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CompanyMasterListComponent,NewCompanyMasterComponent, ServeToCompanyComponent],
+    declarations: [CompanyMasterListComponent,NewCompanyMasterComponent, ServeToCompanyComponent, UpdateServCodePrintComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

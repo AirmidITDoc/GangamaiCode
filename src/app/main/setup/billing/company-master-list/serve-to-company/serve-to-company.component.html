@@ -33,6 +33,7 @@
                     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
                       (selectedTabChange)="onTabChange($event)">
                       <mat-tab label="Service To Company Detail"></mat-tab>
+                      <mat-tab label="Company Wise Service List"></mat-tab>
                       <mat-tab label="Discount Details"></mat-tab>
                       <mat-tab label="Sub Tpa List"></mat-tab>
                     </mat-tab-group>
@@ -42,7 +43,7 @@
                   <div *ngSwitchCase="0">
                     <form [formGroup]="companyForm">
 
-                      <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                      <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-textbox label="CompanyName" formControlName="companyName" [formGroup]="companyForm"
                             [validations]="getValidationMessages().companyName" [maxLength]="50"
@@ -66,9 +67,9 @@
                       </div>
 
 
-                      <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                      <!-- <div fxLayout="row wrap" fxLayoutGap="12px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <!-- [value]="data?.compTypeId" -->
+                        
                           <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
                             (selectionChange)="selectChangeclass($event)"
                             [validations]="getValidationMessages().compTypeId" [mode]="autocompleteModetypeName">
@@ -81,55 +82,11 @@
                           </airmid-dropdown>
                         </div>
 
-                      </div>
+                      </div> -->
                     </form>
 
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                      <div class="table-left" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="40%">
-
-                        <div fusePerfectScrollbar
-                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                          dynamicTableHeight>
-
-                          <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
-                            [@animateStagger]="{ value: '50' }">
-
-                            <ng-container matColumnDef="ServiceName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="Action" stickyEnd>
-                              <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
-                              <mat-cell *matCellDef="let element" class="w-80">
-                                <button mat-icon-button color="warn"
-                                  (click)="onSaveEntry(element)"><mat-icon>add</mat-icon></button>
-                              </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="loading">
-                              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent"
-                              *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
-                              [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                              [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                              [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
-                          </mat-table>
-
-                        </div>
-                      </div>
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="60%">
+                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="98%">
                         <div fusePerfectScrollbar
                           class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                           dynamicTableHeight>
@@ -142,11 +99,11 @@
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
                             </ng-container>
 
-
+                            <!-- 
                             <ng-container matColumnDef="ClassName">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ClassName}}</mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="TariffName">
                               <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
@@ -221,9 +178,9 @@
                         </div>
                       </div>
                     </div>
-                    <!-- </mat-card> -->
 
                   </div>
+               
                   <div *ngSwitchCase="1">
                     <ng-container [ngSwitch]="selectedTabIndex">
                       <form [formGroup]="searchFormGroup">
@@ -315,26 +272,9 @@
                       </div>
 
                       <div *ngIf="Regflag==1">
-                        <form [formGroup]="groupFormGroup">
-                          <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 20px;">
-                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                              <airmid-dropdown label="ServiceName" formControlName="ServiceName"
-                                [formGroup]="groupFormGroup" (selectionChange)="selectService($event)"
-                                [validations]="getValidationMessages().ServiceName" [mode]="autocompleteModetypeName">
-                              </airmid-dropdown>
-                            </div>
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                              <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="groupFormGroup"
-                                (selectionChange)="selectdiscservicelist($event)"
-                                [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
-                              </airmid-dropdown>
-                            </div>
-
-                          </div>
-                        </form>
                         <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row"
-                          style="max-height: 400px; overflow-y: auto;">
+                          style="max-height: 600px; overflow-y: auto;">
 
                           <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="95%">
                             <div fusePerfectScrollbar
@@ -344,10 +284,16 @@
                               <mat-table matSort [dataSource]="discgroupList" class="airmid-table"
                                 [@animateStagger]="{ value: '50' }">
 
-                                <ng-container matColumnDef="ServiceName">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                                <ng-container matColumnDef="GroupName">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
                                   <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                    element.ServiceName}}</mat-cell>
+                                    element.GroupName}}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TariffName">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                    element.TariffName}}</mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="disc">
@@ -386,39 +332,25 @@
                       </div>
 
                       <div *ngIf="Regflag==2">
-                        <form [formGroup]="subgropFormGroup">
-                          <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 20px;">
-                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                              <airmid-dropdown label="ServiceName" formControlName="ServiceName"
-                                [formGroup]="subgropFormGroup" (selectionChange)="selectService($event)"
-                                [validations]="getValidationMessages().ServiceName" [mode]="autocompleteModetypeName">
-                              </airmid-dropdown>
-                            </div>
-                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                              <airmid-dropdown label="ClassName" formControlName="ClassId2"
-                                [formGroup]="subgropFormGroup" (selectionChange)="selectdiscservicelist($event)"
-                                [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
-                              </airmid-dropdown>
-                            </div>
-
-                          </div>
-                        </form>
                         <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row"
-                          style="max-height: 400px; overflow-y: auto;">
+                          style="max-height: 600px; overflow-y: auto;">
 
                           <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="95%">
-                            <div fusePerfectScrollbar
-                              class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                              dynamicTableHeight>
+                          <div class="airmid-table-container pt-12">
 
-                              <mat-table matSort [dataSource]="discsubgroupList" class="airmid-table"
-                                [@animateStagger]="{ value: '50' }">
-
-                                <ng-container matColumnDef="ServiceName">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                              <mat-table matSort [dataSource]="discsubgroupList" [@animateStagger]="{ value: '50' }"
+                                class="airmid-table">
+                                <ng-container matColumnDef="SubGroupName">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>SubGroup Name</mat-header-cell>
                                   <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                    element.ServiceName}}</mat-cell>
+                                    element.SubGroupName}}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="TariffName">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                    element.TariffName}}</mat-cell>
                                 </ng-container>
 
 
@@ -434,23 +366,24 @@
                                 </ng-container>
 
 
-                                <!-- <ng-container matColumnDef="loading">
+                                <ng-container matColumnDef="loading">
                                   <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="noData">
                                   <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                                </ng-container> -->
+                                </ng-container>
 
-                                <mat-header-row class="accent"
+
+                                <mat-header-row class="accent min-width-1100"
                                   *matHeaderRowDef="displayedColumnssubgrp; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let element; columns: displayedColumnssubgrp" class="element"
-                                  [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnssubgrp"
+                                  class="element min-width-1100"
+                                  [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
-                                  [ngClass]="{ hide: discsubgroupList != null }"></mat-footer-row>
+                                  [ngClass]="{ hide: dataSourceeducation != null }"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
                                   [ngClass]="{ hide: !(discsubgroupList != null && discsubgroupList.data.length == 0) }"></mat-footer-row>
-
                               </mat-table>
                             </div>
                           </div>
@@ -480,10 +413,10 @@
                                   element.TypeName}}</mat-cell>
                               </ng-container>
 
-                              <ng-container matColumnDef="companyName">
+                              <ng-container matColumnDef="CompanyName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Company Name</mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                  element.companyName}}</mat-cell>
+                                  element.CompanyName}}</mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="Action" stickyEnd>

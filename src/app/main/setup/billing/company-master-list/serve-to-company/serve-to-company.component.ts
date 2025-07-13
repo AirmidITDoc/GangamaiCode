@@ -28,7 +28,7 @@ import { SubTpaCompanyMaster } from '../../subtpa-company-master/subtpa-company-
 export class ServeToCompanyComponent {
 
     companyForm: FormGroup;
-    autocompleteModetypeName: string = "Service";
+   
     isExpanded = false;
     selectedTabIndex = 0;
     searchFormGroup: FormGroup;
@@ -36,6 +36,7 @@ export class ServeToCompanyComponent {
     groupFormGroup: FormGroup;
     subgropFormGroup: FormGroup;
     serviceForm: FormGroup;
+    compwiseserForm: FormGroup;
     servlist: any = [];
     ServiceId1 = 0
     ServiceId2 = 0
@@ -48,6 +49,7 @@ export class ServeToCompanyComponent {
 
 
     displayedColumns1: string[] = [
+        'Code',
         'ServiceName',
         'Action'
     ];
@@ -55,7 +57,7 @@ export class ServeToCompanyComponent {
 
     displayedColumns2: string[] = [
         'ServiceName',
-        'ClassName',
+        // 'ClassName',
         'TariffName',
         // 'qty',
         'classRate',
@@ -63,21 +65,32 @@ export class ServeToCompanyComponent {
         'Action'
     ];
 
+    displayedColumnsCompser: string[] = [
+        'ServiceName',
+        // 'ClassName',
+        'TariffName',
+        // 'qty',
+        'classRate',
+        'checkbox',
+        'Action'
+    ];
     displayedColumnsser: string[] = [
         'ServiceName',
         'disc'
     ];
     displayedColumnsgrp: string[] = [
-        'ServiceName',
+        'GroupName',
+        'TariffName',
         'disc'
     ];
     displayedColumnssubgrp: string[] = [
-        'ServiceName',
+        'SubGroupName',
+         'TariffName',
         'disc'
     ];
     displayedColumnsubtpa: string[] = [
         'TypeName',
-        'companyName',
+        'CompanyName',
         'Action'
     ];
 
@@ -89,6 +102,7 @@ export class ServeToCompanyComponent {
     discgroupList = new MatTableDataSource<Servicedetail>();
     discsubgroupList = new MatTableDataSource<Servicedetail>();
     subtpaList = new MatTableDataSource<SubTpaCompanyMaster>();
+    DSComwiseServiceList= new MatTableDataSource<Servicedetail>();
 
 
 
@@ -96,6 +110,7 @@ export class ServeToCompanyComponent {
     autocompleteModetariff1: string = "Tariff";
     autocompleteModeclass2: string = "Class";
     autocompleteModetariff2: string = "Tariff";
+     autocompleteModetypeName: string = "Service";
 
     dstable1 = new MatTableDataSource<Servicedetail>();
     dsLabRequest2 = new MatTableDataSource<Servicedetail>();
@@ -122,6 +137,8 @@ export class ServeToCompanyComponent {
         this.servFormGroup = this._CompanyMasterService.createservSearchForm();
         this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
         this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
+    
+        this.compwiseserForm= this._CompanyMasterService.createcompwiseservForm();
         this.serviceForm = this.createServicemasterForm();
         this.serviceDetailsArray.push(this.createserviceDetails());
 
@@ -139,6 +156,7 @@ export class ServeToCompanyComponent {
         this.getServiceList()
         this.getsubtpaList()
         this.getServiceListMain()
+          this.getServicecompwiseList()
     }
     createServicemasterForm(): FormGroup {
         const now = new Date();
@@ -146,8 +164,8 @@ export class ServeToCompanyComponent {
         return this._formBuilder.group({
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             groupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            serviceShortDesc: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
-            serviceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            serviceShortDesc: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            serviceName: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
             price: 0,
             isEditable: [false],
             creditedtoDoctor: [false],
@@ -199,13 +217,15 @@ export class ServeToCompanyComponent {
     onChangeRadio(event) {
         if (event.value === 'Service')
             this.Regflag = 0
-        else if (event.value === 'Group')
+        else if (event.value === 'Group'){
             this.Regflag = 1
-        else if (event.value === 'SubGroup')
+            this.selectdiscservicelist(event)
+        }
+        else if (event.value === 'SubGroup'){
             this.Regflag = 2
-
+            this.selectdiscservicelist(event)
     }
-
+    }
 
 
 
@@ -258,7 +278,45 @@ export class ServeToCompanyComponent {
         });
 
     }
+getServicecompwiseList() {
 
+        let classId = this.compwiseserForm.get("ClassId2").value || 1
+        let serviceName = this.compwiseserForm.get("ServiceName").value || "%"
+        debugger
+        var param =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "ServiceName",
+                    "fieldValue": String(serviceName),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "TariffId",
+                    "fieldValue": String(this.compobj.traiffId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ClassId",
+                    "fieldValue": String(classId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "type",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "CompanyWiseServiceList"
+        }
+
+        console.log(param)
+        this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
+            this.DSComwiseServiceList.data = data as Servicedetail[];
+            console.log(this.DSComwiseServiceList.data)
+        });
+
+    }
 
     getServiceList() {
         debugger
@@ -301,18 +359,15 @@ export class ServeToCompanyComponent {
 
     getsubtpaList() {
 
-        var param1 = {
-            "first": 0,
-            "rows": 10,
-            "sortField": "subCompanyId",
-            "sortOrder": 0,
-            "filters": [
-                { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
-                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        let param1 = {
+            "searchFields": [
+                {
+                    "fieldName": "CompanyId",
+                    "fieldValue": String(this.CompanyId),
+                    "opType": "Equals"
+                }
             ],
-            "exportType": "JSON",
-            "columns": [
-            ]
+            "mode": "CompanyWiseSubTPAList"
         }
         console.log(param1)
         this._CompanyMasterService.getsubtpaListRetrive(param1).subscribe(data => {
@@ -327,6 +382,12 @@ export class ServeToCompanyComponent {
         this.serviceName = event.text
         this.selectdiscservicelist(event)
     }
+printserviceName=''
+    gettableServName(event) {
+        this.printserviceName = event.text
+        // this.selectdiscservicelist(event)
+    }
+
 
     selectdiscservicelist(event) {
         debugger
@@ -340,12 +401,12 @@ export class ServeToCompanyComponent {
                 serviceName = this.serviceName || "%"
                 type = 1
             } else if (this.Regflag == 1) {
-                classId = this.groupFormGroup.get("ClassId2").value || 1
-                serviceName = this.serviceName || "%"
+                classId = 0,//this.groupFormGroup.get("ClassId2").value || 0
+                serviceName = "%"
                 type = 2
             } else if (this.Regflag == 2) {
-                classId = this.subgropFormGroup.get("ClassId2").value || 1
-                serviceName = this.serviceName || "%"
+                classId = 0,// this.subgropFormGroup.get("ClassId2").value || 1
+                serviceName = "%" //"this.serviceName || "%"
                 type = 3
             }
 
@@ -383,7 +444,7 @@ export class ServeToCompanyComponent {
                     this.discgroupList.data = data as Servicedetail[];
                 if (this.Regflag == 2)
                     this.discsubgroupList.data = data as Servicedetail[];
-                console.log(this.discServiceList.data)
+                console.log(this.discsubgroupList.data)
             });
 
         }
@@ -419,7 +480,7 @@ export class ServeToCompanyComponent {
         debugger
         this.chargeList = []
         if (this.DSServicedetailMainList.data.length > 0) {
-            this.chargeList=this.DSServicedetailMainList.data
+            this.chargeList = this.DSServicedetailMainList.data
         }
 
         let Serv = row.ServiceName

@@ -100,12 +100,12 @@ export class NewCompanyMasterComponent {
      }
  
      onClear(val: boolean) {
-         this.companyForm.reset();
+        //  this.companyForm.reset();
          this.dialogRef.close(val);
      }
  
      onClose() {
-         this.companyForm.reset();
+        //  this.companyForm.reset();
          this.dialogRef.close();
      }
  

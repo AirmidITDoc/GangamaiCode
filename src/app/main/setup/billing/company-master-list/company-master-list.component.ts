@@ -8,22 +8,23 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ServeToCompanyComponent } from './serve-to-company/serve-to-company.component';
 import { NewCompanyMasterComponent } from './new-company-master/new-company-master.component';
 import { fuseAnimations } from '@fuse/animations';
+import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
 
 @Component({
-  selector: 'app-company-master-list',
-  templateUrl: './company-master-list.component.html',
-  styleUrls: ['./company-master-list.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-company-master-list',
+    templateUrl: './company-master-list.component.html',
+    styleUrls: ['./company-master-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class CompanyMasterListComponent {
 
 
     ngAfterViewInit() {
-         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     companyName: any = "";
 
@@ -45,15 +46,15 @@ export class CompanyMasterListComponent {
         { heading: "Admin Charges", key: "adminCharges", sort: true, align: 'left', emptySign: 'NA', width: 110 },
         { heading: "Credit Days", key: "creditDays", sort: true, align: 'left', emptySign: 'NA', width: 110 },
 
-        
+
         { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width:70 },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 70 },
         {
-              heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-              template: this.actionButtonTemplate  // Assign ng-template to the column
-            }
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
     ]
 
     allfilters = [
@@ -76,7 +77,7 @@ export class CompanyMasterListComponent {
     ngOnInit(): void {
 
     }
-    
+
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -112,6 +113,31 @@ export class CompanyMasterListComponent {
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
 
+        });
+    }
+
+    CompservUpdate(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(UpdateServCodePrintComponent,
+            {
+
+                maxWidth: "95vw",
+                width: '100%',
+                maxHeight: "98vh",
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+
+        });
+    }
+    delCompany(obj) {
+        this._CompanyMasterService.deactivateTheStatus(obj.companyId).subscribe((response: any) => {
+            this.toastr.success(response.message);
+            this.grid.bindGridData();
         });
     }
 }
@@ -152,7 +178,7 @@ export class CompanyMaster {
     loginWebsitePassword: any;
     companyShortName: any;
     emailId: any;
-     TypeName: any;
+    TypeName: any;
     CompanyName: string;
     /**
    * Constructor
@@ -174,7 +200,7 @@ export class CompanyMaster {
             this.faxNo = CompanyMaster.FaxNo || "";
             this.traiffId = CompanyMaster.traiffId || 0;
             this.classId = CompanyMaster.classId || 0;
-            
+
             this.AddedBy = CompanyMaster.AddedBy || 0;
             this.isDeleted = CompanyMaster.IsDeleted || "false";
             this.UpdatedBy = CompanyMaster.UpdatedBy || 0;

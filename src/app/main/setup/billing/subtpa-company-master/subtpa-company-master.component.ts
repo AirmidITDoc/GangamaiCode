@@ -96,6 +96,7 @@ export class SubTpaCompanyMaster {
     compTypeId: number;
     companyId: any;
     companyName: string;
+    CompanyName: string;
     companyShortName: any;
     subCompanyId: any;
     address: string;
@@ -113,6 +114,7 @@ export class SubTpaCompanyMaster {
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
+    TypeName:any;
 
     /**
    * Constructor
@@ -127,6 +129,7 @@ export class CompanyMaster {
             this.companyId = CompanyMaster.companyId || 0;
             this.compTypeId = CompanyMaster.CompTypeId || 0;
             this.companyName = CompanyMaster.CompanyName || "";
+               this.CompanyName = CompanyMaster.CompanyName || "";
             this.companyShortName == CompanyMaster.CompanyName || "";
             this.address = CompanyMaster.Address || "";
             this.cityId = CompanyMaster.cityId || 0;
@@ -143,6 +146,7 @@ export class CompanyMaster {
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
+ this.TypeName = CompanyMaster.TypeName || "";
 
         }
     }

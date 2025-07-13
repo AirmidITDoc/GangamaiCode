@@ -206,7 +206,12 @@ export class CompanyMasterService {
         });
     }
 
-
+createcompwiseservForm(): FormGroup {
+        return this._formBuilder.group({
+            ServiceName: [""],
+            ClassId2: [""],
+        });
+    }
     createCompanysearchFormDemo(): FormGroup {
         return this._formBuilder.group({
             companyName:[""],
