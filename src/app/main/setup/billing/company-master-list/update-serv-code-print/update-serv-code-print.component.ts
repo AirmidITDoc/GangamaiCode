@@ -3,7 +3,7 @@ import { CompanyMasterService } from '../company-master.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Servicedetail } from '../../service-master/service-master.component';
-import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -16,9 +16,10 @@ import { CompanyMaster } from '../company-master-list.component';
 })
 export class UpdateServCodePrintComponent {
   compwiseserForm: FormGroup;
+  serviceForm: FormGroup;
   tariffId = 0
   classId = 0
-  serviceName: "%"
+  serviceName="%"
   compobj = new CompanyMaster({});
   CompanyId = 0
   autocompleteModetypeName: string = "Service";
@@ -26,9 +27,12 @@ export class UpdateServCodePrintComponent {
 
   DSComwiseServiceList = new MatTableDataSource<Servicedetail>();
   displayedColumns1: string[] = [
-    'Code',
+    'ServiceId',
     'ServiceName',
-    'Action'
+    'Company Code',
+    'PrintName',
+    'checkbox',
+    // 'Action'
   ];
 
   constructor(
@@ -45,28 +49,27 @@ export class UpdateServCodePrintComponent {
   ngOnInit(): void {
 
     this.compwiseserForm = this._CompanyMasterService.createcompwiseservForm();
-    this.getServicecompwiseList(event)
+    this.serviceForm=this._CompanyMasterService.createcompwiseservForm();
+   
     if (this.data) {
       this.compobj = this.data
       console.log(this.compobj.traiffId)
       this.CompanyId = this.compobj.companyId
       this.tariffId = this.compobj.traiffId
       // this.compwiseserForm.get("TariffId1").setValue(this.compobj.traiffId)
-      this.compwiseserForm.get("companyName").setValue(this.compobj.companyName)
+      // this.compwiseserForm.get("companyName").setValue(this.compobj.companyName)
     }
+     this.getServicecompwiseList()
   }
 
-  getServicecompwiseList(event) {
-
-    // let classId = this.compwiseserForm.get("ClassId2").value || 1
-    let serviceName = this.compwiseserForm.get("ServiceName").value || "%"
-    debugger
+  getServicecompwiseList() {
+   debugger
     var param =
     {
       "searchFields": [
         {
           "fieldName": "ServiceName",
-          "fieldValue": String(serviceName),
+          "fieldValue": String(this.serviceName),
           "opType": "Equals"
         },
         {
@@ -86,41 +89,69 @@ export class UpdateServCodePrintComponent {
 
   }
 
-  printserviceName=''
-    gettableServName(event) {
-        this.printserviceName = event.text
-        // this.selectdiscservicelist(event)
+  selectService(event) {
+    this.serviceName = event.text
+    this.getServicecompwiseList()
+  }
+
+  printserviceName = ''
+  gettableServName(event) {
+    this.printserviceName = event.text
+    // this.selectdiscservicelist(event)
+  }
+
+  createserviceDetails(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      classId: [item.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+  }
+
+  get serviceDetailsArray(): FormArray {
+    return this.serviceForm.get('serviceDetails') as FormArray;
+  }
+
+
+  onSubmit() {
+
+    if (!this.compwiseserForm.invalid) {
+
+      this.serviceDetailsArray.clear();
+      this.DSComwiseServiceList.data.forEach(item => {
+        console.log(item)
+        this.serviceDetailsArray.push(this.createserviceDetails(item));
+      });
+
+      console.log("Company Insert:-", this.compwiseserForm.value);
+
+      this._CompanyMasterService.updateservicecodeSave(this.compwiseserForm.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
     }
-
-    onSubmit() {
-
-        if (!this.compwiseserForm.invalid) {
-
-            console.log("Company Insert:-", this.compwiseserForm.value);
-
-            this._CompanyMasterService.companyMasterSave(this.compwiseserForm.value).subscribe((response) => {
-                this.toastr.success(response.message);
-                this.onClear(true);
-            }, (error) => {
-                this.toastr.error(error.message);
-            });
-        }
-        else {
-            this.toastr.warning('please check form is invalid', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+    else {
+      this.toastr.warning('please check form is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
+  }
 
-        onClear(val: boolean) {
-        this.compwiseserForm.reset();
-        this.dialogRef.close(val);
-    }
+  getChargesList(event) { }
 
-    onClose() {
-        this.compwiseserForm.reset();
-        this.dialogRef.close();
-    }
+  onClear(val: boolean) {
+    this.compwiseserForm.reset();
+    this.dialogRef.close(val);
+  }
+
+  onClose() {
+    this.compwiseserForm.reset();
+    this.dialogRef.close();
+  }
 
 }

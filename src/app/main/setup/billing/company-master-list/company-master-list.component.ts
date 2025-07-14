@@ -31,25 +31,25 @@ export class CompanyMasterListComponent {
     allcolumns = [
         { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Company Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "City Name", key: "city", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Mobile No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Mobile No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Phone No", key: "contactNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "EmailId", key: "emailId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Website", key: "website", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Pan No", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "Tan No", key: "tanno", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "GSTIN", key: "gstin", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "Admin Charges", key: "adminCharges", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "Credit Days", key: "creditDays", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "PAN No", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "TAN No", key: "tanno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "GSTIN", key: "gstin", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Admin Charges", key: "adminCharges", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Credit Days", key: "creditDays", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
 
-        { heading: "Tariff Name", key: "traiffId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Tariff Name", key: "traiffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 70 },
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -85,9 +85,9 @@ export class CompanyMasterListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
-                maxWidth: "100vw",
-                height: '95%',
-                width: '90%',
+                maxWidth: "98vw",
+                width: '100%',
+                maxHeight: "95vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -107,7 +107,7 @@ export class CompanyMasterListComponent {
 
                 maxWidth: "95vw",
                 width: '100%',
-                maxHeight: "98vh",
+                maxHeight: "90vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -126,7 +126,7 @@ export class CompanyMasterListComponent {
 
                 maxWidth: "95vw",
                 width: '100%',
-                maxHeight: "98vh",
+                maxHeight: "95vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -180,6 +180,7 @@ export class CompanyMaster {
     emailId: any;
     TypeName: any;
     CompanyName: string;
+    isSubCompany:any;
     /**
    * Constructor
    *
@@ -225,6 +226,9 @@ export class CompanyMaster {
 
             this.TypeName = CompanyMaster.TypeName || "";
             this.CompanyName = CompanyMaster.CompanyName || "";
+            this.isSubCompany = CompanyMaster.isSubCompany || 0;
+
+            
         }
     }
 }

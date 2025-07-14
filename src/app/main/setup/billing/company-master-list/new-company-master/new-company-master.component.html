@@ -267,25 +267,7 @@
 
                   </div>
 
-                  <!-- <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Credit Days" formControlName="creditDays"
-                                                [formGroup]="companyFormDemo" [maxLength]="10">
-                                            </airmid-textbox>
-                                        </div>
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="FAdministrative Charges %"
-                                                formControlName="adminCharges" [formGroup]="companyFormDemo">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Fax No" formControlName="faxNo"
-                                                [formGroup]="companyFormDemo">
-                                            </airmid-textbox>
-                                        </div>
-                                    </div> -->
-
+               
                 </mat-card-content>
               </mat-card>
             </form>
@@ -295,7 +277,7 @@
           <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
 
             <div fxLayout="row" style="padding-left: 10px;">
-              <app-airmid-slider label="Sub Company" formControlName="isSubCompany" [formGroup]="companyFormDemo">
+              <app-airmid-slider label="Sub Company" formControlName="isSubCompany" [formGroup]="companyFormDemo" [value]="registerObj?.isSubCompany">
               </app-airmid-slider>
 
             </div>

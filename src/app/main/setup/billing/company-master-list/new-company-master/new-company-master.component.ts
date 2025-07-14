@@ -46,10 +46,11 @@ export class NewCompanyMasterComponent {
          if ((this.data?.companyId ?? 0) > 0) {
  
              this.isActive = this.data.isActive
-             if (this.data.city)
+             debugger
+             if (this.data?.companyId)
               setTimeout(() => {
                  this._CompanyMasterService.getCompanyById(this.data.companyId).subscribe((response) => {
-                     this.registerObj = response;
+                    this.registerObj = response;
                      console.log(this.registerObj)
                });
              }, 500);

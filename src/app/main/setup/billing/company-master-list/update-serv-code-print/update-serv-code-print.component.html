@@ -1,111 +1,126 @@
 <div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Update Service Code Print Name</span>
-            </div>
-            <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                        matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
+  <!-- Modal Header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+          Update Service Code Print Name
+        </span>
+      </div>
+      <div class="modal-header-right">
+        <div class="close-icon">
+          <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
+      </div>
     </div>
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-              <div>
-                    <form [formGroup]="compwiseserForm">
+  </div>
 
-                      <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="compwiseserForm"
-                            (selectionChange)="getServicecompwiseList($event)"
-                          [mode]="autocompleteModetypeName">
-                          </airmid-dropdown>
-                        </div>
-                        <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="compwiseserForm"
-                            (selectionChange)="getServicecompwiseList($event)"
-                            [mode]="autocompleteModeclass2">
-                          </airmid-dropdown>
-                        </div> -->
-
-                      </div>
-                    </form>
-
-
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="98%">
-                        <div fusePerfectScrollbar
-                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                          dynamicTableHeight>
-
-                          <mat-table matSort [dataSource]="DSComwiseServiceList" class="airmid-table"
-                            [@animateStagger]="{ value: '50' }">
-
-                            <ng-container matColumnDef="Code">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.Code}}</mat-cell>
-                            </ng-container>
-
-                            <!-- <ng-container matColumnDef="ServiceName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Service Print Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
-                            </ng-container> -->
-
-
-                            <ng-container matColumnDef="ServiceName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Service Print
-                                Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.ServiceName" OnlyNumber
-                                    (keyup)="gettableServName(element, $event.value)"
-                                    (keypress)="keyPressCharater($event)" />
-                                </mat-form-field>
-                              </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="Action" stickyEnd>
-                              <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
-                              <mat-cell *matCellDef="let element" class="w-80">
-                                <button mat-icon-button color="warn"
-                                  (click)="onSaveEntry(element)"><mat-icon>edit</mat-icon></button>
-                              </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="loading">
-                              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent"
-                              *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
-                              [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                              [ngClass]="{ hide: DSComwiseServiceList != null }"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                              [ngClass]="{ hide: !(DSComwiseServiceList != null && DSComwiseServiceList.data.length == 0) }"></mat-footer-row>
-                          </mat-table>
-
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
+  <!-- Modal Body -->
+  <div class="modal-body">
+    <div class="modal-body-container">
+      <form [formGroup]="compwiseserForm">
+        <div fxLayout="row wrap" fxLayoutGap="12px grid" class="p-4">
+          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+            <airmid-dropdown
+              label="ServiceName"
+              formControlName="ServiceName"
+              [formGroup]="compwiseserForm"
+              (selectionChange)="selectService($event)"
+              [mode]="autocompleteModetypeName">
+            </airmid-dropdown>
+          </div>
         </div>
+      </form>
+
+      <!-- Table Section -->
+      <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+        <div class="table-right" fxFlex="100%">
+          <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+            dynamicTableHeight>
+
+            <mat-table matSort [dataSource]="DSComwiseServiceList" class="airmid-table" [@animateStagger]="{ value: '50' }">
+
+              <!-- Code Column -->
+              <ng-container matColumnDef="ServiceId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-180">Code</mat-header-cell>
+                <mat-cell *matCellDef="let element"  class="w-180">{{ element.ServiceId }}</mat-cell>
+              </ng-container>
+
+              <!-- Service Name Column -->
+              <ng-container matColumnDef="ServiceName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-350">Service Name</mat-header-cell>
+                <mat-cell *matCellDef="let element"  class="w-350">{{ element.ServiceName }}</mat-cell>
+              </ng-container>
+
+                <ng-container matColumnDef="Company Code" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">Company Code</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="w-280">
+                  <mat-form-field appearance="fill" style="width: 100%;">
+                    <input
+                      matInput
+                      [(ngModel)]="element.ServiceName"
+                      (keyup)="gettableServName(element, $event.target.value)"
+                      (keypress)="keyPressCharater($event)" />
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+
+              <!-- Editable Print Name Column -->
+              <ng-container matColumnDef="PrintName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">Service Print Name</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="w-350">
+                  <mat-form-field appearance="fill" style="width: 100%;">
+                    <input
+                      matInput
+                      [(ngModel)]="element.ServiceName"
+                      (keyup)="gettableServName(element, $event.target.value)"
+                      (keypress)="keyPressCharater($event)" />
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Checkbox Column -->
+              <ng-container matColumnDef="checkbox" sticky>
+                <mat-header-cell *matHeaderCellDef class="w-60">
+                  Exclude <mat-icon (click)="getChargesList()" style="cursor: pointer;">cached</mat-icon>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="w-60">
+                  <mat-checkbox (change)="tableElementChecked($event, element)"></mat-checkbox>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Action Column -->
+              <!-- <ng-container matColumnDef="Action" stickyEnd>
+                <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="w-80">
+                  <button mat-icon-button color="warn" (click)="onSaveEntry(element)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container> -->
+
+              <!-- No Data Message -->
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">No data found...</mat-footer-cell>
+              </ng-container>
+
+              <!-- Table Rows -->
+              <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true" class="accent"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns1" class="element" [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 50px;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: DSComwiseServiceList?.data?.length }"></mat-footer-row>
+
+            </mat-table>
+          </div>
+        </div>
+      </div>
     </div>
-     <div class="modal-footer">
+  </div>
+
+  <!-- Modal Footer -->
+  <div class="modal-footer">
     <div class="footer-navigation-container">
       <div class="modal-footer-buttons">
         <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>

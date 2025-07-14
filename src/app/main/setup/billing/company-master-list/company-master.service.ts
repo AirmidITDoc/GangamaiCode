@@ -255,7 +255,7 @@ createcompwiseservForm(): FormGroup {
     }
 
      public getsubtpaListRetrive(data) {
-        return this._httpClient.PostData("SubTpaCompany/List" ,data);
+        return this._httpClient.PostData("Common",data);
     }
 
    public serviceMasterInsert(Param: any) {
@@ -263,4 +263,11 @@ createcompwiseservForm(): FormGroup {
             return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
         }else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
+
+ public updateservicecodeSave(Param: any) {
+         if (Param.serviceId) {
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+        }else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+    }
+    
 }
