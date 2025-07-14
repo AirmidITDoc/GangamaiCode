@@ -38,6 +38,7 @@ import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from './tariff/tariff.component';
 import { MatTimepickerModule } from "mat-timepicker";
 import { MatChipsModule } from "@angular/material/chips";
+import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
 
 const routes: Routes = [
     {
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, TariffComponent, EditpackageComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent,ServiceMasterFormNewComponent, TariffComponent, EditpackageComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,

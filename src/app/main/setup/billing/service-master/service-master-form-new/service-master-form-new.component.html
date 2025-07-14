@@ -1,0 +1,142 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                        {{ serviceForm.controls.serviceId.value ? 'Modify Service Master' : 'NewService Master' }}
+                    </span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <mat-card>
+                            <mat-card-content class="p-4">
+                                <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px">
+                                    <input type="hidden" name="serviceId" formControlName="serviceId"
+                                        [ngModel]="ServiceId" />
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                        class="b-service-master gap-6" style="padding-top: 10px">
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Group Name" formControlName="groupId"
+                                                [formGroup]="serviceForm"
+                                                (selectionChange)="selectChangegroupName($event)"
+                                                [validations]="getValidationMessages().groupId"
+                                                [mode]="autocompleteModegroupName"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
+                                                [formGroup]="serviceForm"
+                                                (selectionChange)="selectChangesubGroupName($event)"
+                                                [mode]="autocompleteModesubGroupName"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Sponsor / Tariff Name" formControlName="tariffId"
+                                                [formGroup]="serviceForm" (selectionChange)="selectChangetariff($event)"
+                                                [validations]="getValidationMessages().tariffId"
+                                                [mode]="autocompleteModetariff"></airmid-dropdown>
+                                        </div>
+                                    </div>
+
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Service Name</mat-label>
+                                            <input name="ServiceName" formControlName="serviceName"
+                                                placeholder="ServiceName" matInput
+                                                (keydown)="onEnterServiceName($event)" #ServiceName />
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>ServiceShortDesc</mat-label>
+                                            <input name="Service Short Desc" formControlName="serviceShortDesc"
+                                                placeholder="ServiceShortDesc" matInput
+                                                (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc />
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>PrintOrder</mat-label>
+                                            <input name="PrintOrder" placeholder="Select PrintOrder"
+                                                formControlName="printOrder" matInput required OnlyNumber
+                                                (keypress)="keyPressCharater($event)" min="0" maxlength="5" />
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Effective Date</mat-label>
+                                            <input matInput [matDatepicker]="picker3"
+                                                placeholder="Choose an Effective Date" name="EffectiveDate"
+                                                formControlName="EffectiveDate" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </form>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+
+                        <div class="modal-card-container airmid-table-container"
+                            style="max-height: 400px; overflow-y: auto;">
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Service Name
+                                        </th>
+                                        <th *ngFor="let item of ColumnList">
+                                            {{item.className}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of ServiceList">
+                                        <td>{{item.serviceName}}</td>
+                                        <td *ngFor="let data of ColumnList">
+                                            {{ getClassValue(item, data.classId) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal footer  || savebtn-->
+        <div class="modal-footer">
+            <div class="footer-navigation-container" fxLayoutAlign="space-between">
+                <form [formGroup]="serviceForm">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="serviceForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                </form>
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button type="button" class="btn btn-primary" (click)="onSubmit()" #savebutton>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

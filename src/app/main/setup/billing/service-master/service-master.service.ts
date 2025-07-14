@@ -156,6 +156,11 @@ export class ServiceMasterService {
         return this._httpClient.PostData("Billing/ServiceClassdetaillList",param);
     }
 
+    
+    public getServicesNew(param) {
+        return this._httpClient.GetData("BillingService/GetServicesNew?TariffId="+param);
+    }
+
   
     populateForm(param) {
         ;
