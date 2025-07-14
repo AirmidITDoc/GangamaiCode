@@ -1,5 +1,5 @@
-<div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
+<div class="modal-wrapper grid-container fixed-modal-layout">
+    <div class="modal-header accent fixed-header">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Package Details</span>
@@ -15,46 +15,134 @@
         </div>
     </div>
 
-    <div class="content">
+    <div class="modal-content scrollable-content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div class="content-card">
+            <div class="modal-card-container">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-                    <mat-card style="padding: 5px;">
+
+                    <mat-card style="padding: 12px;">
                         <form [formGroup]="serviceForm">
-                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="ServiceName" formControlName="ServiceName"
+
+                            <div fxLayout="row wrap" fxLayoutGap="12px">
+                                <div fxFlex="49%" fxFlex.sm="50%" fxFlex.xs="100%">
+                                    <airmid-textbox label="Service Name" formControlName="ServiceName"
                                         [(ngModel)]="serviceName" [formGroup]="serviceForm" readonly [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="TariffName" formControlName="TariffName"
+
+                                <div fxFlex="49%" fxFlex.sm="50%" fxFlex.xs="100%">
+                                    <airmid-textbox label="Tariff Name" formControlName="TariffName"
                                         [(ngModel)]="TariffName" [formGroup]="serviceForm" readonly [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
                             </div>
 
-                            <div fxLayout="row" fxLayoutGap="5px">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-autocomplete label="Enter Package Service Name" [formGroup]="serviceForm"
-                                        formControlName="serviceId" placeholderText="Enter Package Service Name" fxFlex
-                                        ApiUrl="{{ApiURL}}" (selectionChange)="selectChangeService($event)"
-                                        TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
+                            <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-2">
+                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                    <airmid-textbox label="Total Days" formControlName="PackageTotalDays"
+                                        [formGroup]="serviceForm" [maxLength]="50"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                    </airmid-textbox>
                                 </div>
-                                <div>
-                                    <button (click)="onAddPackageService()" class="btn btn-primary btn-with-icon py-8"
-                                        style="margin-left: 10px;">
-                                        <span class="btn-icon">
-                                            <mat-icon>add</mat-icon>
-                                        </span>
-                                    </button>
+
+                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                    <airmid-textbox label="ICU Days" formControlName="PackageICUDays"
+                                        [formGroup]="serviceForm" [maxLength]="50"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                    <airmid-textbox label="Medicine Amount" formControlName="PackageMedicineAmount"
+                                        [formGroup]="serviceForm" [maxLength]="50"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                    <airmid-textbox label="Consumable Amount" formControlName="PackageConsumableAmount"
+                                        [formGroup]="serviceForm" [maxLength]="50"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-3" fxLayoutAlign="start center">
+
+                                <div fxFlex="100%" fxLayoutAlign="start center">
+                                    <mat-radio-group [formGroup]="serviceForm" formControlName="isPackageType"
+                                        fxLayout="row" fxLayoutGap="16px">
+                                        <mat-radio-button value="0">Service Wise</mat-radio-button>
+                                        <mat-radio-button value="1">Group Wise</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <!-- service Wise radio -->
+                                <div *ngIf="serviceForm.get('isPackageType')?.value == '0'" fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                    <div fxFlex="40%" fxFlex.sm="60%" fxFlex.xs="100%">
+                                        <airmid-autocomplete label="Enter Package Service Name"
+                                            [formGroup]="serviceForm" formControlName="serviceId"
+                                            placeholderText="Enter Package Service Name" [ApiUrl]="ApiURL"
+                                            (selectionChange)="selectChangeService($event)" TextField="formattedText"
+                                            ValueField="serviceId">
+                                        </airmid-autocomplete>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.sm="20%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Qty Limit" formControlName="qtyLimit"
+                                            [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.sm="20%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Amount" formControlName="amount" [(ngModel)]="price"
+                                            [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)" [readonly]="true">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div class="input-add-button">
+                                        <button class="btn btn-primary btn-with-icon"
+                                            (click)="onAddPackageService()">
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                            <span>Add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- groupwise radio -->
+                                 <div *ngIf="serviceForm.get('isPackageType')?.value == '1'" fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                    <div fxFlex="70%" fxFlex.sm="60%" fxFlex.xs="100%">
+                                        <airmid-dropdown label="Group Name" formControlName="groupId"
+                                            [formGroup]="serviceForm" (selectionChange)="selectChangegroupName($event)"
+                                            [mode]="autocompleteModegroupName">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.sm="20%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Amount" formControlName="amount"
+                                            [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div class="input-add-button">
+                                        <button class="btn btn-primary btn-with-icon"
+                                            (click)="onAddPackageGroup()">
+                                            <span class="btn-icon">
+                                                <mat-icon> add </mat-icon>
+                                            </span>
+                                            <span>Add</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </mat-card>
 
+                    <!-- servicewise table -->
                     <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
-                        style="height:250px !important;overflow: auto;">
+                        style="height:250px !important;overflow: auto;" *ngIf="serviceForm.get('isPackageType')?.value == '0'">
 
                         <ng-container matColumnDef="ServiceName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -74,12 +162,21 @@
                             </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="Qty">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                QtyLimt
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <span> {{contact.qtyLimit}}</span>
+                            </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="Price">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Price
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.Price || contact.price}}</span>
+                                <span> {{contact.price}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -117,7 +214,80 @@
                         </mat-footer-row>
                     </mat-table>
 
-                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                    <!-- groupwise table -->
+                      <mat-table #table1 matSort [dataSource]="dsPackagegroupDet" [@animateStagger]="{value:'50'}"
+                        style="height:250px !important;overflow: auto;" *ngIf="serviceForm.get('isPackageType')?.value == '1'">
+
+                        <ng-container matColumnDef="GroupName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                Group Name
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <span> {{contact.GroupName}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Price">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                Price
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <span> {{contact.price}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-icon-button (click)="deleteTableRowPackageGroup(row)" color="warn">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                <span>No Data Found</span>
+                            </mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsGroup; sticky: true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumnsGroup;"
+                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsPackagegroupDet!=null}">
+                        </mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{'hide':!(dsPackagegroupDet!=null && dsPackagegroupDet.data.length==0)}">
+                        </mat-footer-row>
+                    </mat-table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer fixed-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+          
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+
+            </div>
+        </div>
+    </div>
+
+    
+                    <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                         <div></div>
                         <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
@@ -125,11 +295,6 @@
                                 <span>Save</span>
                             </button>
                         </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
+                    </div> -->
 
 </div>

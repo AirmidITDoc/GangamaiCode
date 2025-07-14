@@ -14,13 +14,13 @@ import { TariffComponent } from "../tariff/tariff.component";
 
 @Component({
     selector: "app-service-master-form",
-    templateUrl: "./service-master-form.component.html",
-    styleUrls: ["./service-master-form.component.scss"],
+    templateUrl: "./service-master-form-new.component.html",
+    styleUrls: ["./service-master-form-new.component.scss"],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
 
-export class ServiceMasterFormComponent implements OnInit {
+export class ServiceMasterFormNewComponent implements OnInit {
 
     serviceForm: FormGroup;
     serviceFormDetails: FormGroup;
@@ -55,10 +55,10 @@ export class ServiceMasterFormComponent implements OnInit {
     constructor(public _serviceMasterService: ServiceMasterService,
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-           private _formBuilder: FormBuilder,
+        private _formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public _matDialog: MatDialog,
-     
+
         public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) { }
 
@@ -71,8 +71,17 @@ export class ServiceMasterFormComponent implements OnInit {
         'classRate',
         // 'action'
     ];
-
+    ServiceList: any[] = [];
+    ColumnList: any[] = [];
+    getClassValue(item: any, classId: number): number {
+        return item.columnValues.find(x => x.classId === classId)?.classValue ?? 0;
+    }
     ngOnInit(): void {
+        this._serviceMasterService.getServicesNew(1).subscribe((response) => {
+            debugger
+            this.ServiceList = response.data;
+            this.ColumnList = response.columns;
+        });
         this.serviceForm = this.createServicemasterForm();
         this.serviceForm.markAllAsTouched();
 
@@ -94,10 +103,10 @@ export class ServiceMasterFormComponent implements OnInit {
                 this.serviceForm.get('doctorId').setValue(this.registerObj.doctorId)
             }
             this.serviceForm.get('isDocEditable')?.valueChanges.subscribe((val: boolean) => {
-            if (!val) {
-                this.serviceForm.get('creditedtoDoctor')?.setValue(false);
-                this.serviceForm.get('doctorId')?.setValue('');
-            }
+                if (!val) {
+                    this.serviceForm.get('creditedtoDoctor')?.setValue(false);
+                    this.serviceForm.get('doctorId')?.setValue('');
+                }
             });
 
             if (this.registerObj.isEmergency) this.showEmg = true;
@@ -114,12 +123,12 @@ export class ServiceMasterFormComponent implements OnInit {
 
             if (this.registerObj.isRadiology) this.showRadOut = true;
             this.serviceForm.get('isRadiology')?.valueChanges.subscribe((val: boolean) => {
-                if (!val){ this.serviceForm.get('isRadOutSource')?.setValue(false);}
+                if (!val) { this.serviceForm.get('isRadOutSource')?.setValue(false); }
             });
 
             if (this.registerObj.isPathology) this.showPathOut = true;
             this.serviceForm.get('isPathology')?.valueChanges.subscribe((val: boolean) => {
-                if (!val){this.serviceForm.get('isPathOutSource')?.setValue(false);}
+                if (!val) { this.serviceForm.get('isPathOutSource')?.setValue(false); }
             });
 
         }
@@ -160,8 +169,8 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('isDocEditable')?.valueChanges.subscribe(val => {
             this.iscreditedtoDoctor = val;
         });
-        this.serviceForm.get('opipType')?.valueChanges.subscribe(val=>{
-            this.opiptype=val
+        this.serviceForm.get('opipType')?.valueChanges.subscribe(val => {
+            this.opiptype = val
         })
     }
 
@@ -181,7 +190,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isRadiology: [0],
             isRadOutSource: [false],
             isDiscount: [false],
-            isProcedure:[false],
+            isProcedure: [false],
             isPackage: [0],
             subGroupId: [0],
             doctorId: 0,
@@ -193,8 +202,8 @@ export class ServiceMasterFormComponent implements OnInit {
             printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive: true,
             isDocEditable: false,
-            isServiceTaxApplicable:false,
-            isApplicableFor:['2', [Validators.required]],
+            isServiceTaxApplicable: false,
+            isApplicableFor: ['2', [Validators.required]],
             packageTotalDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageIcudays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -204,7 +213,7 @@ export class ServiceMasterFormComponent implements OnInit {
             // extra field which we not insert
             EffectiveDate: [""],
             tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            opipType:[true, [Validators.required]],
+            opipType: [true, [Validators.required]],
         });
     }
     createserviceDetails(item: any = {}): FormGroup {
@@ -267,7 +276,7 @@ export class ServiceMasterFormComponent implements OnInit {
     updateEmergencyValidators() {
         const now = new Date();
         const defaultTime = now.toTimeString().slice(0, 5);
-         if (this.showEmg) {
+        if (this.showEmg) {
             this.serviceForm.get('emgAmt')?.setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('emgPer')?.setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('emgStartTime')?.setValidators([Validators.required, Validators.min(0)]);
@@ -294,14 +303,14 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onSubmit() {
-         this.updateEmergencyValidators();
+        this.updateEmergencyValidators();
         if (!this.serviceForm.invalid) {
-        if (this.serviceForm.get('opipType').value == false) {
-            this.toastr.warning('IsApplicableFor is required', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+            if (this.serviceForm.get('opipType').value == false) {
+                this.toastr.warning('IsApplicableFor is required', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
 
             Swal.fire({
                 title: 'Confirm Action',
@@ -325,7 +334,7 @@ export class ServiceMasterFormComponent implements OnInit {
                             data: { context: 'new' }
                         });
                     dialogRef.afterClosed().subscribe(result => {
-                        
+
                     });
 
                 } else if (result.isDenied) {
@@ -436,16 +445,16 @@ export class ServiceMasterFormComponent implements OnInit {
 
     // }
 
-      tableElementChecked(event, element) {
-    // if (event.checked) {
-    //   this.interimArray.push(element);
-    // } else if (this.interimArray.length > 0) {
-    //   let index = this.interimArray.indexOf(element);
-    //   if (index !== -1) {
-    //     this.interimArray.splice(index, 1);
-    //   }
-    // }
-  }
+    tableElementChecked(event, element) {
+        // if (event.checked) {
+        //   this.interimArray.push(element);
+        // } else if (this.interimArray.length > 0) {
+        //   let index = this.interimArray.indexOf(element);
+        //   if (index !== -1) {
+        //     this.interimArray.splice(index, 1);
+        //   }
+        // }
+    }
 
 
     onChangeTime(event: any): void {

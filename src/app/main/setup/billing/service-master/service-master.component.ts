@@ -9,6 +9,7 @@ import { EditpackageComponent } from "./editpackage/editpackage.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from "./tariff/tariff.component";
+import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
 
 
 @Component({
@@ -171,6 +172,23 @@ export class ServiceMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
+    onNewNew(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const dialogRef = this._matDialog.open(ServiceMasterFormNewComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '70%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            console.log('The dialog was closed - Action', result);
+        });
+    }
 
     onTariff(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -202,7 +220,12 @@ export class ServiceMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(EditpackageComponent,
             {
                 // maxWidth: "90vw",
-                maxHeight: '70vh',
+                // maxHeight: '70vh',
+                // width: '70%',
+                // data: row
+                 maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
                 width: '70%',
                 data: row
             });

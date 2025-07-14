@@ -246,6 +246,19 @@
                     </button>
                   </div>
                 </div>
+
+                <!-- <div  fxLayout="row" style="padding-top: 15px;">
+                <button class="btn" matTooltip="Add Auto Service" (click)="getChargesList()">
+                 <mat-icon>control_point</mat-icon> Auto Service
+                </button>&nbsp;
+                   <button class="btn"  matTooltip="Change Tariff Name" (click)="ChangeTariffname()">
+                 Tariff <mat-icon>edit</mat-icon>
+                </button>&nbsp;
+                   <button class="btn" matTooltip="Change Class Name" (click)="ChangeClassname()" style="width: 100px;">
+                  Class<mat-icon >edit</mat-icon>
+                </button> 
+                </div> -->
+               
               </form>
             </div>
           </mat-card>
@@ -476,9 +489,20 @@
                       <span class="patient-col-value">{{ PharmacyAmont | currency : 'INR' }}</span>
                     </div> 
 
+                    <div fxLayout="row" fxLayoutGap="4px">
                     <button mat-icon-button (click)="openServiceTable()" style="padding: 0px;">
                       <mat-icon>notifications_none</mat-icon>
                     </button>
+                      <button mat-icon-button (click)="ChangeTariffname()" style="padding: 0px;" matTooltip="Change Class" >
+                      <img width="12px" height="8px" src="assets/images/logos/class.png">
+                    </button>
+                      <button mat-icon-button (click)="ChangeClassname()" style="padding: 0px;" matTooltip="Change Tariff" >
+                       <img width="12px" height="8px" src="assets/images/logos/tariff.png">
+                    </button>
+                      <button mat-icon-button (click)="getChargesList()" style="padding: 0px;" matTooltip="Auto Service"  >
+                       <img width="12px" height="8px" src="assets/images/logos/service.png">
+                    </button>
+                    </div>
                   
                 </div> 
               </mat-card>
