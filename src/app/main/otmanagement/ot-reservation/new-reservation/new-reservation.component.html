@@ -1,274 +1,272 @@
-
-<div class="content-card" style="width:100%;height:100%">
-    <div class="dialog-content-wrapper">
-        <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="space-between center " style="height: 40px;width: 100%;">
-
-            <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="space-between center " style="width: 100%;">
-                <!-- <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-                </mat-icon> -->
-
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                    style="font-size: 20px;width: 70%; font-weight: 400;">
-                    New Reservation 
-                </span>
-
-                <div fxLayout="column" fxLayout.gt-xs="row">
-                    <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                        style="border-color: red;"></app-common-date>
-                    <span class="material-icons" style="cursor: pointer; margin-top: 18px; color: #fff;"
-                        (click)="onClose()">
-                        close
-                    </span>
-                </div>
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Booking Request</span>
             </div>
-            <button class="back-btn" id="auto_trigger" (click)="setDropdownObjs1()" style="border-radius: 16px;display:none;">
-                Show
-             </button>
-        </div>
-
-<br/>
-        <div>
-            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-                <!-- <form [formGroup]="myRefundBillForm" style="width: 100%;"> -->
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row" style="background-color: white; padding: 5px 5px 5px 5px;">
-                        <!-- ================================ LABEL HEADER  -->
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                                <h3 style="font-weight: bold; font-size: 23px; margin: 0 0 0px;">Patient Information
-                                </h3>
-                            </div>
-                            <br/>
-                            <form [formGroup]="myForm">
-                                <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutAlign="space-between"
-                                    style="align-items: baseline;">
-                                    <div>
-                                    <mat-form-field appearance="outline"
-                                        style="width:40%;margin-left:20px; margin-right: 400px;"
-                                        disabled="isRegSearchDisabled">
-                                        <input type="text" name="RegID" formControlName="RegID"
-                                            placeholder="RegNo / First Name / Last Name / Mobile No" matInput
-                                            [matAutocomplete]="auto1" (input)="getSearchList()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="myForm.get('RegID').setValue(''); isRegIdSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
-                                            <mat-option *ngFor="let option of PatientListfilteredOptions"
-                                                [value]="option">
-                                                {{option.FirstName}} {{option.MiddleName}} {{option.LastName}} |
-                                                {{option.RegNo}} |
-                                                {{option.MobileNo}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                        <mat-error *ngIf="myForm.get('RegID').hasError('required')">
-                                            Required field cannot be left blank
-                                        </mat-error>
-                                    </mat-form-field>
-                                     </div>
-
-                                    <div>
-
-                                        <span style="margin-left: 30px;font-size: large;color: rgb(4, 32, 122);">Patient
-                                            Name :{{PatientName}} <span style="margin-left: 20px;">RegId
-                                                :{{RegId}}</span><span style="margin-left: 20px;">Admission Id
-                                                :{{vAdmissionID}}</span>
-                                            <span style="margin-left: 20px;">Company Name :{{RegId}}</span>
-                                            <span style="margin-left: 20px;">Tariif :{{RegId}}</span>
-                                        </span>
-
-                                    </div>
-
-                                   
-                                </div>
-                            </form>
-                        </mat-card>
-                        <!-- ================================ LABEL HEADER  -->
+            <div class="modal-header-right">
+                <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </div>
-
-                </div>
-                <!-- </form> -->
             </div>
         </div>
-
-
     </div>
 
-    
-    <div style="padding:5px; height: 100%;" fxLayoutGap="5px">
-        <div >
-           
-            <br>
+       <div class="modal-body" fusePerfectScrollbar>
+         <div class="modal-body-container">
+          <div fxLayout="column" class="gap-12"></div>
+           <form  [formGroup]="requestForm">
+               <div class="modal-card-container">
 
-
-            <form [formGroup]="_OtManagementService.otreservationFormGroup" style="padding:20px;">
-
-                <ng-template matStepLabel>Personal</ng-template>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;margin-bottom: 10px;">
-                 
-                    <ejs-datetimepicker #ejDateTimePicker formControlName="OPDate"
-                    placeholder="Select OPDate" name="datetimepicker" floatLabelType='Auto'
-                    style="width:25%;height:60px;margin-bottom:30px ;" [(ngModel)]="Today">
-                     </ejs-datetimepicker>
-
-                </div>
-
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-
-
-                    <mat-form-field appearance="outline"  style="width:60% ;">
-                        <mat-label>Surgery Name </mat-label>
-                        <mat-select formControlName="SurgeryId" required>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of SurgeryList" [value]="m">
-                                {{m.SurgeryName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                 
-
-                    <mat-form-field appearance="outline" style="width:10% ;">
-                        <mat-label>Duration (D)</mat-label>
-                        <input name="Duration" formControlName="Duration" placeholder="Duration  (D)" matInput
-                            type="number" min="0">
-                        <!-- [ngModel]="registerObj.Duration " (ngModelChange)="registerObj.Duration  = $event"
-                            
-                        <!-- <mat-error *ngIf="personalFormGroup.get('AgeDay').invalid && personalFormGroup.get('AgeDay').touched">
-        Please enter Age Day </mat-error> -->
-                    </mat-form-field>
-
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                style="margin-left:20px;margin-right:20px ;">
-                  
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Surgen1 Name</mat-label>
-                        <mat-select formControlName="SurgeonId" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctorFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctor | async" [value]="element">
-                                {{element.Doctorname }} <b>|</b> {{element.DepartmentName }} <b>|</b>
-                                {{element.DoctorId }}
-                            </mat-option>
-
-                        </mat-select>
-
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Surgen2 Name</mat-label>
-                        <mat-select formControlName="SurgeonId1" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="doctoroneFilterCtrl"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredDoctorone | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-
-                    </mat-form-field>
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-                    
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthestishDoctor Name</mat-label>
-                        <mat-select formControlName="AnestheticsDr" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl1"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredAnesthDoctor1 | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>OTTableId </mat-label>
-                        <mat-select formControlName="OTTableId" required>
-                            <mat-option></mat-option>
-                            <mat-option *ngFor="let m of OTtableList" [value]="m">
-                                {{m.OTTableName}}
-                            </mat-option>
-                        </mat-select>
-                        <!-- <mat-error
-        *ngIf="personalFormGroup.get('GenderId').invalid && personalFormGroup.get('GenderId').touched">
-        <span *ngIf="personalFormGroup.get('GenderId').hasError('required')">
-          Gender is required</span>
-      </mat-error> -->
-                    </mat-form-field>
-
-
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;margin-right:20px ;">
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthestishDoctor Name1</mat-label>
-                        <mat-select formControlName="AnestheticsDr1" placeholder="Bank" #singleSelect>
-                            <mat-option>
-                                <ngx-mat-select-search [formControl]="AnesthDoctFilterCtrl2"
-                                    [placeholderLabel]="'Search'" [noEntriesFoundLabel]="'No matching found'">
-                                </ngx-mat-select-search>
-                            </mat-option>
-                            <mat-option *ngFor="let element of filteredAnesthDoctor2 | async" [value]="element">
-                                {{element.DoctorName}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>AnesthType</mat-label>
-                        <input name="AnesthType" formControlName="AnesthType" placeholder="AnesthType" matInput>
-                      </mat-form-field>
-                </div>
-
-                <div  fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" style="margin-left:20px;">
-
-                    <mat-form-field appearance="outline" class="mr-sm-12" style="width:100%;">
-                        <textarea name="Instruction" matInput rows="4" cols="5" placeholder="Enter Instruction"
-                            formControlName="Instruction">
-                    </textarea>
-                    </mat-form-field>
-
-                </div>
-
-                <br/>
-               
-                <div class="footer-navigation-container">
-           
-                    <div class="modal-footer-buttons">
                         
-                        <button class="btn btn-danger-outline" (click)="closeDialog()">Cancel</button>
-                        <button class="btn btn-primary" (click)="onSubmit()" [disabled]="personalFormGroup.invalid">Save</button>
-                        <button class="btn btn-primary" (click)="Otnote()" [disabled]="personalFormGroup.invalid">OTNote</button>
-                        <button class="btn btn-primary" (click)="OPreOPrativenote()" >Pre & Post OPrative Note</button>
+                      
+                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
+                             <!-- <div class="radio-container">
+                                        <mat-radio-group aria-label="Select an option" formControlName="regRadio"
+                                            name="regRadio" (change)="onChangeReg($event)">
+                                            <mat-radio-button value="registration">OP </mat-radio-button>
+                                            <mat-radio-button value="registrered">IP</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div> -->
+                                     <div class="radio-container">
+                                    <mat-radio-group aria-label="Select an option" formControlName="requestForm"
+                                        name="regRadio" (change)="onChangeReg($event)"
+                                        (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
+                                        <mat-radio-button value="OP">OP</mat-radio-button>
+                                        <mat-radio-button value="IP">IP</mat-radio-button>
+                                    </mat-radio-group>
+
+                                </div>
+                             <div class="input-container gap-8" fxFlex>
+
+                                <airmid-autocomplete lbl="RegId" [formGroup]="requestForm" formControlName="RegID"
+                                    placeholderText="Op-RegNo/First Name/Last Name/Mobile No" label="Search Op-RegNo / First Name / Last Name / Mobile No"
+                                    ApiUrl="Admission/search-patient?Keyword="
+                                    (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                    TextField="formattedText">
+                                </airmid-autocomplete>
+                               
+                            </div>
+                            
+                                <div class="input-container gap-8" fxFlex>
+
+                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'OP'"
+                                        [formGroup]="requestForm" formControlName="RegID"
+                                        placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="VisitDetail/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete> -->
+
+                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'IP'"
+                                        [formGroup]="requestForm" formControlName="RegID"
+                                        placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="Admission/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                        TextField="formattedText">
+                                    </airmid-autocomplete> -->
+                                </div>
+                        </div>
+                       
+                      
                     </div>
-                </div>
-            </form>
+                    <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                        <div class="patient-info-sales my-8">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                fxLayoutAlign="space-between center" class="patient-info">
+                                                <div class="patient-sub">
+                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                        fxLayoutAlign="space-between">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">UHID No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vRegNo}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">OPD No</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vOPDNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{ vPatientName
+                                                                    }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                             <div class="patient-col">
+                                                                  <span class="patient-col-key">Age 
+                                                                 </span>
+                                                                  <span>:</span>
+                                                                 <span
+                                                                    class="patient-col-value">{{vAge}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">Department</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDepartment}}</span>
+                                                            </div>
+                                                                  <div class="patient-col">
+                                                                <span class="patient-col-key">Mobile No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vMobNo}}</span>
+                                                            </div>
+                                                        </div>
+                                                         <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vDoctorName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">terrif</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vTariffName}}</span>
+                                                            </div>
+                                                             <div class="patient-col">
+                                                                <span class="patient-col-key">Company Name</span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{vCompanyName}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+ <div  class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
+</span>
+            </div>
+           
         </div>
     </div>
+ </div>
+        <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+           
+                <input type="hidden" name="cityId" formControlName="cityId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
+                       <airmid-dropdown 
+                            label="Surgery Name" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                       <airmid-dropdown 
+                            label="Surgery Name 1" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                        <airmid-dropdown 
+                            label="Surgery Name 2" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                        <airmid-dropdown 
+                            label="Anathesia doctor 1" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                        <airmid-dropdown 
+                            label="Anathesia doctor 2" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                        <airmid-dropdown 
+                            label="OT Table" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
+                        <airmid-dropdown 
+                            label="Anesth Type" 
+                            formControlName="requestForm" 
+                            [formGroup]="requestForm"
+                            [value]="data?.stateId" 
+                            [validations]="getValidationMessages(). countryName"
+                            [mode]="autocompleteModestatus">
+                        </airmid-dropdown>
+                    </div>
+                </div>
+ <airmid-textbox label="Enter Instruction" formControlName="Instruction" 
+                                    [formGroup]="requestForm" [(ngModel)]="vInstruction">
+                                </airmid-textbox>
+                
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                          <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
+                            <span>surgery Type:</span>
+                            <mat-radio-button value="Normal">Normal</mat-radio-button>
+                            <mat-radio-button value="Emergency">Emergency</mat-radio-button>
+                          </mat-radio-group>
+                        </div> -->
+                <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+            </div>
+        </div>
+    </div>
+            </div>
+         </div>
 
+     </form>
+
+         </div>
+        </div>
+     </div>
+    

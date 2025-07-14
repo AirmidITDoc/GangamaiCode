@@ -24,7 +24,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { CommonModule, DatePipe } from "@angular/common";
-import { OTManagementServiceService } from "../ot-management-service.service";
+
 import { NewRequestComponent } from "./new-request/new-request.component";
 import { OTRequestComponent } from "./ot-request.component";
 import { OtRequestService } from "./ot-request.service";

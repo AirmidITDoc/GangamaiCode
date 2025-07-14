@@ -1,17 +1,15 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { ReplaySubject, Subject } from 'rxjs';
-import { OTManagementServiceService } from '../ot-management-service.service';
-import { NewReservationComponent } from './new-reservation/new-reservation.component';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ToastrService } from "ngx-toastr";
+
+import { FormGroup } from "@angular/forms";
+import { NewReservationComponent } from "./new-reservation/new-reservation.component";
+import { OtReservationService } from "./ot-reservation.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-ot-reservation',
@@ -21,333 +19,146 @@ import { NewReservationComponent } from './new-reservation/new-reservation.compo
   animations: fuseAnimations
 })
 export class OTReservationComponent implements OnInit {
-
-  personalFormGroup: FormGroup;
-  searchFormGroup: FormGroup;
-  registerObj = new OTReservationDetail({});
-  options = [];
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  selectedHName: any;
-  selectedPrefixId: any;
-  buttonColor: any;
-  isCompanySelected: boolean = false;
-  public now: Date = new Date();
-  isLoading: string = '';
-  screenFromString = 'admission-form';
-  submitted = false;
-  sIsLoading: string = '';
-  minDate: Date;
-  hasSelectedContacts: boolean;
-  AnesthType: any = ''
-  D_data1: any;
-  dataArray = {};
-
-  displayedColumns = [
-
-    'RegNo',
-    'PatientName',
-    'OPDate',
-    // 'OPTime',
-    'Duration',
-    // 'OTTableID',
-    'OTTableName',
-    // 'SurgeonId',
-    'SurgeonName',
-    'AnathesDrName',
-    'AnathesDrName1',
-    'Surgeryname',
-    'AnesthType',
-    'UnBooking',
-    // 'IsAddedBy',
-    'AddedBy',
-    'TranDate',
-    'instruction',
-    'action'
-
-  ];
-  dataSource = new MatTableDataSource<OTReservationDetail>();
-  isChecked = true;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+ myFilterform: FormGroup
+   msg: any;
+      RequestName: any = "";
+      
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    mobileno: any = "%"
+  
+  //   VBillcount = 0;
+  // VOPtoIPcount = 0;
+  // vIsDischarg = 0;
+  // VAdmissioncount = 0;
+  //  VNewcount = 0;
+      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  
+       allcolumns = [
+        { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
+        { heading: "OPDate&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Surgeon Name1", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Surgeon Name2", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "AnathesDrName1", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "AnathesDrName2", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Surgery name", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "OTTableName", key: "ottable", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "AnesthType", key: "AnesthType", sort: true, align: 'left', emptySign: 'NA', width: 130},
+        { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
 
-  constructor(private _fuseSidebarService: FuseSidebarService,
-    public _OtManagementService: OTManagementServiceService,
-    public formBuilder: UntypedFormBuilder,
-
-    public _matDialog: MatDialog,
-    private accountService: AuthenticationService,
-    // public dialogRef: MatDialogRef<OTReservationComponent>,
-    private advanceDataStored: AdvanceDataStored,
-    public datePipe: DatePipe,
-    ) {
-    // dialogRef.disableClose = true;
-  }
-
-
-  doctorNameCmbList: any = [];
-
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  //department filter
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
-
-
-  ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
-
-    this.minDate = new Date();
-
-
-    this.searchFormGroup = this.createSearchForm();
-    ;
-    this.minDate = new Date();
-    var D_data = {
-
-      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
-
-    }
-    console.log(D_data);
-    this.D_data1 = D_data;
-    this._OtManagementService.getOTReservationlist(D_data).subscribe(reg => {
-      this.dataArray = reg as OTReservationDetail[];
-      this.dataSource.data = reg as OTReservationDetail[];
-      console.log(this.dataSource.data);
-      console.log(this.dataArray);
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-
-
-    this.getOtreservationList();
-  }
-
-
-  get f() { return this.personalFormGroup.controls; }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-
-  createSearchForm() {
-    return this.formBuilder.group({
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-      OTTableID: [''],
-
-    });
-  }
-
-
-  getOtreservationList() {
-
-    
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "ToDate": this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
-    }
-    console.log(m_data);
-    this._OtManagementService.getOTReservationlist(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as OTReservationDetail[];
-      console.log(this.dataSource.data);
-      //  this.dataSource.sort = this.sort;
-      //  this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-      //  this.click = false;
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-
-
-  addNewReservationg() {
-
-    // ;
-
-    console.log(this.dataSource.data['OTTableID'])
-    //  this.advanceDataStored.storage = new OTReservationDetail(m_data);
-
-    const dialogRef = this._matDialog.open(NewReservationComponent,
-      {
-        maxWidth: "80%",
-        height: '95%',
-        width: '100%',
-
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-        this.dataSource.data = Visit as OTReservationDetail[];
-        console.log(this.dataSource.data);
-        this.sIsLoading = '';
-        //  this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    });
-    //  if(row) this.dialogRef.close(m_data);
-  }
-
-  onEdit(contact) {
-
-
-    if (contact.AnesthType)
-      this.AnesthType = contact.AnesthType.trim();
-
-    let PatInforObj = {};
-    PatInforObj['OTBookingID'] = contact.OTBookingID,
-
-      PatInforObj['PatientName'] = contact.PatientName,
-      PatInforObj['OTTableName'] = contact.OTTableName,
-
-      PatInforObj['OTTableID'] = contact.OTTableID,
-      PatInforObj['RegNo'] = contact.RegNo,
-      PatInforObj['SurgeonId'] = contact.SurgeonId,
-      PatInforObj['SurgeonId1'] = contact.SurgeonId1,
-      PatInforObj['SurgeonName'] = contact.SurgeonName,
-      PatInforObj['Surgeryname'] = 'Mild one',//contact.Surgeryname,
-
-      PatInforObj['AnathesDrName'] = contact.AnathesDrName,
-      PatInforObj['AnathesDrName1'] = contact.AnathesDrName1,
-      PatInforObj['AnesthType'] = contact.AnesthType,
-      PatInforObj['AnestheticsDr'] = contact.AnestheticsDr,
-      PatInforObj['AnestheticsDr1'] = contact.AnestheticsDr1,
-      PatInforObj['Duration'] = contact.Duration,
-      PatInforObj['OPDate'] = contact.OPDate,
-      PatInforObj['OPTime'] = contact.OPTime,
-      PatInforObj['OP_IP_ID'] = contact.OP_IP_ID
-
-    PatInforObj['TranDate'] = contact.TranDate,
-      PatInforObj['UnBooking'] = contact.UnBooking,
-      PatInforObj['Instruction'] = contact.instruction,
-      PatInforObj['AddedBy'] = contact.AddedBy,
-
-      console.log(PatInforObj);
-
-
-    this._OtManagementService.populateFormpersonal(PatInforObj);
-
-    this.advanceDataStored.storage = new OTReservationDetail(PatInforObj);
-
-    const dialogRef = this._matDialog.open(NewReservationComponent,
-      {
-        maxWidth: "70%",
-        height: '80%',
-        width: '100%',
-        data: {
-          PatObj: PatInforObj
+        {
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+           // template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this._OtManagementService.getOTReservationlist(this.D_data1).subscribe(Visit => {
-        this.dataSource.data = Visit as OTReservationDetail[];
-        console.log(this.dataSource.data);
-        this.sIsLoading = '';
-        //  this.click = false;
-      },
-        error => {
-          this.sIsLoading = '';
-        });
-    });
-    // if (contact) this.dialogRef.close(PatInforObj);
-  }
 
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  onClear() {
-    // this.personalFormGroup.reset();
-    // this.dialogRef.close();
-  }
-  onClose() {
-    // this.personalFormGroup.reset();
-    // this.dialogRef.close();
-  }
-  changec() {
-
-    this.buttonColor = 'red';
-    // this.buttonColor: ThemePalette = 'primary';
-  }
-}
-
-
-export class OTReservationDetail {
-  OTBookingID: any;
-  OP_IP_ID: any;
-  RegNo: number;
-  PatientName: string;
-
-  OPDate: Date;
-  OPTime: Date;
-  Duration: number;
-  OTTableID: Number;
-  OTTableName: any;
-  SurgeonId: number;
-  SurgeonId1: number;
-  AdmissionID: any;
-  SurgeonName: any;
-  AnestheticsDr: any;
-  AnestheticsDr1: any;
-  Surgeryname: any;
-  AnesthType: any;
-  UnBooking: any;
-
-  IsAddedBy: any;
-  AddedBy: any;
-  TranDate: Date;
-  instruction: any;
-
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(OTReservationDetail) {
-    {
-      this.OTBookingID = OTReservationDetail.OTBookingID || '';
-      this.OP_IP_ID = OTReservationDetail.OP_IP_ID || '';
-      this.RegNo = OTReservationDetail.RegNo || '';
-      this.PatientName = OTReservationDetail.PatientName || '';
-      this.AdmissionID = OTReservationDetail.AdmissionID || 0;
-      this.OPDate = OTReservationDetail.OPDate || '';
-      this.OPTime = OTReservationDetail.OPTime || '';
-      this.Duration = OTReservationDetail.Duration || '';
-      this.OTTableID = OTReservationDetail.OTTableID || '';
-      this.OTTableName = OTReservationDetail.OTTableName || '';
-      this.SurgeonId = OTReservationDetail.SurgeonId || '';
-      this.SurgeonId1 = OTReservationDetail.SurgeonId1 || '';
-      this.SurgeonName = OTReservationDetail.SurgeonName || '';
-      this.AnestheticsDr = OTReservationDetail.AnestheticsDr || '';
-
-      this.AnestheticsDr1 = OTReservationDetail.AnestheticsDr1 || '';
-      this.Surgeryname = OTReservationDetail.Surgeryname || '';
-      this.AnesthType = OTReservationDetail.AnesthType || '';
-      this.UnBooking = OTReservationDetail.UnBooking || '';
-      this.IsAddedBy = OTReservationDetail.IsAddedBy || '';
-      this.AddedBy = OTReservationDetail.AddedBy || '';
-      this.TranDate = OTReservationDetail.TranDate || '';
-      this.instruction = OTReservationDetail.instruction || '';
-
+        // {
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.onEdit(data);
+        //                 this.grid.bindGridData();
+        //             }},]
+        // }
+    ];
+  
+      allFilters = [
+          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+          //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
+      ]
+      gridConfig: gridModel = {
+          apiUrl: "OT/OTBookinglist",
+          columnsList: this.allcolumns,
+          sortField: "OTBookingID",
+          sortOrder: 0,
+          filters: this.allFilters
+      }
+      autocompleteMode: string = "CityMaster";
+  
+      constructor(
+          public _OtReservationService: OtReservationService,
+          public toastr: ToastrService, public _matDialog: MatDialog,
+          public datePipe: DatePipe
+      ) { }
+  
+      ngOnInit(): void { }
+  
+      onChangeStartDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
-  }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+  onNewotrequest(row: any = null) {
+          const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+          buttonElement.blur(); // Remove focus from the button
+          let that = this;
+          const dialogRef = this._matDialog.open(NewReservationComponent,
+              {
+                  maxWidth: "90vw",
+                  maxHeight: '90%',
+                  width: '90%',
+  
+              });
+          dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                  this.grid.bindGridData();
+              }
+          });
+      }
+  
+     
+       onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.getfilterdata();
+    }
+     getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "OutPatient/RegistrationList",
+            columnsList: this.allcolumns,
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+   Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterform.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterform.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myFilterform.get('RegNo').setValue("")
+        // if (event == 'MobileNo')
+        //     this.myFilterform.get('MobileNo').setValue("")
+
+        this.onChangeFirst();
+    }
+      selectChange(obj: any) {
+          console.log(obj);
+      }
 }
