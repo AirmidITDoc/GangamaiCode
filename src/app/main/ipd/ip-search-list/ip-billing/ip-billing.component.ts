@@ -226,7 +226,7 @@ export class IPBillingComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: UntypedFormBuilder) { 
   }
-
+checkdata:any=0;
   ngOnInit(): void {
     this.createserviceForm();
     this.createBillForm();
@@ -235,7 +235,7 @@ export class IPBillingComponent implements OnInit {
     this.IPBillMyForm=this.CreateIPBillForm();
     this.draftSaveform=this.createDraftSaveForm(); 
     this.IpbillFooterform.markAllAsTouched();
-
+debugger
     if (this.data) {
       this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
@@ -246,6 +246,7 @@ export class IPBillingComponent implements OnInit {
       this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
        this.draftSaveform=this.createDraftSaveForm();
        this.IPBillMyForm=this.CreateIPBillForm();
+       this.checkdata = 1
     }
     this.getChargesList();
     this.getLabRequestChargelist();
@@ -267,9 +268,24 @@ export class IPBillingComponent implements OnInit {
     else {
       this.IpbillFooterform.get('CreditBill').setValue(false);
     }
-    this.setupFormListener();
-  }
+        if(this.checkdata == 1){
+        Swal.fire({
+       title: 'Do you want to calculate the Bed Charges',
+       text: "Do you want to change the all the rate or not!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, Change it!" 
+    }).then((flag)=>{
+      if(flag.isConfirmed){
 
+      } 
+    }) 
+    }  
+    this.setupFormListener();
+
+  } 
   oncloseservice() {
     this.dialogRef.close(this.serviceTable);
   }
@@ -1680,6 +1696,41 @@ checkAdvBalAmt:any=0;
       concessionId: [{}],
       DoctorID: [{}]
     }
+  }
+
+  ChangeTariffname(){
+  Swal.fire({ 
+       title: 'Do you want to change Tariff Name',
+       text: "Do you want to change the all the rate or not!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, Change it!" 
+    }).then((flag)=>{
+      if(flag.isConfirmed){
+
+      }else{
+
+      }
+    })  
+  }
+    ChangeClassname(){
+      Swal.fire({ 
+       title: 'Do you want to change Class Name',
+       text: "Do you want to change the all the rate or not!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, Change it!" 
+    }).then((flag)=>{
+      if(flag.isConfirmed){
+
+      }else{
+
+      }
+    })  
   }
 }
 
