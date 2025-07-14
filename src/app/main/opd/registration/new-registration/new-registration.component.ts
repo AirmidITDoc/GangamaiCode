@@ -49,6 +49,7 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModecountry: string = "Country";
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
+    autocompleteModerelationship: string = "Relationship";
     imagePreview!: string;
 
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -154,6 +155,9 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
 
         if (
             (!this.ageYear || this.ageYear == 0) &&

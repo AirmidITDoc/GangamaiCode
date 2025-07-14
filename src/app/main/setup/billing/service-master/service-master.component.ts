@@ -202,7 +202,12 @@ export class ServiceMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(EditpackageComponent,
             {
                 // maxWidth: "90vw",
-                maxHeight: '70vh',
+                // maxHeight: '70vh',
+                // width: '70%',
+                // data: row
+                 maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
                 width: '70%',
                 data: row
             });

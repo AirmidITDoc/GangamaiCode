@@ -79,8 +79,7 @@
                                             <mat-label>PrintOrder</mat-label>
                                             <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="printOrder" matInput required OnlyNumber
                                                 (keypress)="keyPressCharater($event)" min="0" maxlength="5" />
-                                        </mat-form-field>
-                                        
+                                        </mat-form-field>                                       
                                            
 
                                         <mat-form-field appearance="outline" fxFlex>
@@ -142,26 +141,43 @@
 
                                 <div fxLayout="row" fxLayoutGap="12px">
 
-                                    <mat-checkbox class="example-margin" name="IsEditable" formControlName="isEditable">IsEditable</mat-checkbox>
+                                    <mat-checkbox  name="IsEditable" formControlName="isEditable">IsEditable</mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="IsPackage" formControlName="isPackage">IsPackage</mat-checkbox>
+                                    <mat-checkbox  name="IsPackage" formControlName="isPackage">IsPackage</mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="isDiscount" formControlName="isDiscount">IsDiscount</mat-checkbox>
+                                    <mat-checkbox  name="isDiscount" formControlName="isDiscount">IsDiscount</mat-checkbox>
 
-                                    <mat-checkbox class="example-margin" name="IsSurgery" formControlName="isProcedure">IsSurgery</mat-checkbox>
+                                    <mat-checkbox  name="IsSurgery" formControlName="isProcedure">IsSurgery</mat-checkbox>
 
+                                    <mat-checkbox  name="IsServiceTaxApplicable" formControlName="isServiceTaxApplicable">IsServiceTaxApplicable</mat-checkbox>
+
+                                </div>
+
+                                <hr/>
+
+                                <div fxLayout="row" fxLayoutGap="12px">
+                                    <mat-checkbox name="opipType" formControlName="opipType">IsApplicableFor</mat-checkbox>
+
+                                    <div fxLayout="row" fxLayoutGap="12px" *ngIf="opiptype">
+                                        <mat-radio-group value="" [formGroup]="serviceForm"
+                                            formControlName="isApplicableFor" fxLayoutAlign="center center">
+                                            <mat-radio-button value="2">All</mat-radio-button>
+                                            <mat-radio-button mat-fab value="0">OP</mat-radio-button>
+                                            <mat-radio-button mat-fab value="1">IP</mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
                                 </div>
 
                                 <hr />
 
                                 <div fxLayout="row" fxLayoutGap="12px">
                                                                     
-                                    <mat-checkbox class="example-margin" name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
+                                    <mat-checkbox  name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
                                         Is Doc Editable For Service
                                     </mat-checkbox>
                                     
                                     <div fxLayout="row" fxLayoutGap="6px">
-                                        <mat-checkbox class="example-margin" name="CreditedtoDoctor" formControlName="creditedtoDoctor" value="false" *ngIf="iscreditedtoDoctor" [(ngModel)]="showDoctor">
+                                        <mat-checkbox  name="CreditedtoDoctor" formControlName="creditedtoDoctor" value="false" *ngIf="iscreditedtoDoctor" [(ngModel)]="showDoctor">
                                             CreditedtoDoctor
                                         </mat-checkbox>
 
@@ -207,7 +223,7 @@
                                 <div fxLayout="row" fxLayoutGap="12px">
 
                                     <div fxLayout="row" fxLayoutGap="6px" fxFlex>
-                                        <mat-checkbox class="example-margin" name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="isEmergency" (change)="emg_amt = ''; emg_per = ''">
+                                        <mat-checkbox  name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="isEmergency" (change)="emg_amt = ''; emg_per = ''">
                                             IsEmergency
                                         </mat-checkbox>
 

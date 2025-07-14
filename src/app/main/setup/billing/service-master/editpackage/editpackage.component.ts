@@ -17,18 +17,31 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class EditpackageComponent implements OnInit {
 
-  serviceForm: FormGroup;;
+  serviceForm: FormGroup;
+  serviceInsertForm: FormGroup;
   // isActive:boolean=true;
   displayedColumnspackage = [
     'ServiceName',
     'PackageServiceName',
+    'Qty',
+    'Price',
+    'action'
+  ];
+  displayedColumnsGroup = [
+    'GroupName',
     'Price',
     'action'
   ];
 
-  autocompleteModegroupName: string = "Service";
+  autocompleteModeserviceName: string = "Service";
+  autocompleteModegroupName: string = "GroupName";
+  autocompleteModesubGroupName: string = "SubGroupName";
+
   dsPackageDet = new MatTableDataSource<PacakgeList>();
-  PacakgeList: any = [];
+  dsPackagegroupDet = new MatTableDataSource<PacakgeList>();
+  
+  PacakgeServiceList: any = [];
+  PacakgeGroupList: any = [];
   registerObj: any
   serviceName: any
   TariffName: any;
@@ -46,6 +59,7 @@ export class EditpackageComponent implements OnInit {
   ngOnInit(): void {
     this.serviceForm = this.createServicemasterForm();
     this.serviceForm.markAllAsTouched();
+    this.serviceInsertForm = this.createServicemasterInsertForm();
     this.packageDetailsArray.push(this.createPackageDetail());
 
     if (this.data) {
@@ -60,27 +74,46 @@ export class EditpackageComponent implements OnInit {
 
   createServicemasterForm(): FormGroup {
     return this._formBuilder.group({
-      packageDetail: this._formBuilder.array([]),
+      // packageDetail: this._formBuilder.array([]),
       // extra fields
       serviceId: [0],
       ServiceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
       TariffName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+
+      PackageTotalDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageICUDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+      isPackageType: "0",
+      qtyLimit: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      amount: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      groupId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+  }
+
+   createServicemasterInsertForm(): FormGroup {
+    return this._formBuilder.group({
+      packageDetail: this._formBuilder.array([])
     });
   }
 
   createPackageDetail(item: any = {}): FormGroup {
     return this._formBuilder.group({
       packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceId:[item.ServiceId ?? item.serviceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],              
-      packageServiceId: [item.PackageServiceId ?? item.packageServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item.price ?? item.Price ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId: [item.classId ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      classId: [item.tariffId ??0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isPackageType:[this.serviceForm.get('isPackageType').value === '0' ? false : true],
+      serviceId: [item.serviceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      packageServiceId: [item.packageServiceId ?? item.GroupId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyLimit:[item.qtyLimit ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item.price ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [item.classId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      classId: [item.tariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
+
   get packageDetailsArray(): FormArray {
-      return this.serviceForm.get('packageDetail') as FormArray;
-    }
+    return this.serviceInsertForm.get('packageDetail') as FormArray;
+  }
 
   getRtevPackageDetList(obj) {
     // debugger
@@ -104,8 +137,11 @@ export class EditpackageComponent implements OnInit {
     setTimeout(() => {
       this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data => {
         this.dsPackageDet.data = data.data as PacakgeList[];
-        this.PacakgeList = data.data as PacakgeList
-        console.log(this.dsPackageDet.data)
+        this.dsPackagegroupDet.data = data.data as PacakgeList[];
+        this.PacakgeServiceList = data.data as PacakgeList
+        this.PacakgeGroupList = data.data as PacakgeList
+        console.log("Service:",this.dsPackageDet.data)
+        console.log("Group:",this.dsPackagegroupDet.data)
       });
     }, 1000);
   }
@@ -115,7 +151,8 @@ export class EditpackageComponent implements OnInit {
   vPackageServiceId: any;
   price: any;
   classId: any;
-tariffId: any;
+  tariffId: any;
+
   selectChangeService(data) {
     // console.log(data)
     this.vPackageServiceId = data.serviceId
@@ -127,35 +164,35 @@ tariffId: any;
   }
 
   onAddPackageService() {
-    debugger
     if ((this.vPackageServiceId == 0 || this.vPackageServiceId == null || this.vPackageServiceId == undefined)) {
       this.toastr.warning('Please select Service', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-  const isDuplicate = this.PacakgeList.some(
-    item => item.PackageServiceId === this.vPackageServiceId
-  );
+    const isDuplicate = this.PacakgeServiceList.some(
+      item => item.PackageServiceId === this.vPackageServiceId
+    );
 
-  if (isDuplicate) {
-    this.toastr.warning('Selected Service already added in the list');
-    return;
-  }
+    if (isDuplicate) {
+      this.toastr.warning('Selected Service already added in the list');
+      return;
+    }
     this.dsPackageDet.data = [];
-    this.PacakgeList.push(
+    this.PacakgeServiceList.push(
       {
-        ServiceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0,
+        serviceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0, // list serviceid
         ServiceName: this.registerObj.serviceName || this.registerObj.ServiceName,
-        PackageServiceId: this.vPackageServiceId || this.registerObj.PackageServiceId || 0,
+        packageServiceId: this.vPackageServiceId || this.registerObj.PackageServiceId || 0, //serach filter serviceid
         PackageServiceName: this.vPackageServiceName || this.registerObj.PackageServiceName,
-        Price: this.price ?? 0,
+        price: this.price ?? 0,
         classId: this.classId ?? 0,
         tariffId: this.tariffId ?? 0,
+        qtyLimit: this.serviceForm.get('amount').value
       });
 
-    this.dsPackageDet.data = this.PacakgeList;
-    this.serviceForm.reset();
+    this.dsPackageDet.data = this.PacakgeServiceList;
+    // this.serviceForm.reset();
     this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
     this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
     // console.log(this.dsPackageDet.data)
@@ -164,15 +201,77 @@ tariffId: any;
     this.classId = null;
     this.tariffId = null;
     this.serviceForm.get('serviceId').reset('')
+    this.serviceForm.get('qtyLimit').reset('')
+    this.serviceForm.get('amount').reset('')
+    this.serviceForm.get('isPackageType').reset('0')
     this.vPackageServiceName = '';
   }
 
+  groupId = 0;
+  groupaName='';
+
+  selectChangegroupName(obj: any) {
+    this.groupId = obj.value;
+    this.groupaName=obj.text;
+  }
+  
+  onAddPackageGroup() {
+    if ((this.groupId == 0 || this.groupId == null || this.groupId == undefined)) {
+      this.toastr.warning('Please select Group', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    debugger
+    const isDuplicate = this.PacakgeGroupList.some(
+      item => item.GroupId === this.groupId
+    );
+
+    if (isDuplicate) {
+      this.toastr.warning('Selected Group already added in the list');
+      return;
+    }
+    this.dsPackagegroupDet.data = [];
+    this.PacakgeGroupList.push(
+      {
+        serviceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0,
+        GroupId:this.groupId,
+        GroupName: this.groupaName,
+        price: this.serviceForm.get('amount').value ?? 0,
+        classId: this.classId ?? 0,
+        tariffId: this.tariffId ?? 0
+      });
+
+    this.dsPackagegroupDet.data = this.PacakgeGroupList;
+    // this.serviceForm.reset();
+    this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
+    this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
+    console.log(this.dsPackagegroupDet.data)
+
+    // this.vPackageServiceId = null;
+    // this.classId = null;
+    // this.tariffId = null;
+    this.serviceForm.get('groupId').reset('0')
+    this.serviceForm.get('amount').reset('')
+    this.serviceForm.get('isPackageType').reset('1')
+    // this.vPackageServiceName = '';
+  }
+
   deleteTableRowPackage(element) {
-    let index = this.PacakgeList.indexOf(element);
+    let index = this.PacakgeServiceList.indexOf(element);
     if (index >= 0) {
-      this.PacakgeList.splice(index, 1);
+      this.PacakgeServiceList.splice(index, 1);
       this.dsPackageDet.data = [];
-      this.dsPackageDet.data = this.PacakgeList;
+      this.dsPackageDet.data = this.PacakgeServiceList;
+    }
+  }
+
+   deleteTableRowPackageGroup(element) {
+    let index = this.PacakgeGroupList.indexOf(element);
+    if (index >= 0) {
+      this.PacakgeGroupList.splice(index, 1);
+      this.dsPackagegroupDet.data = [];
+      this.dsPackagegroupDet.data = this.PacakgeGroupList;
     }
   }
 
@@ -180,23 +279,38 @@ tariffId: any;
     // debugger;
 
     if (!this.serviceForm.invalid) {
-      if (this.dsPackageDet.data.length === 0) {
-        this.toastr.warning('Please add package service name to the list.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
+      if (this.serviceForm.get('isPackageType').value === '0') {
+        if (this.dsPackageDet.data.length === 0) {
+          this.toastr.warning('Please add package Service name to the list.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+      } else {
+        if (this.dsPackagegroupDet.data.length === 0) {
+          this.toastr.warning('Please add package Group name to the list.', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
       }
       debugger
       this.packageDetailsArray.clear();
-      this.dsPackageDet.data.forEach(item => {
-        this.packageDetailsArray.push(this.createPackageDetail(item));
-      });
-      this.serviceForm.removeControl('ServiceName')
-      this.serviceForm.removeControl('TariffName')
-      this.serviceForm.removeControl('serviceId')
-      console.log("Submitting Package Details:", this.serviceForm.value);
+      if (this.serviceForm.get('isPackageType').value === '0') {
+        this.dsPackageDet.data.forEach(item => {
+          this.packageDetailsArray.push(this.createPackageDetail(item));
+        });
+      } else if (this.serviceForm.get('isPackageType').value === '1'){
+        this.dsPackagegroupDet.data.forEach(item => {
+          this.packageDetailsArray.push(this.createPackageDetail(item));
+        });
+      }
+      // this.serviceForm.removeControl('ServiceName')
+      // this.serviceForm.removeControl('TariffName')
+      // this.serviceForm.removeControl('serviceId')
+      console.log("Submitting Package Details:", this.serviceInsertForm.value);
 
-      this._ServiceMasterService.SavePackagedet(this.serviceForm.value).subscribe((response) => {
+      this._ServiceMasterService.SavePackagedet(this.serviceInsertForm.value).subscribe((response) => {
         this.onClose()
       });
     } else {
@@ -220,7 +334,8 @@ tariffId: any;
 
   onClose() {
     this._matDialog.closeAll();
-    this.PacakgeList.data = [];
+    this.PacakgeServiceList.data = [];
+    this.PacakgeGroupList.data = [];
     this.serviceForm.reset();
   }
 
@@ -229,16 +344,43 @@ tariffId: any;
     this.dialogRef.close(val);
   }
 
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  keyPressAmount(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    var currentValue = (event.target as HTMLInputElement).value;
+    if (/^\d$/.test(inp)) {
+      return true;
+    }
+    if (inp === '.' && !currentValue.includes('.')) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
+  }
+
 }
 export class PacakgeList {
   ServiceId: number;
   ServiceName: String;
   PackageServiceId: any;
   PacakgeServiceName: any;
+  groupId:any;
+  Price:any;
 
   constructor(PacakgeList) {
     this.ServiceId = PacakgeList.ServiceId || '';
     this.ServiceName = PacakgeList.ServiceName || '';
     this.PacakgeServiceName = PacakgeList.PacakgeServiceName || '';
+    this.groupId = PacakgeList.groupId || 0;
+    this.Price = PacakgeList.Price || 0;
   }
 }
