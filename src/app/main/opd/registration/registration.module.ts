@@ -29,7 +29,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationComponent } from './registration.component';
-
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
@@ -82,6 +82,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
+        MatTabsModule
     ],
     providers: [RegistrationService,
         DatePipe

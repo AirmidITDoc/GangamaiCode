@@ -49,6 +49,7 @@ export class ServiceMasterFormComponent implements OnInit {
     showRadOut: boolean = false;
     showPathOut: boolean = false;
     iscreditedtoDoctor: boolean = false;
+    opiptype: boolean = true;
     isActive: boolean = true;
 
     constructor(public _serviceMasterService: ServiceMasterService,
@@ -159,6 +160,9 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('isDocEditable')?.valueChanges.subscribe(val => {
             this.iscreditedtoDoctor = val;
         });
+        this.serviceForm.get('opipType')?.valueChanges.subscribe(val=>{
+            this.opiptype=val
+        })
     }
 
     createServicemasterForm(): FormGroup {
@@ -189,11 +193,18 @@ export class ServiceMasterFormComponent implements OnInit {
             printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive: true,
             isDocEditable: false,
+            isServiceTaxApplicable:false,
+            isApplicableFor:['2', [Validators.required]],
+            packageTotalDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageIcudays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceDetails: this._formBuilder.array([]),
 
             // extra field which we not insert
             EffectiveDate: [""],
             tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            opipType:[true, [Validators.required]],
         });
     }
     createserviceDetails(item: any = {}): FormGroup {
@@ -284,8 +295,13 @@ export class ServiceMasterFormComponent implements OnInit {
 
     onSubmit() {
          this.updateEmergencyValidators();
-
         if (!this.serviceForm.invalid) {
+        if (this.serviceForm.get('opipType').value == false) {
+            this.toastr.warning('IsApplicableFor is required', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
             Swal.fire({
                 title: 'Confirm Action',
@@ -318,7 +334,7 @@ export class ServiceMasterFormComponent implements OnInit {
                         this.serviceDetailsArray.push(this.createserviceDetails(item));
                     });
 
-                    const controlsToRemove = ['EffectiveDate', 'tariffId'];
+                    const controlsToRemove = ['EffectiveDate', 'tariffId', 'opipType'];
                     controlsToRemove.forEach(control => {
                         this.serviceForm.removeControl(control);
                     });
@@ -334,6 +350,7 @@ export class ServiceMasterFormComponent implements OnInit {
                     this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
                     this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
                     this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
+                    // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
 
                     console.log("FormValue", this.serviceForm.value)
                     this._serviceMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {

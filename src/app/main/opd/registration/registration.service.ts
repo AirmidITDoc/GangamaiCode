@@ -38,7 +38,6 @@ export class RegistrationService {
         });
     }
 
-    //changed by raksha date:6/3/25
     createPesonalForm1() {
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -104,9 +103,36 @@ export class RegistrationService {
             RegTime: ['', Validators.required],
             Photo: [''],
             PinNo: [''],
+
+            //emergency form
+            emgContactPersonName: ['', [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            emgRelationshipId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgLandlineNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+            emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
+                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
+                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]], 
+                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
+
+            // medical tourisum
+            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern("^[0-9]*$"),
+                 this._FormvalidationserviceService.onlyNumberValidator()]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+            medTourismVisaIssueDate: [null], //"2025-10-25",
+            medTourismVisaValidityDate: [null], //"2025-10-25",
+            medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
+            medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
+            medTourismDateOfEntry: [null], //"2025-10-25",
+            medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+            medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });
 
     }
+
     // new Api
     initializeFormGroup() { }
 
