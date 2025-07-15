@@ -295,6 +295,22 @@ export class RegInsert {
     departmentId:any;
     doctorId:any;
     campId:any;
+    emgContactPersonName:any;
+    emgRelationshipId:any;
+    emgMobileNo:any;
+    emgLandlineNo:any;
+    engAddress:any;
+    emgAadharCardNo:any;
+    emgDrivingLicenceNo:any;
+    medTourismNationalityId:any;
+    medTourismPassportNo:any;
+    medTourismVisaIssueDate:Date;
+    medTourismCitizenship:any;  
+    medTourismPortOfEntry:any;  
+    medTourismResidentialAddress:any;
+    medTourismOfficeWorkAddress:any;
+    medTourismVisaValidityDate:Date;
+    medTourismDateOfEntry:Date;
     // religionId:any;
     // updatedBy:any;
 
@@ -377,6 +393,22 @@ export class RegInsert {
             this.departmentId = RegInsert.departmentId || 0;
             this.doctorId = RegInsert.doctorId || 0;
             this.campId = RegInsert.campId || 0;
+            this.emgContactPersonName = RegInsert.emgContactPersonName || "";
+            this.emgRelationshipId = RegInsert.emgRelationshipId || 0;
+            this.emgMobileNo = RegInsert.emgMobileNo || 0;
+            this.emgLandlineNo = RegInsert.emgLandlineNo || 0;
+            this.engAddress = RegInsert.engAddress || '';
+            this.emgAadharCardNo = RegInsert.emgAadharCardNo || 0;
+            this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
+            this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
+            this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
+            this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || this.currentDate;
+            this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
+            this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
+            this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
+            this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
+            this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
+            this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
         }
     }
 }

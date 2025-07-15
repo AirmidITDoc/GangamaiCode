@@ -18,15 +18,27 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-
-            <button mat-icon-button matTooltip="Edit Emergency" (click)="newEmergency(element)">
+            <button mat-icon-button matTooltip="Edit Emergency" (click)="newEmergency(element)"
+            *ngIf="element.isCancelled==false">
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)">
+            <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
+            *ngIf="element.isCancelled==false">
                 <mat-icon> cancel</mat-icon>
             </button>
+        </div>
+    </ng-template>
 
+     <ng-template #actionsTemplate let-element>
+        <div class="pill-icon">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Emergency Cancelled"
+                class="red-600 s-16">circle
+            </mat-icon>
+
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Emergency Cancelled"
+                class="green-600 s-16">circle
+            </mat-icon>
         </div>
     </ng-template>
 
