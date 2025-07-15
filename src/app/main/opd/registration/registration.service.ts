@@ -41,7 +41,7 @@ export class RegistrationService {
     createPesonalForm1() {
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
@@ -98,7 +98,7 @@ export class RegistrationService {
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+            // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             RegDate: ['', Validators.required],
             RegTime: ['', Validators.required],
             Photo: [''],
@@ -121,12 +121,12 @@ export class RegistrationService {
             // medical tourisum
             medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern("^[0-9]*$"),
                  this._FormvalidationserviceService.onlyNumberValidator()]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
-            medTourismVisaIssueDate: [null], //"2025-10-25",
-            medTourismVisaValidityDate: [null], //"2025-10-25",
+            medTourismVisaIssueDate: [new Date()], //"2025-10-25",
+            medTourismVisaValidityDate: [new Date()], //"2025-10-25",
             medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
             medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
-            medTourismDateOfEntry: [null], //"2025-10-25",
+            medTourismDateOfEntry: [new Date()], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });

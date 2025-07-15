@@ -56,7 +56,27 @@ export class NewEmergencyComponent {
     this.searchFormGroup = this.createSearchForm();
     if((this.data?.emgId ?? 0) > 0){
       this.registerObj=this.data
+      this.myForm.get('doctorId').setValue(this.registerObj?.doctorId)
       console.log("Retrived data:",this.registerObj)
+       var mdata = {
+            prefixId: this.registerObj?.prefixId,
+            firstName: this.registerObj?.firstName,
+            middleName: this.registerObj?.middleName,
+            lastName: this.registerObj?.lastName,
+            genderId: this.registerObj?.genderID,
+            dateofBirth: this.registerObj?.dateofBirth,
+            address: this.registerObj?.address,
+            pinNo: this.registerObj?.pinNo,
+            cityId: this.registerObj?.cityId,
+            stateId: this.registerObj?.stateId,
+            countryId: this.registerObj?.countryId,
+            mobileNo: this.registerObj?.mobileNo?.trim(),
+            phoneNo: this.registerObj?.phoneNo,
+            departmentId: this.registerObj?.departmentId,
+            // doctorId: this.registerObj?.doctorId,
+        };        
+        this.myForm.patchValue(mdata);
+        // this.selectChangedepartment(this.registerObj)
     }
   }
 
@@ -95,12 +115,34 @@ export class NewEmergencyComponent {
     });
   }
 
+  // selectChangedepartment(obj: any) {
+  //   this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+  //     this.ddlDoctor.options = data;
+  //     this.ddlDoctor.bindGridAutoComplete();
+  //   });
+  // }
   selectChangedepartment(obj: any) {
-    this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddlDoctor.options = data;
-      this.ddlDoctor.bindGridAutoComplete();
-    });
-  }
+        if(obj.value){
+            this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+            });
+        }else{
+            this._EmergencyService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+                // debugger
+                this.ddlDoctor.options = data;
+                this.ddlDoctor.bindGridAutoComplete();
+                const incomingDoctorId = String(obj.doctorId);
+                console.log("Id:",incomingDoctorId)
+                if (incomingDoctorId) {
+                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                  if (matchedDoctor) {
+                    this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
+                  }
+                }
+            });
+        }
+    }
 
   onNewSave() {
     if (!this.myForm.invalid) {
@@ -114,7 +156,9 @@ export class NewEmergencyComponent {
       }
 
       this.myForm.get('regId')?.setValue(this.RegId);
-      this.myForm.get('emgDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+      this.myForm.get('emgId')?.setValue(this.registerObj?.emgId || 0);
+      this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+      this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
       ['PinNo', 'PhoneNo', 'StateId', 'CountryId', 'DateOfBirth'].forEach(control => {
         this.myForm.removeControl(control)
       })

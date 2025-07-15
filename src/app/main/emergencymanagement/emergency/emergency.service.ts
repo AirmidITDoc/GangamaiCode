@@ -113,9 +113,10 @@ export class EmergencyService {
   }
 
   public EmgCancel(param){
-    return this._httpClient.DeleteData('Emergency/Cancel')
+    return this._httpClient.PostData('Emergency/Cancel',param)
   }
   public getDoctorsByDepartment(deptId) {
     return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
   }
+  
 }

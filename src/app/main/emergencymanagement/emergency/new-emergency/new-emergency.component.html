@@ -100,7 +100,7 @@
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <app-airmid-dateofbirth [formGroup]="myForm"
                                             formControlName="DateOfBirth"
-                                            [(value)]="registerObj.dateOfBirth"></app-airmid-dateofbirth>
+                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -110,8 +110,8 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="PinNo" formControlName="PinNo"
-                                            [value]="registerObj?.pinNo" [formGroup]="myForm">
+                                        <airmid-textbox label="PinNo" formControlName="PinNo" (keypress)="keyPressAlphanumeric($event)"
+                                            [value]="registerObj?.pinNo" [formGroup]="myForm" [maxLength]="6">
                                          </airmid-textbox>
                                     </div>
 
@@ -173,7 +173,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Doctor Name" formControlName="doctorId"
-                                            [value]="registerObj?.docNameId" [formGroup]="myForm"
+                                            [value]="registerObj?.doctorId" [formGroup]="myForm"
                                             #ddlDoctor>
                                         </airmid-dropdown>
                                     </div>

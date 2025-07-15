@@ -156,7 +156,7 @@
                                 <hr/>
 
                                 <div fxLayout="row" fxLayoutGap="12px">
-                                    <mat-checkbox name="opipType" formControlName="opipType">IsApplicableFor</mat-checkbox>
+                                    <mat-checkbox name="opipType" formControlName="opipType" (change)="keepChecked()">IsApplicableFor</mat-checkbox>
 
                                     <div fxLayout="row" fxLayoutGap="12px" *ngIf="opiptype">
                                         <mat-radio-group value="" [formGroup]="serviceForm"

@@ -5,7 +5,7 @@
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-                        {{ serviceForm.controls.serviceId.value ? 'Modify Service Master' : 'NewService Master' }}
+                       New Service Page
                     </span>
                 </div>
                 <div class="modal-header-right">
@@ -23,7 +23,7 @@
         <div class="modal-body" fusePerfectScrollbar>
             <div class="modal-body-container">
                 <div fxLayout="column" class="gap-8 h-100-p">
-                    <div class="modal-card-container">
+                    <!-- <div class="modal-card-container">
                         <mat-card>
                             <mat-card-content class="p-4">
                                 <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px">
@@ -90,35 +90,44 @@
                                 </form>
                             </mat-card-content>
                         </mat-card>
-                    </div>
+                    </div> -->
 
                     <div style="display: flex; flex-direction: column; gap: 10px;">
 
                         <div class="modal-card-container airmid-table-container"
-                            style="max-height: 400px; overflow-y: auto;">
+                            style="overflow-y: auto;">
 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Service Name
-                                        </th>
-                                        <th *ngFor="let item of ColumnList">
-                                            {{item.className}}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of ServiceList">
-                                        <td>{{item.serviceName}}</td>
-                                        <td *ngFor="let data of ColumnList">
-                                            {{ getClassValue(item, data.classId) }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="material-table-container">
+                                <table class="material-table">
+                                    <thead class="material-table-header">
+                                        <tr>
+                                            <th>
+                                                Service Name
+                                            </th>
+                                            <th *ngFor="let item of ColumnList">
+                                                {{item.className}}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="material-table-row" *ngFor="let item of ServiceList">
+                                            <td>{{item.serviceName}}</td>
+                                            <td *ngFor="let data of ColumnList">
+                                                <mat-form-field appearance="outline" class="small-textbox">
+                                                    <input matInput type="text"
+                                                        [ngModel]="getClassValue(item,data.classId)"
+                                                        (ngModelChange)="setClassValue(item,data.classId, $event)">
+                                                </mat-form-field>
+                                                <!-- <airmid-textbox [label]="data.className" formControlName="registrationNo"
+                                                [formGroup]="myform" [maxLength]="50"
+                                                [value]="getClassValue(item, data.classId)">
+                                            </airmid-textbox> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -128,10 +137,10 @@
         <!-- Modal footer  || savebtn-->
         <div class="modal-footer">
             <div class="footer-navigation-container" fxLayoutAlign="space-between">
-                <form [formGroup]="serviceForm">
+                <!-- <form [formGroup]="serviceForm">
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="serviceForm"
                         [(ngModel)]="isActive"></app-airmid-slider>
-                </form>
+                </form> -->
                 <div class="modal-footer-buttons">
                     <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button type="button" class="btn btn-primary" (click)="onSubmit()" #savebutton>Save</button>

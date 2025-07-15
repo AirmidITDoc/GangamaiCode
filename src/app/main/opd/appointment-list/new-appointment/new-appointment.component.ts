@@ -34,8 +34,6 @@ export class NewAppointmentComponent implements OnInit {
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
     searchFormGroup: FormGroup;
-    EmergencyFormGroup:FormGroup;
-    MedicalFormGroup:FormGroup;
     abhaForm:FormGroup;
 
     currentDate = new Date();
@@ -153,14 +151,11 @@ export class NewAppointmentComponent implements OnInit {
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
-        this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.personalFormGroup.markAllAsTouched();
+
+        this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
 
-        this.EmergencyFormGroup=this._AppointmentlistService.createEmergencydetailForm();
-        this.EmergencyFormGroup.markAllAsTouched();
-        this.MedicalFormGroup=this._AppointmentlistService.createMedicaldetailForm();
-        this.MedicalFormGroup.markAllAsTouched();
         this.abhaForm=this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
@@ -413,7 +408,7 @@ export class NewAppointmentComponent implements OnInit {
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo
                         });
-                        // console.log(this.registerObj)
+                        console.log(this.registerObj)
                     });
 
                 }, 100);
@@ -606,6 +601,10 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
@@ -630,6 +629,9 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
         this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
         this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
@@ -841,7 +843,7 @@ export class NewAppointmentComponent implements OnInit {
     createPesonalForm() {
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
@@ -902,12 +904,38 @@ export class NewAppointmentComponent implements OnInit {
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+            // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
             PinNo: [''],
             // CourtesyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            //emergency form
+            emgContactPersonName: ['', [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            emgRelationshipId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgLandlineNo: ['', [Validators.minLength(10), Validators.maxLength(10),
+                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+            emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
+                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
+                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]], 
+                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
+
+            // medical tourisum
+            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern("^[0-9]*$"),
+                 this._FormvalidationserviceService.onlyNumberValidator()]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+            medTourismVisaIssueDate: [new Date()], //"2025-10-25",
+            medTourismVisaValidityDate: [new Date()], //"2025-10-25",
+            medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
+            medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
+            medTourismDateOfEntry: [new Date()], //"2025-10-25",
+            medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+            medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });
     }
 

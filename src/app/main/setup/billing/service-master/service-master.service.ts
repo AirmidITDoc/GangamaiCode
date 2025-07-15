@@ -24,9 +24,9 @@ export class ServiceMasterService {
     createServicemasterForm(): FormGroup {
         return this._formBuilder.group({
             ServiceId: 0,
-            groupId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+            groupId: [0, [Validators.required, notEmptyOrZeroValidator()]],
             GroupName: [""],
-            ServiceShortDesc: ["", 
+            ServiceShortDesc: ["",
                 [
                     Validators.required,
                     //Validators.pattern("^[A-Za-z0-9 ]+$")
@@ -36,14 +36,14 @@ export class ServiceMasterService {
             ServiceName: ["",
                 [
                     Validators.required,
-                   // Validators.pattern("^[A-Za-z0-9 ]+$")
+                    // Validators.pattern("^[A-Za-z0-9 ]+$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             TariffName: ["",
                 [
                     Validators.required,
-                   // Validators.pattern("^[A-Za-z0-9 ]+$")
+                    // Validators.pattern("^[A-Za-z0-9 ]+$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
@@ -53,31 +53,31 @@ export class ServiceMasterService {
             IsPathology: ["0"],
             IsRadiology: ["0"],
             IsDeleted: ["0"],
-            PrintOrder: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            PrintOrder: ["", [Validators.required, Validators.pattern("[0-9]+")]],
             IsPackage: ["0"],
             SubGroupId: [""],
             FirstName: ["",
-                 //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                 Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ],
+                //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                Validators.pattern('^[a-zA-Z0-9 ]*$')
+            ],
             IsEmergency: true,
-            EmgAmt: ["",[Validators.required, Validators.pattern("[0-9]+")]],
-            EmgPer: ["",[Validators.required, Validators.pattern("[0-9]+")]],
+            EmgAmt: ["", [Validators.required, Validators.pattern("[0-9]+")]],
+            EmgPer: ["", [Validators.required, Validators.pattern("[0-9]+")]],
             IsDocEditable: true,
             AddedBy: [""],
             UpdatedBy: [""],
-            IsActive:[true],
+            IsActive: [true],
             ServiceDetails: [
                 {
-                    serviceDetailId : 0,
-                    serviceId : 0,
-                    tariffId : 0,
-                    classId : 0,
-                    classRate : 0
+                    serviceDetailId: 0,
+                    serviceId: 0,
+                    tariffId: 0,
+                    classId: 0,
+                    classRate: 0
                 }
             ],
-            DoctorId:[""],
-            tariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+            DoctorId: [""],
+            tariffId: [0, [Validators.required, notEmptyOrZeroValidator()]],
             // classId: ["0"],
             // classRate: ["0"],
             EffectiveDate: [""],
@@ -85,25 +85,25 @@ export class ServiceMasterService {
     }
 
     createTariffmasterForm(): FormGroup {
-        return this._formBuilder.group({            
-            oldTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+        return this._formBuilder.group({
+            oldTariffId: [0, [Validators.required, notEmptyOrZeroValidator()]],
             // newTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
-            newTariffId: [[],[Validators.required, notEmptyOrZeroValidator()]],
+            newTariffId: [[], [Validators.required, notEmptyOrZeroValidator()]],
         });
     }
 
     createAllTariffmasterForm(): FormGroup {
-        return this._formBuilder.group({            
-            TariffId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        return this._formBuilder.group({
+            TariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isAll: [true],
-            isSelected:[false]
+            isSelected: [false]
         });
     }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            TariffId:[""],
-            GroupId:[""],
+            TariffId: [""],
+            GroupId: [""],
             ServiceNameSearch: [""],
             IsDeletedSearch: ["2"],
             IsRadPath: ["1"],
@@ -117,7 +117,7 @@ export class ServiceMasterService {
     public SaveTariff(Param: any) {
         return this._httpClient.PutData("BillingService/UpdateDifferTariff", Param);
     }
-    
+
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ServicDelete?Id=" + m_data.toString());
@@ -128,40 +128,43 @@ export class ServiceMasterService {
     }
 
     public getClassMasterList(param) {
-        return this._httpClient.PostData("ClassMaster/List",param);
+        return this._httpClient.PostData("ClassMaster/List", param);
     }
 
     public getRtevPackageDetList(param) {
-        return this._httpClient.PostData("BillingService/PackageServiceInfoList",param);
+        return this._httpClient.PostData("BillingService/PackageServiceInfoList", param);
     }
 
     public ServiceMasterCancle(Id: any) {
-        
-      return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
+
+        return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 
     public serviceMasterInsert(Param: any) {
-         if (Param.serviceId) {
+        if (Param.serviceId) {
             return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
-        }else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
+        } else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
 
     // public serviceMasterUpdate(Param: any) {
-        // if (Param.serviceId) {
-        //     return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
-        // }
+    // if (Param.serviceId) {
+    //     return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+    // }
     // }
 
     public getClassMasterListRetrive(param) {
-        return this._httpClient.PostData("Billing/ServiceClassdetaillList",param);
+        return this._httpClient.PostData("Billing/ServiceClassdetaillList", param);
     }
 
-    
+
     public getServicesNew(param) {
-        return this._httpClient.GetData("BillingService/GetServicesNew?TariffId="+param);
+        return this._httpClient.GetData("BillingService/GetServicesNew?TariffId=" + param);
+    }
+    public saveServicesNew(param) {
+        return this._httpClient.PostData("BillingService/save-services-new", param);
     }
 
-  
+
     populateForm(param) {
         ;
         this.myform.patchValue(param);
@@ -176,8 +179,8 @@ export class ServiceMasterService {
 }
 
 function notEmptyOrZeroValidator(): any {
-  return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
-      return value > 0 ? null : { greaterThanZero: { value: value } };
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
     };
 }

@@ -28,6 +28,7 @@ export class EmergencyComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   myFilterform: FormGroup;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
    f_name: any = ""
     l_name: any = ""
    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -35,6 +36,7 @@ export class EmergencyComponent implements OnInit {
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
   }
 
   constructor(
@@ -50,8 +52,10 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "DateTime", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10 },
+    { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA',type:9,width: 200},
+    { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
@@ -138,7 +142,9 @@ export class EmergencyComponent implements OnInit {
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag)=>{
       if(flag.isConfirmed){
-        this._EmergencyService.EmgCancel(data.emgId).subscribe((res)=>{
+         let submitData = { "emgId": data.emgId }
+        console.log(submitData);
+        this._EmergencyService.EmgCancel(submitData).subscribe((res)=>{
           this.grid.bindGridData();
         })
       }
@@ -165,11 +171,14 @@ export class EmergencyList {
   countryId: any;
   mobileNo: any;
   phoneNo: any;
-  dateOfBirth: any;
+  dateofBirth: any;
   prefixId: any;
   regId: any;
   departmentId:any;
   docNameId:any;
+  doctorId:any;
+  genderID:any;
+  emgId:any;
 
   constructor(EmergencyList) {
     {
@@ -190,11 +199,14 @@ export class EmergencyList {
       this.countryId = EmergencyList.countryId || 0
       this.mobileNo = EmergencyList.mobileNo || 0
       this.phoneNo = EmergencyList.phoneNo || 0
-      this.dateOfBirth = EmergencyList.dateofBirth || ''
+      this.dateofBirth = EmergencyList.dateofBirth || ''
       this.prefixId = EmergencyList.prefixId || 0
       this.regId = EmergencyList.regId || 0
       this.departmentId = EmergencyList.departmentId || 0
       this.docNameId = EmergencyList.docNameId || 0
+      this.doctorId = EmergencyList.doctorId || 0
+      this.genderID = EmergencyList.genderID || 0
+      this.emgId = EmergencyList.emgId || 0
     }
   }
 }

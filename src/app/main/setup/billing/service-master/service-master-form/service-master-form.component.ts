@@ -145,6 +145,8 @@ export class ServiceMasterFormComponent implements OnInit {
             isRadOutSource: this.data?.isRadOutSource,
             isDiscount: this.data?.isDiscount,
             isProcedure: this.data?.isProcedure,
+            isServiceTaxApplicable: this.data?.isServiceTaxApplicable,
+            isApplicableFor: this.data?.isApplicableFor,
             emgStartTime: formatTime(this.data?.emgStartTime),
             emgEndTime: formatTime(this.data?.emgEndTime),
         };
@@ -286,6 +288,10 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('emgPer')?.updateValueAndValidity();
         this.serviceForm.get('emgStartTime')?.updateValueAndValidity();
         this.serviceForm.get('emgEndTime')?.updateValueAndValidity();
+    }
+
+    keepChecked() {
+        this.serviceForm.get('opipType')?.setValue(true);
     }
 
     doctorId = 0;

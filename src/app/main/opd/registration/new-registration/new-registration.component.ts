@@ -83,6 +83,7 @@ export class NewRegistrationComponent implements OnInit {
             setTimeout(() => {
                 this._registerService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
+                    console.log(this.registerObj)
                     this.isEditMode = true;
                     this.regNo=this.registerObj.regNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)

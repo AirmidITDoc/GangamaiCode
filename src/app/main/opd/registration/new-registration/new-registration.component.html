@@ -81,16 +81,13 @@
                                                     [validations]="getValidationMessages().genderId" #ddlGender
                                                     [readonly]="true" [mode]="autocompleteModegender">
                                                 </airmid-dropdown>
-
                                             </div>
-
 
                                             <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
                                                 <app-airmid-dateofbirth [formGroup]="personalFormGroup"
-                                                    formControlName="DateOfBirth" [(value)]="registerObj.dateOfBirth"
+                                                    formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
                                                     (dateChange)="chkChange()"></app-airmid-dateofbirth>
                                             </div>
-
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
@@ -110,14 +107,11 @@
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-
                                                 <airmid-dropdown label="Area" formControlName="AreaId"
                                                     [value]="registerObj?.areaId" [formGroup]="personalFormGroup"
                                                     [validations]="getValidationMessages().areaId"
                                                     [mode]="autocompleteModearea">
                                                 </airmid-dropdown>
-
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -221,38 +215,38 @@
                     <div fxLayout="row wrap" fxLayoutGap="10px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Emergency Contact Person Name" formControlName="emgContactPersonName"
-                                [formGroup]="personalFormGroup" [maxLength]="50"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="50" [value]="registerObj.emgContactPersonName"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Relationship" formControlName="emgRelationshipId"
                                 [formGroup]="personalFormGroup"
-                                [mode]="autocompleteModerelationship"></airmid-dropdown>
+                                [mode]="autocompleteModerelationship" [value]="registerObj.emgRelationshipId"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="MobileNo" formControlName="emgMobileNo" [formGroup]="personalFormGroup"
-                                [maxLength]="10"></airmid-textbox>
+                                [maxLength]="10" [value]="registerObj.emgMobileNo"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Landline" formControlName="emgLandlineNo"
-                                [formGroup]="personalFormGroup" [maxLength]="10"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="10" [value]="registerObj.emgLandlineNo"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Address" formControlName="engAddress" [formGroup]="personalFormGroup"
-                                [maxLength]="100"></airmid-textbox>
+                                [maxLength]="100" [value]="registerObj.engAddress"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo"
-                                [formGroup]="personalFormGroup" [maxLength]="12"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="12" [value]="registerObj.emgAadharCardNo"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo"
-                                [formGroup]="personalFormGroup" [maxLength]="16"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="16" [value]="registerObj.emgDrivingLicenceNo"></airmid-textbox>
                         </div>
                     </div>
                 </form>
@@ -265,16 +259,14 @@
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo"
-                                [formGroup]="personalFormGroup" [maxLength]="8"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="8" [value]="registerObj.medTourismPassportNo"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <airmid-datepicker [label]="'Visa Issue Date'" [formGroup]="personalFormGroup"
-                                [isRangePicker]="false" formStartControlName="medTourismVisaIssueDate">
-                            </airmid-datepicker> -->
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Visa Issue Date</mat-label>
-                                <input matInput [matDatepicker]="picker1" formControlName="medTourismVisaIssueDate">
+                                <input matInput [matDatepicker]="picker1" formControlName="medTourismVisaIssueDate"
+                                [value]="registerObj.medTourismVisaIssueDate">
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
@@ -282,12 +274,10 @@
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <airmid-datepicker [label]="'Visa Validity'" [formGroup]="personalFormGroup"
-                                [isRangePicker]="false" formStartControlName="medTourismVisaValidityDate">
-                            </airmid-datepicker> -->
                              <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Visa Validity</mat-label>
-                                <input matInput [matDatepicker]="picker2" formControlName="medTourismVisaValidityDate">
+                                <input matInput [matDatepicker]="picker2" formControlName="medTourismVisaValidityDate"
+                                [value]="registerObj.medTourismVisaValidityDate">
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
@@ -296,25 +286,24 @@
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId"
-                                [formGroup]="personalFormGroup" [maxLength]="20"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="20" [value]="registerObj.medTourismNationalityId"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="CitizenShip" formControlName="medTourismCitizenship"
-                                [formGroup]="personalFormGroup" [mode]="autocompleteModecountry"></airmid-dropdown>
+                                [formGroup]="personalFormGroup" [mode]="autocompleteModecountry" [value]="registerObj.medTourismCitizenship"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Port Of Entry" formControlName="medTourismPortOfEntry"
-                                [formGroup]="personalFormGroup" [maxLength]="20"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="20" [value]="registerObj.medTourismPortOfEntry"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <!-- <airmid-full-datepicker [label]="'Date Of Entry'" [formGroup]="personalFormGroup"
-                                formControlName="medTourismDateOfEntry"></airmid-full-datepicker> -->
                                <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Date Of Entry</mat-label>
-                                <input matInput [matDatepicker]="picker3" formControlName="medTourismDateOfEntry">
+                                <input matInput [matDatepicker]="picker3" formControlName="medTourismDateOfEntry"
+                                [value]="registerObj.medTourismDateOfEntry">
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker3"></mat-datepicker-toggle>
                                 <mat-datepicker #picker3></mat-datepicker>
@@ -323,12 +312,12 @@
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Residential Address" formControlName="medTourismResidentialAddress"
-                                [formGroup]="personalFormGroup" [maxLength]="100"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="100" [value]="registerObj.medTourismResidentialAddress"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Office/Work Address" formControlName="medTourismOfficeWorkAddress"
-                                [formGroup]="personalFormGroup" [maxLength]="100"></airmid-textbox>
+                                [formGroup]="personalFormGroup" [maxLength]="100" [value]="registerObj.medTourismOfficeWorkAddress"></airmid-textbox>
                         </div>
                     </div>
                 </form>
