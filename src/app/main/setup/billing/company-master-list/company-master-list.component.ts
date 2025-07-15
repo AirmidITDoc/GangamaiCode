@@ -47,7 +47,7 @@ export class CompanyMasterListComponent {
         { heading: "Credit Days", key: "creditDays", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
 
-        { heading: "Tariff Name", key: "traiffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 70 },
@@ -58,13 +58,13 @@ export class CompanyMasterListComponent {
     ]
 
     allfilters = [
-        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "CompanyName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-        apiUrl: "CompanyMaster/List",
+        apiUrl: "CompanyMaster/CompanyMasterList",
         columnsList: this.allcolumns,
-        sortField: "companyId",
+        sortField: "CompanyId",
         sortOrder: 0,
         filters: this.allfilters
     }
@@ -126,7 +126,7 @@ export class CompanyMasterListComponent {
 
                 maxWidth: "95vw",
                 width: '100%',
-                maxHeight: "95vh",
+                maxHeight: "90vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

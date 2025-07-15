@@ -28,7 +28,7 @@ import { SubTpaCompanyMaster } from '../../subtpa-company-master/subtpa-company-
 export class ServeToCompanyComponent {
 
     companyForm: FormGroup;
-   
+
     isExpanded = false;
     selectedTabIndex = 0;
     searchFormGroup: FormGroup;
@@ -42,11 +42,11 @@ export class ServeToCompanyComponent {
     ServiceId2 = 0
     tariffId = 0
     classId = 0
-    serviceName: "%"
+    serviceName = "%"
     compobj = new CompanyMaster({});
     Regflag = 1;
     CompanyId = 0
-
+ ApiURL: any='';
 
     displayedColumns1: string[] = [
         'Code',
@@ -61,7 +61,8 @@ export class ServeToCompanyComponent {
         'TariffName',
         // 'qty',
         'classRate',
-         'disc',
+        'discountAmount',
+        'discountPercentage'
         // 'checkbox',
         // 'Action'
     ];
@@ -83,13 +84,15 @@ export class ServeToCompanyComponent {
     displayedColumnsgrp: string[] = [
         'GroupName',
         'TariffName',
-        'disc'
+        'discountAmount',
+        'discountPercentage'
     ];
     displayedColumnssubgrp: string[] = [
         'GroupName',
         'SubGroupName',
-         'TariffName',
-        'disc'
+        'TariffName',
+        'discountAmount',
+        'discountPercentage'
     ];
     displayedColumnsubtpa: string[] = [
         'TypeName',
@@ -105,7 +108,7 @@ export class ServeToCompanyComponent {
     discgroupList = new MatTableDataSource<Servicedetail>();
     discsubgroupList = new MatTableDataSource<Servicedetail>();
     subtpaList = new MatTableDataSource<SubTpaCompanyMaster>();
-    DSComwiseServiceList= new MatTableDataSource<Servicedetail>();
+    DSComwiseServiceList = new MatTableDataSource<Servicedetail>();
 
 
 
@@ -113,7 +116,7 @@ export class ServeToCompanyComponent {
     autocompleteModetariff1: string = "Tariff";
     autocompleteModeclass2: string = "Class";
     autocompleteModetariff2: string = "Tariff";
-     autocompleteModetypeName: string = "Service";
+    autocompleteModetypeName: string = "Service";
 
     dstable1 = new MatTableDataSource<Servicedetail>();
     dsLabRequest2 = new MatTableDataSource<Servicedetail>();
@@ -138,30 +141,33 @@ export class ServeToCompanyComponent {
         this.companyForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
         this.servFormGroup = this._CompanyMasterService.createservSearchForm();
-        this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
-        this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
-    
-        this.compwiseserForm= this._CompanyMasterService.createcompwiseservForm();
+        // this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
+        // this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
+
+        this.compwiseserForm = this._CompanyMasterService.createcompwiseservForm();
         this.serviceForm = this.createServicemasterForm();
         this.serviceDetailsArray.push(this.createserviceDetails());
-
-
-        this.serviceForm.markAllAsTouched();
+        // this.groupFormGroup = this.creategroupSearchForm();
+        this.groupDetailsArray.push(this.creategroupDetails());
+         this.subgroupDetailsArray.push(this.createsubgroupDetails());
+        // this.serviceForm.markAllAsTouched();
         if (this.data) {
             this.compobj = this.data
-          
-            console.log(this.compobj.traiffId)
+
+            console.log(this.compobj)
             this.CompanyId = this.compobj.companyId
             this.tariffId = this.compobj.traiffId
+            this.classId = this.compobj.classId
             this.companyForm.get("TariffId1").setValue(this.compobj.traiffId)
             this.companyForm.get("companyName").setValue(this.compobj.companyName)
+            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" +this.compobj.traiffId + "&ClassId=" + 0 + "&ServiceName="
         }
 
         // this.getServiceList()
         this.getsubtpaList()
         this.getServiceListMain()
-          this.getServicecompwiseList()
-          this.selectdiscservicelist()
+        // this.getServicecompwiseList()
+        this.selectdiscservicelist()
     }
     createServicemasterForm(): FormGroup {
         const now = new Date();
@@ -199,18 +205,57 @@ export class ServeToCompanyComponent {
         });
     }
     createserviceDetails(item: any = {}): FormGroup {
+        console.log(item)
         return this._formBuilder.group({
-            serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            classId: [item.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // serviceDetailId: [item.serviceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classRate: [item.classRate || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {
         return this.serviceForm.get('serviceDetails') as FormArray;
     }
 
+
+    creategroupDetails(item: any = {}): FormGroup {
+        console.log(item)
+        return this._formBuilder.group({
+            compServiceDetailId: [item.compServiceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [this.classId || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isGroupOrSubGroup: true
+        });
+    }
+
+    createsubgroupDetails(item: any = {}): FormGroup {
+        console.log(item)
+        return this._formBuilder.group({
+            compServiceDetailId: [item.compServiceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isGroupOrSubGroup: false
+        });
+    }
+    get groupDetailsArray(): FormArray {
+        return this.serviceForm.get('serviceDetails') as FormArray;
+    }
+
+    get subgroupDetailsArray(): FormArray {
+        return this.serviceForm.get('serviceDetails') as FormArray;
+    }
+    
 
     createSearchForm() {
         return this.formBuilder.group({
@@ -222,39 +267,41 @@ export class ServeToCompanyComponent {
     onChangeRadio(event) {
         // if (event.value === 'Service')
         //     this.Regflag = 0
-         if (event.value === 'Group'){
+        if (event.value === 'Group') {
             this.Regflag = 1
             this.selectdiscservicelist()
         }
-        else if (event.value === 'SubGroup'){
+        else if (event.value === 'SubGroup') {
             this.Regflag = 2
             this.selectdiscservicelist()
-    }
+        }
     }
 
 
 
-    selectChangeclass(event) {
-        this.getServiceList();
-    }
+    // selectChangeclass(event) {
+    //     this.serviceName = event.text
+    //     this.getServiceList();
+    // }
 
     selectChangemainclass(event) {
+        // this.serviceName = event.text
         this.getServiceListMain()
     }
 
 
     getServiceListMain() {
-
+        debugger
         // let tariffId = this.companyForm.get("TariffId1").value || 1
         let classId = this.companyForm.get("ClassId1").value || 1
-        let serviceName = "%"//this.companyForm.get("ServiceName").value || "%"
-        
+        // let serviceName = this.companyForm.get("ServiceName").value || "%"
+
         var param =
         {
             "searchFields": [
                 {
                     "fieldName": "ServiceName",
-                    "fieldValue": String(serviceName),
+                    "fieldValue": String(this.serviceName),
                     "opType": "Equals"
                 },
                 {
@@ -283,91 +330,91 @@ export class ServeToCompanyComponent {
         });
 
     }
-getServicecompwiseList() {
+    // getServicecompwiseList() {
 
-        let classId = this.compwiseserForm.get("ClassId2").value || 1
-        let serviceName = this.compwiseserForm.get("ServiceName").value || "%"
-        debugger
-        var param =
-        {
-            "searchFields": [
-                {
-                    "fieldName": "ServiceName",
-                    "fieldValue": String(serviceName),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "TariffId",
-                    "fieldValue": String(this.compobj.traiffId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "ClassId",
-                    "fieldValue": String(classId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "type",
-                    "fieldValue": "1",
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "CompanyWiseServiceList"
-        }
+    //     let classId = this.compwiseserForm.get("ClassId2").value || 1
+    //     let serviceName = this.compwiseserForm.get("ServiceName").value || "%"
+    //     debugger
+    //     var param =
+    //     {
+    //         "searchFields": [
+    //             {
+    //                 "fieldName": "ServiceName",
+    //                 "fieldValue": String(serviceName),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "TariffId",
+    //                 "fieldValue": String(this.compobj.traiffId),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "ClassId",
+    //                 "fieldValue": String(classId),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "type",
+    //                 "fieldValue": "1",
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "mode": "CompanyWiseServiceList"
+    //     }
 
-        console.log(param)
-        this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-            this.DSComwiseServiceList.data = data as Servicedetail[];
-            console.log(this.DSComwiseServiceList.data)
-        });
+    //     console.log(param)
+    //     this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
+    //         this.DSComwiseServiceList.data = data as Servicedetail[];
+    //         console.log(this.DSComwiseServiceList.data)
+    //     });
 
-    }
+    // }
 
-    getServiceList() {
-        debugger
-        let tariffId = this.companyForm.get("TariffId2").value || 1
-        let classId = this.companyForm.get("ClassId2").value || 1
-        let serviceName = this.companyForm.get("ServiceName").value || "%"
+    // getServiceList() {
+    //     debugger
+    //     let tariffId = this.companyForm.get("TariffId2").value || 1
+    //     let classId = this.companyForm.get("ClassId2").value || 1
+    //     // let serviceName = this.companyForm.get("ServiceName").value || "%"
 
+    //     var param = {
+    //         "searchFields": [
+    //             {
+    //                 "fieldName": "ServiceName",
+    //                 "fieldValue": String(this.serviceName),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "TariffId",
+    //                 "fieldValue": String(tariffId),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "ClassId",
+    //                 "fieldValue": String(classId),
+    //                 "opType": "Equals"
+    //             },
+    //             {
+    //                 "fieldName": "type",
+    //                 "fieldValue": "1",
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "mode": "CompanyWiseTraiffList"
+    //     }
+    //     console.log(param)
+    //     this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
+    //         this.DSServicedetailMainList.data = data as Servicedetail[];;
+    //         console.log(this.DSServicedetailMainList.data)
+    //     });
+
+    // }
+
+    getsubtpaList() {
         var param = {
             "searchFields": [
                 {
-                    "fieldName": "ServiceName",
-                    "fieldValue": String(serviceName),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "TariffId",
-                    "fieldValue": String(tariffId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "ClassId",
-                    "fieldValue": String(classId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "type",
-                    "fieldValue": "1",
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "CompanyWiseTraiffList"
-        }
-        console.log(param)
-        this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-            this.DSServicedetailList.data = data as Servicedetail[];;
-            console.log(this.DSServicedetailList.data)
-        });
-
-    }
-
-    getsubtpaList() {
-var param = {
-            "searchFields": [
-                {
                     "fieldName": "CompanyId",
-                    "fieldValue": "9",//String(this.CompanyId),
+                    "fieldValue": String(this.CompanyId),
                     "opType": "Equals"
                 }
             ],
@@ -384,9 +431,9 @@ var param = {
 
     selectService(event) {
         this.serviceName = event.text
-        this.selectdiscservicelist()
+        this.getServiceListMain()
     }
-printserviceName=''
+    printserviceName = ''
     gettableServName(event) {
         this.printserviceName = event.text
         // this.selectdiscservicelist(event)
@@ -405,13 +452,13 @@ printserviceName=''
             //     serviceName = this.serviceName || "%"
             //     type = 1
             // } else 
-                if (this.Regflag == 1) {
+            if (this.Regflag == 1) {
                 classId = 0,//this.groupFormGroup.get("ClassId2").value || 0
-                serviceName = "%"
+                    serviceName = "%"
                 type = 2
             } else if (this.Regflag == 2) {
                 classId = 0,// this.subgropFormGroup.get("ClassId2").value || 1
-                serviceName = "%" //"this.serviceName || "%"
+                    serviceName = "%" //"this.serviceName || "%"
                 type = 3
             }
 
@@ -460,25 +507,8 @@ printserviceName=''
 
         debugger
         this.dstable1.data = [];
-        // if (this.DSServicedetailMainList.data.length > 0) {
-        // let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId)// && ele.tariffId === row.tariffId && ele.classId == row.classId);
-        // if (duplicateItem && duplicateItem.length == 0) {
         this.addChargList(row);
-        //     return;
-        // }
-        // this.DSServicedetailMainList.data = this.chargeslist;
-        //     this.chargeslist =this.DSServicedetailMainList.data 
-        //     this.DSServicedetailMainList.sort = this.sort;
-        //     this.DSServicedetailMainList.paginator = this.paginator;
-        // } else if (this.chargeslist && this.chargeslist.length == 0) {
-        //     this.addChargList(row);
-        // }
-        // else {
-        //     this.toastr.warning('Selected Service already added in the list ', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+      
     }
 
     addChargList(row) {
@@ -509,84 +539,79 @@ printserviceName=''
         console.log(this.DSServicedetailMainList.data);
     }
 
-
-
-    // onSubmit() {
-
-    //     if (!this.companyForm.invalid) {
-
-    //         console.log("Company Insert:-", this.companyForm.value);
-
-    //         this._CompanyMasterService.companyMasterSave(this.companyForm.value).subscribe((response) => {
-    //             this.toastr.success(response.message);
-    //             this.onClear(true);
-    //         }, (error) => {
-    //             this.toastr.error(error.message);
-    //         });
-    //     }
-    //     else {
-    //         this.toastr.warning('please check form is invalid', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    // }
-
-    onSubmit() {
-
-        // if (!this.serviceForm.invalid) {
-
-        this.serviceDetailsArray.clear();
-        this.DSServicedetailMainList.data.forEach(item => {
-            console.log(item)
-            this.serviceDetailsArray.push(this.createserviceDetails(item));
-        });
-
-        const controlsToRemove = ['EffectiveDate', 'tariffId'];
-        controlsToRemove.forEach(control => {
-            this.serviceForm.removeControl(control);
-        });
-        this.serviceForm.get('price').setValue(0)
-        // this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
-        // this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
-        // this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
-        // this.serviceForm.get("isPackage")?.setValue(this.serviceForm.get("isPackage")?.value ? 1 : 0);
-        // this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
-        // this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
-        // this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
-        // this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
-        // this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
-        // this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
-        // this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
-
-        // this.serviceForm.get("serviceShortDes")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
-        // this.serviceForm.get("serviceName")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
-
-
-        console.log("FormValue", this.serviceForm.value)
-        this._CompanyMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {
-            this.onClose();
-        })
-
-        //  } else {
-        //     let invalidFields = [];
-
-        //     if (this.serviceForm.invalid) {
-        //         for (const controlName in this.serviceForm.controls) {
-        //             if (this.serviceForm.controls[controlName].invalid) {
-        //                 invalidFields.push(`Service Form: ${controlName}`);
-        //             }
-        //         }
-        //     }
-        //     if (invalidFields.length > 0) {
-        //         invalidFields.forEach(field => {
-        //             this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-        //             );
-        //         });
-        //     }
-        // }
+    getSelectedserviceObj(obj){
+        this.serviceName = obj.serviceName
+        this.getServiceListMain()
     }
 
+    onSubmit() {
+        debugger
+        if (this.selectedTabIndex == 0)
+            this.onservocompSubmit()
+        else
+            this.ondisccompSubmit()
+    }
+
+
+
+    onservocompSubmit() {
+
+        if (this.DSServicedetailMainList.data.length > 0) {
+
+            this.serviceDetailsArray.clear();
+            this.DSServicedetailMainList.data.forEach(item => {
+                console.log(item)
+                this.serviceDetailsArray.push(this.createserviceDetails(item));
+            });
+
+            console.log("FormValue", this.serviceDetailsArray.value)
+            this._CompanyMasterService.servicecoderateupdate(this.serviceDetailsArray.value).subscribe((response) => {
+                this.onClose();
+            })
+        } else {
+            this.toastr.warning('please check Service Table is invalid', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+    }
+
+    ondisccompSubmit() {
+debugger
+        if (this.Regflag == 1) {
+            if (this.discgroupList.data.length > 0) {
+
+                this.groupDetailsArray.clear();
+                this.discgroupList.data.forEach(item => {
+                    console.log(item)
+                    this.groupDetailsArray.push(this.creategroupDetails(item));
+                });
+                console.log("FormValue", this.groupDetailsArray.value)
+                this._CompanyMasterService.Servdiscupdate(this.groupDetailsArray.value).subscribe((response) => {
+                    this.onClose();
+                })
+            } else {
+                this.toastr.warning('please check Service Table is invalid', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        } else if (this.Regflag == 2) {
+            if (this.discsubgroupList.data.length > 0) {
+                this.subgroupDetailsArray.clear();
+                this.discsubgroupList.data.forEach(item => {
+                    console.log(item)
+                    this.subgroupDetailsArray.push(this.createsubgroupDetails(item));
+                });
+                console.log("FormValue", this.subgroupDetailsArray.value)
+                this._CompanyMasterService.Servdiscupdate(this.subgroupDetailsArray.value).subscribe((response) => {
+                    this.onClose();
+                })
+            }
+
+        }
+
+    }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -608,7 +633,7 @@ printserviceName=''
 
     onTabChange(event: MatTabChangeEvent) {
         this.selectedTabIndex = event.index;
-        console.log( this.selectedTabIndex)
+        console.log(this.selectedTabIndex)
         this.selectdiscservicelist()
     }
 

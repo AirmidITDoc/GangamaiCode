@@ -36,7 +36,7 @@
 
       <!-- Table Section -->
       <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-        <div class="table-right" fxFlex="100%">
+        <div class="table-right" fxFlex="100%" style="height: 500px;">
           <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
             dynamicTableHeight>
 
@@ -53,16 +53,12 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-350">Service Name</mat-header-cell>
                 <mat-cell *matCellDef="let element"  class="w-350">{{ element.ServiceName }}</mat-cell>
               </ng-container>
-
+<!-- [(ngModel)]="element.ServiceName" -->
                 <ng-container matColumnDef="Company Code" >
                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">Company Code</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="w-280">
                   <mat-form-field appearance="fill" style="width: 100%;">
-                    <input
-                      matInput
-                      [(ngModel)]="element.ServiceName"
-                      (keyup)="gettableServName(element, $event.target.value)"
-                      (keypress)="keyPressCharater($event)" />
+                    <input matInput (keyup)="gettableServName(element, $event.target.value)" [(ngModel)]="element.companyCode" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -73,11 +69,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">Service Print Name</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="w-350">
                   <mat-form-field appearance="fill" style="width: 100%;">
-                    <input
-                      matInput
-                      [(ngModel)]="element.ServiceName"
-                      (keyup)="gettableServName(element, $event.target.value)"
-                      (keypress)="keyPressCharater($event)" />
+                    <input matInput (keyup)="gettableServName(element, $event.target.value)"  [(ngModel)]="element.companyServicePrint" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -88,7 +80,7 @@
                   Exclude <mat-icon (click)="getChargesList()" style="cursor: pointer;">cached</mat-icon>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let element" class="w-60">
-                  <mat-checkbox (change)="tableElementChecked($event, element)"></mat-checkbox>
+                  <mat-checkbox (change)="tableElementChecked($event, element)"  [(ngModel)]="element.isInclusionOrExclusion"></mat-checkbox>
                 </mat-cell>
               </ng-container>
 

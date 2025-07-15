@@ -40,41 +40,48 @@
                 <form [formGroup]="companyForm">
 
                   <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding-top: 10px;">
-                  
+
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-textbox label="CompanyName" formControlName="companyName" [formGroup]="companyForm"
                         [validations]="getValidationMessages().companyName" [maxLength]="50" [readonly]="true"
                         [value]="compobj?.companyName">
                       </airmid-textbox>
                     </div>
-<!-- 
+                    <!-- 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-dropdown label="ClassName" formControlName="ClassId1" [formGroup]="companyForm"
                         (selectionChange)="selectChangemainclass($event)" [value]="compobj?.classId" [readonly]="true"
                         [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass1">
                       </airmid-dropdown>
                     </div> -->
-                   
+
                   </div>
 
 
                   <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                      <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
-                        (selectionChange)="selectChangeclass($event)" [validations]="getValidationMessages().compTypeId"
+                      <!-- <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
+                        (selectionChange)="selectChangemainclass($event)" [validations]="getValidationMessages().compTypeId"
                         [mode]="autocompleteModetypeName">
-                      </airmid-dropdown>
+                      </airmid-dropdown> -->
+
+                      <airmid-autocomplete label="Enter Service Name" [formGroup]="companyForm"
+                        formControlName="ServiceName" placeholderText="Enter Service Name" fxFlex ApiUrl="{{ApiURL}}"
+                        (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                        ValueField="serviceId"></airmid-autocomplete>
+
+
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
-                        (selectionChange)="selectChangeclass($event)" [validations]="getValidationMessages().ClassId1"
-                        [mode]="autocompleteModeclass2">
+                        (selectionChange)="selectChangemainclass($event)"
+                        [validations]="getValidationMessages().ClassId1" [mode]="autocompleteModeclass2">
                       </airmid-dropdown>
                     </div>
-                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-dropdown label="TariffName" formControlName="TariffId1" [formGroup]="companyForm"
-                        [value]="compobj?.traiffId" (selectionChange)="selectChangemainclass($event)" [readonly]="true"
+                        [value]="compobj?.traiffId" [readonly]="true"
                         [validations]="getValidationMessages().TariffId1" [mode]="autocompleteModetariff1">
                       </airmid-dropdown>
                     </div>
@@ -132,11 +139,22 @@
                         </ng-container>
 
 
-                        <ng-container matColumnDef="disc">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc</mat-header-cell>
+                        <ng-container matColumnDef="discountAmount">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxShow.gt-sm>
                             <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.disc" OnlyNumber
+                              <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                                (keypress)="keyPressCharater($event)" />
+                            </mat-form-field>
+                          </mat-cell>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="discountPercentage">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                            <mat-form-field appearance="fill">
+                              <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
                                 (keyup)="gettableclassrate(element, $event.value)"
                                 (keypress)="keyPressCharater($event)" />
                             </mat-form-field>
@@ -185,7 +203,7 @@
                     <mat-card-content class="py-8">
 
                       <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center"
-                        class="input-error-hidden" >
+                        class="input-error-hidden">
                         <div class="radio-container">
                           <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                             (change)="onChangeRadio($event)">
@@ -261,12 +279,13 @@
                     </div>
                   </div> -->
 
-                  <div *ngIf="Regflag==1" >
+                  <div *ngIf="Regflag==1">
 
                     <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                       <!-- fusePerfectScrollbar -->
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%">
-                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
+                        <div
+                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                           dynamicTableHeight>
 
                           <mat-table matSort [dataSource]="discgroupList" class="airmid-table"
@@ -284,11 +303,22 @@
                                 element.TariffName}}</mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="disc">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc</mat-header-cell>
+                            <ng-container matColumnDef="discountAmount">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.disc" OnlyNumber
+                                  <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                                    (keyup)="gettableclassrate(element, $event.value)"
+                                    (keypress)="keyPressCharater($event)" />
+                                </mat-form-field>
+                              </mat-cell>
+                            </ng-container>
+
+                             <ng-container matColumnDef="discountPercentage">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                <mat-form-field appearance="fill">
+                                  <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
@@ -321,9 +351,9 @@
 
                   <div *ngIf="Regflag==2">
 
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row" >
+                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                       <!-- fusePerfectScrollbar -->
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%">
+                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
                         <div
                           class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                           dynamicTableHeight>
@@ -349,11 +379,23 @@
                             </ng-container>
 
 
-                            <ng-container matColumnDef="disc">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc</mat-header-cell>
+                            <ng-container matColumnDef="discountAmount">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.disc" OnlyNumber
+                                  <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                                    (keyup)="gettableclassrate(element, $event.value)"
+                                    (keypress)="keyPressCharater($event)" />
+                                </mat-form-field>
+                              </mat-cell>
+                            </ng-container>
+
+                            
+                            <ng-container matColumnDef="discountPercentage">
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
+                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                <mat-form-field appearance="fill">
+                                  <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
@@ -391,24 +433,27 @@
               <div *ngSwitchCase="2">
                 <ng-container [ngSwitch]="selectedTabIndex">
                   <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row" style="padding: 10px;">
-                      <!-- fusePerfectScrollbar -->
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%">
-                        <div
-                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                          dynamicTableHeight>
+                    <!-- fusePerfectScrollbar -->
+                    <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
+                      <div
+                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                        dynamicTableHeight>
 
-                          <mat-table matSort [dataSource]="subtpaList" class="airmid-table"
-                            [@animateStagger]="{ value: '50' }">
+                        <mat-table matSort [dataSource]="subtpaList" class="airmid-table"
+                          [@animateStagger]="{ value: '50' }">
 
                           <ng-container matColumnDef="TypeName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Service Name</mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Service
+                              Name</mat-header-cell>
                             <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-500">{{
                               element.TypeName}}</mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="CompanyName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Company Name</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-500">{{element.CompanyName}}</mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Company
+                              Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm
+                              class="w-500">{{element.CompanyName}}</mat-cell>
                           </ng-container>
 
                           <!-- <ng-container matColumnDef="Action" stickyEnd>

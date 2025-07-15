@@ -3,7 +3,7 @@ import { CompanyMasterService } from '../company-master.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Servicedetail } from '../../service-master/service-master.component';
-import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -17,9 +17,10 @@ import { CompanyMaster } from '../company-master-list.component';
 export class UpdateServCodePrintComponent {
   compwiseserForm: FormGroup;
   serviceForm: FormGroup;
+  serviceInsertForm: FormGroup;
   tariffId = 0
   classId = 0
-  serviceName="%"
+  serviceName = "%"
   compobj = new CompanyMaster({});
   CompanyId = 0
   autocompleteModetypeName: string = "Service";
@@ -49,8 +50,11 @@ export class UpdateServCodePrintComponent {
   ngOnInit(): void {
 
     this.compwiseserForm = this._CompanyMasterService.createcompwiseservForm();
-    this.serviceForm=this._CompanyMasterService.createcompwiseservForm();
-   
+    this.serviceInsertForm = this.createservCompany();
+
+    this.servicearray.push(this.createserviceDetails());
+
+
     if (this.data) {
       this.compobj = this.data
       console.log(this.compobj.traiffId)
@@ -59,11 +63,38 @@ export class UpdateServCodePrintComponent {
       // this.compwiseserForm.get("TariffId1").setValue(this.compobj.traiffId)
       // this.compwiseserForm.get("companyName").setValue(this.compobj.companyName)
     }
-     this.getServicecompwiseList()
+    this.getServicecompwiseList()
   }
 
+  createservCompany(): FormGroup {
+    return this._formBuilder.group({
+      userId: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      serviceWise: this._formBuilder.array([])
+
+    });
+  }
+
+  createserviceDetails(item: any = {}): FormGroup {
+    console.log(item)
+    return this._formBuilder.group({
+      serviceId: [item.ServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+      tariffId: [this.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyCode: [item.companyCode || "", [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      companyServicePrint: [item.companyServicePrint || "", [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      isInclusionOrExclusion: [item.isInclusionOrExclusion || false],
+
+
+    });
+  }
+
+  get servicearray(): FormArray {
+    return this.serviceInsertForm.get('serviceWise') as FormArray;
+  }
+
+
   getServicecompwiseList() {
-   debugger
+    debugger
     var param =
     {
       "searchFields": [
@@ -74,7 +105,7 @@ export class UpdateServCodePrintComponent {
         },
         {
           "fieldName": "TariffId",
-          "fieldValue": String(this.compobj.traiffId),
+          "fieldValue": String(this.tariffId),
           "opType": "Equals"
         }
       ],
@@ -100,42 +131,25 @@ export class UpdateServCodePrintComponent {
     // this.selectdiscservicelist(event)
   }
 
-  createserviceDetails(item: any = {}): FormGroup {
-    return this._formBuilder.group({
-      serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      classId: [item.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
-  }
-
-  get serviceDetailsArray(): FormArray {
-    return this.serviceForm.get('serviceDetails') as FormArray;
-  }
-
 
   onSubmit() {
 
-    if (!this.compwiseserForm.invalid) {
+    if (this.DSComwiseServiceList.data.length > 0) {
 
-      this.serviceDetailsArray.clear();
+      this.servicearray.clear();
       this.DSComwiseServiceList.data.forEach(item => {
         console.log(item)
-        this.serviceDetailsArray.push(this.createserviceDetails(item));
+        this.servicearray.push(this.createserviceDetails(item));
       });
 
-      console.log("Company Insert:-", this.compwiseserForm.value);
+      console.log("Company Insert:-", this.serviceInsertForm.value);
 
-      this._CompanyMasterService.updateservicecodeSave(this.compwiseserForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
+      this._CompanyMasterService.updateservicecodeSave(this.serviceInsertForm.value).subscribe((response) => {
+        this.dialogRef.close()
       });
     }
     else {
-      this.toastr.warning('please check form is invalid', 'Warning !', {
+      this.toastr.warning('please check Service Table is invalid', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
