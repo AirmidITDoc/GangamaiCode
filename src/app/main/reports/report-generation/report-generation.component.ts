@@ -446,7 +446,7 @@ export class ReportGenerationComponent implements OnInit {
                 "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
                 "groupByLabel": this.reportDetail?.reportGroupByLabel,
                 "summaryLabel": this.reportDetail?.summaryLabel,
-                "columnWidths": this.reportDetail?.columnWidths?.split(",") || this.reportDetail?.reportColumnWidths?.split(",") || [],
+                "columnWidths": this.reportDetail?.reportColumnWidth?.split(",") || [],
                 "htmlFilePath": this.reportDetail?.reportBodyFile,
                 "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
                 "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
