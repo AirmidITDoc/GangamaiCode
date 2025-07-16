@@ -72,9 +72,9 @@ export class NewCompanyMasterComponent {
      }
  
      onSubmit() {
- 
+   console.log(this.companyFormDemo.value)
          if (!this.companyFormDemo.invalid) {
-             console.log(this.companyFormDemo.value)
+           
               if ((this.data?.companyId ?? 0) > 0) 
                  this.companyFormDemo.get("companyId").setValue(this.registerObj.companyId)
  

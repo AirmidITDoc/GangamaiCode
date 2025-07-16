@@ -57,8 +57,8 @@ export class ServeToCompanyComponent {
 
     displayedColumns2: string[] = [
         'ServiceName',
-        // 'ClassName',
-        'TariffName',
+        'ClassName',
+        // 'TariffName',
         // 'qty',
         'classRate',
         'discountAmount',
@@ -141,13 +141,11 @@ export class ServeToCompanyComponent {
         this.companyForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
         this.servFormGroup = this._CompanyMasterService.createservSearchForm();
-        // this.groupFormGroup = this._CompanyMasterService.creategroupSearchForm();
-        // this.subgropFormGroup = this._CompanyMasterService.createsubgroupSearchForm();
-
+      
         this.compwiseserForm = this._CompanyMasterService.createcompwiseservForm();
         this.serviceForm = this.createServicemasterForm();
         this.serviceDetailsArray.push(this.createserviceDetails());
-        // this.groupFormGroup = this.creategroupSearchForm();
+        this.groupFormGroup = this.creategroupSearchForm();
         this.groupDetailsArray.push(this.creategroupDetails());
          this.subgroupDetailsArray.push(this.createsubgroupDetails());
         // this.serviceForm.markAllAsTouched();
@@ -163,45 +161,52 @@ export class ServeToCompanyComponent {
             this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" +this.compobj.traiffId + "&ClassId=" + 0 + "&ServiceName="
         }
 
-        // this.getServiceList()
         this.getsubtpaList()
         this.getServiceListMain()
-        // this.getServicecompwiseList()
         this.selectdiscservicelist()
     }
+
+    
+  creategroupSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      userId: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyWiseService: this._formBuilder.array([])
+
+    });
+  }
     createServicemasterForm(): FormGroup {
         const now = new Date();
         const defaultTime = now.toTimeString().slice(0, 5);
         return this._formBuilder.group({
-            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            groupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            serviceShortDesc: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
-            serviceName: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
-            price: 0,
-            isEditable: [false],
-            creditedtoDoctor: [false],
-            isPathology: [0],
-            isPathOutSource: [false],
-            isRadiology: [0],
-            isRadOutSource: [false],
-            isDiscount: [false],
-            isProcedure: [false],
-            isPackage: [0],
-            subGroupId: [0],
-            doctorId: 0,
-            isEmergency: false,
-            emgAmt: [0, [Validators.required, Validators.pattern("[0-9]+")]],
-            emgPer: [0, [Validators.required, Validators.pattern("[0-9]+")]],
-            emgStartTime: [defaultTime, [Validators.required]],
-            emgEndTime: [defaultTime, [Validators.required]],
-            printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isActive: true,
-            isDocEditable: false,
+            // serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // groupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // serviceShortDesc: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            // serviceName: ["ss", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            // price: 0,
+            // isEditable: [false],
+            // creditedtoDoctor: [false],
+            // isPathology: [0],
+            // isPathOutSource: [false],
+            // isRadiology: [0],
+            // isRadOutSource: [false],
+            // isDiscount: [false],
+            // isProcedure: [false],
+            // isPackage: [0],
+            // subGroupId: [0],
+            // doctorId: 0,
+            // isEmergency: false,
+            // emgAmt: [0, [Validators.required, Validators.pattern("[0-9]+")]],
+            // emgPer: [0, [Validators.required, Validators.pattern("[0-9]+")]],
+            // emgStartTime: [defaultTime, [Validators.required]],
+            // emgEndTime: [defaultTime, [Validators.required]],
+            // printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // isActive: true,
+            // isDocEditable: false,
             serviceDetails: this._formBuilder.array([]),
 
             // extra field which we not insert
-            EffectiveDate: [""],
-            tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // EffectiveDate: [""],
+            // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     createserviceDetails(item: any = {}): FormGroup {
@@ -209,9 +214,9 @@ export class ServeToCompanyComponent {
         return this._formBuilder.group({
             // serviceDetailId: [item.serviceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            // tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            // classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            classRate: [item.classRate || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [this.classId || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
@@ -225,7 +230,7 @@ export class ServeToCompanyComponent {
         console.log(item)
         return this._formBuilder.group({
             compServiceDetailId: [item.compServiceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.GroupId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -239,7 +244,7 @@ export class ServeToCompanyComponent {
         console.log(item)
         return this._formBuilder.group({
             compServiceDetailId: [item.compServiceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.SubGroupId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -249,11 +254,11 @@ export class ServeToCompanyComponent {
         });
     }
     get groupDetailsArray(): FormArray {
-        return this.serviceForm.get('serviceDetails') as FormArray;
+        return this.groupFormGroup.get('companyWiseService') as FormArray;
     }
 
     get subgroupDetailsArray(): FormArray {
-        return this.serviceForm.get('serviceDetails') as FormArray;
+        return this.groupFormGroup.get('companyWiseService') as FormArray;
     }
     
 
@@ -265,8 +270,7 @@ export class ServeToCompanyComponent {
     }
 
     onChangeRadio(event) {
-        // if (event.value === 'Service')
-        //     this.Regflag = 0
+      
         if (event.value === 'Group') {
             this.Regflag = 1
             this.selectdiscservicelist()
@@ -277,15 +281,7 @@ export class ServeToCompanyComponent {
         }
     }
 
-
-
-    // selectChangeclass(event) {
-    //     this.serviceName = event.text
-    //     this.getServiceList();
-    // }
-
     selectChangemainclass(event) {
-        // this.serviceName = event.text
         this.getServiceListMain()
     }
 
@@ -293,7 +289,7 @@ export class ServeToCompanyComponent {
     getServiceListMain() {
         debugger
         // let tariffId = this.companyForm.get("TariffId1").value || 1
-        let classId = this.companyForm.get("ClassId1").value || 1
+        let classId = this.companyForm.get("ClassId2").value || 0
         // let serviceName = this.companyForm.get("ServiceName").value || "%"
 
         var param =
@@ -447,17 +443,12 @@ export class ServeToCompanyComponent {
             let serviceName
             let type = 1
 
-            // if (this.Regflag == 0) {
-            //     classId = this.servFormGroup.get("ClassId2").value || 1
-            //     serviceName = this.serviceName || "%"
-            //     type = 1
-            // } else 
-            if (this.Regflag == 1) {
-                classId = 0,//this.groupFormGroup.get("ClassId2").value || 0
+         if (this.Regflag == 1) {
+                classId = 0,
                     serviceName = "%"
                 type = 2
             } else if (this.Regflag == 2) {
-                classId = 0,// this.subgropFormGroup.get("ClassId2").value || 1
+                classId = 0,
                     serviceName = "%" //"this.serviceName || "%"
                 type = 3
             }
@@ -490,9 +481,7 @@ export class ServeToCompanyComponent {
             console.log(param)
             this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
                 console.log(data)
-                // if (this.Regflag == 0)
-                //     this.discServiceList.data = data as Servicedetail[];
-                if (this.Regflag == 1)
+              if (this.Regflag == 1)
                     this.discgroupList.data = data as Servicedetail[];
                 if (this.Regflag == 2)
                     this.discsubgroupList.data = data as Servicedetail[];
@@ -504,15 +493,12 @@ export class ServeToCompanyComponent {
 
 
     onSaveEntry(row) {
-
-        debugger
         this.dstable1.data = [];
         this.addChargList(row);
       
     }
 
     addChargList(row) {
-        debugger
         this.chargeList = []
         if (this.DSServicedetailMainList.data.length > 0) {
             this.chargeList = this.DSServicedetailMainList.data
@@ -545,7 +531,7 @@ export class ServeToCompanyComponent {
     }
 
     onSubmit() {
-        debugger
+        
         if (this.selectedTabIndex == 0)
             this.onservocompSubmit()
         else
@@ -586,8 +572,10 @@ debugger
                     console.log(item)
                     this.groupDetailsArray.push(this.creategroupDetails(item));
                 });
-                console.log("FormValue", this.groupDetailsArray.value)
-                this._CompanyMasterService.Servdiscupdate(this.groupDetailsArray.value).subscribe((response) => {
+
+
+                console.log("FormValue", this.groupFormGroup.value)
+                this._CompanyMasterService.Servdiscupdate(this.groupFormGroup.value).subscribe((response) => {
                     this.onClose();
                 })
             } else {
@@ -603,8 +591,8 @@ debugger
                     console.log(item)
                     this.subgroupDetailsArray.push(this.createsubgroupDetails(item));
                 });
-                console.log("FormValue", this.subgroupDetailsArray.value)
-                this._CompanyMasterService.Servdiscupdate(this.subgroupDetailsArray.value).subscribe((response) => {
+                console.log("FormValue", this.groupFormGroup.value)
+                this._CompanyMasterService.Servdiscupdate(this.groupFormGroup.value).subscribe((response) => {
                     this.onClose();
                 })
             }
@@ -612,25 +600,7 @@ debugger
         }
 
     }
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        // let that = this;
-        // const dialogRef = this._matDialog.open(NewCompanyTypeComponent,
-        //     {
-        //         maxWidth: "45vw",
-        //         height: '35%',
-        //         width: '70%',
-        //         data: row
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         that.grid.bindGridData();
-        //     }
-        // });
-    }
-
+ 
     onTabChange(event: MatTabChangeEvent) {
         this.selectedTabIndex = event.index;
         console.log(this.selectedTabIndex)
@@ -653,37 +623,7 @@ debugger
                 { name: "required", Message: "Company Name is required" },
                 { name: "maxlength", Message: "Company name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
-            ],
-            TariffId1: [
-                { name: "required", Message: "Tariff Name is required" }
-            ],
-            ClassId1: [
-                { name: "required", Message: "City Name is required" }
-            ],
-            mobileNo: [
-                { name: "required", Message: "Mobile Number is required" },
-                { name: "maxlength", Message: "Number be not be greater than 10 digits" },
-                { name: "pattern", Message: "Only Digits allowed." }
-            ],
-            phoneNo: [
-                { name: "required", Message: "Phone Number is required" },
-                { name: "maxlength", Message: "Number be not be greater than 10 digits" },
-                { name: "pattern", Message: "Only Digits allowed." }
-            ],
-            pinNo: [
-                { name: "required", Message: "Pin Code is required" },
-                { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
-                { name: "pattern", Message: "Only Digits allowed." }
-            ],
-            address: [
-                { name: "required", Message: "Address is required" },
-                { name: "maxlength", Message: "Address must be between 1 and 100 characters." },
-                { name: "pattern", Message: "Secial Char allowed." }
-            ],
-            compTypeId: [
-                { name: "required", Message: "Company Type Name is required" }
-            ],
-            ServiceName: []
+            ]
         };
     }
 

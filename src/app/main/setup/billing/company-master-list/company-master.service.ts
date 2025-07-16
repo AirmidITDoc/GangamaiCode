@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
@@ -21,22 +21,65 @@ export class CompanyMasterService {
         // this.myformSearch = this.createSearchForm();
     }
 
+createCompanymasterFormDemo(): FormGroup {
+return this._formBuilder.group({
+            companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-    createCompanymasterFormDemo(): FormGroup {
-        return this._formBuilder.group({
+            companyName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            this._FormvalidationserviceService.allowEmptyStringValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            companyShortName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             companyCode: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            this._FormvalidationserviceService.allowEmptyStringValidator()]],
+this._FormvalidationserviceService.allowEmptyStringValidator()]],
+
+            address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+
+            cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            contactPerson: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$')]],
             companyServicePrint: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
             inInclusionOrExclusion: [0],
 
+            // designation: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            // this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-        });
-    }
+            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+            Validators.maxLength(10)]],
 
+            contactNumber: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+            Validators.maxLength(10)]],
+
+            emailId: ['', [Validators.email]],
+            website: [''],
+
+            compTypeId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isSubCompany: [false],
+            paymodeOfPayId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            tanno: ['', Validators.maxLength(13)],
+            gstin: ['', Validators.maxLength(10)],
+            panNo: ['', Validators.maxLength(10)],
+            adminCharges: [0, Validators.maxLength(5)],
+            // isActive: [true],
+            pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
+            Validators.minLength(6),
+            Validators.maxLength(6),]],
+            faxNo: [" ", Validators.maxLength(10)],
+            traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            creditDays: [0, Validators.maxLength(3)],
+
+            loginWebsiteUser: "",
+            loginWebsitePassword: "",
+
+});
+}
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
@@ -51,19 +94,19 @@ export class CompanyMasterService {
         });
     }
 
-    creategroupSearchForm(): FormGroup {
-        return this._formBuilder.group({
-            ServiceName: [""],
-            ClassId2: [""],
-        });
-    }
+    // creategroupSearchForm(): FormGroup {
+    //     return this._formBuilder.group({
+    //         ServiceName: [""],
+    //         ClassId2: [""],
+    //     });
+    // }
 
-    createsubgroupSearchForm(): FormGroup {
-        return this._formBuilder.group({
-            ServiceName: [""],
-            ClassId2: [""],
-        });
-    }
+    // createsubgroupSearchForm(): FormGroup {
+    //     return this._formBuilder.group({
+    //         ServiceName: [""],
+    //         ClassId2: [""],
+    //     });
+    // }
 
     createcompwiseservForm(): FormGroup {
         return this._formBuilder.group({
@@ -74,13 +117,13 @@ export class CompanyMasterService {
     createCompanysearchFormDemo(): FormGroup {
         return this._formBuilder.group({
             companyName: [""],
-            compTypeId: 0,
+            compTypeId: [0, [ notEmptyOrZeroValidator()]],
             ServiceSearch: [""],
-            ClassId1: [1],
-            TariffId1: [0],
-            ClassId2: [1],
-            TariffId2: [1],
-            IsPathRad: ["3"],
+            // ClassId1: [0, [notEmptyOrZeroValidator()]],
+            TariffId1:[0, [notEmptyOrZeroValidator()]],
+            ClassId2:[0, [notEmptyOrZeroValidator()]],
+            // TariffId2: [0, [notEmptyOrZeroValidator()]],
+            // IsPathRad: ["3"],
             ServiceName: ['%']
 
         });
@@ -130,8 +173,17 @@ export class CompanyMasterService {
 
 
  public Servdiscupdate(Param: any) {
+     if (Param.compServiceDetailId) {
+            return this._httpClient.PutData("CompanyMaster/CompanyWiseServiceDiscount/" + Param.compServiceDetailId, Param);
+        } else 
       return this._httpClient.PostData("CompanyMaster/CompanyWiseServiceDiscount", Param);
     }
 
     
+}
+function notEmptyOrZeroValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const value = control.value;
+        return value > 0 ? null : { greaterThanZero: { value: value } };
+    };
 }

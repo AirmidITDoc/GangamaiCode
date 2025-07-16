@@ -113,8 +113,6 @@
                   </airmid-dropdown>
                 </div>
 
-
-
               </div>
 
             </mat-card-content>
@@ -142,34 +140,13 @@
                         [maxLength]="10">
                       </airmid-textbox>
                     </div>
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                            <airmid-textbox label="Landline / Other Number" fxFlex
-                                                formControlName="contactNumber" [formGroup]="companyFormDemo"
-                                                [maxLength]="6">
-                                            </airmid-textbox>
-                                        </div> -->
-
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                  <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                       <airmid-textbox label="Email ID" formControlName="emailId" fxFlex [formGroup]="companyFormDemo"
                         [value]="registerObj?.emailId" [validations]="getValidationMessages().phoneNo">
                       </airmid-textbox>
 
                     </div>
-
-                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Email ID" formControlName="emailId"
-                                                [formGroup]="companyFormDemo"
-                                                [validations]="getValidationMessages().phoneNo">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.x="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Website" formControlName="website"
-                                                [formGroup]="companyFormDemo">
-                                            </airmid-textbox>
-                                        </div> -->
 
                   </div>
 
@@ -214,17 +191,11 @@
                   </div>
                   <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-
-
-
-
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-textbox label="GSTIN" formControlName="gstin" [value]="registerObj?.gstin"
                         [formGroup]="companyFormDemo" [maxLength]="10">
                       </airmid-textbox>
                     </div>
-
-
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-textbox label="PAN No" formControlName="panNo" [value]="registerObj?.panNo"
