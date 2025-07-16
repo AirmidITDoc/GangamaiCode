@@ -83,7 +83,7 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
-            IsDeletedSearch: [""],
+            Isactive: ["1"],
         });
     }
 

@@ -28,36 +28,40 @@
                 <button mat-icon-button matTooltip="Edit Company" (click)="onSave(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
-                
-   <button mat-icon-button matTooltip="Edit Service Code" (click)="CompservUpdate(element)">
+
+                <button mat-icon-button matTooltip="Edit Service Code" (click)="CompservUpdate(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
 
-            <button mat-icon-button matTooltip="Delete" (click)="delCompany(element)">
-                <mat-icon>delete</mat-icon>
-            </button> 
+                <button mat-icon-button matTooltip="Delete" (click)="delCompany(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
 
 
             </div>
         </ng-template>
 
 
-        <airmid-table [gridConfig]="gridConfig" class="content">
+         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Company Name</mat-label>
-                    <input matInput placeholder="Search Company  Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                <form [formGroup]="searchform" fxLayout="column">
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Company Name</mat-label>
+                        <input matInput placeholder="Search Service Name" autocomplete="off" (input)="onChangeFirst()"
+                            [formGroup]="searchform" formControlName="CompanyNameSearch" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('CompanyNameSearch')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+                    <mat-radio-group value="" fxLayoutAlign="center center" formControlName="Isactive"   [formGroup]="searchform">
+                        <mat-radio-button value="">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                </form>
             </ng-container>
         </airmid-table>
     </div>

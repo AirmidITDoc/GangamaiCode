@@ -9,6 +9,7 @@ import { ServeToCompanyComponent } from './serve-to-company/serve-to-company.com
 import { NewCompanyMasterComponent } from './new-company-master/new-company-master.component';
 import { fuseAnimations } from '@fuse/animations';
 import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-company-master-list',
@@ -19,16 +20,20 @@ import { UpdateServCodePrintComponent } from './update-serv-code-print/update-se
 })
 export class CompanyMasterListComponent {
 
+searchform:FormGroup
+    Companyname:any;
+    type=0
 
-    ngAfterViewInit() {
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  
+     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    companyName: any = "";
-
-    allcolumns = [
+  
+     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   
+    allColumns = [
         { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -57,17 +62,51 @@ export class CompanyMasterListComponent {
         }
     ]
 
-    allfilters = [
-        { fieldName: "CompanyName", fieldValue: "", opType: OperatorComparer.Contains },
+
+    allFilters = [
+        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
+    
+
     gridConfig: gridModel = {
         apiUrl: "CompanyMaster/CompanyMasterList",
-        columnsList: this.allcolumns,
+        columnsList: this.allColumns,
         sortField: "CompanyId",
         sortOrder: 0,
-        filters: this.allfilters
+        filters: this.allFilters
     }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CompanyNameSearch')
+            this.searchform.get('CompanyNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.Companyname = this.searchform.get('CompanyNameSearch').value + "%"
+        // this.type = this.myformSearch.get('IsDeletedSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "CompanyMaster/CompanyMasterList",
+            columnsList: this.allColumns,
+            sortField: "CompanyId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "CompanyName", fieldValue: this.Companyname, opType: OperatorComparer.Contains },
+                { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public _matDialog: MatDialog,
@@ -75,9 +114,9 @@ export class CompanyMasterListComponent {
     ) { }
 
     ngOnInit(): void {
-
+        this.searchform=this._CompanyMasterService.createSearchForm()
     }
-
+   
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

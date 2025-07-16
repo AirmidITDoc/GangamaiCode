@@ -7,6 +7,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
 import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
+import { FormGroup } from "@angular/forms";
 
 
 
@@ -18,10 +19,13 @@ import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
     animations: fuseAnimations,
 })
 export class SubtpaCompanyMasterComponent implements OnInit {
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+    myformSearch:FormGroup
     companyName: any = "";
-    allcolumns = [
+   
+
+ @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   
+    allColumns =  [
         { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
         { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Main Company Name", key: "mainCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -52,24 +56,58 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
 
-    allfilters = [
+
+    allFilters = [
         { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
+    
+
     gridConfig: gridModel = {
         apiUrl: "SubTpaCompany/List",
-        columnsList: this.allcolumns,
+        columnsList: this.allColumns,
         sortField: "subCompanyId",
         sortOrder: 0,
-        filters: this.allfilters
+        filters: this.allFilters
     }
 
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'CompanyNameSearch')
+            this.myformSearch.get('CompanyNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.companyName = this.myformSearch.get('CompanyNameSearch').value + "%"
+        // this.type = this.myformSearch.get('IsDeletedSearch').value
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "SubTpaCompany/List",
+            columnsList: this.allColumns,
+            sortField: "subCompanyId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "CompanyName", fieldValue: this.companyName, opType: OperatorComparer.Contains },
+                { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
     constructor(
         public _subtpacompanyService: SubtpaCompanyMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void { 
+        this.myformSearch=this._subtpacompanyService.createSearchForm()
+    }
 
 
     onNew(row: any = null) {
