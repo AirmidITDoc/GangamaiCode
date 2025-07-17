@@ -1201,6 +1201,22 @@ export class RegInsert {
   AdmissionID: any;
   VisitId: any;
   isSeniorCitizen: boolean
+  emgContactPersonName:any;
+  emgRelationshipId:any;
+  emgMobileNo:any;
+  emgLandlineNo:any;
+  engAddress:any;
+  emgAadharCardNo:any;
+  emgDrivingLicenceNo:any;
+  medTourismNationalityId:any;
+  medTourismPassportNo:any;
+  medTourismVisaIssueDate:Date;
+  medTourismCitizenship:any;  
+  medTourismPortOfEntry:any;  
+  medTourismResidentialAddress:any;
+  medTourismOfficeWorkAddress:any;
+  medTourismVisaValidityDate:Date;
+  medTourismDateOfEntry:Date;
   // addedBy:any;
   // updatedBy:any;
 
@@ -1276,6 +1292,22 @@ export class RegInsert {
       this.AdmissionID = RegInsert.AdmissionID || '';
       this.VisitId = RegInsert.VisitId || 0;
       this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
+      this.emgContactPersonName = RegInsert.emgContactPersonName || "";
+      this.emgRelationshipId = RegInsert.emgRelationshipId || 0;
+      this.emgMobileNo = RegInsert.emgMobileNo || 0;
+      this.emgLandlineNo = RegInsert.emgLandlineNo || 0;
+      this.engAddress = RegInsert.engAddress || '';
+      this.emgAadharCardNo = RegInsert.emgAadharCardNo || 0;
+      this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
+      this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
+      this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
+      this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || this.currentDate;
+      this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
+      this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
+      this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
+      this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
+      this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
+      this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
       // this.addedBy = RegInsert.addedBy || 0 ;
       // this.updatedBy = RegInsert.updatedBy || 0 ;
 

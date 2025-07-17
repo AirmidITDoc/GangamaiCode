@@ -29,6 +29,8 @@ export class NewAdmissionComponent implements OnInit {
   admissionFormGroup: FormGroup;
 
   searchFormGroup: FormGroup;
+  EmergencyFormGroup:FormGroup;
+  MedicalFormGroup:FormGroup;
 
 
   // options = [];
@@ -117,6 +119,9 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
     this.searchFormGroup.markAllAsTouched();
+
+    this.EmergencyFormGroup=this._AdmissionService.createEmergencydetailForm();
+    this.MedicalFormGroup=this._AdmissionService.createMedicaldetailForm();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
@@ -513,6 +518,21 @@ export class NewAdmissionComponent implements OnInit {
       docNameId: [
         { name: "required", Message: "Doctor Name is required" }
       ],
+      emgDrivingLicenceNo:[
+          { name: "pattern", Message: "e.g., MH-14-20210001234" },
+          { name: "minLength", Message: "16 digit required." },
+          { name: "maxLength", Message: "More than 16 digits not allowed." }
+      ],
+      medTourismPassportNo:[
+          { name: "pattern", Message: "e.g., A1234567" },
+          { name: "minLength", Message: "8 digit required." },
+          { name: "maxLength", Message: "More than 8 digits not allowed." }
+      ],
+      medTourismNationalityId: [
+          { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
+          { name: "minLength", Message: "Minimum 6 characters required." },
+          { name: "maxLength", Message: "Maximum 15 characters allowed." }
+          ]
     };
   }
   onClear() { }

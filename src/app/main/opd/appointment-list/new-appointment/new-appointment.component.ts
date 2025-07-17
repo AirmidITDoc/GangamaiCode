@@ -407,13 +407,22 @@ export class NewAppointmentComponent implements OnInit {
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
-                            // emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-                            // emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-                            // emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-                            // emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-                            // engAddress: this.registerObj?.engAddress ?? '',
-                            // emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-                            // emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? ''
+                            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                            engAddress: this.registerObj?.engAddress ?? '',
+                            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
                         console.log(this.registerObj)
                     });
@@ -433,7 +442,23 @@ export class NewAppointmentComponent implements OnInit {
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
-                            MobileNo: this.registerObj.mobileNo
+                            MobileNo: this.registerObj.mobileNo,
+                            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                            engAddress: this.registerObj?.engAddress ?? '',
+                            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
                         // console.log(this.registerObj)
                     });
@@ -483,7 +508,23 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo
+                        MobileNo: this.registerObj.mobileNo,
+                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                        engAddress: this.registerObj?.engAddress ?? '',
+                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                     });
                 });
 
@@ -500,7 +541,23 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo.trim()
+                        MobileNo: this.registerObj.mobileNo.trim(),
+                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                        engAddress: this.registerObj?.engAddress ?? '',
+                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                     });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
