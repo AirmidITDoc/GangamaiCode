@@ -21,7 +21,7 @@ export class EditpackageComponent implements OnInit {
   serviceInsertForm: FormGroup;
   // isActive:boolean=true;
   displayedColumnspackage = [
-    'ServiceName',
+    // 'ServiceName',
     'PackageServiceName',
     'Qty',
     'Price',
@@ -80,11 +80,6 @@ export class EditpackageComponent implements OnInit {
       ServiceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
       TariffName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
 
-      PackageTotalDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PackageICUDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PackageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PackageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
       isPackageType: "0",
       qtyLimit: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
       amount: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -94,7 +89,11 @@ export class EditpackageComponent implements OnInit {
 
    createServicemasterInsertForm(): FormGroup {
     return this._formBuilder.group({
-      packageDetail: this._formBuilder.array([])
+      packageDetail: this._formBuilder.array([]),
+      PackageTotalDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageICUDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
@@ -116,7 +115,6 @@ export class EditpackageComponent implements OnInit {
   }
 
   getRtevPackageDetList(obj) {
-    // debugger
     var vdata =
     {
       "first": 0,
@@ -136,16 +134,25 @@ export class EditpackageComponent implements OnInit {
     console.log(vdata)
     setTimeout(() => {
       this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data => {
-        this.dsPackageDet.data = data.data as PacakgeList[];
-        this.dsPackagegroupDet.data = data.data as PacakgeList[];
-        this.PacakgeServiceList = data.data as PacakgeList
-        this.PacakgeGroupList = data.data as PacakgeList
-        console.log("Service:",this.dsPackageDet.data)
-        console.log("Group:",this.dsPackagegroupDet.data)
+      const fullList = data.data as PacakgeList[];
+      const packageList = fullList.filter(item => item.isPackageType === false);
+      const groupList = fullList.filter(item => item.isPackageType === true);
+
+       if (fullList.length > 0) {
+        this.serviceForm.patchValue({
+          isPackageType: fullList[0].isPackageType ? '1' : '0'
+        });
+      }
+      this.dsPackageDet.data = packageList;
+      this.PacakgeServiceList = packageList;
+      console.log("Service:", this.dsPackageDet.data);
+
+      this.dsPackagegroupDet.data = groupList;
+      this.PacakgeGroupList = groupList;
+      console.log("Group:", this.dsPackagegroupDet.data);
       });
     }, 1000);
   }
-
 
   vPackageServiceName: any;
   vPackageServiceId: any;
@@ -154,7 +161,6 @@ export class EditpackageComponent implements OnInit {
   tariffId: any;
 
   selectChangeService(data) {
-    // console.log(data)
     this.vPackageServiceId = data.serviceId
     this.vPackageServiceName = data.serviceName
     this.classId = data.classId
@@ -192,10 +198,8 @@ export class EditpackageComponent implements OnInit {
       });
 
     this.dsPackageDet.data = this.PacakgeServiceList;
-    // this.serviceForm.reset();
     this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
     this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
-    // console.log(this.dsPackageDet.data)
 
     this.vPackageServiceId = null;
     this.classId = null;
@@ -222,7 +226,7 @@ export class EditpackageComponent implements OnInit {
       });
       return;
     }
-    debugger
+    // debugger
     const isDuplicate = this.PacakgeGroupList.some(
       item => item.GroupId === this.groupId
     );
@@ -243,18 +247,13 @@ export class EditpackageComponent implements OnInit {
       });
 
     this.dsPackagegroupDet.data = this.PacakgeGroupList;
-    // this.serviceForm.reset();
     this.serviceForm.get('ServiceName').setValue(this.registerObj.serviceName);
     this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
     console.log(this.dsPackagegroupDet.data)
 
-    // this.vPackageServiceId = null;
-    // this.classId = null;
-    // this.tariffId = null;
     this.serviceForm.get('groupId').reset('0')
     this.serviceForm.get('amount').reset('')
     this.serviceForm.get('isPackageType').reset('1')
-    // this.vPackageServiceName = '';
   }
 
   deleteTableRowPackage(element) {
@@ -294,7 +293,6 @@ export class EditpackageComponent implements OnInit {
           return;
         }
       }
-      debugger
       this.packageDetailsArray.clear();
       if (this.serviceForm.get('isPackageType').value === '0') {
         this.dsPackageDet.data.forEach(item => {
@@ -305,9 +303,6 @@ export class EditpackageComponent implements OnInit {
           this.packageDetailsArray.push(this.createPackageDetail(item));
         });
       }
-      // this.serviceForm.removeControl('ServiceName')
-      // this.serviceForm.removeControl('TariffName')
-      // this.serviceForm.removeControl('serviceId')
       console.log("Submitting Package Details:", this.serviceInsertForm.value);
 
       this._ServiceMasterService.SavePackagedet(this.serviceInsertForm.value).subscribe((response) => {
@@ -367,6 +362,14 @@ export class EditpackageComponent implements OnInit {
     return false;
   }
 
+  focusNext(nextEl: any) {
+  if (nextEl && nextEl.focus) {
+    nextEl.focus(); // for native inputs
+  } else if (nextEl?._elementRef?.nativeElement) {
+    nextEl._elementRef.nativeElement.focus(); // for custom Angular components
+  }
+}
+
 }
 export class PacakgeList {
   ServiceId: number;
@@ -375,6 +378,7 @@ export class PacakgeList {
   PacakgeServiceName: any;
   groupId:any;
   Price:any;
+  isPackageType:any;
 
   constructor(PacakgeList) {
     this.ServiceId = PacakgeList.ServiceId || '';
@@ -382,5 +386,6 @@ export class PacakgeList {
     this.PacakgeServiceName = PacakgeList.PacakgeServiceName || '';
     this.groupId = PacakgeList.groupId || 0;
     this.Price = PacakgeList.Price || 0;
+    this.isPackageType = PacakgeList.isPackageType || ''
   }
 }

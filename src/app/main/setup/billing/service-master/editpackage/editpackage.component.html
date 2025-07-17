@@ -37,35 +37,39 @@
                                 </div>
                             </div>
 
-                            <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-2">
-                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
-                                    <airmid-textbox label="Ward Days" formControlName="PackageTotalDays"
-                                        [formGroup]="serviceForm" [maxLength]="50"
-                                        (keypress)="keyPressAlphanumeric($event)">
-                                    </airmid-textbox>
-                                </div>
+                            <form [formGroup]="serviceInsertForm">
 
-                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
-                                    <airmid-textbox label="ICU Days" formControlName="PackageICUDays"
-                                        [formGroup]="serviceForm" [maxLength]="50"
-                                        (keypress)="keyPressAlphanumeric($event)">
-                                    </airmid-textbox>
-                                </div>
+                                <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-2">
+                                    <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Ward Days" formControlName="PackageTotalDays"
+                                            [formGroup]="serviceInsertForm" [maxLength]="50"
+                                            (keypress)="keyPressAlphanumeric($event)" (keydown.enter)="focusNext(PackageICUDays)">
+                                        </airmid-textbox>
+                                    </div>
 
-                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
-                                    <airmid-textbox label="Medicine Amount" formControlName="PackageMedicineAmount"
-                                        [formGroup]="serviceForm" [maxLength]="50"
-                                        (keypress)="keyPressAlphanumeric($event)">
-                                    </airmid-textbox>
-                                </div>
+                                    <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                        <airmid-textbox label="ICU Days" formControlName="PackageICUDays" #PackageICUDays
+                                            [formGroup]="serviceInsertForm" [maxLength]="50"
+                                            (keypress)="keyPressAlphanumeric($event)" (keydown.enter)="focusNext(PackageMedicineAmount)">
+                                        </airmid-textbox>
+                                    </div>
 
-                                <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
-                                    <airmid-textbox label="Consumable Amount" formControlName="PackageConsumableAmount"
-                                        [formGroup]="serviceForm" [maxLength]="50"
-                                        (keypress)="keyPressAlphanumeric($event)">
-                                    </airmid-textbox>
+                                    <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Medicine Amount" formControlName="PackageMedicineAmount"
+                                            [formGroup]="serviceInsertForm" [maxLength]="50" #PackageMedicineAmount
+                                            (keypress)="keyPressAlphanumeric($event)" (keydown.enter)="focusNext(PackageConsumableAmount)">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="24%" fxFlex.sm="48%" fxFlex.xs="100%">
+                                        <airmid-textbox label="Consumable Amount" #PackageConsumableAmount
+                                            formControlName="PackageConsumableAmount" [formGroup]="serviceInsertForm"
+                                            [maxLength]="50" (keypress)="keyPressAlphanumeric($event)">
+                                        </airmid-textbox>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
+
 
                             <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-3" fxLayoutAlign="start center">
 
@@ -78,31 +82,32 @@
                                 </div>
 
                                 <!-- service Wise radio -->
-                                <div *ngIf="serviceForm.get('isPackageType')?.value == '0'" fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                <div *ngIf="serviceForm.get('isPackageType')?.value == '0'" fxLayout="column"
+                                    fxLayout.gt-xs="row" class="gap-8">
                                     <div fxFlex="40%" fxFlex.sm="60%" fxFlex.xs="100%">
-                                        <airmid-autocomplete label="Enter Package Service Name"
+                                        <airmid-autocomplete label="Enter Package Service Name" #serviceInput
                                             [formGroup]="serviceForm" formControlName="serviceId"
                                             placeholderText="Enter Package Service Name" [ApiUrl]="ApiURL"
                                             (selectionChange)="selectChangeService($event)" TextField="formattedText"
-                                            ValueField="serviceId">
+                                            ValueField="serviceId" (keydown.enter)="focusNext(qtyLimitInput)">
                                         </airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.sm="20%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Qty Limit" formControlName="qtyLimit"
+                                        <airmid-textbox label="Qty Limit" formControlName="qtyLimit" #qtyLimitInput (keydown.enter)="focusNext(amountInput)"
                                             [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)">
                                         </airmid-textbox>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.sm="20%" fxFlex.xs="100%">
                                         <airmid-textbox label="Amount" formControlName="amount" [(ngModel)]="price"
-                                            [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)" [readonly]="true">
+                                            [formGroup]="serviceForm" (keypress)="keyPressAlphanumeric($event)"
+                                            [readonly]="true">
                                         </airmid-textbox>
                                     </div>
 
                                     <div class="input-add-button">
-                                        <button class="btn btn-primary btn-with-icon"
-                                            (click)="onAddPackageService()">
+                                        <button class="btn btn-primary btn-with-icon" (click)="onAddPackageService()">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>
@@ -112,7 +117,8 @@
                                 </div>
 
                                 <!-- groupwise radio -->
-                                 <div *ngIf="serviceForm.get('isPackageType')?.value == '1'" fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                <div *ngIf="serviceForm.get('isPackageType')?.value == '1'" fxLayout="column"
+                                    fxLayout.gt-xs="row" class="gap-8">
                                     <div fxFlex="70%" fxFlex.sm="60%" fxFlex.xs="100%">
                                         <airmid-dropdown label="Group Name" formControlName="groupId"
                                             [formGroup]="serviceForm" (selectionChange)="selectChangegroupName($event)"
@@ -127,8 +133,7 @@
                                     </div>
 
                                     <div class="input-add-button">
-                                        <button class="btn btn-primary btn-with-icon"
-                                            (click)="onAddPackageGroup()">
+                                        <button class="btn btn-primary btn-with-icon" (click)="onAddPackageGroup()">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>
@@ -142,16 +147,17 @@
 
                     <!-- servicewise table -->
                     <mat-table #table1 matSort [dataSource]="dsPackageDet" [@animateStagger]="{value:'50'}"
-                        style="height:250px !important;overflow: auto;" *ngIf="serviceForm.get('isPackageType')?.value == '0'">
+                        style="height:250px !important;overflow: auto;"
+                        *ngIf="serviceForm.get('isPackageType')?.value == '0'">
 
-                        <ng-container matColumnDef="ServiceName">
+                        <!-- <ng-container matColumnDef="ServiceName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Service Name
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 <span> {{contact.ServiceName || contact.serviceName}}</span>
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
 
                         <ng-container matColumnDef="PackageServiceName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -215,15 +221,16 @@
                     </mat-table>
 
                     <!-- groupwise table -->
-                      <mat-table #table1 matSort [dataSource]="dsPackagegroupDet" [@animateStagger]="{value:'50'}"
-                        style="height:250px !important;overflow: auto;" *ngIf="serviceForm.get('isPackageType')?.value == '1'">
+                    <mat-table #table1 matSort [dataSource]="dsPackagegroupDet" [@animateStagger]="{value:'50'}"
+                        style="height:250px !important;overflow: auto;"
+                        *ngIf="serviceForm.get('isPackageType')?.value == '1'">
 
                         <ng-container matColumnDef="GroupName">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Group Name
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                <span> {{contact.GroupName}}</span>
+                                <span> {{contact.GroupName || contact.packageServiceName}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -278,16 +285,16 @@
     <div class="modal-footer fixed-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-          
-                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
 
             </div>
         </div>
     </div>
 
-    
-                    <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+    <!-- <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                         <div></div>
                         <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>

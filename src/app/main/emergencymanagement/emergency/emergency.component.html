@@ -23,6 +23,16 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
+            <button mat-icon-button matTooltip="Bill" (click)="OnBillPayment(element)"
+            *ngIf="element.isCancelled==false">
+                <mat-icon>payment</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Emergency History" (click)="EmergencyHistory(element)"
+            *ngIf="element.isCancelled==false">
+                <mat-icon>history</mat-icon>
+            </button>
+
             <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
             *ngIf="element.isCancelled==false">
                 <mat-icon> cancel</mat-icon>

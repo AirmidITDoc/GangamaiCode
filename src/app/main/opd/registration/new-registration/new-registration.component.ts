@@ -312,6 +312,21 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
 
             ],
+            emgDrivingLicenceNo:[
+                { name: "pattern", Message: "e.g., MH-14-20210001234" },
+                { name: "minLength", Message: "16 digit required." },
+                { name: "maxLength", Message: "More than 16 digits not allowed." }
+            ],
+            medTourismPassportNo:[
+                { name: "pattern", Message: "e.g., A1234567" },
+                { name: "minLength", Message: "8 digit required." },
+                { name: "maxLength", Message: "More than 8 digits not allowed." }
+            ],
+           medTourismNationalityId: [
+                { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
+                { name: "minLength", Message: "Minimum 6 characters required." },
+                { name: "maxLength", Message: "Maximum 15 characters allowed." }
+                ]
         };
     }
 

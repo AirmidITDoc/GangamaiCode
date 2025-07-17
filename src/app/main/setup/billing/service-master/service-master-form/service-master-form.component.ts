@@ -49,8 +49,8 @@ export class ServiceMasterFormComponent implements OnInit {
     showRadOut: boolean = false;
     showPathOut: boolean = false;
     iscreditedtoDoctor: boolean = false;
-    opiptype: boolean = true;
     isActive: boolean = true;
+    vSelectedOption: any = '2';
 
     constructor(public _serviceMasterService: ServiceMasterService,
         public toastr: ToastrService,
@@ -87,6 +87,7 @@ export class ServiceMasterFormComponent implements OnInit {
             this.IsDocEditable = this.registerObj.isDocEditable
             this.emg_amt = this.registerObj.emgAmt
             this.emg_per = this.registerObj.emgPer
+            this.vSelectedOption = String(this.registerObj?.isApplicableFor)
 
             if (this.registerObj.creditedtoDoctor == true) {
                 this.serviceForm.get('creditedtoDoctor').setValue(true)
@@ -146,7 +147,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isDiscount: this.data?.isDiscount,
             isProcedure: this.data?.isProcedure,
             isServiceTaxApplicable: this.data?.isServiceTaxApplicable,
-            isApplicableFor: this.data?.isApplicableFor,
+            // isApplicableFor: this.data?.isApplicableFor,
             emgStartTime: formatTime(this.data?.emgStartTime),
             emgEndTime: formatTime(this.data?.emgEndTime),
         };
@@ -162,9 +163,6 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('isDocEditable')?.valueChanges.subscribe(val => {
             this.iscreditedtoDoctor = val;
         });
-        this.serviceForm.get('opipType')?.valueChanges.subscribe(val=>{
-            this.opiptype=val
-        })
     }
 
     createServicemasterForm(): FormGroup {
@@ -196,7 +194,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isActive: true,
             isDocEditable: false,
             isServiceTaxApplicable:false,
-            isApplicableFor:['2', [Validators.required]],
+            isApplicableFor:['2'],
             packageTotalDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageIcudays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -206,7 +204,7 @@ export class ServiceMasterFormComponent implements OnInit {
             // extra field which we not insert
             EffectiveDate: [""],
             tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            opipType:[true, [Validators.required]],
+            opipType:[true],
         });
     }
     createserviceDetails(item: any = {}): FormGroup {

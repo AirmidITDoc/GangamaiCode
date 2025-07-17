@@ -89,7 +89,10 @@ export class EmergencyService {
       PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       StateId: [''],
       CountryId: [''],
-      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      dateofBirth: [new Date()],
+            DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+
+      // dateofBirth: [(new Date()).toISOString(), [this._FormvalidationserviceService.validDateValidator()]]
 
     })
   }

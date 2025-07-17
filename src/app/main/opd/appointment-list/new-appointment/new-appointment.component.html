@@ -199,11 +199,13 @@
                               </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo" [formGroup]="personalFormGroup" [maxLength]="12" [value]="registerObj.emgAadharCardNo"></airmid-textbox>
+                                <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo" [formGroup]="personalFormGroup" [maxLength]="12" 
+                                [validations]="getValidationMessages().aadharCardNo" [value]="registerObj.emgAadharCardNo"></airmid-textbox>
                               </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo" [formGroup]="personalFormGroup" [maxLength]="16" [value]="registerObj.emgDrivingLicenceNo"></airmid-textbox>
+                                <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo" [formGroup]="personalFormGroup" [maxLength]="16" 
+                                [validations]="getValidationMessages().emgDrivingLicenceNo" [value]="registerObj.emgDrivingLicenceNo"></airmid-textbox>
                               </div>
                             </div>
                           </form>
@@ -214,16 +216,9 @@
                           <form [formGroup]="personalFormGroup" class="mat-form-field-100">
                             <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo" [formGroup]="personalFormGroup" [maxLength]="8" [value]="registerObj.medTourismPassportNo"></airmid-textbox>
+                                <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo" [formGroup]="personalFormGroup" [maxLength]="8" 
+                                [validations]="getValidationMessages().medTourismPassportNo" [value]="registerObj.medTourismPassportNo"></airmid-textbox>
                               </div>
-
-                              <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-datepicker [label]="'Visa Issue Date'" [formGroup]="personalFormGroup" [isRangePicker]="false" formStartControlName="medTourismVisaIssueDate" formEndControlName="VisaDate"></airmid-datepicker>
-                              </div>
-
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-datepicker [label]="'Visa Validity'" [formGroup]="personalFormGroup" [isRangePicker]="false" formStartControlName="medTourismVisaValidityDate" formEndControlName="VisaValidityDate"></airmid-datepicker>
-                              </div> -->
                                   <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Visa Issue Date</mat-label>
@@ -247,7 +242,8 @@
                                 </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId" [formGroup]="personalFormGroup" [maxLength]="20" [value]="registerObj.medTourismNationalityId"></airmid-textbox>
+                                <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId" [formGroup]="personalFormGroup" [maxLength]="20" 
+                                [validations]="getValidationMessages().medTourismNationalityId" [value]="registerObj.medTourismNationalityId"></airmid-textbox>
                               </div>
 
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

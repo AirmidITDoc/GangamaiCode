@@ -150,6 +150,14 @@ export class EmergencyComponent implements OnInit {
       }
     })
   }
+
+  OnBillPayment(row){
+
+  }
+
+  EmergencyHistory(row){
+    
+  }
 }
 
 export class EmergencyList {
@@ -171,7 +179,8 @@ export class EmergencyList {
   countryId: any;
   mobileNo: any;
   phoneNo: any;
-  dateofBirth: any;
+  dateofBirth: any;  
+  currentDate = new Date();
   prefixId: any;
   regId: any;
   departmentId:any;
@@ -199,7 +208,7 @@ export class EmergencyList {
       this.countryId = EmergencyList.countryId || 0
       this.mobileNo = EmergencyList.mobileNo || 0
       this.phoneNo = EmergencyList.phoneNo || 0
-      this.dateofBirth = EmergencyList.dateofBirth || ''
+      this.dateofBirth = EmergencyList.dateofBirth || this.currentDate;
       this.prefixId = EmergencyList.prefixId || 0
       this.regId = EmergencyList.regId || 0
       this.departmentId = EmergencyList.departmentId || 0

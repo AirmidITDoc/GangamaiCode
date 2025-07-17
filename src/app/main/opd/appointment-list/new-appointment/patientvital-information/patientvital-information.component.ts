@@ -102,7 +102,7 @@ export class PatientvitalInformationComponent {
   }
 
   getBMIcalculation() {
-    debugger
+    // debugger
     if (this.vHeight > 0 && this.vWeight > 0) {
       let Height = (this.vHeight / 100)
       this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));

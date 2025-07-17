@@ -261,6 +261,7 @@ export class ServiceMaster {
     AddedByName: string;
     IsDeleted: any;
     tariffId:any;
+    isApplicableFor:any;
 
     /**
      * Constructor
@@ -292,6 +293,7 @@ export class ServiceMaster {
             this.AddedByName = ServiceMaster.AddedByName || "";
             this.IsDeleted = ServiceMaster.IsDeleted || "";
             this.tariffId = ServiceMaster.tariffId || "";
+            this.isApplicableFor = ServiceMaster.isApplicableFor || 0
         }
     }
 }
