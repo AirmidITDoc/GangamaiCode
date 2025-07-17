@@ -84,6 +84,8 @@ export class CrossConsultationComponent implements OnInit {
       followupDate: ['1900-01-01'],
       crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      campId:0,
+      crossConsultantDrId:0,
     });
   }
 
@@ -94,7 +96,7 @@ export class CrossConsultationComponent implements OnInit {
     data.departmentId = Number(this.crossconForm.get('departmentId').value)
     data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
     this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
-    this.crossconForm.get('visitTime').setValue(this.datePipe.transform(this.crossconForm.get('visitTime').value, 'yyyy-MM-ddTHH:mm'))
+    this.crossconForm.get('crossConsultantDrId').setValue(this.data.doctorId)
 
      console.log(this.crossconForm.value)
 

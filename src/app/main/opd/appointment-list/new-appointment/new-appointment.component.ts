@@ -674,7 +674,7 @@ export class NewAppointmentComponent implements OnInit {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         }
-        // console.log(submitData);
+        console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
             this.onClear(true);
@@ -710,7 +710,7 @@ export class NewAppointmentComponent implements OnInit {
             "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
-        // console.log(submitData)
+        console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
             this.onClear(true);

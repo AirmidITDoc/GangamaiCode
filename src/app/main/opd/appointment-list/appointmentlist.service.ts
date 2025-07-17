@@ -143,7 +143,7 @@ export class AppointmentlistService {
             followupDate: [(new Date()).toISOString()],
             crossConsulFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-
+            crossConsultantDrId: 0,
         });
     }
 

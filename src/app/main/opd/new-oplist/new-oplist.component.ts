@@ -278,7 +278,7 @@ export class NewOPListComponent implements OnInit {
 
     openPaymentpopup(contact) {
         console.log(contact)
-
+debugger
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
             PatientHeaderObj['RegNo'] = contact.regNo;
@@ -295,6 +295,8 @@ export class NewOPListComponent implements OnInit {
             {
                 maxWidth: "80vw",
                 width: '70%',
+                maxHeight: "90vw",
+                height: '90%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-Bill"
@@ -308,16 +310,16 @@ export class NewOPListComponent implements OnInit {
                 PaymentObj['BillNo'] = contact.billNo;
                 let updateBillobj = {};
                 updateBillobj['BillNo'] = contact.billNo;
-                updateBillobj['balanceAmt'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-
+                updateBillobj['balanceAmt'] = 0,//result.submitDataPay.ipPaymentInsert.BalanceAmt;
+                console.log(result.submitDataPay.ipPaymentInsert)
                 let data = {
                     opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
-                        "balanceAmt": result.submitDataPay.ipPaymentInsert.BalanceAmt
+                        "balanceAmt":0,// result.submitDataPay.ipPaymentInsert.BalanceAmt
                     },
                 }
-
+                console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
                     this.toastr.success(response.message);
                     this.grid.gridConfig = this.gridConfig;

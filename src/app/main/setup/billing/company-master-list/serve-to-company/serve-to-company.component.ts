@@ -61,8 +61,8 @@ export class ServeToCompanyComponent {
         // 'TariffName',
         // 'qty',
         'classRate',
-        'discountAmount',
-        'discountPercentage'
+        'DiscountAmount',
+        'DiscountPercentage'
         // 'checkbox',
         // 'Action'
     ];
@@ -84,15 +84,15 @@ export class ServeToCompanyComponent {
     displayedColumnsgrp: string[] = [
         'GroupName',
         'TariffName',
-        'discountAmount',
-        'discountPercentage'
+        'DiscountAmount',
+        'DiscountPercentage'
     ];
     displayedColumnssubgrp: string[] = [
         'GroupName',
         'SubGroupName',
         'TariffName',
-        'discountAmount',
-        'discountPercentage'
+        'DiscountAmount',
+        'DiscountPercentage'
     ];
     displayedColumnsubtpa: string[] = [
         'TypeName',
@@ -217,8 +217,8 @@ export class ServeToCompanyComponent {
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.DiscountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.DiscountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {
@@ -234,8 +234,8 @@ export class ServeToCompanyComponent {
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.DiscountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.DiscountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isGroupOrSubGroup: true
         });
     }
@@ -248,8 +248,8 @@ export class ServeToCompanyComponent {
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountAmount: [item.discountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountPercentage: [item.discountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [item.DiscountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [item.DiscountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isGroupOrSubGroup: false
         });
     }
@@ -542,6 +542,13 @@ export class ServeToCompanyComponent {
 
 
     onservocompSubmit() {
+       
+        if (!this.companyForm.get("ClassId2").value) {
+        this.toastr.warning('Please select Class.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
 
         if (this.DSServicedetailMainList.data.length > 0) {
 

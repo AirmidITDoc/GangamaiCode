@@ -115,22 +115,22 @@
                         </ng-container>
 
 
-                        <ng-container matColumnDef="discountAmount">
+                        <ng-container matColumnDef="DiscountAmount">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxShow.gt-sm>
                             <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                              <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
                                 (keypress)="keyPressCharater($event)" />
                             </mat-form-field>
                           </mat-cell>
                         </ng-container>
 
 
-                        <ng-container matColumnDef="discountPercentage">
+                        <ng-container matColumnDef="DiscountPercentage">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxShow.gt-sm>
                             <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
+                              <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
                                 (keyup)="gettableclassrate(element, $event.value)"
                                 (keypress)="keyPressCharater($event)" />
                             </mat-form-field>
@@ -202,22 +202,22 @@
                                 element.TariffName}}</mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="discountAmount">
+                            <ng-container matColumnDef="DiscountAmount">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                                  <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
                               </mat-cell>
                             </ng-container>
 
-                             <ng-container matColumnDef="discountPercentage">
+                             <ng-container matColumnDef="DiscountPercentage">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
+                                  <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
@@ -278,11 +278,11 @@
                             </ng-container>
 
 
-                            <ng-container matColumnDef="discountAmount">
+                            <ng-container matColumnDef="DiscountAmount">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.discountAmount" OnlyNumber
+                                  <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
@@ -290,11 +290,11 @@
                             </ng-container>
 
                             
-                            <ng-container matColumnDef="discountPercentage">
+                            <ng-container matColumnDef="DiscountPercentage">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
                               <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.discountPercentage" OnlyNumber
+                                  <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
                                     (keyup)="gettableclassrate(element, $event.value)"
                                     (keypress)="keyPressCharater($event)" />
                                 </mat-form-field>
