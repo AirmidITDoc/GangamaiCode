@@ -103,6 +103,7 @@ searchform:FormGroup
                 { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
             ]
         }
+        
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }

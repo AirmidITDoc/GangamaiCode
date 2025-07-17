@@ -105,7 +105,10 @@
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
                                 <div class="form-title mb-2 border-bottom pb-2">
-                                    <span class="h3 font-weight-600">Cross Consultation Information</span>
+                                    <!-- <span class="h3 font-weight-600">Cross Consultation Information :</span> -->
+                                    <span class="h3 font-weight-600" style="color: rgb(4, 69, 106);">Current Doctor :
+                                        {{data.doctorname}}</span>
+
                                 </div>
                                 <div class="form-body">
                                     <div fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
@@ -118,7 +121,7 @@
                                             <input matInput type="datetime-local" placeholder="Visit Date / Time"
                                                 formControlName="visitTime"
                                                 [ngModel]="date | date:'yyyy-MM-ddTHH:mm'" />
-                                          
+
                                         </mat-form-field>
 
 
@@ -127,18 +130,18 @@
                                             [validations]="getValidationMessages().Departmentid"
                                             [mode]="autocompletedepartment"
                                             (selectionChange)="selectChangedepartment($event)">
-                                          
+
                                         </airmid-dropdown>
                                         <!-- <app-form-validation
                                         [control]="crossconForm.get('departmentId')"></app-form-validation> -->
 
-                                        
+
                                         <!-- [mode]="autocompleteModedeptdoc"  [value]="data?.doctorId"-->
 
                                         <airmid-dropdown label="Doctor Name" formControlName="consultantDocId"
                                             fxFlex="30%" [formGroup]="crossconForm"
                                             [validations]="getValidationMessages().consultantDocId" #ddldoctor>
-                                           
+
                                         </airmid-dropdown>
 
                                         <!-- <app-form-validation

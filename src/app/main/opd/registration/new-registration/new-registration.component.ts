@@ -170,7 +170,10 @@ export class NewRegistrationComponent implements OnInit {
             });
             return;
         }
+        debugger
+         console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
+           
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
                 this.OnPrint(response);

@@ -34,7 +34,7 @@ return this._formBuilder.group({
             companyCode: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
 this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            address: ['', [Validators.required,Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
@@ -71,7 +71,7 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
             pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
             Validators.minLength(6),
             Validators.maxLength(6),]],
-            faxNo: [" ", Validators.maxLength(10)],
+            faxNo: [" ",[Validators.required, Validators.maxLength(10)]],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             creditDays: [0, Validators.maxLength(3)],
 
