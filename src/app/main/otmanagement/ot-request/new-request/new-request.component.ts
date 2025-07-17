@@ -64,43 +64,43 @@ export class NewRequestComponent implements OnInit {
      this.requestForm = this._OtRequestService.createRequestForm();
      this.requestForm.markAllAsTouched();
      
-     if ((this.data?.countryId??0) > 0) 
+     if ((this.data?.otbookingId??0) > 0) 
          {
-             this.isActive=this.data.isActive
+             //this.isActive=this.data.isActive
              this.requestForm.patchValue(this.data);
          }
  }
  
  onChangeReg(event) {
      if (event.value == 'registration') {
-       this.Regflag = false;
-       this.personalFormGroup.get('RegId').reset();
-       this.personalFormGroup.get('RegId').disable();
+      // this.Regflag = false;
+       //this.personalFormGroup.get('RegId').reset();
+       //this.personalFormGroup.get('RegId').disable();
        // this.isRegSearchDisabled = true;
       // this.registerObj1 = new AdmissionPersonlModel({});
-       this.personalFormGroup.reset();
-       this.Patientnewold = 1;
+       //this.personalFormGroup.reset();
+      // this.Patientnewold = 1;
  
-       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-       this.Regdisplay = false;
+      // this.personalFormGroup = this._AdmissionService.createPesonalForm();
+       //this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+      // this.Regdisplay = false;
  
      } else {
-       this.Regdisplay = true;
-       this.Regflag = true;
-       this.searchFormGroup.get('RegId').enable();
-       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-       this.Patientnewold = 2;
+      // this.Regdisplay = true;
+      // this.Regflag = true;
+      // this.searchFormGroup.get('RegId').enable();
+     //  this.personalFormGroup = this._AdmissionService.createPesonalForm();
+      // this.Patientnewold = 2;
  
      }
  
-     this.personalFormGroup.markAllAsTouched();
+     //this.personalFormGroup.markAllAsTouched();
      this.admissionFormGroup.markAllAsTouched();
    }
-  getSelectedObjIP(obj) {
+  getSelectedObjOT(obj) {
 
     if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:", obj)
+     
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
@@ -140,11 +140,32 @@ export class NewRequestComponent implements OnInit {
  
      getValidationMessages() {
        return {
-           countryName: [
-               { name: "required", Message: "Country Name is required" },
-               { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
+           DepartmentName: [
+               { name: "required", Message: "Department Name is required" },
+               { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
-           ]
+           ],
+           SurgeryCategory: [
+               { name: "required", Message: "SurgeryCategory  is required" },
+               { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           Site: [
+               { name: "required", Message: "Site Name is required" },
+               { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeryProcedure: [
+               { name: "required", Message: "SurgeryProcedure Name is required" },
+               { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeryName: [
+               { name: "required", Message: "Surgery Name is required" },
+               { name: "maxlength", Message: "Surgery Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+
        };
    }
  onClose() {
