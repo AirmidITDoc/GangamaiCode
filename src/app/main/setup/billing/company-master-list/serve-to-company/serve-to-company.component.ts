@@ -282,6 +282,7 @@ export class ServeToCompanyComponent {
     }
 
     selectChangemainclass(event) {
+        this.classId=event.value
         this.getServiceListMain()
     }
 
