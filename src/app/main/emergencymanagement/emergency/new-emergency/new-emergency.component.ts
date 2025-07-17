@@ -56,7 +56,8 @@ export class NewEmergencyComponent {
     this.searchFormGroup = this.createSearchForm();
     if((this.data?.emgId ?? 0) > 0){
       this.registerObj=this.data
-      this.myForm.get('doctorId').setValue(this.registerObj?.doctorId)
+      // this.myForm.get('doctorId').setValue('2')
+      console.log("doctor data:",this.myForm.get('doctorId').value)
       console.log("Retrived data:",this.registerObj)
        var mdata = {
             prefixId: this.registerObj?.prefixId,
@@ -76,7 +77,7 @@ export class NewEmergencyComponent {
             // doctorId: this.registerObj?.doctorId,
         };        
         this.myForm.patchValue(mdata);
-        // this.selectChangedepartment(this.registerObj)
+        this.selectChangedepartment(this.registerObj)
     }
   }
 
@@ -115,38 +116,35 @@ export class NewEmergencyComponent {
     });
   }
 
-  // selectChangedepartment(obj: any) {
-  //   this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-  //     this.ddlDoctor.options = data;
-  //     this.ddlDoctor.bindGridAutoComplete();
-  //   });
-  // }
   selectChangedepartment(obj: any) {
-        if(obj.value){
-            this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-                this.ddlDoctor.options = data;
-                this.ddlDoctor.bindGridAutoComplete();
-            });
-        }else{
-            this._EmergencyService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-                // debugger
-                this.ddlDoctor.options = data;
-                this.ddlDoctor.bindGridAutoComplete();
-                const incomingDoctorId = String(obj.doctorId);
-                console.log("Id:",incomingDoctorId)
-                if (incomingDoctorId) {
-                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                  if (matchedDoctor) {
-                    this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
-                  }
-                }
-            });
-        }
+    if (obj.value) {
+      this._EmergencyService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+      });
+    } else {
+      this._EmergencyService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+        debugger
+        this.ddlDoctor.options = data;
+        // this.ddlDoctor.bindGridAutoComplete();
+        const incomingDoctorId = obj.doctorId;
+        console.log("Id:", incomingDoctorId)
+        setTimeout(() => {
+          this.ddlDoctor.bindGridAutoComplete();
+          if (incomingDoctorId) {
+            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+            if (matchedDoctor) {
+              this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
+            }
+          }
+        }, 100);
+      });
     }
+  }
 
   onNewSave() {
     if (!this.myForm.invalid) {
-      const dateOfBirthValue = this.myForm.get('DateOfBirth')?.value;
+      const dateOfBirthValue = this.myForm.get('dateofBirth')?.value;
 
       if (dateOfBirthValue) {
         const today = new Date();
@@ -159,7 +157,7 @@ export class NewEmergencyComponent {
       this.myForm.get('emgId')?.setValue(this.registerObj?.emgId || 0);
       this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
       this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
-      ['PinNo', 'PhoneNo', 'StateId', 'CountryId', 'DateOfBirth'].forEach(control => {
+      ['PinNo', 'PhoneNo', 'StateId', 'CountryId', 'dateofBirth'].forEach(control => {
         this.myForm.removeControl(control)
       })
       console.log(this.myForm.value)

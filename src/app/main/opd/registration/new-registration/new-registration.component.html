@@ -240,12 +240,12 @@
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo"
+                            <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo" [validations]="getValidationMessages().aadharCardNo"
                                 [formGroup]="personalFormGroup" [maxLength]="12" [value]="registerObj.emgAadharCardNo"></airmid-textbox>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo"
+                            <airmid-textbox label="Driving Licence No." formControlName="emgDrivingLicenceNo" [validations]="getValidationMessages().emgDrivingLicenceNo"
                                 [formGroup]="personalFormGroup" [maxLength]="16" [value]="registerObj.emgDrivingLicenceNo"></airmid-textbox>
                         </div>
                     </div>
@@ -258,7 +258,7 @@
                 <form [formGroup]="personalFormGroup" class="mat-form-field-100">
                     <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo"
+                            <airmid-textbox label="Passport Number" formControlName="medTourismPassportNo" [validations]="getValidationMessages().medTourismPassportNo"
                                 [formGroup]="personalFormGroup" [maxLength]="8" [value]="registerObj.medTourismPassportNo"></airmid-textbox>
                         </div>
 
@@ -285,7 +285,7 @@
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId"
+                            <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId" [validations]="getValidationMessages().medTourismNationalityId"
                                 [formGroup]="personalFormGroup" [maxLength]="20" [value]="registerObj.medTourismNationalityId"></airmid-textbox>
                         </div>
 

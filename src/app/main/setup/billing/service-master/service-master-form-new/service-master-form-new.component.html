@@ -5,7 +5,7 @@
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-                       New Service Page
+                        New Service Page
                     </span>
                 </div>
                 <div class="modal-header-right">
@@ -94,8 +94,44 @@
 
                     <div style="display: flex; flex-direction: column; gap: 10px;">
 
-                        <div class="modal-card-container airmid-table-container"
-                            style="overflow-y: auto;">
+                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
+                            
+                                <form [formGroup]="myformSearch" fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+                                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Service Name</mat-label>
+                                            <input matInput placeholder="Search Service Name" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="searchServiceName" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="myformSearch.get('searchServiceName')?.setValue('')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                         <airmid-dropdown label="Tariff Name" formControlName="searchTariffName"
+                                            [formGroup]="myformSearch" [mode]="autocompleteModetariff">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div class="action-button-container">
+                                        <div class="button-row-group">
+                                            <button class="btn btn-danger-outline btn-xs"
+                                                (click)="onClear()">clear</button>
+                                            <button class="btn btn-primary btn-with-icon btn-xs" (click)="applyFilters()">
+                                                <span>Search</span>
+                                                <span class="btn-icon">
+                                                    <mat-icon>search</mat-icon>
+                                                </span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+
+                        <div class="modal-card-container airmid-table-container" style="overflow-y: auto;">
 
                             <div class="material-table-container">
                                 <table class="material-table">
@@ -110,7 +146,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="material-table-row" *ngFor="let item of ServiceList">
+                                        <tr class="material-table-row" *ngFor="let item of filteredList">
                                             <td>{{item.serviceName}}</td>
                                             <td *ngFor="let data of ColumnList">
                                                 <mat-form-field appearance="outline" class="small-textbox">
@@ -136,7 +172,7 @@
 
         <!-- Modal footer  || savebtn-->
         <div class="modal-footer">
-            <div class="footer-navigation-container" fxLayoutAlign="space-between">
+            <div class="footer-navigation-container" fxLayoutAlign="end">
                 <!-- <form [formGroup]="serviceForm">
                     <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="serviceForm"
                         [(ngModel)]="isActive"></app-airmid-slider>

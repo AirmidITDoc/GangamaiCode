@@ -104,7 +104,8 @@ export class OTReservationComponent implements OnInit {
           const dialogRef = this._matDialog.open(NewReservationComponent,
               {
                   maxWidth: "90vw",
-                  maxHeight: '90%',
+                  maxHeight: '90vh',
+                  height:'90%',
                   width: '90%',
   
               });

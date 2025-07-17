@@ -158,16 +158,15 @@
                                 <div fxLayout="row" fxLayoutGap="12px">
                                     <mat-checkbox name="opipType" formControlName="opipType" (change)="keepChecked()">IsApplicableFor</mat-checkbox>
 
-                                    <div fxLayout="row" fxLayoutGap="12px" *ngIf="opiptype">
-                                        <mat-radio-group value="" [formGroup]="serviceForm"
+                                    <div fxLayout="row" fxLayoutGap="12px">
+                                        <mat-radio-group value='' [formGroup]="serviceForm" [(ngModel)]="vSelectedOption"
                                             formControlName="isApplicableFor" fxLayoutAlign="center center">
-                                            <mat-radio-button value="2">All</mat-radio-button>
-                                            <mat-radio-button mat-fab value="0">OP</mat-radio-button>
-                                            <mat-radio-button mat-fab value="1">IP</mat-radio-button>
+                                            <mat-radio-button value='2'>All</mat-radio-button>
+                                            <mat-radio-button mat-fab value='0'>OP</mat-radio-button>
+                                            <mat-radio-button mat-fab value='1'>IP</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                 </div>
-
                                 <hr />
 
                                 <div fxLayout="row" fxLayoutGap="12px">

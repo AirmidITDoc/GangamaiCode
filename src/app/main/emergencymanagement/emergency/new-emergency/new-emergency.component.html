@@ -36,7 +36,7 @@
                                 <div fxLayout="row" fxLayout.sm="column" class="gap-16"
                                     fxLayoutAlign="start center center">
 
-                                    <div class="input-container gap-8" fxFlex="80%">
+                                    <div class="input-container gap-8" fxFlex="40%">
 
                                         <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
                                             [formGroup]="myForm" formControlName="regId"
@@ -99,7 +99,7 @@
 
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <app-airmid-dateofbirth [formGroup]="myForm"
-                                            formControlName="DateOfBirth"
+                                            formControlName="dateofBirth"
                                             [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                     </div>
 
@@ -173,7 +173,7 @@
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Doctor Name" formControlName="doctorId"
-                                            [value]="registerObj?.doctorId" [formGroup]="myForm"
+                                           [formGroup]="myForm"
                                             #ddlDoctor>
                                         </airmid-dropdown>
                                     </div>

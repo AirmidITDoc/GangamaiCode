@@ -243,6 +243,13 @@ export class NewreportConfigComponent {
     console.log(element)
   }
 
+  onDisplayColumnChange(event: any, element: any) {
+  if (!event.checked) {
+    element.ReportColumnWidth = 0;
+    element.ReportColumnAligment = "";
+  }
+}
+
   onSubmit() {
     for (let i = 0; i < this.dsReportList.data.length; i++) {
       const row = this.dsReportList.data[i];

@@ -88,12 +88,20 @@
                     <mat-table #table matSort [dataSource]="dsReportList" class="airmid-table"
                         [@animateStagger]="{ value: '50' }" cdkDropList (cdkDropListDropped)="drop($event)">
 
-                        <ng-container matColumnDef="isDisplay">
+                        <!-- <ng-container matColumnDef="isDisplay">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                 fxShow.gt-sm>IsDisplay</mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                 <mat-checkbox [(ngModel)]="element.IsDisplayColumn"
                                     (change)="element.IsDisplayColumn = $event.checked ? true : false">
+                                </mat-checkbox>
+                            </mat-cell>
+                        </ng-container> -->
+                        <ng-container matColumnDef="isDisplay">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                fxShow.gt-sm>IsDisplay</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-checkbox [(ngModel)]="element.IsDisplayColumn"  (change)="onDisplayColumnChange($event, element)">
                                 </mat-checkbox>
                             </mat-cell>
                         </ng-container>

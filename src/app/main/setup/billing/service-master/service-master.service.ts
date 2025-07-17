@@ -110,6 +110,13 @@ export class ServiceMasterService {
         });
     }
 
+    createnewServiceSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      searchServiceName: ['', [Validators.pattern('^[a-zA-Z () ]*$')]],
+      searchTariffName: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+  }
+
     initializeFormGroup() {
         this.createServicemasterForm();
     }

@@ -406,7 +406,23 @@ export class NewAppointmentComponent implements OnInit {
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
-                            MobileNo: this.registerObj.mobileNo
+                            MobileNo: this.registerObj.mobileNo,
+                            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                            engAddress: this.registerObj?.engAddress ?? '',
+                            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
                         console.log(this.registerObj)
                     });
@@ -426,7 +442,23 @@ export class NewAppointmentComponent implements OnInit {
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
-                            MobileNo: this.registerObj.mobileNo
+                            MobileNo: this.registerObj.mobileNo,
+                            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                            engAddress: this.registerObj?.engAddress ?? '',
+                            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
                         // console.log(this.registerObj)
                     });
@@ -476,7 +508,23 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo
+                        MobileNo: this.registerObj.mobileNo,
+                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                        engAddress: this.registerObj?.engAddress ?? '',
+                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                     });
                 });
 
@@ -493,7 +541,23 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo.trim()
+                        MobileNo: this.registerObj.mobileNo.trim(),
+                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                        engAddress: this.registerObj?.engAddress ?? '',
+                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                     });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
@@ -604,6 +668,7 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+        this.personalFormGroup.removeControl('updatedBy')
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -636,6 +701,10 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
+        this.VisitFormGroup.removeControl('SubCompanyId');
+        ['AddedBy', 'ReligionId', 'AreaId','IsSeniorCitizen'].forEach(control => {
+        this.personalFormGroup.removeControl(control)
+      })
 
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,
@@ -787,9 +856,21 @@ export class NewAppointmentComponent implements OnInit {
             SubCompanyId: [
                 { name: "required", Message: "SubCompany Name is required" }
             ],
-            // bedId: [
-            //     { name: "required", Message: "Bed Name is required" }
-            // ],
+            emgDrivingLicenceNo:[
+                { name: "pattern", Message: "e.g., MH-14-20210001234" },
+                { name: "minLength", Message: "16 digit required." },
+                { name: "maxLength", Message: "More than 16 digits not allowed." }
+            ],
+            medTourismPassportNo:[
+                { name: "pattern", Message: "e.g., A1234567" },
+                { name: "minLength", Message: "8 digit required." },
+                { name: "maxLength", Message: "More than 8 digits not allowed." }
+            ],
+           medTourismNationalityId: [
+                { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
+                { name: "minLength", Message: "Minimum 6 characters required." },
+                { name: "maxLength", Message: "Maximum 15 characters allowed." }
+                ]
             // wardId: [
             //     { name: "required", Message: "Ward Name is required" }
             // ],
@@ -904,7 +985,7 @@ export class NewAppointmentComponent implements OnInit {
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -922,12 +1003,11 @@ export class NewAppointmentComponent implements OnInit {
             emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
-                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]], 
+                Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/)]], 
                 //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
 
             // medical tourisum
-            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern("^[0-9]*$"),
-                 this._FormvalidationserviceService.onlyNumberValidator()]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern(/^[A-Z][0-9]{7}$/),]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
             medTourismVisaIssueDate: [new Date()], //"2025-10-25",
             medTourismVisaValidityDate: [new Date()], //"2025-10-25",
             medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
