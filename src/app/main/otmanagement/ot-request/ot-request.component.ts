@@ -37,15 +37,15 @@ export class OTRequestComponent implements OnInit {
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   
        allcolumns = [
-        { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
+        { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
         { heading: "Date&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "UHID NO", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Surgeon Name", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Category Name", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Site Description", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Surgery Name", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Department Name", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Surgeon Name", key: "surgeonId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Category Name", key: "categoryId", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Site Description", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Surgery Name", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Department Name", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         {
             heading: "AddedBy", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
            // template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -85,12 +85,12 @@ export class OTRequestComponent implements OnInit {
   
       ngOnInit(): void { }
   
-      onChangeStartDate(value) {
-        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
+    //   onChangeStartDate(value) {
+    //     this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    // }
+    // onChangeEndDate(value) {
+    //     this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    // }
   onNewotrequest(row: any = null) {
           const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
           buttonElement.blur(); // Remove focus from the button
@@ -121,9 +121,9 @@ export class OTRequestComponent implements OnInit {
     }
      getfilterdata() {
         this.gridConfig = {
-            apiUrl: "OutPatient/RegistrationList",
+            apiUrl: "OT/OTBookinglist",
             columnsList: this.allcolumns,
-            sortField: "RegId",
+            sortField: "OTBookingID",
             sortOrder: 0,
             filters: [
                 { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
