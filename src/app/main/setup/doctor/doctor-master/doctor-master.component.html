@@ -17,13 +17,13 @@
             </button> -->
             <button mat-raised-button (click)="newDoctormaster()">New Doctor
             </button>
-             <!-- <button mat-raised-button (click)="newSchdule()">New Doctor Schdule
+            <!-- <button mat-raised-button (click)="newSchdule()">New Doctor Schdule
             </button> -->
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        
-            <airmid-table [gridConfig]="gridConfig" class="content">
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
 
@@ -44,7 +44,7 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                   
+
                     <mat-radio-group value="1" [formGroup]="myformSearch" formControlName="FlagActive"
                         (change)="onChangeFirst()" fxLayoutAlign="center center">
                         <mat-radio-button value="2">All</mat-radio-button>
@@ -55,7 +55,7 @@
                     <div fxLayout="column" class="gap-4 ">
                         <span style="font-weight: bold;">Doctor Type :</span>
                         <mat-slide-toggle name="IsConsultant" (change)="onChangeFirst()" formControlName="IsConsultant">
-                            IsConsultant /  IsRefDoctor
+                            IsConsultant / IsRefDoctor
                         </mat-slide-toggle>
 
                         <!-- <mat-slide-toggle name="IsRef" formControlName="IsRef">
@@ -66,5 +66,18 @@
                 </form>
             </ng-container>
         </airmid-table>
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="onEdit(element)" style="color:black;">
+                    <mat-icon title="Edit Menu">edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDelete(element)" color="warn">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Print" (click)="onFiles(element)">
+                    <mat-icon> insert_drive_file</mat-icon>
+                </button>
+            </div>
+        </ng-template>
     </div>
 </div>

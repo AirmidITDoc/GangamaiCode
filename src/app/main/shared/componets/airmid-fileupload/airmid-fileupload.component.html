@@ -1,12 +1,54 @@
-<button mat-raised-button color="primary" (click)="onClick($event)">
-    <mat-icon>add</mat-icon>
-    {{chooseLabel}}</button>
-<input #fileUpload type="file" class="input_fileupload--hidden" (input)="onInput($event)"
-    (change)="onFileSelected($event)" [multiple]="multiple" [(ngModel)]="inputFileName" [accept]="accept">
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Doctor Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div> -->
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div *ngFor="let f of filteredFiles">
-    <span>{{f.docName}}</span>
-    <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel||''" (click)="removeFile($event,f.srNo)">
-        <mat-icon>{{deleteButtonIcon}}</mat-icon>
-    </button>
+    <div class="modal-body overflow-hidden">
+        <div class="modal-body-container">
+            <div class="personal-panel fix-panel">
+                <button mat-raised-button color="primary" (click)="onClick($event)">
+                    <mat-icon>add</mat-icon>
+                    {{chooseLabel}}</button>
+                <input #fileUpload type="file" class="input_fileupload--hidden" (input)="onInput($event)"
+                    (change)="onFileSelected($event)" [multiple]="multiple" [(ngModel)]="inputFileName"
+                    [accept]="accept">
+
+                <div *ngFor="let f of filteredFiles">
+                    <span>{{f.docName}}</span>
+                    <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel||''"
+                        (click)="removeFile($event,f.srNo)">
+                        <mat-icon>{{deleteButtonIcon}}</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
 </div>

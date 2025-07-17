@@ -1,13 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Component({
     selector: 'airmid-fileupload',
     templateUrl: './airmid-fileupload.component.html',
     styleUrls: ['./airmid-fileupload.component.scss']
 })
-export class AirmidFileuploadComponent {
+export class AirmidFileuploadComponent implements OnInit {
     @Input() multiple: boolean = false;
     @Input() accept
     @Input() auto = true
@@ -16,14 +18,28 @@ export class AirmidFileuploadComponent {
     @Input() cancelLabel = 'Cance'
     @Input() deleteButtonIcon = 'delete'
     @Input() refType: PageNames
-    @Input() refId: Number = 0;
+    @Input() refId: number = 0;
     @Input() files: AirmidFileModel[] = [];
     @Output() filesChange = new EventEmitter<AirmidFileModel[]>();
     @ViewChild('fileUpload')
     fileUpload: ElementRef
     inputFileName: string
-    constructor(private sanitizer: DomSanitizer) {
+    constructor(private sanitizer: DomSanitizer, private _service: ApiCaller,
+        @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AirmidFileuploadComponent>) {
 
+    }
+    ngOnInit(): void {
+        debugger
+        if (this.data) {
+            this.refId = this.data.refId;
+            this.refType = this.data.refType;
+        }
+        if (this.refId > 0) {
+            this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType).subscribe((data) => {
+                debugger
+                this.files = data;
+            });
+        }
     }
 
     onClick(event) {
@@ -72,22 +88,25 @@ export class AirmidFileuploadComponent {
     get filteredFiles() {
         return this.files?.filter(x => !x.isDelete) || [];
     }
+    onClose() {
+        this.dialogRef.close();
+    }
 
 }
 export class AirmidFileModel {
     srNo: Number;
     id: Number;
     refId: Number;
-    refType: Number;
+    refType: PageNames;
     docName: string;
     docSavedName: string;
     Document: File;
     isDelete: boolean;
-    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: number; docName: string; docSavedName: string; document: File, isDelete: boolean }) {
+    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: PageNames; docName: string; docSavedName: string; document: File, isDelete: boolean }) {
         this.srNo = AirmidFileModel.srNo || 0;
         this.id = AirmidFileModel.id || 0;
         this.refId = AirmidFileModel.refId || 0;
-        this.refType = AirmidFileModel.refType || 0;
+        this.refType = AirmidFileModel.refType || PageNames.NONE;
         this.docName = AirmidFileModel.docName || '';
         this.docSavedName = AirmidFileModel.docSavedName || '';
         this.Document = AirmidFileModel.document || null;
@@ -95,5 +114,5 @@ export class AirmidFileModel {
     }
 }
 export enum PageNames {
-    Doctor = 1
+    NONE = "NONE", DOCTOR = "Doctor"
 }
