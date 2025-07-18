@@ -199,7 +199,10 @@ export class NewRegistrationComponent implements OnInit {
     }
     chkChange() {
         if (this.registerObj.dateOfBirth > this.minDate) {
-            Swal.fire("Enter Proper Birth Date ")
+            // Swal.fire("Enter Proper Birth Date ")
+            this.toastr.warning('Enter Proper Birth Date', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
         }
     }
 

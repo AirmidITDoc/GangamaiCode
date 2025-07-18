@@ -54,30 +54,31 @@ export class NewEmergencyComponent {
     this.myForm = this._EmergencyService.CreateMyForm();
     this.myForm.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
-    if((this.data?.emgId ?? 0) > 0){
-      this.registerObj=this.data
+    if ((this.data?.emgId ?? 0) > 0) {
+      this.registerObj = this.data
       // this.myForm.get('doctorId').setValue('2')
-      console.log("doctor data:",this.myForm.get('doctorId').value)
-      console.log("Retrived data:",this.registerObj)
-       var mdata = {
-            prefixId: this.registerObj?.prefixId,
-            firstName: this.registerObj?.firstName,
-            middleName: this.registerObj?.middleName,
-            lastName: this.registerObj?.lastName,
-            genderId: this.registerObj?.genderID,
-            dateofBirth: this.registerObj?.dateofBirth,
-            address: this.registerObj?.address,
-            pinNo: this.registerObj?.pinNo,
-            cityId: this.registerObj?.cityId,
-            stateId: this.registerObj?.stateId,
-            countryId: this.registerObj?.countryId,
-            mobileNo: this.registerObj?.mobileNo?.trim(),
-            phoneNo: this.registerObj?.phoneNo,
-            departmentId: this.registerObj?.departmentId,
-            // doctorId: this.registerObj?.doctorId,
-        };        
-        this.myForm.patchValue(mdata);
-        this.selectChangedepartment(this.registerObj)
+      console.log("doctor data:", this.myForm.get('doctorId').value)
+      console.log("Retrived data:", this.registerObj)
+      var mdata = {
+        prefixId: this.registerObj?.prefixId,
+        firstName: this.registerObj?.firstName,
+        middleName: this.registerObj?.middleName,
+        lastName: this.registerObj?.lastName,
+        genderId: this.registerObj?.genderID,
+        DateOfBirth: this.registerObj?.dateofBirth,
+        address: this.registerObj?.address,
+        pinNo: this.registerObj?.pinNo,
+        cityId: this.registerObj?.cityId,
+        stateId: this.registerObj?.stateId,
+        countryId: this.registerObj?.countryId,
+        mobileNo: this.registerObj?.mobileNo?.trim(),
+        phoneNo: this.registerObj?.phoneNo,
+        departmentId: this.registerObj?.departmentId,
+        comment: this.registerObj?.comment,
+        // doctorId: this.registerObj?.doctorId,
+      };
+      this.myForm.patchValue(mdata);
+      this.selectChangedepartment(this.registerObj)
     }
   }
 
@@ -98,7 +99,7 @@ export class NewEmergencyComponent {
       setTimeout(() => {
         this._EmergencyService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
-          console.log("Searched data:",this.registerObj)
+          console.log("Searched data:", this.registerObj)
         });
       }, 500);
     }
@@ -137,27 +138,44 @@ export class NewEmergencyComponent {
               this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
             }
           }
-        }, 100);
+        }, 0);
       });
     }
   }
 
   onNewSave() {
     if (!this.myForm.invalid) {
-      const dateOfBirthValue = this.myForm.get('dateofBirth')?.value;
+      let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+      console.log("DOB Raw:", DateOfBirth1);
 
-      if (dateOfBirthValue) {
-        const today = new Date();
-        const dob = new Date(dateOfBirthValue);
-        let ageYear = today.getFullYear() - dob.getFullYear();
+      if (DateOfBirth1) {
+        const todayDate = new Date();
+        const dob = new Date(DateOfBirth1);
+        let ageYear = (todayDate.getFullYear() - dob.getFullYear());
+        let ageMonth = (todayDate.getMonth() - dob.getMonth());
+        let ageDay = (todayDate.getDate() - dob.getDate());
+
+        if (ageDay < 0) {
+          (ageMonth)--;
+          const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+          ageDay += previousMonth.getDate(); 
+        }
+
+        if (ageMonth < 0) {
+          ageYear--;
+          ageMonth += 12;
+        }
         this.myForm.get('ageYear')?.setValue(ageYear, { emitEvent: false });
+        this.myForm.get('ageMonth')?.setValue(ageMonth, { emitEvent: false });
+        this.myForm.get('ageDay')?.setValue(ageDay, { emitEvent: false });
       }
 
       this.myForm.get('regId')?.setValue(this.RegId);
       this.myForm.get('emgId')?.setValue(this.registerObj?.emgId || 0);
       this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
       this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
-      ['PinNo', 'PhoneNo', 'StateId', 'CountryId', 'dateofBirth'].forEach(control => {
+      this.myForm.get("DateOfBirth").setValue(this.datePipe.transform(this.myForm.get("DateOfBirth").value, "yyyy-MM-dd"));
+      ['PinNo', 'PhoneNo'].forEach(control => {
         this.myForm.removeControl(control)
       })
       console.log(this.myForm.value)
