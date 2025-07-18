@@ -85,7 +85,7 @@ export class NewRegistrationComponent implements OnInit {
                     this.registerObj = response;
                     console.log(this.registerObj)
                     this.isEditMode = true;
-                    this.regNo=this.registerObj.regNo
+                    this.regNo = this.registerObj.regNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
                 });
             }, 500);
@@ -170,10 +170,10 @@ export class NewRegistrationComponent implements OnInit {
             });
             return;
         }
-        debugger
-         console.log(this.personalFormGroup.value)
+        
+        console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
-           
+
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
                 this.OnPrint(response);
@@ -215,7 +215,7 @@ export class NewRegistrationComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
-     OnPrint(Param) {
+    OnPrint(Param) {
         this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
     }
     onClear(val: boolean) {
@@ -315,21 +315,24 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
 
             ],
-            emgDrivingLicenceNo:[
+            emgDrivingLicenceNo: [
                 { name: "pattern", Message: "e.g., MH-14-20210001234" },
                 { name: "minLength", Message: "16 digit required." },
                 { name: "maxLength", Message: "More than 16 digits not allowed." }
             ],
-            medTourismPassportNo:[
+            medTourismPassportNo: [
                 { name: "pattern", Message: "e.g., A1234567" },
                 { name: "minLength", Message: "8 digit required." },
                 { name: "maxLength", Message: "More than 8 digits not allowed." }
             ],
-           medTourismNationalityId: [
+            medTourismNationalityId: [
                 { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
                 { name: "minLength", Message: "Minimum 6 characters required." },
                 { name: "maxLength", Message: "Maximum 15 characters allowed." }
-                ]
+            ],
+            emgContactPersonName: [
+                { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }]
         };
     }
 

@@ -144,7 +144,7 @@ export class RegistrationComponent implements OnInit {
             {
                 maxWidth: "90vw",
                 maxHeight: '90%',
-                width: '90%',
+                width: '94%',
                 data: row
             }
         );
@@ -215,6 +215,16 @@ export class RegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
+        }
+    }
+
+       keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
     }
         

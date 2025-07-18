@@ -69,7 +69,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>UHID</mat-label>
                         <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" (input)="onChangeFirst()"/>
+                            formControlName="RegNo" (input)="onChangeFirst()" (keypress)="keyPressAlphanumeric($event)"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
@@ -79,7 +79,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
                         <input matInput placeholder="Search MobileNo" autocomplete="off" [formGroup]="myFilterform"  formControlName="MobileNo"
-                            [maxLength]="10" (input)="onChangeFirst()"/>
+                            [maxLength]="10" (input)="onChangeFirst()" (keypress)="keyPressAlphanumeric($event)"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('MobileNo')">
                             <mat-icon>close</mat-icon>

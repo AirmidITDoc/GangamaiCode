@@ -285,8 +285,8 @@ debugger
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
-        PatientHeaderObj['DepartmentName'] = contact.DepartmentName;
-        PatientHeaderObj['DoctorName'] = contact.departmentName;
+        PatientHeaderObj['DepartmentName'] = contact.departmentName;
+        PatientHeaderObj['DoctorName'] = contact.doctorName;
         PatientHeaderObj['TariffName'] = contact.tariffName;
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
@@ -498,8 +498,21 @@ debugger
         this.onChangeOPRefund();
     }
 
+    
+       keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
     Onemail(data) { }
     Onmessage(data) { }
+
+    
 }
 
 export class BrowseOPDBill {
