@@ -102,8 +102,7 @@ export class CrossConsultationComponent implements OnInit {
 
     if(this.crossconForm.valid){
     this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
-    this.toastr.success(response);
-      this.onClear(true);
+    this.onClear(true);
     });
   }else {
     let invalidFields = [];
