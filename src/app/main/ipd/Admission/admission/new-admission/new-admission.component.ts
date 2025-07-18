@@ -120,8 +120,8 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup.markAllAsTouched();
     this.searchFormGroup.markAllAsTouched();
 
-    this.EmergencyFormGroup=this._AdmissionService.createEmergencydetailForm();
-    this.MedicalFormGroup=this._AdmissionService.createMedicaldetailForm();
+    // this.EmergencyFormGroup=this._AdmissionService.createEmergencydetailForm();
+    // this.MedicalFormGroup=this._AdmissionService.createMedicaldetailForm();
 
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
@@ -146,6 +146,29 @@ export class NewAdmissionComponent implements OnInit {
         this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
+          // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
+          this.personalFormGroup.patchValue({
+              FirstName: this.registerObj.firstName.trim(),
+              LastName: this.registerObj.lastName.trim(),
+              MobileNo: this.registerObj.mobileNo.trim(),
+              // MaritalStatusId: this.registerObj.maritalStatusId,
+              emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+              emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+              emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+              emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+              engAddress: this.registerObj?.engAddress ?? '',
+              emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+              emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+              medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+              medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+              medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+              medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+              medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+              medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+              medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+              medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+              medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+          });
 
         });
 
@@ -156,33 +179,105 @@ export class NewAdmissionComponent implements OnInit {
 
   chkHealthcard(e) { }
   Patientnewold: any = 1;
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.Regflag = false;
-      this.personalFormGroup.get('RegId').reset();
-      this.personalFormGroup.get('RegId').disable();
-      // this.isRegSearchDisabled = true;
-      this.registerObj1 = new AdmissionPersonlModel({});
-      this.personalFormGroup.reset();
-      this.Patientnewold = 1;
+  // onChangeReg(event) {
+  //   if (event.value == 'registration') {
+  //     this.Regflag = false;
+  //     this.personalFormGroup.get('RegId').reset();
+  //     this.personalFormGroup.get('RegId').disable();
+  //     // this.isRegSearchDisabled = true;
+  //     this.registerObj1 = new AdmissionPersonlModel({});
+  //     this.personalFormGroup.reset();
+  //     this.Patientnewold = 1;
 
-      this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-      this.Regdisplay = false;
+  //     this.personalFormGroup = this._AdmissionService.createPesonalForm();
+  //     this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
+  //     this.Regdisplay = false;
 
-    } else {
-      this.Regdisplay = true;
-      this.Regflag = true;
-      this.searchFormGroup.get('RegId').enable();
-      this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      this.Patientnewold = 2;
+  //   } else {
+  //     this.Regdisplay = true;
+  //     this.Regflag = true;
+  //     this.searchFormGroup.get('RegId').enable();
+  //     this.personalFormGroup = this._AdmissionService.createPesonalForm();
+  //     this.Patientnewold = 2;
 
+  //   }
+
+  //   this.personalFormGroup.markAllAsTouched();
+  //   this.admissionFormGroup.markAllAsTouched();
+  // }
+   onChangeReg(event) {
+        if (event.value === 'registration') {
+            this.personalFormGroup.reset();
+            this.personalFormGroup.get('RegId').reset();
+            this.searchFormGroup.get('RegId').disable();
+            this.isRegSearchDisabled = false;
+            this.Patientnewold = 1;
+
+            // Instead of reassigning, update controls one by one
+            const newPersonalForm = this._AdmissionService.createPesonalForm();
+            this.resetFilteredOptions();
+            Object.keys(newPersonalForm.controls).forEach(key => {
+                if (this.personalFormGroup.contains(key)) {
+                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+                } else {
+                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+                }
+            });
+
+            const newadmissionForm = this._AdmissionService.createAdmissionForm();
+            Object.keys(newadmissionForm.controls).forEach(key => {
+                if (this.admissionFormGroup.contains(key)) {
+                    this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+                } else {
+                    this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+                }
+            });
+
+            this.personalFormGroup.markAllAsTouched();
+            this.admissionFormGroup.markAllAsTouched();
+
+            this.Regflag = false;
+
+        } else if (event.value === 'registrered') {
+
+            this.personalFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').enable();
+            this.searchFormGroup.get('RegId').reset();
+            this.personalFormGroup.reset();
+            this.Patientnewold = 2;
+
+            const newPersonalForm = this._AdmissionService.createPesonalForm();
+            this.resetFilteredOptions();
+            Object.keys(newPersonalForm.controls).forEach(key => {
+                if (this.personalFormGroup.contains(key)) {
+                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+                } else {
+                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+                }
+            });
+
+            const newadmissionForm = this._AdmissionService.createAdmissionForm();
+            Object.keys(newadmissionForm.controls).forEach(key => {
+                if (this.admissionFormGroup.contains(key)) {
+                    this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+                } else {
+                    this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+                }
+            });
+
+            this.personalFormGroup.markAllAsTouched();
+            this.admissionFormGroup.markAllAsTouched();
+
+            this.Regflag = true;
+            this.isRegSearchDisabled = true;
+        }
     }
-
-    this.personalFormGroup.markAllAsTouched();
-    this.admissionFormGroup.markAllAsTouched();
-  }
-
+    prevResults: any[] = [];
+    filteredOptions: any[] = [];
+    resetFilteredOptions(){
+        this.filteredOptions = [];
+        this.prevResults = [];
+    }
   onNewSave() {
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
@@ -298,9 +393,21 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('City').setValue(this.CityName)
     console.log(this.searchFormGroup.get("HospitalId").value)
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
-
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+    const today = new Date();
+    const medTourismVisaIssueDate = this.personalFormGroup.get('medTourismVisaIssueDate')?.value;
+    const medTourismVisaValidityDate = this.personalFormGroup.get('medTourismVisaValidityDate')?.value;
+    const medTourismDateOfEntry = this.personalFormGroup.get('medTourismDateOfEntry')?.value;
+    this.personalFormGroup.get('medTourismVisaIssueDate')?.setValue(
+      medTourismVisaIssueDate ? new Date(medTourismVisaIssueDate) : today
+    );
+    this.personalFormGroup.get('medTourismVisaValidityDate')?.setValue(
+      medTourismVisaValidityDate ? new Date(medTourismVisaValidityDate) : today
+    );
+    this.personalFormGroup.get('medTourismDateOfEntry')?.setValue(
+      medTourismDateOfEntry ? new Date(medTourismDateOfEntry) : today
+    );
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
@@ -529,8 +636,8 @@ export class NewAdmissionComponent implements OnInit {
           { name: "maxLength", Message: "More than 8 digits not allowed." }
       ],
       medTourismNationalityId: [
-          { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
-          { name: "minLength", Message: "Minimum 6 characters required." },
+          { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters (e.g., A123456789)" },
+          { name: "minLength", Message: "Minimum 10 characters required." },
           { name: "maxLength", Message: "Maximum 15 characters allowed." }
           ]
     };

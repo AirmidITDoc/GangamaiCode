@@ -391,7 +391,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   onChangeFirst() {
-    debugger
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900",
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
     this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -405,7 +404,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   getfilterdata() {
-  debugger
     this.gridConfig = {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
@@ -432,7 +430,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   Clearfilter(event) {
-    debugger
     console.log(event)
     if (event == 'FirstName')
       this.myFilterform.get('FirstName').setValue("")
@@ -451,7 +448,6 @@ export class AdmissionComponent implements OnInit {
   }
 
   ListView(value) {
-        debugger
     console.log(value)
      if(value.value!==0)
         this.DoctorId=String(value.value)

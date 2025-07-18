@@ -236,14 +236,13 @@ export class DoctorMasterComponent implements OnInit {
         });
     }
     onFiles(row) {
-        debugger
         const dialogRef = this._matDialog.open(
             AirmidFileuploadComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: "94vh",
                 width: "100%",
-                data: { refId: row.doctorId, refType: PageNames.DOCTOR }
+                data: { refId: row.doctorId, refType: PageNames.DOCTOR,multiple:true }
             }
         );
 

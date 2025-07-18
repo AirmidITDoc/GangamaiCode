@@ -36,6 +36,13 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
 import { EmergencyComponent } from './emergency.component';
+import { EmergencyHistoryComponent } from './emergency-history/emergency-history.component';
+import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MatTimepickerModule } from 'mat-timepicker';
+
 
 const routes: Routes = [
   {
@@ -45,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [EmergencyComponent, NewEmergencyComponent],
+  declarations: [EmergencyComponent, NewEmergencyComponent, EmergencyHistoryComponent, EmergencyBillComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -84,7 +91,10 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
+    MatGridListModule,
+    MatSidenavModule,
+    AngularEditorModule,
+    MatTimepickerModule,
     MatTooltipModule
   ],
   providers: [

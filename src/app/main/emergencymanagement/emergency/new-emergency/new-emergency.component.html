@@ -98,9 +98,12 @@
                                     </div>
 
                                     <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                        <app-airmid-dateofbirth [formGroup]="myForm"
+                                        <!-- <app-airmid-dateofbirth [formGroup]="myForm"
                                             formControlName="dateofBirth"
-                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                            [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth> -->
+                                             <app-airmid-dateofbirth [formGroup]="myForm"
+                                                    formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
+                                             ></app-airmid-dateofbirth>
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -176,6 +179,28 @@
                                            [formGroup]="myForm"
                                             #ddlDoctor>
                                         </airmid-dropdown>
+                                    </div>
+
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </form>
+                </div>
+
+                <div class="detail-container">
+                    <form [formGroup]="myForm">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="detail-header">
+                                    Comment Details
+                                </div>
+                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                       <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Comment" formControlName="comment"
+                                            [value]="registerObj.comment" [formGroup]="myForm"
+                                            [maxLength]="200">
+                                        </airmid-textbox>
                                     </div>
 
                                 </div>

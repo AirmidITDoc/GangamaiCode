@@ -28,7 +28,8 @@ export class NewRequestComponent implements OnInit {
        vSelectedOption: any = 'OP';
     
    isActive:boolean=true;
- 
+  autocompleteModeDepartment: String = "Department";
+   autocompleteModeSiteDescriptioId: String = "SiteDescriptioId";
  autocompleteModestatus: string = "State";
    // vClassId: any = 0;
   vRegNo: any;

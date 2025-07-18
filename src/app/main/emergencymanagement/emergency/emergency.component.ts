@@ -14,6 +14,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { EmergencyHistoryComponent } from './emergency-history/emergency-history.component';
+import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
 
 @Component({
   selector: 'app-emergency',
@@ -122,8 +124,35 @@ export class EmergencyComponent implements OnInit {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
       {
         maxWidth: "95vw",
+        maxHeight: '90vh',
+        height:'90%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+  EmergencyHistory(row: any = null) {
+    const dialogRef = this._matDialog.open(EmergencyHistoryComponent,
+      {
+        maxWidth: "95vw",
         maxHeight: '80%',
         width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+  OnBillPayment(row: any = null) {
+    const dialogRef = this._matDialog.open(EmergencyBillComponent,
+      {
+        maxWidth: "100%",
+        width: '95%',
+        height: '95%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -150,14 +179,6 @@ export class EmergencyComponent implements OnInit {
       }
     })
   }
-
-  OnBillPayment(row){
-
-  }
-
-  EmergencyHistory(row){
-    
-  }
 }
 
 export class EmergencyList {
@@ -179,7 +200,7 @@ export class EmergencyList {
   countryId: any;
   mobileNo: any;
   phoneNo: any;
-  dateofBirth: any;  
+  dateofBirth: Date;  
   currentDate = new Date();
   prefixId: any;
   regId: any;
@@ -188,6 +209,7 @@ export class EmergencyList {
   doctorId:any;
   genderID:any;
   emgId:any;
+  comment:any;
 
   constructor(EmergencyList) {
     {
@@ -216,6 +238,58 @@ export class EmergencyList {
       this.doctorId = EmergencyList.doctorId || 0
       this.genderID = EmergencyList.genderID || 0
       this.emgId = EmergencyList.emgId || 0
+      this.comment = EmergencyList.comment || ''
     }
   }
+}
+
+export class ChargesList {
+    ChargesId: any
+    chargesId: number;
+    ServiceId: number;
+    ServiceName: String;
+    Price: number;
+    Qty: number;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId: number;
+    ChargeDoctorName: String;
+    ChargesDate: Date;
+    IsPathology: boolean;
+    IsRadiology: boolean;
+    ClassId: number;
+    ClassName: string;
+    ChargesAddedName: string;
+    BalanceQty: any;
+    IsStatus: any;
+    extMobileNo: any;
+    doctorName: any;
+    ConcessionPercentage: any;
+    EditDoctor: any;
+    constructor(ChargesList) {
+        this.chargesId = ChargesList.chargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.doctorName = ChargesList.doctorName || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.BalanceQty = ChargesList.BalanceQty || 0;
+        this.IsStatus = ChargesList.IsStatus || 0;
+        this.extMobileNo = ChargesList.extMobileNo || ''
+        this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+    }
 }

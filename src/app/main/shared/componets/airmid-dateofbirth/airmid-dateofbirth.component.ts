@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 
@@ -47,13 +48,19 @@ export class AirmidDateofbirthComponent implements OnInit {
 
         if (this.ageYear > 110) {
             this.ageYear = 0
-            Swal.fire("Please Enter Valid BirthDate..")
+            // Swal.fire("Please Enter Valid BirthDate..")
+            this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
         }
     }
     minDate = new Date();
     onChangeDateofBirth(DateOfBirth: Date) {
         if (DateOfBirth > this.minDate) {
-            Swal.fire("Enter Proper Birth Date.. ")
+            // Swal.fire("Enter Proper Birth Date.. ")
+             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
             return;
         }
         if (DateOfBirth) {
@@ -84,7 +91,10 @@ export class AirmidDateofbirthComponent implements OnInit {
             this.value = DateOfBirth;
             this.formGroup.get('DateOfBirth').setValue(DateOfBirth);
             if (this.ageYear > 110)
-                Swal.fire("Please Enter Valid BirthDate..")
+                // Swal.fire("Please Enter Valid BirthDate..")
+             this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
         }
     }
     ngOnInit(): void {
@@ -106,7 +116,7 @@ export class AirmidDateofbirthComponent implements OnInit {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(@Optional() @Self() public ngControl: NgControl | null) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null,public toastr: ToastrService) {
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
