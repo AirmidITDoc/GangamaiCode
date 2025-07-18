@@ -243,7 +243,7 @@ export class DoctorMasterComponent implements OnInit {
                 maxWidth: "95vw",
                 maxHeight: "94vh",
                 width: "100%",
-                data: { refId: row.doctorId, refType: PageNames.DOCTOR }
+                data: { refId: row.doctorId, refType: PageNames.DOCTOR,multiple:true }
             }
         );
 

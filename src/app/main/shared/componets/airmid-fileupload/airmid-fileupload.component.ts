@@ -29,15 +29,21 @@ export class AirmidFileuploadComponent implements OnInit {
 
     }
     ngOnInit(): void {
-        debugger
         if (this.data) {
             this.refId = this.data.refId;
             this.refType = this.data.refType;
+            this.multiple = this.data.multiple;
         }
         if (this.refId > 0) {
             this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType).subscribe((data) => {
-                debugger
                 this.files = data;
+            });
+        }
+    }
+    onSubmit(): void {
+        if (this.files.length > 0) {
+            this._service.PostFromData("Files/save-files", { MDoctorFiles: this.files }).subscribe((data) => {
+                
             });
         }
     }
