@@ -12,8 +12,7 @@
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div> -->
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog"
-                            matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog" matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -34,6 +33,9 @@
 
                 <div *ngFor="let f of filteredFiles">
                     <span>{{f.docName}}</span>
+                    <button mat-icon-button color="primary" *ngIf="f.id>0" [attr.title]="deleteButtonLabel||''">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
                     <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel||''"
                         (click)="removeFile($event,f.srNo)">
                         <mat-icon>{{deleteButtonIcon}}</mat-icon>

@@ -236,7 +236,6 @@ export class DoctorMasterComponent implements OnInit {
         });
     }
     onFiles(row) {
-        debugger
         const dialogRef = this._matDialog.open(
             AirmidFileuploadComponent,
             {
