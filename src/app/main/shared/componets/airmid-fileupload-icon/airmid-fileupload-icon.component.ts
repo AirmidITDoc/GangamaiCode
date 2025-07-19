@@ -20,8 +20,8 @@ export class AirmidFileuploadIconComponent {
         const dialogRef = this._matDialog.open(
             AirmidFileuploadComponent,
             {
-                maxWidth: "95vw",
-                maxHeight: "94vh",
+                maxWidth: "50vw",
+                maxHeight: "60vh",
                 width: "100%",
                 data: { refId: this.refId, refType: this.refType, multiple: this.multiple }
             }
