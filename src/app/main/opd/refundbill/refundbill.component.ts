@@ -272,7 +272,7 @@ export class RefundbillComponent implements OnInit {
         NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value),
         billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value
       };
-
+      console.log(PatientHeaderObj)
       const dialogRef = this._matDialog.open(OpPaymentComponent, {
         maxWidth: "90vw",
         height: '650px',

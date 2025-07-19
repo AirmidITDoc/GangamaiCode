@@ -398,7 +398,7 @@ export class NewAppointmentComponent implements OnInit {
             this.RegId = obj.regId;
             this.VisitFlagDisp = true;
             if ((this.RegId ?? 0) > 0) {
-                // console.log(this.data)
+                console.log(this.data)
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
@@ -415,12 +415,12 @@ export class NewAppointmentComponent implements OnInit {
                             emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
                             emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
                             medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
-                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
                             medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
                             medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
@@ -434,7 +434,7 @@ export class NewAppointmentComponent implements OnInit {
             this.RegId = obj.value;
             this.VisitFlagDisp = true;
             if ((this.RegId ?? 0) > 0) {
-                // console.log(this.data)
+                console.log(this.data)
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
@@ -451,12 +451,12 @@ export class NewAppointmentComponent implements OnInit {
                             emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
                             emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
                             medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
-                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
                             medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
                             medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
@@ -520,7 +520,7 @@ export class NewAppointmentComponent implements OnInit {
                         medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
                         medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
                         medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
                         medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
                         medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                         medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
@@ -553,7 +553,7 @@ export class NewAppointmentComponent implements OnInit {
                         medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
                         medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
                         medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
                         medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
                         medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                         medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
@@ -683,7 +683,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
-
+debugger
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -697,6 +697,11 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+     
+     
+    //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+    //     this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+       
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
@@ -1008,12 +1013,12 @@ export class NewAppointmentComponent implements OnInit {
 
             // medical tourisum
             medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern(/^[A-Z][0-9]{7}$/),]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
-            medTourismVisaIssueDate: [new Date()], //"2025-10-25",
-            medTourismVisaValidityDate: [new Date()], //"2025-10-25",
+            medTourismVisaIssueDate:  [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
+            medTourismVisaValidityDate:  [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
             medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
             medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
-            medTourismDateOfEntry: [new Date()], //"2025-10-25",
+            medTourismDateOfEntry: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });

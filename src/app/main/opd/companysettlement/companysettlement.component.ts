@@ -158,6 +158,8 @@ export class CompanysettlementComponent implements OnInit {
 
                 if (this.OpSettlementForm.valid) {
                     console.log(this.OpSettlementForm.value)
+                    console.log(result.submitDataPay.ipPaymentInsert)
+                    
                     this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
                         this.GetDetails(this.RegId1)
                         this.viewgetOPPayemntPdf(response, true);

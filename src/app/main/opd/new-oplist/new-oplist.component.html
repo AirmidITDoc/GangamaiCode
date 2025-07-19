@@ -164,7 +164,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="PBillNo"
+                                        [formGroup]="myFilterbillform" formControlName="PBillNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPBill()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPbill('PBillNo')">
@@ -187,7 +187,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
                                     <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="RegNo"
+                                        [formGroup]="myFilterbillform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPBill()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPbill('RegNo')">
@@ -269,7 +269,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
                                     <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="RegNo"
+                                        [formGroup]="myFilterpayform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPPayment()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPpayment('RegNo')">
@@ -280,7 +280,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
                                     <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="PBillNo"
+                                        [formGroup]="myFilterpayform" formControlName="PBillNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPPayment()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPpayment('PBillNo')">
@@ -292,7 +292,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>ReceiptNo</mat-label>
                                     <input matInput placeholder="Search ReceiptNo" autocomplete="off"
-                                        [formGroup]="myFilterpayform" formControlName="ReceiptNo"
+                                        [formGroup]="myFilterpayform" formControlName="ReceiptNo"   (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPPayment()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPpayment('ReceiptNo')">
@@ -374,7 +374,7 @@
                                 <mat-form-field appearance="outline">
                                     <mat-label>RegNo</mat-label>
                                     <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterrefundform" formControlName="RegNo"
+                                        [formGroup]="myFilterrefundform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPRefund()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
                                         (click)=" ClearfilterOPRefund('RegNo')">

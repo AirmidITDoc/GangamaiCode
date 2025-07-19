@@ -132,7 +132,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -140,10 +140,10 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230},
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
-        { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type:7 },
+        { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
+        { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         {
             heading: "Action", key: "action", align: "right", width: 280, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -178,7 +178,7 @@ export class AppointmentListComponent implements OnInit {
 
     }
     onChangeFirst1(event) {
-        debugger
+
         console.log(event)
         if (event.key == 13) {
             this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
@@ -240,7 +240,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     ListView(value) {
-        debugger
+
         const departmentId = this.myformSearch.get('departmentId')?.value;
         if (!departmentId || departmentId === "0" || departmentId === 0) {
             this.ddlDoctor.options = [];
@@ -438,7 +438,7 @@ export class AppointmentListComponent implements OnInit {
             {
                 // maxWidth: '95%',
                 // height: '48%',
-                 maxWidth: "95vw",
+                maxWidth: "95vw",
                 maxHeight: '80%',
                 width: '90%',
                 data: element
@@ -567,9 +567,9 @@ export class AppointmentListComponent implements OnInit {
         };
     }
 
-   
-	
-	checkIn: Date | null = null;
+
+
+    checkIn: Date | null = null;
     checkOut: Date | null = null;
     isCheckedIn = false;
     isCheckedOut = false;
@@ -653,6 +653,16 @@ export class AppointmentListComponent implements OnInit {
         console.log('Total Time:', new Date(totalTime).toISOString().substr(11, 8));
     }
 
+      keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
 }
 
 
@@ -710,6 +720,7 @@ export class VisitMaster1 {
             this.doctorID = VisitMaster1.doctorID || 0;
         }
     }
+  
 }
 
 

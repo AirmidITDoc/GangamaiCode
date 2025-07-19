@@ -69,13 +69,13 @@ export class OTRequestComponent implements OnInit {
           //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
       ]
       gridConfig: gridModel = {
-          apiUrl: "OT/OTBookinglist",
+          apiUrl: "OTBooking/OtbookingRequestList",
           columnsList: this.allcolumns,
-          sortField: "OTBookingID",
+          sortField: "DoctorId",
           sortOrder: 0,
           filters: this.allFilters
       }
-      autocompleteMode: string = "CityMaster";
+      autocompleteMode: string = "Department";
   
       constructor(
           public _OtRequestService: OtRequestService,
@@ -121,16 +121,16 @@ export class OTRequestComponent implements OnInit {
     }
      getfilterdata() {
         this.gridConfig = {
-            apiUrl: "OT/OTBookinglist",
+            apiUrl: "OTBooking/OtbookingRequestList",
             columnsList: this.allcolumns,
-            sortField: "OTBookingID",
+            sortField: "DoctorId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Contains },
+                { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.Equals },
+                { fieldName: "LastName", fieldValue: this.l_name , opType: OperatorComparer.Equals },
+                { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
             ],
             row: 25

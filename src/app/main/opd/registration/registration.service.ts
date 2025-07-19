@@ -105,7 +105,11 @@ export class RegistrationService {
             PinNo: [''],
 
             //emergency form
-            emgContactPersonName: ['', [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            emgContactPersonName: ['', [
+                Validators.minLength(1),
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
             emgRelationshipId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
                 Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],

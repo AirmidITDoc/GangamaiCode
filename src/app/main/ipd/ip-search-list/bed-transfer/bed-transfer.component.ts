@@ -35,7 +35,7 @@ export class BedTransferComponent implements OnInit {
   advanceAmount: any = 0;
 
   autocompleteroom: string = "Room";
-  autocompleteclass: string = "Class";
+  autocompleteModeClass: string = "Class";
   autocompletebed: string = "Bed";
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
@@ -172,9 +172,9 @@ BedFinalform: FormGroup;
     debugger
     return this._formBuilder.group({
       admissionId: [this.AdmissionId], //[this._FormvalidationserviceService.onlyNumberValidator()]],
-      bedId: [0],// [this._FormvalidationserviceService.onlyNumberValidator()]],
-      wardId: [0],// [this._FormvalidationserviceService.onlyNumberValidator()]],
-      classId: [0],// [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
   }
@@ -269,9 +269,7 @@ BedFinalform: FormGroup;
       console.log(this.BedFinalform.value);
 
       this._IpSearchListService.BedtransferUpdate(this.BedFinalform.value).subscribe((response) => {
-        this.toastr.success(response.message);
-        this._matDialog.closeAll()
-        // this.onClear(true);
+      this._matDialog.closeAll()
       }, (error) => {
         this.toastr.error(error.message);
       });
