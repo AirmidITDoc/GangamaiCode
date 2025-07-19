@@ -13,12 +13,6 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="newEmergency()">New Emergency
             </button>
-
-            <button mat-raised-button (click)="EmergencyHistory()">history
-            </button>
-
-            <button mat-raised-button (click)="OnBillPayment()">bill
-            </button>
         </div>
     </div>
 
@@ -58,6 +52,14 @@
         </div>
     </ng-template>
 
+    <ng-template #oldNewTemplate let-element>
+        <div class="pill-icon">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.regId==0" matTooltip="NewPatient"
+                class="orange-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
         <airmid-table [gridConfig]="gridConfig" class="content">
@@ -81,8 +83,8 @@
                         <mat-form-field appearance="outline">
                             <mat-label>FirstName</mat-label>
                             <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="F_Name" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('F_Name')">
+                                formControlName="firstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('firstName')">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
