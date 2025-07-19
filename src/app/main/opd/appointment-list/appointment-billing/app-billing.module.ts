@@ -40,6 +40,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { AppointmentBillService } from "./appointment-bill.service";
 import { AppointmentBillingComponent } from "./appointment-billing.component";
+import { PackageDetailsComponent } from './package-details/package-details.component';
 
 
 const routes: Routes = [
@@ -50,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentBillingComponent],
+    declarations: [AppointmentBillingComponent, PackageDetailsComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

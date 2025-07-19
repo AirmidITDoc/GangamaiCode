@@ -28,4 +28,7 @@ export class AppointmentBillService {
   public InsertOPBilling(param) {
     return this._httpClient1.PostData("OPBill/OPBillingInsert", param)
   }
+    public getRtevPackageDetList(param) {
+        return this._httpClient1.PostData("BillingService/PackageServiceInfoList", param);
+    }
 }

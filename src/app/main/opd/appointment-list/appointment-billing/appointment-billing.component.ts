@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component'; 
 import { RegInsert } from '../../registration/registration.component'; 
 import { AppointmentBillService } from './appointment-bill.service'; 
+import { PacakgeList } from 'app/main/setup/billing/service-master/editpackage/editpackage.component';
+import { PackageDetailsComponent } from './package-details/package-details.component';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -23,9 +25,9 @@ import { AppointmentBillService } from './appointment-bill.service';
 })
 export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public displayedChargeColumns: string[] =
-    ['ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
-  public displayedPackageColumns: string[] =
-    ['PackageName', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+    ['Status','ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+  public displayedColumnspackage: string[] =
+    ['IsCheck', 'ServiceNamePackage', 'ServiceName','Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount', 'NetAmount'];
   public displayedPrescriptionColumns =
     ['ServiceName', 'Qty', 'Price', 'TotalAmt']; 
 
@@ -459,6 +461,124 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.isDiscountApplied = false;
     }
   } 
+    getRtevPackageDetList(obj) {
+      var vdata =
+      {
+        "first": 0,
+        "rows": 10,
+        "sortField": "ServiceId",
+        "sortOrder": 0,
+        "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
+        "exportType": "JSON",
+        "columns": []
+      }
+      console.log(vdata)
+      setTimeout(() => {
+        this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
+        this.dsPackageList.data = data.data as ChargesList[]; 
+        });
+      }, 1000);
+    }
+      EditedPackageService:any=[];
+  OriginalPackageService:any = [];
+  TotalPrice:any = 0; 
+  PacakgeList:any=[];
+getPacakgeDetail(contact){
+  let deleteservice;
+  deleteservice = this.dsPackageList.data
+  this.dsPackageList.data.forEach(element => {
+    deleteservice = deleteservice.filter(item => item.ServiceId !== element.ServiceId)
+    console.log(deleteservice)   
+    this.dsPackageList.data =  deleteservice
+ 
+    this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+    this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+    console.log(this.OriginalPackageService)
+    console.log(this.EditedPackageService)
+  });
+
+  const dialogRef = this._matDialog.open(PackageDetailsComponent,
+    {
+      maxWidth: "100%",
+      height: '75%',
+      width: '70%' ,
+      data: {
+        Obj:contact
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    debugger
+    console.log('The dialog was closed - Insert Action', result);
+    if (result) { 
+      this.dsPackageList.data = result
+      console.log( this.dsPackageList.data)   
+      this.dsPackageList.data.forEach(element => {
+        this.PacakgeList = this.PacakgeList.filter(item => item.ServiceId !== element.ServiceId)
+        console.log(this.PacakgeList)   
+        if(element.BillwiseTotalAmt > 0){
+          this.TotalPrice = element.BillwiseTotalAmt;  
+          console.log(this.TotalPrice) 
+        }else{
+          this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);  
+          console.log(this.TotalPrice) 
+        } 
+        this.OriginalPackageService = this.dataSource.data.filter(item => item.ServiceId !== element.ServiceId)
+        this.EditedPackageService = this.dataSource.data.filter(item => item.ServiceId === element.ServiceId)
+        console.log(this.OriginalPackageService)
+        console.log(this.EditedPackageService)
+      }); 
+      this.dsPackageList.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            ServiceId: element.ServiceId,
+            ServiceName: element.ServiceName,
+            Price: element.Price || 0,
+            Qty: element.Qty || 1,
+            TotalAmt: element.TotalAmt || 0,
+            ConcessionPercentage: element.DiscPer || 0,
+            DiscAmt: element.DiscAmt || 0,
+            NetAmount: element.NetAmount || 0,
+            IsPathology: element.IsPathology || 0,
+            IsRadiology: element.IsRadiology || 0,
+            PackageId: element.PackageId || 0,
+            PackageServiceId: element.PackageServiceId || 0, 
+            PacakgeServiceName:element.PacakgeServiceName || '',
+            DoctorName: element.DoctorName || '',
+            DoctorId:element.DoctorId || 0
+          });
+        this.dsPackageList.data = this.PacakgeList;
+      }); 
+        if(this.EditedPackageService.length){
+          this.EditedPackageService.forEach(element => {
+            this.OriginalPackageService.push(
+              {  
+                ChargesId: 0,// this.serviceId,
+                ServiceId:  element.ServiceId,
+                ServiceName: element.ServiceName,
+                Price: this.TotalPrice || 0,
+                Qty:  element.Qty || 0,
+                TotalAmt: (parseFloat(element.Qty) *  parseFloat(this.TotalPrice)) || 0,
+                DiscPer: element.DiscPer || 0, 
+                DiscAmt: element.DiscAmt || 0,
+                NetAmount: (parseFloat(element.Qty) *  parseFloat(this.TotalPrice))  || 0,
+                ClassId: 1, 
+                DoctorId: element.DoctornewId, 
+                DoctorName: element.DoctorName,
+                ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+                IsPathology: element.IsPathology,
+                IsRadiology: element.IsRadiology,
+                IsPackage: element.IsPackage,
+                ClassName: element.ClassName, 
+                ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
+              }); 
+            this.dataSource.data = this.OriginalPackageService;
+           this.chargeList = this.dataSource.data 
+          });
+        }  
+        this.TotalPrice = 0;
+    }
+  })
+}
   getAmount(key: string): number {
     const control = this.OPFooterForm.get(key);
     return control ? control.value : 0;
@@ -632,6 +752,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       } 
       this.serviceSelct = true
     }
+    this.getRtevPackageDetList(obj) 
   } 
   getSelectedObj(obj) {
     console.log(obj)
