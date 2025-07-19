@@ -31,6 +31,7 @@ export class EmergencyComponent implements OnInit {
   myFilterform: FormGroup;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('oldNewTemplate') oldNewTemplate!: TemplateRef<any>;
    f_name: any = ""
     l_name: any = ""
    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -39,6 +40,7 @@ export class EmergencyComponent implements OnInit {
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'regId')!.template = this.oldNewTemplate;
   }
 
   constructor(
@@ -54,7 +56,8 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 10 },
+    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template},
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template},
     { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA',type:9,width: 200},
     { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
@@ -87,18 +90,19 @@ export class EmergencyComponent implements OnInit {
 
   Clearfilter(event) {
     console.log(event)
-    if (event == 'F_Name')
-        this._EmergencyService.myFilterform.get('F_Name').setValue("")
+    if (event == 'firstName')
+        this.myFilterform.get('firstName').setValue("")
     if (event == 'L_Name')
-        this._EmergencyService.myFilterform.get('L_Name').setValue("")
+        this.myFilterform.get('L_Name').setValue("")
     this.onChangeFirst();
   }
 
   onChangeFirst() {
-     this.fromDate = this.datePipe.transform(this._EmergencyService.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this._EmergencyService.myFilterform.get('enddate').value, "yyyy-MM-dd")
-    this.f_name = this._EmergencyService.myFilterform.get('F_Name').value + "%"
-    this.l_name = this._EmergencyService.myFilterform.get('L_Name').value + "%"
+     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this.myFilterform.get('firstName').value + "%"
+    console.log(this.myFilterform.get('firstName').value)
+    this.l_name = this.myFilterform.get('L_Name').value + "%"
     this.getfilterdata();
   }
 

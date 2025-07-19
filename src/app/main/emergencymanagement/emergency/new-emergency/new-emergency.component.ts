@@ -165,6 +165,16 @@ export class NewEmergencyComponent {
           ageYear--;
           ageMonth += 12;
         }
+       if (
+            (!ageYear || ageYear == 0) &&
+            (!ageMonth || ageMonth == 0) &&
+            (!ageDay || ageDay == 0)
+        ) {
+            this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
         this.myForm.get('ageYear')?.setValue(ageYear, { emitEvent: false });
         this.myForm.get('ageMonth')?.setValue(ageMonth, { emitEvent: false });
         this.myForm.get('ageDay')?.setValue(ageDay, { emitEvent: false });

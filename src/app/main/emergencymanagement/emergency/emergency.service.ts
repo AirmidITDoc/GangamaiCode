@@ -5,6 +5,7 @@ import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { first } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class EmergencyService {
     private accountService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
-    this.myFilterform = this.CreateSearchGroup();
+    // this.myFilterform = this.CreateSearchGroup();
     this.MyForm = this.CreateMyForm();
   }
 
@@ -28,7 +29,7 @@ export class EmergencyService {
     return this._frombuilder.group({
       fromDate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
-      F_Name: [''],
+      firstName: [''],
       L_Name: ['']
     })
   }
@@ -131,5 +132,12 @@ export class EmergencyService {
   public getpackagedetList(employee)
   {    
     return this._httpClient.PostData("IPBill/PackageDetailsList",employee);
+  }
+
+    public InsertIPBillingCredit(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.PostData("IPBill/IPBilllCreditInsert",employee)
   }
 }

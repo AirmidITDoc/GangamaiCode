@@ -536,9 +536,9 @@ export class AdmissionComponent implements OnInit {
   EditRegistration(row) {
     console.log(row)
     this._registrationService.populateFormpersonal(row);
-    this.registerObj["RegId"] = row.RegID;
-    this.registerObj["RegID"] = row.RegID;
-    this.registerObj["PrefixID"] = row.PrefixId;
+    this.registerObj["RegId"] = row.regId;
+    this.registerObj["RegID"] = row.regId;
+    this.registerObj["PrefixID"] = row.prefixId;
 
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
