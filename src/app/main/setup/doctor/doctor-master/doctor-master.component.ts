@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
 import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
-import { AirmidFileuploadComponent, PageNames } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { PageNames } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
 
 @Component({
     selector: "app-doctor-master",
@@ -32,7 +32,7 @@ export class DoctorMasterComponent implements OnInit {
     active: any = "1"
     isCon: any = "1"
     isRef: any = "0"
-
+    page: PageNames=PageNames.DOCTOR;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     ngAfterViewInit() {
@@ -227,22 +227,6 @@ export class DoctorMasterComponent implements OnInit {
                 maxHeight: "94vh",
                 width: "100%",
                 data: row
-            }
-        );
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
-            this.grid.bindGridData();
-        });
-    }
-    onFiles(row) {
-        const dialogRef = this._matDialog.open(
-            AirmidFileuploadComponent,
-            {
-                maxWidth: "95vw",
-                maxHeight: "94vh",
-                width: "100%",
-                data: { refId: row.doctorId, refType: PageNames.DOCTOR,multiple:true }
             }
         );
 

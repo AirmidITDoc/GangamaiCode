@@ -43,7 +43,7 @@ export class AirmidFileuploadComponent implements OnInit {
     onSubmit(): void {
         if (this.files.length > 0) {
             this._service.PostFromData("Files/save-files", { MDoctorFiles: this.files }).subscribe((data) => {
-                
+
             });
         }
     }
@@ -97,7 +97,56 @@ export class AirmidFileuploadComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
+    getFileIcon(fileName: string): string {
+        const ext = fileName.split('.').pop()?.toLowerCase();
 
+        switch (ext) {
+            case 'pdf':
+                return 'picture_as_pdf';
+            case 'doc':
+            case 'docx':
+                return 'description';
+            case 'xls':
+            case 'xlsx':
+                return 'table_chart';
+            case 'ppt':
+            case 'pptx':
+                return 'slideshow';
+            case 'txt':
+                return 'article';
+            case 'zip':
+            case 'rar':
+                return 'folder_zip';
+            case 'mp3':
+            case 'wav':
+                return 'audiotrack';
+            case 'mp4':
+            case 'mov':
+            case 'avi':
+                return 'movie';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+            case 'bmp':
+            case 'webp':
+                return 'image';
+            default:
+                return 'insert_drive_file'; // default generic file icon
+        }
+    }
+
+    getPreview(file: File): string | null {
+        if (file == null || !file.type.startsWith('image/')) return null;
+        return URL.createObjectURL(file);
+    }
+
+    downloadFile(file: File): void {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(file);
+        link.download = file.name;
+        link.click();
+    }
 }
 export class AirmidFileModel {
     srNo: Number;

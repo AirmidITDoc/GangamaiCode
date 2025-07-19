@@ -31,7 +31,7 @@
                     (change)="onFileSelected($event)" [multiple]="multiple" [(ngModel)]="inputFileName"
                     [accept]="accept">
 
-                <div *ngFor="let f of filteredFiles">
+                <!-- <div *ngFor="let f of filteredFiles">
                     <span>{{f.docName}}</span>
                     <button mat-icon-button color="primary" *ngIf="f.id>0" [attr.title]="deleteButtonLabel||''">
                         <mat-icon>cloud_download</mat-icon>
@@ -40,6 +40,28 @@
                         (click)="removeFile($event,f.srNo)">
                         <mat-icon>{{deleteButtonIcon}}</mat-icon>
                     </button>
+                </div> -->
+                <div class="file-list">
+                    <div *ngFor="let file of files; let i = index" class="file-item">
+                        <ng-container *ngIf="getPreview(file.Document); else fileIcon">
+                            <img [src]="getPreview(file.Document)!" alt="preview" class="preview-img" />
+                        </ng-container>
+
+                        <ng-template #fileIcon>
+                            <mat-icon class="file-icon">{{ getFileIcon(file.docName) }}</mat-icon>
+                        </ng-template>
+
+                        <span class="file-name">{{ file.docName }}</span>
+
+                        <div class="file-actions">
+                            <button mat-icon-button (click)="downloadFile(file)" title="Download">
+                                <mat-icon>cloud_download</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteFile(i)" title="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

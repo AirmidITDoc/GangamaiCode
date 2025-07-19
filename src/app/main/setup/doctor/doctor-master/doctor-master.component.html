@@ -74,9 +74,8 @@
                 <button mat-icon-button (click)="onDelete(element)" color="warn">
                     <mat-icon>delete_outline</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Print" (click)="onFiles(element)">
-                    <mat-icon> insert_drive_file</mat-icon>
-                </button>
+                <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
+                    [multiple]="true"></airmid-fileupload-icon>
             </div>
         </ng-template>
     </div>
