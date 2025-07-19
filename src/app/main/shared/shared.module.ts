@@ -62,11 +62,12 @@ import { AirmidChipautocompleteComponent } from './componets/airmid-chipautocomp
 import { MatChipsModule } from '@angular/material/chips';
 import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicker/airmid-full-datepicker.component';
 import { AirmidFileuploadComponent } from './componets/airmid-fileupload/airmid-fileupload.component';
+import { AirmidFileuploadIconComponent } from './componets/airmid-fileupload-icon/airmid-fileupload-icon.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent],
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -115,6 +116,7 @@ import { AirmidFileuploadComponent } from './componets/airmid-fileupload/airmid-
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
         AirmidFileuploadComponent,
+        AirmidFileuploadIconComponent,
         AirmidDateofbirthComponent,
         AirmidEditorComponent,
         AirmidSliderComponent,
