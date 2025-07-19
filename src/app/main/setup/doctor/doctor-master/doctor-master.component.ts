@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
 import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
 import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
+import { PageNames } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
 
 @Component({
     selector: "app-doctor-master",
