@@ -61,18 +61,19 @@ export class ParametermasterService {
                       this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
+              methodName: ["",
+                // [Validators.pattern("^[A-Za-z ]*$")],
+            ],
+            formula:[""],
             unitId: ["",
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isNumeric: ["1"],
             isPrintDisSummary: true,
-            methodName: ["",
-                // [Validators.pattern("^[A-Za-z ]*$")],
-            ],
-            formula:[""],
+          
             isBoldFlag: [true],
             IsDeleted: ["true"],
-            mParameterDescriptiveMasters:"",
-            mPathParaRangeWithAgeMasters:""
+            mParameterDescriptiveMasters:this._formBuilder.array([]),
+            mPathParaRangeWithAgeMasters:this._formBuilder.array([])
         });
     }
 
@@ -113,11 +114,12 @@ export class ParametermasterService {
     createformulaForm(): FormGroup {
         return this._formBuilder.group({
             formulaId: [0],  // Ensuring null values don't become strings
-            ParameterId: [null, Validators.required], // Change to null instead of []
+            ParameterId: [0, Validators.required], // Change to null instead of []
             parameterName: [""],
-            Formula: [""],
-            isActive: [true],
-            createdBy: [1],
+            Formula: ["", Validators.required],
+            Parameter:""
+            // isActive: [true],
+            // createdBy: [1],
         });
     }
     
@@ -171,12 +173,10 @@ export class ParametermasterService {
         } else return this._httpClient.PostData("ParameterMaster/InsertEDMX", Param);
     }
 
-    // public update1ParameterMaster(Param: any) {
-        
-    //     if (Param.parameterId) {
-    //         return this._httpClient.PutData("ParameterMaster/Edit/" + Param.parameterId, Param);
-    //     }        
-    // }
+    public getParameteformulaedit(Param: any) {
+      return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.ParameterId, Param);
+           
+    }
 
     public updateParameterMaster(param) {
         return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
@@ -245,7 +245,7 @@ export class ParametermasterService {
     }
 
     populateForm(param) {
-        
+        console.log(param)
         console.log("sfjhgfskjsfg",param)
         this.myform.patchValue(param);
         this.myform.get("isPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);

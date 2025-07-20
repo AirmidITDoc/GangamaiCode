@@ -57,7 +57,7 @@ export class NewPrescriptionComponent implements OnInit {
   isWardselected: boolean = false;
   CompanyName: any;
   vClassId: any = 0;
-  vRegNo: any;
+  vRegNo: any=0;
   vPatientName: any;
   vAdmissionDate: any;
   vIPDNo: any;
@@ -75,7 +75,7 @@ export class NewPrescriptionComponent implements OnInit {
   vRefDocName: any;
   vPatientType: any;
   vDOA: any;
-  vstoreId: any = '';
+  vstoreId=0;
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
   // dsiVisitList = new MatTableDataSource<MedicineItemList>();
@@ -112,6 +112,7 @@ export class NewPrescriptionComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj)
+      this.vstoreId=this._loggedService.currentUserValue.user.storeId
     }
   }
 
@@ -173,7 +174,13 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeItem(obj: any) {
-    if (!this.vstoreId) {
+
+    if (this.vstoreId==0) {
+      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+      this.ItemForm.get('ItemId').reset();
+      this.ItemForm.get('ItemId').updateValueAndValidity();
       return;
     }
     if (!obj || typeof obj !== 'object') {
@@ -352,6 +359,20 @@ export class NewPrescriptionComponent implements OnInit {
   OnSavePrescription() {
     debugger
     if (!this.prescForm.invalid && this.prescriptionArray.controls.every(c => !c.invalid)) {
+       if (this.vstoreId==0) {
+      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+      this.ItemForm.get('ItemId').reset();
+      this.ItemForm.get('ItemId').updateValueAndValidity();
+      return;
+    }
+  if (this.vRegNo==0) {
+      this.toastr.warning('Please select a Patient Name .', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+       return;
+    }
 
       this.prescriptionArray.clear();
       if (this.dsItemList.data.length === 0) {
@@ -379,6 +400,7 @@ export class NewPrescriptionComponent implements OnInit {
           }
         }
       }
+      
       this.prescriptionArray.controls.forEach((control, index) => {
         if (control instanceof FormGroup) {
           for (const key in control.controls) {

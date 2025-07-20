@@ -76,6 +76,7 @@ const routes: Routes = [
                NgxMatSelectSearchModule,
                MatButtonToggleModule,
                MatDialogModule,
+               SharedModule
     ],
      providers: [ItemMasterService, DatePipe]
 })

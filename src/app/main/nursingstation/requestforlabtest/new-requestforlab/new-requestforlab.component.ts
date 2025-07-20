@@ -179,7 +179,7 @@ export class NewRequestforlabComponent implements OnInit {
       reqDate:[(new Date()).toISOString().split('T')[0]],
       reqTime:[(new Date()).toISOString()],
       opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpType:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
       isAddedBy:this._loggedService.currentUserValue.userId,
       isCancelled:false,
       isCancelledBy:0,
@@ -201,7 +201,7 @@ export class NewRequestforlabComponent implements OnInit {
         addedBillingId: 0,
         addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
         addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
-        charId: [0], //260570
+        charId: [260570], //260570
         isTestCompted: false,
         isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
       });
@@ -214,6 +214,13 @@ export class NewRequestforlabComponent implements OnInit {
   OnSave() {
     debugger
     console.log(this.labRequestInsert.value)
+
+    if (this.vRegNo==0) {
+      this.toastr.warning('Please select a Patient Name .', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+       return;
+    }
 
     if(!this.labRequestInsert.invalid){
 

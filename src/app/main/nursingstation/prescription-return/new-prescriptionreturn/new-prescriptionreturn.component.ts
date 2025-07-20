@@ -100,8 +100,15 @@ export class NewPrescriptionreturnComponent implements OnInit {
   ngOnInit(): void {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
-      this.registerObj1 = this.data.row;
+      this.registerObj1 = this.data;
       console.log("Icd RegisterObj:", this.registerObj1)
+
+       setTimeout(() => {
+                 this._PrescriptionReturnService.getPrscretbyId(this.data.presReId).subscribe((response) => {
+                    this.registerObj = response;
+                     console.log(this.registerObj)
+               });
+             }, 500);
     }
     this.getItemSubform();
     this.ItemSubform.markAllAsTouched();
@@ -125,7 +132,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   presReturnForm(): FormGroup {
     return this._formBuilder.group({
       presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      presNo: ['0', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      presNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       presDate: [(new Date()).toISOString().split('T')[0]],
       presTime: [(new Date()).toISOString()],
       toStoreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -160,6 +167,14 @@ export class NewPrescriptionreturnComponent implements OnInit {
     if (this.ItemSubform.get('PatientType').value == 'IP') { opip_Type = 1; }
     else { opip_Type = 0; }
 
+    if (this.vRegNo==0) {
+      this.toastr.warning('Please select a Patient Name .', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+       return;
+    }
+
+    
     if (!this.prescriptionReturnForm.invalid) {
 
       this.prescriptionReturnArray.clear();
@@ -355,8 +370,9 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.add = true;
     this.addbutton.focus();
   }
-
+ 
   onAdd() {
+    debugger
     if (!this.ItemSubform.invalid) {
       const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.ItemId)
       if (!iscekDuplicate) {
@@ -366,7 +382,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
             ItemID: this.ItemId || 0,
             ItemName: this.itemName || '',
             BatchNo: this.BatchNo || '',
-            Qty: this.Qty,
+            Qty:this.ItemSubform.get('Qty').value || this.Qty,
             BatchexpDate: this.BatchExpDate || ''
           });
         this.saleSelectedDatasource.data = this.Chargelist

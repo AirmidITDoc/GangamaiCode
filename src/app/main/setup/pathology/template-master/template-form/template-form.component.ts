@@ -78,7 +78,7 @@ export class TemplateFormComponent implements OnInit {
         if (!this.templateForm.invalid) {
             console.log(this.templateForm.value)
             this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
-                this.onClear(true);
+                this.dialogRef.close()
             });
         } {
             let invalidFields = [];

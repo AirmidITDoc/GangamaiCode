@@ -174,7 +174,7 @@ export class ParametermasterComponent implements OnInit {
         }
 
         console.log(param)
-
+        console.log(param,row)
         this._ParameterService.getTableData(param, row.isNumericParameter).subscribe((data) => {
 
             console.log("data:", data.data)
@@ -229,7 +229,7 @@ export class ParametermasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(AddformulaComponent, {
             maxWidth: "50vw",
-            maxHeight: "55vh",
+            maxHeight: "60vh",
             width: "100%",
             // height: "100%",
             data: {
@@ -238,7 +238,6 @@ export class ParametermasterComponent implements OnInit {
 
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log("The dialog was closed - Insert Action", result);
             this.grid.bindGridData();
         });
     }
@@ -265,7 +264,7 @@ export class ParametermasterComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Change Status!'
         }).then((result) => {
-            
+            debugger
             if (result.isConfirmed) {
                 this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
                     (data) => {

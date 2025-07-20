@@ -22,8 +22,9 @@
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="templateId" formControlName="templateId">
-
+                                        <input type="hidden" name="templateId" formControlName="templateId"   [(ngModel)]="TemplateId">
+ 
+                       
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
                                             <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"

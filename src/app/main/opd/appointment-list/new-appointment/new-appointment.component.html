@@ -117,11 +117,11 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true" [validations]="getValidationMessages().stateId" ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)" ApiUrl="StateMaster/get-state"></airmid-dropdown>
+                                  <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="false" [validations]="getValidationMessages().stateId" ValueField="stateId" TextField="stateName" (selectionChange)="onChangestate($event)" ApiUrl="StateMaster/get-state"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <airmid-dropdown label="Country" formControlName="CountryId" [readonly]="true" [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="true" [validations]="getValidationMessages().countryId" #ddlCountry [mode]="autocompleteModecountry"></airmid-dropdown>
+                                  <airmid-dropdown label="Country" formControlName="CountryId" [readonly]="true" [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="false" [validations]="getValidationMessages().countryId" #ddlCountry [mode]="autocompleteModecountry"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

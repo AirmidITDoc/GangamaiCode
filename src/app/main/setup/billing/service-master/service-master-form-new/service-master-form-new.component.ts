@@ -76,7 +76,7 @@ export class ServiceMasterFormNewComponent implements OnInit {
     onSubmit() {
         var data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
         this._serviceMasterService.saveServicesNew(data).subscribe(() => {
-            debugger
+            
         });
     }
 

@@ -26,10 +26,13 @@ export class RequestforlabtestComponent implements OnInit {
     hasSelectedContacts: boolean;
     @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
+ @ViewChild('isOnFileTest') isOnFileTestIcon!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        // this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
-        // this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+
+         this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -41,7 +44,8 @@ export class RequestforlabtestComponent implements OnInit {
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        // { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+  { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
 
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -121,14 +125,11 @@ export class RequestforlabtestComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
-                {
-                    heading: "IsBillingStatus", key: "isStatus", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.isStatusIcon, width: 50
-                },
-                {
-                    heading: "IsTestStatus", key: "isTestCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.isTestCompletedIcon, width: 50
-                },
+              
+                { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
+                { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
+
+
                 { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -222,5 +223,13 @@ export class RequestforlabtestComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
-
+ keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }

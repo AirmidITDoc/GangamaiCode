@@ -114,6 +114,10 @@ public deactivateTheStatus(m_data) {
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
+  getPrscretbyId(companyId: any) {
+        return this._httpClient1.GetData("CompanyMaster/" + companyId);
+    }
+  
 }
 
 

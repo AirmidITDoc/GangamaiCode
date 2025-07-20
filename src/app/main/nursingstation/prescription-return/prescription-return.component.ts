@@ -28,10 +28,10 @@ export class PrescriptionReturnComponent implements OnInit {
         columnsList: [            
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Adm Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "Adm Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA'},
             { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
+            // { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA'},   
             {
                 heading: "Action", key: "action",width: 50,align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -54,7 +54,7 @@ export class PrescriptionReturnComponent implements OnInit {
         filters: [
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "1008", opType: OperatorComparer.Equals }
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
         ]
     }
 
@@ -67,17 +67,18 @@ export class PrescriptionReturnComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     GetDetails1(data){
+        debugger
         this.gridConfig1 = {
-            apiUrl: "IPPrescription/PrescriptionDetailList",
+            apiUrl: "IPPrescription/IPPrescReturnItemDetList",
             columnsList: [
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA'},
-                { heading: "BatchNo", key: "medicalRecoredId", sort: true, align: 'left', emptySign: 'NA'},
+                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
             ],
-            sortField: "IPMedID",
+            sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "IPMedID", fieldValue: "334", opType: OperatorComparer.Equals }
+                { fieldName: "PresReId", fieldValue: String(data.presReId), opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable = true;

@@ -25,7 +25,7 @@ export class PrescriptionComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('grid2') grid2: AirmidTableComponent;
     @ViewChild('grid4') grid4: AirmidTableComponent;
-    @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+    // @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
     regNo: any = ""
 
     ngAfterViewInit() {
@@ -111,10 +111,7 @@ export class PrescriptionComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
             columnsList: [
-                {
-                    heading: "Status", key: "isClosed", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.iconisClosed, width: 50
-                },
+              { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
             ],
@@ -337,4 +334,14 @@ export class PrescriptionComponent implements OnInit {
         });
     }
 
+    
+  keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 }

@@ -88,11 +88,13 @@
                                                         </airmid-dropdown>
                                                     </div>
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Min Age" formControlName="minAge" [value]="vMinAge" [formGroup]="numericForm" [validations]="getValidationMessages().minAge" [maxLength]="3">
+                                                        <airmid-textbox label="Min Age" formControlName="minAge" [value]="vMinAge" [formGroup]="numericForm" [validations]="getValidationMessages().minAge" [maxLength]="3"   (keypress)="keyPressAlphanumeric($event)"
+                                                         (input)="chkage()">
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Max Age" formControlName="maxAge" [value]="vMaxAge" [formGroup]="numericForm" [validations]="getValidationMessages().maxAge" [maxLength]="3">
+                                                        <airmid-textbox label="Max Age" formControlName="maxAge" [value]="vMaxAge" [formGroup]="numericForm" [validations]="getValidationMessages().maxAge" [maxLength]="3"   (keypress)="keyPressAlphanumeric($event)" 
+                                                         (input)="chkage()">
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">

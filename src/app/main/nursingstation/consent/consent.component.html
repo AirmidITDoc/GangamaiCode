@@ -51,7 +51,7 @@
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFormSearch"
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFormSearch" (keypress)="keyPressAlphanumeric($event)"
                             formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>

@@ -60,8 +60,17 @@ export class RegistrationService {
                 Validators.maxLength(100),
                 Validators.pattern("^[A-Za-z/() ]*$")
             ]],
+
+
+                Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+             aadharCardNo: ['', [
+                Validators.minLength(12),
+                Validators.maxLength(12),
+                Validators.pattern("^[0-9]*$"),
+                this._FormvalidationserviceService.onlyNumberValidator()
+            ]],
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
+          
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             Age: ['0'],
             AgeYear: ['0', [
@@ -80,12 +89,7 @@ export class RegistrationService {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-            aadharCardNo: ['', [
-                Validators.minLength(12),
-                Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$"),
-                this._FormvalidationserviceService.onlyNumberValidator()
-            ]],
+           
 
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], //changed by raksha

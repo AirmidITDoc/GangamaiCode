@@ -60,6 +60,7 @@ export class AddformulaComponent implements OnInit {
       console.log(this.data)
       this.registerObj = this.data.registerObj;
       this.ParameterId = this.registerObj.parameterId
+
       this.vParameter = this.registerObj.parameterName
       this.finalformula = this.registerObj.formula
       this.VFormulaId=this.registerObj.formulaId
@@ -75,7 +76,7 @@ export class AddformulaComponent implements OnInit {
   onChangeparaList(option) {
     
     this.paraname = option.ParameterName
-     this.paraname=this._ParameterService.formulaform.get("ParameterId").value.ParameterName;
+     this.paraname=this._ParameterService.formulaform.get("Parameter").value.ParameterName;
     console.log(this.paraname)
   }
   onClear(p0: boolean) {
@@ -94,16 +95,23 @@ export class AddformulaComponent implements OnInit {
 
   onSubmit() {
 // 
-    if (!this.paraname.invalid) {
-            console.log(this.paraname.value)
-            this._ParameterService.getParameterMasterList(this.paraname.value).subscribe((response) => {
-                this.onClear(true);
+ console.log(this._ParameterService.formulaform.value)
+ const payload=this._ParameterService.formulaform.value
+delete payload.parameterName
+delete payload.formulaId
+delete payload.Parameter
+ 
+ console.log(this._ParameterService.formulaform.value)
+    if (!this._ParameterService.formulaform.invalid) {
+           
+            this._ParameterService.getParameteformulaedit(this._ParameterService.formulaform.value).subscribe((response) => {
+                this.dialogRef.close()
             });
         } {
             let invalidFields = [];
-            if (this.paraname.invalid) {
-                for (const controlName in this.paraname.controls) {
-                    if (this.paraname.controls[controlName].invalid) {
+            if (this._ParameterService.formulaform.invalid) {
+                for (const controlName in this._ParameterService.formulaform.controls) {
+                    if (this._ParameterService.formulaform.controls[controlName].invalid) {
                         invalidFields.push(`paraname Form: ${controlName}`);
                     }
                 }
@@ -123,7 +131,7 @@ export class AddformulaComponent implements OnInit {
   }
   getValidationMessages() {
     return {
-      ParameterId:[
+      Parameter:[
         { name: "required", Message: "Parameter Name is required" }
       ]
     };

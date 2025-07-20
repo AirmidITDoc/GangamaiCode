@@ -27,7 +27,7 @@
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off"
+                        <input matInput placeholder="Search RegNo" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
                             [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="RegNo"
                             (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">

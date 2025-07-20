@@ -22,6 +22,9 @@
             <form [formGroup]="_ParameterService.formulaform">
                 <div fxLayout="column" class="gap-12">
 
+                    <input type="hidden" name="ParameterId" formControlName="ParameterId"
+                        [(ngModel)]="registerObj.parameterId" />
+
                     <div class="modal-card-container" style="padding: 10px;">
                         <mat-card>
                             <div fxLayout="column" class="gap-8">
@@ -32,16 +35,15 @@
                                 </mat-form-field>
                             </div>
                             <div fxLayout="column" class="gap-8">
-                                <airmid-dropdown label="Parameter Name" 
-                                formControlName="ParameterId" [formGroup]="_ParameterService.formulaform"
-                                [validations]="getValidationMessages().ParameterId" 
-                                [mode]="autocompleteParameter"
-                                (selectionChange)="selectChangeParameter($event)">
-                            </airmid-dropdown>
+                                <airmid-dropdown label="Parameter Name" formControlName="Parameter"
+                                    [formGroup]="_ParameterService.formulaform"
+                                    [validations]="getValidationMessages().Parameter" [mode]="autocompleteParameter"
+                                    (selectionChange)="selectChangeParameter($event)">
+                                </airmid-dropdown>
 
                             </div>
                             <!--  -->
-                            <div fxLayout="row"  class="gap-8">
+                            <div fxLayout="row" class="gap-8">
                                 <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>Oprator</mat-label>
                                     <mat-select formControlName="OPrator" required

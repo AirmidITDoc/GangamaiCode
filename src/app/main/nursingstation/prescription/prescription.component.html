@@ -50,7 +50,7 @@
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
-                                <input matInput placeholder="Search Reg_No" autocomplete="off"
+                                <input matInput placeholder="Search Reg_No" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
                                     [formGroup]="_PrescriptionService.mysearchform" formControlName="RegNo"
                                     (input)="onChangeFirst()"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"
@@ -67,7 +67,7 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
 
-                    <ng-template #iconisClosed let-element>
+                    <!-- <ng-template #iconisClosed let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
         
                             <mat-icon *ngIf="element.isClosed == false" matTooltip="Pending"
@@ -79,7 +79,7 @@
                             </mat-icon>
                             
                         </div>
-                    </ng-template>
+                    </ng-template> -->
 
                     <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
                     </airmid-table>
@@ -120,7 +120,7 @@
 
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Reg_No</mat-label>
-                                <input matInput placeholder="Search Reg_No" autocomplete="off"
+                                <input matInput placeholder="Search Reg_No" autocomplete="off"  (keypress)="keyPressAlphanumeric($event)"
                                      [formGroup]="_PrescriptionService.mysearchform" formControlName="RegNo"
                                     (input)="onChangeFirst1()"/>
                                 <button matSuffix mat-icon-button aria-label="Clear"

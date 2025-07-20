@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from "../shared/shared.module";
+import { DiscApprovalComponent } from './disc-approval/disc-approval.component';
 
 
 const appRoutes: Routes = [
@@ -54,12 +55,18 @@ const appRoutes: Routes = [
   path: "physiotherapistSchedule",
     loadChildren: () =>import("./physiotherapist-schedule/physiotherapist-schedule.module").then((m) => m.PhysiotherapistScheduleModule),
 },
+{
+  path: "disccapproval",
+    loadChildren: () =>import("./disc-approval/disc-approval.module").then((m) => m.DiscApprovalModule),
+},
 
 
 ];
 
 @NgModule({
   declarations: [ 
+  
+    
   ],
   imports: [
     RouterModule.forChild(appRoutes),
