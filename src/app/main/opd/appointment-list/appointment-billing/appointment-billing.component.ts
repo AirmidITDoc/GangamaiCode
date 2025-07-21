@@ -54,14 +54,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   currentDate = new Date();
   PatientName: any;  
   className = "OPD";
-  savebtn: boolean = true;
+ 
   screenFromString = 'Common-form';  
   AgeYear: any;   
   ConcessionId = 0;
   ConcessionReason = "";
   Regstatus: boolean = true;
   Consessionres: boolean = false;
-
+ savebtn: boolean = true;
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModetariff: string = "Tariff";
   autocompleteModedeptdoc: string = "ConDoctor";
@@ -686,11 +686,13 @@ getPacakgeDetail(contact){
     this.isUpdating = false;
   }
   updateTotalDiscountPer(): void {
+
+    debugger
     if (this.isUpdating) return; // Stop recursion
     this.isUpdating = true;
 
     const totalDiscountAmount = +this.OPFooterForm.get("concessionAmt").value;
-    const totalChargeAmount = +this.OPFooterForm.get("totalAmt").value;
+    const totalChargeAmount = +(this.OPFooterForm.get("totalAmt").value);
 
     if (totalDiscountAmount == 0)
       this.OPFooterForm.get("concessionReasonId").setValue(0)
@@ -705,7 +707,9 @@ getPacakgeDetail(contact){
     }
     this.Consessionres = totalDiscountAmount !== 0;
     if (!this.isDiscountApplied) {
-      const disountPer = Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00");
+      // const disountPer = Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00");
+    
+     const disountPer = Math.ceil (Number(totalChargeAmount ? ((totalDiscountAmount / totalChargeAmount) * 100).toFixed(2) : "0.00"));
       const netAmount = totalChargeAmount - totalDiscountAmount;
       this.OPFooterForm.patchValue({
         totalDiscountPer: disountPer,

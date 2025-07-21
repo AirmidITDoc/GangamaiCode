@@ -103,18 +103,6 @@
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
                                     [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
-
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="FirstName"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
-
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
@@ -125,18 +113,6 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-
-
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="LastName"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
@@ -149,17 +125,7 @@
                                     </button>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>PBillNo</mat-label>
-                                    <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="PBillNo"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[5].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
-
+                          
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
@@ -172,21 +138,10 @@
                                     </button>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="RegNo"
-                                        [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[4].fieldValue='0'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
-
-
+                           
                                 <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="myFilterbillform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPBill()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
@@ -267,8 +222,8 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="myFilterpayform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPPayment()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
@@ -372,8 +327,8 @@
 
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="myFilterrefundform" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
                                         (input)="onChangeOPRefund()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"

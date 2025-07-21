@@ -36,15 +36,15 @@ export class PatientvitalInformationComponent {
   advanceObj: any;
   MyFormGroup: FormGroup
 
-  vHeight: any;
-  vWeight: any;
-  vBSL: any;
-  vBMI: any;
-  vBP: any;
+  vHeight = 0;
+  vWeight = 0;
+  vBSL = "0";
+  vBMI = "0";
+  vBP = "0";
   VisitId: any;
-  vTemp: any;
-  vSpO2: any;
-  vPulse: any;
+  vTemp = "0";
+  vSpO2 = "0";
+  vPulse = "0";
   registerObj1 = new VisitMaster1({});
   patientDetail1 = new VisitMaster1({});
 
@@ -73,7 +73,7 @@ export class PatientvitalInformationComponent {
           console.log(data)
           this.vHeight = data.height
           this.vWeight = data.pweight
-          this.vBSL = data.bmi
+          this.vBSL = data.bsl
           this.vBMI = data.bmi
           this.vBP = data.bp
           this.vTemp = data.temp
@@ -91,9 +91,9 @@ export class PatientvitalInformationComponent {
       this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.pattern("^[0-9]{1,3}$")]],
       pweight: ['', [Validators.required, Validators.minLength(0), Validators.maxLength(3),
       Validators.pattern("^[0-9]{1,3}$"), this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bmi: ['', [Validators.minLength(0), Validators.maxLength(5),Validators.pattern("^$|^[0-9]{1,5}$")]],
-      bsl: ['', [Validators.minLength(0), Validators.maxLength(3),Validators.pattern("^[0-9]{1,3}$")]],
-      spO2: ['', [Validators.minLength(0), Validators.maxLength(3),Validators.pattern("^[0-9]{1,3}$")]],
+      bmi: ['', [Validators.minLength(0), Validators.maxLength(5), Validators.pattern("^$|^[0-9]{1,5}$")]],
+      bsl: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
+      spO2: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
       temp: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
       pulse: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
       bp: ['', [Validators.minLength(0), Validators.maxLength(3),
@@ -108,19 +108,27 @@ export class PatientvitalInformationComponent {
       this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));
     }
     else if (this.vHeight <= 0) {
-      this.vBMI = 0;
+      this.vBMI = '0';
 
     }
     else if (this.vWeight <= 0) {
-      this.vBMI = 0;
+      this.vBMI = '0';
 
     }
   }
 
   onSave() {
+
+    debugger
     if (!this.MyFormGroup.invalid) {
       let visitId = this.data.visitId
-      console.log(this.MyFormGroup.value)
+   
+      this.MyFormGroup.get("bsl").setValue(this.vBSL || "0")
+      this.MyFormGroup.get("spO2").setValue(this.vSpO2 || "0")
+      this.MyFormGroup.get("pulse").setValue(this.vPulse || "0")
+      this.MyFormGroup.get("bp").setValue(this.vBP || "0")
+      this.MyFormGroup.get("temp").setValue(this.vTemp || "0")
+         console.log(this.MyFormGroup.value)
       this._OpAppointmentService.InsertVitalInfo(visitId, this.MyFormGroup.value).subscribe((response) => {
         this._matDialog.closeAll();
       });

@@ -59,7 +59,7 @@ export class RegistrationComponent implements OnInit {
     allcolumns = [
         { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },

@@ -35,6 +35,7 @@ import { DiscApprovalComponent } from './disc-approval.component';
 import { DoscApprovalService } from './dosc-approval.service';
 
 
+
 const routes: Routes = [
     {
         path: '**',
@@ -43,7 +44,8 @@ const routes: Routes = [
 ];
 @NgModule({
     declarations: [
-      DiscApprovalComponent
+      DiscApprovalComponent,
+      
          
     ],
     imports: [

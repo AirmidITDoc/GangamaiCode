@@ -12,12 +12,33 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class DoscApprovalService {
 
   constructor(
-          public _httpClient: HttpClient, public _httpClient1: ApiCaller,
+           public _httpClient1: ApiCaller,
           private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
-          private accountService: AuthenticationService,
-          private _loaderService: LoaderService) { }
+          // private accountService: AuthenticationService,
+          // private _loaderService: LoaderService
+        ) { }
 
+         
           
+          
+  myFilterbillbrowseform(): FormGroup {
+    return this._formBuilder.group({
+     
+      FirstName: ['', [  Validators.maxLength(50),
+         Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      LastName:['', [  Validators.maxLength(50),
+         Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+     ]],
+     fromDate: [(new Date()).toISOString()],
+     enddate: [(new Date()).toISOString()],
+     PBillNo: '', 
+      RegNo: '',
+    //  ReceiptNo: '',
+    });
+  }
+
+  
   DiscAppForm(): FormGroup {
         return this._formBuilder.group({
             RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],

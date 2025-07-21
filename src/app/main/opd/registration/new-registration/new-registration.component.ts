@@ -31,17 +31,23 @@ export class NewRegistrationComponent implements OnInit {
     submitted = false;
     isRegSearchDisabled: boolean = true;
     Submitflag: boolean = false;
+    isSaving: boolean = false;
+    isEditMode: boolean = false;
     newRegSelected: any = 'registration';
-
+    imagePreview!: string;
     msg: any = [];
     AgeYear: any;
     AgeMonth: any;
     AgeDay: any;
     matDialogRef: any;
     RegID: number = 0;
-    isSaving: boolean = false;
+
     regNo: any;
-    isEditMode: boolean = false;
+    ageYear = 0;
+    ageMonth = 0;
+    ageDay = 0;
+    CityName = ""
+
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
     autocompleteModecity: string = "City";
@@ -50,7 +56,7 @@ export class NewRegistrationComponent implements OnInit {
     autocompleteModemstatus: string = "MaritalStatus";
     autocompleteModereligion: string = "Religion";
     autocompleteModerelationship: string = "Relationship";
-    imagePreview!: string;
+
 
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
@@ -91,36 +97,6 @@ export class NewRegistrationComponent implements OnInit {
             }, 500);
         }
 
-    }
-    ageYear = 0;
-    ageMonth = 0;
-    ageDay = 0;
-
-    openCamera(type: string, place: string) {
-        const dialogRef = this._matDialog.open(ImageViewComponent,
-            {
-                width: '750px',
-                height: '550px',
-
-                data: {
-                    docData: type == 'camera' ? 'camera' : '',
-                    type: type == 'camera' ? 'camera' : '',
-                    place: place
-                }
-            }
-        );
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                if (place == "photo") {
-                    this.imagePreview = result.url;
-                }
-                else {
-                    // this.imgArr.push(result.name);
-                    // this.images.push(result);
-                    // this.imgDataSource.data = this.images;
-                }
-            }
-        });
     }
 
     OnSubmit() {
@@ -170,7 +146,7 @@ export class NewRegistrationComponent implements OnInit {
             });
             return;
         }
-        
+
         console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
 
@@ -199,11 +175,36 @@ export class NewRegistrationComponent implements OnInit {
     }
     chkChange() {
         if (this.registerObj.dateOfBirth > this.minDate) {
-            // Swal.fire("Enter Proper Birth Date ")
             this.toastr.warning('Enter Proper Birth Date', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
             });
         }
+    }
+    openCamera(type: string, place: string) {
+        const dialogRef = this._matDialog.open(ImageViewComponent,
+            {
+                width: '750px',
+                height: '550px',
+
+                data: {
+                    docData: type == 'camera' ? 'camera' : '',
+                    type: type == 'camera' ? 'camera' : '',
+                    place: place
+                }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (place == "photo") {
+                    this.imagePreview = result.url;
+                }
+                else {
+                    // this.imgArr.push(result.name);
+                    // this.images.push(result);
+                    // this.imgDataSource.data = this.images;
+                }
+            }
+        });
     }
 
     keyPressAlphanumeric(event) {
@@ -242,7 +243,7 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-    CityName = ""
+   
     onChangestate(e) {
     }
 

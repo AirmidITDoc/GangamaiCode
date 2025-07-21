@@ -197,6 +197,7 @@ export class RefundbillComponent implements OnInit {
     this.getfilterdata(obj.value)
   }
     getfilterdata(RegId) {
+      debugger
     this.gridConfig = {
       apiUrl: "RefundOfBill/OPBilllistforrefundList",
       columnsList: this.allColumns1,
@@ -336,11 +337,13 @@ export class RefundbillComponent implements OnInit {
   cleardata() {
     this.dataSource2.data = [];
     this.RefundOfBillFormFooter.reset();
+    this.RefundOfBillFormFooter.get("Remark").reset("")
     this.searchFormGroup.get('RegId')?.setValue(0); 
     this.registerObj = new RegInsert({});
     this.RegNo = ''; 
      this.RefundOfBillFormFooter.markAllAsTouched();
-     this.getfilterdata(0)
+     this.dataSource2.data=[]
+          this.getfilterdata(0)
   }
   onEdit(row) { 
     console.log(row);
