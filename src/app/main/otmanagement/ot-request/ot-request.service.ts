@@ -28,14 +28,16 @@ export class OtRequestService {
             categoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             siteDescId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            otbookingDate:  [null],
+            otbookingDate:  [""],
             otbookingTime: [""],
             opIpType: 'OP',
             surgeryType:["Normal"],
-            addedDateTime: [null],
-            updateDateTime: [null],
-            isCancelledDateTime:  [null],
-            
+            isCancelledDateTime:  [""],
+            isCancelled: [""],
+            isCancelledBy: [""],
+            otrequestDate: [""],
+            otrequestId: [""],
+            otrequestTime: [""],
            
             // cityName: ["",
             //     [
