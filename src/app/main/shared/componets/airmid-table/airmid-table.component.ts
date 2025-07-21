@@ -150,7 +150,7 @@ export class AirmidTableComponent implements OnInit {
             filename = filename + ".pdf";
         else if (type == gridResponseType.Excel)
             filename = filename + ".xlsx";
-        this._httpClient.downloadFilePost(this.gridConfig.apiUrl, this.gridDataRequest, filename).subscribe((data) => {
+        this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest,1, filename).subscribe((data) => {
 
         });
     }

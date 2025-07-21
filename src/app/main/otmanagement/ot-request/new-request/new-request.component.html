@@ -5,12 +5,17 @@
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Booking Request</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
         </div>
     </div>
 
@@ -132,7 +137,7 @@
                                                             <span class="patient-col-value">{{vDoctorName}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">terrif</span>
+                                                            <span class="patient-col-key">tariff</span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{vTariffName}}</span>
                                                         </div>
@@ -179,13 +184,13 @@
                                 <airmid-dropdown label="Surgery Category" formControlName="surgeryId"
                                     [formGroup]="requestForm" [value]="data?.stateId"
                                     [validations]="getValidationMessages(). SurgeryCategory"
-                                    [mode]="autocompleteModestatus">
+                                    [mode]="autocompleteModeSurgeryCategory">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Site" formControlName="siteDescId" [formGroup]="requestForm"
                                     [value]="data?.stateId" [validations]="getValidationMessages(). Site"
-                                    [mode]="autocompleteModestatus">
+                                    [mode]="autocompleteModeSiteDescriptionId">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
@@ -206,9 +211,17 @@
 
 <input type="hidden" formControlName="otbookingId">
   <input type="hidden" formControlName="opIpId">
-  <input type="hidden" formControlName="addedDateTime">
-  <input type="hidden" formControlName="updateDateTime">
-  <input type="hidden" formControlName="isCancelledDateTime">
+   <input type="hidden" formControlName="otrequestDate">
+  <input type="hidden" formControlName="isCancelledBy">
+  <input type="hidden" formControlName="isCancelled">
+ <input type="hidden" formControlName="isCancelledDateTime">
+ <input type="hidden" formControlName="otrequestId">
+ <input type="hidden" formControlName="otrequestTime">
+ <input type="hidden" formControlName="categoryId">
+  <input type="hidden" formControlName="otbookingDate">
+   <input type="hidden" formControlName="otbookingTime">
+    <input type="hidden" formControlName="categoryId">
+
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
                             <mat-radio-group formControlName="surgeryType" [formGroup]="requestForm" fxLayout="row" fxLayoutGap="10px">
                                 <span>surgery Type:</span>

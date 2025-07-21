@@ -29,7 +29,8 @@ export class NewRequestComponent implements OnInit {
     
    isActive:boolean=true;
   autocompleteModeDepartment: String = "Department";
-   autocompleteModeSiteDescriptioId: String = "SiteDescriptioId";
+   autocompleteModeSiteDescriptionId: String = "SiteDescription";
+ autocompleteModeSurgeryCategory: String = "SurgeryCategory";
  autocompleteModestatus: string = "State";
    // vClassId: any = 0;
   vRegNo: any;
@@ -53,6 +54,9 @@ export class NewRequestComponent implements OnInit {
   //vstoreId: any = '';
   //vAdmissionID: any;
 
+
+   screenFromString = 'Common-form';
+
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
      @Inject(MAT_DIALOG_DATA) public data: any,
@@ -72,6 +76,12 @@ export class NewRequestComponent implements OnInit {
          }
  }
  
+ dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+       
+        this.dateTimeObj = dateTimeObj;
+         console.log(this.dateTimeObj)
+    }
  onChangeReg(event) {
      if (event.value == 'registration') {
       // this.Regflag = false;
@@ -99,6 +109,7 @@ export class NewRequestComponent implements OnInit {
      this.admissionFormGroup.markAllAsTouched();
    }
   getSelectedObjOT(obj) {
+
 
     if ((obj.regID ?? 0) > 0) {
      
