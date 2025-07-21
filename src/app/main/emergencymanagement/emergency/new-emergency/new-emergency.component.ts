@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { EmergencyComponent, EmergencyList } from '../emergency.component';
 import { EmergencyService } from '../emergency.service';
-
+import { format } from 'date-fns';
 @Component({
   selector: 'app-new-emergency',
   templateUrl: './new-emergency.component.html',
@@ -36,9 +36,12 @@ export class NewEmergencyComponent {
   autocompleteModegender: string = "Gender";
   autocompleteModecountry: string = "Country";
   autocompleteModeDepartment: string = "Department";
+  autocompleteModeClass: string = "Class";
+  autocompleteModetariff: string = "Tariff";
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
+  @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
 
   constructor(public _EmergencyService: EmergencyService,
@@ -55,30 +58,32 @@ export class NewEmergencyComponent {
     this.myForm.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
     if ((this.data?.emgId ?? 0) > 0) {
+      console.log("data:", this.data)
+
       this.registerObj = this.data
-      // this.myForm.get('doctorId').setValue('2')
-      console.log("doctor data:", this.myForm.get('doctorId').value)
+      // debugger
       console.log("Retrived data:", this.registerObj)
-      var mdata = {
+      this.myForm.patchValue({
         prefixId: this.registerObj?.prefixId,
         firstName: this.registerObj?.firstName,
         middleName: this.registerObj?.middleName,
         lastName: this.registerObj?.lastName,
         genderId: this.registerObj?.genderID,
-        DateOfBirth: this.registerObj?.dateofBirth,
+        // DateOfBirth: format(new Date(this.registerObj?.dateofBirth), 'dd-MM-yyyy HH:mm:ss'),
+        // DateOfBirth: this.registerObj?.dateofBirth,
         address: this.registerObj?.address,
         pinNo: this.registerObj?.pinNo,
         cityId: this.registerObj?.cityId,
-        stateId: this.registerObj?.stateId,
-        countryId: this.registerObj?.countryId,
         mobileNo: this.registerObj?.mobileNo?.trim(),
         phoneNo: this.registerObj?.phoneNo,
         departmentId: this.registerObj?.departmentId,
+        tariffId: this.registerObj?.tariffid,
+        classId: this.registerObj?.classid,
         comment: this.registerObj?.comment,
         // doctorId: this.registerObj?.doctorId,
-      };
-      this.myForm.patchValue(mdata);
+      });
       this.selectChangedepartment(this.registerObj)
+      this.onChangecity(this.registerObj)
     }
   }
 
@@ -88,11 +93,22 @@ export class NewEmergencyComponent {
     });
   }
 
+  chkChange() {
+      if (this.registerObj.dateOfBirth > this.minDate) {
+          // Swal.fire("Enter Proper Birth Date ")
+          this.toastr.warning('Enter Proper Birth Date', 'warning !', {
+              toastClass: 'tostr-tost custom-toast-success',
+          });
+      }
+  }
+
   dateTimeObj: any;
+  minDate = new Date();
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-
+ 
   getSelectedObj(obj) {
     this.RegId = obj.value;
     if ((obj.value ?? 0) > 0) {
@@ -113,6 +129,7 @@ export class NewEmergencyComponent {
     this.CityName = e.cityName
     this.registerObj.stateId = e.stateId
     this._EmergencyService.getstateId(e.stateId).subscribe((Response) => {
+      this.ddlState.SetSelection(Response.stateId)
       this.ddlCountry.SetSelection(Response.countryId);
     });
   }
@@ -123,9 +140,10 @@ export class NewEmergencyComponent {
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
-    } else {
+    }
+    else {
       this._EmergencyService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-        debugger
+        // debugger
         this.ddlDoctor.options = data;
         // this.ddlDoctor.bindGridAutoComplete();
         const incomingDoctorId = obj.doctorId;
@@ -135,10 +153,11 @@ export class NewEmergencyComponent {
           if (incomingDoctorId) {
             const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
             if (matchedDoctor) {
-              this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
+              this.ddlDoctor.SetSelection(matchedDoctor.value);
+              // this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
             }
           }
-        }, 0);
+        }, 100);
       });
     }
   }
@@ -158,22 +177,22 @@ export class NewEmergencyComponent {
         if (ageDay < 0) {
           (ageMonth)--;
           const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-          ageDay += previousMonth.getDate(); 
+          ageDay += previousMonth.getDate();
         }
 
         if (ageMonth < 0) {
           ageYear--;
           ageMonth += 12;
         }
-       if (
-            (!ageYear || ageYear == 0) &&
-            (!ageMonth || ageMonth == 0) &&
-            (!ageDay || ageDay == 0)
+        if (
+          (!ageYear || ageYear == 0) &&
+          (!ageMonth || ageMonth == 0) &&
+          (!ageDay || ageDay == 0)
         ) {
-            this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
+          this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
         }
         this.myForm.get('ageYear')?.setValue(ageYear, { emitEvent: false });
         this.myForm.get('ageMonth')?.setValue(ageMonth, { emitEvent: false });

@@ -154,11 +154,11 @@ export class EmergencyBillComponent {
     if (this.data) {
       this.selectedAdvanceObj = this.data;
       console.log(this.selectedAdvanceObj)
-      this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
-      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=1&ServiceName="
-      // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
-       this.getdata(this.selectedAdvanceObj.admissionId)
-       this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
+      this.opD_IPD_Id = this.selectedAdvanceObj.emgId || "0"
+      // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=1&ServiceName="
+      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffid + "&ClassId=" + this.selectedAdvanceObj.classid + "&ServiceName="
+       this.getdata(this.selectedAdvanceObj.emgId)
+       this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classid)
        this.IPBillMyForm=this.CreateIPBillForm();
        this.checkdata = 1
     }
@@ -240,9 +240,9 @@ export class EmergencyBillComponent {
   AddList(m) {
     var m_data = {
       "opdIpdId": m.opipid,
-      "classID": this.selectedAdvanceObj.classId || 0,
+      "classID": this.selectedAdvanceObj.classid || 0,
       "serviceId": m.serviceId,
-      "traiffId": this.selectedAdvanceObj.tariffId,
+      "traiffId": this.selectedAdvanceObj.tariffid,
       "reqDetId": m.reqDetId,
       "userId": this.accountService.currentUserValue.userId,
       "chargesDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
@@ -1059,8 +1059,8 @@ export class EmergencyBillComponent {
   }
   //Class selected 
   getSelectedClassObj(event) {
-    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=1 &ClassId=" + event.value + "&ServiceName="
-    // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&ServiceName="
+    // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=1 &ClassId=" + event.value + "&ServiceName="
+    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffid + "&ClassId=" + event.value + "&ServiceName="
   }
   // Service Add 
   onSaveAddCharges() {
@@ -1078,13 +1078,12 @@ export class EmergencyBillComponent {
     }
     debugger
 
-    // this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 1) //add 0 in or
-    this.Serviceform.get("opdIpdId").setValue(1) //add 0 in or
+    this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id)
     this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
     this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
     this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
     this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName ?? '')
-    // this.Serviceform.get("serviceId").setValue(formValue.serviceId?.serviceId ?? 0)
+    this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId ?? 0)
     this.Serviceform.get("doctorId").setValue(doctorid)
 
     console.log(this.Serviceform.value)
@@ -1176,9 +1175,9 @@ export class EmergencyBillComponent {
     return this.formBuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
-      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdType: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      serviceId: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1209,7 +1208,7 @@ export class EmergencyBillComponent {
       cTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isComServ: [false],
       isPrintCompSer: [false],
-      serviceName1: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      serviceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       chPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1247,7 +1246,7 @@ export class EmergencyBillComponent {
       //ipInterim bill header  
       bill: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdid: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdid: [this.selectedAdvanceObj?.emgId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -1263,7 +1262,7 @@ export class EmergencyBillComponent {
         isPrinted: true,
         isFree: true,    
         companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        tariffId: [this.selectedAdvanceObj?.tariffid, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -1282,7 +1281,7 @@ export class EmergencyBillComponent {
       }),
       // Admission Id Insert
       addmission: this.formBuilder.group({
-        admissionID: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        admissionID: [this.selectedAdvanceObj?.emgId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
       //Payment form
       payment: this.formBuilder.group({

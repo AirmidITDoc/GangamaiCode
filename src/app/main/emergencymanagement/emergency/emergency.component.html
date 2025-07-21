@@ -33,6 +33,11 @@
                 <mat-icon>history</mat-icon>
             </button>
 
+            <button mat-icon-button matTooltip="Convert to OPD or IPD" (click)="getConvert(element)"
+            *ngIf="element.isCancelled==false">
+                <mat-icon>cached icon</mat-icon>
+            </button>
+
             <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
             *ngIf="element.isCancelled==false">
                 <mat-icon> cancel</mat-icon>

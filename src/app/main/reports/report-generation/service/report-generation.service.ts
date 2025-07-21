@@ -24,8 +24,8 @@ export class ReportService {
         var date = new Date();
         date.setDate(date.getDate() - 7);
         return this._formBuilder.group({
-            // StartDate: [date.toISOString()],
-            StartDate: [new Date().toISOString()],
+            StartDate: [date.toISOString()],
+            // StartDate: [new Date().toISOString()],
             EndDate: [new Date().toISOString()],
             UserId: [""],
             DoctorId: [""],

@@ -469,8 +469,8 @@ export class ReportGenerationComponent implements OnInit {
                 });
 
                 matDialog.afterClosed().subscribe(result => {
-                    this._ReportService.userForm.get("StartDate").setValue(new Date())
-                    this._ReportService.userForm.get("EndDate").setValue(new Date())
+                    // this._ReportService.userForm.get("StartDate").setValue(new Date())
+                    // this._ReportService.userForm.get("EndDate").setValue(new Date())
                 });
             },
             (error) => {

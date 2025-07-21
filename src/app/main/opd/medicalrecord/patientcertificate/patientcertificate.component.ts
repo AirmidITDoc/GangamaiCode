@@ -10,6 +10,8 @@ import { AppointmentlistService } from '../../appointment-list/appointmentlist.s
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-patientcertificate',
@@ -77,6 +79,7 @@ export class PatientcertificateComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<PatientcertificateComponent>,
     public _matDialog: MatDialog,
+    private commonService: PrintserviceService,    
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private _formBuilder: FormBuilder
@@ -134,6 +137,7 @@ export class PatientcertificateComponent {
       console.log(payload)
       this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
         this.onSubList()
+        // this.viewgetCertificateReportPdf(response)
         this.mycertificateForm.reset();
         this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
       });
@@ -223,8 +227,11 @@ export class PatientcertificateComponent {
   }
 
    getWhatsappshareSales(el, vmono) {
-
     
+  }
+
+  viewgetCertificateReportPdf(element: any) {
+    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
   }
 }
 export class certificateTemp {

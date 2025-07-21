@@ -16,6 +16,8 @@ import { FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmergencyHistoryComponent } from './emergency-history/emergency-history.component';
 import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
+import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
+import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
 
 @Component({
   selector: 'app-emergency',
@@ -63,19 +65,19 @@ export class EmergencyComponent implements OnInit {
     { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
 
   allfilters = [
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith }
   ]
@@ -98,8 +100,8 @@ export class EmergencyComponent implements OnInit {
   }
 
   onChangeFirst() {
-     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
     this.f_name = this.myFilterform.get('firstName').value + "%"
     console.log(this.myFilterform.get('firstName').value)
     this.l_name = this.myFilterform.get('L_Name').value + "%"
@@ -107,17 +109,16 @@ export class EmergencyComponent implements OnInit {
   }
 
   getfilterdata() {
-    debugger
     this.gridConfig = {
       apiUrl: "Emergency/Emergencylist",
       columnsList: this.allcolumns,
       sortField: "EmgId",
       sortOrder: 0,
       filters: [
-         { fieldName: "From_Dt", fieldValue:this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-    { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
+        { fieldName: "From_Dt", fieldValue:this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -134,6 +135,8 @@ export class EmergencyComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
+      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.grid.bindGridData();
     });
   }
@@ -163,6 +166,51 @@ export class EmergencyComponent implements OnInit {
       this.grid.bindGridData();
     });
   }
+
+  getConvert(row) {
+  const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
+
+  Swal.fire({
+    title: `Convert ${patientName} to OPD or IPD?`,
+    text: 'Please choose the type you want to convert this patient to:',
+    icon: 'question',
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    denyButtonColor: '#6c757d',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Convert to OPD',
+    denyButtonText: 'Convert to IPD',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      // show patient visit list by regno when click on any row then show appointment page
+      const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+        maxWidth: '95vw',
+        height: '95%',
+        width: '90%',
+        data: row
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('OPD conversion dialog closed', result);
+        this.grid.bindGridData();
+      });
+    } else if (result.isDenied) {
+      const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+        maxWidth: '95vw',
+        width: '100%',
+        height: '98vh',
+        data: row
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('IPD conversion dialog closed', result);
+        this.grid.bindGridData();
+      });
+    }
+  });
+}
+
 
   EmergencyCancel(data){
     Swal.fire({
@@ -205,6 +253,7 @@ export class EmergencyList {
   mobileNo: any;
   phoneNo: any;
   dateofBirth: Date;  
+  dateOfBirth:Date;
   currentDate = new Date();
   prefixId: any;
   regId: any;
@@ -214,6 +263,10 @@ export class EmergencyList {
   genderID:any;
   emgId:any;
   comment:any;
+  tariffId:any;
+  classId:any;
+  tariffid:any;
+classid:any;
 
   constructor(EmergencyList) {
     {
@@ -234,6 +287,7 @@ export class EmergencyList {
       this.countryId = EmergencyList.countryId || 0
       this.mobileNo = EmergencyList.mobileNo || 0
       this.phoneNo = EmergencyList.phoneNo || 0
+      this.dateOfBirth = EmergencyList.dateOfBirth || this.currentDate;
       this.dateofBirth = EmergencyList.dateofBirth || this.currentDate;
       this.prefixId = EmergencyList.prefixId || 0
       this.regId = EmergencyList.regId || 0
@@ -243,6 +297,10 @@ export class EmergencyList {
       this.genderID = EmergencyList.genderID || 0
       this.emgId = EmergencyList.emgId || 0
       this.comment = EmergencyList.comment || ''
+      this.tariffId = EmergencyList.tariffId || 0
+      this.classId = EmergencyList.classId || 0
+      this.tariffid = EmergencyList.tariffid || 0
+      this.classid = EmergencyList.classid || 0
     }
   }
 }
