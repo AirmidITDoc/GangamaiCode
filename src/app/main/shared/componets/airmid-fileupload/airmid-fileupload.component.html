@@ -12,7 +12,7 @@
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div> -->
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" aria-label="Close dialog" (click)="onClose()" matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -54,7 +54,7 @@
                         <span class="file-name">{{ file.docName }}</span>
 
                         <div class="file-actions">
-                            <button mat-icon-button (click)="downloadFile(file)" title="Download">
+                            <button mat-icon-button (click)="downloadFile(file)" title="Download" *ngIf="file.id>0">
                                 <mat-icon>cloud_download</mat-icon>
                             </button>
                             <button mat-icon-button color="warn" (click)="deleteFile(i)" title="Delete">

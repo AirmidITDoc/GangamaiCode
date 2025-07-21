@@ -141,11 +141,10 @@ export class AirmidFileuploadComponent implements OnInit {
         return URL.createObjectURL(file);
     }
 
-    downloadFile(file: File): void {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(file);
-        link.download = file.name;
-        link.click();
+    downloadFile(file: AirmidFileModel): void {
+        this._service.downloadFile("Files/get-file?Id="+file.id, null,2, file.docName).subscribe((data) => {
+
+        });
     }
 }
 export class AirmidFileModel {

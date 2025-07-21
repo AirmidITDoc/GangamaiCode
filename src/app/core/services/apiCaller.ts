@@ -142,20 +142,37 @@ export class ApiCaller {
             }
         })));
     }
-    downloadFilePost(url: string, body: any, filename: string): Observable<Blob> {
-        return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, body, {
-            responseType: 'blob',
-            observe: 'response',
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Accept': 'application/octet-stream'
-            })
-        }).pipe(
-            map(response => {
-                this.saveFile(response.body as Blob, filename);
-                return response.body as Blob;
-            })
-        );
+    downloadFile(url: string, body: any, type: number, filename: string): Observable<Blob> {
+        if (type == 1) {
+            return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, body, {
+                responseType: 'blob',
+                observe: 'response',
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/octet-stream'
+                })
+            }).pipe(
+                map(response => {
+                    this.saveFile(response.body as Blob, filename);
+                    return response.body as Blob;
+                })
+            );
+        }
+        else {
+            return this._httpClient.get(`${this.config.apiBaseUrl}${url}`, {
+                responseType: 'blob',
+                observe: 'response',
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/octet-stream'
+                })
+            }).pipe(
+                map(response => {
+                    this.saveFile(response.body as Blob, filename);
+                    return response.body as Blob;
+                })
+            );
+        }
     }
     saveFile(blob: Blob, filename: string): void {
         const link = document.createElement('a');
