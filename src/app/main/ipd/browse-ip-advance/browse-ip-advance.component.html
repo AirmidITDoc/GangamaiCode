@@ -72,8 +72,8 @@
                                 </mat-form-field> -->
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.UserFormGroup" formControlName="RegNo"
                                         (input)="onChangeAdvance()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
@@ -104,25 +104,7 @@
                                     </button>
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[0].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="gridConfig.filters[1].fieldValue='%'">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field> -->
+                             
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -172,8 +154,8 @@
 
 
                                 <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input matInput placeholder="Search RegNo" autocomplete="off"
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
                                         [formGroup]="_BrowseIpAdvanceService.AdvanceOfRefund" formControlName="RegNo"
                                         (input)="onChangeAdvanceOfRefund()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"

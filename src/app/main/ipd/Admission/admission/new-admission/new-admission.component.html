@@ -272,7 +272,7 @@
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Nationality ID Number" formControlName="medTourismNationalityId" [validations]="getValidationMessages().medTourismNationalityId"
-                                            [formGroup]="personalFormGroup" [value]="registerObj.medTourismNationalityId"></airmid-textbox>
+                                            [formGroup]="personalFormGroup" [value]="registerObj.medTourismNationalityId"  [maxLength]="15"></airmid-textbox>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

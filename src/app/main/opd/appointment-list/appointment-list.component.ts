@@ -63,7 +63,7 @@ export class AppointmentListComponent implements OnInit {
 
     vOPIPId = 0;
     f_name: any = ""
-    regNo: any = "0"
+    regNo=0;
     l_name: any = ""
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
@@ -178,20 +178,20 @@ export class AppointmentListComponent implements OnInit {
 
     }
     onChangeFirst1(event) {
-
+debugger
         console.log(event)
-        if (event.key == 13) {
+        // if (event.key == 13) {
             this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
             this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
             this.f_name = this.myformSearch.get('FirstName').value + "%"
             this.l_name = this.myformSearch.get('LastName').value + "%"
             this.regNo = this.myformSearch.get('RegNo').value
             this.getfilterdata();
-        }
+        // }
     }
 
     getfilterdata() {
-
+debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -200,7 +200,7 @@ export class AppointmentListComponent implements OnInit {
             filters: [
                 { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
                 { fieldName: "Doctor_Id", fieldValue: String(this.DoctorId), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },

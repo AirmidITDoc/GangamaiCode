@@ -91,14 +91,14 @@ export class MLCInformationComponent implements OnInit {
 
       mlcid: 0,
       admissionId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mlcno: ['', [
+      mlcno: ['', [Validators.minLength(10), Validators.maxLength(15),
         Validators.required]],
       reportingDate: [(new Date()).toISOString()],
       reportingTime: ['', [
         Validators.required]],
       authorityName: ['', [
         Validators.required]],
-      buckleNo: ['', [
+      buckleNo: ['',  [Validators.minLength(5), Validators.maxLength(7),
         Validators.required]],
       policeStation: ['', [
         Validators.required]],
