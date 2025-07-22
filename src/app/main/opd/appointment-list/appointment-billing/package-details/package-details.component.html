@@ -37,64 +37,21 @@
                                     <input matInput name="MainServiceName" type="text" required readonly
                                     [(ngModel)]="registerObj.ServiceName" formControlName="MainServiceName">
                                 </mat-form-field>
-                                <div fxLayout="row" fxLayoutGap="5px">   
-    
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <input type="text" name="SrvcName" formControlName="SrvcName" #Servicename
-                                            placeholder="Service Name" matInput [matAutocomplete]="autoService"
-                                            (keydown)="onEnterservice($event)" (input)="getServiceListCombobox()" required
-                                            id="myInput" [(ngModel)]="vServiceId">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="PackageForm.get('SrvcName').setValue(''); isServiceSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoService="matAutocomplete" [displayWith]="getOptionText"
-                                            (optionSelected)='getSelectedObj($event.option.value)'>
-    
-                                            <mat-option *ngFor="let option of filteredOptionsService" [value]="option">
-                                                {{option.ServiceName}} | Price {{option.Price}} |
-                                                <span fxLayoutGap="4px">
-                                                    <mat-icon *ngIf="option.CreditedtoDoctor == true" matTooltip="IsDoctor">
-                                                        <img width="10px" height="6px" src="assets/images/logos/doctor.png">
-                                                    </mat-icon> |
-                                                    <mat-icon *ngIf="option.IsRadiology == true" matTooltip="IsRadiology">
-                                                        <img width="10px" height="6px"
-                                                            src="assets/images/logos/radiology.png">
-                                                    </mat-icon>
-                                                    <mat-icon *ngIf="option.IsPathology == true" matTooltip="IsPatholgy">
-                                                        <img width="10px" height="6px"
-                                                            src="assets/images/logos/pathology.png">
-                                                    </mat-icon>
-                                                    <mat-icon *ngIf="option.IsPackage == true" matTooltip="IsPackage">
-                                                        <img width="10px" height="6px"
-                                                            src="assets/images/logos/package.png">
-                                                    </mat-icon>
-                                                </span>
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-    
-                                    <mat-form-field appearance="outline" fxFlex="22%" *ngIf="isDoctor">
-                                        <mat-label>Doctor Name</mat-label>
-                                        <input matAutocompletePosition="below" type="text" placeholder="Select Doctor"
-                                            matInput formControlName="DoctorID" [(ngModel)]="vDoctor"
-                                            [matAutocomplete]="autoSearchDoctor1" #doctorname
-                                            (input)="getAdmittedDoctorCombo()">
-                                        <span matSuffix style="display: flex;">
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">close</mat-icon>
-                                            <mat-icon class="mat-icon-close"
-                                                (click)="PackageForm.get('DoctorID').setValue(''); isDoctorSelected = false;">search</mat-icon>
-                                        </span>
-                                        <mat-autocomplete #autoSearchDoctor1="matAutocomplete"
-                                            [displayWith]="getOptionTextDoctor">
-                                            <mat-option *ngFor="let option of filteredOptionsDoctors" [value]="option">
-                                                {{option.Doctorname}}
-                                            </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
+                                <div fxLayout="row" fxLayoutGap="5px">  
+
+                                      <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+                                            <airmid-autocomplete label="Enter Service Name" [formGroup]="PackageForm"
+                                                formControlName="SrvcName" placeholderText="Enter Service Name"
+                                                fxFlex ApiUrl="{{ApiURL}}"
+                                                (selectionChange)="getSelectedserviceObj($event)"
+                                                TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
+                                        </div>
+
+                                          <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" *ngIf="isDoctor">
+                                            <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                                [formGroup]="PackageForm" >
+                                            </airmid-dropdown>
+                                        </div>  
     
                                     <div matTooltip="Enter all data to enable this button!!" [matTooltipPosition]="'above'"
                                         style="padding: 8px 20px 0px 20px;">
@@ -121,10 +78,10 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                         class="w-70">Status</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" class="w-70">
-                                        <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
+                                        <mat-icon *ngIf="contact.isRadiology == 1" matTooltip="IsRadiology">
                                             <img width="15px" height="8px" src="assets/images/logos/radiology.png">
                                         </mat-icon>
-                                        <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
+                                        <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
                                             <img width="15px" height="9px" src="assets/images/logos/pathology.png">
                                         </mat-icon>
                                     </mat-cell>
@@ -135,7 +92,7 @@
                                         Service Name
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                        <span> {{contact.ServiceName}}</span>
+                                        <span> {{contact.serviceName}}</span>
                                     </mat-cell>
                                 </ng-container>
 
@@ -144,7 +101,7 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <mat-form-field appearance="legacy">
-                                            <input matInput [(ngModel)]="contact.Price" type="text" OnlyNumber
+                                            <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber
                                                 (keyup)="gettablecalculation(contact)"
                                                 (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
@@ -186,7 +143,7 @@
                                         class="w-200">
                                         DoctorName</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                        <span>{{contact.DoctorName}}</span>
+                                        <span>{{contact.doctorName}}</span>
                                         <ng-container *ngIf="!contact.EditDoctor; else showInput">
                                             <button mat-icon-button (click)="DocenableEditing(contact)" class="clear-button">
                                                 <mat-icon>edit</mat-icon></button>

@@ -504,14 +504,14 @@
 
                                                             <ng-container matColumnDef="IsCheck" sticky>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    class="w-60">Status</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" class="w-60">
-                                                                    <mat-icon *ngIf="contact.IsRadiology == 1"
+                                                                    class="w-90">Status</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-90">
+                                                                    <mat-icon *ngIf="contact.isRadiology == 1"
                                                                         matTooltip="IsRadiology">
                                                                         <img width="15px" height="8px"
                                                                             src="assets/images/logos/radiology.png">
                                                                     </mat-icon>
-                                                                    <mat-icon *ngIf="contact.IsPathology == 1"
+                                                                    <mat-icon *ngIf="contact.isPathology == 1"
                                                                         matTooltip="IsPatholgy">
                                                                         <img width="15px" height="9px"
                                                                             src="assets/images/logos/pathology.png">
@@ -521,24 +521,24 @@
 
                                                             <ng-container matColumnDef="ServiceNamePackage">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-180">
+                                                                    fxShow.gt-sm class="w-250">
                                                                     Package Name
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-180"
-                                                                    mat-Tooltip="{{contact.PacakgeServiceName}}">
-                                                                    <span> {{contact.packageServiceName}}</span>
+                                                                    class="w-250"
+                                                                    mat-Tooltip="{{contact.pacakgeServiceName}}">
+                                                                    <span> {{contact.pacakgeServiceName}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="ServiceName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-180">
+                                                                    fxShow.gt-sm class="w-200">
                                                                     Service Name
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-180" mat-Tooltip="{{contact.ServiceName}}">
-                                                                    <span> {{contact.ServiceName}}</span>
+                                                                    class="w-200" mat-Tooltip="{{contact.serviceName}}">
+                                                                    <span> {{contact.serviceName}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -548,7 +548,7 @@
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                                     lass="w-110">
-                                                                    <span> {{contact.Price}}</span>
+                                                                    <span> {{contact.price}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -577,8 +577,8 @@
                                                                     fxShow.gt-sm>DoctorName
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    mat-Tooltip="{{contact.DoctorName}}">
-                                                                    <span> {{contact.DoctorName || '-'}}</span>
+                                                                    mat-Tooltip="{{contact.doctorName}}">
+                                                                    <span> {{contact.doctorName || '-'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
