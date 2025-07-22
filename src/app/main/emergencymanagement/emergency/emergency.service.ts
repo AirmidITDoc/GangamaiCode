@@ -37,10 +37,10 @@ export class EmergencyService {
       emgDate: [new Date()],
       emgTime: [new Date()],
       firstName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
+      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      address: ['', [Validators.maxLength(100)]],
-      mobileNo: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      address: ['', [Validators.maxLength(100),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mobileNo: ['', [Validators.required,Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       departmentId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       doctorId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -57,14 +57,18 @@ export class EmergencyService {
       tariffId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       classId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // extra fields
-      PinNo: ['',[Validators.maxLength(6)]],
-      PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      // PinNo: ['',[Validators.maxLength(6)]],
+      // PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       // dateofBirth: [new Date()],
     })
   }
 
   public getRegistraionById(Id) {
     return this._httpClient.GetData("OutPatient/" + Id);
+  }
+
+  public getEmergencyById(Id) {
+    return this._httpClient.GetData("Emergency/" + Id);
   }
 
   public getMaster(mode, Id) {
