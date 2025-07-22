@@ -5,7 +5,7 @@
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-                        New Service Page
+                        Tariff Wise Data Update
                     </span>
                 </div>
                 <div class="modal-header-right">
@@ -131,7 +131,7 @@
                                 </form>
                         </div>
 
-                        <div class="modal-card-container airmid-table-container" style="overflow-y: auto;">
+                        <div  *ngIf="showTable" class="modal-card-container airmid-table-container" style="overflow-y: auto;">
 
                             <div class="material-table-container">
                                 <table class="material-table">

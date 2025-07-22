@@ -31,7 +31,7 @@ export class NewEmergencyComponent {
   registerObj = new EmergencyList({});
   RegId = 0;
   CityName = ""
-
+  
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModegender: string = "Gender";
   autocompleteModecountry: string = "Country";
@@ -57,33 +57,13 @@ export class NewEmergencyComponent {
     this.myForm = this._EmergencyService.CreateMyForm();
     this.myForm.markAllAsTouched();
     this.searchFormGroup = this.createSearchForm();
-    if ((this.data?.emgId ?? 0) > 0) {
-      console.log("data:", this.data)
-
-      this.registerObj = this.data
-      // debugger
-      console.log("Retrived data:", this.registerObj)
-      this.myForm.patchValue({
-        prefixId: this.registerObj?.prefixId,
-        firstName: this.registerObj?.firstName,
-        middleName: this.registerObj?.middleName,
-        lastName: this.registerObj?.lastName,
-        genderId: this.registerObj?.genderID,
-        // DateOfBirth: format(new Date(this.registerObj?.dateofBirth), 'dd-MM-yyyy HH:mm:ss'),
-        // DateOfBirth: this.registerObj?.dateofBirth,
-        address: this.registerObj?.address,
-        pinNo: this.registerObj?.pinNo,
-        cityId: this.registerObj?.cityId,
-        mobileNo: this.registerObj?.mobileNo?.trim(),
-        phoneNo: this.registerObj?.phoneNo,
-        departmentId: this.registerObj?.departmentId,
-        tariffId: this.registerObj?.tariffid,
-        classId: this.registerObj?.classid,
-        comment: this.registerObj?.comment,
-        // doctorId: this.registerObj?.doctorId,
+    if ((this.data?.emgId) > 0) {
+      this._EmergencyService.getEmergencyById(this.data.emgId).subscribe((response) => {
+          this.registerObj = response;
+          this.selectChangedepartment(this.registerObj)
+          // this.onChangecity(this.registerObj)
+          console.log(this.registerObj)
       });
-      this.selectChangedepartment(this.registerObj)
-      this.onChangecity(this.registerObj)
     }
   }
 
@@ -204,9 +184,6 @@ export class NewEmergencyComponent {
       this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
       this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
       this.myForm.get("DateOfBirth").setValue(this.datePipe.transform(this.myForm.get("DateOfBirth").value, "yyyy-MM-dd"));
-      ['PinNo', 'PhoneNo'].forEach(control => {
-        this.myForm.removeControl(control)
-      })
       console.log(this.myForm.value)
       this._EmergencyService.EmgSaveUpdate(this.myForm.value).subscribe((res) => {
         this.onClose()

@@ -39,7 +39,7 @@
             </button>
 
             <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
-            *ngIf="element.isCancelled==false">
+            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1">
                 <mat-icon> cancel</mat-icon>
             </button>
         </div>
@@ -61,6 +61,14 @@
         <div class="pill-icon">
             <mat-icon style="border-radius:100% ;" *ngIf="element.regId==0" matTooltip="NewPatient"
                 class="orange-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #after24Hr let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isAfter24Hrs==1" matTooltip="24hrs Completed">
+                <img width="20px" height="20px" src="assets/images/logos/alarm.png">  
             </mat-icon>
         </div>
     </ng-template>
