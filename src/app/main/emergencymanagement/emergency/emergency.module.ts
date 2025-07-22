@@ -42,6 +42,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatSliderModule } from '@angular/material/slider';
+import { MatTreeModule } from '@angular/material/tree';
 
 
 const routes: Routes = [
@@ -95,7 +98,10 @@ const routes: Routes = [
     MatSidenavModule,
     AngularEditorModule,
     MatTimepickerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatButtonToggleModule,
+    MatSliderModule,
+    MatTreeModule,
   ],
   providers: [
     DatePipe,

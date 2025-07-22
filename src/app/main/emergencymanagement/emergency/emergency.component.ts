@@ -34,15 +34,17 @@ export class EmergencyComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('oldNewTemplate') oldNewTemplate!: TemplateRef<any>;
-   f_name: any = ""
-    l_name: any = ""
-   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  @ViewChild('after24Hr') after24Hr!: TemplateRef<any>;
+  f_name: any = ""
+  l_name: any = ""
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'regId')!.template = this.oldNewTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isAfter24Hrs')!.template = this.after24Hr;
   }
 
   constructor(
@@ -58,9 +60,11 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template},
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template},
-    { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA',type:9,width: 200},
+    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
+    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:20 },
+    { heading: "HourCompleted", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
     { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -93,15 +97,15 @@ export class EmergencyComponent implements OnInit {
   Clearfilter(event) {
     console.log(event)
     if (event == 'firstName')
-        this.myFilterform.get('firstName').setValue("")
+      this.myFilterform.get('firstName').setValue("")
     if (event == 'L_Name')
-        this.myFilterform.get('L_Name').setValue("")
+      this.myFilterform.get('L_Name').setValue("")
     this.onChangeFirst();
   }
 
   onChangeFirst() {
-     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
+    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
     this.f_name = this.myFilterform.get('firstName').value + "%"
     console.log(this.myFilterform.get('firstName').value)
     this.l_name = this.myFilterform.get('L_Name').value + "%"
@@ -115,7 +119,7 @@ export class EmergencyComponent implements OnInit {
       sortField: "EmgId",
       sortOrder: 0,
       filters: [
-        { fieldName: "From_Dt", fieldValue:this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
+        { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
         { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
         { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
         { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
@@ -130,7 +134,7 @@ export class EmergencyComponent implements OnInit {
       {
         maxWidth: "95vw",
         maxHeight: '90vh',
-        height:'90%',
+        height: '90%',
         width: '90%',
         data: row
       });
@@ -168,64 +172,92 @@ export class EmergencyComponent implements OnInit {
   }
 
   getConvert(row) {
-  const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
+    const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
 
-  Swal.fire({
-    title: `Convert ${patientName} to OPD or IPD?`,
-    text: 'Please choose the type you want to convert this patient to:',
-    icon: 'question',
-    showDenyButton: true,
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    denyButtonColor: '#6c757d',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Convert to OPD',
-    denyButtonText: 'Convert to IPD',
-    cancelButtonText: 'Cancel'
-  }).then((result) => {
-    if (result.isConfirmed) {
-
-      // show patient visit list by regno when click on any row then show appointment page
-      const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-        maxWidth: '95vw',
-        height: '95%',
-        width: '90%',
-        data: row
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('OPD conversion dialog closed', result);
-        this.grid.bindGridData();
-      });
-    } else if (result.isDenied) {
-      const dialogRef = this._matDialog.open(NewAdmissionComponent, {
-        maxWidth: '95vw',
-        width: '100%',
-        height: '98vh',
-        data: row
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('IPD conversion dialog closed', result);
-        this.grid.bindGridData();
-      });
-    }
-  });
-}
-
-
-  EmergencyCancel(data){
     Swal.fire({
-      title:'Do You want to cancel Emergency?',
-      text:"You won't be able to revert this!",
+      title: `Convert ${patientName} to OPD or IPD?`,
+      text: 'Please choose the type you want to convert this patient to:',
+      icon: 'question',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      denyButtonColor: '#6c757d',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Convert to OPD',
+      denyButtonText: 'Convert to IPD',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show second dialog with 2 options
+        Swal.fire({
+          title: 'Appointment Check',
+          text: 'Does the patient already have an appointment today?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonColor: '#198754',
+          denyButtonColor: '#0dcaf0',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: 'Yes',
+          denyButtonText: "No",
+          cancelButtonText: 'Cancel'
+        }).then((res) => {
+          if (res.isConfirmed) {
+            // need to show list of patient
+            const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+              maxWidth: '95vw',
+              height: '95%',
+              width: '90%',
+              data: row
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('old appointment', result);
+              this.grid.bindGridData();
+            });
+
+          } else if (res.isDenied) {
+            const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+              maxWidth: '95vw',
+              height: '95%',
+              width: '90%',
+              data: row
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('new appointment', result);
+              this.grid.bindGridData();
+            });
+          }
+        });
+      }
+      else if (result.isDenied) {
+        const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+          maxWidth: '95vw',
+          width: '100%',
+          height: '98vh',
+          data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('IPD conversion dialog closed', result);
+          this.grid.bindGridData();
+        });
+      }
+    });
+  }
+
+
+  EmergencyCancel(data) {
+    Swal.fire({
+      title: 'Do You want to cancel Emergency?',
+      text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
-    }).then((flag)=>{
-      if(flag.isConfirmed){
-         let submitData = { "emgId": data.emgId }
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let submitData = { "emgId": data.emgId }
         console.log(submitData);
-        this._EmergencyService.EmgCancel(submitData).subscribe((res)=>{
+        this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
           this.grid.bindGridData();
         })
       }
@@ -252,21 +284,21 @@ export class EmergencyList {
   countryId: any;
   mobileNo: any;
   phoneNo: any;
-  dateofBirth: Date;  
-  dateOfBirth:Date;
+  dateofBirth: Date;
+  dateOfBirth: Date;
   currentDate = new Date();
   prefixId: any;
   regId: any;
-  departmentId:any;
-  docNameId:any;
-  doctorId:any;
-  genderID:any;
-  emgId:any;
-  comment:any;
-  tariffId:any;
-  classId:any;
-  tariffid:any;
-classid:any;
+  departmentId: any;
+  docNameId: any;
+  doctorId: any;
+  genderID: any;
+  emgId: any;
+  comment: any;
+  tariffId: any;
+  classId: any;
+  tariffid: any;
+  classid: any;
 
   constructor(EmergencyList) {
     {
@@ -306,52 +338,52 @@ classid:any;
 }
 
 export class ChargesList {
-    ChargesId: any
-    chargesId: number;
-    ServiceId: number;
-    ServiceName: String;
-    Price: number;
-    Qty: number;
-    TotalAmt: number;
-    DiscPer: number;
-    DiscAmt: number;
-    NetAmount: number;
-    DoctorId: number;
-    ChargeDoctorName: String;
-    ChargesDate: Date;
-    IsPathology: boolean;
-    IsRadiology: boolean;
-    ClassId: number;
-    ClassName: string;
-    ChargesAddedName: string;
-    BalanceQty: any;
-    IsStatus: any;
-    extMobileNo: any;
-    doctorName: any;
-    ConcessionPercentage: any;
-    EditDoctor: any;
-    constructor(ChargesList) {
-        this.chargesId = ChargesList.chargesId || '';
-        this.ServiceId = ChargesList.ServiceId || '';
-        this.doctorName = ChargesList.doctorName || '';
-        this.ServiceName = ChargesList.ServiceName || '';
-        this.Price = ChargesList.Price || '';
-        this.Qty = ChargesList.Qty || '';
-        this.TotalAmt = ChargesList.TotalAmt || '';
-        this.DiscPer = ChargesList.DiscPer || '';
-        this.DiscAmt = ChargesList.DiscAmt || '';
-        this.NetAmount = ChargesList.NetAmount || '';
-        this.DoctorId = ChargesList.DoctorId || 0;
-        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-        this.ChargesDate = ChargesList.ChargesDate || '';
-        this.IsPathology = ChargesList.IsPathology || '';
-        this.IsRadiology = ChargesList.IsRadiology || '';
-        this.ClassId = ChargesList.ClassId || 0;
-        this.ClassName = ChargesList.ClassName || '';
-        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-        this.BalanceQty = ChargesList.BalanceQty || 0;
-        this.IsStatus = ChargesList.IsStatus || 0;
-        this.extMobileNo = ChargesList.extMobileNo || ''
-        this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
-    }
+  ChargesId: any
+  chargesId: number;
+  ServiceId: number;
+  ServiceName: String;
+  Price: number;
+  Qty: number;
+  TotalAmt: number;
+  DiscPer: number;
+  DiscAmt: number;
+  NetAmount: number;
+  DoctorId: number;
+  ChargeDoctorName: String;
+  ChargesDate: Date;
+  IsPathology: boolean;
+  IsRadiology: boolean;
+  ClassId: number;
+  ClassName: string;
+  ChargesAddedName: string;
+  BalanceQty: any;
+  IsStatus: any;
+  extMobileNo: any;
+  doctorName: any;
+  ConcessionPercentage: any;
+  EditDoctor: any;
+  constructor(ChargesList) {
+    this.chargesId = ChargesList.chargesId || '';
+    this.ServiceId = ChargesList.ServiceId || '';
+    this.doctorName = ChargesList.doctorName || '';
+    this.ServiceName = ChargesList.ServiceName || '';
+    this.Price = ChargesList.Price || '';
+    this.Qty = ChargesList.Qty || '';
+    this.TotalAmt = ChargesList.TotalAmt || '';
+    this.DiscPer = ChargesList.DiscPer || '';
+    this.DiscAmt = ChargesList.DiscAmt || '';
+    this.NetAmount = ChargesList.NetAmount || '';
+    this.DoctorId = ChargesList.DoctorId || 0;
+    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+    this.ChargesDate = ChargesList.ChargesDate || '';
+    this.IsPathology = ChargesList.IsPathology || '';
+    this.IsRadiology = ChargesList.IsRadiology || '';
+    this.ClassId = ChargesList.ClassId || 0;
+    this.ClassName = ChargesList.ClassName || '';
+    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+    this.BalanceQty = ChargesList.BalanceQty || 0;
+    this.IsStatus = ChargesList.IsStatus || 0;
+    this.extMobileNo = ChargesList.extMobileNo || ''
+    this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+  }
 }

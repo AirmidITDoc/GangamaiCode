@@ -32,12 +32,15 @@ export class OtRequestService {
             otbookingTime: [""],
             opIpType: 'OP',
             surgeryType:["Normal"],
-            isCancelledDateTime:  [""],
-            isCancelled: [""],
-            isCancelledBy: [""],
+          //  isCancelledDateTime:  [""],
+           
             otrequestDate: [""],
             otrequestId: [""],
             otrequestTime: [""],
+             isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+       isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+
            
             // cityName: ["",
             //     [

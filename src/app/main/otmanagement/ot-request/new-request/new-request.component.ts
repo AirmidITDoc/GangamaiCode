@@ -31,11 +31,12 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeDepartment: String = "Department";
    autocompleteModeSiteDescriptionId: String = "SiteDescription";
  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
  autocompleteModestatus: string = "State";
    // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
-  //vAdmissionDate: any;
+  //vAdmissionDate: any; 
   vOPDNo: any;
   vTariffName: any;
   vCompanyName: any;
@@ -106,7 +107,7 @@ export class NewRequestComponent implements OnInit {
      }
  
      //this.personalFormGroup.markAllAsTouched();
-     this.admissionFormGroup.markAllAsTouched();
+     this.requestForm.markAllAsTouched();
    }
   getSelectedObjOT(obj) {
 
@@ -172,12 +173,12 @@ export class NewRequestComponent implements OnInit {
                { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
            ],
-           SurgeryName: [
-               { name: "required", Message: "Surgery Name is required" },
-               { name: "maxlength", Message: "Surgery Name should not be greater than 50 char." },
+           SurgeonName: [
+               { name: "required", Message: "Surgeon Name is required" },
+               { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
            ],
-
+  
        };
    }
  onClose() {

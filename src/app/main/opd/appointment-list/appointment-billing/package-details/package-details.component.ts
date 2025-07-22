@@ -34,17 +34,14 @@ export class PackageDetailsComponent {
   registerObj: any;
   dateTimeObj: any;
   PacakgeList: any = [];
-  PackageForm: FormGroup;
-  isServiceSelected: boolean = false;
-  isDoctorSelected: boolean = false;
-  filteredOptionsService: any;
+  PackageForm: FormGroup; 
+  isDoctorSelected: boolean = false; 
   noOptionFound: any;
   vTariffId: any;
   vClassId: any;
   CreditedtoDoctor: any;
   isDoctor: boolean = false;
-  SrvcName: any;
-  filteredOptionsDoctors: any;
+  SrvcName: any; 
   vServiceId: any;
   vDoctor: any;
   isLoading: string = '';
@@ -58,8 +55,8 @@ export class PackageDetailsComponent {
   isChkbillwiseAmt: boolean = false;
   screenFromString = 'OP-billing';
   FormName: any;
-
-
+   ApiURL: any='';
+  autocompleteModedeptdoc: string = "ConDoctor"
 
   dsPackageDet = new MatTableDataSource<ChargesList>();
 
@@ -95,7 +92,7 @@ export class PackageDetailsComponent {
         this.vClassName = this.registerObj.ClassName;
         this.getOPDpackagedetList(this.registerObj);
       }
-    
+        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId || 1 + "&ClassId=" + this.data?.PatientDet?.ClassId + "&ServiceName="
     }
     this.createForm();
   }
@@ -123,43 +120,25 @@ export class PackageDetailsComponent {
     }
 
   }
-  //Service list
-  getServiceListCombobox() {
-    var m_data = {
-      SrvcName: `${this.PackageForm.get('SrvcName').value}%`,
-      TariffId: this.vTariffId || 1,
-      ClassId: this.vClassId,
-    };
-    console.log(m_data)
-    if (this.PackageForm.get('SrvcName').value.length >= 1) {
-      this._oPSearhlistService.getBillingServiceList(m_data).subscribe(data => {
-        this.filteredOptionsService = data;
-        if (this.filteredOptionsService.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
+  //Service list 
+  getSelectedserviceObj(obj) {
+    console.log(obj) 
+       const isItemAlreadyAdded = this.dsPackageDet.data.some((element) => element.ServiceId === obj.serviceId);
+     if (isItemAlreadyAdded) {
+        Swal.fire({
+          title: 'Message',
+          text: "Selected Service already available in the list",
+          icon: "warning"
+        });  
+         this.PackageForm.get('SrvcName').setValue('a%')
+        const serviceNameElement = document.querySelector(`[name='SrvcName']`) as HTMLElement;
+        if (serviceNameElement) {
+          serviceNameElement.focus();
         }
-      });
-    }
-  }
-  getOptionText(option) {
-    if (!option)
-      return '';
-    return option.ServiceName;
-  }
-  getSelectedObj(obj) {
-    console.log(obj)
-    if (this.dsPackageDet.data.length > 0) {
-      this.dsPackageDet.data.forEach((element) => {
-        if (obj.ServiceId == element.ServiceId) {
-          Swal.fire('Selected Item already added in the list ');
-          this.PackageForm.get('SrvcName').setValue('')
-        }
-      });
-    }
-    this.SrvcName = obj.ServiceName;
-    this.CreditedtoDoctor = obj.CreditedtoDoctor;
-    if (this.CreditedtoDoctor == true) {
+        return;  // Exit the function early
+      } 
+    this.SrvcName = obj.serviceName; 
+    if (obj?.CreditedtoDoctor == true) {
       this.isDoctor = true;
       this.PackageForm.get('DoctorID').reset();
       this.PackageForm.get('DoctorID').setValidators([Validators.required]);
@@ -171,62 +150,47 @@ export class PackageDetailsComponent {
       this.PackageForm.get('DoctorID').updateValueAndValidity();
       this.PackageForm.get('DoctorID').disable();
     }
-  }
-  //Doctor list 
-  getAdmittedDoctorCombo() {
-    var vdata = {
-      "Keywords": this.PackageForm.get('DoctorID').value + "%" || "%"
-    }
-    console.log(vdata)
-    this._oPSearhlistService.getAdmittedDoctorCombo(vdata).subscribe(data => {
-      this.filteredOptionsDoctors = data;
-      console.log(this.filteredOptionsDoctors)
-      if (this.filteredOptionsDoctors.length == 0) {
-        this.noOptionFound = true;
-      } else {
-        this.noOptionFound = false;
-      }
+  } 
+  //Doctor list  
+//OPD Package list
+  getOPDpackagedetList(obj) {
+    this.PacakgeList = [];
+    var vdata =
+    {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.ServiceId), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    } 
+    this._OpBillingService.getRtevPackageDetList(vdata).subscribe(data => {
+      this.dsPackageDet.data = data.data as ChargesList[]; 
+      this.dsPackageDet.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: element.Qty || 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: element.ConcessionPercentage || 0,
+            DiscAmt: element.ConcessionAmount || 0,
+            NetAmount:(element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName || '',
+            doctorId: element.doctorId || 0,
+          })
+      })
+      this.dsPackageDet.data = this.PacakgeList
+      console.log(this.PacakgeList);
     });
   }
-  getOptionTextDoctor(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
-  }
-//OPD Package list
-getOPDpackagedetList(obj) {
-  this.PacakgeList = []; 
-  var vdata = {
-    'ServiceId': obj.ServiceId
-  }
-  console.log(vdata);
-  // this._oPSearhlistService.getmainpackagedetList(vdata).subscribe((data) => {
-  //   this.dsPackageDet.data = data as ChargesList[];
-  //   console.log(this.dsPackageDet.data);
-  //   this.dsPackageDet.data.forEach(element => {
-  //     this.PacakgeList.push(
-  //       {
-  //         ServiceId: element.ServiceId,
-  //         ServiceName: element.ServiceName,
-  //         Price: element.Price || 0,
-  //         Qty: element.Qty || 1,
-  //         TotalAmt: element.TotalAmt || 0,
-  //         ConcessionPercentage:element.ConcessionPercentage || 0,
-  //         DiscAmt:element.ConcessionAmount || 0,
-  //         NetAmount: element.NetAmount || 0,
-  //         IsPathology: element.IsPathology,
-  //         IsRadiology: element.IsRadiology,
-  //         PackageId: element.PackageId,
-  //         PackageServiceId: element.PackageServiceId,
-  //         PacakgeServiceName: element.PacakgeServiceName,
-  //         DoctorId: element.DoctorId || 0,
-  //         DoctorName: element.DoctorName || '',
-  //         ChargesId: element.ChargesId || 0
-  //       })
-  //   })
-  //   this.dsPackageDet.data = this.PacakgeList
-  //   console.log(this.PacakgeList);
-
-  // });
-}
   //IPD package list 
   getpackagedetList(obj) {
     this.PacakgeList = []; 
@@ -272,20 +236,15 @@ getOPDpackagedetList(obj) {
     const formattedTime = datePipe.transform(currentDate, 'yyyy-MM-dd hh:mm');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
+    debugger
+    const formValue = this.PackageForm.value
+
     if ((this.vServiceId == 0 || this.vServiceId == null || this.vServiceId == undefined)) {
       this.toastr.warning('Please select Service', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-    if (this.PackageForm.get('SrvcName').value) {
-      if (!this.filteredOptionsService.find(item => item.ServiceName == this.PackageForm.get('SrvcName').value.ServiceName)) {
-        this.toastr.warning('Please select valid Service Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    } 
     if (this.CreditedtoDoctor) {
       if ((this.vDoctor == undefined || this.vDoctor == null || this.vDoctor == "")) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
@@ -294,12 +253,12 @@ getOPDpackagedetList(obj) {
         return;
       }
       if (this.PackageForm.get('DoctorID').value) {
-        if (!this.filteredOptionsDoctors.find(item => item.Doctorname == this.PackageForm.get('DoctorID').value.Doctorname)) {
-          this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
+        // if (!this.filteredOptionsDoctors.find(item => item.Doctorname == this.PackageForm.get('DoctorID').value.Doctorname)) {
+        //   this.toastr.warning('Please select valid Doctor Name', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-warning',
+        //   });
+        //   return;
+        // }
         this.ChargesDoctorname = this.PackageForm.get('DoctorID').value.Doctorname || ''
         this.ChargeDoctorId = this.PackageForm.get('DoctorID').value.DoctorId || 0;
         console.log(this.ChargesDoctorname)
@@ -360,31 +319,29 @@ getOPDpackagedetList(obj) {
       this.dsPackageDet.data = [];
       this.PacakgeList.push(
         {
-          ChargesId: 0,// this.serviceId,
-          ServiceId: this.registerObj.ServiceId, //this.PackageForm.get('SrvcName').value.ServiceId || 0,
-          ServiceName: this.PackageForm.get('SrvcName').value.ServiceName || '',
-          Price: 0,
+          ChargesId: 0,
+          serviceId: this.registerObj.ServiceId, //this.PackageForm.get('SrvcName').value.ServiceId || 0,
+          serviceName: this.PackageForm.get('SrvcName').value.ServiceName || '',
+          price: 0,
           Qty: 1,
           TotalAmt: 0,
-          DiscPer: 0,
+          ConcessionPercentage: 0,
           DiscAmt: 0,
           NetAmount: 0,
-          DoctorId: this.ChargeDoctorId,
-          DoctorName: this.ChargesDoctorname,
-          IsPathology: this.IsPathology || 0,
-          IsRadiology: this.IsRadiology || 0,
-          PackageServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0,
-
+          doctorId: this.ChargeDoctorId,
+          doctorName: this.ChargesDoctorname,
+          isPathology: this.IsPathology || 0,
+          isRadiology: this.IsRadiology || 0,
+          PackageServiceId: this.PackageForm.get('SrvcName').value.ServiceId || 0, 
         });
       this.isLoading = '';
       this.dsPackageDet.data = this.PacakgeList;
     }
     this.isDoctor = false;
     this.ChargesDoctorname = ''
-    this.ChargeDoctorId = 0; 
-    this.Servicename.nativeElement.focus();
-    this.PackageForm.get('SrvcName').reset();
-    this.PackageForm.get('DoctorID').reset('');
+    this.ChargeDoctorId = 0;  
+    this.PackageForm.get('SrvcName').setValue('a%');
+    this.PackageForm.get('DoctorID').reset('%');
     this.PackageForm.get('MainServiceName').setValue(this.registerObj.ServiceName);
   }
 
@@ -406,9 +363,7 @@ getOPDpackagedetList(obj) {
       }
     });
   }
-  getOptionTextDoctorEdit(option) {
-    return option && option.Doctorname ? option.Doctorname : '';
-  }
+ 
   EditDoctor: boolean = false;
   DocenableEditing(row: ChargesList) {
     row.EditDoctor = true;
@@ -491,17 +446,17 @@ getOPDpackagedetList(obj) {
     debugger
     if (this.isChkbillwiseAmt == true) {
       element.Qty = 1;
-      element.Price = 0;
+      element.price = 0;
       element.TotalAmt = 0;
       element.DiscAmt = 0;
       element.NetAmount = 0;
     }
-    else if (element.Price > 0 && element.Qty > 0) {
-      element.TotalAmt = element.Qty * element.Price || 0;
+    else if (element.price > 0 && element.Qty > 0) {
+      element.TotalAmt = element.Qty * element.price || 0;
       element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 || 0;
       element.NetAmount = element.TotalAmt - element.DiscAmt
     }
-    else if (element.Price == 0 || element.Price == '' || element.Qty == '' || element.Qty == 0) {
+    else if (element.price == 0 || element.price == '' || element.Qty == '' || element.Qty == 0) {
       element.TotalAmt = 0;
       element.DiscAmt = 0;
       element.NetAmount = 0;
@@ -687,14 +642,7 @@ getOPDpackagedetList(obj) {
     }
   }
 
-  @ViewChild('Servicename') Servicename: ElementRef;
-  @ViewChild('Doctor') Doctor: ElementRef;
-
-  onEnterservice(event): void {
-    if (event.which === 13) {
-      this.Doctor.nativeElement.focus();
-    }
-  }
+ 
 }
 export class ChargesList {
   ChargesId: number;
@@ -722,6 +670,16 @@ export class ChargesList {
   EditDoctor: any;
   ConcessionPercentage:any;
   ConcessionAmount:any;
+    serviceName: String;
+    serviceId: number;
+   doctorName:any;
+    doctorId:any;
+    isPathology:any;
+    isRadiology:any;
+pacakgeServiceName:any;
+packageServiceId:any;
+price:any;
+packageId:any;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';

@@ -371,7 +371,7 @@
                     <!-- END COMPLETE INFO -->
 
                     <!-- CHOOSE DATE PART -->
-                   <div fxFlex.gt-sm="25%" fxFlex>                    
+                   <!-- <div fxFlex.gt-sm="25%" fxFlex>                    
                        <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
                         <ng-container *ngIf="isFilteredDateDisabled">
                           <form [formGroup]="IpbillFooterform">
@@ -395,7 +395,7 @@
                           <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">Show All Charges</mat-checkbox>                         
                         </div>
                       </div>
-                    </div> 
+                    </div>  -->
                     <!-- END CHOOSE DATE PART -->
 
                   </div>
@@ -404,7 +404,7 @@
               <!-- END OF 1ST TAB -->
 
               <!-- 2ND TAB -->
-               <mat-card style="padding: 2px;"> 
+               <!-- <mat-card style="padding: 2px;"> 
 
                 <div fxFlex.gt-sm="85%" fxFlex class="bill-info-title" fxLayout="row" fxLayoutAlign="space-between center">
  
@@ -457,7 +457,7 @@
                     </div>
                   
                 </div> 
-              </mat-card> 
+              </mat-card>  -->
               <!-- END OF 2ND TAB -->
 
               <!-- 3RD TAB OF TABLES -->
@@ -868,22 +868,10 @@
                   </div>
 
                   <div fxLayout="row" fxLayoutAlign="end center">
-                    <!-- <div class="action-content-left" fxLayout="row" class="gap-24" fxLayoutAlign="start center">
-                      <mat-checkbox formControlName="Admincheck" (checked)="(true)" (change)="AdminStatus($event)">Admin</mat-checkbox>
-
-                      <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
-                      <mat-checkbox formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
-                    </div> -->
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
-                      <!-- <mat-radio-group aria-label="Select an option" formControlName="BillType" name="BillType">
-                        <mat-radio-button value="1">Class Wise DraftBill</mat-radio-button>
-                        <mat-radio-button value="2">Service Wise DraftBill</mat-radio-button>
-                      </mat-radio-group> -->
-
                       <div class="button-row-group">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary" (click)="onSave()">Save</button>
                       </div>
                     </div>
                   </div>

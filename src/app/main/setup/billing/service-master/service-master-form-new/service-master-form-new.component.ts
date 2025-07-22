@@ -49,18 +49,19 @@ export class ServiceMasterFormNewComponent implements OnInit {
     }
     ngOnInit(): void {
         this.myformSearch = this._serviceMasterService.createnewServiceSearchForm()
-        this._serviceMasterService.getServicesNew(1).subscribe((response) => {
-            this.ServiceList = response.data;
-            this.filteredList = this.ServiceList;
-            this.ColumnList = response.columns;
-            console.log(this.ServiceList)
-        });
+        // this._serviceMasterService.getServicesNew(1).subscribe((response) => {
+        //     this.ServiceList = response.data;
+        //     this.filteredList = this.ServiceList;
+        //     this.ColumnList = response.columns;
+        //     console.log(this.ServiceList)
+        // });
     }
-
+showTable = false;
     applyFilters() {
         const selectedTariffId = this.myformSearch.get('searchTariffName')?.value;
 
-        this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response) => {
+        if(selectedTariffId > 0){
+            this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response) => {
             this.ServiceList = response.data;
             this.ColumnList = response.columns;
             
@@ -69,7 +70,12 @@ export class ServiceMasterFormNewComponent implements OnInit {
             this.filteredList = this.ServiceList.filter(item =>
                 item.serviceName?.toLowerCase().includes(serviceFilter)
             );
+             this.showTable = true;
         });
+        }else{
+             this.showTable = false;
+            console.log('aasasas:',this.myformSearch.get('searchTariffName')?.value)
+        }
         console.log('aasasas:',this.myformSearch.get('searchTariffName')?.value)
     }
 

@@ -1878,7 +1878,9 @@ onTabChange(event: MatTabChangeEvent) {
       }
     }
   }
-
+ viewgetCertificateReportPdf(element: any) {
+    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
+  }
   onSubList() {
     this.getCertificateList();
     this.certiID=0
