@@ -24,7 +24,7 @@
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="requestForm">
                 <div class="modal-card-container">
-
+ 
 
 
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
@@ -90,8 +90,8 @@
                                             fxLayoutAlign="space-between center" class="patient-info">
                                             <div class="patient-sub">
                                                 <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                    fxLayoutAlign="space-between">
-                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                    fxLayoutAlign="space-between" >
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">UHID No
                                                             </span>
@@ -111,7 +111,7 @@
                                                                 }}</span>
                                                         </div>
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Age
                                                             </span>
@@ -130,7 +130,7 @@
                                                             <span class="patient-col-value">{{vMobNo}}</span>
                                                         </div>
                                                     </div>
-                                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Doctor Name</span>
                                                             <span>:</span>
@@ -203,30 +203,20 @@
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
                                     [formGroup]="requestForm" [value]="data?.stateId"
-                                    [validations]="getValidationMessages(). SurgeryName"
+                                    [validations]="getValidationMessages(). SurgeonName"
                                     [mode]="autocompleteModestatus">
                                 </airmid-dropdown>
                             </div>
                         </div>
 
-<input type="hidden" formControlName="otbookingId">
-  <input type="hidden" formControlName="opIpId">
-   <input type="hidden" formControlName="otrequestDate">
-  <input type="hidden" formControlName="isCancelledBy">
-  <input type="hidden" formControlName="isCancelled">
- <input type="hidden" formControlName="isCancelledDateTime">
- <input type="hidden" formControlName="otrequestId">
- <input type="hidden" formControlName="otrequestTime">
- <input type="hidden" formControlName="categoryId">
-  <input type="hidden" formControlName="otbookingDate">
-   <input type="hidden" formControlName="otbookingTime">
-    <input type="hidden" formControlName="categoryId">
+
 
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
                             <mat-radio-group formControlName="surgeryType" [formGroup]="requestForm" fxLayout="row" fxLayoutGap="10px">
-                                <span>surgery Type:</span>
-                                <mat-radio-button value="Normal">Normal</mat-radio-button>
-                                <mat-radio-button value="Emergency">Emergency</mat-radio-button>
+                               <div style="min-width: 120px; font-size: 16px; font-weight: 600;">
+                               Surgery Type:</div>
+                                <mat-radio-button value="1">Normal</mat-radio-button>
+                                <mat-radio-button value="2">Emergency</mat-radio-button>
                             </mat-radio-group>
                         </div>
                         <div class="modal-footer" style="margin-top: 10px;">

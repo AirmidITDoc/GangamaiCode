@@ -22,12 +22,12 @@ export class OTRequestComponent implements OnInit {
    msg: any;
       RequestName: any = "";
       
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    f_name: any = ""
-    regNo: any = "0"
-    l_name: any = ""
-    mobileno: any = "%"
+    FromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    FirstName: any = ""
+    RegNo: any = "0"
+    LastName: any = ""
+  //  mobileno: any = "%"
   
   //   VBillcount = 0;
   // VOPtoIPcount = 0;
@@ -61,12 +61,11 @@ export class OTRequestComponent implements OnInit {
     ];
   
       allFilters = [
-          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-          //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
+          { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
       ]
       gridConfig: gridModel = {
           apiUrl: "OTBooking/OtbookingRequestList",
@@ -111,11 +110,11 @@ export class OTRequestComponent implements OnInit {
   
      
        onChangeFirst() {
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-        this.f_name = this.myFilterform.get('FirstName').value + "%"
-        this.l_name = this.myFilterform.get('LastName').value + "%"
-        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.FirstName = this.myFilterform.get('FirstName').value + "%"
+        this.LastName = this.myFilterform.get('LastName').value + "%"
+        this.RegNo = this.myFilterform.get('RegNo').value || "0"
         //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
         this.getfilterdata();
     }
@@ -126,12 +125,11 @@ export class OTRequestComponent implements OnInit {
             sortField: "DoctorId",
             sortOrder: 0,
             filters: [
-                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
-                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Contains },
-                { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.Equals },
-                { fieldName: "LastName", fieldValue: this.l_name , opType: OperatorComparer.Equals },
-                { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
+                { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
+                { fieldName: "LastName", fieldValue: this.LastName , opType: OperatorComparer.StartsWith },
+               { fieldName: "RegNo", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
             ],
             row: 25
         }
