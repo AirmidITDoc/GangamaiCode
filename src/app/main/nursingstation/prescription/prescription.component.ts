@@ -39,7 +39,7 @@ export class PrescriptionComponent implements OnInit {
     allColumns1 = [
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Visite Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Prescription Time", key: "ptime", sort: true, align: 'left', emptySign: 'NA',type:6 },
+        { heading: "Prescription Time", key: "ptime", sort: true, align: 'left', emptySign: 'NA',type:8, width: 170 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },

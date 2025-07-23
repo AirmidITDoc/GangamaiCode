@@ -93,7 +93,7 @@ export class SampleRequestComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   allcolumns = [
-    { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "AdmDate", key: "admDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },

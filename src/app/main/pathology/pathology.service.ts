@@ -57,7 +57,7 @@ export class PathologyService {
       TestStatusSearch: ['1'],
       IsPathOrRad: ['0'],
       Reg_No: [],
-      Istype: ['0'],
+      Istype: ['1'],
 
     });
   }
@@ -71,7 +71,7 @@ export class PathologyService {
       Istype: ['0'],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      IsCompleted:'1',
+      IsCompleted:'0',
       IsPathOrRad: ['0'],
     });
   }

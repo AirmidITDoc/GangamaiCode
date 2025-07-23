@@ -36,7 +36,7 @@
                       </mat-radio-group>
                     </form>
 
-                    <div class="table-header-right">
+                    <!-- <div class="table-header-right">
                         <div class="export-buttons">
                             <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
                                 <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
@@ -49,7 +49,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         
@@ -64,8 +64,8 @@
                     </airmid-datepicker>
 
                     <mat-form-field appearance="outline">
-                        <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch"
+                        <mat-label>UHID</mat-label>
+                        <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
                          formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
@@ -73,7 +73,7 @@
                     </mat-form-field>
                     <!-- [(ngModel)]="gridConfig.filters[4].fieldValue" -->
                         <div fxLayout="column" fxLayoutAlign="start start">
-                            <div fxFlex fxLayout="row">
+                            <!-- <div fxFlex fxLayout="row">
                                 <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
                                 style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
                                     <mat-label>Type:</mat-label>
@@ -82,7 +82,7 @@
                                         <mat-radio-button value='0'>OP</mat-radio-button>
                                     </div>
                                 </mat-radio-group>
-                            </div>
+                            </div> -->
                             <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="StatusSearch" formControlName="IsCompleted" fxLayout="row" value="0"

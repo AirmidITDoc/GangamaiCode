@@ -147,19 +147,21 @@ export class IPBillBrowseListComponent implements OnInit {
     ]
 
     allIpPaymentListColumns = [
-        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 9 },
-        { heading: "CashPay", key: "cashPay", sort: true, align: "center", type: gridColumnTypes.amount },
-        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "CardPay", key: "cardPay", sort: true, align: "center", type: gridColumnTypes.amount },
+     
         { heading: "AdvanceUsed", key: "advused", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CashPayAmt", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+       
         { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "PayTMAmt", key: "payTmPay", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "PayTMAmt", key: "payTmPayAmount", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
         { heading: "User Name", key: "userName", sort: true, align: "center", emptySign: 'NA' },
         {
@@ -185,14 +187,15 @@ export class IPBillBrowseListComponent implements OnInit {
     ]
 
     allIpRefundListColumns = [
-        { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-        { heading: "UHID", key: "uhidNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+          { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "CashPay", key: "cashPay", sort: true, align: "center", type: gridColumnTypes.amount },
-        { heading: "ChequePay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "CardPay", key: "cardPay", sort: true, align: "center", type: gridColumnTypes.amount },
+        // { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "Remark", key: "remark", sort: true, align: "center" },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,

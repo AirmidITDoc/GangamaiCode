@@ -128,7 +128,7 @@ export class IPRefundofBillComponent implements OnInit {
         refundTime: [this.datePipe.transform(new Date(), 'shortTime')],
         billId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         refundAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
         this._FormvalidationserviceService.notEmptyOrZeroValidator()
@@ -315,6 +315,7 @@ calculateTotalAmount(): void {
         if (result && result.submitDataPay) {
           this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
           console.log(this.vRefundOfBillFormGroup.value);
+        
           this._IpSearchListService.InsertRefundOfBill(this.vRefundOfBillFormGroup.value).subscribe(response => {
             this.viewgetRefundofBillReportPdf(response)
             this.grid.bindGridData();

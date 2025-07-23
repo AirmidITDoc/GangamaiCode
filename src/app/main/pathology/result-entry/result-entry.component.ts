@@ -141,15 +141,18 @@ export class ResultEntryComponent implements OnInit {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+          { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+     
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-        {
+       {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
@@ -177,6 +180,7 @@ export class ResultEntryComponent implements OnInit {
         columnsList: [
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+            
             { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
