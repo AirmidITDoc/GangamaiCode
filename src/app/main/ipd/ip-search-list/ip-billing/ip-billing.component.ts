@@ -643,10 +643,11 @@ debugger
         doctorid = this.Serviceform.get("doctorId").value;
     }    
       this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0) 
-      this.Serviceform.get("isPathology").setValue(formValue.serviceId?.isPathology ?? 0)
-      this.Serviceform.get("isRadiology").setValue(formValue.serviceId?.isRadiology ?? 0)
-      this.Serviceform.get("isPackage").setValue(formValue.serviceId?.isPackage ?? 0) 
-      this.Serviceform.get("serviceId").setValue(formValue.serviceId?.serviceId ?? 0)  
+      this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
+      this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
+      this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0) 
+      this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId ?? 0)
+      this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName ?? '')
       this.Serviceform.get("doctorId").setValue(doctorid) 
 
       console.log(this.Serviceform.value)
