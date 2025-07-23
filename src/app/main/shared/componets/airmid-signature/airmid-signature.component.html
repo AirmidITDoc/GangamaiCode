@@ -1,0 +1,116 @@
+<div class="image-view-section">
+    <div fxLayout="row" fxLayoutAlign="start center" class="accent image-view-header">
+        <div class="logo px-12 py-8" fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
+            <div class="logo-text">
+                <span class="h3" [@animate]="{value:'*',params:{delay:'100ms',x:'-16px'}}"> Signature View </span>
+            </div>
+            <div class="close-icon">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <span class="material-icons" style="cursor: pointer;" (click)="onClose()">
+                        close
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="webcam-container">
+        <mat-card>
+            <div class="toggle-container">
+                Use Signature
+                <mat-slide-toggle [(ngModel)]="isFileUpload" color="primary">Select File</mat-slide-toggle>
+            </div>
+            <div *ngIf="isFileUpload" class="section">
+                <h3>Select File</h3>
+                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                    <div class="photp-capture-image">
+                        <img class="h-100-p w-100-p border-radius-4" style="height: 250px !important;"
+                            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
+                    </div>
+                    <div class="img-container">
+                        <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
+                            name="file" id="file" class="inputfile" (change)="onImageChange($event)"
+                            style="margin-right: 10px;display: none;" />
+
+                        <label class="file-lable1" for="file">
+                            <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                            Browse
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!isFileUpload" class="section">
+                <h3>Draw Signature</h3>
+                <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                    <div class="photp-capture-image signature-pad-container"
+                        style="border:1px solid grey;border-radius: 5px;">
+                        <!-- <ngx-signature-pad [config]="config" #testPad></ngx-signature-pad> -->
+                        <canvas #signaturePad class="signature-pad"></canvas>
+                    </div>
+                    <div class="img-container">
+                        <label class="file-lable1" (click)="clear()">
+                            <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                            Clear
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <label class="file-lable1" (click)="OnSubmit()">
+                    <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                    Submit
+                </label>
+            </div>
+        </mat-card>
+
+        <!-- <div fxLayout="row" fxLayout.lt-sm="column" class="webcam-section px-12 gap-12">
+            <div fxLayout="row" fxFlex="100" fxFlex.gt-sm="50" class="content" fxLayout.gt-xs="column">
+                <div class="webcam-video-container p-12 gap-12" fxLayout="column">
+                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
+                        <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                            <div class="photp-capture-image">
+                                <img class="h-100-p w-100-p border-radius-4" style="height: 150px !important;"
+                                    [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
+                            </div>
+                            <div class="img-container">
+                                <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
+                                    name="file" id="file" class="inputfile" (change)="onImageChange($event)"
+                                    style="margin-right: 10px;display: none;" />
+
+                                <label class="file-lable1" for="file">
+                                    <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                    Browse
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxFlex="100" fxFlex.gt-sm="50" class="content" fxLayout.gt-xs="column">
+                <div class="webcam-result p-12 gap-12" fxLayout="column">
+                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
+                        <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
+                            <div class="photp-capture-image signature-pad-container"
+                                style="border:1px solid grey;border-radius: 5px;">
+                                <canvas #signaturePad class="signature-pad"></canvas>
+                            </div>
+                            <div class="img-container">
+                                <label class="file-lable1" (click)="clear()">
+                                    <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                    Clear
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="img-container" fxLayout="row">
+            <label class="file-lable1" (click)="OnSubmit()">
+                <mat-icon style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                Submit
+            </label>
+        </div> -->
+    </div>
+</div>

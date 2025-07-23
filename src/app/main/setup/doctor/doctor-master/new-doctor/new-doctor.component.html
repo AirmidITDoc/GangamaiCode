@@ -313,7 +313,8 @@
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Qualification
                                                         Name</mat-header-cell>
                                                     <mat-cell *matCellDef="let element">
-                                                        <span>{{ element.qualificationName || element.Qualification}}</span>
+                                                        <span>{{ element.qualificationName ||
+                                                            element.Qualification}}</span>
                                                     </mat-cell>
                                                 </ng-container>
 
@@ -759,18 +760,16 @@
                                     </div>
 
                                     <!-- RIGHT SECTION: Signature Preview -->
-                                    <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <!-- <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <div class="photo-capture p-16 border border-radius-4" fxLayout="column"
                                             fxLayoutAlign="start stretch" fxLayoutGap="12px">
 
-                                            <!-- Image Display -->
                                             <div class="photp-capture-image">
                                                 <img class="border-radius-4"
                                                     style="height: 200px; width: 100%; object-fit: contain;"
                                                     [src]="sanitizeImagePreview ? sanitizeImagePreview : '/assets/images/noimage.jpg'" />
                                             </div>
 
-                                            <!-- Capture Button -->
                                             <div class="photo-capture-button">
                                                 <button mat-raised-button color="primary" class="w-100"
                                                     (click)="onViewSignature()">
@@ -780,8 +779,8 @@
                                             </div>
 
                                         </div>
-                                    </div>
-
+                                    </div> -->
+                                    <airmid-signature></airmid-signature>
                                 </div>
 
                             </div>

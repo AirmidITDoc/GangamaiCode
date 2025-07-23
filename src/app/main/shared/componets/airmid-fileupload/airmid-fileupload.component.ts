@@ -168,5 +168,5 @@ export class AirmidFileModel {
     }
 }
 export enum PageNames {
-    NONE = "NONE", DOCTOR = "Doctor"
+    NONE = "NONE", DOCTOR = "Doctor",DOCTOR_SIGNATURE="Doctor_Signature"
 }
