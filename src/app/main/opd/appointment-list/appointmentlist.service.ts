@@ -234,6 +234,10 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
+    public getEmergencyById(Id) {
+        return this._httpClient1.GetData("Emergency/" + Id);
+    }
+
     public getPhoneappById(Id) {
         return this._httpClient1.GetData("PhoneAppointment2/" + Id);
     }

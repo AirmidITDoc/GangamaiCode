@@ -137,7 +137,7 @@ export class PatientcertificateComponent {
       console.log(payload)
       this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
         this.onSubList()
-        // this.viewgetCertificateReportPdf(response)
+        this.viewgetCertificateReportPdf(response)
         this.mycertificateForm.reset();
         this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
       });
@@ -231,7 +231,7 @@ export class PatientcertificateComponent {
   }
 
   viewgetCertificateReportPdf(element: any) {
-    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
+    this.commonService.Onprint("CertificateId", element.certificateId, "Certificate");
   }
 }
 export class certificateTemp {

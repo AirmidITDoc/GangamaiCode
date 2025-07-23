@@ -2,7 +2,7 @@
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               New Template 
+                New Template
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
@@ -23,45 +23,52 @@
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column">
                                         <input type="hidden" name="certificateId" formControlName="certificateId">
-                                    
+
                                         <div fxLayout="column" fxFlex>
                                             <!-- Textbox -->
                                             <div fxFlex>
-                                                <airmid-textbox 
-                                                    label="TemplateName" 
-                                                    formControlName="certificateName" 
-                                                    [(ngModel)]="vcertificateName"
-                                                    [formGroup]="templateForm"
+                                                <airmid-textbox label="TemplateName" formControlName="certificateName"
+                                                    [(ngModel)]="vcertificateName" [formGroup]="templateForm"
                                                     [validations]="getValidationMessages().certificateName"
                                                     [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
-                                    
-                                                <!-- <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor> -->
+
+                                            <!-- <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor> -->
 
                                             <!-- Editor -->
                                             <div fxFlex>
                                                 <mat-label>Template Details</mat-label>
-                                                <angular-editor 
-                                                    (blur)="onBlur($event)" 
-                                                    [config]="editorConfig"
-                                                    style="height:400px;" 
-                                                    [(ngModel)]="vTemplateDesc" 
-                                                    required
+                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
                                                     formControlName="certificateDesc">
                                                 </angular-editor>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                                <div style="margin-top: 10px; font-size: 14px; color: #555;">
+                                    <strong>Note:</strong> The following fields will be automatically replaced in the
+                                    report:
+                                    <ul style="margin: 4px 0 0 16px; padding: 0; list-style-type: disc;">
+                                        <li>Patient Name</li>
+                                        <li>Doctor Name</li>
+                                        <li>Referring Doctor Name</li>
+                                        <li>Age</li>
+                                        <li>Department</li>
+                                    </ul>
+                                </div>
+
+                                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row"
+                                    fxLayoutAlign="space-between">
                                     <div>
-                                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="templateForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                                            [formGroup]="templateForm" [(ngModel)]="isActive"></app-airmid-slider>
                                     </div>
                                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                                             <span>Save</span>
                                         </button>
                                     </div>

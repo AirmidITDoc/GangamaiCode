@@ -1857,6 +1857,7 @@ onTabChange(event: MatTabChangeEvent) {
       console.log(payload)
       this._CasepaperService.CertificateInsertUpdate(payload).subscribe((response) => {
         this.onSubList()
+        this.viewgetCertificateReportPdf(response)
         this.mycertificateForm.reset();
         this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
       });
@@ -1879,7 +1880,7 @@ onTabChange(event: MatTabChangeEvent) {
     }
   }
  viewgetCertificateReportPdf(element: any) {
-    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
+    this.commonService.Onprint("CertificateId", element.certificateId, "Certificate");
   }
   onSubList() {
     this.getCertificateList();

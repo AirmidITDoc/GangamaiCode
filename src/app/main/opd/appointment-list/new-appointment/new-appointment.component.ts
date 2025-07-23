@@ -128,6 +128,8 @@ export class NewAppointmentComponent implements OnInit {
     prevResults: any[] = [];
     filteredOptions: any[] = [];
     debounceTimers: { [key: string]: any } = {};
+    showEmergencyFlag: boolean = false;
+    EmgId:any;
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -179,6 +181,27 @@ export class NewAppointmentComponent implements OnInit {
                 //this.registerObj = this.FromRegistration;
                 this.getSelectedObj(this.FromRegistration)
             }
+        }
+
+        if ((this.data?.emgId) > 0) {
+            this.showEmergencyFlag=true
+            this._AppointmentlistService.getEmergencyById(this.data.emgId).subscribe((response) => {
+            this.registerObj = response;
+            this.RegId = this.registerObj.regId;
+            this.EmgId = this.registerObj.emgId;
+            console.log("Emg Data:", this.registerObj)
+            if (this.RegId > 0) {
+            this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                this.Regflag = true;
+            } else {
+            this.searchFormGroup.get('regRadio')?.setValue('registration');
+                this.Regflag = false;
+            }
+            this.personalFormGroup.patchValue({
+            MiddleName: this.registerObj.middleName || '',
+            });
+            this.selectChangedepartment(this.registerObj)
+        });
         }
 
     }

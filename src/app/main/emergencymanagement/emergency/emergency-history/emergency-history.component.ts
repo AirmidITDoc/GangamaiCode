@@ -3,9 +3,11 @@ import { fuseAnimations } from '@fuse/animations';
 import { EmergencyService } from '../emergency.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { EmergencyList } from '../emergency.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-emergency-history',
@@ -17,25 +19,50 @@ import { FormBuilder } from '@angular/forms';
 export class EmergencyHistoryComponent {
   screenFromString = 'Common-form';
   dateTimeObj: any;
-emgHistoryList: any[] = [];
-  selectedEmg: any = null;
+  registerObj = new EmergencyList({});
+  historyForm: FormGroup
 
   constructor(
       public _EmergencyService: EmergencyService,
       private _loggedService: AuthenticationService,
       public datePipe: DatePipe,
       public _matDialog: MatDialog,
-      public toastr: ToastrService,
+      public dialogRef: MatDialogRef<EmergencyHistoryComponent>,      
+      public toastr: ToastrService,   
+      private _FormvalidationserviceService: FormvalidationserviceService,
+      public _frombuilder: UntypedFormBuilder,            
       @Inject(MAT_DIALOG_DATA) public data: any
     ) { }
   
     ngOnInit(): void {
-    this._EmergencyService.getEmergencyById(this.data.emgId).subscribe((res) => {
-      this.emgHistoryList = res;
-    });
+      this.historyForm=this.CreateMyForm()
+      if(this.data){
+        this.registerObj=this.data
+        console.log("Data:",this.registerObj)
+      }
+      // this._EmergencyService.getEmergencyById(this.data.emgId).subscribe((res) => {
+      //   this.registerObj = res;
+      //   console.log(this.registerObj)
+      // });
     }
+
+    CreateMyForm() {
+        return this._frombuilder.group({
+          clinicalHistory: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
+          PatientName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        })
+      }
 
     getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+  }
+
+onSave(){
+  
+}
+
+  onClose(){
+    this.historyForm.reset();
+    this.dialogRef.close();
   }
 }
