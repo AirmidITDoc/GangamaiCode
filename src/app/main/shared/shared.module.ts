@@ -63,11 +63,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AirmidFullDatepickerComponent } from './componets/airmid-full-datepicker/airmid-full-datepicker.component';
 import { AirmidFileuploadComponent } from './componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidFileuploadIconComponent } from './componets/airmid-fileupload-icon/airmid-fileupload-icon.component';
+import { AirmidSignatureComponent } from './componets/airmid-signature/airmid-signature.component';
+import { AirmidSignatureIconComponent } from './componets/airmid-signature-icon/airmid-signature-icon.component';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent],
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -117,6 +119,8 @@ import { AirmidFileuploadIconComponent } from './componets/airmid-fileupload-ico
         AirmidAutoCompleteComponent,
         AirmidFileuploadComponent,
         AirmidFileuploadIconComponent,
+        AirmidSignatureComponent,
+        AirmidSignatureIconComponent,
         AirmidDateofbirthComponent,
         AirmidEditorComponent,
         AirmidSliderComponent,

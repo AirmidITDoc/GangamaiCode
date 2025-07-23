@@ -321,6 +321,7 @@ export class RegInsert {
     medTourismOfficeWorkAddress:any;
     medTourismVisaValidityDate:Date;
     medTourismDateOfEntry:Date;
+    emgId:any
     // religionId:any;
     // updatedBy:any;
 
@@ -419,6 +420,7 @@ export class RegInsert {
             this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
             this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
+            this.emgId=RegInsert.emgId || 0
         }
     }
 }

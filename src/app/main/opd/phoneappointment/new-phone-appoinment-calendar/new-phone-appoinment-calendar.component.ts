@@ -102,7 +102,7 @@ export class NewPhoneAppoinmentCalendarComponent {
         this.objDoctor = obj;
         this.bindData();
     }
-    now:Date=new Date();
+    now: Date = new Date();
     hourSegmentModifier: Function = (segment: WeekViewHourSegment): void => {
         debugger
         const now = new Date();
@@ -155,7 +155,6 @@ export class NewPhoneAppoinmentCalendarComponent {
             label: '<i class="fas fa-fw fa-pencil-alt"></i>',
             a11yLabel: 'Edit',
             onClick: ({ event }: { event: CalendarEvent }): void => {
-                debugger
                 this.handleEvent('CellClicked', event);
             },
         },
@@ -331,7 +330,10 @@ export class NewPhoneAppoinmentCalendarComponent {
         if (action == "CellClicked") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
-
+            if (!event["end"]) {
+                event["end"] = event["start"];
+                event["end"].setMinutes(event["end"].getMinutes() + 10);
+            }
             let that = this;
             const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
                 {

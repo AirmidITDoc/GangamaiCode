@@ -29,8 +29,8 @@ export class NewAdmissionComponent implements OnInit {
   admissionFormGroup: FormGroup;
 
   searchFormGroup: FormGroup;
-  EmergencyFormGroup:FormGroup;
-  MedicalFormGroup:FormGroup;
+  EmergencyFormGroup: FormGroup;
+  MedicalFormGroup: FormGroup;
 
 
   // options = [];
@@ -49,14 +49,14 @@ export class NewAdmissionComponent implements OnInit {
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
-
+  EmgId:any
   // printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-  RegId = 0;
+  RegId:any;
   currentDate = new Date();
   public now: Date = new Date();
   // isLoading: string = '';
@@ -112,7 +112,7 @@ export class NewAdmissionComponent implements OnInit {
   autocompleteModestate: string = "State";
 
   autocompleteModehospital: string = "Hospital";
-
+  showEmergencyFlag: boolean = false;
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
@@ -120,11 +120,44 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup.markAllAsTouched();
     this.searchFormGroup.markAllAsTouched();
 
-    // this.EmergencyFormGroup=this._AdmissionService.createEmergencydetailForm();
-    // this.MedicalFormGroup=this._AdmissionService.createMedicaldetailForm();
-
     if (this.AdmissionId)
       this.searchFormGroup.get("regRadio").setValue("registrered")
+
+
+    if ((this.data?.emgId) > 0) {
+      this.showEmergencyFlag=true
+      this._AdmissionService.getEmergencyById(this.data.emgId).subscribe((response) => {
+        this.registerObj = response;
+        this.registerObj1 = response;
+        this.RegId = this.registerObj.regId;
+        this.EmgId = this.registerObj.emgId;
+        console.log("Emg Data:", this.registerObj)
+        if (this.RegId > 0) {
+          this.searchFormGroup.get('regRadio')?.setValue('registrered');
+              this.Regflag = true;
+        } else {
+          this.searchFormGroup.get('regRadio')?.setValue('registration');
+              this.Regflag = false;
+        }
+         this.personalFormGroup.patchValue({
+          MiddleName: this.registerObj.middleName || '',
+        });
+        this.selectChangedepartment(this.registerObj1)
+      });
+    }
+
+    //  if ((this.data?.emgId) > 0) {
+    //   this._AdmissionService.getEmergencyById(this.data.emgId).subscribe((response) => {
+    //     this.registerObj = response;
+    //     this.RegId=this.registerObj.regId;
+    //     console.log("Emg Data:", this.registerObj)
+    //      const selectedRadioValue = this.RegId > 0 ? 'registrered' : 'registration';
+    
+    //     this.searchFormGroup.get('regRadio')?.setValue(selectedRadioValue);
+        
+    //     this.onChangeReg({ value: selectedRadioValue }, this.registerObj);
+    //   });
+    // }
 
   }
 
@@ -148,26 +181,26 @@ export class NewAdmissionComponent implements OnInit {
           console.log(this.registerObj)
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
-              FirstName: this.registerObj.firstName.trim(),
-              LastName: this.registerObj.lastName.trim(),
-              MobileNo: this.registerObj.mobileNo.trim(),
-              // MaritalStatusId: this.registerObj.maritalStatusId,
-              emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-              emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-              emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-              emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-              engAddress: this.registerObj?.engAddress ?? '',
-              emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-              emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
-              medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-              medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
-              medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
-              medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-              medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
-              medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-              medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
-              medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
-              medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+            FirstName: this.registerObj.firstName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo.trim(),
+            // MaritalStatusId: this.registerObj.maritalStatusId,
+            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+            engAddress: this.registerObj?.engAddress ?? '',
+            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
           });
 
         });
@@ -179,105 +212,158 @@ export class NewAdmissionComponent implements OnInit {
 
   chkHealthcard(e) { }
   Patientnewold: any = 1;
-  // onChangeReg(event) {
-  //   if (event.value == 'registration') {
-  //     this.Regflag = false;
-  //     this.personalFormGroup.get('RegId').reset();
-  //     this.personalFormGroup.get('RegId').disable();
-  //     // this.isRegSearchDisabled = true;
-  //     this.registerObj1 = new AdmissionPersonlModel({});
+  onChangeReg(event) {
+    if (event.value === 'registration') {
+      this.personalFormGroup.reset();
+      this.personalFormGroup.get('RegId').reset();
+      this.searchFormGroup.get('RegId').disable();
+      this.isRegSearchDisabled = false;
+      this.Patientnewold = 1;
+
+      // Instead of reassigning, update controls one by one
+      const newPersonalForm = this._AdmissionService.createPesonalForm();
+      this.resetFilteredOptions();
+      Object.keys(newPersonalForm.controls).forEach(key => {
+        if (this.personalFormGroup.contains(key)) {
+          this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+        } else {
+          this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+        }
+      });
+
+      const newadmissionForm = this._AdmissionService.createAdmissionForm();
+      Object.keys(newadmissionForm.controls).forEach(key => {
+        if (this.admissionFormGroup.contains(key)) {
+          this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+        } else {
+          this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+        }
+      });
+
+      this.personalFormGroup.markAllAsTouched();
+      this.admissionFormGroup.markAllAsTouched();
+
+      this.Regflag = false;
+
+    } else if (event.value === 'registrered') {
+
+      this.personalFormGroup.get('RegId').enable();
+      this.searchFormGroup.get('RegId').enable();
+      this.searchFormGroup.get('RegId').reset();
+      this.personalFormGroup.reset();
+      this.Patientnewold = 2;
+
+      const newPersonalForm = this._AdmissionService.createPesonalForm();
+      this.resetFilteredOptions();
+      Object.keys(newPersonalForm.controls).forEach(key => {
+        if (this.personalFormGroup.contains(key)) {
+          this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+        } else {
+          this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+        }
+      });
+
+      const newadmissionForm = this._AdmissionService.createAdmissionForm();
+      Object.keys(newadmissionForm.controls).forEach(key => {
+        if (this.admissionFormGroup.contains(key)) {
+          this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+        } else {
+          this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+        }
+      });
+
+      this.personalFormGroup.markAllAsTouched();
+      this.admissionFormGroup.markAllAsTouched();
+
+      this.Regflag = true;
+      this.isRegSearchDisabled = true;
+    }
+  }
+  //   onChangeReg(event,registerObj?: any) {
+  //   if (event.value === 'registration') {
   //     this.personalFormGroup.reset();
+  //     this.personalFormGroup.get('RegId').reset();
+  //     this.searchFormGroup.get('RegId').disable();
+  //     this.isRegSearchDisabled = false;
   //     this.Patientnewold = 1;
 
-  //     this.personalFormGroup = this._AdmissionService.createPesonalForm();
-  //     this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-  //     this.Regdisplay = false;
+  //     // Instead of reassigning, update controls one by one
+  //     const newPersonalForm = this._AdmissionService.createPesonalForm();
+  //     this.resetFilteredOptions();
+  //     Object.keys(newPersonalForm.controls).forEach(key => {
+  //       if (this.personalFormGroup.contains(key)) {
+  //         this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+  //       } else {
+  //         this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+  //       }
+  //     });
 
-  //   } else {
-  //     this.Regdisplay = true;
-  //     this.Regflag = true;
+  //     const newadmissionForm = this._AdmissionService.createAdmissionForm();
+  //     Object.keys(newadmissionForm.controls).forEach(key => {
+  //       if (this.admissionFormGroup.contains(key)) {
+  //         this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+  //       } else {
+  //         this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+  //       }
+  //     });
+
+  //     this.personalFormGroup.markAllAsTouched();
+  //     this.admissionFormGroup.markAllAsTouched();
+
+  //     this.Regflag = false;
+
+  //   } else if (event.value === 'registrered') {
+
+  //     this.personalFormGroup.get('RegId').enable();
   //     this.searchFormGroup.get('RegId').enable();
-  //     this.personalFormGroup = this._AdmissionService.createPesonalForm();
+  //     this.searchFormGroup.get('RegId').reset();
+  //     this.personalFormGroup.reset();
   //     this.Patientnewold = 2;
 
+  //     const newPersonalForm = this._AdmissionService.createPesonalForm();
+  //     this.resetFilteredOptions();
+  //     Object.keys(newPersonalForm.controls).forEach(key => {
+  //       if (this.personalFormGroup.contains(key)) {
+  //         this.personalFormGroup.setControl(key, newPersonalForm.get(key));
+  //       } else {
+  //         this.personalFormGroup.addControl(key, newPersonalForm.get(key));
+  //       }
+  //     });
+
+  //     const newadmissionForm = this._AdmissionService.createAdmissionForm();
+  //     Object.keys(newadmissionForm.controls).forEach(key => {
+  //       if (this.admissionFormGroup.contains(key)) {
+  //         this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
+  //       } else {
+  //         this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
+  //       }
+  //     });
+
+  //      if (registerObj) {
+  //   if (this.personalFormGroup.get('FirstName')) {
+  //     this.personalFormGroup.get('FirstName')!.setValue(registerObj.firstName || '');
   //   }
-
-  //   this.personalFormGroup.markAllAsTouched();
-  //   this.admissionFormGroup.markAllAsTouched();
+  //   if (this.personalFormGroup.get('MiddleName')) {
+  //     this.personalFormGroup.get('MiddleName')!.setValue(registerObj.middleName || '');
+  //   }
+  //   if (this.personalFormGroup.get('LastName')) {
+  //     this.personalFormGroup.get('LastName')!.setValue(registerObj.lastName || '');
+  //   }
   // }
-   onChangeReg(event) {
-        if (event.value === 'registration') {
-            this.personalFormGroup.reset();
-            this.personalFormGroup.get('RegId').reset();
-            this.searchFormGroup.get('RegId').disable();
-            this.isRegSearchDisabled = false;
-            this.Patientnewold = 1;
 
-            // Instead of reassigning, update controls one by one
-            const newPersonalForm = this._AdmissionService.createPesonalForm();
-            this.resetFilteredOptions();
-            Object.keys(newPersonalForm.controls).forEach(key => {
-                if (this.personalFormGroup.contains(key)) {
-                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
-                } else {
-                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
-                }
-            });
+  //     this.personalFormGroup.markAllAsTouched();
+  //     this.admissionFormGroup.markAllAsTouched();
 
-            const newadmissionForm = this._AdmissionService.createAdmissionForm();
-            Object.keys(newadmissionForm.controls).forEach(key => {
-                if (this.admissionFormGroup.contains(key)) {
-                    this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
-                } else {
-                    this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
-                }
-            });
-
-            this.personalFormGroup.markAllAsTouched();
-            this.admissionFormGroup.markAllAsTouched();
-
-            this.Regflag = false;
-
-        } else if (event.value === 'registrered') {
-
-            this.personalFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').enable();
-            this.searchFormGroup.get('RegId').reset();
-            this.personalFormGroup.reset();
-            this.Patientnewold = 2;
-
-            const newPersonalForm = this._AdmissionService.createPesonalForm();
-            this.resetFilteredOptions();
-            Object.keys(newPersonalForm.controls).forEach(key => {
-                if (this.personalFormGroup.contains(key)) {
-                    this.personalFormGroup.setControl(key, newPersonalForm.get(key));
-                } else {
-                    this.personalFormGroup.addControl(key, newPersonalForm.get(key));
-                }
-            });
-
-            const newadmissionForm = this._AdmissionService.createAdmissionForm();
-            Object.keys(newadmissionForm.controls).forEach(key => {
-                if (this.admissionFormGroup.contains(key)) {
-                    this.admissionFormGroup.setControl(key, newadmissionForm.get(key));
-                } else {
-                    this.admissionFormGroup.addControl(key, newadmissionForm.get(key));
-                }
-            });
-
-            this.personalFormGroup.markAllAsTouched();
-            this.admissionFormGroup.markAllAsTouched();
-
-            this.Regflag = true;
-            this.isRegSearchDisabled = true;
-        }
-    }
-    prevResults: any[] = [];
-    filteredOptions: any[] = [];
-    resetFilteredOptions(){
-        this.filteredOptions = [];
-        this.prevResults = [];
-    }
+  //     this.Regflag = true;
+  //     this.isRegSearchDisabled = true;
+  //   }
+  // }
+  prevResults: any[] = [];
+  filteredOptions: any[] = [];
+  resetFilteredOptions() {
+    this.filteredOptions = [];
+    this.prevResults = [];
+  }
   onNewSave() {
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
@@ -395,6 +481,7 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+    this.admissionFormGroup.get('convertId').setValue(this.EmgId ?? 0)
     const today = new Date();
     const medTourismVisaIssueDate = this.personalFormGroup.get('medTourismVisaIssueDate')?.value;
     const medTourismVisaValidityDate = this.personalFormGroup.get('medTourismVisaValidityDate')?.value;
@@ -460,13 +547,26 @@ export class NewAdmissionComponent implements OnInit {
 
 
   selectChangedepartment(obj: any) {
-
-    this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddlDoctor.options = data;
-      this.ddlDoctor.bindGridAutoComplete();
-    });
+    if (obj.value) {
+      this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+      });
+    } else {
+      this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+        // console.log(data)
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+        const incomingDoctorId = obj.docNameId || obj.doctorId;
+        if (incomingDoctorId) {
+          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+          if (matchedDoctor) {
+            this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
+          }
+        }
+      });
+    }
   }
-
 
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
@@ -625,21 +725,21 @@ export class NewAdmissionComponent implements OnInit {
       docNameId: [
         { name: "required", Message: "Doctor Name is required" }
       ],
-      emgDrivingLicenceNo:[
-          { name: "pattern", Message: "e.g., MH-14-20210001234" },
-          { name: "minLength", Message: "16 digit required." },
-          { name: "maxLength", Message: "More than 16 digits not allowed." }
+      emgDrivingLicenceNo: [
+        { name: "pattern", Message: "e.g., MH-14-20210001234" },
+        { name: "minLength", Message: "16 digit required." },
+        { name: "maxLength", Message: "More than 16 digits not allowed." }
       ],
-      medTourismPassportNo:[
-          { name: "pattern", Message: "e.g., A1234567" },
-          { name: "minLength", Message: "8 digit required." },
-          { name: "maxLength", Message: "More than 8 digits not allowed." }
+      medTourismPassportNo: [
+        { name: "pattern", Message: "e.g., A1234567" },
+        { name: "minLength", Message: "8 digit required." },
+        { name: "maxLength", Message: "More than 8 digits not allowed." }
       ],
       medTourismNationalityId: [
-          { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters (e.g., A123456789)" },
-          { name: "minLength", Message: "Minimum 10 characters required." },
-          { name: "maxLength", Message: "Maximum 15 characters allowed." }
-          ]
+        { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters (e.g., A123456789)" },
+        { name: "minLength", Message: "Minimum 10 characters required." },
+        { name: "maxLength", Message: "Maximum 15 characters allowed." }
+      ]
     };
   }
   onClear() { }

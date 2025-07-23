@@ -62,7 +62,7 @@ export class EmergencyComponent implements OnInit {
   allcolumns = [
     { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
     { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
-    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:20 },
+    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
     { heading: "HourCompleted", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
     { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
@@ -74,7 +74,7 @@ export class EmergencyComponent implements OnInit {
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -299,7 +299,14 @@ export class EmergencyList {
   classId: any;
   tariffid: any;
   classid: any;
-
+  tariffName:any;
+  genderName:any;
+  ageYear:any;
+  ageMonth:any;
+  ageDay:any;
+  patientName:any;
+doctorName:any;
+departmentName:any;
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;
@@ -333,6 +340,14 @@ export class EmergencyList {
       this.classId = EmergencyList.classId || 0
       this.tariffid = EmergencyList.tariffid || 0
       this.classid = EmergencyList.classid || 0
+      this.genderName = EmergencyList.genderName || ''
+      this.tariffName = EmergencyList.tariffName || ''
+      this.ageYear = EmergencyList.ageYear || 0
+      this.ageMonth = EmergencyList.ageMonth || 0
+      this.ageDay = EmergencyList.ageDay || 0
+      this.patientName = EmergencyList.patientName || ''
+      this.doctorName = EmergencyList.doctorName || ''
+      this.departmentName = EmergencyList.departmentName || ''
     }
   }
 }

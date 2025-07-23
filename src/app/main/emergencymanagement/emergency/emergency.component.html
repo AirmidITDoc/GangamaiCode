@@ -42,16 +42,20 @@
             *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1">
                 <mat-icon> cancel</mat-icon>
             </button>
+
+            <button mat-icon-button matTooltip="Print" *ngIf="element.isCancelled==false">
+                <mat-icon> print</mat-icon>
+            </button>
         </div>
     </ng-template>
 
      <ng-template #actionsTemplate let-element>
         <div class="pill-icon">
-            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Emergency Cancelled"
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Cancelled"
                 class="red-600 s-16">circle
             </mat-icon>
 
-            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Emergency Cancelled"
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Not Cancelled"
                 class="green-600 s-16">circle
             </mat-icon>
         </div>

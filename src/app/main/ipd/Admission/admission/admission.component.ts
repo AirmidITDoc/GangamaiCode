@@ -856,6 +856,8 @@ export class AdmissionPersonlModel {
   classId: any;
   WardId: any;
   wardId: any;
+  doctorId: any;
+  tariffid: any;
   PolicyNo: any;
   MemberNo: any;
   // WardName:any;
@@ -933,6 +935,7 @@ export class AdmissionPersonlModel {
   isDischarge:any;
   HospitalID:any;
   hospitalID:any;
+  emgId:any;
   /**
 * Constructor
 *
@@ -1137,6 +1140,9 @@ export class AdmissionPersonlModel {
       this.isDischarge=AdmissionPersonl.isDischarge 
       this.HospitalID=AdmissionPersonl.HospitalID || 1
       this.hospitalID=AdmissionPersonl.hospitalID || 1
+      this.doctorId = AdmissionPersonl.doctorId || 0
+      this.tariffid = AdmissionPersonl.tariffid || 0
+      this.emgId = AdmissionPersonl.emgId || 0
     }
   }
 }
@@ -1224,6 +1230,7 @@ export class RegInsert {
   medTourismOfficeWorkAddress:any;
   medTourismVisaValidityDate:Date;
   medTourismDateOfEntry:Date;
+  emgId:any;
   // addedBy:any;
   // updatedBy:any;
 
@@ -1315,6 +1322,7 @@ export class RegInsert {
       this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
       this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
       this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
+      this.emgId = RegInsert.emgId || 0
       // this.addedBy = RegInsert.addedBy || 0 ;
       // this.updatedBy = RegInsert.updatedBy || 0 ;
 
