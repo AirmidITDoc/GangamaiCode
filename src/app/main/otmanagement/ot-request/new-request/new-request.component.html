@@ -44,7 +44,7 @@
                             </mat-radio-group>
 
                         </div>
-                        <div class="input-container gap-8" fxFlex>
+                        <!-- <div class="input-container gap-8" fxFlex>
 
                             <airmid-autocomplete lbl="opIpId" [formGroup]="requestForm" formControlName="opIpId"
                                 placeholderText="Op-RegNo/First Name/Last Name/Mobile No"
@@ -53,25 +53,25 @@
                                 ValueField="admissionID" TextField="formattedText">
                             </airmid-autocomplete>
 
-                        </div>
+                        </div> -->
 
                         <div class="input-container gap-8" fxFlex>
 
-                            <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'OP'"
+                            <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('opIpType').value == 'OP'"
                                         [formGroup]="requestForm" formControlName="opIpId"
                                         placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                         ValueField="opIpId">
-                                    </airmid-autocomplete> -->
+                                    </airmid-autocomplete>
 
-                            <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'IP'"
+                            <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('opIpType').value == 'IP'"
                                         [formGroup]="requestForm" formControlName="opIpId"
                                         placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
-                                        (selectionChange)="getSelectedObjOT($event)" ValueField="admissionID"
+                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
-                                    </airmid-autocomplete> -->
+                                    </airmid-autocomplete>
                         </div>
                     </div>
 
@@ -194,7 +194,7 @@
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Surgery Procedure" formControlName="surgeryType"
+                                <airmid-dropdown label="Surgery Procedure" formControlName="surgeryId"
                                     [formGroup]="requestForm" [value]="data?.stateId"
                                     [validations]="getValidationMessages(). SurgeryProcedure"
                                     [mode]="autocompleteModestatus">
