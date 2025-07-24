@@ -1,21 +1,26 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import SignaturePad from 'signature_pad';
 import { ImageViewComponent } from 'app/main/opd/appointment-list/image-view/image-view.component';
 import { ImageCropComponent } from '../image-crop/image-crop.component';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { AirmidFileModel, PageNames } from '../airmid-fileupload/airmid-fileupload.component';
 
 @Component({
     selector: 'airmid-signature',
     templateUrl: './airmid-signature.component.html',
     styleUrls: ['./airmid-signature.component.scss']
 })
-export class AirmidSignatureComponent {
+export class AirmidSignatureComponent implements OnInit {
     sanitizeImagePreview = "";
-    isFileUpload:boolean=false;
+    isFileUpload: boolean = false;
+    @Input() refType: PageNames
+    @Input() refId: number = 0;
+    @Input() docName: string = "default";
     @ViewChild('signaturePad') signaturePadElement!: ElementRef<HTMLCanvasElement>;
     private signaturePad!: SignaturePad;
     private canvas!: HTMLCanvasElement;
-
+    objFile: AirmidFileModel;
     ngAfterViewInit(): void {
         this.canvas = this.signaturePadElement.nativeElement;
         this.setupSignaturePad();
@@ -62,9 +67,23 @@ export class AirmidSignatureComponent {
         public dialogRef: MatDialogRef<ImageViewComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public matDialog: MatDialog,
+        private _service: ApiCaller,
         // public safe: SafePipesPipe
 
     ) {
+    }
+    ngOnInit(): void {
+        if (this.data) {
+            this.refId = this.data.refId;
+            this.refType = this.data.refType;
+        }
+        if (this.refId > 0) {
+            this._service.GetData("Files/get-signature?RefId=" + this.refId + "&RefType=" + this.refType).subscribe((data) => {
+                 if (data)
+                    this.signaturePad.fromDataURL(data);
+
+            });
+        }
     }
     // onImageChange(event) {
     //     let Imgflag = "";
@@ -109,11 +128,6 @@ export class AirmidSignatureComponent {
     // };
     config: any;
 
-    // public clear() {
-    //     this.signaturePadElement.clear();
-    // }
-    ngOnInit(): void {
-    }
     onClose() {
         this.dialogRef.close();
     }
@@ -127,7 +141,20 @@ export class AirmidSignatureComponent {
                 alert('Please provide a signature first.');
                 return;
             }
-            this.dialogRef.close(this.signaturePad.toDataURL());
+            this.objFile = {
+                srNo: 1,
+                id: 0,
+                docName: this.docName,
+                docSavedName: '',
+                Document: null,
+                isDelete: false,
+                base64: this.signaturePad.toDataURL(),
+                refId: this.refId,
+                refType: this.refType
+            }
+            this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe((data) => {
+                this.dialogRef.close(this.signaturePad.toDataURL());
+            });
         }
     }
 }

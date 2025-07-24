@@ -70,7 +70,7 @@ export class AirmidFileuploadComponent implements OnInit {
                 id: 0,
                 docName: selectedFile.name,
                 docSavedName: '',
-                isDelete: false
+                isDelete: false, base64: ''
             });
         }
         this.filesChange.emit(this.files);
@@ -142,7 +142,7 @@ export class AirmidFileuploadComponent implements OnInit {
     }
 
     downloadFile(file: AirmidFileModel): void {
-        this._service.downloadFile("Files/get-file?Id="+file.id, null,2, file.docName).subscribe((data) => {
+        this._service.downloadFile("Files/get-file?Id=" + file.id, null, 2, file.docName).subscribe((data) => {
 
         });
     }
@@ -156,7 +156,8 @@ export class AirmidFileModel {
     docSavedName: string;
     Document: File;
     isDelete: boolean;
-    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; refType: PageNames; docName: string; docSavedName: string; document: File, isDelete: boolean }) {
+    base64: string;
+    constructor(AirmidFileModel: { srNo: number, id: number; refId: number; base64: string, refType: PageNames; docName: string; docSavedName: string; document: File, isDelete: boolean }) {
         this.srNo = AirmidFileModel.srNo || 0;
         this.id = AirmidFileModel.id || 0;
         this.refId = AirmidFileModel.refId || 0;
@@ -165,8 +166,9 @@ export class AirmidFileModel {
         this.docSavedName = AirmidFileModel.docSavedName || '';
         this.Document = AirmidFileModel.document || null;
         this.isDelete = AirmidFileModel.isDelete || false;
+        this.base64 = AirmidFileModel.base64 || '';
     }
 }
 export enum PageNames {
-    NONE = "NONE", DOCTOR = "Doctor",DOCTOR_SIGNATURE="Doctor_Signature"
+    NONE = "NONE", DOCTOR = "Doctor", DOCTOR_SIGNATURE = "Doctor_Signature"
 }

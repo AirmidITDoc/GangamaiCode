@@ -33,6 +33,7 @@ export class DoctorMasterComponent implements OnInit {
     isCon: any = "1"
     isRef: any = "0"
     page: PageNames=PageNames.DOCTOR;
+    signature: PageNames=PageNames.DOCTOR_SIGNATURE;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     ngAfterViewInit() {

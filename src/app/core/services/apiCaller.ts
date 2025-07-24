@@ -20,9 +20,10 @@ export class ApiCaller {
                     return data.data;
                 }
                 else {
-                    this.toastr.error(data.message, 'Error !', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
+                    if (data.message)
+                        this.toastr.error(data.message, 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
                     return of(null); // Avoid returning anything invalid
                 }
             }),
