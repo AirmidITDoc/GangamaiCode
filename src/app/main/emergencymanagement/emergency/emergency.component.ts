@@ -60,11 +60,12 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
-    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:10 },
+    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
+    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
     { heading: "HourCompleted", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DateTime", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 9, width: 200 },
+    { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6},
+    { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7},
     { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -171,65 +172,101 @@ export class EmergencyComponent implements OnInit {
     });
   }
 
-  getConvert(row) {
-    const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
+  // required code //
+  // getConvert(row) {
+  //   const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
 
+  //   Swal.fire({
+  //     title: `Convert ${patientName} to OPD or IPD?`,
+  //     text: 'Please choose the type you want to convert this patient to:',
+  //     icon: 'question',
+  //     showDenyButton: true,
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     denyButtonColor: '#6c757d',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Convert to OPD',
+  //     denyButtonText: 'Convert to IPD',
+  //     cancelButtonText: 'Cancel'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       // Show second dialog with 2 options
+  //       Swal.fire({
+  //         title: 'Appointment Check',
+  //         text: 'Does the patient already have an appointment today?',
+  //         showDenyButton: true,
+  //         showCancelButton: true,
+  //         confirmButtonColor: '#198754',
+  //         denyButtonColor: '#0dcaf0',
+  //         cancelButtonColor: '#dc3545',
+  //         confirmButtonText: 'Yes',
+  //         denyButtonText: "No",
+  //         cancelButtonText: 'Cancel'
+  //       }).then((res) => {
+  //         if (res.isConfirmed) {
+  //           // need to show list of patient
+  //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+  //             maxWidth: '95vw',
+  //             height: '95%',
+  //             width: '90%',
+  //             data: row
+  //           });
+  //           dialogRef.afterClosed().subscribe(result => {
+  //             console.log('old appointment', result);
+  //             this.grid.bindGridData();
+  //           });
+
+  //         } else if (res.isDenied) {
+  //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+  //             maxWidth: '95vw',
+  //             height: '95%',
+  //             width: '90%',
+  //             data: row
+  //           });
+  //           dialogRef.afterClosed().subscribe(result => {
+  //             console.log('new appointment', result);
+  //             this.grid.bindGridData();
+  //           });
+  //         }
+  //       });
+  //     }
+  //     else if (result.isDenied) {
+  //       const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+  //         maxWidth: '95vw',
+  //         width: '100%',
+  //         height: '98vh',
+  //         data: row
+  //       });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         console.log('IPD conversion dialog closed', result);
+  //         this.grid.bindGridData();
+  //       });
+  //     }
+  //   });
+  // }
+
+getConvert(row) {
+    const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
+    const showIPD = row.isAfter24Hrs == 1;
     Swal.fire({
-      title: `Convert ${patientName} to OPD or IPD?`,
-      text: 'Please choose the type you want to convert this patient to:',
+      title: showIPD
+      ?`Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
+      :`Convert ${patientName} to IPD or OPD?`,
+        text: showIPD 
+      ? 'Only IPD conversion is available after 24 hours.' 
+      : 'Please choose the type you want to convert this patient to:',
       icon: 'question',
-      showDenyButton: true,
+      showDenyButton: !showIPD,
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      denyButtonColor: '#6c757d',
+      confirmButtonColor: '#6c757d',
+      denyButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Convert to OPD',
-      denyButtonText: 'Convert to IPD',
+      confirmButtonText: 'Convert to IPD',
+      denyButtonText: 'Convert to OPD',
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Show second dialog with 2 options
-        Swal.fire({
-          title: 'Appointment Check',
-          text: 'Does the patient already have an appointment today?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonColor: '#198754',
-          denyButtonColor: '#0dcaf0',
-          cancelButtonColor: '#dc3545',
-          confirmButtonText: 'Yes',
-          denyButtonText: "No",
-          cancelButtonText: 'Cancel'
-        }).then((res) => {
-          if (res.isConfirmed) {
-            // need to show list of patient
-            const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-              maxWidth: '95vw',
-              height: '95%',
-              width: '90%',
-              data: row
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('old appointment', result);
-              this.grid.bindGridData();
-            });
-
-          } else if (res.isDenied) {
-            const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-              maxWidth: '95vw',
-              height: '95%',
-              width: '90%',
-              data: row
-            });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('new appointment', result);
-              this.grid.bindGridData();
-            });
-          }
-        });
-      }
-      else if (result.isDenied) {
-        const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+        const dialogRef = this._matDialog.open(NewAdmissionComponent, {          
           maxWidth: '95vw',
           width: '100%',
           height: '98vh',
@@ -240,9 +277,20 @@ export class EmergencyComponent implements OnInit {
           this.grid.bindGridData();
         });
       }
+      else if (result.isDenied && !showIPD) {
+        const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+          maxWidth: '95vw',
+          height: '95%',
+          width: '90%',
+          data: row
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('OPD conversion dialog closed', result);
+          this.grid.bindGridData();
+        });
+      }
     });
   }
-
 
   EmergencyCancel(data) {
     Swal.fire({

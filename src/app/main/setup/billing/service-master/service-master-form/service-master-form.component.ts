@@ -11,6 +11,7 @@ import { ServiceMasterService } from "../service-master.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import Swal from "sweetalert2";
 import { TariffComponent } from "../tariff/tariff.component";
+import { element } from "protractor";
 
 @Component({
     selector: "app-service-master-form",
@@ -211,8 +212,8 @@ export class ServiceMasterFormComponent implements OnInit {
         return this._formBuilder.group({
             serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            classId: [item.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }

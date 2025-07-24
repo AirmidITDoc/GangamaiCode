@@ -170,6 +170,11 @@ export class PatientcertificateComponent {
     this.dialogRef.close();
   }
 
+  onReset(){
+    this.mycertificateForm.reset()
+    this.mycertificateForm.reset({ Language: '1' });
+  }
+
   addTemplateDescription() {
     this.isButtonDisabled = false;
     if (!this.mycertificateForm.get('CertificateTemplateId').value) {
@@ -231,7 +236,7 @@ export class PatientcertificateComponent {
   }
 
   viewgetCertificateReportPdf(element: any) {
-    this.commonService.Onprint("CertificateId", element.certificateId, "Certificate");
+    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
   }
 }
 export class certificateTemp {

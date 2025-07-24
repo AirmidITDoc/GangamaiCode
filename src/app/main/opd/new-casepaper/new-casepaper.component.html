@@ -1332,8 +1332,8 @@
                                                 </div>
 
                                                 <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                                                    <button class="btn btn-danger-outline"
-                                                        (click)="onClose()">Close</button>
+                                                    <button class="btn btn-danger-outline" (click)="onReset()">
+                                                        Reset</button>
                                                     <button class="btn btn-primary" (click)="onCertificateSave()">
                                                         Save</button>
                                                 </div>
@@ -1344,6 +1344,14 @@
                                     </form>
                                 </mat-tab>
                             </mat-tab-group>
+                            
+                                <div class="modal-footer" style="margin-top: 10px;" fxLayout="row" fxLayoutAlign="end center">
+                                <div class="footer-navigation-container">
+                                    <div class="modal-footer-buttons">
+                                    <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                    </div>
+                                </div>
+                                </div>
                         </mat-tab>
                     </mat-tab-group>
                    

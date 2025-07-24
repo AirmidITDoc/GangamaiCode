@@ -64,7 +64,7 @@
                                   </span>
                                   <span>:</span>
                                   <span class="patient-col-value">{{vAgeYear}}Y|{{vAgeMonth}}M|{{vAgeDay}}</span>
-                                    <!-- D | {{GenderName}} -->
+                                  <!-- D | {{GenderName}} -->
                                 </div>
                                 <div class="patient-col">
                                   <span class="patient-col-key">Department</span>
@@ -147,11 +147,12 @@
                               </span>
                             </mat-cell> -->
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                              <span matTooltip="{{element.certificateText}}" matTooltipPosition="above" class="ellipsis-text">
+                              <span matTooltip="{{element.certificateText}}" matTooltipPosition="above"
+                                class="ellipsis-text">
                                 {{ element.certificateText }}
                               </span>
                             </mat-cell>
-                          
+
                           </ng-container>
 
                           <ng-container matColumnDef="Action" stickyEnd>
@@ -165,8 +166,8 @@
                                 <mat-icon>print</mat-icon>
                               </button>
                               <button mat-icon-button matTooltip="WhatsApp">
-                                <img width="25" height="8px" src="assets/images/logos/WhatsApp.png" (click)="getWhatsappshareSales()"
-                                  matTooltip="Send Certificate Details On WhatsApp" />
+                                <img width="25" height="8px" src="assets/images/logos/WhatsApp.png"
+                                  (click)="getWhatsappshareSales()" matTooltip="Send Certificate Details On WhatsApp" />
                               </button>
                             </mat-cell>
                           </ng-container>
@@ -205,10 +206,10 @@
                             <input type="hidden" name="certificateId" formControlName="certificateId"
                               [(ngModel)]="vCertificateId">
 
-                            <airmid-dropdown label="CertificateTemplate" formControlName="CertificateTemplateId" [formGroup]="mycertificateForm"
-                              fxFlex="35%" [mode]="autocompleteModeTemplate" (selectionChange)="selectChangeTemplate($event)"
-                              ValueField="certificateId" TextField="certificateName"
-                              ApiUrl="OPDEMRCertificate/get-CertificateMaster">
+                            <airmid-dropdown label="CertificateTemplate" formControlName="CertificateTemplateId"
+                              [formGroup]="mycertificateForm" fxFlex="35%" [mode]="autocompleteModeTemplate"
+                              (selectionChange)="selectChangeTemplate($event)" ValueField="certificateId"
+                              TextField="certificateName" ApiUrl="OPDEMRCertificate/get-CertificateMaster">
                             </airmid-dropdown>
 
                             <div class="modal-footer-buttons gap-8 m-8">
@@ -245,8 +246,9 @@
                             </mat-radio-group>
                           </div>
 
-                          <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                          <div class="new-appointment-actions gap-8 p-12" fxLayoutAlign="end center">
+                            <button class="btn btn-danger-outline" (click)="onReset()">
+                              Reset</button>
                             <button class="btn btn-primary" (click)="onSave()">
                               Save</button>
                           </div>
@@ -255,9 +257,18 @@
 
                       </div>
                     </mat-tab>
+
                   </mat-tab-group>
 
                 </mat-card>
+
+                <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center">
+                  <div class="footer-navigation-container">
+                    <div class="modal-footer-buttons">
+                      <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    </div>
+                  </div>
+                </div>
 
               </div>
             </form>

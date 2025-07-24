@@ -1308,6 +1308,10 @@ export class NewCasepaperComponent implements OnInit {
     // this.numericForm.reset();
     this.dialogRef.close();
   }
+  onReset(){
+    this.mycertificateForm.reset()
+    this.mycertificateForm.reset({ Language: '1' });
+  }
   onClear() {
     this.caseFormGroup.reset();
     this.searchFormGroup.get('RegId').reset();
@@ -1880,7 +1884,7 @@ onTabChange(event: MatTabChangeEvent) {
     }
   }
  viewgetCertificateReportPdf(element: any) {
-    this.commonService.Onprint("CertificateId", element.certificateId, "Certificate");
+    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
   }
   onSubList() {
     this.getCertificateList();

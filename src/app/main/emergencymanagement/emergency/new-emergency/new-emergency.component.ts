@@ -180,8 +180,8 @@ export class NewEmergencyComponent {
 
       this.myForm.get('regId')?.setValue(this.RegId);
       this.myForm.get('emgId')?.setValue(this.registerObj?.emgId || 0);
-      // this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-      // this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
+      this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+      this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
       this.myForm.get("DateOfBirth").setValue(this.datePipe.transform(this.myForm.get("DateOfBirth").value, "yyyy-MM-dd"));
       console.log(this.myForm.value)
       this._EmergencyService.EmgSaveUpdate(this.myForm.value).subscribe((res) => {

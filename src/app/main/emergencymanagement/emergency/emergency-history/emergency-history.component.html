@@ -103,19 +103,119 @@
                     </div>
 
                     <div>
-                        <form [formGroup]="historyForm" fxLayout="row wrap" fxLayoutGap="12px 0px">
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="ClinicalHistory" formControlName="clinicalHistory"
-                                    [formGroup]="historyForm" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
+                        <mat-card style="padding: 5px;">
+                            <form [formGroup]="historyForm">
+                                <div fxLayout="column">
+                                    <div class="prescription-title" style="font-weight: 700;">
+                                        Vitals
+                                    </div>
+                                    <hr>
 
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="PatientName" formControlName="PatientName"
-                                    [formGroup]="historyForm" [maxLength]="50">
-                                </airmid-textbox>
-                            </div>
-                        </form>
+                                    <div fxLayout="row wrap" fxLayoutGap="10px">
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>Height</mat-label>
+                                            <input matInput formControlName="Height" placeholder="Height in cm" required
+                                                [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
+                                                (keypress)="keyPressCharater($event)">
+                                            <span matSuffix style="font-size: x-large;">|</span>
+                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>Weight</mat-label>
+                                            <input matInput formControlName="Weight" placeholder="Weight in Kg" required
+                                                [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
+                                                (keypress)="keyPressCharater($event)">
+                                            <span matSuffix style="font-size: x-large;">|</span>
+                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>BMI</mat-label>
+                                            <input matInput formControlName="BMI" placeholder="BMI" readonly>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>BSL</mat-label>
+                                            <input matInput formControlName="BSL" placeholder="BSL" [maxLength]="20"
+                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>SpO2</mat-label>
+                                            <input matInput formControlName="SpO2" placeholder="SpO2" [maxLength]="20"
+                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>Pulse</mat-label>
+                                            <input matInput formControlName="Pulse" placeholder="Pulse" [maxLength]="10"
+                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                            <span matSuffix style="font-size: x-large;">|</span>
+                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>BP</mat-label>
+                                            <input matInput formControlName="BP" placeholder="BP" [maxLength]="10"
+                                                OnlyNumber (keypress)="keyPressOk($event)">
+                                            <span matSuffix style="font-size: x-large;">|</span>
+                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="11%">
+                                            <mat-label>Temp</mat-label>
+                                            <input matInput formControlName="Temp" placeholder="Temp" [maxLength]="10"
+                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                            <span matSuffix style="font-size: x-large;">|</span>
+                                            <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="column">
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Chief Complaints
+                                            </span>
+                                            <hr>
+                                            <app-airmid-chipautocomplete fxFlex
+                                                [chips]="historyForm.get('mAssignChiefComplaint')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Complaint'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeChiefComplaint($event)">
+                                            </app-airmid-chipautocomplete>
+                                        </div>
+
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Diagnosis
+                                            </span>
+                                            <hr>
+                                            <app-airmid-chipautocomplete fxFlex
+                                                [chips]="historyForm.get('mAssignDiagnosis')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeDiagnosis($event)">
+                                            </app-airmid-chipautocomplete>
+                                        </div>
+
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Examination
+                                            </span>
+                                            <hr>
+                                            <app-airmid-chipautocomplete fxFlex
+                                                [chips]="historyForm.get('mAssignExamination')?.value"
+                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Examination'"
+                                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                                (chipsChange)="selectChangeExamination($event)">
+                                            </app-airmid-chipautocomplete>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
                     </div>
 
                 </div>
