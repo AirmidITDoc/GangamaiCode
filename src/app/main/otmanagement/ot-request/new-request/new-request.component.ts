@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OtRequestService } from '../ot-request.service';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class NewRequestComponent implements OnInit {
    autocompleteModeSiteDescriptionId: String = "SiteDescription";
  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
 autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
+autocompleteModeSurgeryMaster: String = "SurgeryMaster";
  autocompleteModestatus: string = "State";
    // vClassId: any = 0;
   vRegNo: any;
@@ -59,6 +61,8 @@ autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
 
    screenFromString = 'Common-form';
     opIpId: any;
+  
+    @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
 
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
@@ -217,7 +221,21 @@ autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   
          }
      }
- 
+ selectChangedepartment(obj: any){
+  const departmentId = obj?.value;
+
+  if (departmentId) {
+    this._OtRequestService.getSurgeonsByDepartment(departmentId).subscribe((data: any[]) => {
+      this.surgeonList.options = data ;
+       this.surgeonList.bindGridAutoComplete();
+      // Do NOT reset surgeonId — retain selected value even if not found in filtered list
+    });
+  } else {
+    this.surgeonList.options = [];
+    // Optionally retain surgeonId here too — no reset
+  }
+}
+
      getValidationMessages() {
        return {
            DepartmentName: [
@@ -243,6 +261,11 @@ autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
            SurgeonName: [
                { name: "required", Message: "Surgeon Name is required" },
                { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+            SurgeryType: [
+               { name: "required", Message: "SurgeryType Name is required" },
+               { name: "maxlength", Message: "SurgeryType Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
            ],
   

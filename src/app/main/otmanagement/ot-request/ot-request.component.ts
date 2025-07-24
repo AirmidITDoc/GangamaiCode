@@ -16,6 +16,7 @@ import { FormGroup } from "@angular/forms";
   styleUrls: ['./ot-request.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
+
 })
 export class OTRequestComponent implements OnInit {
  myFilterform: FormGroup
@@ -40,7 +41,7 @@ export class OTRequestComponent implements OnInit {
         { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
         { heading: "Date&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "UHID NO", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Surgeon Name", key: "surgeonId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Category Name", key: "categoryId", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Site Description", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA', },

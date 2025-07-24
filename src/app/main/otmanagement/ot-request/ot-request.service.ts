@@ -31,9 +31,9 @@ export class OtRequestService {
             otbookingDate:  [new Date()],
             otbookingTime: [new Date()],
             opIpType:  ["OP"],
-            surgeryType:[1],
+            surgeryTypeId:[1],
           //  isCancelledDateTime:  [""],
-           
+           surgeryCategoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             otrequestDate: [new Date()],
             otrequestId: [0],
             otrequestTime: [new Date()],
@@ -66,7 +66,9 @@ export class OtRequestService {
         this.createRequestForm();
     }
 
-   
+   public getSurgeonsByDepartment(deptId) {
+        return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId="+deptId)
+    }
 
     public requestSave(Param: any) {
         if (Param.otbookingId) {

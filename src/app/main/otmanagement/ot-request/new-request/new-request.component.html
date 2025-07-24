@@ -175,36 +175,43 @@
                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                    [formGroup]="requestForm" [value]="data?.stateId"
+                                    [formGroup]="requestForm" [value]="data?.departmentId"
                                     [validations]="getValidationMessages(). DepartmentName"
-                                    [mode]="autocompleteModeDepartment">
+                                    [mode]="autocompleteModeDepartment"
+                                    (selectionChange)="selectChangedepartment($event)">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Surgery Category" formControlName="surgeryId"
-                                    [formGroup]="requestForm" [value]="data?.stateId"
+                                <airmid-dropdown label="Surgery Category" formControlName="surgeryCategoryId"
+                                    [formGroup]="requestForm" [value]="data?.surgeryId"
                                     [validations]="getValidationMessages(). SurgeryCategory"
                                     [mode]="autocompleteModeSurgeryCategory">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Site" formControlName="siteDescId" [formGroup]="requestForm"
-                                    [value]="data?.stateId" [validations]="getValidationMessages(). Site"
+                                    [value]="data?.siteDescId" [validations]="getValidationMessages(). Site"
                                     [mode]="autocompleteModeSiteDescriptionId">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgery Procedure" formControlName="surgeryId"
-                                    [formGroup]="requestForm" [value]="data?.stateId"
+                                    [formGroup]="requestForm" [value]="data?.surgeryId"
                                     [validations]="getValidationMessages(). SurgeryProcedure"
                                     [mode]="autocompleteModestatus">
                                 </airmid-dropdown>
                             </div>
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
-                                    [formGroup]="requestForm" [value]="data?.stateId"
-                                    [validations]="getValidationMessages(). SurgeonName"
-                                    [mode]="autocompleteModestatus">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                                 <airmid-dropdown  label="Surgeon Name" formControlName="surgeonId"
+                                   [value]="requestForm?.get('surgeonId')?.value" [formGroup]="requestForm"
+                                   [validations]="getValidationMessages().SurgeonName" #surgeonList>
+                                 </airmid-dropdown>
+                            </div>
+                              <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                                <airmid-dropdown label="Surgery type" formControlName="categoryId"
+                                    [formGroup]="requestForm" [value]="data?.categoryId"
+                                    [validations]="getValidationMessages(). SurgeryType"
+                                    [mode]="autocompleteModeSurgeryMaster">
                                 </airmid-dropdown>
                             </div>
                         </div>
@@ -212,7 +219,7 @@
 
 
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                            <mat-radio-group formControlName="surgeryType" [formGroup]="requestForm" fxLayout="row" fxLayoutGap="10px">
+                            <mat-radio-group formControlName="surgeryTypeId" [formGroup]="requestForm" fxLayout="row" fxLayoutGap="10px">
                                <div style="min-width: 120px; font-size: 16px; font-weight: 600;">
                                Surgery Type:</div>
                                 <mat-radio-button value="1">Normal</mat-radio-button>
