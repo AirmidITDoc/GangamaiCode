@@ -40,7 +40,7 @@ export class RequestforlabtestComponent implements OnInit {
     regNo: any = ""
 
     allColumns = [
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' , width:80},
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA' },

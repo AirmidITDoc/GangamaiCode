@@ -162,7 +162,7 @@
                         <mat-card style="padding: 5px;">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                                 <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="myForm"
-                                    [validations]="getValidationMessages().StoreId" [value]="data?.StoreId" fxFlex="50%"
+                                    [validations]="getValidationMessages().StoreId" [value]="vstoreId" fxFlex="50%"
                                     [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                                 </airmid-dropdown>
                                 <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"

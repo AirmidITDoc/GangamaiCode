@@ -63,17 +63,20 @@ export class RadiologyOrderListComponent implements OnInit {
             heading: "-", key: "patientType", type: gridColumnTypes.template, align: "center", width: 50,
             template: this.actionsType
         },
-        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+         { heading: "Admission Date", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "AgeYear", key: "ageYear", type: gridColumnTypes.status, align: "center", width: 150 },
-        { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "TestName", key: "serviceName", type: gridColumnTypes.status, align: "center", width: 150 },
-        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "TestName", key: "serviceName",  sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
@@ -124,35 +127,7 @@ export class RadiologyOrderListComponent implements OnInit {
         // Update the filters dynamically
         this.gridConfig = {
             apiUrl: "RadiologyTest/RadiologyList",
-            columnsList: [
-                {
-                    heading: "-", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 50,
-                    template: this.actionsIPOP
-                },
-                {
-                    heading: "-", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 50,
-                    template: this.actionsCompleted
-                },
-                {
-                    heading: "-", key: "patientType", type: gridColumnTypes.template, align: "center", width: 50,
-                    template: this.actionsType
-                },
-                { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                {
-                    heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-                    template: this.actionButtonTemplate
-                }
-            ],
+            columnsList: this.allColumns,
             sortField: "RadReportId",
             sortOrder: 0,
             filters: [

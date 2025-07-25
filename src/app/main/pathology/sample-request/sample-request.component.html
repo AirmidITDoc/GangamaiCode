@@ -19,102 +19,17 @@
         dynamicTableHeight>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        
+
             <div style="padding: 10px; height: 40px; margin-bottom: 10px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
                         <span class="h3 font-weight-600">Lab Or Rad Details</span>
                     </div>
 
-                    <form [formGroup]="myformSearch">
+                    <!-- <form [formGroup]="myformSearch">
                         <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad">
                         <mat-radio-button (click)="toggle(0)" [checked]="true"
                             value="0">All</mat-radio-button>
-                        <mat-radio-button mat-fab value="1"
-                            (click)="toggle(1)">IsPathology</mat-radio-button>
-                        <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
-                      </mat-radio-group>
-                    </form>
-
-                    <!-- <div class="table-header-right">
-                        <div class="export-buttons">
-                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                </button>
-        
-                                <button mat-icon-button (click)="exportSamplerequstReportExcel()"
-                                    [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                </button>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
-        
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
-            (onSelectRow)="getSelectedRow($event)">
-                <ng-container filters>
-                    <form [formGroup]="myformSearch">
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                        formStartControlName="start" formEndControlName="end"
-                         [(fromValue)]="gridConfig.filters[0].fieldValue"
-                        [(toValue)]="gridConfig.filters[1].fieldValue">
-                    </airmid-datepicker>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>UHID</mat-label>
-                        <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
-                         formControlName="RegNo" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                    <!-- [(ngModel)]="gridConfig.filters[4].fieldValue" -->
-                        <div fxLayout="column" fxLayoutAlign="start start">
-                            <!-- <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
-                                style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
-                                    <mat-label>Type:</mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='1'>IP</mat-radio-button>
-                                        <mat-radio-button value='0'>OP</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div> -->
-                            <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
-                            <div fxFlex fxLayout="row">
-                                <mat-radio-group name="StatusSearch" formControlName="IsCompleted" fxLayout="row" value="0"
-                                    style="padding: 6px;" class="gap-4" (change)="onChangeFirst()" >
-                                    <mat-label>Status:</mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='0'>Pending</mat-radio-button>
-                                        <mat-radio-button value='1'>Completed</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
-                        </div>
-                    </form>
-        
-                </ng-container>
-            </airmid-table>
-        </div>
-
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-        *ngIf="isShowDetailTable">
-
-            <!-- <div style="padding: 10px; height: 50px;">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center"> -->
-                    <!-- <div class="table-header-title" style="padding: 10px;">
-                        <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
-                    </div> -->
-
-                    <!-- <form [formGroup]="myformSearch">
-                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
-                        (change)="onFilterChange()">
-                        <mat-radio-button (click)="toggle(0)" [checked]="true"
-                            value="3">All</mat-radio-button>
                         <mat-radio-button mat-fab value="1"
                             (click)="toggle(1)">IsPathology</mat-radio-button>
                         <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
@@ -135,7 +50,98 @@
                             </div>
                         </div>
                     </div> -->
-                <!-- </div>
+                </div>
+            </div>
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+                (onSelectRow)="getSelectedRow($event)">
+                <ng-container filters>
+                    <form [formGroup]="myformSearch">
+                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        <!-- [(ngModel)]="gridConfig.filters[4].fieldValue" -->
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <!-- <div fxFlex fxLayout="row">
+                                <mat-radio-group name="Istype" formControlName="Istype" fxLayout="row" value="1" 
+                                style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
+                                    <mat-label>Type:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='1'>IP</mat-radio-button>
+                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div> -->
+                            <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
+
+                            <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad" (change)="onChangeFirst()">
+                                <mat-radio-button (click)="toggle(0)"  value="3">All</mat-radio-button>
+                                <mat-radio-button mat-fab value="1" (click)="toggle(1)">IsPathology</mat-radio-button>
+                                <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
+                            </mat-radio-group>
+
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="StatusSearch" formControlName="IsCompleted" fxLayout="row"
+                                    value="0" style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
+                                    <mat-label>Status:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='0'>Pending</mat-radio-button>
+                                        <mat-radio-button value='1'>Completed</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </form>
+
+                </ng-container>
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+
+            <!-- <div style="padding: 10px; height: 50px;">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center"> -->
+            <!-- <div class="table-header-title" style="padding: 10px;">
+                        <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
+                    </div> -->
+
+            <!-- <form [formGroup]="myformSearch">
+                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
+                        (change)="onFilterChange()">
+                        <mat-radio-button (click)="toggle(0)" [checked]="true"
+                            value="3">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1"
+                            (click)="toggle(1)">IsPathology</mat-radio-button>
+                        <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
+                      </mat-radio-group>
+                    </form> -->
+
+            <!-- <div class="table-header-right">
+                        <div class="export-buttons">
+                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                                <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
+                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
+                                </button>
+        
+                                <button mat-icon-button (click)="exportSamplerequstReportExcel()"
+                                    [disabled]="! (dataSource.data.length > 0)">
+                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
+                                </button>
+                            </div>
+                        </div>
+                    </div> -->
+            <!-- </div>
             </div> -->
 
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">

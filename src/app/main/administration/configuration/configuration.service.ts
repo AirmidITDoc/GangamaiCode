@@ -109,7 +109,11 @@ export class ConfigurationService {
             OPSalesdisc: '',
             IPSalesdisc: '',
 
-            classId:''
+            classId:'',
+
+
+            LoginAccess:''
+
         });
     }
 
@@ -133,4 +137,11 @@ export class ConfigurationService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("Configuration?Id=" + m_data.toString());
     }
+
+    
+
+      public getloginaccessRetrive(param) {
+        return this._httpClient.PostData("Common", param);
+    }
+
 }

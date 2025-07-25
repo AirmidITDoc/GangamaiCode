@@ -26,8 +26,8 @@
                     </airmid-datepicker>
 
                     <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>RegNo</mat-label>
-                        <input matInput placeholder="Search RegNo" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
+                        <mat-label>UHID</mat-label>
+                        <input matInput placeholder="Search UHID" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
                             [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="RegNo"
                             (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">

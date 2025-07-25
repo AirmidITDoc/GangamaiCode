@@ -28,7 +28,7 @@
                         </mat-radio-group>
 
                         <airmid-autocomplete lbl="RgId" [formGroup]="myFormGroup" formControlName="RegID"
-                            placeholderText="IP-RegNo/FirstName/LastName" fxFlex="50%"
+                            placeholderText="IP-RegNo/FirstName/LastName" fxFlex="50%" label="Search Reg No / Patient Name / Mobile No"
                             ApiUrl="Admission/search-patient?Keyword="
                             (selectionChange)="getSelectedObjIP($event)"
                             ValueField="admissionID" TextField="formattedText">

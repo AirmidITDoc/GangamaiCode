@@ -7,6 +7,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationService } from './configuration.service';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
+import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
 
 
 @Component({
@@ -67,11 +68,11 @@ export class ConfigurationComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewConfigurationComponent,
+        const dialogRef = this._matDialog.open(EditConfigurationComponent,
             {
-                maxWidth: "95vw",
-                height: '85%',
-                width: '95%',
+                  maxWidth: "95vw",
+                  maxHeight: "98vh",
+                  width: "100%",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

@@ -54,7 +54,7 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "isSampleCollection", width: 80, sort: true, align: 'left', type: gridColumnTypes.template },
          { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
+        // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

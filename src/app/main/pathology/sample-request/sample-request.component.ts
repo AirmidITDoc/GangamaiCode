@@ -147,10 +147,10 @@ export class SampleRequestComponent implements OnInit {
         { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "BillingUser", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "AddedByDate", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "IsStatus", key: "isStatus", type: gridColumnTypes.status, align: 'center' },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left' },
+     { heading: "IsPathology", key: "isPathology", type: gridColumnTypes.status, align: 'left' },
         { heading: "IsRadiology", key: "isRadiology", type: gridColumnTypes.status, align: 'left' },
         { heading: "IsTestCompleted", key: "isTestCompted", type: gridColumnTypes.status, align: 'left' },
       ],
@@ -171,13 +171,13 @@ export class SampleRequestComponent implements OnInit {
   }
 
   onChangeFirst() {
-    // debugger
+    debugger
     this.isShowDetailTable = false;
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
     this.regNo = this.myformSearch.get('RegNo').value || ""
-    this.Istype = this.myformSearch.get('Istype').value
+    this.Istype = this.myformSearch.get('IsPathOrRad').value
     this.IsCompleted = this.myformSearch.get('IsCompleted').value
 
     this.getfilterdata();

@@ -164,3 +164,5 @@ export class NewConfigurationComponent implements OnInit {
         this.dialogRef.close();
     }
 }
+
+

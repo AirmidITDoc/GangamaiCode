@@ -233,11 +233,13 @@ export class NewRequestforlabComponent implements OnInit {
         this.labeRequestArray.push(this.createlabRequestFormArray(item));
       });
 
-    
+     this.labRequestInsert.get("isType").setValue(this.myFormGroup.get("IsPathRad").value)
       this.labRequestInsert.get("opIpId").setValue(this.vAdmissionID)
       this.labRequestInsert.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
       
       console.log(this.labRequestInsert.value)
+
+
       this._RequestforlabtestService.LabRequestSave(this.labRequestInsert.value).subscribe(response => {
               if (response) {
                 this.viewgetLabrequestReportPdf(response)

@@ -109,11 +109,11 @@ export class NewPrescriptionComponent implements OnInit {
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
   ) {
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-      this.vstoreId=this._loggedService.currentUserValue.user.storeId
-    }
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   console.log(this.selectedAdvanceObj)
+  
+    // }
   }
 
   ngOnInit(): void {
@@ -125,11 +125,10 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.prescForm = this._PrescriptionService.createPrescForm();
     this.prescriptionArray.push(this.createPrescriptionFormInsert());
+        this.vstoreId=this._loggedService.currentUserValue.user.storeId
   }
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+ 
 
   getSelectedObjIP(obj) {
 
@@ -468,7 +467,9 @@ export class NewPrescriptionComponent implements OnInit {
       return false;
     }
   }
-
+ getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 }
 
 export class PrecriptionItemList {
