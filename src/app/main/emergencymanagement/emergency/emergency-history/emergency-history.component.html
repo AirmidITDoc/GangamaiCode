@@ -102,7 +102,7 @@
                         </mat-card>
                     </div>
 
-                    <div>
+                    <div fxLayout="column" fxLayoutGap="8px" style="overflow: visible;">
                         <mat-card style="padding: 5px;">
                             <form [formGroup]="historyForm">
                                 <div fxLayout="column">
@@ -114,7 +114,7 @@
                                     <div fxLayout="row wrap" fxLayoutGap="10px">
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Height</mat-label>
-                                            <input matInput formControlName="Height" placeholder="Height in cm" required
+                                            <input matInput formControlName="height" placeholder="Height in cm" required
                                                 [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
                                                 (keypress)="keyPressCharater($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
@@ -123,7 +123,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Weight</mat-label>
-                                            <input matInput formControlName="Weight" placeholder="Weight in Kg" required
+                                            <input matInput formControlName="pweight" placeholder="Weight in Kg" required
                                                 [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
                                                 (keypress)="keyPressCharater($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
@@ -132,24 +132,24 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BMI</mat-label>
-                                            <input matInput formControlName="BMI" placeholder="BMI" readonly>
+                                            <input matInput formControlName="bmi" placeholder="BMI" readonly>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BSL</mat-label>
-                                            <input matInput formControlName="BSL" placeholder="BSL" [maxLength]="20"
+                                            <input matInput formControlName="bsl" placeholder="BSL" [maxLength]="20"
                                                 OnlyNumber (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>SpO2</mat-label>
-                                            <input matInput formControlName="SpO2" placeholder="SpO2" [maxLength]="20"
+                                            <input matInput formControlName="spO2" placeholder="SpO2" [maxLength]="20"
                                                 OnlyNumber (keypress)="keyPressCharater($event)">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Pulse</mat-label>
-                                            <input matInput formControlName="Pulse" placeholder="Pulse" [maxLength]="10"
+                                            <input matInput formControlName="pulse" placeholder="Pulse" [maxLength]="10"
                                                 OnlyNumber (keypress)="keyPressCharater($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
@@ -157,7 +157,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BP</mat-label>
-                                            <input matInput formControlName="BP" placeholder="BP" [maxLength]="10"
+                                            <input matInput formControlName="bp" placeholder="BP" [maxLength]="10"
                                                 OnlyNumber (keypress)="keyPressOk($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
@@ -165,7 +165,7 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Temp</mat-label>
-                                            <input matInput formControlName="Temp" placeholder="Temp" [maxLength]="10"
+                                            <input matInput formControlName="temp" placeholder="Temp" [maxLength]="10"
                                                 OnlyNumber (keypress)="keyPressCharater($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
@@ -173,6 +173,36 @@
                                     </div>
 
                                     <div fxLayout="column">
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Chief Complaints
+                                            </span>
+                                            <hr>
+                                            <airmid-textbox label="Chief Complaints" formControlName="chiefComplaint" [value]="registerObj1?.chiefComplaint" [formGroup]="historyForm">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Diagnosis
+                                            </span>
+                                            <hr>
+                                            <airmid-textbox label="Diagnosis" formControlName="diagnosis" [value]="registerObj1?.diagnosis" [formGroup]="historyForm">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div style="margin-bottom: 16px;" fxLayout="column">
+                                            <span style="font-weight: 700;">
+                                                Examination
+                                            </span>
+                                            <hr>
+                                            <airmid-textbox label="Examination" formControlName="examination" [value]="registerObj1?.examination" [formGroup]="historyForm">
+                                            </airmid-textbox>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- <div fxLayout="column">
                                         <div style="margin-bottom: 16px;" fxLayout="column">
                                             <span style="font-weight: 700;">
                                                 Chief Complaints
@@ -212,9 +242,47 @@
                                             </app-airmid-chipautocomplete>
                                         </div>
 
-                                    </div>
+                                    </div> -->
                                 </div>
                             </form>
+                        </mat-card>
+
+                        <!-- Advice part -->
+                        <mat-card fxLayout="column" style="padding: 5px;">
+                            <div class="advice-title">
+                                <span style="font-weight: 700;">Advice</span>
+                            </div>
+                            <hr>
+
+                            <!-- 🎯 Row: Remark + Mic (inside form) + Language (outside form) -->
+                            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+
+                                <!-- ✅ Form starts here -->
+                                <form [formGroup]="historyForm" fxFlex>
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>Advice</mat-label>
+                                        <textarea rows="1" formControlName="advice" placeholder="Advice"
+                                            matInput [value]="registerObj1.advice"></textarea>
+
+                                        <!-- 🎤 Mic button -->
+                                        <button mat-icon-button matSuffix (click)="onMicToggle()"
+                                            [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                                            <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                        </button>
+                                    </mat-form-field>
+                                </form>
+
+                                <!-- ✅ Language dropdown outside form -->
+                                <mat-form-field appearance="outline" style="min-width: 180px;">
+                                    <mat-label>Language</mat-label>
+                                    <mat-select [(ngModel)]="selectedLang" (selectionChange)="onLangChange()"
+                                        name="languageSelect">
+                                        <mat-option *ngFor="let lang of languages" [value]="lang.code">
+                                            {{ lang.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
                         </mat-card>
                     </div>
 

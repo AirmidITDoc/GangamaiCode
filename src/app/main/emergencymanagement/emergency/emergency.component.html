@@ -24,26 +24,31 @@
             </button>
 
             <button mat-icon-button matTooltip="Bill" (click)="OnBillPayment(element)"
-            *ngIf="element.isCancelled==false">
+            *ngIf="element.isCancelled==false" [disabled]="element.convertedIntoAdm > 0">
                 <mat-icon>payment</mat-icon>
             </button>
 
             <button mat-icon-button matTooltip="Emergency History" (click)="EmergencyHistory(element)"
             *ngIf="element.isCancelled==false">
-                <mat-icon>history</mat-icon>
+                <mat-icon> list_alt</mat-icon>
+                <!-- <mat-icon>history</mat-icon> -->
             </button>
 
             <button mat-icon-button matTooltip="Convert to OPD or IPD" (click)="getConvert(element)"
-            *ngIf="element.isCancelled==false">
+            *ngIf="element.isCancelled==false" [disabled]="element.convertedIntoAdm > 0">
                 <mat-icon>cached icon</mat-icon>
             </button>
 
             <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
-            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1">
+            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
                 <mat-icon> cancel</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Print" *ngIf="element.isCancelled==false">
+            <button mat-icon-button matTooltip="Emg Print" *ngIf="element.isCancelled==false">
+                <mat-icon> print</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="History Print" *ngIf="element.isCancelled==false">
                 <mat-icon> print</mat-icon>
             </button>
         </div>

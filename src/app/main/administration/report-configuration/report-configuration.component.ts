@@ -57,10 +57,6 @@ export class ReportConfigurationComponent implements OnInit {
                     }
                 },
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onNew2(data);
-                    }
-                }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._ReportConfigurationService.deactivateTheStatus(data.reportId).subscribe((response: any) => {
                             this.toastr.success(response.message);

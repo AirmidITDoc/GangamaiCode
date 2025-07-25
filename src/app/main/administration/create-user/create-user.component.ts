@@ -98,8 +98,10 @@ debugger
     let that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
+         maxWidth: "95vw",
         maxHeight: '95vh',
-        width: '90%'
+        height: '95%',
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -115,7 +117,9 @@ debugger
     let that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
+         maxWidth: "95vw",
         maxHeight: '95vh',
+        height: '95%',
         width: '90%',
         data: row
       });

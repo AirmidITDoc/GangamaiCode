@@ -85,6 +85,16 @@ export class EmergencyService {
     }else return this._httpClient.PostData('Emergency/InsertSP',param)
   }
 
+  public EmgHistorySave(param: any){
+    if(param.emgHistoryId){
+      return this._httpClient.PutData('Emergency/EmergencyMedical/'+param.emgHistoryId, param)
+    }else return this._httpClient.PostData('Emergency/EmergencyMedical',param)
+  }
+
+  public retriveHistoryList(employee) {
+  return this._httpClient.PostData("Emergency/EmergencyMedicalHistoryList",employee)
+}
+
   public EmgCancel(param){
     return this._httpClient.PostData('Emergency/Cancel',param)
   }

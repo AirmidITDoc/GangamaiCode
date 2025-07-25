@@ -513,6 +513,8 @@ export class NewAdmissionComponent implements OnInit {
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
+          console.log(response)
+          this.AddChargesFromEmg(response);
           this.onClear();
           this._matDialog.closeAll();
         });
@@ -520,8 +522,9 @@ export class NewAdmissionComponent implements OnInit {
       else {
         console.log(submitData);
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-          this.toastr.success(response.message);
           this.getAdmittedPatientCasepaperview(response);
+          console.log(response)
+          this.AddChargesFromEmg(response);
           this.onClear();
           this._matDialog.closeAll();
         });
@@ -545,6 +548,29 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
+   AddChargesFromEmg(admissionId) {
+      Swal.fire({
+        title: 'Do You want to add all changes in IPD?',
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: 'No'
+      }).then((flag) => {
+        if (flag.isConfirmed) {
+          let submitData = { 
+            "emgId": this.EmgId,
+            "newAdmissionId":admissionId
+           }
+          console.log(submitData);
+          this._AdmissionService.UpdateAddChargesFromEmg(submitData).subscribe((res) => {
+            // this.grid.bindGridData();
+          })
+        }
+      })
+    }
 
   selectChangedepartment(obj: any) {
     if (obj.value) {

@@ -55,7 +55,9 @@ export class CreateUserService {
     return this._httpClient.PostData("DoctorMaster/DoctorUpdate", employee);
   }
 
-
+public getApprovalList(param){
+    return this._httpClient.PostData("Common",param)
+  }
   
   public getpasswwordupdate(data) {
     return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})

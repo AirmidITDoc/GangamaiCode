@@ -76,7 +76,7 @@ export class EmergencyComponent implements OnInit {
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA',width:200},
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -151,7 +151,8 @@ export class EmergencyComponent implements OnInit {
     const dialogRef = this._matDialog.open(EmergencyHistoryComponent,
       {
         maxWidth: "95vw",
-        maxHeight: '80%',
+        maxHeight: '95vh',
+        height: '95%',
         width: '90%',
         data: row
       });
@@ -354,8 +355,21 @@ export class EmergencyList {
   ageMonth:any;
   ageDay:any;
   patientName:any;
-doctorName:any;
-departmentName:any;
+  doctorName:any;
+  departmentName:any;
+  chiefComplaint:any;
+  diagnosis:any;
+  examination:any;
+  height:any;
+  pweight:any;
+  bmi:any;
+  bsl:any;
+  spo2:any;
+  pulse:any;
+  bp:any;
+  temp:any;
+  advice:any;
+  emgHistoryId:any;
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;
@@ -397,6 +411,19 @@ departmentName:any;
       this.patientName = EmergencyList.patientName || ''
       this.doctorName = EmergencyList.doctorName || ''
       this.departmentName = EmergencyList.departmentName || ''
+      this.chiefComplaint = EmergencyList.chiefComplaint || ''
+      this.diagnosis = EmergencyList.diagnosis || ''
+      this.examination = EmergencyList.examination || ''
+      this.height = EmergencyList.height || ''
+      this.pweight = EmergencyList.pweight || ''
+      this.bmi = EmergencyList.bmi || ''
+      this.bsl = EmergencyList.bsl || ''
+      this.spo2 = EmergencyList.spo2 || ''
+      this.pulse = EmergencyList.pulse || ''
+      this.bp = EmergencyList.bp || ''
+      this.temp = EmergencyList.temp || ''
+      this.advice = EmergencyList.advice || ''
+      this.emgHistoryId = EmergencyList.emgHistoryId || 0
     }
   }
 }
