@@ -403,6 +403,10 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
   {    
     return this._httpClient1.PostData("IPBill/PackageDetailsList",employee);
   }
+    public getpackagedetServiceWiseList(employee)
+  {    
+    return this._httpClient1.PostData("IPBill/Addpackagelist",employee);
+  }
   public advanceHeaderInsert(employee)
   {    
     return this._httpClient.post("InPatient/IPAdvance",employee);

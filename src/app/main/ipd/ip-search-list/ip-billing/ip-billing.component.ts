@@ -61,20 +61,8 @@ export class IPBillingComponent implements OnInit {
     'billingUser',
     'Action'
   ];
-  PackageBillColumns = [
-    'BDate',
-    'PBillNo',
-    'TotalAmt',
-    'ConcessionAmt',
-    'NetPayableAmt',
-    'BalanceAmt',
-    'CashPayAmount',
-    'ChequePayAmount',
-    'CardPayAmount',
-    'AdvanceUsedAmount',
-    'Action'
-  ];
-
+  PackageBillColumns =  ['IsCheck', 'ServiceNamePackage', 'ServiceName','Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
+ 
   opD_IPD_Id: any = "0"
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -414,8 +402,43 @@ debugger
         billNo: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isHospMrk: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         doctorId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]], 
+        packcagecharges:this.formBuilder.array([])
     });
   } 
+  createPacakgeForm(item: any): FormGroup {
+    return this.formBuilder.group({
+        chargesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
+        opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        price:  [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        qty: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionPercentage:[item?.serviceId, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAmount:  [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId:[0], 
+        docPercentage:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        docAmt: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        hospitalAmt:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isGenerated: [false],
+        addedBy: this.accountService.currentUserValue.userId,
+        isCancelled: [false],
+        isCancelledBy:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: "1900-01-01", 
+        isPathology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],  
+        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      });
+  } 
+     // Getters 
+  get PackageDetArray(): FormArray {
+    return this.Serviceform.get('packcagecharges') as FormArray;
+  }  
   //Ip Bill Footer form
   createBillForm() {
     this.IpbillFooterform = this.formBuilder.group({
@@ -614,7 +637,7 @@ debugger
       this.Serviceform.get('doctorId').disable();
       this.isDoctor = false;
     }
-    //this.getpackagedetList(obj) 
+    this.getpackagedetList(obj) 
   }
   //Doctor selected 
   getdocdetail(event) { 
@@ -652,6 +675,12 @@ debugger
 
       console.log(this.Serviceform.value)
     if (this.Serviceform.valid) {   
+      if(formValue.serviceName?.isPackage == 1){  
+          this.PackageDetArray.clear();
+          this.PackageDatasource.data.forEach(item => {
+          this.PackageDetArray.push(this.createPacakgeForm(item));
+        });
+      }
       console.log('valida service form',this.Serviceform.value)   
       this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => { 
         this.getChargesList();
@@ -738,23 +767,16 @@ debugger
   } 
   PacakgeList: any = [];
   PacakgeOptionlist: any = [];
-  getpackagedetList(obj) {
+  getRtrvpackagedetList(obj) {
     var vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "ChargesId",
       "sortOrder": 0,
-      "filters": [
-
-        {
-          "fieldName": "ChargesId",
-          "fieldValue": String(obj.chargesId),
-          "opType": "Equals"
-        }
-      ],
-      "columns": [],
+      "filters": [{"fieldName": "ChargesId","fieldValue": String(obj.chargesId),"opType": "Equals"}],
+      "columns":[{"data": "string",  "name": "string" }],
       "exportType": "JSON"
-    }
+    } 
     this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
       this.PacakgeList = response.data as [];
       this.PacakgeList.forEach(element => {
@@ -779,6 +801,43 @@ debugger
       this.PackageDatasource.data = this.PacakgeOptionlist
       this.PacakgeList = this.PackageDatasource.data
       console.log(this.PackageDatasource.data);
+    });
+  }
+  getpackagedetList(obj) {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
+      "columns": [{ "data": "string", "name": "string" }],
+      "exportType": "JSON"
+    }
+    this._IpSearchListService.getpackagedetServiceWiseList(vdata).subscribe((response) => {
+      this.PacakgeList = response.data as [];
+      console.log(this.PacakgeList)
+      this.PacakgeList.forEach(element => {
+        this.PacakgeOptionlist.data.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: 0,
+            DiscAmt: 0,
+            NetAmount: (element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName,
+            doctorId: element.doctorId
+          })
+      })
+      this.PackageDatasource.data = this.PacakgeOptionlist
+      this.PacakgeList = this.PackageDatasource.data
     });
   }
   getdata(opD_IPD_Id) {
@@ -868,18 +927,8 @@ checkAdvBalAmt:any=0;
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
-        {
-          "fieldName": "OPD_IPD_Id",
-          "fieldValue": String(this.opD_IPD_Id),
-          "opType": "Equals"
-        }
-        ,
-        {
-          "fieldName": "ChargeDate",
-          "fieldValue": String(this.chargeDate),
-          "opType": "Equals"
-        }
-      ],
+        { "fieldName": "OPD_IPD_Id", "fieldValue": String(this.opD_IPD_Id), "opType": "Equals" } ,
+        {  "fieldName": "ChargeDate",  "fieldValue": String(this.chargeDate),  "opType": "Equals" } ],
       "Columns": [],
       "exportType": "JSON"
     }
