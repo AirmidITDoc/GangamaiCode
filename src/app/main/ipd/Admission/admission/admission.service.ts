@@ -215,6 +215,9 @@ export class AdmissionService {
         return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
     }
 
+    public UpdateAddChargesFromEmg(employee) {
+        return this._httpClient1.PutData("Emergency/UpdateAddChargesFromEmergency", employee);
+    }
 
     public AdmissionUpdate(Id, employee) {
         return this._httpClient1.PutData("Admission/Edit/" + Id, employee);

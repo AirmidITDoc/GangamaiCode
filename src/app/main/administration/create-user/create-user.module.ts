@@ -39,6 +39,7 @@ import { CreateUserComponent } from './create-user.component';
 import { CreateUserService } from './create-user.service';
 import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
 import { NUserComponent } from './nuser/nuser.component';
+import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
   {
@@ -90,6 +91,7 @@ const routes: Routes = [
         MatCardModule,
         MatTooltipModule,
         MatExpansionModule,
+        MatChipsModule
     ],
     providers: [CreateUserService, DatePipe]
 })
