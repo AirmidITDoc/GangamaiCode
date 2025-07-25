@@ -60,19 +60,20 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
-    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:50 },
-    { heading: "HourCompleted", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
+    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
+    { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA',width:40  },
     { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6},
     { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7},
-    { heading: "FistName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:300},
+    { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA',width:150 },
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA',width:200},
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
