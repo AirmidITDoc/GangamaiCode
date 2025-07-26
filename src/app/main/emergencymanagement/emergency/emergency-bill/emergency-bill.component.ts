@@ -971,6 +971,12 @@ export class EmergencyBillComponent {
 
     console.log(this.Serviceform.value)
     if (this.Serviceform.valid) {
+      if(formValue.serviceName?.isPackage == 1){  
+          this.PackageDetArray.clear();
+          this.PackageDatasource.data.forEach(item => {
+          this.PackageDetArray.push(this.createPacakgeForm(item));
+        });
+      }
       console.log('valida service form', this.Serviceform.value)
       this._EmergencyService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
         this.getChargesList();
@@ -1100,8 +1106,45 @@ export class EmergencyBillComponent {
       billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      packcagecharges:this.formBuilder.array([])
     });
   }
+
+   createPacakgeForm(item: any): FormGroup {
+    return this.formBuilder.group({
+        chargesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
+        opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        price:  [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        qty: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionPercentage:[item?.serviceId, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionAmount:  [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId:[0], 
+        docPercentage:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        docAmt: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        hospitalAmt:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isGenerated: [false],
+        addedBy: this.accountService.currentUserValue.userId,
+        isCancelled: [false],
+        isCancelledBy:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: "1900-01-01", 
+        isPathology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],  
+        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      });
+  } 
+     // Getters 
+  get PackageDetArray(): FormArray {
+    return this.Serviceform.get('packcagecharges') as FormArray;
+  }  
+
   //Ip Bill Footer form
   createBillForm() {
     return this.formBuilder.group({
