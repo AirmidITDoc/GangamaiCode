@@ -132,9 +132,9 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
 
         if (
             (!this.ageYear || this.ageYear == 0) &&
@@ -320,7 +320,7 @@ export class NewRegistrationComponent implements OnInit {
 
             ],
             emgDrivingLicenceNo: [
-                { name: "pattern", Message: "e.g., MH-14-20210001234" },
+                { name: "pattern", Message: "e.g., MH14-20210001234" },
                 { name: "minLength", Message: "16 digit required." },
                 { name: "maxLength", Message: "More than 16 digits not allowed." }
             ],
@@ -330,8 +330,8 @@ export class NewRegistrationComponent implements OnInit {
                 { name: "maxLength", Message: "More than 8 digits not allowed." }
             ],
             medTourismNationalityId: [
-                { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
-                { name: "minLength", Message: "Minimum 6 characters required." },
+                { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
+                { name: "minLength", Message: "Minimum 10 characters required." },
                 { name: "maxLength", Message: "Maximum 15 characters allowed." }
             ],
             emgContactPersonName: [

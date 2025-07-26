@@ -227,11 +227,11 @@
                                   <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Visa Issue Date</mat-label>
-                                        <input matInput [matDatepicker]="picker1" formControlName="medTourismVisaIssueDate"
-                                        [value]="registerObj.medTourismVisaIssueDate">
+                                        <input matInput [matDatepicker]="picker6" formControlName="medTourismVisaIssueDate"
+                                        [value]="registerObj.medTourismVisaIssueDate ?? '1900-01-01'">
                                         <mat-datepicker-toggle matSuffix
-                                            [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
+                                            [for]="picker6"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker6></mat-datepicker>
                                     </mat-form-field>
                                 </div>
 
@@ -239,7 +239,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Visa Validity</mat-label>
                                         <input matInput [matDatepicker]="picker2" formControlName="medTourismVisaValidityDate"
-                                        [value]="registerObj.medTourismVisaValidityDate">
+                                        [value]="registerObj.medTourismVisaValidityDate ?? '1900-01-01'">
                                         <mat-datepicker-toggle matSuffix
                                             [for]="picker2"></mat-datepicker-toggle>
                                         <mat-datepicker #picker2></mat-datepicker>
@@ -259,14 +259,11 @@
                                 <airmid-textbox label="Port Of Entry" formControlName="medTourismPortOfEntry" [formGroup]="personalFormGroup" [maxLength]="20" [value]="registerObj.medTourismPortOfEntry ?? ''"></airmid-textbox>
                               </div>
 
-                              <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-full-datepicker [label]="'Date Of Entry'" [formGroup]="personalFormGroup" formControlName="EntryDate"></airmid-full-datepicker>
-                              </div> -->
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                   <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Date Of Entry</mat-label>
                                     <input matInput [matDatepicker]="picker3" formControlName="medTourismDateOfEntry"
-                                    [value]="registerObj.medTourismDateOfEntry">
+                                    [value]="registerObj.medTourismDateOfEntry ?? '1900-01-01'">
                                     <mat-datepicker-toggle matSuffix
                                         [for]="picker3"></mat-datepicker-toggle>
                                     <mat-datepicker #picker3></mat-datepicker>

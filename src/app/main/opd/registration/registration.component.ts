@@ -413,13 +413,13 @@ export class RegInsert {
             this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
             this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
             this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
-            this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || this.currentDate;
+            this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || '1900-01-01';
             this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
             this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
             this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
             this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
-            this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
-            this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
+            this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
+            this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
             this.emgId=RegInsert.emgId || 0
         }
     }

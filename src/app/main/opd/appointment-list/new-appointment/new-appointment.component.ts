@@ -564,23 +564,7 @@ export class NewAppointmentComponent implements OnInit {
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
                         LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo.trim(),
-                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-                        engAddress: this.registerObj?.engAddress ?? '',
-                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
-                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
-                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
-                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
-                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
-                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
-                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+                        MobileNo: this.registerObj.mobileNo.trim()
                     });
                     this.registerObj.maritalStatusId = 0;
                     this.registerObj.areaId = 0
@@ -688,9 +672,9 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.removeControl('updatedBy')
 
         let submitData = {
@@ -717,9 +701,9 @@ debugger
         this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
         this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
         this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd"));
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd"));
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
      
      
     //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
@@ -885,7 +869,7 @@ debugger
                 { name: "required", Message: "SubCompany Name is required" }
             ],
             emgDrivingLicenceNo:[
-                { name: "pattern", Message: "e.g., MH-14-20210001234" },
+                { name: "pattern", Message: "e.g., MH14-20210001234" },
                 { name: "minLength", Message: "16 digit required." },
                 { name: "maxLength", Message: "More than 16 digits not allowed." }
             ],
@@ -895,8 +879,8 @@ debugger
                 { name: "maxLength", Message: "More than 8 digits not allowed." }
             ],
            medTourismNationalityId: [
-                { name: "pattern", Message: "Only alphanumeric, 6 to 15 characters (e.g., A123456789)" },
-                { name: "minLength", Message: "Minimum 6 characters required." },
+                { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
+                { name: "minLength", Message: "Minimum 10 characters required." },
                 { name: "maxLength", Message: "Maximum 15 characters allowed." }
                 ]
             // wardId: [
@@ -975,13 +959,13 @@ debugger
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
             Age: ['0'],
-            AgeYear: ['', [
+            AgeYear: ['0', [
                 // Validators.required,
                 Validators.maxLength(3),
                 Validators.pattern("^[0-9]*$")]],
-            AgeMonth: ['', [
+            AgeMonth: ['0', [
                 Validators.pattern("^[0-9]*$")]],
-            AgeDay: ['', [
+            AgeDay: ['0', [
                 Validators.pattern("^[0-9]*$")]],
             PhoneNo: ['', [Validators.minLength(10),
             Validators.maxLength(10),
@@ -1031,17 +1015,17 @@ debugger
             emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
-                Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/)]], 
-                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
+                Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]], 
+                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234
 
             // medical tourisum
             medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern(/^[A-Z][0-9]{7}$/),]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
-            medTourismVisaIssueDate:  [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
-            medTourismVisaValidityDate:  [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
+            medTourismVisaIssueDate:  [''],// [(new Date()).toISOString()],
+            medTourismVisaValidityDate:  [''],// [(new Date()).toISOString()],
             medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
             medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
-            medTourismDateOfEntry: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],// [(new Date()).toISOString()],
+            medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });

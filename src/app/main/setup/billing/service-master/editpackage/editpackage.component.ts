@@ -39,7 +39,7 @@ export class EditpackageComponent implements OnInit {
 
   dsPackageDet = new MatTableDataSource<PacakgeList>();
   dsPackagegroupDet = new MatTableDataSource<PacakgeList>();
-  
+
   PacakgeServiceList: any = [];
   PacakgeGroupList: any = [];
   registerObj: any
@@ -65,6 +65,12 @@ export class EditpackageComponent implements OnInit {
     if (this.data) {
       this.registerObj = this.data;
       console.log(this.registerObj)
+      this.serviceInsertForm.patchValue({
+        PackageTotalDays: this.registerObj.packageTotalDays,
+        PackageICUDays: this.registerObj.packageIcudays,
+        PackageMedicineAmount: this.registerObj.packageMedicineAmount,
+        PackageConsumableAmount: this.registerObj.packageConsumableAmount
+      });
       this.ApiURL = "BillingService/GetServiceListwithTraiff?TariffId=" + this.registerObj.tariffId + "&ServiceName="
       this.serviceName = this.registerObj.serviceName
       this.TariffName = this.registerObj.tariffName
@@ -81,17 +87,17 @@ export class EditpackageComponent implements OnInit {
       TariffName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
 
       isPackageType: "0",
-      qtyLimit: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-      amount: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyLimit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      amount: [0],
       groupId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
-   createServicemasterInsertForm(): FormGroup {
+  createServicemasterInsertForm(): FormGroup {
     return this._formBuilder.group({
       packageDetail: this._formBuilder.array([]),
-      PackageTotalDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-      PackageICUDays: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageTotalDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      PackageICUDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       PackageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       PackageConsumableAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
@@ -100,13 +106,13 @@ export class EditpackageComponent implements OnInit {
   createPackageDetail(item: any = {}): FormGroup {
     return this._formBuilder.group({
       packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isPackageType:[this.serviceForm.get('isPackageType').value === '0' ? false : true],
-      serviceId: [item.serviceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      packageServiceId: [item.packageServiceId ?? item.GroupId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      qtyLimit:[item.qtyLimit ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      isPackageType: [this.serviceForm.get('isPackageType').value === '0' ? false : true],
+      serviceId: [item.serviceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      packageServiceId: [item.packageServiceId ?? item.GroupId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qtyLimit: [item.qtyLimit ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item.price ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId: [item.classId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      classId: [item.tariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      classId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
@@ -134,22 +140,22 @@ export class EditpackageComponent implements OnInit {
     console.log(vdata)
     setTimeout(() => {
       this._ServiceMasterService.getRtevPackageDetList(vdata).subscribe(data => {
-      const fullList = data.data as PacakgeList[];
-      const packageList = fullList.filter(item => item.isPackageType === false);
-      const groupList = fullList.filter(item => item.isPackageType === true);
+        const fullList = data.data as PacakgeList[];
+        const packageList = fullList.filter(item => item.isPackageType === false);
+        const groupList = fullList.filter(item => item.isPackageType === true);
 
-       if (fullList.length > 0) {
-        this.serviceForm.patchValue({
-          isPackageType: fullList[0].isPackageType ? '1' : '0'
-        });
-      }
-      this.dsPackageDet.data = packageList;
-      this.PacakgeServiceList = packageList;
-      console.log("Service:", this.dsPackageDet.data);
+        if (fullList.length > 0) {
+          this.serviceForm.patchValue({
+            isPackageType: fullList[0].isPackageType ? '1' : '0'
+          });
+        }
+        this.dsPackageDet.data = packageList;
+        this.PacakgeServiceList = packageList;
+        console.log("Service:", this.dsPackageDet.data);
 
-      this.dsPackagegroupDet.data = groupList;
-      this.PacakgeGroupList = groupList;
-      console.log("Group:", this.dsPackagegroupDet.data);
+        this.dsPackagegroupDet.data = groupList;
+        this.PacakgeGroupList = groupList;
+        console.log("Group:", this.dsPackagegroupDet.data);
       });
     }, 1000);
   }
@@ -187,14 +193,14 @@ export class EditpackageComponent implements OnInit {
     this.dsPackageDet.data = [];
     this.PacakgeServiceList.push(
       {
-        serviceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0, // list serviceid
+        serviceId: this.registerObj.serviceId || this.registerObj.ServiceId, // list serviceid
         ServiceName: this.registerObj.serviceName || this.registerObj.ServiceName,
-        packageServiceId: this.vPackageServiceId || this.registerObj.PackageServiceId || 0, //serach filter serviceid
+        packageServiceId: this.vPackageServiceId || this.registerObj.PackageServiceId, //serach filter serviceid
         PackageServiceName: this.vPackageServiceName || this.registerObj.PackageServiceName,
         price: this.price ?? 0,
-        classId: this.classId ?? 0,
-        tariffId: this.tariffId ?? 0,
-        qtyLimit: this.serviceForm.get('amount').value
+        classId: this.classId,
+        tariffId: this.tariffId,
+        qtyLimit: this.serviceForm.get('qtyLimit').value
       });
 
     this.dsPackageDet.data = this.PacakgeServiceList;
@@ -204,21 +210,21 @@ export class EditpackageComponent implements OnInit {
     this.vPackageServiceId = null;
     this.classId = null;
     this.tariffId = null;
-    this.serviceForm.get('serviceId').reset('')
-    this.serviceForm.get('qtyLimit').reset('')
-    this.serviceForm.get('amount').reset('')
+    this.serviceForm.get('serviceId').reset(0)
+    this.serviceForm.get('qtyLimit').reset(0)
+    this.serviceForm.get('amount').reset(0)
     this.serviceForm.get('isPackageType').reset('0')
     this.vPackageServiceName = '';
   }
 
   groupId = 0;
-  groupaName='';
+  groupaName = '';
 
   selectChangegroupName(obj: any) {
     this.groupId = obj.value;
-    this.groupaName=obj.text;
+    this.groupaName = obj.text;
   }
-  
+
   onAddPackageGroup() {
     if ((this.groupId == 0 || this.groupId == null || this.groupId == undefined)) {
       this.toastr.warning('Please select Group', 'Warning !', {
@@ -239,7 +245,7 @@ export class EditpackageComponent implements OnInit {
     this.PacakgeGroupList.push(
       {
         serviceId: this.registerObj.serviceId || this.registerObj.ServiceId || 0,
-        GroupId:this.groupId,
+        GroupId: this.groupId,
         GroupName: this.groupaName,
         price: this.serviceForm.get('amount').value ?? 0,
         classId: this.classId ?? 0,
@@ -251,8 +257,8 @@ export class EditpackageComponent implements OnInit {
     this.serviceForm.get('TariffName').setValue(this.registerObj.tariffName);
     console.log(this.dsPackagegroupDet.data)
 
-    this.serviceForm.get('groupId').reset('0')
-    this.serviceForm.get('amount').reset('')
+    this.serviceForm.get('groupId').reset(0)
+    this.serviceForm.get('amount').reset(0)
     this.serviceForm.get('isPackageType').reset('1')
   }
 
@@ -265,7 +271,7 @@ export class EditpackageComponent implements OnInit {
     }
   }
 
-   deleteTableRowPackageGroup(element) {
+  deleteTableRowPackageGroup(element) {
     let index = this.PacakgeGroupList.indexOf(element);
     if (index >= 0) {
       this.PacakgeGroupList.splice(index, 1);
@@ -298,7 +304,7 @@ export class EditpackageComponent implements OnInit {
         this.dsPackageDet.data.forEach(item => {
           this.packageDetailsArray.push(this.createPackageDetail(item));
         });
-      } else if (this.serviceForm.get('isPackageType').value === '1'){
+      } else if (this.serviceForm.get('isPackageType').value === '1') {
         this.dsPackagegroupDet.data.forEach(item => {
           this.packageDetailsArray.push(this.createPackageDetail(item));
         });
@@ -363,12 +369,12 @@ export class EditpackageComponent implements OnInit {
   }
 
   focusNext(nextEl: any) {
-  if (nextEl && nextEl.focus) {
-    nextEl.focus(); // for native inputs
-  } else if (nextEl?._elementRef?.nativeElement) {
-    nextEl._elementRef.nativeElement.focus(); // for custom Angular components
+    if (nextEl && nextEl.focus) {
+      nextEl.focus(); // for native inputs
+    } else if (nextEl?._elementRef?.nativeElement) {
+      nextEl._elementRef.nativeElement.focus(); // for custom Angular components
+    }
   }
-}
 
 }
 export class PacakgeList {
@@ -376,9 +382,9 @@ export class PacakgeList {
   ServiceName: String;
   PackageServiceId: any;
   PacakgeServiceName: any;
-  groupId:any;
-  Price:any;
-  isPackageType:any;
+  groupId: any;
+  Price: any;
+  isPackageType: any;
 
   constructor(PacakgeList) {
     this.ServiceId = PacakgeList.ServiceId || '';

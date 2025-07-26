@@ -123,18 +123,17 @@ export class RegistrationService {
             emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
-                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]], 
-                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
+                Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]], 
+                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234
 
             // medical tourisum
-            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern("^[0-9]*$"),
-                 this._FormvalidationserviceService.onlyNumberValidator()]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
-            medTourismVisaIssueDate: [new Date()], //"2025-10-25",
-            medTourismVisaValidityDate: [new Date()], //"2025-10-25",
+            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern(/^[A-Z][0-9]{7}$/)]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+            medTourismVisaIssueDate: [''], //"2025-10-25",
+            medTourismVisaValidityDate: [''], //"2025-10-25",
             medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
             medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
-            medTourismDateOfEntry: [new Date()], //"2025-10-25",
+            medTourismDateOfEntry: [''], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
         });

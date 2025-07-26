@@ -482,19 +482,9 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('convertId').setValue(this.EmgId ?? 0)
-    const today = new Date();
-    const medTourismVisaIssueDate = this.personalFormGroup.get('medTourismVisaIssueDate')?.value;
-    const medTourismVisaValidityDate = this.personalFormGroup.get('medTourismVisaValidityDate')?.value;
-    const medTourismDateOfEntry = this.personalFormGroup.get('medTourismDateOfEntry')?.value;
-    this.personalFormGroup.get('medTourismVisaIssueDate')?.setValue(
-      medTourismVisaIssueDate ? new Date(medTourismVisaIssueDate) : today
-    );
-    this.personalFormGroup.get('medTourismVisaValidityDate')?.setValue(
-      medTourismVisaValidityDate ? new Date(medTourismVisaValidityDate) : today
-    );
-    this.personalFormGroup.get('medTourismDateOfEntry')?.setValue(
-      medTourismDateOfEntry ? new Date(medTourismDateOfEntry) : today
-    );
+    this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
+    this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
+    this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
@@ -503,6 +493,7 @@ export class NewAdmissionComponent implements OnInit {
       return;
     }
 
+    this.personalFormGroup.get('medTourismCitizenship').setValue(this.personalFormGroup.get('medTourismCitizenship').value ?? 0)
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
       let submitData = {
@@ -514,7 +505,10 @@ export class NewAdmissionComponent implements OnInit {
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
           console.log(response)
-          this.AddChargesFromEmg(response);
+          if(this.EmgId>0){
+            this.AddChargesFromEmg(response);
+            return
+          }
           this.onClear();
           this._matDialog.closeAll();
         });
@@ -524,7 +518,10 @@ export class NewAdmissionComponent implements OnInit {
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
           console.log(response)
-          this.AddChargesFromEmg(response);
+          if(this.EmgId>0){
+            this.AddChargesFromEmg(response);
+            return
+          }
           this.onClear();
           this._matDialog.closeAll();
         });
@@ -752,7 +749,7 @@ export class NewAdmissionComponent implements OnInit {
         { name: "required", Message: "Doctor Name is required" }
       ],
       emgDrivingLicenceNo: [
-        { name: "pattern", Message: "e.g., MH-14-20210001234" },
+        { name: "pattern", Message: "e.g., MH14-20210001234" },
         { name: "minLength", Message: "16 digit required." },
         { name: "maxLength", Message: "More than 16 digits not allowed." }
       ],
@@ -762,7 +759,7 @@ export class NewAdmissionComponent implements OnInit {
         { name: "maxLength", Message: "More than 8 digits not allowed." }
       ],
       medTourismNationalityId: [
-        { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters (e.g., A123456789)" },
+        { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
         { name: "minLength", Message: "Minimum 10 characters required." },
         { name: "maxLength", Message: "Maximum 15 characters allowed." }
       ]
