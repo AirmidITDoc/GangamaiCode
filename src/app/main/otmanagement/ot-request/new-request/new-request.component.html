@@ -178,12 +178,12 @@
                                     [formGroup]="requestForm" [value]="data?.departmentId"
                                     [validations]="getValidationMessages(). DepartmentName"
                                     [mode]="autocompleteModeDepartment"
-                                    (selectionChange)="selectChangedepartment($event)">
+                                    >
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgery Category" formControlName="surgeryCategoryId"
-                                    [formGroup]="requestForm" [value]="data?.surgeryId"
+                                    [formGroup]="requestForm" [value]="data?.surgeryCategoryId"
                                     [validations]="getValidationMessages(). SurgeryCategory"
                                     [mode]="autocompleteModeSurgeryCategory">
                                 </airmid-dropdown>
@@ -198,7 +198,14 @@
                                 <airmid-dropdown label="Surgery Procedure" formControlName="surgeryId"
                                     [formGroup]="requestForm" [value]="data?.surgeryId"
                                     [validations]="getValidationMessages(). SurgeryProcedure"
-                                    [mode]="autocompleteModestatus">
+                                    [mode]="autocompleteModeSurgeryMaster">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                                <airmid-dropdown label="Doctor Type" formControlName="surgeryTypeId"
+                                    [formGroup]="requestForm" [value]="data?.surgeryTypeId"
+                                    [mode]="autocompleteModeDoctorType"
+                                    (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
@@ -207,13 +214,7 @@
                                    [validations]="getValidationMessages().SurgeonName" #surgeonList>
                                  </airmid-dropdown>
                             </div>
-                              <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Surgery type" formControlName="categoryId"
-                                    [formGroup]="requestForm" [value]="data?.categoryId"
-                                    [validations]="getValidationMessages(). SurgeryType"
-                                    [mode]="autocompleteModeSurgeryMaster">
-                                </airmid-dropdown>
-                            </div>
+                              
                         </div>
 
 

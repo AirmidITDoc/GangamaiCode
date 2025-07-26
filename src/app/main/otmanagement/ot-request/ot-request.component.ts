@@ -9,6 +9,7 @@ import { OtRequestService } from "./ot-request.service";
 import { NewRequestComponent } from "./new-request/new-request.component";
 import { DatePipe } from "@angular/common";
 import { FormGroup } from "@angular/forms";
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
 
 @Component({
   selector: 'app-ot-request',
@@ -80,7 +81,8 @@ export class OTRequestComponent implements OnInit {
       constructor(
           public _OtRequestService: OtRequestService,
           public toastr: ToastrService, public _matDialog: MatDialog,
-          public datePipe: DatePipe
+          public datePipe: DatePipe,
+           private commonService: PrintserviceService,
       ) { }
   
       ngOnInit(): void { }
@@ -109,7 +111,25 @@ export class OTRequestComponent implements OnInit {
           });
       }
   
-     
+      OnEditRegistration(row) {
+             this._OtRequestService.populateForm(row);
+             const dialogRef = this._matDialog.open(
+                 NewRequestComponent,
+                 {
+                     maxWidth: "95vw",
+                     maxHeight: '90%',
+                     width: '94%',
+                     data: row
+                 }
+             );
+             dialogRef.afterClosed().subscribe((result) => {
+                 console.log("The dialog was closed - Insert Action", result);
+                 this.grid.bindGridData();
+             });
+         }
+         OnPrint(Param) {
+        this.commonService.Onprint("otbookingId", Param.regId, "RequestName");
+    } 
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
