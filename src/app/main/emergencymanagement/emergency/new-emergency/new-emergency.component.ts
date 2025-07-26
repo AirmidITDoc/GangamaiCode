@@ -49,6 +49,7 @@ export class NewEmergencyComponent {
     public dialogRef: MatDialogRef<NewEmergencyComponent>,
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
+    private commonService: PrintserviceService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -185,6 +186,7 @@ export class NewEmergencyComponent {
       this.myForm.get("DateOfBirth").setValue(this.datePipe.transform(this.myForm.get("DateOfBirth").value, "yyyy-MM-dd"));
       console.log(this.myForm.value)
       this._EmergencyService.EmgSaveUpdate(this.myForm.value).subscribe((res) => {
+        this.OnViewReportPdf(res)
         this.onClose()
       })
     } else {
@@ -203,6 +205,10 @@ export class NewEmergencyComponent {
         });
       }
     }
+  }
+
+  OnViewReportPdf(element: any) {
+    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
   }
 
   onClose() {

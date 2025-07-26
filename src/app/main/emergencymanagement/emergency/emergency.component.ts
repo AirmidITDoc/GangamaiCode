@@ -18,6 +18,7 @@ import { EmergencyHistoryComponent } from './emergency-history/emergency-history
 import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
 import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
 import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-emergency',
@@ -53,6 +54,7 @@ export class EmergencyComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -312,6 +314,10 @@ getConvert(row) {
         })
       }
     })
+  }
+
+  OnViewReportPdf(element: any) {
+    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
   }
 }
 

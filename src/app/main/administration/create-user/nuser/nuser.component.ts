@@ -130,8 +130,10 @@ export class NUserComponent implements OnInit {
         this.DisclimitFlag = true
       else
         this.DisclimitFlag = false
+      this.getAccessDetail(this.data)
+      this.getUnitDetail(this.data)
+      this.getStoreDetail(this.data)
 
-      // 
     }
     this.getList()
     this.LoginAccessDetailsArray.push(this.createLoginAccessDetails());
@@ -142,7 +144,7 @@ export class NUserComponent implements OnInit {
   //  getList() {
   //     var SelectQuery = {
   //       "searchFields": [
-          
+
   //       ],
   //       "mode": "LoginAccessConfigList"
   //     }
@@ -156,25 +158,108 @@ export class NUserComponent implements OnInit {
   //   }
 
   getList() {
-  const SelectQuery = {
-    searchFields: [],
-    mode: "LoginAccessConfigList"
-  };
+    const SelectQuery = {
+      searchFields: [],
+      mode: "LoginAccessConfigList"
+    };
 
-  this._CreateUserService.getApprovalList(SelectQuery).subscribe((Visit: UserDetail[]) => {
-    const updatedList = Visit.map(item => ({
-      ...item,
-      InputValue: item.InputValue ?? '' // i am not getting this field from list so i am adding here
-    }));
+    this._CreateUserService.getApprovalList(SelectQuery).subscribe((Visit: UserDetail[]) => {
+      const updatedList = Visit.map(item => ({
+        ...item,
+        InputValue: item.InputValue ?? '' // i am not getting this field from list so i am adding here
+      }));
 
-    this.dsApprovalList.data = updatedList;
-    console.log("Get data:", this.dsApprovalList.data);
+      this.dsApprovalList.data = updatedList;
+      console.log("Get data:", this.dsApprovalList.data);
 
-    this.dsApprovalList.sort = this.sort;
-    this.dsApprovalList.paginator = this.paginator;
-  });
-}
+      this.dsApprovalList.sort = this.sort;
+      this.dsApprovalList.paginator = this.paginator;
+    });
+  }
 
+  getAccessDetail(row) {
+    // debugger
+    var SelectQuery = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AccessValueId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "LoginId",
+          "fieldValue": String(row.userId), //"30091",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    console.log(SelectQuery);
+    this._CreateUserService.getAccessDetailList(SelectQuery).subscribe(response => {
+      this.dsApprovalList.data = response as UserDetail[];
+      console.log("get Access data:", this.dsApprovalList.data)
+      this.dsApprovalList.sort = this.sort;
+      this.dsApprovalList.paginator = this.paginator;
+    });
+  }
+
+  RtrvUnitList: any = [];
+  getUnitDetail(row) {
+    // debugger
+    var SelectQuery = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "LoginUnitDetId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "LoginId",
+          "fieldValue": String(row.userId), //"30091",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    console.log(SelectQuery);
+    this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
+      debugger
+      const rowData = response?.data || [];
+      this.RtrvUnitList = rowData.forEach(item=>({
+        value: item.unitId,
+        text: item.unitName
+      }))
+      console.log("Unit data:", this.RtrvUnitList)
+      this.ddlUnit.SetSelection(this.RtrvUnitList);
+      // this.myuserform.get('multipleUnitId').setValue(this.RtrvUnitList)
+    });
+  }
+
+  getStoreDetail(row) {
+    // debugger
+    var SelectQuery = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "LoginStoreDetId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "LoginId",
+          "fieldValue": String(row.userId), //"30091",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    console.log(SelectQuery);
+    this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(Visit => {
+      this.dsApprovalList.data = Visit as UserDetail[];
+      console.log("Retrive data:", this.dsApprovalList.data)
+      this.dsApprovalList.sort = this.sort;
+      this.dsApprovalList.paginator = this.paginator;
+    });
+  }
 
   createuserForm(): FormGroup {
     return this._formBuilder.group({
@@ -319,7 +404,7 @@ export class NUserComponent implements OnInit {
       isPoinchargeVerify: false,
       isInchIndVfy: false,
       isRefDocEditOpt: true,
-      webRoleId: [0, [ Validators.required ] ],
+      webRoleId: [0, [Validators.required]],
       userToken: [""],
       pharExtOpt: 0,
       pharOpopt: 0,
@@ -339,42 +424,42 @@ export class NUserComponent implements OnInit {
   }
 
   createLoginAccessDetails(item: any = {}): FormGroup {
-      return this._formBuilder.group({
-        loginAccessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        accessValueId: [item.AccessValueId ?? 0], //what to send here id or name (LoginConfigId)
-        accessValue: [item.IsInputField ?? false, [Validators.maxLength(100)]],
-        accessInputValue: [item.InputValue ?? ''],
-      });
-    }
-  
-    createLoginUnitDetails(item: any = {}): FormGroup {
-      return this._formBuilder.group({
-        loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [Number(item.value) ?? 0],
-      });
-    }
-  
-    createLoginStoreDetails(item: any = {}): FormGroup {
-      return this._formBuilder.group({
-        loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        storeId: [Number(item.value) ?? 0],
-      });
-    }
+    return this._formBuilder.group({
+      loginAccessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      accessValueId: [item.LoginConfigId ?? 0],
+      accessValue: [item.IsInputField ?? false, [Validators.maxLength(100)]],
+      accessInputValue: [item.InputValue ?? ''],
+    });
+  }
 
-    get LoginAccessDetailsArray(): FormArray {
-      return this.myuserApprovalform.get('tLoginAccessDetails') as FormArray;
-    }
+  createLoginUnitDetails(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [Number(item.value) ?? 0],
+    });
+  }
 
-    get LoginUnitDetailsArray(): FormArray {
-      return this.myuserApprovalform.get('tLoginUnitDetails') as FormArray;
-    }
+  createLoginStoreDetails(item: any = {}): FormGroup {
+    return this._formBuilder.group({
+      loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [Number(item.value) ?? 0],
+    });
+  }
 
-    get LoginStoreDetailsArray(): FormArray {
-      return this.myuserApprovalform.get('tLoginStoreDetails') as FormArray;
-    }
+  get LoginAccessDetailsArray(): FormArray {
+    return this.myuserApprovalform.get('tLoginAccessDetails') as FormArray;
+  }
+
+  get LoginUnitDetailsArray(): FormArray {
+    return this.myuserApprovalform.get('tLoginUnitDetails') as FormArray;
+  }
+
+  get LoginStoreDetailsArray(): FormArray {
+    return this.myuserApprovalform.get('tLoginStoreDetails') as FormArray;
+  }
 
   removeUnit(item) {
     let removedIndex = this.myuserApprovalform.value.multipleUnitId.findIndex(x => x.value == item.value);
@@ -409,24 +494,24 @@ export class NUserComponent implements OnInit {
 
     console.log(this.myuserApprovalform.value)
     if (this.myuserApprovalform.valid) {
-      debugger
+      // debugger
       this.LoginAccessDetailsArray.clear();
-      this.dsApprovalList.data.forEach((item)=>{
+      this.dsApprovalList.data.forEach((item) => {
         this.LoginAccessDetailsArray.push(this.createLoginAccessDetails(item))
       })
 
       this.LoginUnitDetailsArray.clear();
-      this.myuserApprovalform.get('multipleUnitId').value.forEach((item)=>{
+      this.myuserApprovalform.get('multipleUnitId').value.forEach((item) => {
         this.LoginUnitDetailsArray.push(this.createLoginUnitDetails(item))
       })
 
       this.LoginStoreDetailsArray.clear();
-      this.myuserApprovalform.get('multipleStoreId').value.forEach((item)=>{
+      this.myuserApprovalform.get('multipleStoreId').value.forEach((item) => {
         this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
       })
 
-        this.myuserApprovalform.removeControl('multipleUnitId')
-        this.myuserApprovalform.removeControl('multipleStoreId')
+      this.myuserApprovalform.removeControl('multipleUnitId')
+      this.myuserApprovalform.removeControl('multipleStoreId')
 
       let formData = { ...this.myuserApprovalform.value };
 
@@ -470,7 +555,7 @@ export class NUserComponent implements OnInit {
     }
   }
 
- onSubmit() {
+  onSubmit() {
 
     if (this.docflag == true) {
       if (!this.myuserform.get('doctorId')?.value) {
@@ -695,7 +780,7 @@ export class UserDetail {
   PharExpOpt: any;
   PharIPOpt: any;
   PharOPOpt: any;
-  InputValue:any;
+  InputValue: any;
   /**
    * Constructor
    *

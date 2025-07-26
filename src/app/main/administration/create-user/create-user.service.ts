@@ -59,6 +59,18 @@ public getApprovalList(param){
     return this._httpClient.PostData("Common",param)
   }
   
+   public getAccessDetailList(param){
+    return this._httpClient.PostData("LoginManager/loginAccessDetailsList",param)
+  }
+
+  public getUnitDetailList(param){
+    return this._httpClient.PostData("LoginManager/LoginUnitUserWiseList",param)
+  }
+
+  public getStoreDetailList(param){
+    return this._httpClient.PostData("LoginManager/LoginStoreUserWiseList",param)
+  }
+
   public getpasswwordupdate(data) {
     return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
   }

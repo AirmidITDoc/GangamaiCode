@@ -44,7 +44,7 @@
                 <mat-icon> cancel</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Emg Print" *ngIf="element.isCancelled==false">
+            <button mat-icon-button matTooltip="Emg Print" *ngIf="element.isCancelled==false" (click)="OnViewReportPdf(element)">
                 <mat-icon> print</mat-icon>
             </button>
 

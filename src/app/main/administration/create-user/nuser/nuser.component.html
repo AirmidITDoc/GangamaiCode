@@ -24,14 +24,14 @@
                     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
                         (selectedTabChange)="onTabChange($event)">
                         <mat-tab label="Create User">
-                            <form [formGroup]="myuserform">
+                            <form [formGroup]="myuserApprovalform">
                                 <input type="hidden" name="userId" formControlName="userId">
                                 <div fxLayout="column" class="p-12">
 
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="UnitName" formControlName="unitId"
-                                                [formGroup]="myuserform" [validations]="getValidationMessages().unitId"
+                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().unitId"
                                                 [mode]="autocompleteModeUnitName"
                                                 (selectionChange)="selectChangeUnitName($event)">
                                             </airmid-dropdown>
@@ -39,7 +39,7 @@
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                                 <!-- [value]="data.mobileNo"  -->
                                             </airmid-textbox>
@@ -49,14 +49,14 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="FirstName" formControlName="firstName"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().firstName" [maxLength]="30">
                                             </airmid-textbox>
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="LastName" formControlName="lastName"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().lastName" [maxLength]="30">
                                             </airmid-textbox>
                                         </div>
@@ -65,13 +65,13 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="UserName" formControlName="userName"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().userName" [maxLength]="30">
                                             </airmid-textbox>
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                            <!-- <airmid-textbox label="PassWord" formControlName="password" [formGroup]="myuserform"
+                                            <!-- <airmid-textbox label="PassWord" formControlName="password" [formGroup]="myuserApprovalform"
                                                                                         [validations]="getValidationMessages().password" [maxLength]="30" #passwordTextbox>
                                                                                     </airmid-textbox> -->
                                             <mat-form-field appearance="outline" fxFlex>
@@ -84,7 +84,7 @@
                                                 <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                                             </button>
                                             </mat-form-field>
-                                            <!-- <mat-error *ngIf="myuserform.get('password')?.hasError('required')">
+                                            <!-- <mat-error *ngIf="myuserApprovalform.get('password')?.hasError('required')">
                                                 Password is required
                                             </mat-error> -->
                                         </div>
@@ -93,14 +93,14 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="MailID" formControlName="mailId"
-                                                [formGroup]="myuserform" [validations]="getValidationMessages().mailId"
+                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().mailId"
                                                 [maxLength]="30">
                                             </airmid-textbox>
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="RoleName" formControlName="roleId"
-                                                [formGroup]="myuserform" [validations]="getValidationMessages().roleId"
+                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().roleId"
                                                 [mode]="autocompleteModeRoleName"
                                                 (selectionChange)="selectChangeRoleName($event)">
                                             </airmid-dropdown>
@@ -110,7 +110,7 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="StoreName" formControlName="storeId"
-                                                [formGroup]="myuserform" [validations]="getValidationMessages().storeId"
+                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().storeId"
                                                 [mode]="autocompleteModeStoreName"
                                                 (selectionChange)="selectChangeStoreName($event)">
                                             </airmid-dropdown>
@@ -118,7 +118,7 @@
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="WebRoleName" formControlName="webRoleId"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().webRoleId"
                                                 [mode]="autocompleteModeWebRoleName"
                                                 (selectionChange)="selectChangeWebRoleName($event)">
@@ -133,7 +133,7 @@
                                             </mat-checkbox>&nbsp;
 
                                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" fxFlex="35%"
-                                                [formGroup]="myuserform"
+                                                [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().doctorId"
                                                 [mode]="autocompleteModedoctor" *ngIf="docflag">
                                                 <!-- [value]="vdoctorID"  -->
@@ -245,7 +245,7 @@
                                                 </div>
                                                 <div class="icon-info-col" fxLayoutGap="50px">
                                                     <airmid-textbox label="BrowseDays"
-                                                        formControlName="isDateIntervalDays" [formGroup]="myuserform"
+                                                        formControlName="isDateIntervalDays" [formGroup]="myuserApprovalform"
                                                         [validations]="getValidationMessages().isDateIntervalDays"
                                                         [maxLength]="30">
                                                     </airmid-textbox>
@@ -259,151 +259,10 @@
                             </form>
                         </mat-tab>
 
-                        <mat-tab label="Approval Tab">
+                        <mat-tab label="User Access Information">
 
-                            <!-- <form [formGroup]="myuserApprovalform"> -->
-                            <input type="hidden" name="userId" formControlName="userId">
                             <div fxLayout="column" class="p-12">
                                 <form [formGroup]="myuserApprovalform">
-
-                                    <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="UnitName" formControlName="unitId"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().unitId"
-                                                [mode]="autocompleteModeUnitName"
-                                                (selectionChange)="selectChangeUnitName($event)">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="StoreName" formControlName="storeId"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().storeId"
-                                                [mode]="autocompleteModeStoreName"
-                                                (selectionChange)="selectChangeStoreName($event)">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                    </div>
-
-                                    <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="FirstName" formControlName="firstName"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().firstName" [maxLength]="30">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="LastName" formControlName="lastName"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().lastName" [maxLength]="30">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().mobileNo" [maxLength]="10">
-                                                <!-- [value]="data.mobileNo"  -->
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="MailID" formControlName="mailId"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().mailId" [maxLength]="30">
-                                            </airmid-textbox>
-                                        </div>
-
-                                    </div>
-
-                                    <div fxLayout="row" fxLayoutGap="10px">
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="UserName" formControlName="userName"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().userName" [maxLength]="30">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <!-- <airmid-textbox label="PassWord" formControlName="password"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().password" [maxLength]="30"
-                                                #passwordTextbox>
-                                            </airmid-textbox> -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Password</mat-label>
-                                                <input matInput formControlName="password" autocomplete="new-password" 
-                                                [type]="hidePassword ? 'password' : 'text'"/>
-                                            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
-                                                [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword"
-                                                type="button">
-                                                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                                            </button>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="RoleName" formControlName="roleId"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().roleId"
-                                                [mode]="autocompleteModeRoleName"
-                                                (selectionChange)="selectChangeRoleName($event)">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="WebRoleName" formControlName="webRoleId"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().webRoleId"
-                                                [mode]="autocompleteModeWebRoleName"
-                                                (selectionChange)="selectChangeWebRoleName($event)">
-                                            </airmid-dropdown>
-                                        </div>
-                                    </div>
-
-                                    <div fxLayout="row wrap" fxLayoutGap="10px">
-
-                                        <!-- IsDoctor + Doctor Dropdown -->
-                                        <div fxLayout="row" fxLayoutGap="10px">
-                                            <mat-checkbox formControlName="isDoctorType"
-                                                (change)="chkdoctorApp($event)">
-                                                IsDoctor
-                                            </mat-checkbox>
-
-                                            <airmid-dropdown *ngIf="docflag" label="Doctor Name"
-                                                formControlName="doctorId" [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().doctorId"
-                                                [mode]="autocompleteModedoctor">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <!-- IsDiscountLimit + Percentage Input -->
-                                        <div fxLayout="row" fxLayoutGap="10px">
-                                            <mat-checkbox formControlName="isDiscApply"
-                                                (change)="chkDiscLimitApp($event)">
-                                                IsDiscountLimit
-                                            </mat-checkbox>
-
-                                            <mat-form-field appearance="outline" *ngIf="DisclimitFlag" fxFlex="25p%">
-                                                <mat-label>Discount %</mat-label>
-                                                <input matInput type="text" formControlName="discApplyPer">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <!-- BrowseDays Textbox -->
-                                        <div fxFlex="20%" fxFlex.sm="100%">
-                                            <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
-                                                [formGroup]="myuserform"
-                                                [validations]="getValidationMessages().isDateIntervalDays"
-                                                [maxLength]="30">
-                                            </airmid-textbox>
-                                        </div>
-
-                                    </div>
 
                                     <mat-card fxLayout="column" style="padding: 5px;">
                                         <form [formGroup]="myuserApprovalform">
@@ -420,7 +279,6 @@
                                             <!-- unit dropdown -->
                                             <div fxLayout="row">
                                                 <div fxFlex="35%">
-
                                                     <airmid-dropdown label="UnitName" formControlName="multipleUnitId"
                                                         [formGroup]="myuserApprovalform"
                                                         [validations]="getValidationMessages().unitId"
@@ -428,7 +286,6 @@
                                                         ValueField="value" #ddlUnit TextField="text" [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeUnitName($event)">
                                                     </airmid-dropdown>
-
                                                 </div>
 
                                                 <mat-chip-listbox #chipList>
@@ -537,9 +394,9 @@
             <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxFlexFill>
                 <div class="sales-footer-buttons gap-6" fxLayout="row">
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <!-- <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                         <span>Save</span>
-                    </button>
+                    </button> -->
                     <button class="btn btn-primary " color="accent" (click)="onSubmitApproval()">
                         <span>Save Approval</span>
                     </button>
