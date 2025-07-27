@@ -30,7 +30,7 @@ export class CategoryMasterService {
                    ]
                     ],
                    // talukaName: [""],
-                    isActive:[true,[Validators.required]]
+                    // isActive:[true,[Validators.required]]
                 });
             }
           
@@ -45,7 +45,8 @@ export class CategoryMasterService {
                 this.createCategoryForm();
             }
         
-            public stateMasterSave(Param: any) {
+            public CatMasterSave(Param: any) {
+                debugger
                 if (Param.SurgeryCategoryId) {
                     return this._httpClient.PutData("SurgeryCategoryMaster/" + Param.SurgeryCategoryId, Param);
                 } else return this._httpClient.PostData("SurgeryCategoryMaster", Param);

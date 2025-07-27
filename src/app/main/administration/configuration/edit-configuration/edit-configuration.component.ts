@@ -42,8 +42,7 @@ export class EditConfigurationComponent {
       'LoginConfigId',
       'AccessCategoryId',
        'IsInputField',
-      'AccessValueId',
-     
+      'AccessValueId'     
       
     ];
 
@@ -53,7 +52,7 @@ export class EditConfigurationComponent {
       'SystemCategoryId',
       'SystemName',
       'IsInputField',
-      'SystemInputValue',
+      'SystemInputValue'
     ];
   constructor(
     public _ConfigurationService: ConfigurationService,
@@ -77,6 +76,8 @@ export class EditConfigurationComponent {
     if (!this.myform.invalid) {
       console.log("Currency JSON :-", this.myform.value);
 
+      console.log(this.DSServiceList.data)
+
       this._ConfigurationService.ConfigSave(this.myform.value).subscribe((response) => {
         this.toastr.success(response.message);
         this.onClear(true);
@@ -92,22 +93,6 @@ export class EditConfigurationComponent {
     }
   }
 
-
-  // getLoginaccessList() {
-
-  //   var param = {
-  //     "searchFields": [
-
-  //     ],
-  //     "mode": "LoginAccessConfigList"
-  //   }
-  //   console.log(param)
-  //   this._ConfigurationService.getloginaccessRetrive(param).subscribe(Menu => {
-  //   console.log(Menu)
-  //     this.DSLoginaccessList.data = Menu as Congigdetail[];;
-  //     console.log(this.DSLoginaccessList.data)
-  //   });
-  // }
 
     getServiceList() {
 

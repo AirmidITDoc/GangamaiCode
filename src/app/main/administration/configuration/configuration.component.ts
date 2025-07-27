@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
@@ -8,79 +8,209 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfigurationService } from './configuration.service';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
 import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
-    selector: 'app-configuration',
-    templateUrl: './configuration.component.html',
-    styleUrls: ['./configuration.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-configuration',
+  templateUrl: './configuration.component.html',
+  styleUrls: ['./configuration.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class ConfigurationComponent implements OnInit {
 
-    constructor(public _ConfigurationService: ConfigurationService,
-        public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+  myform: FormGroup
+  ConfigFormGroup: FormGroup
+  myConfigform:FormGroup
+  //  isActive: any
+  //  isPatientSelected: boolean = false;
+  autocompleteModeItem: string = "PatientType";
+  autocompleteModeCashcounter: string = "CashCounter";
+  autocompleteModeDepartment: String = "Department";
+  autocompleteModedoctorty: string = "ConDoctor";
+  screenFromString = 'Common-form';
+  autocompleteModeClass: string = "Class";
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "Configuration/List",
-        columnsList: [
-            // { heading: "ConfigId", key: "configId", sort: true, width: 100, align: 'left', emptySign: 'NA' },
-            { heading: "FirstName", key: "mandatoryFirstName", sort: true, width: 100, align: 'left', emptySign: 'NA' },
-            { heading: "MiddleName", key: "mandatoryMiddleName", sort: true, width: 100, align: 'left', emptySign: 'NA' },
-            { heading: "LastName", key: "mandatoryLastName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Address", key: "mandatoryAddress", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "City", key: "mandatoryCity", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Age", key: "mandatoryAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-            { heading: "PhoneNo", key: "mandatoryPhoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "OP BILL", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "OP Receipt", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Refund Counter", key: "refundCounter", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IPAdvance", key: "iPAdvance", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IPBill", key: "iPBill", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IPReceipt", key: "iPReceipt", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IPRefundBill", key: "iPRefundBill", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "IPRefOfAdv", key: "iPRefOfAdv", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "DepartmentName", key: "pathDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PrintRegAfterReg", key: "printRegAfterReg", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "OTCharges", key: "otcharges", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PrintOPDCaseAfterVisit", key: "printOpdcaseAfterVisit", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "PrintIPDAfterAdm", key: "printIpdafterAdm", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "ConfigId",
-        sortOrder: 0,
-        filters: []
+
+  DSServiceList = new MatTableDataSource<logervicedetail>();
+  itemId = 0;
+  dateTimeObj: any;
+Department=0
+DoctorId=0
+
+  displayedColumns1: string[] = [
+    'SystemConfigId',
+    'SystemCategoryId',
+    'SystemName',
+    'IsInputField',
+    'SystemInputValue'
+  ];
+  constructor(
+    public _ConfigurationService: ConfigurationService,
+    private formBuilder: FormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    //    public dialogRef: MatDialogRef<EditConfigurationComponent>,
+    //    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
+  ) { }
+
+  ngOnInit(): void {
+     this.ConfigFormGroup = this.vConfigInsert()
+    // this.myform = this._ConfigurationService.createConfigForm();
+    this.myConfigform=this.vConfigFormInsert()
+    this.getServiceList()
+
+    this.serviceDetailsArray.push(this.createserviceDetail());
+   
+  }
+
+
+  createserviceDetail(item: any = {}): FormGroup {
+    console.log(item)
+        return this.formBuilder.group({
+      systemConfigId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      syatemCategoryId: [item.SystemCategoryId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      systemName: [item.SystemName || '',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      IsIputFiled: [item.IsIputFiled || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      SystemInputValue: [item.SystemInputValue || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+    });
+  }
+
+  get serviceDetailsArray(): FormArray {
+    return this.ConfigFormGroup.get('serviceDetails') as FormArray;
+  }
+
+  vConfigInsert(): FormGroup {
+    return this.formBuilder.group({
+      serviceDetails: this.formBuilder.array([])
+
+    });
+  }
+
+   vConfigFormInsert(): FormGroup {
+    return this.formBuilder.group({
+      Department: "",
+      DoctorId:""
+    });
+  }
+  onSubmit() {
+    if (this.DSServiceList.data.length > 0) {
+      // console.log("Currency JSON :-", this.myform.value);
+
+      console.log(this.DSServiceList.data)
+
+      this.serviceDetailsArray.clear();
+      this.DSServiceList.data.forEach(item => {
+        this.serviceDetailsArray.push(this.createserviceDetail(item));
+      });
+      console.log(this.ConfigFormGroup.value)
+      this._ConfigurationService.ConfigSave(this.ConfigFormGroup.value).subscribe((response) => {
+        this.toastr.success(response.message);
+        this.onClear(true);
+      }, (error) => {
+        this.toastr.error(error.message);
+      });
     }
-
-    ngOnInit(): void { }
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
-
-        let that = this;
-        const dialogRef = this._matDialog.open(EditConfigurationComponent,
-            {
-                  maxWidth: "95vw",
-                  maxHeight: "98vh",
-                  width: "100%",
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
+    else {
+      this.toastr.warning('please check from is invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
     }
+  }
+
+
+  getServiceList() {
+
+    var param = {
+      "searchFields": [
+
+      ],
+      "mode": "SystemConfigList"
+    }
+    console.log(param)
+    this._ConfigurationService.getloginaccessRetrive(param).subscribe(Menu => {
+      console.log(Menu)
+      this.DSServiceList.data = Menu as logervicedetail[];
+      console.log(this.DSServiceList.data)
+    });
+  }
+
+  selectChangeDept(event){
+    this.Department=event.value
+  }
+
+    selectChangeDoctor(event){
+    this.DoctorId=event.value
+  }
+  keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  onClear(val: boolean) {
+    this.myform.reset();
+    //  this.dialogRef.close(val);
+  }
+
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+
+
+  onClose() {
+    //  this.dialogRef.close();
+  }
 
 }
 
+
+export class Congigdetail {
+  LoginConfigId: any;
+  Name: any;
+  AccessCategoryId: any;
+  AccessValueId: any;
+  IsInputField: any;
+
+
+  constructor(Congigdetail) {
+    {
+      this.LoginConfigId = Congigdetail.LoginConfigId || 0;
+      this.Name = Congigdetail.Name || '';
+      this.AccessCategoryId = Congigdetail.AccessCategoryId || 0;
+      this.AccessValueId = Congigdetail.AccessValueId || 0;
+      this.IsInputField = Congigdetail.IsInputField || 0;
+
+    }
+  }
+}
+
+
+
+export class logervicedetail {
+  SystemConfigId: any;
+  SystemCategoryId: any;
+  SystemName: any;
+  IsInputField: any;
+  SystemInputValue: any;
+
+
+  constructor(logervicedetail) {
+    {
+      this.SystemConfigId = logervicedetail.SystemConfigId || 0;
+      this.SystemCategoryId = logervicedetail.SystemCategoryId || 0;
+      this.SystemName = logervicedetail.SystemName || 0;
+      this.IsInputField = logervicedetail.IsInputField || 0;
+      this.SystemInputValue = logervicedetail.SystemInputValue || 0;
+
+    }
+  }
+}

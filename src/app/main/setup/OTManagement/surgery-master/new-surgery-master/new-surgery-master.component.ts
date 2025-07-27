@@ -36,6 +36,7 @@ myForm: FormGroup;
         if ((this.data?.surgeryId??0) > 0) 
         {
             this.isActive=this.data.isActive
+            this.SurgeryId=this.data.surgeryId
             this.myForm.patchValue(this.data);
         }   
     }
@@ -44,7 +45,7 @@ myForm: FormGroup;
         onSubmit() {
          if (!this.myForm.invalid) {
             console.log(this.myForm.value)
-            this._SurgeryMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
+            this._SurgeryMasterService.surgerySave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
@@ -52,7 +53,7 @@ myForm: FormGroup;
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`myForm Form: ${controlName}`);
+                        invalidFields.push(`Surgery Form: ${controlName}`);
                     }
                 }
             }
@@ -96,11 +97,16 @@ myForm: FormGroup;
         }
     
     
-        selectChangecountry(obj: any){
-            console.log(obj);
-            this.SurgeryId=obj.value
+    keyPressCharater(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
-    
+    }
+         
         onClear(val: boolean) {
           this.myForm.reset();
           this.dialogRef.close(val);

@@ -7,12 +7,12 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="close-icon">
+                    <!-- <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -21,180 +21,40 @@
     <div class="modal-body overflow-hidden">
         <div class="modal-body-container">
             <div class="personal-panel fix-panel">
-                <mat-accordion multi>
-                    <mat-expansion-panel expanded class="mt-12">
-                        <ng-container>
-                            <div>
-                                <mat-accordion multi>
-                                    <mat-expansion-panel expanded class="mt-12">
-                                        <mat-expansion-panel-header class="accent">
+                <ng-container>
+                    <div>
+                        <mat-accordion multi>
+                            <mat-expansion-panel expanded class="mt-12">
+                                <!-- <mat-expansion-panel-header class="accent">
                                             <mat-panel-title>Config Detail</mat-panel-title>
-                                        </mat-expansion-panel-header>
-                                        <div class="content-card " style="padding: 5px 5px 5px 5px;">
+                                        </mat-expansion-panel-header> -->
+                                <div class="content-card " style="padding: 5px 5px 5px 5px;height: 600px;">
 
+                                    <!-- <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;"> -->
+                                        <mat-table #table matSort [dataSource]="DSServiceList" class="airmid-table"
+                                            [@animateStagger]="{ value: '50' }" style="overflow: auto;">
 
-                                            <mat-card fxFlex.gt-sm="22%" fxFlex style="padding: 6px;">
-                                                <div class="patient-info-container">
-                                                    <div class="patient-info-box">
+                                            <ng-container matColumnDef="SystemConfigId">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-150">SystemConfig</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">{{
+                                                    element.SystemConfigId }}</mat-cell>
+                                            </ng-container>
 
-                                                        <div class="patient-info-row patient-info-1-111 pt-8"
-                                                            fxLayout="row" fxLayoutAlign="space-between">
+                                            <ng-container matColumnDef="SystemCategoryId">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                    class="w-150">SystemCategory</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">{{
+                                                    element.SystemCategoryId }}</mat-cell>
+                                            </ng-container>
 
-                                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="PrintReg"
-                                                                        (change)="onChangePrintReg($event)"
-                                                                        formControlName="PrintReg">Print After
-                                                                        Registration</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="PrintOPDVisit"
-                                                                        (change)="onChangePrintAfterReg($event)"
-                                                                        formControlName="PrintOPDVisit">Print Case
-                                                                        Proper
-                                                                        After OPD
-                                                                        Visit</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="PrintAdm"
-                                                                        (change)="onChangeIPDAdd($event)"
-                                                                        formControlName="PrintAdm">Print IPD
-                                                                        Admission</mat-slide-toggle>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </mat-card>
-                                            <mat-card fxFlex.gt-sm="20%" fxFlex style="padding: 6px;">
-                                                <div class="bill-summary px-12">
-                                                    <div class="bill-summary-title py-8 border-bottom">
-                                                        <span class="h3 font-weight-600"> Registration Mandatory
-                                                            Field</span>
-                                                    </div>
-                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                        fxLayoutAlign="space-between">
-                                                        <div fxLayout="row" fxLayoutGap="6px">
-                                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="FirstName"
-                                                                        formControlName="FirstName">First
-                                                                        Name</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="MiddleName"
-                                                                        formControlName="MiddleName">Middle
-                                                                        Name</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="LastName"
-                                                                        formControlName="LastName">Last
-                                                                        Name</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="Address"
-                                                                        formControlName="Address">Address</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="Age"
-                                                                        formControlName="Age">Age</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="isPathologistDr"
-                                                                        formControlName="isPathologistDr">IsPathologistDr</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <mat-slide-toggle name="OTCharges"
-                                                                        formControlName="OTCharges">OTCharges</mat-slide-toggle>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- <div fxLayout="row" fxLayoutGap="2px">
-                                                            <div fxLayout="column" fxLayoutGap="2px">
-                                                                <div class="patient-col">
-                                                                    <airmid-textbox label="Registration No"
-                                                                        formControlName="registrationNo"
-                                                                        [formGroup]="myform"
-                                                                        [validations]="getValidationMessages().registrationNo"
-                                                                        [maxLength]="50">
-                                                                    </airmid-textbox>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <airmid-textbox label="IP No" formControlName="ipNo"
-                                                                        [formGroup]="myform"
-                                                                        [validations]="getValidationMessages().ipNo"
-                                                                        [maxLength]="50">
-                                                                    </airmid-textbox>
-
-                                                                    <airmid-textbox label="OP No" formControlName="opNo"
-                                                                        [formGroup]="myform"
-                                                                        [validations]="getValidationMessages().opNo"
-                                                                        [maxLength]="50">
-                                                                    </airmid-textbox>
-                                                                </div>
-
-                                                                <div class="patient-col">
-                                                                    <airmid-dropdown label="PatientType"
-                                                                        formControlName="patientType"
-                                                                        [formGroup]="myform"
-                                                                        [validations]="getValidationMessages().patientType"
-                                                                        (selectDdlObject)="selectChangeItem($event)"
-                                                                        [mode]="autocompleteModeItem">
-                                                                    </airmid-dropdown>
-                                                                    <mat-slide-toggle name="ClassEdit"
-                                                                        (change)="onChangeClassEdit($event)"
-                                                                        formControlName="ClassEdit">Class Edit For
-                                                                        IPPatient</mat-slide-toggle>
-                                                                </div>
-                                                                <div class="patient-col">
-                                                                    <airmid-dropdown label="Class Name"
-                                                                        formControlName="classId" *ngIf="classstatus"
-                                                                        [formGroup]="myform"
-                                                                        [validations]="getValidationMessages().ChargeClass"
-                                                                        [mode]="autocompleteModeClass"
-                                                                        (selectionChange)="getSelectedClassObj($event)"></airmid-dropdown>
-                                                                </div>
-
-
-                                                            </div>
-                                                        </div> -->
-
-                                                    </div>
-                                                </div>
-
-                                            </mat-card>
-
-                                            <mat-card fxFlex.gt-sm="57%" fxFlex style="padding: 6px;">
-                                                <mat-table #table matSort [dataSource]="DSServiceList"
-                                                    class="airmid-table" [@animateStagger]="{ value: '50' }"
-                                                    dynamicTableHeight style="overflow: auto;">
-                                                    <ng-container matColumnDef="SystemConfigId">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm class="w-110">SystemConfig</mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                            class="w-110">{{
-                                                            element.SystemConfigId }}</mat-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="SystemCategoryId">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            class="w-120">SystemCategory</mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm
-                                                            class="w-120">{{
-                                                            element.SystemCategoryId }}</mat-cell>
-                                                    </ng-container>
-
-                                                    <ng-container matColumnDef="SystemName">
-                                                        <mat-header-cell *matHeaderCellDef class="w-260"
-                                                            mat-sort-header>SystemName</mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm
-                                                            class="w-260">{{
-                                                            element.SystemName }}</mat-cell>
-                                                    </ng-container>
-                                                    <!-- 
+                                            <ng-container matColumnDef="SystemName">
+                                                <mat-header-cell *matHeaderCellDef class="w-460"
+                                                    mat-sort-header>SystemName</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-460">{{
+                                                    element.SystemName }}</mat-cell>
+                                            </ng-container>
+                                            <!-- 
                                                 <ng-container matColumnDef="IsInputField">
                                                     <mat-header-cell *matHeaderCellDef
                                                         mat-sort-header class="w-200">IsInputField</mat-header-cell>
@@ -202,385 +62,89 @@
                                                         element.IsInputField }}</mat-cell>
                                                 </ng-container> -->
 
-                                                    <ng-container matColumnDef="IsInputField" sticky>
-                                                        <mat-header-cell *matHeaderCellDef class="w-100">
-                                                            IsInputField
-                                                        </mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" class="w-100">
-                                                            <mat-checkbox
-                                                                (change)="tableElementChecked($event, element)"
-                                                                [(ngModel)]="element.IsInputField"></mat-checkbox>
-                                                        </mat-cell>
+                                            <ng-container matColumnDef="IsInputField" sticky>
+                                                <mat-header-cell *matHeaderCellDef class="w-200">
+                                                    IsInputField
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="w-200">
+                                                    <mat-checkbox (change)="tableElementChecked($event, element)"
+                                                        [(ngModel)]="element.IsInputField"></mat-checkbox>
+                                                </mat-cell>
 
 
+                                            </ng-container>
+
+
+
+                                            <ng-container matColumnDef="SystemInputValue">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                                    class="w-300">Value</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300">
+                                                    <ng-container
+                                                        *ngIf="element.IsInputField && element.SystemName=='RegNo' || element.IsInputField && element.SystemName=='OPDNo' || element.IsInputField && element.SystemName=='OPSalesdisc' || element.IsInputField && element.SystemName=='IPSalesdisc'">
+                                                        <mat-form-field appearance="fill">
+                                                            <input matInput [maxLength]="100"  (keypress)="keyPressCharater($event)"
+                                                                [(ngModel)]="element.SystemInputValue" />
+                                                        </mat-form-field>
+                                                    </ng-container>
+
+                                                    <ng-container
+                                                        *ngIf="element.IsInputField && element.SystemName=='IsPathDepartment'">
+                                                        <airmid-dropdown label="Pathology Department"
+                                                            formControlName="patientType"
+                                                            [formGroup]="myform"
+                                                            [validations]="getValidationMessages().patientType"
+                                                            (selectDdlObject)="selectChangeItem($event)"
+                                                            [mode]="autocompleteModeDepartment">
+                                                        </airmid-dropdown>
                                                     </ng-container>
 
 
-
-                                                    <ng-container matColumnDef="SystemInputValue">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                            fxShow.gt-sm>Value</mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                            class="w-200">
-                                                            <ng-container
-                                                                *ngIf="element.IsInputField && element.SystemName=='RegNo' || element.IsInputField && element.SystemName=='OPDNo'">
-                                                                <mat-form-field appearance="fill">
-                                                                    <input matInput [maxLength]="100"
-                                                                        [(ngModel)]="element.SystemInputValue" />
-                                                                </mat-form-field>
-                                                            </ng-container>
-
-
-                                                        </mat-cell>
+                                                    <ng-container
+                                                        *ngIf="element.IsInputField && element.SystemName=='IsPathDoctorId'">
+                                                        <airmid-dropdown label="Pathology Doctor"
+                                                            formControlName="patientType" 
+                                                            [formGroup]="myform"
+                                                            [validations]="getValidationMessages().patientType"
+                                                            (selectDdlObject)="selectChangeItem($event)"
+                                                            [mode]="autocompleteModedoctorty">
+                                                        </airmid-dropdown>
                                                     </ng-container>
+                                                </mat-cell>
+                                            </ng-container>
+
+<!-- 
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                                    data...</mat-footer-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">no data
+                                                    found...</mat-footer-cell>
+                                            </ng-container> -->
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"
+                                                class="accent"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                                                [@animate]="{ value: '*', params: { y: '100%' } }"
+                                                style="height: 50px;"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{ hide: DSServiceList?.data?.length }"></mat-footer-row>
+
+                                        </mat-table>
+                                    <!-- </mat-card> -->
+                                </div>
+                            </mat-expansion-panel>
 
 
-                                                    <ng-container matColumnDef="loading">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">loading
-                                                            data...</mat-footer-cell>
-                                                    </ng-container>
+                        </mat-accordion>
+                    </div>
 
-                                                    <ng-container matColumnDef="noData">
-                                                        <mat-footer-cell *matFooterCellDef colspan="6">no data
-                                                            found...</mat-footer-cell>
-                                                    </ng-container>
+                </ng-container>
 
-                                                    <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"
-                                                        class="accent"></mat-header-row>
-                                                    <mat-row *matRowDef="let row; columns: displayedColumns1"
-                                                        class="element"
-                                                        [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                        style="height: 50px;"></mat-row>
-                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                        [ngClass]="{ hide: DSServiceList?.data?.length }"></mat-footer-row>
-
-                                                </mat-table>
-                                            </mat-card>
-                                        </div>
-                                    </mat-expansion-panel>
-
-                                    <mat-expansion-panel expanded class="mt-12">
-                                        <mat-expansion-panel-header class="accent">
-                                            <mat-panel-title> OPD Billing Config</mat-panel-title>
-                                        </mat-expansion-panel-header>
-                                        <mat-card fxFlex.gt-sm="95%" fxFlex style="padding: 6px;">
-
-                                            <div fxLayout="row" fxLayoutGap="10px">
-                                                <div class="patient-col" style="padding: 10px;">
-                                                    <mat-slide-toggle name="Charges" fxFlex
-                                                        (change)="onChangePrintReg($event)" formControlName="Charges">
-                                                        After OPD Appointment Pop
-                                                        add Charges
-                                                        Form</mat-slide-toggle>
-                                                </div>
-                                                <div class="patient-col" style="padding: 10px;">
-                                                    <mat-slide-toggle name="PopPayBill" fxFlex
-                                                        (change)="onChangePrintAfterReg($event)"
-                                                        formControlName="PopPayBill"> After Charges Pop
-                                                        Payment
-                                                        Form</mat-slide-toggle>
-                                                </div>
-                                                <div class="patient-col" style="padding: 10px;">
-                                                    <mat-slide-toggle name="GenerateOPBill" fxFlex
-                                                        (change)="onChangeIPDAdd($event)"
-                                                        formControlName="GenerateOPBill">Generated Bill
-                                                        Cash</mat-slide-toggle>
-                                                </div>
-
-                                            </div>
-
-                                        </mat-card>
-                                    </mat-expansion-panel>
-
-                                    <mat-expansion-panel expanded class="mt-12">
-                                        <mat-expansion-panel-header class="accent">
-                                            <mat-panel-title> IPD Billing Config</mat-panel-title>
-                                        </mat-expansion-panel-header>
-                                        <mat-card fxFlex.gt-sm="30%" fxFlex style="padding: 6px;">
-                                            <div class="patient-info-container">
-                                                <div class="patient-info-box">
-
-                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                        fxLayoutAlign="space-between">
-
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                            <div class="patient-col">
-                                                                <mat-slide-toggle name="Charges"
-                                                                    (change)="onChangePrintReg($event)"
-                                                                    formControlName="Charges">Chk Pharmacy Due
-                                                                </mat-slide-toggle>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </mat-card>
-                                        <mat-card fxFlex.gt-sm="65%" fxFlex style="padding: 6px;">
-                                            <div class="bill-summary px-12">
-                                                <!-- <div class="bill-summary-title py-8 border-bottom">
-                                                    <span class="h3 font-weight-600"> Printer Setting</span>
-                                                </div> -->
-                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                    fxLayoutAlign="space-between">
-                                                    <!-- <div fxLayout="row" fxLayoutGap="6px">
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div class="patient-col">
-                                                    <airmid-dropdown label="Select Cash Counter "
-                                                        formControlName="IPDCashCounterID1" [formGroup]="myform"
-                                                        [validations]="getValidationMessages().cashCounterId"
-                                                        [mode]="autocompleteModeIpbillCashcounter"></airmid-dropdown>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <airmid-dropdown label="Select Cash Counter "
-                                                        formControlName="IPDCashCounterID2" [formGroup]="myform"
-                                                        [validations]="getValidationMessages().cashCounterId"
-                                                        [mode]="autocompleteModeIpreceiptCashcounter"></airmid-dropdown>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <airmid-dropdown label="Select Cash Counter "
-                                                        formControlName="IPDCashCounterID3" [formGroup]="myform"
-                                                        [validations]="getValidationMessages().cashCounterId"
-                                                        [mode]="autocompleteModeIprefundCashcounter"></airmid-dropdown>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <airmid-dropdown label="Select Cash Counter "
-                                                        formControlName="IPDCashCounterID4" [formGroup]="myform"
-                                                        [validations]="getValidationMessages().cashCounterId"
-                                                        [mode]="autocompleteModeIprefundreeiptCashcounter"></airmid-dropdown>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <airmid-dropdown label="Select Cash Counter "
-                                                        formControlName="IPDCashCounterID4" [formGroup]="myform"
-                                                        [validations]="getValidationMessages().cashCounterId"
-                                                        [mode]="autocompleteModeIpAdvanceCashcounter"></airmid-dropdown>
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                                    <div fxLayout="row" fxLayoutGap="2px">
-                                                        <div fxLayout="column" fxLayoutGap="2px">
-                                                            <div class="patient-col">
-                                                                <mat-slide-toggle name="Isprint"
-                                                                    (change)="onChangeprintIp($event)"
-                                                                    formControlName="Isprint1">
-                                                                    Is Printer Setting
-                                                                </mat-slide-toggle>
-                                                            </div>
-                                                            <div class="patient-col" *ngIf="Isprint1">
-                                                                <airmid-textbox label="IPPrintName"
-                                                                    formControlName="IPPrintName1" [formGroup]="myform"
-                                                                    [maxLength]="12"
-                                                                    [validations]="getValidationMessages().IPPrintName">
-                                                                </airmid-textbox>
-                                                                <airmid-textbox label="IPPaperName"
-                                                                    formControlName="IPPaperName1" [formGroup]="myform"
-                                                                    [maxLength]="12"
-                                                                    [validations]="getValidationMessages().IPPaperName">
-                                                                </airmid-textbox>
-                                                            </div>
-                                                            <!-- <div class="patient-col" *ngIf="Isprint1">
-                                                    <airmid-textbox label="IPPaperName" formControlName="IPPaperName1"
-                                                        [formGroup]="myform" [maxLength]="12"
-                                                        [validations]="getValidationMessages().IPPaperName">
-                                                    </airmid-textbox>
-                                                </div> -->
-
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                        </mat-card>
-
-                                    </mat-expansion-panel>
-
-                                    <mat-expansion-panel expanded class="mt-12">
-                                        <mat-expansion-panel-header class="accent">
-                                            <mat-panel-title> Pathology Config</mat-panel-title>
-                                        </mat-expansion-panel-header>
-                                        <!-- <mat-card fxFlex.gt-sm="45%" fxFlex style="padding: 6px;">
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding-top: 10px;">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown label="Pathology Department"
-                                                        formControlName="patientType" [value]="data?.patientType"
-                                                        [formGroup]="myform"
-                                                        [validations]="getValidationMessages().patientType"
-                                                        (selectDdlObject)="selectChangeItem($event)"
-                                                        [mode]="autocompleteModeDepartment">
-                                                    </airmid-dropdown>
-                                                </div>
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-dropdown label="Pathology Doctor"
-                                                        formControlName="patientType" [value]="data?.patientType"
-                                                        [formGroup]="myform"
-                                                        [validations]="getValidationMessages().patientType"
-                                                        (selectDdlObject)="selectChangeItem($event)"
-                                                        [mode]="autocompleteModedoctorty">
-                                                    </airmid-dropdown>
-                                                </div>
-                                            </div>
-                                        </mat-card> -->
-
-                                        <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
-                                            <mat-table #table matSort [dataSource]="DSPathServiceList"
-                                                class="airmid-table" [@animateStagger]="{ value: '50' }"
-                                                dynamicTableHeight style="overflow: auto;">
-                                                <ng-container matColumnDef="SystemConfigId">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm class="w-150">SystemConfig</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                        class="w-150">{{
-                                                        element.SystemConfigId }}</mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="SystemCategoryId">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                        class="w-150">SystemCategory</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">{{
-                                                        element.SystemCategoryId }}</mat-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="SystemName">
-                                                    <mat-header-cell *matHeaderCellDef class="w-400"
-                                                        mat-sort-header>SystemName</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-400">{{
-                                                        element.SystemName }}</mat-cell>
-                                                </ng-container>
-                                                <!-- 
-                                                <ng-container matColumnDef="IsInputField">
-                                                    <mat-header-cell *matHeaderCellDef
-                                                        mat-sort-header class="w-200">IsInputField</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">{{
-                                                        element.IsInputField }}</mat-cell>
-                                                </ng-container> -->
-
-                                                <ng-container matColumnDef="IsInputField" sticky>
-                                                    <mat-header-cell *matHeaderCellDef class="w-100">
-                                                        IsInputField
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" class="w-100">
-                                                        <mat-checkbox (change)="tableElementChecked($event, element)"
-                                                            [(ngModel)]="element.IsInputField"></mat-checkbox>
-                                                    </mat-cell>
-                                                </ng-container>
-
-
-                                                <!-- *ngIf="element.SystemName==IsPathologistDr" -->
-                                                <!-- <ng-container matColumnDef="SystemInputValue">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                            class="w-120">SystemInputValue</mat-header-cell>
-                                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-120" >
-                                                            <mat-form-field appearance="fill" >
-                                                                <input matInput [(ngModel)]="element.SystemInputValue"
-                                                                    OnlyNumber (keypress)="keyPressCharater($event)" />
-                                                            </mat-form-field>
-                                                        </mat-cell>
-                                                    </ng-container> -->
-
-                                                <ng-container matColumnDef="SystemInputValue">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                        fxShow.gt-sm>Value</mat-header-cell>
-                                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm
-                                                        class="w-300">
-                                                        <!-- <ng-container *ngIf="element.IsInputField">
-                                                            <mat-form-field appearance="fill">
-                                                                <input matInput [maxLength]="100"
-                                                                    [(ngModel)]="element.SystemInputValue" />
-                                                            </mat-form-field>
-                                                        </ng-container> -->
-
-                                                        <ng-container
-                                                            *ngIf="element.IsInputField && element.SystemName=='IsPathDepartment'">
-                                                            <airmid-dropdown label="Pathology Department"
-                                                                formControlName="patientType"
-                                                                [value]="data?.patientType" [formGroup]="myform"
-                                                                [validations]="getValidationMessages().patientType"
-                                                                (selectDdlObject)="selectChangeItem($event)"
-                                                                [mode]="autocompleteModeDepartment">
-                                                            </airmid-dropdown>
-                                                        </ng-container>
-
-
-                                                        <ng-container
-                                                            *ngIf="element.IsInputField && element.SystemName=='IsPathDoctorId'">
-                                                            <airmid-dropdown label="Pathology Doctor"
-                                                                formControlName="patientType"
-                                                                [value]="data?.patientType" [formGroup]="myform"
-                                                                [validations]="getValidationMessages().patientType"
-                                                                (selectDdlObject)="selectChangeItem($event)"
-                                                                [mode]="autocompleteModedoctorty">
-                                                            </airmid-dropdown>
-                                                        </ng-container>
-
-                                                    </mat-cell>
-                                                </ng-container>
-
-
-                                                <ng-container matColumnDef="loading">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
-                                                        data...</mat-footer-cell>
-                                                </ng-container>
-
-                                                <ng-container matColumnDef="noData">
-                                                    <mat-footer-cell *matFooterCellDef colspan="6">no data
-                                                        found...</mat-footer-cell>
-                                                </ng-container>
-
-                                                <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"
-                                                    class="accent"></mat-header-row>
-                                                <mat-row *matRowDef="let row; columns: displayedColumns1"
-                                                    class="element" [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                    style="height: 50px;"></mat-row>
-                                                <mat-footer-row *matFooterRowDef="['noData']"
-                                                    [ngClass]="{ hide: DSPathServiceList?.data?.length }"></mat-footer-row>
-
-                                            </mat-table>
-                                        </mat-card>
-                                    </mat-expansion-panel>
-
-                                    <mat-expansion-panel expanded class="mt-12">
-                                        <mat-expansion-panel-header class="accent">
-                                            <mat-panel-title> Pharmacy Config</mat-panel-title>
-                                        </mat-expansion-panel-header>
-                                        <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
-                                            <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding-top: 10px;">
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="OPSalesdisc" formControlName="OPSalesdisc"
-                                                        [formGroup]="myform"
-                                                        [validations]="getValidationMessages().OPSalesdisc"
-                                                        [maxLength]="2">
-                                                    </airmid-textbox>
-                                                </div>
-                                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox label="IPSalesdisc" formControlName="IPSalesdisc"
-                                                        [formGroup]="myform"
-                                                        [validations]="getValidationMessages().IPSalesdisc"
-                                                        [maxLength]="2">
-                                                    </airmid-textbox>
-                                                </div>
-
-                                            </div>
-
-                                        </mat-card>
-                                    </mat-expansion-panel>
-                                </mat-accordion>
-                            </div>
-
-
-
-                            <!-- <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
-                              
-                            </div> -->
-                        </ng-container>
-                    </mat-expansion-panel>
-                </mat-accordion>
             </div>
-        </div>
-    </div>
-
+            
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
@@ -589,4 +153,7 @@
             </div>
         </div>
     </div>
+        </div>
+    </div>
+
 </div>

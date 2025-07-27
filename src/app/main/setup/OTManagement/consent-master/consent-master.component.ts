@@ -22,10 +22,10 @@ export class ConsentMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
         allColumns = [
-            { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Department Name", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA',width:300 },
+            { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' ,width:350 },
+            { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:200 },
            // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

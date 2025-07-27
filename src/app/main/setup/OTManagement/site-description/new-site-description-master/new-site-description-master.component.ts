@@ -15,7 +15,8 @@ import { SiteDescriptionService } from '../site-description.service';
 export class NewSiteDescriptionMasterComponent {
 myForm: FormGroup;
     isActive:boolean=true;
-      
+       SiteDescId = 0;
+       autocompleteModecategory:string='SurgeryCategory'
     constructor(
                     public _SiteDescriptionService: SiteDescriptionService,
                     public dialogRef: MatDialogRef<NewSiteDescriptionMasterComponent>,
@@ -23,9 +24,7 @@ myForm: FormGroup;
                     public toastr: ToastrService
                 ) { }
     
-    autocompleteModetaluka: string = "Taluka";
-
-    surgeryCategoryId = 0;
+   
     
     ngOnInit(): void {
         this.myForm = this._SiteDescriptionService.createSiteDescForm();
@@ -35,6 +34,8 @@ myForm: FormGroup;
         if ((this.data?.siteDescId??0) > 0) 
         {
             this.isActive=this.data.isActive
+            this.SiteDescId=this.data.siteDescId
+
             this.myForm.patchValue(this.data);
         }   
     }
@@ -43,7 +44,7 @@ myForm: FormGroup;
         onSubmit() {
         if (!this.myForm.invalid) {
             console.log(this.myForm.value)
-            this._SiteDescriptionService.stateMasterSave(this.myForm.value).subscribe((response) => {
+            this._SiteDescriptionService.siteDescriptionSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
@@ -51,7 +52,7 @@ myForm: FormGroup;
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`myForm Form: ${controlName}`);
+                        invalidFields.push(`Site Description Form: ${controlName}`);
                     }
                 }
             }
@@ -80,10 +81,10 @@ myForm: FormGroup;
         }
     
     
-        selectChangecountry(obj: any){
-            console.log(obj);
-            this.surgeryCategoryId=obj.value
-        }
+        // selectChangecountry(obj: any){
+        //     console.log(obj);
+        //     this.surgeryCategoryId=obj.value
+        // }
     
         onClear(val: boolean) {
           this.myForm.reset();

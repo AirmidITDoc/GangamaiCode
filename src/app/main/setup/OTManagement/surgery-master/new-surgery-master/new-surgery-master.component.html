@@ -17,9 +17,9 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <input type="hidden" name="SurgeryId" formControlName="SurgeryId">
+                <input type="hidden" name="SurgeryId" formControlName="SurgeryId" [(ngModel)]="SurgeryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown 
                             label="Department" 
                             [value]="data?.departmentId" 
@@ -29,7 +29,7 @@
                             [mode]="autocompleteModeDepartment">
                         </airmid-dropdown>
                     </div>
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown 
                             label="Surgery Category" 
                             [value]="data?.surgeryCategoryId" 
@@ -39,7 +39,7 @@
                             [mode]="autocompleteModetaluka">
                         </airmid-dropdown>
                     </div>
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-dropdown 
                             label="site Description" 
                             formControlName="siteDescId" 
@@ -49,7 +49,7 @@
                             [mode]="autocompleteModetaluka">
                         </airmid-dropdown>
                     </div>
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="30%">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox 
                             label="Template Name" 
                             formControlName="SurgeryName" 
@@ -73,7 +73,7 @@
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox
                             label="Amount" 
-                            [value]="data?.surgeryAmount" 
+                            [value]="data?.surgeryAmount"   (keypress)="keyPressCharater($event)"
                             formControlName="surgeryAmount"
                             [formGroup]="myForm" 
                             [validations]="getValidationMessages().surgeryAmount"
@@ -83,20 +83,15 @@
 
                 </div>
             
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
-                    <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider>
-                    </div>
-    
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                            <span>Save</span>
-                        </button>
-                    </div>
-    
-                </div>
             </form>
+        </div>
+    </div>
+     <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
         </div>
     </div>
 </div>

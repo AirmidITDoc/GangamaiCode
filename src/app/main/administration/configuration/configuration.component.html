@@ -6,13 +6,106 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Configuration
+                    Configuration List
                 </span>
             </div>
         </div>
        
     </div>
-    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-    </airmid-table>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="padding: 10px;">
+        
 
+      <mat-table #table matSort [dataSource]="DSServiceList" class="airmid-table" [@animateStagger]="{ value: '50' }"
+            style="overflow: auto;">
+
+            <ng-container matColumnDef="SystemConfigId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                    class="w-150">SystemConfig</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">{{
+                    element.SystemConfigId }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="SystemCategoryId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">SystemCategory</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">{{
+                    element.SystemCategoryId }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="SystemName">
+                <mat-header-cell *matHeaderCellDef class="w-460" mat-sort-header>SystemName</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-460">{{
+                    element.SystemName }}</mat-cell>
+            </ng-container>
+            <!-- 
+                                                <ng-container matColumnDef="IsInputField">
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        mat-sort-header class="w-200">IsInputField</mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200">{{
+                                                        element.IsInputField }}</mat-cell>
+                                                </ng-container> -->
+
+            <ng-container matColumnDef="IsInputField" sticky>
+                <mat-header-cell *matHeaderCellDef class="w-200">
+                    IsInputField
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="w-200">
+                    <mat-checkbox (change)="tableElementChecked($event, element)"
+                        [(ngModel)]="element.IsInputField"></mat-checkbox>
+                </mat-cell>
+
+
+            </ng-container>
+
+            <ng-container matColumnDef="SystemInputValue">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                    class="w-300">Value</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-300">
+                    <ng-container
+                        *ngIf="element.IsInputField && element.SystemName=='RegNo' || element.IsInputField && element.SystemName=='OPDNo' || element.IsInputField && element.SystemName=='OPSalesdisc' || element.IsInputField && element.SystemName=='IPSalesdisc'">
+                        <mat-form-field appearance="fill">
+                            <input matInput [maxLength]="100" (keypress)="keyPressCharater($event)"
+                                [(ngModel)]="element.SystemInputValue" />
+                        </mat-form-field>
+                    </ng-container>
+
+                    <ng-container *ngIf="element.IsInputField && element.SystemName=='IsPathDepartment'">
+                        <airmid-dropdown label="Pathology Department" formControlName="Department"
+                            [formGroup]="myConfigform" [value]="Department"
+                            (selectDdlObject)="selectChangeDept($event)" [mode]="autocompleteModeDepartment">
+                        </airmid-dropdown>
+                    </ng-container>
+
+
+                    <ng-container *ngIf="element.IsInputField && element.SystemName=='IsPathDoctorId'">
+                        <airmid-dropdown label="Pathology Doctor" formControlName="DoctorId"
+                            [formGroup]="myConfigform"  [value]="DoctorId"
+                            (selectDdlObject)="selectChangeDoctor($event)" [mode]="autocompleteModedoctorty">
+                        </airmid-dropdown>
+                    </ng-container>
+                </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+            </ng-container>
+            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1;"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+                [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{ hide: !(DSServiceList != null && DSServiceList.data.length == 0) }"></mat-footer-row>
+
+        </mat-table>
+    </div>
+
+
+
+<div class="modal-footer" style="margin-left: 1300px;">
+    <div class="footer-navigation-container">
+        <div class="modal-footer-buttons">
+            <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+        </div>
+    </div>
+</div>
 </div>

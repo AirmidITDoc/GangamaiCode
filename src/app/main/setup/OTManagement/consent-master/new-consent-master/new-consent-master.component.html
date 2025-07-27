@@ -3,7 +3,7 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Consent Master
-</span>
+                </span>
             </div>
             <div class="modal-header-right">
                 <div class="close-icon">
@@ -21,27 +21,18 @@
                 <input type="hidden" name="ConsentId" formControlName="ConsentId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="consent Name" 
-                            formControlName="consentName" 
-                            [value]="data?.consentName"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().consentName" 
-                            [maxLength]="50">
+                        <airmid-textbox label="consent Name" formControlName="consentName" [value]="data?.consentName"
+                            [formGroup]="myForm" [validations]="getValidationMessages().consentName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="Department" 
-                            [value]="data?.departmentId" 
-                            formControlName="departmentId"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().departmentId"
+                        <airmid-dropdown label="Department" [value]="data?.departmentId" formControlName="departmentId"
+                            [formGroup]="myForm" [validations]="getValidationMessages().departmentId"
                             [mode]="autocompleteModeDepartment">
                         </airmid-dropdown>
                     </div>
-                       <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <!-- <airmid-textbox 
                             label="consentDesc Name" 
                             formControlName="consentDesc" 
@@ -51,29 +42,26 @@
                             [maxLength]="50">
                         </airmid-textbox> -->
                         <mat-label>Template Details</mat-label>
-                                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                                formControlName="consentDesc">
-                                            </angular-editor>
+                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
+                            [(ngModel)]="vTemplateDesc" required formControlName="consentDesc">
+                        </angular-editor>
                     </div>
                 </div>
-            
+
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                     <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                        <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
                     </div>
-    
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-    
+
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-

@@ -24,10 +24,7 @@ myForm: FormGroup;
                     public toastr: ToastrService
                 ) { }
     
-    autocompleteModetaluka: string = "Taluka";
-
-    ottypeId = 0;
-    
+      
     ngOnInit(): void {
     
         this.myForm = this._TypeMasterService.createTypeForm();
@@ -80,12 +77,7 @@ myForm: FormGroup;
             };
         }
     
-    
-        selectChangecountry(obj: any){
-            console.log(obj);
-            this.ottypeId=obj.value
-        }
-    
+        
         onClear(val: boolean) {
           this.myForm.reset();
           this.dialogRef.close(val);

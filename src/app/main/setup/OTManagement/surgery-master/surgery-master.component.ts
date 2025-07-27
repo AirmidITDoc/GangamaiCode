@@ -9,47 +9,47 @@ import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-mast
 import { SurgeryMasterService } from './surgery-master.service';
 
 @Component({
-  selector: 'app-surgery-master',
-  templateUrl: './surgery-master.component.html',
-  styleUrls: ['./surgery-master.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-          animations: fuseAnimations,
+    selector: 'app-surgery-master',
+    templateUrl: './surgery-master.component.html',
+    styleUrls: ['./surgery-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class SurgeryMasterComponent implements OnInit {
-msg: any;
- surgeryName: any = "";
+    msg: any;
+    surgeryName: any = "";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-         allColumns =  [
-            { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SurgeryName", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DepartmentName", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SurgeryCategoryName", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SiteDescriptionName", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Amount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       allFilters =[
-            { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+
+    allColumns = [
+        { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SurgeryName", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DepartmentName", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "CategoryName", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SiteDescriptionName", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Amount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+    allFilters = [
+        { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
         apiUrl: "SurgeryMaster/List",
         columnsList: this.allColumns,
         sortField: "SurgeryId",
@@ -71,8 +71,8 @@ msg: any;
         let that = this;
         const dialogRef = this._matDialog.open(NewSurgeryMasterComponent,
             {
-                maxWidth: "50vw",
-                maxHeight: '50%',
+                maxWidth: "85vw",
+                height: 'auto',
                 width: '70%',
                 data: row
             });

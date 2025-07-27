@@ -31,7 +31,7 @@ export class OttablemasterService {
              locationId: ["",
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
              ],
-             isActive:[true,[Validators.required]]
+            //  isActive:[true,[Validators.required]]
          });
      }
    
@@ -48,7 +48,7 @@ export class OttablemasterService {
          this.createTableForm();
      }
  
-     public stateMasterSave(Param: any) {
+     public OtMasterSave(Param: any) {
          if (Param.ottableId) {
              return this._httpClient.PutData("OtTableMaster/" + Param.ottableId, Param);
          } else return this._httpClient.PostData("OtTableMaster", Param);

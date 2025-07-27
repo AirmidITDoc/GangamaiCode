@@ -37,7 +37,6 @@ msg: any;
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CategoryMasterService.deactivateTheStatus(data.surgeryCategoryId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }

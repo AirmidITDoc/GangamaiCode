@@ -6,45 +6,42 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoryMasterService } from '../category-master.service';
 
 @Component({
-  selector: 'app-new-category-master',
-  templateUrl: './new-category-master.component.html',
-  styleUrls: ['./new-category-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-        animations: fuseAnimations,
+    selector: 'app-new-category-master',
+    templateUrl: './new-category-master.component.html',
+    styleUrls: ['./new-category-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
-export class NewCategoryMasterComponent implements OnInit  {
-myForm: FormGroup;
-    isActive:boolean=true;
-categoryName:any=''
+export class NewCategoryMasterComponent implements OnInit {
+    myForm: FormGroup;
+    isActive: boolean = true;
+    categoryName: any = ''
+    surgeryCategoryId=0
     constructor(
-                public _CategoryMasterService: CategoryMasterService,
-                public dialogRef: MatDialogRef<NewCategoryMasterComponent>,
-                @Inject(MAT_DIALOG_DATA) public data: any,
-                public toastr: ToastrService
-            ) { }
-            
-            autocompleteModetaluka: string = "Taluka";
-        
-            talukaId = 0;
-            
-            ngOnInit(): void {
-                this.myForm = this._CategoryMasterService.createCategoryForm();
-                 this.myForm.markAllAsTouched();
-                
-                console.log(this.data)
-                if ((this.data?.surgeryCategoryId??0) > 0) 
-                {
-                    this.categoryName=this.data.surgeryCategoryName
-                    this.isActive=this.data.isActive
-                    this.myForm.patchValue(this.data);
-                }   
-            }
-            
-              
-                onSubmit() {
-                 if (!this.myForm.invalid) {
+        public _CategoryMasterService: CategoryMasterService,
+        public dialogRef: MatDialogRef<NewCategoryMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+
+    ngOnInit(): void {
+        this.myForm = this._CategoryMasterService.createCategoryForm();
+        this.myForm.markAllAsTouched();
+
+        console.log(this.data)
+        if ((this.data?.surgeryCategoryId ?? 0) > 0) {
+            this.categoryName = this.data.surgeryCategoryName
+            this.surgeryCategoryId=this.data.surgeryCategoryId
+            // this.myForm.patchValue(this.data);
+        }
+    }
+
+
+    onSubmit() {
+        if (!this.myForm.invalid) {
             console.log(this.myForm.value)
-            this._CategoryMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
+            this._CategoryMasterService.CatMasterSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
@@ -65,28 +62,28 @@ categoryName:any=''
 
         }
     }
-                  
-                getValidationMessages() {
-                    return {
-                        // talukaName: [
-                        //     { name: "required", Message: "City Name is required" }
-                        // ],
-                        SurgeryCategoryName: [
-                            { name: "required", Message: "category Name is required" },
-                            { name: "maxlength", Message: "category Name should not be greater than 50 char." },
-                            { name: "pattern", Message: "Only char allowed." }
-                        ]
-                    };
-                }
-            
-            
-                selectChangecountry(obj: any){
-                    console.log(obj);
-                    //this.talukaId=obj.value
-                }
-            
-                onClear(val: boolean) {
-                  this.myForm.reset();
-                  this.dialogRef.close(val);
-                }
+
+    getValidationMessages() {
+        return {
+            // talukaName: [
+            //     { name: "required", Message: "City Name is required" }
+            // ],
+            SurgeryCategoryName: [
+                { name: "required", Message: "category Name is required" },
+                { name: "maxlength", Message: "category Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only char allowed." }
+            ]
+        };
+    }
+
+
+    selectChangecountry(obj: any) {
+        console.log(obj);
+        //this.talukaId=obj.value
+    }
+
+    onClear(val: boolean) {
+        this.myForm.reset();
+        this.dialogRef.close(val);
+    }
 }

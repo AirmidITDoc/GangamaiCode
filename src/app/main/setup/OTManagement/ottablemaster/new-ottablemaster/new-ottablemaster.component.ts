@@ -43,7 +43,7 @@ export class NewOTTablemasterComponent implements OnInit {
             onSubmit() {
              if (!this.myForm.invalid) {
             console.log(this.myForm.value)
-            this._OttablemasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
+            this._OttablemasterService.OtMasterSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
@@ -51,7 +51,7 @@ export class NewOTTablemasterComponent implements OnInit {
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`myForm Form: ${controlName}`);
+                        invalidFields.push(`OT Form: ${controlName}`);
                     }
                 }
             }

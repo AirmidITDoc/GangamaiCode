@@ -20,7 +20,7 @@ myForm: FormGroup;
 
      createTypeForm(): FormGroup {
              return this._formBuilder.group({
-                 OttypeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+                 ottypeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                  typeName: ["",
                       [
                     Validators.required,
@@ -46,8 +46,9 @@ myForm: FormGroup;
          }
      
          public stateMasterSave(Param: any) {
-             if (Param.OttypeId) {
-                 return this._httpClient.PutData("OtTypeMaster/" + Param.OttypeId, Param);
+            debugger
+             if (Param.ottypeId) {
+                 return this._httpClient.PutData("OtTypeMaster/" + Param.ottypeId, Param);
              } else return this._httpClient.PostData("OtTypeMaster", Param);
          }
   public deactivateTheStatus(m_data) {

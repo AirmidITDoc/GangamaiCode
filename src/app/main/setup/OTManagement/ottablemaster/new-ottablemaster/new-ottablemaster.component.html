@@ -20,42 +20,31 @@
                 <input type="hidden" name="ottableId" formControlName="ottableId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox 
-                            label="OTRoom Name" 
-                            formControlName="ottableName" 
-                            [value]="data?.ottableName"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().ottableName" 
-                            [maxLength]="50">
+                        <airmid-textbox label="OTRoom Name" formControlName="ottableName" [value]="data?.ottableName"
+                            [formGroup]="myForm" [validations]="getValidationMessages().ottableName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-dropdown 
-                            label="LocationName" 
-                            [value]="data?.locationId" 
-                            formControlName="locationId"
-                            [formGroup]="myForm" 
-                            (SelectionChange)="selectChangeLocation($event)"
-                            [validations]="getValidationMessages().locationId"
-                            [mode]="autocompleteModeLocation">
+                        <airmid-dropdown label="LocationName" [value]="data?.locationId" formControlName="locationId"
+                            [formGroup]="myForm" (SelectionChange)="selectChangeLocation($event)"
+                            [validations]="getValidationMessages().locationId" [mode]="autocompleteModeLocation">
                         </airmid-dropdown>
                     </div>
 
                 </div>
-            
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                     <div>
-                        <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider>
+                        <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
                     </div>
-    
+
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>
                         </button>
                     </div>
-    
+
                 </div>
             </form>
         </div>
