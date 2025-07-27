@@ -35,7 +35,8 @@ export class NewRequestComponent implements OnInit {
  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
 autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
 autocompleteModeSurgeryMaster: String = "SurgeryMaster";
- autocompleteModestatus: string = "State";
+  autocompleteModeDoctorType: string = "DoctorType";
+
    // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
@@ -221,11 +222,11 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   
          }
      }
- selectChangedepartment(obj: any){
-  const departmentId = obj?.value;
+ selectChangedoctorType(obj: any){
+  const surgeryTypeId = obj?.value;
 
-  if (departmentId) {
-    this._OtRequestService.getSurgeonsByDepartment(departmentId).subscribe((data: any[]) => {
+  if (surgeryTypeId) {
+    this._OtRequestService.getSurgeonsByDoctorType(surgeryTypeId).subscribe((data: any[]) => {
       this.surgeonList.options = data ;
        this.surgeonList.bindGridAutoComplete();
       // Do NOT reset surgeonId — retain selected value even if not found in filtered list

@@ -32,7 +32,7 @@ export class OtRequestService {
             otbookingTime: [new Date()],
             opIpType:  ["OP"],
             surgeryTypeId:[1],
-          //  isCancelledDateTime:  [""],
+         
            surgeryCategoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             otrequestDate: [new Date()],
             otrequestId: [0],
@@ -65,9 +65,11 @@ export class OtRequestService {
     initializeFormGroup() {
         this.createRequestForm();
     }
-
-   public getSurgeonsByDepartment(deptId) {
-        return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId="+deptId)
+populateForm(param) {
+        // this.personalFormGroup.patchValue(param);
+    }
+   public getSurgeonsByDoctorType(doctTypeId) {
+        return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId="+doctTypeId)
     }
 
     public requestSave(Param: any) {
