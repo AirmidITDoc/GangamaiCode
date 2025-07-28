@@ -48,7 +48,7 @@
                 <mat-icon> print</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="History Print" *ngIf="element.isCancelled==false">
+            <button mat-icon-button matTooltip="History Print" *ngIf="element.isCancelled==false" (click)="OnViewReportHistPdf(element)">
                 <mat-icon> print</mat-icon>
             </button>
         </div>

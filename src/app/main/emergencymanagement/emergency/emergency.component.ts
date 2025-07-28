@@ -319,6 +319,10 @@ getConvert(row) {
   OnViewReportPdf(element: any) {
     this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
   }
+
+  OnViewReportHistPdf(element: any) {
+    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrescription");
+  }
 }
 
 export class EmergencyList {

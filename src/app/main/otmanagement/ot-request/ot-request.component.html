@@ -41,6 +41,7 @@
             </div>
         </div>
     </div>
+    
  <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -54,10 +55,7 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <!-- Button 3: Appointment Page  -->
-                <button mat-icon-button matTooltip="Visit Mark or Appointment" (click)="OnNewAppointment(element)">
-                    <mat-icon>perm_identity</mat-icon>
-                </button>
+               
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
@@ -70,7 +68,7 @@
                   
                     <mat-form-field appearance="outline">
                         <mat-label>Reg No</mat-label>
-                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"
+                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"
                         (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
@@ -81,7 +79,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()"/>
+                            formControlName="FirstName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
@@ -91,7 +89,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" (input)="onChangeFirst()"/>
+                            formControlName="LastName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>

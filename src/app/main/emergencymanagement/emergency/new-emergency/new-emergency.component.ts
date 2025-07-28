@@ -207,8 +207,8 @@ export class NewEmergencyComponent {
     }
   }
 
-  OnViewReportPdf(element: any) {
-    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
+  OnViewReportPdf(EmgId: any) {
+    this.commonService.Onprint("EmgId", EmgId, "EmergencyPrint");
   }
 
   onClose() {

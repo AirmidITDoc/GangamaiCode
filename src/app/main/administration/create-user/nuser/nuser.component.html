@@ -128,7 +128,7 @@
 
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                                            <mat-checkbox formControlName="isDoctorType" (change)="chkdoctor($event)"
+                                            <mat-checkbox formControlName="isDoctorType" (change)="chkdoctorApp($event)"
                                                 style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
 
@@ -141,7 +141,7 @@
                                         </div>
 
                                         <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-checkbox formControlName="isDiscApply" (change)="chkDiscLimit($event)"
+                                            <mat-checkbox formControlName="isDiscApply" (change)="chkDiscLimitApp($event)"
                                                 style="padding: 10px;">IsDiscountLimit
                                             </mat-checkbox>&nbsp;
 
@@ -333,14 +333,16 @@
                                         <ng-container matColumnDef="Header">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                                             <mat-cell *matCellDef="let element"
-                                                fxShow.gt-sm>{{element.AccessValueId}}</mat-cell>
+                                                fxShow.gt-sm>{{element.AccessValueId ?? element.accessValueName}}</mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="CheckBox">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                 fxShow.gt-sm>CheckBox</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-checkbox [(ngModel)]="element.IsInputField">
+                                                <mat-checkbox 
+                                                    [checked]="getCheckboxValue(element)"
+                                                    (change)="setCheckboxValue(element, $event.checked)">
                                                 </mat-checkbox>
                                             </mat-cell>
                                         </ng-container>
@@ -348,9 +350,11 @@
                                         <ng-container matColumnDef="InputField">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Value</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <ng-container *ngIf="element.IsInputField && element.AccessValueId === 'IsDiscount'">
+                                                <ng-container *ngIf="(element.IsInputField && element.AccessValueId) === 'IsDiscount' || (element.accessValue && element.accessValueName) === 'IsDiscount'">
                                                     <mat-form-field appearance="fill">
-                                                        <input matInput [maxLength]="100" [(ngModel)]="element.InputValue" />
+                                                         <input matInput [maxLength]="100"
+                                                                [value]="getInputFieldValue(element)"
+                                                                (input)="setInputFieldValue(element, $event.target.value)" />
                                                     </mat-form-field>
                                                 </ng-container>
                                             </mat-cell>
@@ -380,8 +384,6 @@
                                 </div>
                             </div>
 
-                            <!-- </form> -->
-
                         </mat-tab>
                     </mat-tab-group>
                 </div>
@@ -398,7 +400,7 @@
                         <span>Save</span>
                     </button> -->
                     <button class="btn btn-primary " color="accent" (click)="onSubmitApproval()">
-                        <span>Save Approval</span>
+                        <span>Save</span>
                     </button>
                 </div>
             </div>

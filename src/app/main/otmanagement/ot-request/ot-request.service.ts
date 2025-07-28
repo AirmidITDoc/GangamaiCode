@@ -26,7 +26,7 @@ export class OtRequestService {
             departmentId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             categoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            siteDescId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            siteDescId:[""],
             surgeonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             otbookingDate:  [new Date()],
             otbookingTime: [new Date()],

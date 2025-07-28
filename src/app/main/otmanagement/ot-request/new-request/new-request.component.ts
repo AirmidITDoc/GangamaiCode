@@ -8,7 +8,6 @@ import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.ser
 import { DatePipe } from '@angular/common';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
-
 @Component({
   selector: 'app-new-request',
   templateUrl: './new-request.component.html',
@@ -28,6 +27,7 @@ export class NewRequestComponent implements OnInit {
 
 
        vSelectedOption: any = "OP";
+       vsurgeryType:any="1";
     
    isActive:boolean=true;
   autocompleteModeDepartment: String = "Department";
@@ -64,6 +64,8 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     opIpId: any;
   
     @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
+  opIpType: number;
+  RegId: string;
 
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
@@ -85,39 +87,41 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
          }
           this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
- 
+ patientInfoReset() {
+    this.requestForm.get('opIpId').setValue('');
+    this.requestForm.get('opIpId').reset();
+    this.vRegNo = '';
+    this.vPatientName = '';
+    // this.vAdmissionDate = '';
+    // this.vAdmissionTime = '';
+    // this.vIPDNo = '';
+    this.vDoctorName = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    // this.vRoomName = '';
+    // this.vBedName = '';
+    // this.vGenderName = '';
+    this.vAge = '';
+    this.vDepartment = '';
+   // this.vDOA = ''
+  }
  dateTimeObj: any;
     getDateTime(dateTimeObj) {
        
         this.dateTimeObj = dateTimeObj;
          console.log(this.dateTimeObj)
     }
- onChangeReg(event) {
-     if (event.value == 'registration') {
-      // this.Regflag = false;
-       //this.personalFormGroup.get('RegId').reset();
-       //this.personalFormGroup.get('RegId').disable();
-       // this.isRegSearchDisabled = true;
-      // this.registerObj1 = new AdmissionPersonlModel({});
-       //this.personalFormGroup.reset();
-      // this.Patientnewold = 1;
- 
-      // this.personalFormGroup = this._AdmissionService.createPesonalForm();
-       //this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-      // this.Regdisplay = false;
- 
-     } else {
-      // this.Regdisplay = true;
-      // this.Regflag = true;
-      // this.searchFormGroup.get('RegId').enable();
-     //  this.personalFormGroup = this._AdmissionService.createPesonalForm();
-      // this.Patientnewold = 2;
- 
-     }
- 
-     //this.personalFormGroup.markAllAsTouched();
-     this.requestForm.markAllAsTouched();
-   }
+  onChangeReg(event) {
+    if (event.value == 'OP') {
+      this.opIpType = 0;
+      this.opIpId = "";
+    }
+    else if (event.value == 'IP') {
+      this.opIpType = 1;
+      this.opIpId = "";
+    }
+    this.patientInfoReset();
+  }
   getSelectedObjOT(obj) {
 
 
@@ -223,10 +227,10 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
          }
      }
  selectChangedoctorType(obj: any){
-  const surgeryTypeId = obj?.value;
+  const categoryId = obj?.value;
 
-  if (surgeryTypeId) {
-    this._OtRequestService.getSurgeonsByDoctorType(surgeryTypeId).subscribe((data: any[]) => {
+  if (categoryId) {
+    this._OtRequestService.getSurgeonsByDoctorType(categoryId).subscribe((data: any[]) => {
       this.surgeonList.options = data ;
        this.surgeonList.bindGridAutoComplete();
       // Do NOT reset surgeonId — retain selected value even if not found in filtered list

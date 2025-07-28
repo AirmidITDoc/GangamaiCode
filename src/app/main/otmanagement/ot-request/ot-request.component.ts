@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -37,29 +37,39 @@ export class OTRequestComponent implements OnInit {
   // VAdmissioncount = 0;
   //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  
+   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
        allcolumns = [
-        { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
-        { heading: "Date&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-        { heading: "UHID NO", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Surgeon Name", key: "surgeonId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Category Name", key: "categoryId", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Site Description", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Surgery Name", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Department Name", key: "departmentId", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        {
-            heading: "AddedBy", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-           // template: this.actionButtonTemplate  // Assign ng-template to the column
-        }
+        { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
+        { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
 
         // {
-        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-        //         {action: gridActions.edit, callback: (data: any) => {
-        //                 this.onEdit(data);
-        //                 this.grid.bindGridData();
-        //             }},]
-        // }
+        //     heading: "AddedBy", key: "action", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
+        //    template: this.actionButtonTemplate  // Assign ng-template to the column
+        // },
+
+        {
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+                {action: gridActions.edit, callback: (data: any) => {
+                        this.OnEditRegistration(data);
+                     
+                        this.grid.bindGridData();
+                    }}
+                ,
+            {action: gridActions.print, callback: (data: any) => {
+                        this.OnPrint(data);
+                     
+                       
+                    }}]
+        }
     ];
   
       allFilters = [
@@ -128,8 +138,10 @@ export class OTRequestComponent implements OnInit {
              });
          }
          OnPrint(Param) {
-        this.commonService.Onprint("otbookingId", Param.regId, "RequestName");
+        this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
     } 
+
+
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
