@@ -65,11 +65,11 @@ const approutes : Routes =[
   import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
      
 },
-// {
-//   path:"otnotes",
-//   loadChildren: () =>
-//     import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
-// },
+{
+  path:"otnotes",
+  loadChildren: () =>
+    import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
+},
 {
   path:"endoscopylist",
   loadChildren: () =>

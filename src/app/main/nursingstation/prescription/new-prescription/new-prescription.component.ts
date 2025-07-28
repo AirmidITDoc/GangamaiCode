@@ -126,6 +126,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.prescForm = this._PrescriptionService.createPrescForm();
     this.prescriptionArray.push(this.createPrescriptionFormInsert());
         this.vstoreId=this._loggedService.currentUserValue.user.storeId
+        this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
   }
 
  
@@ -329,13 +330,14 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   createPrescriptionFormInsert(element: any = {}): FormGroup {
+    debugger
     return this.formBuilder.group({
       ippreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       ipmedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpId: [this.vAdmissionID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      pdate: [this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')],
-      ptime: [this.dateTimeObj.time],
+      pdate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      ptime: [new Date()],
       classId: [this.vClassId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       genericId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       drugId: [element.ItemID,[this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -357,7 +359,8 @@ export class NewPrescriptionComponent implements OnInit {
 
   OnSavePrescription() {
     debugger
-    if (!this.prescForm.invalid && this.prescriptionArray.controls.every(c => !c.invalid)) {
+    // && this.prescriptionArray.controls.every(c => !c.invalid)
+    if (!this.myForm.invalid ) {
        if (this.vstoreId==0) {
       this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
@@ -385,7 +388,8 @@ export class NewPrescriptionComponent implements OnInit {
       console.log(this.prescForm.value)
 
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
-     this.viewgetIpprescriptionReportPdf(response)
+        console.log(response)
+     this.viewgetIpprescriptionReportPdf(response.admissionId)
           this._matDialog.closeAll();
         
       });

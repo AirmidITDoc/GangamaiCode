@@ -11,6 +11,7 @@ import { EditConfigurationComponent } from './edit-configuration/edit-configurat
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class ConfigurationComponent implements OnInit {
 
   myform: FormGroup
   ConfigFormGroup: FormGroup
-  myConfigform:FormGroup
+  myConfigform: FormGroup
   //  isActive: any
   //  isPatientSelected: boolean = false;
   autocompleteModeItem: string = "PatientType";
@@ -38,12 +39,12 @@ export class ConfigurationComponent implements OnInit {
   DSServiceList = new MatTableDataSource<logervicedetail>();
   itemId = 0;
   dateTimeObj: any;
-Department=0
-DoctorId=0
+  Department = 0
+  DoctorId = 0
 
   displayedColumns1: string[] = [
     'SystemConfigId',
-    'SystemCategoryId',
+    'Name',
     'SystemName',
     'IsInputField',
     'SystemInputValue'
@@ -58,24 +59,24 @@ DoctorId=0
   ) { }
 
   ngOnInit(): void {
-     this.ConfigFormGroup = this.vConfigInsert()
+    this.ConfigFormGroup = this.vConfigInsert()
     // this.myform = this._ConfigurationService.createConfigForm();
-    this.myConfigform=this.vConfigFormInsert()
+    this.myConfigform = this.vConfigFormInsert()
     this.getServiceList()
 
     this.serviceDetailsArray.push(this.createserviceDetail());
-   
+
   }
 
 
   createserviceDetail(item: any = {}): FormGroup {
     console.log(item)
-        return this.formBuilder.group({
-      systemConfigId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      syatemCategoryId: [item.SystemCategoryId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      systemName: [item.SystemName || '',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      IsIputFiled: [item.IsIputFiled || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      SystemInputValue: [item.SystemInputValue || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    return this.formBuilder.group({
+      systemConfigId: [item.SystemConfigId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      systemCategoryId: [item.ConstantId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      systemName: [item.SystemName ?? '', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      isInputField: [item.IsInputField ? 1 : 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      systemInputValue: [item.SystemInputValue ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
   }
@@ -91,41 +92,67 @@ DoctorId=0
     });
   }
 
-   vConfigFormInsert(): FormGroup {
+  vConfigFormInsert(): FormGroup {
     return this.formBuilder.group({
       Department: "",
-      DoctorId:""
+      DoctorId: "",
+      opdDepartment: "",
+      opdDoctorId: "",
+      InputFiled: 0,
+      Inputvalue: 0,
+      RegNo: 0,
+      OPDNo: 0,
+      OPSalesdisc: 0,
+      IPSalesdisc: 0,
+
     });
   }
   onSubmit() {
+
     if (this.DSServiceList.data.length > 0) {
-      // console.log("Currency JSON :-", this.myform.value);
 
-      console.log(this.DSServiceList.data)
+      Swal.fire({
+        title: 'Confirm Action',
+        text: 'Do you want to Change Configuration Setting ?',
+        icon: 'warning',
+        showDenyButton: true,
+        // showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        denyButtonColor: '#6c757d',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        // cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
 
-      this.serviceDetailsArray.clear();
-      this.DSServiceList.data.forEach(item => {
-        this.serviceDetailsArray.push(this.createserviceDetail(item));
-      });
-      console.log(this.ConfigFormGroup.value)
-      this._ConfigurationService.ConfigSave(this.ConfigFormGroup.value).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    }
+          this.serviceDetailsArray.clear();
+          this.DSServiceList.data.forEach(item => {
+            this.serviceDetailsArray.push(this.createserviceDetail(item));
+          });
+          console.log(this.serviceDetailsArray.value)
+          this._ConfigurationService.ConfigSave(this.serviceDetailsArray.value).subscribe((response) => {
+
+            this.getServiceList()
+          });
+        }
+       });
+
+      }
+
     else {
-      this.toastr.warning('please check from is invalid', 'Warning !', {
+      this.toastr.warning('please check List is invalid', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+
+
   }
 
 
   getServiceList() {
-
+    debugger
     var param = {
       "searchFields": [
 
@@ -140,12 +167,12 @@ DoctorId=0
     });
   }
 
-  selectChangeDept(event){
-    this.Department=event.value
+  selectChangeDept(event) {
+    this.Department = event.value
   }
 
-    selectChangeDoctor(event){
-    this.DoctorId=event.value
+  selectChangeDoctor(event) {
+    this.DoctorId = event.value
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -201,7 +228,7 @@ export class logervicedetail {
   SystemName: any;
   IsInputField: any;
   SystemInputValue: any;
-
+  Name: any;
 
   constructor(logervicedetail) {
     {
@@ -210,6 +237,7 @@ export class logervicedetail {
       this.SystemName = logervicedetail.SystemName || 0;
       this.IsInputField = logervicedetail.IsInputField || 0;
       this.SystemInputValue = logervicedetail.SystemInputValue || 0;
+      this.Name = logervicedetail.Name || '';
 
     }
   }
