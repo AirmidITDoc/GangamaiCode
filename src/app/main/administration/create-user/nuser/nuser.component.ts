@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { values } from 'lodash';
 
 @Component({
   selector: 'app-nuser',
@@ -20,7 +21,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations,
 })
 export class NUserComponent implements OnInit {
-  myuserform: FormGroup;
   myuserApprovalform: FormGroup;
   isActive: boolean = true;
 
@@ -81,9 +81,6 @@ export class NUserComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private renderer: Renderer2
   ) {
-    this.myuserform = this.createuserForm();
-    this.myuserform.markAllAsTouched();
-
     this.myuserApprovalform = this.createuserApprovalForm();
     this.myuserApprovalform.markAllAsTouched();
   }
@@ -101,8 +98,7 @@ export class NUserComponent implements OnInit {
   ngOnInit(): void {
 
     if ((this.data?.userId ?? 0) > 0) {
-      console.log(this.data)
-      this.myuserform.patchValue(this.data);
+      this.myuserApprovalform.patchValue(this.data);
 
       console.log("data:", this.data)
       this.regobj = this.data;
@@ -120,7 +116,7 @@ export class NUserComponent implements OnInit {
       this.visBedStatus = this.regobj.isBedStatus
       this.visCurrentStk = this.regobj.isCurrentStk
       this.vaddChargeIsDelete = this.regobj.addChargeIsDelete
-      this.myuserform.get("doctorId").setValue(this.regobj.doctorID)
+      this.myuserApprovalform.get("doctorId").setValue(this.regobj.doctorID)
       if (this.regobj.isDoctorType == true)
         this.docflag = true
       else
@@ -134,8 +130,9 @@ export class NUserComponent implements OnInit {
       this.getUnitDetail(this.data)
       this.getStoreDetail(this.data)
 
+    }else{
+      this.getList()
     }
-    this.getList()
     this.LoginAccessDetailsArray.push(this.createLoginAccessDetails());
     this.LoginUnitDetailsArray.push(this.createLoginUnitDetails());
     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails());
@@ -181,7 +178,7 @@ export class NUserComponent implements OnInit {
     // debugger
     var SelectQuery = {
       "first": 0,
-      "rows": 10,
+      "rows": 100,
       "sortField": "AccessValueId",
       "sortOrder": 0,
       "filters": [
@@ -194,16 +191,16 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    console.log(SelectQuery);
     this._CreateUserService.getAccessDetailList(SelectQuery).subscribe(response => {
-      this.dsApprovalList.data = response as UserDetail[];
-      console.log("get Access data:", this.dsApprovalList.data)
+      this.dsApprovalList.data = response.data as UserDetail[];
+      // console.log("get Access data:", this.dsApprovalList.data)
       this.dsApprovalList.sort = this.sort;
       this.dsApprovalList.paginator = this.paginator;
     });
   }
 
   RtrvUnitList: any = [];
+  RtrvStoreList: any = [];
   getUnitDetail(row) {
     // debugger
     var SelectQuery = {
@@ -221,22 +218,21 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    console.log(SelectQuery);
     this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
-      debugger
       const rowData = response?.data || [];
-      this.RtrvUnitList = rowData.forEach(item=>({
+      this.RtrvUnitList = rowData.map(item=>({
         value: item.unitId,
-        text: item.unitName
+        text: item.hospitalName
       }))
       console.log("Unit data:", this.RtrvUnitList)
-      this.ddlUnit.SetSelection(this.RtrvUnitList);
-      // this.myuserform.get('multipleUnitId').setValue(this.RtrvUnitList)
+      // this.ddlUnit.SetSelection(this.RtrvUnitList);
+      setTimeout(() => {
+        this.myuserApprovalform.get('multipleUnitId')?.setValue(this.RtrvUnitList);
+      }, 0);
     });
   }
 
   getStoreDetail(row) {
-    // debugger
     var SelectQuery = {
       "first": 0,
       "rows": 10,
@@ -252,93 +248,17 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    console.log(SelectQuery);
-    this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(Visit => {
-      this.dsApprovalList.data = Visit as UserDetail[];
-      console.log("Retrive data:", this.dsApprovalList.data)
-      this.dsApprovalList.sort = this.sort;
-      this.dsApprovalList.paginator = this.paginator;
-    });
-  }
+    this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
+      const rowData = response?.data || [];
+      this.RtrvStoreList = rowData.map(item=>({
+        value: item.storeId,
+        text:item.storeName
+      }))
+      console.log("store data:", this.RtrvStoreList)
+      setTimeout(() => {
+        this.myuserApprovalform.get('multipleStoreId')?.setValue(this.RtrvStoreList);
+      }, 0);
 
-  createuserForm(): FormGroup {
-    return this._formBuilder.group({
-      userId: [0],
-      firstName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      lastName: ['', [
-        Validators.required,
-        Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
-      ]],
-      userName: ['',
-        [
-          Validators.required,
-          Validators.pattern('[a-z A-Z 0-9_ ]*')
-        ]],
-      password: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
-        ]
-      ],
-      unitId: [1],
-      mobileNo: ["", [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      ]],
-      roleId: [0,
-        [
-          Validators.required
-        ]
-      ],
-      storeId: [2,
-        [
-          Validators.required
-        ]
-      ],
-      isDoctorType: false,
-      doctorId: "0",
-      isPoverify: false,
-      isGrnverify: false,
-      isCollection: false,
-      isBedStatus: false,
-      isCurrentStk: false,
-      isPatientInfo: false,
-      isDateInterval: true,
-      isDateIntervalDays: [0
-      ],
-      //  [Validators.minLength(10),
-      // Validators.maxLength(10),
-      // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-      // ]],
-      mailId: ["", [Validators.required,
-      Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
-      ]
-      ],
-      mailDomain: ["1"],
-      loginStatus: true,
-      addChargeIsDelete: true,
-      isIndentVerify: false,
-      isPoinchargeVerify: false,
-      isInchIndVfy: false,
-      isRefDocEditOpt: true,
-      webRoleId: [0,
-        [
-          Validators.required
-        ]
-      ],
-      userToken: [""],
-      pharExtOpt: 0,
-      pharOpopt: 0,
-      pharIpopt: 0,
-      isDiscApply: 0,
-      discApplyPer: [0],
-      isActive: [true, [Validators.required]]
     });
   }
 
@@ -419,6 +339,7 @@ export class NUserComponent implements OnInit {
       // extra fields
       multipleUnitId: [[]],
       multipleStoreId: [[]],
+      IsPharmacyBalClearnace:false
 
     });
   }
@@ -427,9 +348,9 @@ export class NUserComponent implements OnInit {
     return this._formBuilder.group({
       loginAccessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      accessValueId: [item.LoginConfigId ?? 0],
-      accessValue: [item.IsInputField ?? false, [Validators.maxLength(100)]],
-      accessInputValue: [item.InputValue ?? ''],
+      accessValueId: [item.LoginConfigId ?? item.accessValueId],
+      accessValue: [item.IsInputField ?? item.accessValue ??false, [Validators.maxLength(100)]],
+      accessInputValue: [item.InputValue ?? item.accessInputValue ?? ''],
     });
   }
 
@@ -472,6 +393,31 @@ export class NUserComponent implements OnInit {
     this.myuserApprovalform.value.multipleStoreId.splice(removedIndex, 1);
     this.ddlStore.SetSelection(this.myuserApprovalform.value.multipleStoreId.map(x => x.value));
   }
+
+  getCheckboxValue(element: any): boolean {
+  return element.IsInputField ?? element.accessValue ?? false;
+}
+
+setCheckboxValue(element: any, value: boolean): void {
+  if (element.hasOwnProperty('IsInputField')) {
+    element.IsInputField = value;
+  } else {
+    element.accessValue = value;
+  }
+}
+
+getInputFieldValue(element: any): string {
+  return element.InputValue ?? element.accessInputValue ?? '';
+}
+
+setInputFieldValue(element: any, value: string): void {
+  if ('InputValue' in element) {
+    element.InputValue = value;
+  } else {
+    element.accessInputValue = value;
+  }
+}
+
   onSubmitApproval() {
 
     if (this.docflag == true) {
@@ -492,7 +438,6 @@ export class NUserComponent implements OnInit {
       }
     }
 
-    console.log(this.myuserApprovalform.value)
     if (this.myuserApprovalform.valid) {
       // debugger
       this.LoginAccessDetailsArray.clear();
@@ -512,6 +457,7 @@ export class NUserComponent implements OnInit {
 
       this.myuserApprovalform.removeControl('multipleUnitId')
       this.myuserApprovalform.removeControl('multipleStoreId')
+      this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
 
       let formData = { ...this.myuserApprovalform.value };
 
@@ -555,100 +501,23 @@ export class NUserComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-
-    if (this.docflag == true) {
-      if (!this.myuserform.get('doctorId')?.value) {
-        this.toastr.warning('Please select Doctor Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-    if (this.DisclimitFlag == true) {
-      if ((this.myuserform.get('discApplyPer').value == '' || this.myuserform.get('discApplyPer').value == 0
-        || this.myuserform.get('discApplyPer').value == undefined)) {
-        this.toastr.warning('Please enter a Discount % ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
-
-    console.log(this.myuserform.value)
-    if (this.myuserform.valid) {
-      let formData = { ...this.myuserform.value };
-
-      formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
-      formData.pharOpopt = formData.pharOpopt === true ? 1 : 0;
-      formData.pharIpopt = formData.pharIpopt === true ? 1 : 0;
-      formData.isPoverify = formData.isPoverify ?? false;
-      formData.addChargeIsDelete = formData.addChargeIsDelete ?? false;
-      formData.isCollection = formData.isCollection ?? false;
-      formData.isCurrentStk = formData.isCurrentStk ?? false;
-      formData.isBedStatus = formData.isBedStatus ?? false;
-      formData.isGrnverify = formData.isGrnverify ?? false;
-      formData.isInchIndVfy = formData.isInchIndVfy ?? false;
-      formData.isIndentVerify = formData.isIndentVerify ?? false;
-      formData.isPatientInfo = formData.isPatientInfo ?? false;
-      formData.isPoinchargeVerify = formData.isPoinchargeVerify ?? false;
-      formData.isDoctorType = formData.isDoctorType ?? false;
-      formData.isDiscApply = formData.isDiscApply === true ? 1 : 0;
-
-      console.log("MenuMaster json:", formData);
-
-      this._CreateUserService.insertuser(formData).subscribe((response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-    }
-    else {
-      let invalidFields = [];
-      if (this.myuserform.invalid) {
-        for (const controlName in this.myuserform.controls) {
-          if (this.myuserform.controls[controlName].invalid) { invalidFields.push(`User Form: ${controlName}`); }
-        }
-      }
-
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-      }
-
-    }
-  }
-
   selectChangeUnitName(obj: any) {
-    console.log(obj);
     this.unitname = obj.value
   }
 
   selectChangeRoleName(obj: any) {
-    console.log(obj);
     this.rolename = obj.value
   }
 
   selectChangeStoreName(obj: any) {
-    console.log(obj);
     this.storename = obj.value
   }
 
   selectChangeWebRoleName(obj: any) {
-    console.log(obj);
     this.webrolename = obj.value
   }
 
   docflag: boolean = false;
-  chkdoctor(event) {
-    // 
-    if (this.myuserform.get('isDoctorType').value == true) {
-      this.docflag = true
-    } else {
-      this.docflag = false
-    }
-  }
-
   chkdoctorApp(event) {
     if (this.myuserApprovalform.get('isDoctorType').value == true) {
       this.docflag = true
@@ -656,15 +525,8 @@ export class NUserComponent implements OnInit {
       this.docflag = false
     }
   }
+
   DisclimitFlag: boolean = false;
-  chkDiscLimit(event) {
-    if (event.checked == true) {
-      this.DisclimitFlag = true
-    } else {
-      this.DisclimitFlag = false
-      this.myuserform.get('discApplyPer').setValue('')
-    }
-  }
   chkDiscLimitApp(event) {
     if (event.checked == true) {
       this.DisclimitFlag = true
@@ -781,6 +643,11 @@ export class UserDetail {
   PharIPOpt: any;
   PharOPOpt: any;
   InputValue: any;
+  accessValueId:any;
+  accessValue:any;
+  accessInputValue:any;
+  accessValueName:any;
+  loginId:any;
   /**
    * Constructor
    *
@@ -831,7 +698,12 @@ export class UserDetail {
       this.ViewBrowseBill = UserDetail.ViewBrowseBill || '';
       this.IsPharmacyBalClearnace = UserDetail.IsPharmacyBalClearnace || 0;
       this.IsAddChargeDelete = UserDetail.IsAddChargeDelete || 0;
-      this.InputValue = UserDetail.InputValue || ''
+      this.InputValue = UserDetail.InputValue || '';
+      this.accessValueId = UserDetail.accessValueId || ''
+      this.accessValue = UserDetail.accessValue || ''
+      this.accessInputValue = UserDetail.accessInputValue || ''
+      this.accessValueName = UserDetail.accessValueName || ''
+      this.loginId = UserDetail.loginId || 0
     }
 
   }

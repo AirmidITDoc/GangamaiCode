@@ -86,14 +86,13 @@ export class NewCanteenRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.CanteenInsertForm = this.createcanteenInsertForm();
-    this.CanteendetailArray.push(this.createdetailForm());
+    this.CanteenInsertForm.markAllAsTouched();
 
+    this._CanteenRequestservice.ItemForm.markAllAsTouched();
+    this.CanteendetailArray.push(this.createdetailForm());
   }
 
-
-
   createcanteenInsertForm(): FormGroup {
-    debugger
     return this.formBuilder.group({
       reqId: 0,
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -111,14 +110,12 @@ export class NewCanteenRequestComponent implements OnInit {
     });
   }
 
-
   createdetailForm(item: any = {}): FormGroup {
-    debugger
     console.log(item)
     return this.formBuilder.group({
       reqDetId: [item.reqDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      reqId: [item.reqId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [item.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqId: [item.reqId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitMRP: [item.Price || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmount: [item.totalamt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -153,7 +150,6 @@ export class NewCanteenRequestComponent implements OnInit {
     'buttons'
   ]
   getSelectedObj(obj) {
-    console.log(obj)
     if (obj.IsDischarged == 1) {
       Swal.fire('Selected Patient is already discharged');
       this.PatientName = ''
@@ -168,27 +164,9 @@ export class NewCanteenRequestComponent implements OnInit {
     }
     else {
       this.registerObj = obj;
-      console.log(obj)
-      // this.PatientName = obj.FirstName + '' + obj.LastName;
-      this.PatientName = obj.formattedText;
-      // obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.LastName;
       this.RegNo = obj.regNo;
       this.vAdmissionID = obj.admissionID;
-      this.CompanyName = obj.companyName;
-      this.Tarrifname = obj.tariffName;
-      this.Doctorname = obj.doctorName;
       this.vOpDId = obj.admissionID;
-      this.vOPDNo = obj.ipdNo;
-      this.WardName = obj.roomName;
-      this.BedNo = obj.bedName;
-      this.PatientType = obj.PatientType
-      this.RefDocName = obj.RefDocName
-      this.DepartmentName = obj.DepartmentName
-      this.Ageyear = obj.age
-      this.AgeMonth = obj.AgeMonth
-      this.AgeDay = obj.AgeDay
-      this.GenderName = obj.genderName
-      this.AdmissionDate = obj.admissionTime
       console.log(obj);
     }
   }
@@ -365,14 +343,15 @@ export class NewCanteenRequestComponent implements OnInit {
       this.CanteendetailArray.push(this.createdetailForm(item));
     });
 
-    console.log(this.CanteenInsertForm.value)
-
+    this.CanteenInsertForm.get("reqNo").setValue(this.RegNo)
     this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
     this.CanteenInsertForm.get("wardId").setValue(this._CanteenRequestservice.MyForm.get('wardId').value || 0)
 
     if (!this.CanteenInsertForm.invalid) {
+      console.log(this.CanteenInsertForm.value)
       this._CanteenRequestservice.CanteenReqSave(this.CanteenInsertForm.value).subscribe(response => {
-        this._matDialog.closeAll();
+        // this._matDialog.closeAll();
+        this.onClose();
       });
     } else {
       let invalidFields = [];

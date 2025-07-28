@@ -77,7 +77,6 @@ export class CreateUserComponent implements OnInit {
   }
 
   getfilterdata() {
-debugger
     this.gridConfig = {
       apiUrl: "LoginManager/LoginList",
       columnsList: this.allcolumns,

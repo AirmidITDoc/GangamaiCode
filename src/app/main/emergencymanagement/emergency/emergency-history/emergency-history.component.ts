@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular
 import { EmergencyList } from '../emergency.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-emergency-history',
@@ -38,6 +39,7 @@ export class EmergencyHistoryComponent {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<EmergencyHistoryComponent>,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public _frombuilder: UntypedFormBuilder,
     public speechService: SpeechRecognitionService,  
@@ -163,6 +165,7 @@ export class EmergencyHistoryComponent {
       this.historyForm.get('bmi').setValue(String(this.historyForm.get('bmi').value))
       console.log(this.historyForm.value)
       this._EmergencyService.EmgHistorySave(this.historyForm.value).subscribe((res)=>{
+        this.OnViewReportPdf(res)
         this.onClose()
       })
 
@@ -182,6 +185,10 @@ export class EmergencyHistoryComponent {
         });
       }
     }
+  }
+
+  OnViewReportPdf(EmgId: any) {
+    this.commonService.Onprint("EmgId", EmgId, "EmergencyPrescription");
   }
 
   onClose() {
