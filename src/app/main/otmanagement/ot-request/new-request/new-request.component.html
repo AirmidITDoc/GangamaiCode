@@ -202,8 +202,8 @@
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Doctor Type" formControlName="surgeryTypeId"
-                                    [formGroup]="requestForm" [value]="data?.surgeryTypeId"
+                                <airmid-dropdown label="Doctor Type" formControlName="categoryId"
+                                    [formGroup]="requestForm" [value]="data?.categoryId"
                                     [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>
@@ -220,7 +220,7 @@
 
 
                         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                            <mat-radio-group formControlName="surgeryTypeId" [formGroup]="requestForm" fxLayout="row" fxLayoutGap="10px">
+                            <mat-radio-group formControlName="surgeryTypeId" [formGroup]="requestForm"  [(ngModel)]="vsurgeryType" fxLayout="row" fxLayoutGap="10px" >
                                <div style="min-width: 120px; font-size: 16px; font-weight: 600;">
                                Surgery Type:</div>
                                 <mat-radio-button value="1">Normal</mat-radio-button>
