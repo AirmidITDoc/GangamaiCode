@@ -27,6 +27,7 @@ import { Idle } from 'idlejs/dist';
 import { ApiCaller } from './core/services/apiCaller';
 import { BandwidthService } from './core/services/bandwidth.service';
 import { SignalRService } from './core/services/signalr.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app',
@@ -45,6 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     isLoading: boolean = true;
     configSettingParam: any = [];
+      configSettingParam1: any = [];
+    newconfigSettingParam: any = [];
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -226,8 +229,10 @@ export class AppComponent implements OnInit, OnDestroy {
             });
         this.authService.currentUser.subscribe((d: any) => {
             if ((d?.userToken ?? "") != "") {
+                debugger
                 this.authService.getNavigationData();
                 this.ConfigSettingParam();
+                this.ConfigSettingParamNew();
             }
         });
     }
@@ -269,8 +274,50 @@ export class AppComponent implements OnInit, OnDestroy {
         this._httpClient1
             .PostData("Common", Params).subscribe(data => {
                 this.configSettingParam = data;
+                console.log(data);
                 this.configService.setCongiParam(this.configSettingParam[0]);
-                // console.log(this.configSettingParam);
+                console.log(this.configSettingParam);
             });
     }
+
+    configdata = []
+    AddList: any = [];
+    public dsconfigList = new MatTableDataSource<ConfigList>();
+    ConfigSettingParamNew() {
+        var Params =
+        {
+            "searchFields": [],
+            "mode": "NewSysConfig"
+        }
+        this._httpClient1.PostData("Common", Params).subscribe(data => {
+           this.configSettingParam1 = data;
+                console.log(data);
+                this.configService.setCongiParam(this.configSettingParam1[0]);
+                console.log(this.configSettingParam);
+        });
+    }
+}
+
+
+export class ConfigList {
+    SystemConfigId: Number;
+    SystemCategoryId: number;
+    SystemName: number;
+    SystemInputValue: any;
+
+    /**
+     * Constructor
+     *
+     * @param ConfigList
+     */
+    constructor(ConfigList) {
+        {
+            this.SystemConfigId = ConfigList.SystemConfigId || 0;
+            this.SystemCategoryId = ConfigList.SystemCategoryId || 0;
+            this.SystemName = ConfigList.SystemName || '';
+            this.SystemInputValue = ConfigList.SystemInputValue || "";
+
+        }
+    }
+
 }

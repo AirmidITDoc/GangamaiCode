@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -30,10 +30,7 @@ export class NewPrescriptionComponent implements OnInit {
   ItemForm: FormGroup;
   screenFromString = 'Common-form';
   ItemId: any;
-  // displayedVisitColumns: string[] = [
-  //   'Date',
-  //   'Time'
-  // ]
+
   displayedColumns: string[] = [
     'ItemName',
     'Qty',
@@ -53,11 +50,11 @@ export class NewPrescriptionComponent implements OnInit {
   add: boolean = false;
   vInstruction: any;
   Chargelist: any = [];
-  optionsWard: any[] = [];
-  isWardselected: boolean = false;
+  // optionsWard: any[] = [];
+  // isWardselected: boolean = false;
   CompanyName: any;
   vClassId: any = 0;
-  vRegNo: any=0;
+  vRegNo: any = 0;
   vPatientName: any;
   vAdmissionDate: any;
   vIPDNo: any;
@@ -75,10 +72,9 @@ export class NewPrescriptionComponent implements OnInit {
   vRefDocName: any;
   vPatientType: any;
   vDOA: any;
-  vstoreId=0;
+  vstoreId = 0;
 
   dsPresList = new MatTableDataSource<MedicineItemList>();
-  // dsiVisitList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
 
   autocompletestore: string = "Store";
@@ -109,11 +105,6 @@ export class NewPrescriptionComponent implements OnInit {
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
   ) {
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   console.log(this.selectedAdvanceObj)
-  
-    // }
   }
 
   ngOnInit(): void {
@@ -125,11 +116,11 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.prescForm = this._PrescriptionService.createPrescForm();
     this.prescriptionArray.push(this.createPrescriptionFormInsert());
-        this.vstoreId=this._loggedService.currentUserValue.user.storeId
-        this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
+    this.vstoreId = this._loggedService.currentUserValue.user.storeId
+    this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
   }
 
- 
+
 
   getSelectedObjIP(obj) {
 
@@ -175,7 +166,7 @@ export class NewPrescriptionComponent implements OnInit {
 
   selectChangeItem(obj: any) {
 
-    if (this.vstoreId==0) {
+    if (this.vstoreId == 0) {
       this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
@@ -340,16 +331,16 @@ export class NewPrescriptionComponent implements OnInit {
       ptime: [new Date()],
       classId: [this.vClassId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       genericId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      drugId: [element.ItemID,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugId: [element.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doseId: [Number(this.vdoseId), [this._FormvalidationserviceService.onlyNumberValidator()]],
       days: [this.day, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      qtyPerDay: [Number(element.Qty) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalQty: [Number(element.Qty) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      remark: [element.Remark ?? '',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      qtyPerDay: [Number(element.Qty) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalQty: [Number(element.Qty) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      remark: [element.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isClosed: [false],
-      isAddBy: [this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [Number(this.vstoreId) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      wardId: [Number(this.myForm.get('WardName').value) ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]]
+      isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [Number(this.vstoreId) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      wardId: [Number(this.myForm.get('WardName').value) ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
@@ -360,21 +351,22 @@ export class NewPrescriptionComponent implements OnInit {
   OnSavePrescription() {
     debugger
     // && this.prescriptionArray.controls.every(c => !c.invalid)
-    if (!this.myForm.invalid ) {
-       if (this.vstoreId==0) {
-      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning'
-      });
-      this.ItemForm.get('ItemId').reset();
-      this.ItemForm.get('ItemId').updateValueAndValidity();
-      return;
-    }
-  if (this.vRegNo==0) {
-      this.toastr.warning('Please select a Patient Name .', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning'
-      });
-       return;
-    }
+    console.log(this.myForm.value)
+    if (!this.myForm.invalid) {
+      if (this.vstoreId == 0) {
+        this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning'
+        });
+        this.ItemForm.get('ItemId').reset();
+        this.ItemForm.get('ItemId').updateValueAndValidity();
+        return;
+      }
+      if (this.vRegNo == 0) {
+        this.toastr.warning('Please select a Patient Name .', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning'
+        });
+        return;
+      }
 
       this.prescriptionArray.clear();
       if (this.dsItemList.data.length === 0) {
@@ -389,9 +381,9 @@ export class NewPrescriptionComponent implements OnInit {
 
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
         console.log(response)
-     this.viewgetIpprescriptionReportPdf(response.admissionId)
-          this._matDialog.closeAll();
-        
+        this.viewgetIpprescriptionReportPdf(response)
+        this._matDialog.closeAll();
+
       });
     } else {
       let invalidFields = [];
@@ -403,16 +395,16 @@ export class NewPrescriptionComponent implements OnInit {
           }
         }
       }
-      
-      this.prescriptionArray.controls.forEach((control, index) => {
-        if (control instanceof FormGroup) {
-          for (const key in control.controls) {
-            if (control.get(key)?.invalid) {
-              invalidFields.push(`Prescription Row ${index + 1}: ${key}`);
-            }
-          }
-        }
-      });
+
+      // this.prescriptionArray.controls.forEach((control, index) => {
+      //   if (control instanceof FormGroup) {
+      //     for (const key in control.controls) {
+      //       if (control.get(key)?.invalid) {
+      //         invalidFields.push(`Prescription Row ${index + 1}: ${key}`);
+      //       }
+      //     }
+      //   }
+      // });
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
@@ -423,13 +415,13 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   viewgetIpprescriptionReportPdf(response) {
-
+    debugger
     setTimeout(() => {
       let param = {
         "searchFields": [
           {
             "fieldName": "OP_IP_ID",
-            "fieldValue": String(response),
+            "fieldValue": String(response.medicalRecoredId),
             "opType": "Equals"
           },
           {
@@ -471,7 +463,7 @@ export class NewPrescriptionComponent implements OnInit {
       return false;
     }
   }
- getDateTime(dateTimeObj) {
+  getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 }

@@ -35,9 +35,10 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { BatchpopupComponent } from './batchpopup/batchpopup.component';
+
 import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
 import { PrescriptionReturnComponent } from './prescription-return.component';
+import { BatchpopupComponent } from './batchpopup/batchpopup.component';
 
 const routes: Routes = [
   {

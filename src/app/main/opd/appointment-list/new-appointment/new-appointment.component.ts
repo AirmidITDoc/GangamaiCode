@@ -16,6 +16,7 @@ import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-appointment',
@@ -144,6 +145,7 @@ export class NewAppointmentComponent implements OnInit {
         private accountService: AuthenticationService,
         public matDialog: MatDialog,
         private commonService: PrintserviceService,
+         private _configue: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
@@ -151,6 +153,10 @@ export class NewAppointmentComponent implements OnInit {
     FromRegistration:any;
     chkregisterd:boolean=false;
     ngOnInit(): void {
+
+      console.log(this._configue.configParams.OPDDefaultDepartment)
+       console.log(this._configue.configParams.OPDDefaultDoctor)
+
 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAllAsTouched();
@@ -203,7 +209,10 @@ export class NewAppointmentComponent implements OnInit {
             this.selectChangedepartment(this.registerObj)
         });
         }
-
+debugger
+        this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
+        this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
+       
     }
     createSearchForm() {
         return this.formBuilder.group({

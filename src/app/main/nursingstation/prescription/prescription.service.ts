@@ -40,7 +40,7 @@ export class PrescriptionService {
       return this._formBuilder.group({
         RegId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         PatientName: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        WardName: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+        WardName: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         StoreId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         RegID: [0, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator]],
         Op_ip_id: ['1'],
@@ -161,10 +161,6 @@ public getDoseMasterById(Id) {
   public getIpPrescriptionreturnview(PresReId){
     return this._httpClient.get("InPatient/view-IP_PrescriptionReturn?PresReId=" + PresReId);
   }
-  // public getItemlist(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPDrugName",Param)
-  // }
-
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("PhoneApp", m_data);
   }
