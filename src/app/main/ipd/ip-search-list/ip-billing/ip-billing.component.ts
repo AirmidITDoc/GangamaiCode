@@ -23,10 +23,10 @@ import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../../advance';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component'; 
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
-import { IPSearchListService } from '../ip-search-list.service';
-import { IPPackageDetComponent } from '../ippackage-det/ippackage-det.component';
+import { IPSearchListService } from '../ip-search-list.service'; 
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component'; 
 import { element } from 'protractor';
+import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 
 @Component({
   selector: 'app-ip-billing',
@@ -181,7 +181,7 @@ export class IPBillingComponent implements OnInit {
   BillBalAmount: any = 0;
   AdvanceBalAmt: any = 0;
   ApiURL: any;
-
+  TariffId:any;
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModeService: string = "Service";
@@ -196,7 +196,7 @@ export class IPBillingComponent implements OnInit {
   dataSource1 = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   advancedatasource = new MatTableDataSource<any>();
-  PackageDatasource = new MatTableDataSource
+  PackageDatasource =new MatTableDataSource<ChargesList>();
 
   constructor(
     public _printPreview: PrintPreviewService,
@@ -213,17 +213,14 @@ export class IPBillingComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: UntypedFormBuilder) { 
-  }
-checkdata:any=0;
+  } 
   ngOnInit(): void {
     this.createserviceForm();
     this.createBillForm();
-
-     this.Serviceform.markAllAsTouched();  
-    this.IPBillMyForm=this.CreateIPBillForm();
-    this.draftSaveform=this.createDraftSaveForm(); 
+    this.Serviceform.markAllAsTouched();
+    this.IPBillMyForm = this.CreateIPBillForm();
+    this.draftSaveform = this.createDraftSaveForm();
     this.IpbillFooterform.markAllAsTouched();
-debugger
     if (this.data) {
       this.selectedAdvanceObj = this.data.Obj;
       console.log(this.selectedAdvanceObj)
@@ -232,12 +229,15 @@ debugger
       this.getdata(this.selectedAdvanceObj.admissionId)
       this.getadvancelist(this.selectedAdvanceObj.admissionId)
       this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
-       this.draftSaveform=this.createDraftSaveForm();
-       this.IPBillMyForm=this.CreateIPBillForm();
-       this.checkdata = 1
+      this.draftSaveform = this.createDraftSaveForm();
+      this.IPBillMyForm = this.CreateIPBillForm(); 
+      this.TariffId = this.selectedAdvanceObj.tariffId
     }
     this.getChargesList();
     this.getLabRequestChargelist();
+    this.getRtrvpackagedetList()
+    this.AddBedCharge();
+
     // this.getBillheaderList();
     // this.getPharmacyAmount();
 
@@ -256,27 +256,9 @@ debugger
     else {
       this.IpbillFooterform.get('CreditBill').setValue(false);
     }
-        if(this.checkdata == 1){
-        Swal.fire({
-       title: 'Do you want to calculate the Bed Charges',
-       text: "Do you want to change the all the rate or not!",
-       icon: "warning",
-       showCancelButton: true,
-       confirmButtonColor: "#3085d6",
-       cancelButtonColor: "#d33",
-       confirmButtonText: "Yes, Change it!" 
-    }).then((flag)=>{
-      if(flag.isConfirmed){
-
-      } 
-    }) 
-    }  
-    this.setupFormListener();
-
+   
+    this.setupFormListener(); 
   } 
-  oncloseservice() {
-    this.dialogRef.close(this.serviceTable);
-  }
   private setupFormListener(): void {
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
@@ -381,12 +363,13 @@ debugger
         isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isDoctorShareGenerated:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isInterimBillFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isPackage:[0],
         isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         packageMainChargeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         classId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        tariffId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         refundAmount:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         cPrice:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         cQty: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -405,20 +388,21 @@ debugger
         packcagecharges:this.formBuilder.array([])
     });
   } 
+// Create pacakge form
   createPacakgeForm(item: any): FormGroup {
     return this.formBuilder.group({
         chargesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
         opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdIpdId:[this.opD_IPD_Id,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
         serviceId: [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        price:  [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        qty: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmt: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionPercentage:[item?.serviceId, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAmount:  [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        doctorId:[0], 
+        price:  [item?.price,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        qty: [item?.Qty,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [item?.TotalAmt,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionPercentage:[item?.ConcessionPercentage, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionAmount:  [item?.DiscAmt,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netAmount:  [item?.NetAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        doctorId:[item?.doctorId ?? 0], 
         docPercentage:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         docAmt: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         hospitalAmt:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -427,15 +411,15 @@ debugger
         isCancelled: [false],
         isCancelledBy:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: "1900-01-01", 
-        isPathology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],  
-        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isPathology:[item?.isPathology ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        isRadiology:[item?.isRadiology ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],  
+        isPackage:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
         isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        packageId: [item?.PackageServiceId,[this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      });
+      }); 
   } 
-     // Getters 
+  // Getters 
   get PackageDetArray(): FormArray {
     return this.Serviceform.get('packcagecharges') as FormArray;
   }  
@@ -495,6 +479,7 @@ debugger
       tdrBillDet: this.formBuilder.array([]),
     });
   }
+  //IP Draft Det
    createDraftBillDetails(item: any): FormGroup {
     return this.formBuilder.group({
       drNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -596,12 +581,14 @@ debugger
       }),
     });
   }
+  //IP BIll Det
   createBillDetails(item: any): FormGroup {
     return this.formBuilder.group({
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
+ // IP Adv UP
   createAdvanceUpdate(item: any): FormGroup {
     return this.formBuilder.group({
       advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -619,7 +606,6 @@ debugger
       get DraftBillDetArray(): FormArray {
     return this.draftSaveform.get('tdrBillDet') as FormArray;
   }  
-
   //service selected data
   getselectObj(obj) {
     this.Serviceform.patchValue({
@@ -652,9 +638,9 @@ debugger
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&ServiceName="
   } 
   // Service Add 
-  onSaveAddCharges() { 
-    const formValue = this.Serviceform.value 
-    let doctorid = 0; 
+  onSaveAddCharges() {
+    const formValue = this.Serviceform.value
+    let doctorid = 0;
     if (this.isDoctor) {
       if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
         this.toastr.warning('Please select Doctor', 'Warning !', {
@@ -664,42 +650,42 @@ debugger
       }
       if (formValue.doctorId)
         doctorid = this.Serviceform.get("doctorId").value;
-    }    
-      this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0) 
-      this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
-      this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
-      this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0) 
-      this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId ?? 0)
-      this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName ?? '')
-      this.Serviceform.get("doctorId").setValue(doctorid) 
+    }
+    this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
+    this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
+    this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
+    this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
+    this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)
+    this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName)
+    this.Serviceform.get("doctorId").setValue(doctorid)
+    this.Serviceform.get("tariffId").setValue(this.TariffId)
 
-      console.log(this.Serviceform.value)
-    if (this.Serviceform.valid) {   
-      if(formValue.serviceName?.isPackage == 1){  
-          this.PackageDetArray.clear();
-          this.PackageDatasource.data.forEach(item => {
+    if (this.Serviceform.valid) {
+      if (formValue.serviceName?.isPackage == 1) {
+        this.PackageDetArray.clear();
+        this.PackageDatasource.data.forEach(item => {
           this.PackageDetArray.push(this.createPacakgeForm(item));
         });
       }
-      console.log('valida service form',this.Serviceform.value)   
-      this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => { 
+      console.log('valida service form', this.Serviceform.value)
+      this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
         this.getChargesList();
-      }); 
-    }else{
-    let invalidFields = [];
-    if (this.Serviceform.invalid) {
-      for (const controlName in this.Serviceform.controls) {
-        if (this.Serviceform.controls[controlName].invalid) {
-          invalidFields.push(`${controlName}`);
+      });
+    } else {
+      let invalidFields = [];
+      if (this.Serviceform.invalid) {
+        for (const controlName in this.Serviceform.controls) {
+          if (this.Serviceform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
         }
       }
-    }
-    if (invalidFields.length > 0) {
-      invalidFields.forEach(field => {
-        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-        );
-      });
-    }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
     }
     this.interimArray = [];
     this.isDoctor = false;
@@ -754,92 +740,19 @@ debugger
         };
         console.log(submitData);
         this._IpSearchListService.AddchargesDelete(submitData).subscribe(response => {
+          if (contact.isPackage == '1' && contact.serviceId) { 
+          this.PacakgeList  = this.PacakgeList.filter(item=>item.PackageServiceId != contact.serviceId)  
+          this.PackageDatasource.data = this.PacakgeList; 
+        }  
           this.toastr.success(response.message);
           this.getChargesList();
           this.CalculateAdminCharge();
           this.CalFinalDiscper();
-        }, (error) => {
-          this.toastr.error(error.message);
-        });
+        }); 
       }
     });
 
-  } 
-  PacakgeList: any = [];
-  PacakgeOptionlist: any = [];
-  getRtrvpackagedetList(obj) {
-    var vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "ChargesId",
-      "sortOrder": 0,
-      "filters": [{"fieldName": "ChargesId","fieldValue": String(obj.chargesId),"opType": "Equals"}],
-      "columns":[{"data": "string",  "name": "string" }],
-      "exportType": "JSON"
-    } 
-    this._IpSearchListService.getpackagedetList(vdata).subscribe((response) => {
-      this.PacakgeList = response.data as [];
-      this.PacakgeList.forEach(element => {
-        this.PacakgeOptionlist.data.push(
-          {
-            ServiceId: element.packageServiceId,
-            ServiceName: element.serviceName,
-            Price: element.price || 0,
-            Qty: element.qty || 1,
-            TotalAmt: element.totalAmt,
-            ConcessionAmt: element.concessionAmount,
-            NetAmount: element.netAmount,
-            IsPathology: element.isPathology,
-            IsRadiology: element.isRadiology,
-            PackageId: element.packageId,
-            PackageServiceId: element.serviceId,
-            PacakgeServiceName: element.pacakgeServiceName,
-            DoctorName: element.doctorName || '',
-            DoctorId: element.doctorId || 0,
-          })
-      })
-      this.PackageDatasource.data = this.PacakgeOptionlist
-      this.PacakgeList = this.PackageDatasource.data
-      console.log(this.PackageDatasource.data);
-    });
-  }
-  getpackagedetList(obj) {
-    var vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "ServiceId",
-      "sortOrder": 0,
-      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
-      "columns": [{ "data": "string", "name": "string" }],
-      "exportType": "JSON"
-    }
-    this._IpSearchListService.getpackagedetServiceWiseList(vdata).subscribe((response) => {
-      this.PacakgeList = response.data as [];
-      console.log(this.PacakgeList)
-      this.PacakgeList.forEach(element => {
-        this.PacakgeOptionlist.data.push(
-          {
-            serviceId: element.packageServiceId,
-            serviceName: element.serviceName,
-            price: element.price || 0,
-            Qty: 1,
-            TotalAmt: (element.price * 1) || 0,
-            ConcessionPercentage: 0,
-            DiscAmt: 0,
-            NetAmount: (element.price * 1) || 0,
-            isPathology: element.isPathology,
-            isRadiology: element.isRadiology,
-            packageId: element.packageId,
-            PackageServiceId: element.serviceId,
-            pacakgeServiceName: element.pacakgeServiceName,
-            doctorName: element.doctorName,
-            doctorId: element.doctorId
-          })
-      })
-      this.PackageDatasource.data = this.PacakgeOptionlist
-      this.PacakgeList = this.PackageDatasource.data
-    });
-  }
+  }  
   getdata(opD_IPD_Id) {
     this.gridConfig1 = {
       apiUrl: "IPBill/IPPreviousBillList",
@@ -939,7 +852,7 @@ checkAdvBalAmt:any=0;
       this.copiedData = structuredClone(this.chargeslist);
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
       this.getNetAmtSum()
-      this.getbillbalamt();
+      this.getbillbalamt(); 
     },
       (error) => {
         this.isLoading = 'list-loaded';
@@ -1130,7 +1043,7 @@ checkAdvBalAmt:any=0;
     }, { emitEvent: false }); // Prevent infinite loop 
       this.BillBalAmount();
   }  
-  //Save
+  //Save PopUp MSG
   onSave() {
     debugger
     let invalidFields = [];
@@ -1192,7 +1105,7 @@ checkAdvBalAmt:any=0;
       Swal.fire("Please check list is blank ") 
     }
   }
-
+//Save with normal
   SaveBill1() { 
     this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
     this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value)
@@ -1311,6 +1224,7 @@ checkAdvBalAmt:any=0;
       }
     }
   } 
+  //Save with credit
   onSaveDraft() {
     debugger
     this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
@@ -1377,7 +1291,99 @@ checkAdvBalAmt:any=0;
     }
     this.getChargesList();
     this.interimArray = [];
-  }  
+  }   
+    PacakgeList: any = [];  
+  ////Pacakge Section
+  getRtrvpackagedetList() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ChargesId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "OPD_IPD_Id", "fieldValue": String(this.opD_IPD_Id), "opType": "Equals" }],
+      "columns": [{ "data": "string", "name": "string" }],
+      "exportType": "JSON"
+    }
+    this._IpSearchListService.getRtevIPPackageDetList(vdata).subscribe((response) => {
+      this.PackageDatasource.data = response.data as ChargesList[];
+      console.log(this.PackageDatasource.data)
+      this.PackageDatasource.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: element.Qty || 1,
+            TotalAmt: element.totalAmt || 0,
+            ConcessionPercentage: element.concessionPercentage || 0,
+            DiscAmt: element.concessionAmount || 0,
+            NetAmount: element.netAmount || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName,
+            doctorId: element.doctorId
+          }) 
+      })
+      this.PackageDatasource.data = this.PacakgeList 
+    });
+  }
+  //Pacakge list        
+  getpackagedetList(obj) {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
+      "columns": [{ "data": "string", "name": "string" }],
+      "exportType": "JSON"
+    }
+    this._IpSearchListService.getpackagedetServiceWiseList(vdata).subscribe((response) => {
+      this.PackageDatasource.data = response.data as ChargesList[]; 
+      this.PackageDatasource.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: 0,
+            DiscAmt: 0,
+            NetAmount: (element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName,
+            doctorId: element.doctorId
+          })
+      })
+      this.PackageDatasource.data = this.PacakgeList
+    });
+  }
+  //Pacakge page Open
+  getpackageDet(contact) {
+    const dialogRef = this._matDialog.open(PackageDetailsComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '70%',
+        data: {
+          Obj: contact,
+          PatientDet: this.selectedAdvanceObj,
+          FormName: 'IPD Package'
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getChargesList()
+    });
+  }
   getLabRequestChargelist() {
     this.chargeslist1 = [];
     this.dataSource1.data = [];
@@ -1389,20 +1395,13 @@ checkAdvBalAmt:any=0;
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
-        {
-          "fieldName": "OP_IP_ID",
-          "fieldValue": String(this.opD_IPD_Id),
-          "opType": "Equals"
-        }
-
-      ],
+        { "fieldName": "OP_IP_ID",  "fieldValue": String(this.opD_IPD_Id), "opType": "Equals" } ],
       "Columns": [],
       "exportType": "JSON"
     }
     this._IpSearchListService.getchargesList1(m).subscribe(response => {
       this.chargeslist1 = response.data
-      this.dataSource1.data = this.chargeslist1;
-      console.log(this.dataSource1.data)
+      this.dataSource1.data = this.chargeslist1; 
       this.isLoading = 'list-loaded';
     },
       (error) => {
@@ -1439,8 +1438,7 @@ checkAdvBalAmt:any=0;
       "userId": this.accountService.currentUserValue.userId,
       "chargesDate": this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
       "doctorId": 0,
-    }
-    console.log(m_data)
+    } 
     this._IpSearchListService.InsertIPAddChargesNew(m_data).subscribe(data => {
       if (data) {
         this.getLabRequestChargelist();
@@ -1449,49 +1447,20 @@ checkAdvBalAmt:any=0;
     });
     this.onClearServiceAddList()
     this.isLoading = '';
-  }
-
+  } 
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  }
-  chkprint: boolean = false;
-  AdList: boolean = false;
-  viewgetIPAdvanceReportPdf(contact) {
-    this.chkprint = true;
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      // this.SpinLoading =true;
-      this.AdList = true;
-
-      this._IpSearchListService.getViewAdvanceReceipt(
-        contact.AdvanceDetailID
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Ip advance Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100)
-    this.chkprint = false;
-  }
-    openServiceTable(): void {
+  } 
+  openServiceTable(): void {
     this._matDialog.open(this.serviceTable, {
       width: '50%',
       height: '60%',
     })
   }
-  // onwhatsappbill() {
+  oncloseservice() {
+    this.dialogRef.close(this.serviceTable);
+  }
+  //onwhatsappbill() {
   getWhatsappshareIPFinalBill(el, vmono) {
 
     if (vmono != '' && vmono != "0") {
@@ -1594,23 +1563,7 @@ checkAdvBalAmt:any=0;
       console.log('The dialog was closed - Insert Action', result);
     });
   }
-  getpackageDet(contact) {
-    const dialogRef = this._matDialog.open(IPPackageDetComponent,
-      {
-        maxWidth: "100%",
-        height: '75%',
-        width: '70%',
-        data: {
-          Obj: contact,
-          Selected: this.selectedAdvanceObj,
-          FormName: 'IPD Package'
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.getChargesList()
-    });
-  }
+
   OnSaveEditedValue(element) {
     if (element.qty == 0) {
       element.qty = 1;
@@ -1618,15 +1571,13 @@ checkAdvBalAmt:any=0;
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    }
-
+    } 
     let DoctorId = 0
     if (this.IpbillFooterform.get('EditDoctor').value) {
       DoctorId = this.IpbillFooterform.get('EditDoctor').value
     } else {
       DoctorId = element.doctorId
-    }
-
+    } 
     let addCharge = {
       "chargesId": element.chargesId,
       "price": element.price,
@@ -1636,8 +1587,7 @@ checkAdvBalAmt:any=0;
       "concessionAmount": element.concessionAmount || 0,
       "netAmount": element.netAmount || 0,
       "doctorId": DoctorId || 0
-    }
-    console.log(addCharge)
+    } 
     this._IpSearchListService.UpdateChargesDetails(addCharge, element.chargesId).subscribe(response => {
       if (response) {
         this.getChargesList()
@@ -1658,6 +1608,7 @@ checkAdvBalAmt:any=0;
   DropDownValue(Obj) {
     console.log(Obj)
   }
+  //Table calculation
   gettablecalculation(element) {
     // Checking if old value is same as new value
     const oldElement = this.copiedData.find(i => i.chargesId === element.chargesId);
@@ -1673,6 +1624,8 @@ checkAdvBalAmt:any=0;
       element.DiscAmt = 0;
       element.netAmount = 0;
     }
+      this.getNetAmtSum()
+      this.getbillbalamt(); 
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -1782,6 +1735,21 @@ checkAdvBalAmt:any=0;
       }
     })  
   }
+  AddBedCharge(){ 
+      Swal.fire({
+        title: 'Do you want to calculate the Bed Charges',
+        text: "Do you want to change the all the rate or not!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Change it!"
+      }).then((flag) => {
+        if (flag.isConfirmed) {
+
+        }
+      })
+    } 
 }
 
 export class Bill {

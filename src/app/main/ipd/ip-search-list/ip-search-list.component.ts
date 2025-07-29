@@ -773,6 +773,20 @@ export class ChargesList {
     doctorName: any;
     ConcessionPercentage: any;
     EditDoctor: any;
+    doctorId: any;
+    isPathology: any;
+    isRadiology: any;
+    pacakgeServiceName: any;
+    packageServiceId: any;
+    price: any;
+    packageId: any;
+    serviceId: any;
+    serviceName: any;
+    totalAmt:any;
+    concessionPercentage:any;
+    concessionAmount:any;
+    netAmount:any;
+ 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -794,8 +808,21 @@ export class ChargesList {
         this.ChargesAddedName = ChargesList.ChargesAddedName || '';
         this.BalanceQty = ChargesList.BalanceQty || 0;
         this.IsStatus = ChargesList.IsStatus || 0;
+        this.netAmount = ChargesList.netAmount || 0;
+        this.concessionAmount = ChargesList.concessionAmount || 0;
+        this.totalAmt = ChargesList.totalAmt || 0;
+        this.concessionPercentage = ChargesList.concessionPercentage || 0;
         this.extMobileNo = ChargesList.extMobileNo || ''
         this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+        this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
+        this.packageServiceId = ChargesList.packageServiceId || 0;
+        this.price = ChargesList.price || 0;
+        this.packageId = ChargesList.packageId || '';
+        this.doctorName = ChargesList.doctorName || 0;
+        this.serviceName = ChargesList.serviceName || '';
+        this.doctorId = ChargesList.doctorId || 0;
+        this.isPathology = ChargesList.isPathology || 0;
+        this.isRadiology = ChargesList.isRadiology || 0;
     }
 }
 export class AdvanceHeader {

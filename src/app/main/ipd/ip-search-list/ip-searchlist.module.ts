@@ -58,8 +58,7 @@ import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/dis
 import { InterimBillComponent } from './interim-bill/interim-bill.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
-import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { IPPackageDetComponent } from './ippackage-det/ippackage-det.component';
+import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component'; 
 
 const routes: Routes = [
     {
@@ -89,8 +88,7 @@ const routes: Routes = [
         InitiateDischargeComponent,
         DischargeInitiateProcessComponent,
         DischargeSummaryTemplateComponent,
-        IPRefundofAdvanceComponent,
-        IPPackageDetComponent
+        IPRefundofAdvanceComponent 
     ],
     imports: [
         RouterModule.forChild(routes),

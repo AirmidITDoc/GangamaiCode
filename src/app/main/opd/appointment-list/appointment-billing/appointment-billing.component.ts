@@ -53,8 +53,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   vClassId: any = 0; 
   currentDate = new Date();
   PatientName: any;  
-  className = "OPD";
- 
+  className = "OPD"; 
   screenFromString = 'Common-form';  
   AgeYear: any;   
   ConcessionId = 0;
@@ -124,6 +123,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.vOPIPId = this.patientDetail.visitId;  
       this.vTariffId = this.patientDetail.tariffId;
       this.vhospitalId = this.patientDetail.hospitalId;
+       this.vClassId  = this.patientDetail.classId 
       this.savebtn = false 
       this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)  
     } 
@@ -362,6 +362,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       packageId: [ 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
       classId: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [this.vTariffId ?? 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
@@ -1082,15 +1083,15 @@ export class ChargesList {
   OpdIpdId: any;
   serviceName: any;
 
-   doctorName:any;
-    doctorId:any;
-    isPathology:any;
-    isRadiology:any;
-pacakgeServiceName:any;
-packageServiceId:any; 
-price:any;
-packageId:any;
-ConcessionPercentage:any;
+  doctorName: any;
+  doctorId: any;
+  isPathology: any;
+  isRadiology: any;
+  pacakgeServiceName: any;
+  packageServiceId: any;
+  price: any;
+  packageId: any;
+  ConcessionPercentage: any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -1117,8 +1118,17 @@ ConcessionPercentage:any;
     this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
     this.OpdIpdId = ChargesList.OpdIpdId || '';
     this.serviceName = ChargesList.serviceName || ''
+    this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+    this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
+    this.packageServiceId = ChargesList.packageServiceId || 0;
+    this.price = ChargesList.price || 0;
+    this.packageId = ChargesList.packageId || '';
+    this.doctorName = ChargesList.doctorName || 0;
+    this.doctorId = ChargesList.doctorId || 0;
+    this.isPathology = ChargesList.isPathology || 0;
+    this.isRadiology = ChargesList.isRadiology || 0;
   }
-}  
+}
 export class PaymentInsert {
   PaymentId: number;
   BillNo: number;
