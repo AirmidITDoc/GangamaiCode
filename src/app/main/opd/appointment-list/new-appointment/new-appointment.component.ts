@@ -17,6 +17,7 @@ import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import Swal from 'sweetalert2';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-appointment',
@@ -210,6 +211,9 @@ export class NewAppointmentComponent implements OnInit {
             });
         }
 
+        this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
+        this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
+       
     }
     createSearchForm() {
         return this.formBuilder.group({
