@@ -58,7 +58,6 @@ export class AirmidSignatureComponent implements OnInit {
         // have to clear it manually.
         this.signaturePad.clear();
     }
-
     clear(): void {
         this.signaturePad.clear();
     }
@@ -76,12 +75,20 @@ export class AirmidSignatureComponent implements OnInit {
         if (this.data) {
             this.refId = this.data.refId;
             this.refType = this.data.refType;
+            this.docName=this.data.docName;
         }
         if (this.refId > 0) {
             this._service.GetData("Files/get-signature?RefId=" + this.refId + "&RefType=" + this.refType).subscribe((data) => {
-                 if (data)
-                    this.signaturePad.fromDataURL(data);
-
+                if (data.data) {
+                    if (data.type == "signature") {
+                        this.signaturePad.fromDataURL(data.data);
+                        this.isFileUpload = false;
+                    }
+                    else {
+                        this.sanitizeImagePreview = data.data;
+                        this.isFileUpload = true;
+                    }
+                }
             });
         }
     }
@@ -97,7 +104,6 @@ export class AirmidSignatureComponent implements OnInit {
     // }
 
     onImageChange(event: any) {
-        debugger
         if (!event.target.files.length) return;
         const file = event.target.files[0];
 
@@ -107,7 +113,6 @@ export class AirmidSignatureComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((croppedBase64) => {
-            debugger
             console.log("Dialog closed. Received:", croppedBase64);
             if (croppedBase64) {
                 this.sanitizeImagePreview = croppedBase64;
@@ -133,8 +138,18 @@ export class AirmidSignatureComponent implements OnInit {
     }
     OnSubmit() {
         debugger
-        if (this.sanitizeImagePreview) {
-            this.dialogRef.close(this.sanitizeImagePreview)
+        if (this.isFileUpload) {
+            this.objFile = {
+                srNo: 1,
+                id: 0,
+                docName: this.docName + '_File',
+                docSavedName: '',
+                Document: null,
+                isDelete: false,
+                base64: this.sanitizeImagePreview,
+                refId: this.refId,
+                refType: this.refType
+            }
         }
         else {
             if (this.signaturePad.isEmpty()) {
@@ -144,7 +159,7 @@ export class AirmidSignatureComponent implements OnInit {
             this.objFile = {
                 srNo: 1,
                 id: 0,
-                docName: this.docName,
+                docName: this.docName + '_Signature',
                 docSavedName: '',
                 Document: null,
                 isDelete: false,
@@ -152,9 +167,9 @@ export class AirmidSignatureComponent implements OnInit {
                 refId: this.refId,
                 refType: this.refType
             }
-            this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe((data) => {
-                this.dialogRef.close(this.signaturePad.toDataURL());
-            });
         }
+        this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe((data) => {
+            this.dialogRef.close(this.signaturePad.toDataURL());
+        });
     }
 }
