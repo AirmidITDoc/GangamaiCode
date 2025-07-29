@@ -138,22 +138,6 @@ export class NUserComponent implements OnInit {
     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails());
   }
 
-  //  getList() {
-  //     var SelectQuery = {
-  //       "searchFields": [
-
-  //       ],
-  //       "mode": "LoginAccessConfigList"
-  //     }
-  //     console.log(SelectQuery);
-  //     this._CreateUserService.getApprovalList(SelectQuery).subscribe(Visit => {
-  //       this.dsApprovalList.data = Visit as UserDetail[];
-  //       console.log("Get data:",this.dsApprovalList.data)
-  //       this.dsApprovalList.sort = this.sort;
-  //       this.dsApprovalList.paginator = this.paginator;
-  //     });
-  //   }
-
   getList() {
     const SelectQuery = {
       searchFields: [],
@@ -224,8 +208,17 @@ export class NUserComponent implements OnInit {
         value: item.unitId,
         text: item.hospitalName
       }))
+      debugger
       console.log("Unit data:", this.RtrvUnitList)
-      // this.ddlUnit.SetSelection(this.RtrvUnitList);
+        const assignedUnits = this.RtrvUnitList.filter(unit => {
+        const originalItem = rowData.find(r => r.unitId === unit.value);
+        return originalItem?.isAssigned === true;
+      });
+
+      this.myuserApprovalform.patchValue({
+        multipleUnitId: assignedUnits
+      });
+
       setTimeout(() => {
         this.myuserApprovalform.get('multipleUnitId')?.setValue(this.RtrvUnitList);
       }, 0);
@@ -255,6 +248,14 @@ export class NUserComponent implements OnInit {
         text:item.storeName
       }))
       console.log("store data:", this.RtrvStoreList)
+        const assignedStore = this.RtrvUnitList.filter(store => {
+        const originalItem = rowData.find(r => r.storeId === store.value);
+        return originalItem?.isAssigned === true;
+      });
+
+      this.myuserApprovalform.patchValue({
+        multipleUnitId: assignedStore
+      });
       setTimeout(() => {
         this.myuserApprovalform.get('multipleStoreId')?.setValue(this.RtrvStoreList);
       }, 0);
@@ -278,13 +279,7 @@ export class NUserComponent implements OnInit {
           Validators.required,
           Validators.pattern('[a-z A-Z 0-9_ ]*')
         ]],
-      password: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^\\d{0,12}(\\.\\d*)?$")
-        ]
-      ],
+      password: ["",[ Validators.required]],
       unitId: [1],
       mobileNo: ["", [
         Validators.required,

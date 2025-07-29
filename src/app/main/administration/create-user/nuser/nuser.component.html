@@ -31,7 +31,8 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="UnitName" formControlName="unitId"
-                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().unitId"
+                                                [formGroup]="myuserApprovalform"
+                                                [validations]="getValidationMessages().unitId"
                                                 [mode]="autocompleteModeUnitName"
                                                 (selectionChange)="selectChangeUnitName($event)">
                                             </airmid-dropdown>
@@ -71,18 +72,16 @@
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                            <!-- <airmid-textbox label="PassWord" formControlName="password" [formGroup]="myuserApprovalform"
-                                                                                        [validations]="getValidationMessages().password" [maxLength]="30" #passwordTextbox>
-                                                                                    </airmid-textbox> -->
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Password</mat-label>
                                                 <input matInput formControlName="password" autocomplete="new-password"
-                                                [type]="hidePassword ? 'password' : 'text'" />
-                                            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
-                                                [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword"
-                                                type="button">
-                                                <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                                            </button>
+                                                    [type]="hidePassword ? 'password' : 'text'" />
+                                                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                                                    [attr.aria-label]="'Toggle password visibility'"
+                                                    [attr.aria-pressed]="!hidePassword" type="button">
+                                                    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility'
+                                                        }}</mat-icon>
+                                                </button>
                                             </mat-form-field>
                                             <!-- <mat-error *ngIf="myuserApprovalform.get('password')?.hasError('required')">
                                                 Password is required
@@ -93,30 +92,38 @@
                                     <div fxLayout="row" fxLayoutGap="10px">
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="MailID" formControlName="mailId"
-                                                [formGroup]="myuserApprovalform" [validations]="getValidationMessages().mailId"
-                                                [maxLength]="30">
+                                                [formGroup]="myuserApprovalform"
+                                                [validations]="getValidationMessages().mailId" [maxLength]="30">
                                             </airmid-textbox>
                                         </div>
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="RoleName" formControlName="roleId"
                                                 [formGroup]="myuserApprovalform" [validations]="getValidationMessages().roleId"
                                                 [mode]="autocompleteModeRoleName"
                                                 (selectionChange)="selectChangeRoleName($event)">
                                             </airmid-dropdown>
+                                        </div> -->
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="StoreName" formControlName="storeId"
+                                                [formGroup]="myuserApprovalform"
+                                                [validations]="getValidationMessages().storeId"
+                                                [mode]="autocompleteModeStoreName"
+                                                (selectionChange)="selectChangeStoreName($event)">
+                                            </airmid-dropdown>
                                         </div>
                                     </div>
 
                                     <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="StoreName" formControlName="storeId"
                                                 [formGroup]="myuserApprovalform" [validations]="getValidationMessages().storeId"
                                                 [mode]="autocompleteModeStoreName"
                                                 (selectionChange)="selectChangeStoreName($event)">
                                             </airmid-dropdown>
-                                        </div>
+                                        </div> -->
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="34%">
                                             <airmid-dropdown label="WebRoleName" formControlName="webRoleId"
                                                 [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().webRoleId"
@@ -124,10 +131,30 @@
                                                 (selectionChange)="selectChangeWebRoleName($event)">
                                             </airmid-dropdown>
                                         </div>
+
+                                        <div fxFlex="30%" fxFlex.xs="100%">
+                                            <mat-checkbox formControlName="isDoctorType" (change)="chkdoctorApp($event)"
+                                                style="padding: 10px;">IsDoctor
+                                            </mat-checkbox>&nbsp;
+
+                                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" fxFlex="50%"
+                                                [formGroup]="myuserApprovalform"
+                                                [validations]="getValidationMessages().doctorId"
+                                                [mode]="autocompleteModedoctor" *ngIf="docflag">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%">
+                                            <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
+                                                [formGroup]="myuserApprovalform"
+                                                [validations]="getValidationMessages().isDateIntervalDays"
+                                                [maxLength]="30">
+                                            </airmid-textbox>
+                                        </div>
                                     </div>
 
-                                    <div fxLayout="row" fxLayoutGap="10px">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <!-- <div fxLayout="row wrap" fxLayoutGap="10px">
+                                        <div fxFlex="50%" fxFlex.xs="100%" style="border: 1px solid red;">
                                             <mat-checkbox formControlName="isDoctorType" (change)="chkdoctorApp($event)"
                                                 style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
@@ -136,7 +163,6 @@
                                                 [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().doctorId"
                                                 [mode]="autocompleteModedoctor" *ngIf="docflag">
-                                                <!-- [value]="vdoctorID"  -->
                                             </airmid-dropdown>
                                         </div>
 
@@ -151,14 +177,13 @@
                                                     formControlName="discApplyPer">
                                             </mat-form-field>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                    <!-- <hr style="border: none; border-top: 1px solid #ccc; margin: 12px 0;"> -->
-                                    <mat-divider [inset]="false"></mat-divider>
+                                    <!-- <mat-divider [inset]="false"></mat-divider>
 
                                     <div class="user-form-col py-12" fxLayout="column">
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <!-- [checked] -->
+                                           
                                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                                 class="w-100-p gap-8">
                                                 <mat-checkbox formControlName="isGrnverify" [(ngModel)]="visGRNVerify">
@@ -178,12 +203,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- <hr style="border: none; border-top: 1px solid #ccc; margin: 12px 0;"> -->
                                     <mat-divider [inset]="false"></mat-divider>
 
                                     <div class="user-form-col py-12" fxLayout="column">
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <!-- [checked] -->
+                                           
                                             <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                                 class="w-100-p gap-8" fxFlex="50%">
                                                 <mat-checkbox formControlName="pharExtOpt" [(ngModel)]="vpharExtOpt">
@@ -199,7 +223,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- <hr style="border: none; border-top: 1px solid #ccc; margin: 12px 0;"> -->
                                     <mat-divider [inset]="false"></mat-divider>
 
                                     <div class="user-form-col py-12" fxLayout="column">
@@ -208,7 +231,7 @@
                                                 <mat-label class="h4 mb-2"> Icon Info.</mat-label>
                                             </div>
                                             <div class="icon-info-row" fxLayout="column" fxLayout.gt-xs="row">
-                                                <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid"> -->
+                                                
                                                 <div class="icon-info-col " fxLayout="row wrap" style="row-gap: 4px;">
                                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-checkbox formControlName="isCollection"
@@ -252,7 +275,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
 
@@ -332,29 +355,30 @@
 
                                         <ng-container matColumnDef="Header">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                                            <mat-cell *matCellDef="let element"
-                                                fxShow.gt-sm>{{element.AccessValueId ?? element.accessValueName}}</mat-cell>
+                                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{element.AccessValueId ??
+                                                element.accessValueName}}</mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="CheckBox">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                 fxShow.gt-sm>CheckBox</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                <mat-checkbox 
-                                                    [checked]="getCheckboxValue(element)"
+                                                <mat-checkbox [checked]="getCheckboxValue(element)"
                                                     (change)="setCheckboxValue(element, $event.checked)">
                                                 </mat-checkbox>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="InputField">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Value</mat-header-cell>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Value</mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <ng-container *ngIf="(element.IsInputField && element.AccessValueId) === 'IsDiscount' || (element.accessValue && element.accessValueName) === 'IsDiscount'">
+                                                <ng-container
+                                                    *ngIf="(element.IsInputField && element.AccessValueId) === 'IsDiscount' || (element.accessValue && element.accessValueName) === 'IsDiscount'">
                                                     <mat-form-field appearance="fill">
-                                                         <input matInput [maxLength]="100"
-                                                                [value]="getInputFieldValue(element)"
-                                                                (input)="setInputFieldValue(element, $event.target.value)" />
+                                                        <input matInput [maxLength]="100"
+                                                            [value]="getInputFieldValue(element)"
+                                                            (input)="setInputFieldValue(element, $event.target.value)" />
                                                     </mat-form-field>
                                                 </ng-container>
                                             </mat-cell>

@@ -122,25 +122,25 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     }
     this.patientInfoReset();
   }
-  getSelectedObjOT(obj) {
+  // getSelectedObjOT(obj) {
 
 
-    if ((obj.regID ?? 0) > 0) {
-        console.log(obj)
+  //   if ((obj.regID ?? 0) > 0) {
+  //       console.log(obj)
      
-      this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment = obj.departmentName
-      this.vOPDNo = obj.ipdNo
-      this.vAge = obj.age
-      this.vMobNo = obj.refDocName
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-      this.opIpId = obj
+  //     this.vRegNo = obj.regNo
+  //     this.vDoctorName = obj.doctorName
+  //     this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+  //     this.vDepartment = obj.departmentName
+  //     this.vOPDNo = obj.ipdNo
+  //     this.vAge = obj.age
+  //     this.vMobNo = obj.refDocName
+  //     this.vTariffName = obj.tariffName
+  //     this.vCompanyName = obj.companyName
+  //     this.opIpId = obj
      
-    }
-  }
+  //   }
+  // }
  getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {

@@ -11,9 +11,10 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 import { PrescriptionReturnService } from '../prescription-return.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 
 @Component({
   selector: 'app-new-prescriptionreturn',
@@ -465,37 +466,39 @@ export class NewPrescriptionreturnComponent implements OnInit {
     // }
   }
 
-  viewgetIpprescriptionreturnReportPdf(element) {
-    this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
-    //   setTimeout(() => {
-    //     let param = {
-
-    //         "searchFields": [
-    //           {
-    //             "fieldName": "PresReId",
-    //             "fieldValue": "10012",
-    //             "opType": "Equals"
-    //           }
-    //         ],
-    //         "mode": "NurIPprescriptionReturnReport"
-    //       }
-
-    //   this._PrescriptionReturnService.getReportView(param).subscribe(res => {
-
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "Nursing Prescription Return" + " " + "Viewer"
-    //         }
-    //       });
-    //     matDialog.afterClosed().subscribe(result => {
-    //     });
-    //   });
-    // }, 100);
+  viewgetIpprescriptionreturnReportPdf(response) {
+    console.log(response)
+           // this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
+            setTimeout(() => {
+               let param = {
+                   "searchFields": [
+                       {
+                           "fieldName": "PresReId",
+                           "fieldValue": String(response.presReId),
+                           "opType": "Equals"
+                       }
+                   ],
+                   "mode": "NurIPprescriptionReturnReport"
+               }
+   
+               console.log(param)
+               this._PrescriptionReturnService.getReportView(param).subscribe(res => {
+   
+                   const matDialog = this._matDialog.open(PdfviewerComponent,
+                       {
+                           maxWidth: "85vw",
+                           height: '750px',
+                           width: '100%',
+                           data: {
+                               base64: res["base64"] as string,
+                               title: "Nursing Prescription Return" + " " + "Viewer"
+                           }
+                       });
+                   matDialog.afterClosed().subscribe(result => {
+                   });
+               });
+           }, 100);
+         
   }
 
 }

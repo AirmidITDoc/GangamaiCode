@@ -8,20 +8,21 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 })
 export class OtReservationService {
 
- requestform: FormGroup;
+ reservationForm: FormGroup;
      myformSearch: FormGroup;
      constructor(
          private _httpClient: ApiCaller,
          private _formBuilder: UntypedFormBuilder,
          private _FormvalidationserviceService: FormvalidationserviceService
      ) {
-         this.requestform = this.createRequestForm();
+         this.reservationForm = this.createReservationForm();
          this.myformSearch = this.createSearchForm();
      }
  
-     createRequestForm(): FormGroup {
+     createReservationForm(): FormGroup {
          return this._formBuilder.group({
              cityId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+               opIpType:  ["OP"],
              cityName: ["",
                  [
                      Validators.required,
@@ -39,11 +40,12 @@ export class OtReservationService {
          return this._formBuilder.group({
              CityNameSearch: [""],
              IsDeletedSearch: [""],
+             
          });
      }
  
      initializeFormGroup() {
-         this.createRequestForm();
+         this.createReservationForm();
      }
  
     

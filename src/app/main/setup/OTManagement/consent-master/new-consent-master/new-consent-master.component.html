@@ -47,7 +47,18 @@
                         </angular-editor>
                     </div>
                 </div>
-
+ <div style="margin-top: 10px; font-size: 14px; color: #555;">
+                                    <strong>Note:</strong> Use the following fields enclosed in <strong>double curly
+                                        braces</strong> in the report template. They
+                                    will be automatically replaced with actual values:
+                                    <ul style="margin: 4px 0 0 16px; padding: 0; list-style-type: disc;">
+                                        <li>{{ '{{PatientName}}' }}</li>
+                                        <li>{{ '{{DepartmentName}}' }}</li>
+                                        <li>{{ '{{DoctorName}}' }}</li>
+                                        <li>{{ '{{RefDoctorName}}' }}</li>
+                                        <li>{{ '{{AgeYear}}' }}</li>
+                                    </ul>
+                                </div>
                 <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
                     <div>
                         <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider> -->

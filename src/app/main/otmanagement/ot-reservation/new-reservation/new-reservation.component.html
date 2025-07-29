@@ -2,169 +2,173 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Booking Request</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Reservation</span>
             </div>
             <div class="modal-header-right">
-                <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-            </div>
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
         </div>
     </div>
 
-       <div class="modal-body" fusePerfectScrollbar>
-         <div class="modal-body-container">
-          <div fxLayout="column" class="gap-12"></div>
-           <form  [formGroup]="requestForm">
-               <div class="modal-card-container">
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12"></div>
+            <form [formGroup]="reservationForm">
+                <div class="modal-card-container">
+ 
 
-                        
-                      
-                            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
-                             <!-- <div class="radio-container">
-                                        <mat-radio-group aria-label="Select an option" formControlName="regRadio"
-                                            name="regRadio" (change)="onChangeReg($event)">
+
+                    <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
+                        <!-- <div class="radio-container">
+                                        <mat-radio-group aria-label="Select an option" formControlName="opIpType"
+                                            name="opIpType" (change)="onChangeReg($event)">
                                             <mat-radio-button value="registration">OP </mat-radio-button>
                                             <mat-radio-button value="registrered">IP</mat-radio-button>
                                         </mat-radio-group>
                                     </div> -->
-                                     <div class="radio-container">
-                                    <mat-radio-group aria-label="Select an option" formControlName="requestForm"
-                                        name="regRadio" (change)="onChangeReg($event)"
-                                        (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
-                                        <mat-radio-button value="OP">OP</mat-radio-button>
-                                        <mat-radio-button value="IP">IP</mat-radio-button>
-                                    </mat-radio-group>
+                        <div class="radio-container">
+                            <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm" formControlName="opIpType" name="opIpType"
+                                (change)="onChangeReg($event)" (blur)="onChangeReg($event)"
+                                [(ngModel)]="vSelectedOption">
+                                <mat-radio-button value="OP">OP</mat-radio-button>
+                                <mat-radio-button value="IP">IP</mat-radio-button>
+                            </mat-radio-group>
 
-                                </div>
-                             <div class="input-container gap-8" fxFlex>
+                        </div>
+                        <!-- <div class="input-container gap-8" fxFlex>
 
-                                <airmid-autocomplete lbl="RegId" [formGroup]="requestForm" formControlName="RegID"
-                                    placeholderText="Op-RegNo/First Name/Last Name/Mobile No" label="Search Op-RegNo / First Name / Last Name / Mobile No"
-                                    ApiUrl="Admission/search-patient?Keyword="
-                                    (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
-                                    TextField="formattedText">
-                                </airmid-autocomplete>
-                               
-                            </div>
-                            
-                                <div class="input-container gap-8" fxFlex>
+                            <airmid-autocomplete lbl="opIpId" [formGroup]="reservationForm" formControlName="opIpId"
+                                placeholderText="Op-RegNo/First Name/Last Name/Mobile No"
+                                label="Search Op-RegNo / First Name / Last Name / Mobile No"
+                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjOT($event)"
+                                ValueField="admissionID" TextField="formattedText">
+                            </airmid-autocomplete>
 
-                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'OP'"
-                                        [formGroup]="requestForm" formControlName="RegID"
+                        </div> -->
+
+                        <div class="input-container gap-8" fxFlex>
+
+                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'OP'"
+                                        [formGroup]="reservationForm" formControlName="opIpId"
                                         placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
-                                        ValueField="regId">
-                                    </airmid-autocomplete> -->
+                                        ValueField="opIpId">
+                                    </airmid-autocomplete>
 
-                                    <!-- <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('requestForm').value == 'IP'"
-                                        [formGroup]="requestForm" formControlName="RegID"
+                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'IP'"
+                                        [formGroup]="reservationForm" formControlName="opIpId"
                                         placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
-                                    </airmid-autocomplete> -->
-                                </div>
+                                    </airmid-autocomplete>
                         </div>
-                       
-                      
                     </div>
-                    <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                        <div class="patient-info-sales my-8">
-                                            <div class="patient-info-title border-bottom pb-2">
-                                                <span class="h1">Patient Information</span>
-                                            </div>
-                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                                fxLayoutAlign="space-between center" class="patient-info">
-                                                <div class="patient-sub">
-                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                        fxLayoutAlign="space-between">
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">UHID No
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vRegNo}}</span>
-                                                            </div>
-                                                             <div class="patient-col">
-                                                                <span class="patient-col-key">OPD No</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vOPDNo}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{ vPatientName
-                                                                    }}</span>
-                                                            </div>
+
+
+                </div>
+                <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                        <div class="patient-info-container">
+                            <div class="patient-info-box">
+                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                    <div class="patient-info-sales my-8">
+                                        <div class="patient-info-title border-bottom pb-2">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutAlign="space-between" >
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">UHID No
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vRegNo}}</span>
                                                         </div>
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                             <div class="patient-col">
-                                                                  <span class="patient-col-key">Age 
-                                                                 </span>
-                                                                  <span>:</span>
-                                                                 <span
-                                                                    class="patient-col-value">{{vAge}}</span>
-                                                            </div>
-                                                             <div class="patient-col">
-                                                                <span class="patient-col-key">Department</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vDepartment}}</span>
-                                                            </div>
-                                                                  <div class="patient-col">
-                                                                <span class="patient-col-key">Mobile No
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vMobNo}}</span>
-                                                            </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">OPD No</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vOPDNo}}</span>
                                                         </div>
-                                                         <div fxLayout="column" fxLayoutGap="6px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Doctor Name</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vDoctorName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">terrif</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vTariffName}}</span>
-                                                            </div>
-                                                             <div class="patient-col">
-                                                                <span class="patient-col-key">Company Name</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vCompanyName}}</span>
-                                                            </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{ vPatientName
+                                                                }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Age
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vAge}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Department</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vDepartment}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Mobile No
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vMobNo}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vDoctorName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">tariff</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vTariffName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vCompanyName}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </mat-card>
-                                </div>
+                                    </div>
+                                </mat-card>
                             </div>
                         </div>
                     </div>
+                </div>
 
- <div  class="dialog-content-wrapper modal-wrapper grid-container">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
-</span>
-            </div>
-           
-        </div>
-    </div>
- </div>
-        <div class="modal-body" fusePerfectScrollbar>
+                <div class="dialog-content-wrapper modal-wrapper grid-container">
+                    <div class="modal-header accent">
+                        <div class="modal-header-content">
+                            <div class="modal-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                 <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
            
                 <input type="hidden" name="cityId" formControlName="cityId">
@@ -172,8 +176,8 @@
                     <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
                        <airmid-dropdown 
                             label="Surgery Name" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -181,9 +185,9 @@
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                        <airmid-dropdown 
-                            label="Surgery Name 1" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            label="Surgeron Name 1" 
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -191,9 +195,9 @@
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
-                            label="Surgery Name 2" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            label="Surgeon Name 2" 
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -202,8 +206,8 @@
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Anathesia doctor 1" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -212,8 +216,8 @@
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Anathesia doctor 2" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -222,8 +226,8 @@
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="OT Table" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -231,9 +235,9 @@
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
                         <airmid-dropdown 
-                            label="Anesth Type" 
-                            formControlName="requestForm" 
-                            [formGroup]="requestForm"
+                            label="Anathesia Type" 
+                            formControlName="reservationForm" 
+                            [formGroup]="reservationForm"
                             [value]="data?.stateId" 
                             [validations]="getValidationMessages(). countryName"
                             [mode]="autocompleteModestatus">
@@ -241,7 +245,7 @@
                     </div>
                 </div>
  <airmid-textbox label="Enter Instruction" formControlName="Instruction" 
-                                    [formGroup]="requestForm" [(ngModel)]="vInstruction">
+                                    [formGroup]="reservationForm" [(ngModel)]="vInstruction">
                                 </airmid-textbox>
                 
                         <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
@@ -264,9 +268,8 @@
             </div>
          </div>
 
-     </form>
+            </form>
 
-         </div>
         </div>
-     </div>
-    
+    </div>
+</div>

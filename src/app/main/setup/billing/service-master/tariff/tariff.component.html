@@ -100,15 +100,27 @@
                         </div>
 
                     </div>
+                    
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isSelectedCheck">
-                        <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="serviceTariffForm"
-                          [mode]="autocompleteModeName2">
+                         <airmid-dropdown label="Tariff Name" formControlName="TariffId"
+                            [formGroup]="serviceTariffForm" [IsMultiPle]="true" ValueField="value"
+                            #ddltariff TextField="text" [ReqFullObj]="true"
+                            [mode]="autocompleteModeName2"
+                            (selectionChange)="onChangeTariff($event)">
                         </airmid-dropdown>
+                        
+                        <mat-chip-listbox #chipList>
+                            <mat-chip *ngFor="let item of serviceTariffForm.value.TariffId" removable
+                                (removed)="removeTariff(item)">
+                                {{ item.text }}
+                                <mat-icon matChipRemove>close</mat-icon>
+                            </mat-chip>
+                        </mat-chip-listbox>
                     </div>
 
                     <!-- Buttons aligned to the right and placed below -->
                     <div fxLayout="row" fxLayoutAlign="end center" class="button-actions">
-                        <button class="btn btn-danger-outline">Close</button>
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary ml-8" color="accent" (click)="onSubmitTariff()">
                             <span>Save</span>
                         </button>

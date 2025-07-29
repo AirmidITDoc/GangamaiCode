@@ -38,6 +38,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { PrescriptionComponent } from './prescription.component';
 
+
 const routes: Routes = [
   {
       path: "**",

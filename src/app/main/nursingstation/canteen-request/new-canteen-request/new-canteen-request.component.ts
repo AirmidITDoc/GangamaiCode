@@ -30,11 +30,6 @@ export class NewCanteenRequestComponent implements OnInit {
 
   vOPIPId: any = 0;
   vOPDNo: any;
-  vTariffId: any = 0;
-  vClassId: any = 0;
-  filteredOptions: any;
-  PatientListfilteredOptions: any;
-  noOptionFound: any;
   PatientName: any;
   vAdmissionID: any = 0;
   RegNo: any;
@@ -44,28 +39,12 @@ export class NewCanteenRequestComponent implements OnInit {
   WardName: any;
   BedNo: any;
   registerObj: any;
-  isRegIdSelected: boolean = false;
-
-  PresItemlist: any = [];
-  dataArray: any = [];
-  filteredOptionsItem: any;
   ItemId: any;
   ItemName: any;
-  vQty: any;
-  vRemark: any
   Chargelist: any = [];
-  vStoredId: any;
   vOpDId: any = 0;
-
-
-  PatientType: any;
-  RefDocName: any;
-  DepartmentName: any;
-  Ageyear: any;
-  AgeMonth: any;
-  AgeDay: any;
-  AdmissionDate: any;
-  GenderName: any;
+  
+  vstoreId=this._loggedService.currentUserValue.user.storeId
 
   price = 0
   isBatchRequired: boolean = false;
@@ -90,6 +69,8 @@ export class NewCanteenRequestComponent implements OnInit {
 
     this._CanteenRequestservice.ItemForm.markAllAsTouched();
     this.CanteendetailArray.push(this.createdetailForm());
+
+    this.CanteenInsertForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
   }
 
   createcanteenInsertForm(): FormGroup {
@@ -99,29 +80,32 @@ export class NewCanteenRequestComponent implements OnInit {
       time: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
       reqNo: "",
       opIpId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      opIpType: 1,
+      opIpType: ["1"],
       wardId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       cashCounterId: 0,
-      isFree: true,
+      isFree: false,
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isBillGenerated: true,
-      isPrint: true,
-      tCanteenRequestDetails: this.formBuilder.array([]) // FormArray for details
+      isBillGenerated: false,
+      isPrint: false,
+      tCanteenRequestDetails: this.formBuilder.array([]), // FormArray for details
+
+      // extra fields
+      RegID: [0],
+      StoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
     });
   }
 
   createdetailForm(item: any = {}): FormGroup {
-    console.log(item)
     return this.formBuilder.group({
-      reqDetId: [item.reqDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      reqId: [item.reqId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [item.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitMRP: [item.Price || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [Number(item.Qty) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmount: [item.totalamt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isBillGenerated: true,
+      isBillGenerated: false,
       isCancelled: false
-
     });
   }
 
@@ -136,9 +120,9 @@ export class NewCanteenRequestComponent implements OnInit {
       ItemId: [],
       Qty: [],
       Remark: [],
-
     }
   }
+
   displayedVisitColumns: string[] = [
     'Date',
     'Time'
@@ -149,6 +133,7 @@ export class NewCanteenRequestComponent implements OnInit {
     'Remark',
     'buttons'
   ]
+
   getSelectedObj(obj) {
     if (obj.IsDischarged == 1) {
       Swal.fire('Selected Patient is already discharged');
@@ -169,19 +154,19 @@ export class NewCanteenRequestComponent implements OnInit {
       this.vOpDId = obj.admissionID;
       console.log(obj);
     }
+    this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
   }
 
-
   onAdd() {
-    // if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
-    //   this.toastr.warning('Please enter a qty', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
+    if(this._CanteenRequestservice.ItemForm.get('Qty').value==''){
+      this.toastr.warning('Please enter a qty', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-      debugger
+      // debugger
       this.dsItemList.data = [];
       this.Chargelist.push(
         {
@@ -192,7 +177,6 @@ export class NewCanteenRequestComponent implements OnInit {
           totalamt: parseInt(this._CanteenRequestservice.ItemForm.get('Qty').value) * this.price,
           Remark: this._CanteenRequestservice.ItemForm.get('Remark').value || ''
         });
-      console.log(this.Chargelist);
       this.dsItemList.data = this.Chargelist
       console.log(this.dsItemList.data);
     } else {
@@ -204,22 +188,15 @@ export class NewCanteenRequestComponent implements OnInit {
     this._CanteenRequestservice.ItemForm.get('ItemId').reset('');
     this._CanteenRequestservice.ItemForm.get('Qty').reset('');
     this._CanteenRequestservice.ItemForm.get('Remark').reset('');
-    this.itemid.nativeElement.focus();
-    this.add = false;
-    //console.log(this.dsPrePresList.data)
   }
 
-
   getSelectedserviceObj(obj) {
-
     console.log(obj)
     this.ItemId = obj.itemID
     this.ItemName = obj.itemName
     this.price = obj.price
     this.isBatchRequired = obj.isBatchRequired
-    this.add = true;
   }
-
 
   deleteTableRow(event, element) {
     // if (this.key == "Delete") {
@@ -243,83 +220,8 @@ export class NewCanteenRequestComponent implements OnInit {
       return false;
     }
   }
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('remark') remark: ElementRef;
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  add: boolean = false;
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-    }
-  }
 
-  public onEnterqty(event): void {
-    if (event.which === 13) {
-      this.remark.nativeElement.focus();
-    }
-  }
-
-  public onEnterremark(event): void {
-    if (event.which === 13) {
-      this.add = true;
-    }
-  }
   savebtn: boolean = false;
-  //   OnSave() {
-
-  //     if ((!this.dsItemList.data.length)) {
-  //       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-
-  //     if ((this.vAdmissionID ==0)) {
-  //       this.toastr.warning('Please Select Patient', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-
-
-  //     let canteenRequestDetailsInsert = [];
-
-  //     this.dsItemList.data.forEach(element => {
-  //       let CanteenReqDetObj = {};
-  //       CanteenReqDetObj['reqDetId'] = 0
-  //       CanteenReqDetObj['reqId'] = 0
-  //       CanteenReqDetObj['itemId'] = element.ItemID || 0;
-  //       CanteenReqDetObj['unitMRP'] = element.Price || 0,
-  //       CanteenReqDetObj['qty'] = element.Qty || 0;
-  //       CanteenReqDetObj['totalAmount'] = element.totalamt;
-  //       CanteenReqDetObj['isBillGenerated'] = true;
-  //       CanteenReqDetObj['isCancelled'] = false;
-  //       canteenRequestDetailsInsert.push(CanteenReqDetObj);
-  //     });
-
-  //     let SubmitDataObj = {
-  //       "reqId": 0,
-  //       "date":this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-  //       "time": this.datePipe.transform(new Date(), 'hh:mm:ss a'),
-  //       "reqNo": "string",
-  //       "opIpId": this.vOpDId || 0,
-  //       "opIpType": 1,
-  //       "wardId":this._CanteenRequestservice.MyForm.get('WardName').value || 0,
-  //       "cashCounterId": 0,
-  //       "isFree": true,
-  //       "unitId": 1,
-  //       "isBillGenerated": true,
-  //       "isPrint": true,
-  //       'tCanteenRequestDetails': canteenRequestDetailsInsert
-  //     }
-  //     console.log(SubmitDataObj);
-  //     this._CanteenRequestservice.CanteenReqSave(SubmitDataObj).subscribe(response => {
-  //       this.toastr.success(response.message);
-  //       this._matDialog.closeAll();
-  //     });
-  // }
-
 
   OnSave() {
 
@@ -339,13 +241,12 @@ export class NewCanteenRequestComponent implements OnInit {
 
     this.CanteendetailArray.clear();
     this.dsItemList.data.forEach(item => {
-      console.log(item)
       this.CanteendetailArray.push(this.createdetailForm(item));
     });
 
-    this.CanteenInsertForm.get("reqNo").setValue(this.RegNo)
-    this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
-    this.CanteenInsertForm.get("wardId").setValue(this._CanteenRequestservice.MyForm.get('wardId').value || 0)
+    ['RegID', 'StoreId'].forEach(controlName => {
+      this.CanteenInsertForm.removeControl(controlName);
+    });
 
     if (!this.CanteenInsertForm.invalid) {
       console.log(this.CanteenInsertForm.value)
@@ -377,13 +278,13 @@ export class NewCanteenRequestComponent implements OnInit {
   onClose() {
     this._matDialog.closeAll();
     this._CanteenRequestservice.ItemForm.reset();
-    this._CanteenRequestservice.MyForm.reset();
+    this.CanteenInsertForm.reset();
     this.dsCanteenDateList.data = [];
     this.dsItemList.data = [];
     this.Chargelist.data = [];
-    this._CanteenRequestservice.MyForm.get('Op_ip_id').setValue('1')
   }
 }
+
 export class CanteenItemList {
   ItemID: any;
   ItemId: any;

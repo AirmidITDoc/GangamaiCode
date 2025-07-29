@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { gridModel } from 'app/core/models/gridRequest';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
@@ -44,8 +44,8 @@ typeName: any = "";
             } //Action 1-view, 2-Edit,3-delete
         ]
         allFilters = [
-            // { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.Contains },
-            // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
         apiUrl: "OtTypeMaster/List",

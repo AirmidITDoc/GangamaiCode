@@ -13,6 +13,7 @@ export class AirmidSignatureIconComponent {
     @Input() refId:number=0;
     @Input() refType:PageNames=PageNames.NONE;
     @Input() multiple:boolean=false;
+    @Input() docName: string = "default";
     constructor(public _matDialog: MatDialog) { }
     onFiles() {
         const dialogRef = this._matDialog.open(
@@ -21,7 +22,7 @@ export class AirmidSignatureIconComponent {
                 maxWidth: "50vw",
                 maxHeight: "70vh",
                 width: "100%",
-                data: { refId: this.refId, refType: this.refType, multiple: this.multiple }
+                data: { refId: this.refId, refType: this.refType, multiple: this.multiple,docName:this.docName }
             }
         );
 

@@ -17,9 +17,9 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container" fxLayout="column" fxLayoutGap="16px">
 
-            <mat-card>
-                <form [formGroup]="_ConsentService.myform">
-                    <!-- Patient Type & Search -->
+            <form [formGroup]="_ConsentService.myform">
+                <!-- Patient Type & Search -->
+                <mat-card>
                     <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start center">
                         <mat-radio-group formControlName="PatientType" [(ngModel)]="vSelectedOption"
                             (change)="onChangePatientType($event)">
@@ -27,110 +27,135 @@
                             <mat-radio-button value="IP">IP</mat-radio-button>
                         </mat-radio-group>
 
-                        <airmid-autocomplete *ngIf="_ConsentService.myform.get('PatientType').value == 'OP'"
-                            lbl="RgId" [formGroup]="_ConsentService.myform" formControlName="RegID"
+                        <airmid-autocomplete *ngIf="_ConsentService.myform.get('PatientType').value == 'OP'" lbl="RgId"
+                            [formGroup]="_ConsentService.myform" formControlName="RegID"
                             label="OP-RegNo/FirstName/LastName" fxFlex="60"
-                            placeholderText="OP-RegNo/FirstName/LastName"
-                            ApiUrl="VisitDetail/search-patient?Keyword="
-                            (selectionChange)="getSelectedObjOP($event)"
-                            TextField="formattedText" ValueField="regId">
+                            placeholderText="OP-RegNo/FirstName/LastName" ApiUrl="VisitDetail/search-patient?Keyword="
+                            (selectionChange)="getSelectedObjOP($event)" TextField="formattedText" ValueField="regId">
                         </airmid-autocomplete>
 
-                        <airmid-autocomplete *ngIf="_ConsentService.myform.get('PatientType').value == 'IP'"
-                            lbl="RgId" [formGroup]="_ConsentService.myform" formControlName="RegID"
+                        <airmid-autocomplete *ngIf="_ConsentService.myform.get('PatientType').value == 'IP'" lbl="RgId"
+                            [formGroup]="_ConsentService.myform" formControlName="RegID"
                             label="IP-RegNo/FirstName/LastName" fxFlex="60"
-                            placeholderText="IP-RegNo/FirstName/LastName"
-                            ApiUrl="Admission/search-patient?Keyword="
-                            (selectionChange)="getSelectedObjIP($event)"
-                            TextField="formattedText" ValueField="admissionID">
+                            placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="Admission/search-patient?Keyword="
+                            (selectionChange)="getSelectedObjIP($event)" TextField="formattedText"
+                            ValueField="admissionID">
                         </airmid-autocomplete>
                     </div>
+                </mat-card>
 
-                    <!-- Patient Info -->
-                    <mat-card class="mt-16">
-                        <div fxLayout="column" fxLayoutGap="8px">
-                            <div class="patient-info-title border-bottom pb-2">
-                                <span class="h1">Patient Information</span>
+                <!-- Patient Info -->
+                <mat-card class="mt-16">
+                    <div fxLayout="column" fxLayoutGap="8px">
+                        <div class="patient-info-title border-bottom" style="padding: 5px;">
+                            <span class="h1">Patient Information</span>
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutGap="32px" class="pt-8" style="padding: 10px;">
+                            <!-- Column 1 -->
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-col"><span class="patient-col-key">UHID No</span>: {{vRegNo}}</div>
+                                <div class="patient-col"><span class="patient-col-key">Patient Name</span>:
+                                    {{
+                                    (registerObj?.firstName || '') +
+                                    (registerObj?.middleName ? ' ' + registerObj.middleName : '') +
+                                    (registerObj?.lastName ? ' ' + registerObj.lastName : '')
+                                    || registerObj?.patientName
+                                    }}</div>
+                                <div class="patient-col"><span class="patient-col-key">Doctor Name</span>:
+                                    {{registerObj?.doctorName}}</div>
+                                <div class="patient-col"><span class="patient-col-key">Department</span>:
+                                    {{registerObj?.departmentName}}</div>
                             </div>
 
-                            <div fxLayout="row wrap" fxLayoutGap="32px" class="pt-8">
-                                <!-- Column 1 -->
-                                <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
-                                    <div class="patient-col"><span class="patient-col-key">UHID No</span>: {{vRegNo}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Patient Name</span>: {{vPatientName}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Doctor Name</span>: {{vDoctorName}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Department</span>: {{vDepartment}}</div>
+                            <!-- Column 2 -->
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-col"><span class="patient-col-key">DOA | Time</span>:
+                                    {{registerObj?.admissionDate |
+                                    date:'dd/MM/yyyy'}}</div>
+                                <div class="patient-col">
+                                    <span class="patient-col-key">{{vSelectedOption === 'OP' ? 'OPD No' : 'IPD
+                                        No'}}</span>:
+                                    {{vSelectedOption === 'OP' ? registerObj?.opdNo : registerObj?.ipdNo}}
                                 </div>
+                                <div class="patient-col"><span class="patient-col-key">Age | Sex</span>:
+                                    {{
+                                    (registerObj?.age ? registerObj.age + 'Y' :
+                                    (registerObj?.ageYear ? registerObj.ageYear + 'Y ' : '') +
+                                    (registerObj?.ageMonth ? registerObj.ageMonth + 'M ' : '') +
+                                    (registerObj?.ageDay ? registerObj.ageDay + 'D' : '')
+                                    ) + ' | ' + (registerObj?.genderName || '')
+                                    }}
+                                </div>
+                                <div class="patient-col"><span class="patient-col-key">Ref-Doctor</span>:
+                                    {{registerObj?.refDocName}}</div>
+                            </div>
 
-                                <!-- Column 2 -->
-                                <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
-                                    <div class="patient-col"><span class="patient-col-key">DOA | Time</span>: {{vDOA | date:'dd/MM/yyyy'}}</div>
-                                    <div class="patient-col">
-                                        <span class="patient-col-key">{{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}</span>: 
-                                        {{vSelectedOption === 'OP' ? vOPDNo : vIPDNo}}
-                                    </div>
-                                    <div class="patient-col"><span class="patient-col-key">Age | Sex</span>: {{vAge}}Y | {{vAgeMonth}}M | {{vAgeDay}}D | {{vGenderName}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Ref-Doctor</span>: {{vRefDocName}}</div>
+                            <!-- Column 3 -->
+                            <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-col"><span class="patient-col-key">Ward | Bed</span>:
+                                    {{registerObj?.roomName}}
+                                    | {{registerObj?.bedName}}</div>
+                                <div class="patient-col"><span class="patient-col-key">Patient Type</span>:
+                                    {{registerObj?.patientType}}</div>
+                                <div class="patient-col"><span class="patient-col-key">Tariff</span>:
+                                    {{registerObj?.tariffName}}
                                 </div>
-
-                                <!-- Column 3 -->
-                                <div fxFlex="30" fxLayout="column" fxLayoutGap="6px">
-                                    <div class="patient-col"><span class="patient-col-key">Ward | Bed</span>: {{vRoomName}} | {{vBedName}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Patient Type</span>: {{vPatientType}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Tariff</span>: {{vTariffName}}</div>
-                                    <div class="patient-col"><span class="patient-col-key">Company</span>: <span style="color: orange;">{{vCompanyName}}</span></div>
-                                </div>
+                                <div class="patient-col"><span class="patient-col-key">Company</span>: <span
+                                        style="color: orange;">{{registerObj?.companyName}}</span></div>
                             </div>
                         </div>
-                    </mat-card>
-
-                    <!-- Department, Template, Language -->
-                    <mat-card class="mt-16">
-                        <form [formGroup]="ConsentinsertForm" fxLayout="row wrap" fxLayoutGap="16px">
-                            <airmid-dropdown label="Department Name" formControlName="consentDeptId"
-                                [formGroup]="ConsentinsertForm" fxFlex="30"
-                                [value]="data?.consentDeptId" [validations]="getValidationMessages().consentDeptId"
-                                [mode]="autocompletedepartment"
-                                (selectionChange)="selectChangedepartment($event)">
-                            </airmid-dropdown>
-
-                            <airmid-dropdown label="Template" formControlName="consentTempId"
-                                [formGroup]="ConsentinsertForm" fxFlex="30"
-                                [value]="data?.consentTempId" [validations]="getValidationMessages().consentTempId"
-                                [mode]="autocompleteModeTemplate"
-                                (selectionChange)="onTemplateSelect($event)">
-                            </airmid-dropdown>
-
-                            <mat-radio-group fxLayout="row" name="Language" formControlName="Language" value="1" fxFlex="30">
-                                <mat-radio-button value="1">English</mat-radio-button>
-                                <mat-radio-button value="0">Marathi</mat-radio-button>
-                            </mat-radio-group>
-
-                            <div fxFlex="auto">
-                                <button class="btn btn-primary" (click)="addTemplateDescription()" [disabled]="isButtonDisabled">Add</button>
-                            </div>
-                        </form>
-                    </mat-card>
-
-                    <!-- Template Description Editor -->
-                    <mat-card class="mt-16">
-                        <form [formGroup]="ConsentinsertForm">
-                            <mat-label>Template Details</mat-label>
-                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                [(ngModel)]="vConsentText" formControlName="ConsentText" required>
-                            </angular-editor>
-
-                            
-                        </form>
-                    </mat-card>
-
-                    <!-- Footer Buttons -->
-                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px" style="margin-top: 20px;">
-                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary" (click)="onSave()">Save</button>
                     </div>
-                </form>
-            </mat-card>
+                </mat-card>
+
+                <!-- Department, Template, Language -->
+                <mat-card class="mt-16" style="padding: 10px;">
+                    <form [formGroup]="ConsentinsertForm" fxLayout="row wrap" fxLayoutGap="16px">
+                        <airmid-dropdown label="Department Name" formControlName="consentDeptId"
+                            [formGroup]="ConsentinsertForm" fxFlex="30" [value]="data?.consentDeptId"
+                            [validations]="getValidationMessages().consentDeptId" [mode]="autocompletedepartment"
+                            (selectionChange)="selectChangedepartment($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Template" formControlName="consentTempId"
+                            [formGroup]="ConsentinsertForm" fxFlex="30" [value]="data?.consentTempId"
+                            [validations]="getValidationMessages().consentTempId" [mode]="autocompleteModeTemplate"
+                            (selectionChange)="onTemplateSelect($event)">
+                        </airmid-dropdown>
+
+                        <mat-radio-group fxLayout="row" name="Language" formControlName="Language" value="1"
+                            fxFlex="30">
+                            <mat-radio-button value="1">English</mat-radio-button>
+                            <mat-radio-button value="0">Marathi</mat-radio-button>
+                        </mat-radio-group>
+
+                        <div fxFlex="auto">
+                            <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                [disabled]="isButtonDisabled">Add</button>
+                        </div>
+                    </form>
+                </mat-card>
+
+                <!-- Template Description Editor -->
+                <mat-card class="mt-16" style="padding: 10px;">
+                    <form [formGroup]="ConsentinsertForm">
+                        <mat-label>Template Details</mat-label>
+                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" [(ngModel)]="vConsentText"
+                            formControlName="ConsentText" required>
+                        </angular-editor>
+                    </form>
+                </mat-card>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container" fxLayoutAlign="end">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
         </div>
     </div>
 </div>
