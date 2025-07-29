@@ -25,19 +25,19 @@
     <div class="modal-body overflow-hidden">
         <div class="modal-body-container">
             <div class="personal-panel fix-panel">
-                <form [formGroup]="_CanteenRequestservice.MyForm">
+                <form [formGroup]="CanteenInsertForm">
                     <div fxLayout="column" class="gap-10">
                         <div class="modal-card-container">
 
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center">
                                 <div class="radio-container">
-                                    <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                    <mat-radio-group formControlName="opIpType" fxFlex="5%">
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
                                 <div class="input-container gap-8" fxFlex="50%">
                                     <airmid-autocomplete lbl="RgId" label="Search Reg No / Patient Name / Mobile No"
-                                        [formGroup]="_CanteenRequestservice.MyForm" formControlName="RegID"
+                                        [formGroup]="CanteenInsertForm" formControlName="RegID"
                                         placeholderText="IP-RegNo/FirstName/LastName"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObj($event)" ValueField="admissionID"
@@ -157,14 +157,14 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Select Store" formControlName="StoreId"
-                                            [formGroup]="_CanteenRequestservice.MyForm"
+                                            [formGroup]="CanteenInsertForm" [readonly]="true"
                                             [validations]="getValidationMessages().StoreId"
                                             [mode]="autocompleteModestoreName">
                                         </airmid-dropdown>
                                     </div>
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Ward Name" formControlName="wardId"
-                                            [formGroup]="_CanteenRequestservice.MyForm"
+                                            [formGroup]="CanteenInsertForm"
                                             [validations]="getValidationMessages().WardName"
                                             [mode]="autocompleteModewardName">
                                         </airmid-dropdown>
@@ -191,15 +191,15 @@
                                             <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Qty" formControlName="Qty" [value]="data?.Qty"
                                                     [formGroup]="_CanteenRequestservice.ItemForm"
-                                                    [validations]="getValidationMessages().Qty" #qty
+                                                    [validations]="getValidationMessages().Qty"
                                                     (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
                                             <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Remark" formControlName="Remark"
                                                     [value]="data?.Remark" [formGroup]="_CanteenRequestservice.ItemForm"
-                                                    [validations]="getValidationMessages().Remark" #remark
-                                                    (keydown)="onEnterremark($event)" [maxLength]="50">
+                                                    [validations]="getValidationMessages().Remark"
+                                                    [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
                                             <!-- [disabled]="!add" -->
@@ -207,7 +207,7 @@
                                                 <div matTooltip="Select  name to enable this button!!"
                                                     [matTooltipDisabled]="!_CanteenRequestservice.ItemForm.invalid"
                                                     [matTooltipPosition]="'above'">
-                                                    <button #addbutton class="btn btn-primary btn-with-icon"
+                                                    <button class="btn btn-primary btn-with-icon"
                                                         (click)="onAdd()">
                                                         <span class="btn-icon">
                                                             <mat-icon> add </mat-icon>

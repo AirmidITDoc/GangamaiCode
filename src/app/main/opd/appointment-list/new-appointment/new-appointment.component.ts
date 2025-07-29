@@ -16,6 +16,7 @@ import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-new-appointment',
@@ -34,7 +35,7 @@ export class NewAppointmentComponent implements OnInit {
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
     searchFormGroup: FormGroup;
-    abhaForm:FormGroup;
+    abhaForm: FormGroup;
 
     currentDate = new Date();
 
@@ -74,7 +75,7 @@ export class NewAppointmentComponent implements OnInit {
     CityName = ""
     RegOrPhoneflag = '';
     vPhoneFlage = 0;
-    vPhoneAppId: any =0;
+    vPhoneAppId: any = 0;
     RegNo = 0;
     departmentId: any;
     DosctorId: any;
@@ -121,7 +122,7 @@ export class NewAppointmentComponent implements OnInit {
     autocompleteModepurpose: string = "Purpose";
     autocompleteModeClass: string = "Class";
     autocompleteModerelationship: string = "Relationship";
-    autocompleteModecamp:string="CampMaster";
+    autocompleteModecamp: string = "CampMaster";
     selectedTabIndex = 0;
     imagePreview!: string;
     sidebarName = 'patient-sidebar';
@@ -129,7 +130,7 @@ export class NewAppointmentComponent implements OnInit {
     filteredOptions: any[] = [];
     debounceTimers: { [key: string]: any } = {};
     showEmergencyFlag: boolean = false;
-    EmgId:any;
+    EmgId: any;
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -148,8 +149,8 @@ export class NewAppointmentComponent implements OnInit {
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
     ) { }
-    FromRegistration:any;
-    chkregisterd:boolean=false;
+    FromRegistration: any;
+    chkregisterd: boolean = false;
     ngOnInit(): void {
 
         this.personalFormGroup = this.createPesonalForm();
@@ -158,14 +159,14 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
 
-        this.abhaForm=this._AppointmentlistService.createAbhadetailForm();
+        this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
 
-        if(this.data){
+        if (this.data) {
             this.FromRegistration = this.data?.Obj
             // console.log(this.FromRegistration) 
-            if(this.data?.FormName == 'Registration-Page' || this.data?.FormName == 'Registration-Dropdown'){
+            if (this.data?.FormName == 'Registration-Page' || this.data?.FormName == 'Registration-Dropdown') {
                 this.chkregisterd = true
                 this.searchFormGroup.get('regRadio').setValue('registrered')
                 this.personalFormGroup.get('RegId').enable();
@@ -184,24 +185,24 @@ export class NewAppointmentComponent implements OnInit {
         }
 
         if ((this.data?.emgId) > 0) {
-            this.showEmergencyFlag=true
+            this.showEmergencyFlag = true
             this._AppointmentlistService.getEmergencyById(this.data.emgId).subscribe((response) => {
-            this.registerObj = response;
-            this.RegId = this.registerObj.regId;
-            this.EmgId = this.registerObj.emgId;
-            console.log("Emg Data:", this.registerObj)
-            if (this.RegId > 0) {
-            this.searchFormGroup.get('regRadio')?.setValue('registrered');
-                this.Regflag = true;
-            } else {
-            this.searchFormGroup.get('regRadio')?.setValue('registration');
-                this.Regflag = false;
-            }
-            this.personalFormGroup.patchValue({
-            MiddleName: this.registerObj.middleName || '',
+                this.registerObj = response;
+                this.RegId = this.registerObj.regId;
+                this.EmgId = this.registerObj.emgId;
+                console.log("Emg Data:", this.registerObj)
+                if (this.RegId > 0) {
+                    this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                    this.Regflag = true;
+                } else {
+                    this.searchFormGroup.get('regRadio')?.setValue('registration');
+                    this.Regflag = false;
+                }
+                this.personalFormGroup.patchValue({
+                    MiddleName: this.registerObj.middleName || '',
+                });
+                this.selectChangedepartment(this.registerObj)
             });
-            this.selectChangedepartment(this.registerObj)
-        });
         }
 
     }
@@ -416,7 +417,7 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     getSelectedObj(obj) {
-        if(this.data?.FormName == 'Registration-Page'){
+        if (this.data?.FormName == 'Registration-Page') {
             this.PatientName = obj.firstName + ' ' + obj.lastName;
             this.RegId = obj.regId;
             this.VisitFlagDisp = true;
@@ -452,7 +453,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 }, 100);
             }
-        }else{
+        } else {
             this.PatientName = obj.PatientName;
             this.RegId = obj.value;
             this.VisitFlagDisp = true;
@@ -513,6 +514,19 @@ export class NewAppointmentComponent implements OnInit {
 
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
+        console.log("Phone data:", obj)
+
+        if (obj.phAppId > 0) {
+            const name = obj.text?.split('|')[0]?.trim();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Appointment Already Done',
+                text: `This ${name} already has an appointment.`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
         this.PatientName = obj.text;
         this.RegId = obj.regId;
         this.vPhoneAppId = obj.value;
@@ -527,28 +541,7 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                     this.getLastDepartmetnNameList(this.registerObj)
-                    this.personalFormGroup.patchValue({
-                        FirstName: this.registerObj.firstName,
-                        MiddleName: this.registerObj.middleName,
-                        LastName: this.registerObj.lastName,
-                        MobileNo: this.registerObj.mobileNo,
-                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-                        engAddress: this.registerObj?.engAddress ?? '',
-                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
-                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
-                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
-                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
-                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
-                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
-                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-                    });
+                    this.personalFormGroup.patchValue(this.registerObj)
                 });
 
             }, 100);
@@ -690,7 +683,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
-debugger
+        debugger
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -704,19 +697,19 @@ debugger
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
-     
-     
-    //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
-    //     this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-       
+
+
+        //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
+        //     this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
+
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
         this.VisitFormGroup.removeControl('SubCompanyId');
-        ['AddedBy', 'ReligionId', 'AreaId','IsSeniorCitizen'].forEach(control => {
-        this.personalFormGroup.removeControl(control)
-      })
+        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen'].forEach(control => {
+            this.personalFormGroup.removeControl(control)
+        })
 
         let submitData = {
             "appReistrationUpdate": this.personalFormGroup.value,
@@ -756,12 +749,12 @@ debugger
     }
 
     selectChangedepartment(obj: any) {
-        if(obj.value){
+        if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
                 this.ddlDoctor.bindGridAutoComplete();
             });
-        }else{
+        } else {
             this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
                 // console.log(data)
                 this.ddlDoctor.options = data;
@@ -868,21 +861,21 @@ debugger
             SubCompanyId: [
                 { name: "required", Message: "SubCompany Name is required" }
             ],
-            emgDrivingLicenceNo:[
+            emgDrivingLicenceNo: [
                 { name: "pattern", Message: "e.g., MH14-20210001234" },
                 { name: "minLength", Message: "16 digit required." },
                 { name: "maxLength", Message: "More than 16 digits not allowed." }
             ],
-            medTourismPassportNo:[
+            medTourismPassportNo: [
                 { name: "pattern", Message: "e.g., A1234567" },
                 { name: "minLength", Message: "8 digit required." },
                 { name: "maxLength", Message: "More than 8 digits not allowed." }
             ],
-           medTourismNationalityId: [
+            medTourismNationalityId: [
                 { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
                 { name: "minLength", Message: "Minimum 10 characters required." },
                 { name: "maxLength", Message: "Maximum 15 characters allowed." }
-                ]
+            ]
             // wardId: [
             //     { name: "required", Message: "Ward Name is required" }
             // ],
@@ -1005,24 +998,24 @@ debugger
             // CourtesyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             //emergency form
-            emgContactPersonName: ['', [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            emgRelationshipId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            emgContactPersonName: ['', [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            emgRelationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             emgLandlineNo: ['', [Validators.minLength(10), Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
+            Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
-                Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]], 
-                //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234
+            Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]],
+            //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234
 
             // medical tourisum
-            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8),Validators.pattern(/^[A-Z][0-9]{7}$/),]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
-            medTourismVisaIssueDate:  [''],// [(new Date()).toISOString()],
-            medTourismVisaValidityDate:  [''],// [(new Date()).toISOString()],
-            medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]], 
+            medTourismPassportNo: ['', [Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^[A-Z][0-9]{7}$/),]], //Validators.pattern(/^[A-Z][0-9]{7}$/) eg:A1234567
+            medTourismVisaIssueDate: [''],// [(new Date()).toISOString()],
+            medTourismVisaValidityDate: [''],// [(new Date()).toISOString()],
+            medTourismNationalityId: ['', [Validators.minLength(10), Validators.maxLength(20)]],
             medTourismCitizenship: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             medTourismPortOfEntry: ['', [Validators.maxLength(20)]],
             medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
@@ -1106,14 +1099,14 @@ debugger
     handleInputChangeDebounced(changedField: string): void {
         // Clear any existing timer for this field
         if (this.debounceTimers[changedField]) {
-          clearTimeout(this.debounceTimers[changedField]);
+            clearTimeout(this.debounceTimers[changedField]);
         }
         // Set a new timer
         this.debounceTimers[changedField] = setTimeout(() => {
-          this.handleInputChange(changedField);
+            this.handleInputChange(changedField);
         }, 300); // 300ms debounce
-      }
-    resetFilteredOptions(){
+    }
+    resetFilteredOptions() {
         this.filteredOptions = [];
         this.prevResults = [];
     }

@@ -151,15 +151,12 @@ export class CreateUserComponent implements OnInit {
           "userName": contact.userLoginName,
           "password": this.Password
         }
-
         console.log(submitData);
 
         this._CreateUserService.PasswordUpdate(submitData).subscribe(
           (response) => {
             this.toastr.success(response.message);
-            
-            }, (error) => {
-              this.toastr.error(error.message);
+            this.grid.bindGridData();            
             }); 
           }    
     });
