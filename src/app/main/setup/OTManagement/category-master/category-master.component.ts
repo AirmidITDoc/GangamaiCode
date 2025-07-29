@@ -45,7 +45,7 @@ msg: any;
         ]
        
         allFilters = [
-            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     

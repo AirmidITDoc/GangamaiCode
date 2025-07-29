@@ -46,7 +46,7 @@ export class SurgeryMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
     allFilters = [
-        { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "surgeryName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {

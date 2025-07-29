@@ -15,13 +15,12 @@
             </button>
         </div>
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content" [ShowFilter]="false">
-            
-            <!-- <ng-container filters>
+     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>search ottable name</mat-label>
-                    <input matInput placeholder="Search Village Name" autocomplete="off"
+                    <mat-label>Search Table Name</mat-label>
+                    <input matInput placeholder="Search Gender Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">
@@ -34,7 +33,8 @@
                     <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                     <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                 </mat-radio-group>
-            </ng-container> -->
+              
+            </ng-container>
         </airmid-table>
     </div>
 </div>
