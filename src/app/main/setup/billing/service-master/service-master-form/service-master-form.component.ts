@@ -127,33 +127,10 @@ export class ServiceMasterFormComponent implements OnInit {
         }
         this.getClassList()
         const formatTime = (datetime: string) => datetime ? new Date(datetime).toTimeString().slice(0, 5) : '';
-        var mdata = {
-            groupId: this.data?.groupId,
-            subGroupId: this.data?.subGroupid,
-            GroupName: this.data?.groupName,
-            serviceShortDesc: this.data?.serviceShortDesc,
-            serviceName: this.data?.serviceName,
-            price: this.data?.price,
-            creditedtoDoctor: this.data?.creditedtoDoctor,
-            isActive: this.data?.isActive,
-            printOrder: this.data?.printOrder,
-            tariffId: this.data?.tariffId,
-            isEmergency: this.data?.isEmergency,
-            isRadiology: this.data?.isRadiology,
-            isPathology: this.data?.isPathology,
-            isEditable: this.data?.isEditable,
-            isPackage: this.data?.isPackage,
-            isPathOutSource: this.data?.isPathOutSource,
-            isRadOutSource: this.data?.isRadOutSource,
-            isDiscount: this.data?.isDiscount,
-            isProcedure: this.data?.isProcedure,
-            isServiceTaxApplicable: this.data?.isServiceTaxApplicable,
-            // isApplicableFor: this.data?.isApplicableFor,
-            emgStartTime: formatTime(this.data?.emgStartTime),
-            emgEndTime: formatTime(this.data?.emgEndTime),
-        };
-
-        this.serviceForm.patchValue(mdata);
+        this.serviceForm.get('subGroupId').setValue(this.data.subGroupid)
+        this.serviceForm.get('emgStartTime').setValue(formatTime(this.data?.emgStartTime))
+        this.serviceForm.get('emgEndTime').setValue(formatTime(this.data?.emgEndTime))
+        this.serviceForm.patchValue(this.data);
 
         this.serviceForm.get('isRadiology')?.valueChanges.subscribe(val => {
             this.showRadOut = val;
@@ -184,7 +161,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isDiscount: [false],
             isProcedure:[false],
             isPackage: [0],
-            subGroupId: [0],
+            subGroupId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: 0,
             isEmergency: false,
             emgAmt: [0, [Validators.required, Validators.pattern("[0-9]+")]],

@@ -36,7 +36,7 @@ export class CanteenRequestComponent implements OnInit {
     allcolumns=[
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
             { heading: "Visit/AdmDate", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
             { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },

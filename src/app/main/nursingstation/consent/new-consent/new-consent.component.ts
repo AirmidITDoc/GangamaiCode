@@ -96,10 +96,12 @@ export class NewConsentComponent {
       this.vConsentText = this.data.consentText
       this.OP_IP_Id = this.data.opipid
       this.OP_IPType = this.data.opipType
+      this.vSelectedOption = this.data.opipType === 1 ? 'IP' : 'OP';
       this.vdepartmentId = this.data.consentDeptId
       this.templateId = this.data.consentTempId
       this.ConsentinsertForm.patchValue(this.data);
       console.log(this.data)
+      this.registerObj=this.data
       this.getSelectedObjOP(this.data)
       this.getSelectedObjIP(this.data)
     }
@@ -119,48 +121,15 @@ export class NewConsentComponent {
 
   getSelectedObjOP(obj) {
     console.log("Visite Patient:", obj)
+    this.registerObj=obj
     this.vRegNo = obj.regNo
-    this.vDoctorName = obj.doctorName
-    this.vDepartment = obj.departmentName
-    this.vAdmissionDate = obj.admissionDate
-    this.vAdmissionTime = obj.admissionTime
-    this.vOPDNo = obj.opdNo
-    this.vAge = obj.age
-    this.vAgeMonth = obj.ageMonth
-    this.vAgeDay = obj.ageDay
-    this.vGenderName = obj.genderName
-    this.vRefDocName = obj.refDocName
-    this.vRoomName = obj.roomName
-    this.vBedName = obj.bedName
-    this.vPatientType = obj.patientType
-    this.vTariffName = obj.tariffName
-    this.vCompanyName = obj.companyName
-    let nameField = obj.formattedText;
-    let extractedName = nameField.split('|')[0].trim();
-    this.vPatientName = extractedName;
     this.OP_IP_Id = obj.visitId
   }
 
   getSelectedObjIP(obj) {
     console.log("Admitted patient:", obj)
+    this.registerObj=obj
     this.vRegNo = obj.regNo
-    this.vDoctorName = obj.doctorName
-    this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-    this.vDepartment = obj.departmentName
-    this.vAdmissionDate = obj.admissionDate
-    this.vAdmissionTime = obj.admissionTime
-    this.vIPDNo = obj.ipdNo
-    this.vAge = obj.age
-    this.vAgeMonth = obj.ageMonth
-    this.vAgeDay = obj.ageDay
-    this.vGenderName = obj.genderName
-    this.vRefDocName = obj.refDocName
-    this.vRoomName = obj.roomName
-    this.vBedName = obj.bedName
-    this.vPatientType = obj.patientType
-    this.vTariffName = obj.tariffName
-    this.vCompanyName = obj.companyName
-    this.vDOA = obj.admissionDate
     this.OP_IP_Id = obj.admissionID
   }
 
@@ -168,19 +137,7 @@ export class NewConsentComponent {
     this._ConsentService.myform.get('RegID').setValue('');
     this._ConsentService.myform.get('RegID').reset();
     this.vRegNo = '';
-    this.vPatientName = '';
-    this.vAdmissionDate = '';
-    this.vAdmissionTime = '';
-    this.vMobileNo = '';
-    this.vIPDNo = '';
-    this.vDoctorName = '';
-    this.vTariffName = '';
-    this.vCompanyName = '';
-    this.vRoomName = '';
-    this.vBedName = '';
-    this.vGenderName = '';
-    this.vAge = '';
-    this.vDOA = '';
+    this.registerObj = '';
   }
 
   vdepartmentId = ""
