@@ -19,7 +19,7 @@
                 Use Signature
                 <mat-slide-toggle [(ngModel)]="isFileUpload" color="primary">Select File</mat-slide-toggle>
             </div>
-            <div *ngIf="isFileUpload" class="section">
+            <div [hidden]="!isFileUpload" class="section">
                 <h3>Select File</h3>
                 <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                     <div class="photp-capture-image">
@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div *ngIf="!isFileUpload" class="section">
+            <div [hidden]="isFileUpload" class="section">
                 <h3>Draw Signature</h3>
                 <div class="photo-capture p-16 border border-radius-4 gap-12" fxLayout="column">
                     <div class="photp-capture-image signature-pad-container"
