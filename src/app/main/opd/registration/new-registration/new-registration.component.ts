@@ -416,13 +416,13 @@ export class NewRegistrationComponent implements OnInit {
 
   areaList: any[] = [];
   
-    getarealist(){
-        debugger
-    this._registerService.getareaList1().subscribe(response => {
-        console.log(response)
-    this.AreaList = response;
-    });
-    }
+    // getarealist(){
+    //     debugger
+    // this._registerService.getareaList1().subscribe(response => {
+    //     console.log(response)
+    // this.AreaList = response;
+    // });
+    // }
 
 
 

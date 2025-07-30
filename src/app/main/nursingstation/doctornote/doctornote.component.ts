@@ -106,11 +106,10 @@ export class DoctornoteComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+        console.log(result)
         this.grid.bindGridData();
         this.showDropdown = false;
         setTimeout(() => this.showDropdown = true, 100);
-      }
     });
   }
 
@@ -272,7 +271,7 @@ export class DoctornoteComponent implements OnInit {
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
-        this.OP_IP_Id=0;
+        // this.OP_IP_Id=0;
         // this.initializeGridConfig()
         this.grid.bindGridData();
         this.onClear();

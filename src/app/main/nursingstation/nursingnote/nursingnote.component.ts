@@ -264,11 +264,9 @@ export class NursingnoteComponent implements OnInit {
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
         this.grid.bindGridData();
         this.showDropdown = false;
         setTimeout(() => this.showDropdown = true, 100);
-      }
     });
   }
 
@@ -424,8 +422,9 @@ deleteTableRow(event, element) {
       console.log(this.myNursingForm.value)
 
       this._NursingStationService.NursingNoteInsert(this.myNursingForm.value).subscribe(response => {
-        this.OP_IP_Id=0
-        this.initializeGridConfig()
+        // this.OP_IP_Id=0
+        // this.initializeGridConfig()
+        this.grid.bindGridData();
         this.onClear();
       });
     } else {
@@ -451,7 +450,7 @@ deleteTableRow(event, element) {
     this.vDoctNoteId = null;
     this.IsAddFlag = true
     this.vDescription = null;
-    this.onClearPatientInfo()
+    // this.onClearPatientInfo()
   }
   // patient hand over
   onSubmitHandOver() {

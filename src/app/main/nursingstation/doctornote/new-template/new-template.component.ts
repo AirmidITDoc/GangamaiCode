@@ -59,6 +59,7 @@ export class NewTemplateComponent implements OnInit {
         if (!this.Templateform.invalid) {
             this.Templateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
             this.Templateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
+            this.Templateform.removeControl('Category')
             // console.log("template json:", this.Templateform.value);
 
             this._DoctornoteService.templateMasterSave(this.Templateform.value).subscribe((response) => {

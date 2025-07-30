@@ -25,7 +25,7 @@
                     <!-- Name & Category -->
                     <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutAlign="start center">
                         <!-- Template Name -->
-                        <div fxFlex.xs="100%" fxFlex.sm="50%" fxFlex="70%">
+                        <div fxFlex.xs="100%" fxFlex.sm="50%" fxFlex="60%">
                             <airmid-textbox
                                 label="Template Name"
                                 formControlName="docsTempName"
@@ -39,10 +39,8 @@
                         <!-- Radio Group -->
                         <div fxFlex.xs="100%" fxFlex.sm="50%" fxFlex="30%">
                             <mat-label><b>Category:</b></mat-label>
-                            <mat-radio-group
-                                formControlName="Category"
-                                fxLayout="row"
-                                class="gap-16 ml-8">
+                            <mat-radio-group formControlName="Category" value="NursNote"
+                                fxLayout="row" class="gap-16 ml-8">
                                 <mat-radio-button value="NursNote">Nursing Note</mat-radio-button>
                                 <mat-radio-button value="DoctorNote" class="ml-16">Doctor Note</mat-radio-button>
                             </mat-radio-group>

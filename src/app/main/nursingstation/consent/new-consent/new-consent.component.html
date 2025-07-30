@@ -119,7 +119,7 @@
 
                         <airmid-dropdown label="Template" formControlName="consentTempId"
                             [formGroup]="ConsentinsertForm" fxFlex="30" [value]="data?.consentTempId"
-                            [validations]="getValidationMessages().consentTempId" [mode]="autocompleteModeTemplate"
+                            [validations]="getValidationMessages().consentTempId" #ddlTemplate
                             (selectionChange)="onTemplateSelect($event)">
                         </airmid-dropdown>
 

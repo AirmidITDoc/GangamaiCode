@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ConsentService } from './consent.service';
 import { NewConsentComponent } from './new-consent/new-consent.component';
 import { FormGroup } from '@angular/forms';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-consent',
@@ -98,6 +100,7 @@ export class ConsentComponent implements OnInit {
           }
         }, {
           action: gridActions.print, callback: (data: any) => {
+            this.OnViewReportPdf(data)
           }
         }]
     }
@@ -124,6 +127,7 @@ export class ConsentComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
+    private commonService: PrintserviceService,
     public toastr: ToastrService,
   ) { }
 
@@ -211,5 +215,42 @@ export class ConsentComponent implements OnInit {
       return false;
     }
   }
+
+  OnViewReportPdf(element: any) {
+      
+        setTimeout(() => {
+          let param = {
+            "searchFields": [
+              {
+                "fieldName": "ConsentId",
+                "fieldValue": String(element.consentId),
+                "opType": "Equals"
+              },
+              {
+                "fieldName": "OP_IP_Type",
+                "fieldValue": String(element.opipType),
+                "opType": "Equals"
+              }
+            ],
+            "mode": "ConsentInformation"
+          }
+      
+          this._ConsentService.getReportView(param).subscribe(res => {
+      
+            const matDialog = this._matDialog.open(PdfviewerComponent,
+              {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                  base64: res["base64"] as string,
+                  title: "Consent Report" + " " + "Viewer"
+                }
+              });
+            matDialog.afterClosed().subscribe(result => {
+            });
+          });
+        }, 100);
+    }
 
 }
