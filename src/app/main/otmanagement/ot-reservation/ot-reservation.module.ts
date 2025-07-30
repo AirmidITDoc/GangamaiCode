@@ -27,6 +27,16 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { OTManagementServiceService } from "../ot-management-service.service";
 import { NewReservationComponent } from "./new-reservation/new-reservation.component";
 import { OTReservationComponent } from "./ot-reservation.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatListModule } from "@angular/material/list";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 const routes: Routes = [
     {
@@ -63,6 +73,17 @@ const routes: Routes = [
         MatAutocompleteModule,
         SharedModule,
         NgxMatSelectSearchModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
+        MatSlideToggleModule, 
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
     ],
     providers: [DatePipe, OTManagementServiceService]
 })

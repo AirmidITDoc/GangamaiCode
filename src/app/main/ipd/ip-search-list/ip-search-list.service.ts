@@ -1145,7 +1145,9 @@ public UpdateIPDDischargSummaryTemplate(employee)
 public getbedbyRoom(deptId) {
   return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
 }
-
+ public getRtevIPPackageDetList(param) {
+        return this._httpClient1.PostData("IPBill/Retrivepackagedetaillist", param);
+    }
 
 
 }

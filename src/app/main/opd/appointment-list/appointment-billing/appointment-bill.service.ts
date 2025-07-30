@@ -31,4 +31,19 @@ export class AppointmentBillService {
     public getRtevPackageDetList(param) {
         return this._httpClient1.PostData("BillingService/PackageDetailList", param);
     }
+        public getRtevIPPackageDetList(param) {
+        return this._httpClient1.PostData("IPBill/IpPackageDetailsList", param);
+    }
+       public UpdatePacakgeDet(param,chargesId) { 
+        return this._httpClient1.PutData("IPBill/UpdateAddcharges/" + chargesId, param);
+    }
+           public InsertIPAddCharges(param) {
+        return this._httpClient1.PostData("IPBill/InsertIPDPackageBill", param);
+    }
+      public AddchargesDelete(m_data, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient1.PostData("IPBill/IPAddchargesdelete" , m_data);
+  }  
 }

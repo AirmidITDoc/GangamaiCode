@@ -8,9 +8,10 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { PrescriptionService } from './prescription.service';
+import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
+
 
 
 @Component({
@@ -37,17 +38,19 @@ export class PrescriptionComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
     allColumns1 = [
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Visite Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Prescription Time", key: "ptime", sort: true, align: 'left', emptySign: 'NA',type:8, width: 170 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+        { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', widh: 40 },
+
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+
+        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        // { heading: "Bed Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 170 },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
             actions: [
@@ -134,12 +137,13 @@ export class PrescriptionComponent implements OnInit {
     }
 
     allColumns2 = [
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Adm Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IPMedID", key: "ipMedId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 10 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "OPIPType", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+
         {
             heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
                 {
@@ -149,7 +153,7 @@ export class PrescriptionComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
+                            // this.toastr.success(response.message);
                             this.grid2.bindGridData();
                         });
                     }
@@ -274,69 +278,66 @@ export class PrescriptionComponent implements OnInit {
         }, 100);
     }
 
-    viewgetIpprescriptionreturnReportPdf(element) {
-        console.log(element)
-        this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
-        //     setTimeout(() => {
-        //       let param = {
+    viewgetIpprescriptionreturnReportPdf(response) {
+        console.log(response)
+        // this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "PresReId",
+                        "fieldValue": String(response.presReId),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "NurIPprescriptionReturnReport"
+            }
 
-        //           "searchFields": [
-        //             {
-        //               "fieldName": "PresReId",
-        //               "fieldValue": String(response.presReId), //"10012"
-        //               "opType": "Equals"
-        //             }
-        //           ],
-        //           "mode": "NurIPprescriptionReturnReport"
-        //         }
+            console.log(param)
+            this._PrescriptionService.getReportView(param).subscribe(res => {
 
-        //     this._PrescriptionService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Nursing Prescription Return" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
 
-        //       const matDialog = this._matDialog.open(PdfviewerComponent,
-        //         {
-        //           maxWidth: "85vw",
-        //           height: '750px',
-        //           width: '100%',
-        //           data: {
-        //             base64: res["base64"] as string,
-        //             title: "Nursing Prescription Return" + " " + "Viewer"
-        //           }
-        //         });
-        //       matDialog.afterClosed().subscribe(result => {
-        //       });
-        //     });
-        //   }, 100);
     }
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,
             {
-                maxHeight: '85vh',
+                  maxWidth: "80vw",
+                height: '90%',
                 width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-            // if (result) {
-            //     that.grid.bindGridData();
-            // }
-        });
+          });
     }
 
     onPrescriptionReturn(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
             {
-                // maxWidth: "75vw",
-                maxHeight: '75vh',
-                width: '70%',
+                 maxWidth: "80vw",
+                height: '90%',
+                width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
             this.grid2.bindGridData();
-            // }
-        });
+            });
     }
 
 

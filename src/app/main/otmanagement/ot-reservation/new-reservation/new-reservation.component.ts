@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { OtReservationService } from '../ot-reservation.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -16,7 +17,13 @@ import { OtReservationService } from '../ot-reservation.service';
 })
 export class NewReservationComponent implements OnInit {
 
-  requestForm: FormGroup;
+  reservationForm: FormGroup;
+     screenFromString = 'Common-form';
+
+  opIpType: number;
+      opIpId: any;
+       RegId: string;
+
 
    personalFormGroup: FormGroup;
     Regflag: boolean = false;
@@ -58,46 +65,56 @@ vInstruction: any;
      @Inject(MAT_DIALOG_DATA) public data: any,
      private ref: MatDialogRef<NewReservationComponent>,
      public _AdmissionService: AdmissionService,
+     public datePipe: DatePipe,
      public toastr: ToastrService) { }
     
  
    ngOnInit(): void {
-     this.requestForm = this._OtReservationService.createRequestForm();
-     this.requestForm.markAllAsTouched();
+     this.reservationForm = this._OtReservationService.createReservationForm();
+     this.reservationForm.markAllAsTouched();
      
      if ((this.data?.countryId??0) > 0) 
          {
              this.isActive=this.data.isActive
-             this.requestForm.patchValue(this.data);
+             this.reservationForm.patchValue(this.data);
          }
  }
- 
+
+  patientInfoReset() {
+    this.reservationForm.get('opIpId').setValue('');
+    this.reservationForm.get('opIpId').reset();
+    this.vRegNo = '';
+    this.vPatientName = '';
+    // this.vAdmissionDate = '';
+    // this.vAdmissionTime = '';
+    // this.vIPDNo = '';
+    this.vDoctorName = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    // this.vRoomName = '';
+    // this.vBedName = '';
+    // this.vGenderName = '';
+    this.vAge = '';
+    this.vDepartment = '';
+   // this.vDOA = ''
+  }
+ dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+       
+        this.dateTimeObj = dateTimeObj;
+         console.log(this.dateTimeObj)
+    }
  onChangeReg(event) {
-     if (event.value == 'registration') {
-       this.Regflag = false;
-       this.personalFormGroup.get('RegId').reset();
-       this.personalFormGroup.get('RegId').disable();
-       // this.isRegSearchDisabled = true;
-      // this.registerObj1 = new AdmissionPersonlModel({});
-       this.personalFormGroup.reset();
-       this.Patientnewold = 1;
- 
-       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-       this.admissionFormGroup = this._AdmissionService.createAdmissionForm();
-       this.Regdisplay = false;
- 
-     } else {
-       this.Regdisplay = true;
-       this.Regflag = true;
-       this.searchFormGroup.get('RegId').enable();
-       this.personalFormGroup = this._AdmissionService.createPesonalForm();
-       this.Patientnewold = 2;
- 
-     }
- 
-     this.personalFormGroup.markAllAsTouched();
-     this.admissionFormGroup.markAllAsTouched();
-   }
+    if (event.value == 'OP') {
+      this.opIpType = 0;
+      this.opIpId = "";
+    }
+    else if (event.value == 'IP') {
+      this.opIpType = 1;
+      this.opIpId = "";
+    }
+    this.patientInfoReset();
+  }
   getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
@@ -106,25 +123,69 @@ vInstruction: any;
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
-      this.vOPDNo = obj.ipdNo
+    //   this.vAdmissionDate = obj.admissionDate
+    //   this.vAdmissionTime = obj.admissionTime
+    //   this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
-      this.vMobNo = obj.refDocName
+    //   this.vAgeMonth = obj.ageMonth
+    //   this.vAgeDay = obj.ageDay
+    //   this.vGenderName = obj.genderName
+    //   this.vRefDocName = obj.refDocName
+    //   this.vRoomName = obj.roomName
+    //   this.vBedName = obj.bedName
+    //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-     
+    //   this.vDOA = obj.admissionDate
+      this.opIpId = obj.admissionID;
     }
   }
-   onSubmit() {
-     if (!this.requestForm.invalid) {
-             console.log(this.requestForm.value)
-             this._OtReservationService.requestSave(this.requestForm.value).subscribe((response) => {
+  getSelectedObjOP(obj) {
+
+    if ((obj.regId ?? 0) > 0) {
+      console.log("Visit Patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vDepartment = obj.departmentName
+    //   this.vAdmissionDate = obj.admissionDate
+    //   this.vAdmissionTime = obj.admissionTime
+      this.vOPDNo = obj.opdNo
+      this.vAge = obj.age
+    //   this.vAgeMonth = obj.ageMonth
+    //   this.vAgeDay = obj.ageDay
+    //   this.vGenderName = obj.genderName
+    //   this.vRefDocName = obj.refDocName
+    //   this.vRoomName = obj.roomName
+    //   this.vBedName = obj.bedName
+    //   this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+      let nameField = obj.formattedText;
+      let extractedName = nameField.split('|')[0].trim();
+      this.vPatientName = extractedName;
+      this.opIpId = obj.visitId;
+    }
+  }
+ onSubmit() {
+    if (this.reservationForm.get('opIpType').value == 'IP') 
+        { this.reservationForm.get('opIpType').setValue(1) }
+    else { this.reservationForm.get('opIpType').setValue(0)  }
+
+    this.reservationForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
+  this.reservationForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
+  this.reservationForm.get('opIpId').setValue(this.opIpId);
+//   this.reservationForm.get('isCancelledDateTime')?.setValue('1900-01-01');
+
+     if (!this.reservationForm.invalid) {
+             console.log(this.reservationForm.value)
+             this._OtReservationService.requestSave(this.reservationForm.value).subscribe((response) => {
                  this.onClear(true);
              });
          } {
              let invalidFields = [];
-             if (this.requestForm.invalid) {
-                 for (const controlName in this.requestForm.controls) {
-                     if (this.requestForm.controls[controlName].invalid) {
+             if (this.reservationForm.invalid) {
+                 for (const controlName in this.reservationForm.controls) {
+                     if (this.reservationForm.controls[controlName].invalid) {
                          invalidFields.push(`request Form: ${controlName}`);
                      }
                  }
@@ -135,7 +196,7 @@ vInstruction: any;
                      );
                  });
              }
- 
+  
          }
      }
  
@@ -152,7 +213,7 @@ vInstruction: any;
     this.ref.close();
   }
  onClear(val: boolean) {
-     this.requestForm.reset();
+     this.reservationForm.reset();
      this.dialogRef.close(val);
  }
 }
