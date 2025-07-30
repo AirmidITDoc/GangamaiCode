@@ -17,6 +17,8 @@ import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import Swal from 'sweetalert2';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { de } from 'date-fns/locale';
 
 @Component({
     selector: 'app-new-appointment',
@@ -439,12 +441,12 @@ export class NewAppointmentComponent implements OnInit {
                             emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
                             emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
                             medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
-                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+                            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? '',
+                            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
                             medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
                             medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
                             medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+                            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
@@ -541,7 +543,28 @@ export class NewAppointmentComponent implements OnInit {
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
                     this.getLastDepartmetnNameList(this.registerObj)
-                    this.personalFormGroup.patchValue(this.registerObj)
+                    this.personalFormGroup.patchValue({
+                        FirstName: this.registerObj.firstName,
+                        MiddleName: this.registerObj.middleName,
+                        LastName: this.registerObj.lastName,
+                        MobileNo: this.registerObj.mobileNo,
+                        emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+                        emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+                        emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+                        emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+                        engAddress: this.registerObj?.engAddress ?? '',
+                        emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+                        emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+                        medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+                        medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? 0,
+                        medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? '',
+                        medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+                        medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? 0,
+                        medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+                        medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? '',
+                        medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+                        medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+                    })
                 });
 
             }, 100);
@@ -607,6 +630,7 @@ export class NewAppointmentComponent implements OnInit {
             });
             return;
         }
+
         this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
         this.personalFormGroup.get('City').setValue(this.CityName)
@@ -682,8 +706,33 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
+    rawDate1: Date | string = '1900-01-01';
+    rawDate2: Date | string = '1900-01-01';
+    rawDate3: Date | string = '1900-01-01';
+
+    onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Visa date selected:', event.value);
+    this.rawDate1 = event.value || '1900-01-01';
+    }
+
+    onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
+        console.log('Validity date selected:', event.value);
+        this.rawDate2 = event.value || '1900-01-01';
+        if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
+            this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            this.personalFormGroup.get('medTourismVisaValidityDate')?.setValue('');
+            return;
+        }
+    }
+
+    onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Entry date selected:', event.value);
+    this.rawDate3 = event.value || '1900-01-01';
+    }
+
     onSaveRegistered() {
-        debugger
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -694,11 +743,10 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
         this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
         this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
-
-
+debugger
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
         //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
         //     this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
 

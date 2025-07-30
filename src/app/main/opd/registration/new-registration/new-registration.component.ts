@@ -11,6 +11,7 @@ import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-new-registration',
@@ -99,6 +100,26 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
+    rawDate1: Date;
+    rawDate2: Date;
+
+    onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
+        console.log('Visa date selected:', event.value);
+        this.rawDate1 = event.value;
+    }
+
+    onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
+        console.log('Validity date selected:', event.value);
+        this.rawDate2 = event.value;
+        if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
+            this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            this.personalFormGroup.get('medTourismVisaValidityDate')?.setValue('');
+            return;
+        }
+    }
+
     OnSubmit() {
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
@@ -132,9 +153,9 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismPortOfEntry || '1900-01-01');
 
         if (
             (!this.ageYear || this.ageYear == 0) &&
@@ -146,7 +167,6 @@ export class NewRegistrationComponent implements OnInit {
             });
             return;
         }
-
         console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
 
@@ -243,7 +263,7 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-   
+
     onChangestate(e) {
     }
 

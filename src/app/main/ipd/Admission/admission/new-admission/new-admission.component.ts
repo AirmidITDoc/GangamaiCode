@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel, RegInsert } from '../admission.component';
 import { AdmissionService } from '../admission.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-new-admission',
@@ -49,14 +50,14 @@ export class NewAdmissionComponent implements OnInit {
   noOptionFound: boolean = false;
   isRegSearchDisabled: boolean = true;
   registredflag: boolean = true;
-  EmgId:any
+  EmgId: any
   // printTemplate: any;
   selectedAdvanceObj: AdvanceDetailObj;
   newRegSelected: any = 'registration';
   filteredOptionsRegSearch: Observable<string[]>;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
-  RegId:any;
+  RegId: any;
   currentDate = new Date();
   public now: Date = new Date();
   // isLoading: string = '';
@@ -125,7 +126,7 @@ export class NewAdmissionComponent implements OnInit {
 
 
     if ((this.data?.emgId) > 0) {
-      this.showEmergencyFlag=true
+      this.showEmergencyFlag = true
       this._AdmissionService.getEmergencyById(this.data.emgId).subscribe((response) => {
         this.registerObj = response;
         this.registerObj1 = response;
@@ -134,12 +135,12 @@ export class NewAdmissionComponent implements OnInit {
         console.log("Emg Data:", this.registerObj)
         if (this.RegId > 0) {
           this.searchFormGroup.get('regRadio')?.setValue('registrered');
-              this.Regflag = true;
+          this.Regflag = true;
         } else {
           this.searchFormGroup.get('regRadio')?.setValue('registration');
-              this.Regflag = false;
+          this.Regflag = false;
         }
-         this.personalFormGroup.patchValue({
+        this.personalFormGroup.patchValue({
           MiddleName: this.registerObj.middleName || '',
         });
         this.selectChangedepartment(this.registerObj1)
@@ -152,9 +153,9 @@ export class NewAdmissionComponent implements OnInit {
     //     this.RegId=this.registerObj.regId;
     //     console.log("Emg Data:", this.registerObj)
     //      const selectedRadioValue = this.RegId > 0 ? 'registrered' : 'registration';
-    
+
     //     this.searchFormGroup.get('regRadio')?.setValue(selectedRadioValue);
-        
+
     //     this.onChangeReg({ value: selectedRadioValue }, this.registerObj);
     //   });
     // }
@@ -469,6 +470,32 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
+  rawDate1: Date | string = '1900-01-01';
+  rawDate2: Date | string = '1900-01-01';
+  rawDate3: Date | string = '1900-01-01';
+
+  onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Visa date selected:', event.value);
+    this.rawDate1 = event.value || '1900-01-01';
+  }
+
+  onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Validity date selected:', event.value);
+    this.rawDate2 = event.value || '1900-01-01';
+    if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
+      this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.personalFormGroup.get('medTourismVisaValidityDate')?.setValue('');
+      return;
+    }
+  }
+
+  onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Entry date selected:', event.value);
+    this.rawDate3 = event.value || '1900-01-01';
+  }
+
   OnSaveAdmission() {
 
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
@@ -482,9 +509,9 @@ export class NewAdmissionComponent implements OnInit {
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('convertId').setValue(this.EmgId ?? 0)
-    this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
-    this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
-    this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
+    this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
+    this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
+    this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
@@ -493,7 +520,7 @@ export class NewAdmissionComponent implements OnInit {
       return;
     }
 
-    this.personalFormGroup.get('medTourismCitizenship').setValue(this.personalFormGroup.get('medTourismCitizenship').value ?? 0)
+    this.personalFormGroup.get('medTourismCitizenship').setValue(Number(this.personalFormGroup.get('medTourismCitizenship').value) ?? 0)
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
       let submitData = {
@@ -505,7 +532,7 @@ export class NewAdmissionComponent implements OnInit {
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
           console.log(response)
-          if(this.EmgId>0){
+          if (this.EmgId > 0) {
             this.AddChargesFromEmg(response);
             return
           }
@@ -518,7 +545,7 @@ export class NewAdmissionComponent implements OnInit {
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
           console.log(response)
-          if(this.EmgId>0){
+          if (this.EmgId > 0) {
             this.AddChargesFromEmg(response);
             return
           }
@@ -545,29 +572,29 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
-   AddChargesFromEmg(admissionId) {
-      Swal.fire({
-        title: 'Do You want to add all changes in IPD?',
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
-        cancelButtonText: 'No'
-      }).then((flag) => {
-        if (flag.isConfirmed) {
-          let submitData = { 
-            "emgId": this.EmgId,
-            "newAdmissionId":admissionId
-           }
-          console.log(submitData);
-          this._AdmissionService.UpdateAddChargesFromEmg(submitData).subscribe((res) => {
-            // this.grid.bindGridData();
-          })
+  AddChargesFromEmg(admissionId) {
+    Swal.fire({
+      title: 'Do You want to add all changes in IPD?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: 'No'
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let submitData = {
+          "emgId": this.EmgId,
+          "newAdmissionId": admissionId
         }
-      })
-    }
+        console.log(submitData);
+        this._AdmissionService.UpdateAddChargesFromEmg(submitData).subscribe((res) => {
+          // this.grid.bindGridData();
+        })
+      }
+    })
+  }
 
   selectChangedepartment(obj: any) {
     if (obj.value) {

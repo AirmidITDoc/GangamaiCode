@@ -267,7 +267,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Visa Issue Date</mat-label>
                                 <input matInput [matDatepicker]="picker1" formControlName="medTourismVisaIssueDate"
-                                [value]="registerObj.medTourismVisaIssueDate">
+                                [value]="registerObj.medTourismVisaIssueDate" (dateChange)="onVisaDateChange($event)">
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
@@ -278,7 +278,7 @@
                              <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Visa Validity</mat-label>
                                 <input matInput [matDatepicker]="picker2" formControlName="medTourismVisaValidityDate"
-                                [value]="registerObj.medTourismVisaValidityDate">
+                                [value]="registerObj.medTourismVisaValidityDate" (dateChange)="onValidityDateChange($event)">
                                 <mat-datepicker-toggle matSuffix
                                     [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
