@@ -98,7 +98,7 @@ export class NewRegistrationComponent implements OnInit {
                 });
             }, 500);
         }
-this.getarealist()
+// this.getarealist()
 
     this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
       startWith(''),
@@ -414,13 +414,13 @@ this.getarealist()
 
   areaList: any[] = [];
   
-    getarealist(){
-        debugger
-    this._registerService.getareaList1().subscribe(response => {
-        console.log(response)
-    this.AreaList = response;
-    });
-    }
+    // getarealist(){
+    //     debugger
+    // this._registerService.getareaList1().subscribe(response => {
+    //     console.log(response)
+    // this.AreaList = response;
+    // });
+    // }
 
 
 

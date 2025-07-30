@@ -173,9 +173,9 @@ export class RegistrationService {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
 
-     public getareaList1() {
-        return this._httpClient1.GetData("VisitDetail/GetAreaList");
-    }
+    //  public getareaList1() {
+    //     return this._httpClient1.GetData("VisitDetail/GetAreaList");
+    // }
 }
 
 

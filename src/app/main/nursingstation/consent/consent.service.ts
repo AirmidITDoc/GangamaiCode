@@ -49,7 +49,7 @@ export class ConsentService {
       opiptype: [1],
       consentDeptId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       consentTempId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ConsentName: ['%',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      ConsentName: ['',[Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
       // after creating dd need to change above
       ConsentText: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       createdBy: [this._loggedService.currentUserValue.userId,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -75,8 +75,8 @@ export class ConsentService {
     return this._httpClient1.GetData("VisitDetail/" + Id);
 }
 
-public getDoctorsByDepartment(deptId) {
-  // return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
+public getConsentByDepartment(deptId) {
+  return this._httpClient1.GetData("NursingConsent/GetMConsentMasterList?DeptId="+deptId)
 }
 
 public ConsentSave(Param: any) {
@@ -84,5 +84,9 @@ public ConsentSave(Param: any) {
         return this._httpClient1.PutData("NursingConsent/UpdateConsent", Param);
     } else return this._httpClient1.PostData("NursingConsent/InsertConsent", Param);
 }
+
+ public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 
 }

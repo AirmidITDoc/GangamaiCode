@@ -10,6 +10,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { ConsentService } from '../consent.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-consent',
@@ -84,6 +86,7 @@ export class NewConsentComponent {
     private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public dialogRef: MatDialogRef<NewConsentComponent>,
+    private commonService: PrintserviceService,
     public datePipe: DatePipe,) { }
 
   ngOnInit(): void {
@@ -145,17 +148,19 @@ export class NewConsentComponent {
     console.log(obj)
     this.vdepartmentId = obj.value
     // template is dependent on department
-    // this._ConsentService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-    //     this.ddlTemplate.options = data;
-    //     this.ddlTemplate.bindGridAutoComplete();
-    // });
+    this._ConsentService.getConsentByDepartment(obj.value).subscribe((data: any) => {
+        this.ddlTemplate.options = data;
+        this.ddlTemplate.bindGridAutoComplete();
+    });
   }
 
   templateId = "0"
+  templateName=''
   onTemplateSelect(option: any) {
     console.log("selectedTemplateOption:", option)
-    this.templateId = option.value
-    this.selectedTemplateOption = option.text; //details of template dd should pass
+    this.templateId = option.consentId
+    this.templateName = option.consentName
+    this.selectedTemplateOption = option.consentDesc; //details of template dd should pass
   }
 
   onSave() {
@@ -170,31 +175,17 @@ export class NewConsentComponent {
 
       }
     if (!this.ConsentinsertForm.invalid) {
-      // let data = this.ConsentinsertForm.value;
-      // data.consentDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      // data.consentTime = this.datePipe.transform(new Date(), 'shortTime');
-      // data.opipid = this.OP_IP_Id
-      // data.opiptype = this.OP_IPType
-      // data.consentDeptId = Number(this.vdepartmentId)
-      // data.consentTempId = Number(this.templateId)
-
-      console.log(this.ConsentinsertForm.value)
       this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
       this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
       this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
       this.ConsentinsertForm.get("opiptype").setValue(Number(this.OP_IPType))
       this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
+      this.ConsentinsertForm.get("ConsentName").setValue(this.templateName)
 
-      // const isUpdate = data.consentId && data.consentId > 0;
-      
-
-      // if (isUpdate) {
-      //   data.modifiedBy = this._loggedService.currentUserValue.userId;
-      // } else {
-      //   data.createdBy = this._loggedService.currentUserValue.userId;
-      // }
-  console.log(this.ConsentinsertForm.value)
+      console.log(this.ConsentinsertForm.value)
       this._ConsentService.ConsentSave(this.ConsentinsertForm.value).subscribe((response) => {
+        debugger
+        this.OnViewReportPdf(response)
         this.onClose();
       });
     } else {
@@ -272,5 +263,42 @@ export class NewConsentComponent {
         { name: "required", Message: "Template is required" }
       ]
     };
+  }
+
+  OnViewReportPdf(element: any) {
+    
+      setTimeout(() => {
+        let param = {
+          "searchFields": [
+            {
+              "fieldName": "ConsentId",
+              "fieldValue": String(element.consentId),
+              "opType": "Equals"
+            },
+            {
+              "fieldName": "OP_IP_Type",
+              "fieldValue": String(element.opipType),
+              "opType": "Equals"
+            }
+          ],
+          "mode": "ConsentInformation"
+        }
+    
+        this._ConsentService.getReportView(param).subscribe(res => {
+    
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Consent Report" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
   }
 }
