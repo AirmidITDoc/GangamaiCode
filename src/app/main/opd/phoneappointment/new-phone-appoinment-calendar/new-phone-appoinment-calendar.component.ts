@@ -14,6 +14,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
+import { ConfigService } from 'app/core/services/config.service';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -228,13 +229,25 @@ export class NewPhoneAppoinmentCalendarComponent {
 
     constructor(private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private _service: PhoneAppointListService,
         public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,  private _configue: ConfigService,
     ) {
+
+
+        console.log(this._configue.configParams.OPDDefaultDepartment,this._configue.configParams.OPDDefaultDoctor)
         this.myFilterform = this._formBuilder.group({
-            DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            DepartmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            DoctorId: [this._configue.configParams.OPDDefaultDoctor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            DepartmentId: [this._configue.configParams.OPDDefaultDepartment || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
+
+
+            this.myFilterform.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
+           this.myFilterform.get("DoctorId").setValue(this._configue.configParams.OPDDefaultDoctor)
+       
+        // this.DepartmentId=this._configue.configParams.OPDDefaultDepartment
+        // this.DoctorId=this._configue.configParams.OPDDefaultDoctor
     }
+
+
     floorToNearest(amount: number, precision: number) {
         return Math.floor(amount / precision) * precision;
     }

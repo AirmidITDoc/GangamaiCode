@@ -93,7 +93,7 @@ export class NewPrescriptionComponent implements OnInit {
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
   constructor(
-    private ref: MatDialogRef<NewPrescriptionComponent>,
+   
     public _PrescriptionService: PrescriptionService,
     private _loggedService: AuthenticationService,
     public _registerService: RegistrationService,
@@ -103,6 +103,7 @@ export class NewPrescriptionComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
+     private ref: MatDialogRef<NewPrescriptionComponent>,
     public datePipe: DatePipe,
   ) {
   }

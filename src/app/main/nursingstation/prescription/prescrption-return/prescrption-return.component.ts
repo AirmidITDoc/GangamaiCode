@@ -1,30 +1,25 @@
-import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { PrescriptionReturnService } from '../../prescription-return/prescription-return.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
-import { PrescriptionReturnService } from '../prescription-return.service';
+import { HttpClient } from '@microsoft/signalr';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { DatePipe } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { BatchPopupComponent } from '../batch-popup/batch-popup.component';
+import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { BatchpopupComponent } from '../batchpopup/batchpopup.component';
 
 @Component({
-  selector: 'app-new-prescriptionreturn',
-  templateUrl: './new-prescriptionreturn.component.html',
-  styleUrls: ['./new-prescriptionreturn.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-prescrption-return',
+  templateUrl: './prescrption-return.component.html',
+  styleUrls: ['./prescrption-return.component.scss']
 })
-
-export class NewPrescriptionreturnComponent implements OnInit {
+export class PrescrptionReturnComponent {
 
   PresItemlist: any = [];
   ItemSubform: FormGroup;
@@ -76,15 +71,17 @@ export class NewPrescriptionreturnComponent implements OnInit {
   constructor(
     public _PrescriptionReturnService: PrescriptionReturnService,
     public _httpClient: HttpClient,
-    public _matDialog: MatDialog,
+    
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private _formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    public dialogRef: MatDialogRef<NewPrescriptionreturnComponent>,
-    public datePipe: DatePipe
+    
+    public datePipe: DatePipe,
+        public _matDialog: MatDialog,
+         private ref: MatDialogRef<PrescrptionReturnComponent>,
   ) { }
 
   selectedSaleDisplayedCol = [
@@ -264,7 +261,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   getBatch(obj) {
-    const dialogRef = this._matDialog.open(BatchpopupComponent,
+    const dialogRef = this._matDialog.open(BatchPopupComponent,
       {
         maxWidth: "800px",
         minWidth: '800px',
@@ -450,7 +447,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   onClose() {
     this.ItemSubform.reset();
-    this.dialogRef.close();
+    this.ref.close();
   }
 
   deleteTableRow(event, element) {

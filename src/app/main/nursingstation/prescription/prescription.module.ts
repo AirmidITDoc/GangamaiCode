@@ -37,6 +37,8 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { PrescriptionComponent } from './prescription.component';
+import { PrescrptionReturnComponent } from './prescrption-return/prescrption-return.component';
+import { BatchPopupComponent } from './batch-popup/batch-popup.component';
 
 
 const routes: Routes = [
@@ -47,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PrescriptionComponent, NewPrescriptionComponent],
+    declarations: [PrescriptionComponent, NewPrescriptionComponent, PrescrptionReturnComponent, BatchPopupComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

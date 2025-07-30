@@ -40,7 +40,7 @@ export class NewAppointmentComponent implements OnInit {
     abhaForm: FormGroup;
 
     currentDate = new Date();
-
+    minDate = new Date();
     registerObj = new RegInsert({});
     isRegSearchDisabled: boolean = false;
     Regdisplay: boolean = false;
@@ -463,6 +463,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 }, 100);
             }
+           
         } else {
             this.PatientName = obj.PatientName;
             this.RegId = obj.value;
@@ -500,6 +501,8 @@ export class NewAppointmentComponent implements OnInit {
                 }, 100);
             }
         }
+                    this.value=this.registerObj.dateofBirth
+                    this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
     PrevregisterObj: any;
     getLastDepartmetnNameList(row) {
@@ -1165,5 +1168,42 @@ debugger
     resetFilteredOptions() {
         this.filteredOptions = [];
         this.prevResults = [];
+    }
+
+    value=new Date()
+       onChangeDateofBirth(DateOfBirth: Date) {
+        if (DateOfBirth > this.minDate) {
+            this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return;
+        }
+        if (DateOfBirth) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+          
+            this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
+
+            if (this.ageDay < 0) {
+                this.ageMonth--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+                // this.ageDay =this.ageDay +1;
+            }
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
+            this.value = DateOfBirth;
+            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+            if (this.ageYear > 110)
+                this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        }
     }
 }

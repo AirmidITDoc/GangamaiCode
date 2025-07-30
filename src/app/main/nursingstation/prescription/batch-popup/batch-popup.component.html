@@ -1,0 +1,82 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Item Stock Pop Up</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <mat-card>
+                        <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"  (click)="onTableClick()">
+                            <ng-container matColumnDef="BatchNo">
+                                <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.batchNo}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BatchExpDate">
+                                <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.batchExpDate | date: 'MM/yyyy'}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="BalanceQty">
+                                <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.balanceQty}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="MRP">
+                                <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.unitMRP}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="PurPrice">
+                                <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.purchaseRate}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ConversionFactor">
+                                <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.converFactor}} </span></mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="LandedRate">
+                                <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.landedRate}} </span></mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
+                                    <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}" [ngClass]="{'highlight': selectedRowIndex == row.position}" (click)="selectedRow('', row)" tabindex="999" (keydown.arrowdown)="arrowDownEvent(row, selectedRowIndex)" (keydown.arrowup)="arrowUpEvent(row, selectedRowIndex)" (keyup.enter)="selectedRow(selectedRowIndex, '')" id="ele-{{row.position}}"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
+                        </mat-table>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

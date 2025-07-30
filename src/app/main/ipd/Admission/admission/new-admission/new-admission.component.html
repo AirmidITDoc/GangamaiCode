@@ -111,18 +111,42 @@
                                             [disabled]="true" [mode]="autocompleteModegender"> </airmid-dropdown>
                                     </div>
 
-                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <!-- <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                             formControlName="DateOfBirth"
                                             [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                                    </div>
+                                    </div> -->
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
-                                            [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
-                                            [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
-                                        </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex="100%">
+                                                    <input matInput [matDatepicker]="validFromPicker"
+                                                        formControllName="DateOfBirth" #bday [value]="value"
+                                                        (dateChange)="onChangeDateofBirth($event.value)"
+                                                        placeholder="mm/dd/yyyy">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="validFromPicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                                </mat-form-field>
+
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
+                                                    <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%"
+                                                        [(value)]="ageYear" [formGroup]="personalFormGroup"
+                                                        [readonly]="true">
+                                                    </airmid-textbox>
+                                                    <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%"
+                                                        [(value)]="ageMonth" [formGroup]="personalFormGroup"
+                                                        [readonly]="true">
+                                                    </airmid-textbox>
+                                                    <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%"
+                                                        [(value)]="ageDay" [formGroup]="personalFormGroup"
+                                                        [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                            </div>
+                                 
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="Address" formControlName="Address"
@@ -193,6 +217,14 @@
                                                 [maxLength]="10"> </airmid-textbox>
 
                                         </div>
+
+                                         
+                                    </div>
+                                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                            [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
+                                            [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
+                                        </airmid-textbox>
                                     </div>
                                 </div>
                             </mat-card-content>

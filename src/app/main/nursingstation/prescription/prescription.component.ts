@@ -47,8 +47,9 @@ export class PrescriptionComponent implements OnInit {
 
     ngAfterViewInit() {
         // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
+           this.gridConfig.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.patientTypetemp;
     }
-
+  @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
    
     allColumns1 = [
 
@@ -147,11 +148,12 @@ export class PrescriptionComponent implements OnInit {
     }
 
     allColumns2 = [
+         { heading: "", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "Prescription Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
         { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "OPIPType", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "OPIPType", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
 
         {

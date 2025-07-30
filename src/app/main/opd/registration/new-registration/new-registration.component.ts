@@ -95,10 +95,12 @@ export class NewRegistrationComponent implements OnInit {
                     this.isEditMode = true;
                     this.regNo = this.registerObj.regNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+                    this.value=this.registerObj.dateofBirth
+                    this.onChangeDateofBirth(this.registerObj.dateofBirth)
                 });
             }, 500);
         }
-this.getarealist()
+// this.getarealist()
 
     this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
       startWith(''),
