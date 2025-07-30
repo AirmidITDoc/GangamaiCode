@@ -155,9 +155,9 @@ this.getarealist()
         this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
-        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
+        this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismPortOfEntry || '1900-01-01');
 
         if (
             (!this.ageYear || this.ageYear == 0) &&
@@ -169,7 +169,6 @@ this.getarealist()
             });
             return;
         }
-
         console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
 
@@ -279,7 +278,7 @@ this.getarealist()
 
     }
 
-   
+
     onChangestate(e) {
     }
 

@@ -228,7 +228,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Visa Issue Date</mat-label>
                                         <input matInput [matDatepicker]="picker6" formControlName="medTourismVisaIssueDate"
-                                        [value]="registerObj.medTourismVisaIssueDate ?? '1900-01-01'">
+                                        [value]="registerObj.medTourismVisaIssueDate ?? '1900-01-01'" (dateChange)="onVisaDateChange($event)">
                                         <mat-datepicker-toggle matSuffix
                                             [for]="picker6"></mat-datepicker-toggle>
                                         <mat-datepicker #picker6></mat-datepicker>
@@ -239,7 +239,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Visa Validity</mat-label>
                                         <input matInput [matDatepicker]="picker2" formControlName="medTourismVisaValidityDate"
-                                        [value]="registerObj.medTourismVisaValidityDate ?? '1900-01-01'">
+                                        [value]="registerObj.medTourismVisaValidityDate ?? '1900-01-01'" (dateChange)="onValidityDateChange($event)">
                                         <mat-datepicker-toggle matSuffix
                                             [for]="picker2"></mat-datepicker-toggle>
                                         <mat-datepicker #picker2></mat-datepicker>
@@ -263,7 +263,7 @@
                                   <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Date Of Entry</mat-label>
                                     <input matInput [matDatepicker]="picker3" formControlName="medTourismDateOfEntry"
-                                    [value]="registerObj.medTourismDateOfEntry ?? '1900-01-01'">
+                                    [value]="registerObj.medTourismDateOfEntry ?? '1900-01-01'" (dateChange)="onEntryDateChange($event)">
                                     <mat-datepicker-toggle matSuffix
                                         [for]="picker3"></mat-datepicker-toggle>
                                     <mat-datepicker #picker3></mat-datepicker>
