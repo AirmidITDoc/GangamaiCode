@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdmissionPersonlModel, RegInsert } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { MedicineItemList } from 'app/main/ipd/ip-search-list/discharge-summary/discharge-summary.component';
 import { RegistrationService } from 'app/main/opd/registration/registration.service';
@@ -13,6 +13,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { PrescriptionService } from '../prescription.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-new-prescription',
@@ -23,23 +24,14 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class NewPrescriptionComponent implements OnInit {
 
-  vQty: any;
+ 
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   prescForm: FormGroup;
   ItemForm: FormGroup;
   screenFromString = 'Common-form';
   ItemId: any;
-
-  displayedColumns: string[] = [
-    'ItemName',
-    'Qty',
-    'Remark',
-    'Action'
-  ]
-  PresItemlist: any = [];
-  registerObj = new RegInsert({});
-  selectedAdvanceObj = new AdmissionPersonlModel({});
+  vQty: any;
   PatientName: any;
   RegNo: any;
   DoctorName: any;
@@ -47,11 +39,7 @@ export class NewPrescriptionComponent implements OnInit {
   isRegSearchDisabled: boolean;
   registration: any;
   ItemName: any;
-  add: boolean = false;
   vInstruction: any;
-  Chargelist: any = [];
-  // optionsWard: any[] = [];
-  // isWardselected: boolean = false;
   CompanyName: any;
   vClassId: any = 0;
   vRegNo: any = 0;
@@ -73,14 +61,6 @@ export class NewPrescriptionComponent implements OnInit {
   vPatientType: any;
   vDOA: any;
   vstoreId = 0;
-
-  dsPresList = new MatTableDataSource<MedicineItemList>();
-  dsItemList = new MatTableDataSource<PrecriptionItemList>();
-
-  autocompletestore: string = "Store";
-  autocompleteward: string = "Room";
-  autocompleteitem: string = "ItemType";
-  Regstatus: boolean = true;
   vitemId: any;
   vitemname: any;
   dateTimeObj: any;
@@ -88,6 +68,26 @@ export class NewPrescriptionComponent implements OnInit {
   vdoseId: any;
   doseName: any;
   day: any;
+  dsPresList = new MatTableDataSource<MedicineItemList>();
+  dsItemList = new MatTableDataSource<PrecriptionItemList>();
+
+  autocompletestore: string = "Store";
+  autocompleteward: string = "Room";
+  autocompleteitem: string = "ItemType";
+  Regstatus: boolean = true;
+  add: boolean = false;
+  PresItemlist: any = [];
+  Chargelist: any = [];
+  registerObj = new RegInsert({});
+  selectedAdvanceObj = new AdmissionPersonlModel({});
+
+  
+  displayedColumns: string[] = [
+    'ItemName',
+    'Qty',
+    'Remark',
+    'Action'
+  ]
 
   @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
@@ -126,6 +126,7 @@ export class NewPrescriptionComponent implements OnInit {
 
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
+      this.registerObj=obj
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
@@ -150,19 +151,18 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeStore(obj: any) {
-    console.log("Store:", obj);
     this.vstoreId = obj.value
   }
 
-  validateStoreOnTyping() {
-    if (!this.vstoreId) {
-      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning'
-      });
-      this.ItemForm.get('ItemId').reset();
-      this.ItemForm.get('ItemId').updateValueAndValidity();
-    }
-  }
+  // validateStoreOnTyping() {
+  //   if (!this.vstoreId) {
+  //     this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+  //       toastClass: 'tostr-tost custom-toast-warning'
+  //     });
+  //     this.ItemForm.get('ItemId').reset();
+  //     this.ItemForm.get('ItemId').updateValueAndValidity();
+  //   }
+  // }
 
   selectChangeItem(obj: any) {
 
@@ -208,7 +208,6 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   deleteTableRow1(event, element) {
-    // if (this.key == "Delete") {
     let index = this.PresItemlist.indexOf(element);
     if (index >= 0) {
       this.PresItemlist.splice(index, 1);
@@ -238,21 +237,21 @@ export class NewPrescriptionComponent implements OnInit {
     };
   }
 
-  onEdit(row) {
-    console.log(row);
-    this.registerObj = row;
-    this.getSelectedObjIP(row);
-  }
+  // onEdit(row) {
+  //   console.log(row);
+  //   this.registerObj = row;
+  //   this.getSelectedObjIP(row);
+  // }
 
-  onChangeReg(event) {
-    if (event.value == 'registration') {
-      this.registerObj = new RegInsert({});
-      this.myForm.get('RegID').disable();
-    }
-    else {
-      this.isRegSearchDisabled = false;
-    }
-  }
+  // onChangeReg(event) {
+  //   if (event.value == 'registration') {
+  //     this.registerObj = new RegInsert({});
+  //     this.myForm.get('RegID').disable();
+  //   }
+  //   else {
+  //     this.isRegSearchDisabled = false;
+  //   }
+  // }
 
   onAdd() {
 
@@ -268,8 +267,6 @@ export class NewPrescriptionComponent implements OnInit {
             Remark: this.ItemForm.get('Instruction').value || ''
           });
         this.dsItemList.data = this.Chargelist
-        //console.log(this.dsItemList.data); 
-
         this.ItemForm.get('ItemId').reset('');
         this.ItemForm.get('Qty').reset('');
         this.ItemForm.get('Instruction').reset('');

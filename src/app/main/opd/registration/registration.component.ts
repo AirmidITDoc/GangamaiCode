@@ -63,7 +63,7 @@ export class RegistrationComponent implements OnInit {
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         {
@@ -322,8 +322,8 @@ export class RegInsert {
     medTourismVisaValidityDate:Date;
     medTourismDateOfEntry:Date;
     emgId:any
-    // religionId:any;
-    // updatedBy:any;
+    ipdNo:any;
+    genderName:any;
 
 
     /**
@@ -421,6 +421,8 @@ export class RegInsert {
             this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
             this.emgId=RegInsert.emgId || 0
+            this.ipdNo=RegInsert.ipdNo || 0
+            this.genderName=RegInsert.genderName || ''
         }
     }
 }

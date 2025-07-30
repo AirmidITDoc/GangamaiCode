@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -11,6 +11,7 @@ import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
     selector: 'app-new-registration',
@@ -41,7 +42,6 @@ export class NewRegistrationComponent implements OnInit {
     AgeDay: any;
     matDialogRef: any;
     RegID: number = 0;
-
     regNo: any;
     ageYear = 0;
     ageMonth = 0;
@@ -80,6 +80,8 @@ export class NewRegistrationComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
+ options: string[]
+     filteredOptions: Observable<string[]>;
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.personalFormGroup.markAllAsTouched();
@@ -96,8 +98,29 @@ export class NewRegistrationComponent implements OnInit {
                 });
             }, 500);
         }
+this.getarealist()
 
+    this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value)),
+
+    );
     }
+
+
+// private _filter(value: string): string[] {
+//     const filterValue = value.toLowerCase();
+//     return this.areaList.filter(option => option.toLowerCase().includes(filterValue));
+//   }
+  AreaList: any = [];
+   private _filter(value: any): string[] {
+    if (value) {
+      const filterValue = value && value.AreaName ? value.areaName.toLowerCase() : value.toLowerCase();
+      return this.AreaList.filter(option => option.areaName.toLowerCase().includes(filterValue));
+    }
+  }
+
+
 
     OnSubmit() {
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
@@ -206,6 +229,19 @@ export class NewRegistrationComponent implements OnInit {
             }
         });
     }
+
+    onChangedate(event){
+        debugger
+    const selectedDate = new Date(event);
+    const vday = this.personalFormGroup.get("medTourismVisaIssueDate").value
+
+    // selectedDate.setHours(0, 0, 0, 0);
+    // vday.setHours(0, 0, 0, 0);
+    if(selectedDate < vday )
+        Swal.fire("VisaValidity Date Shoud Be Greater than IssueDate !........")
+    return;
+    }
+
 
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
@@ -340,6 +376,66 @@ export class NewRegistrationComponent implements OnInit {
         };
     }
 
+    value=new Date()
+       onChangeDateofBirth(DateOfBirth: Date) {
+        if (DateOfBirth > this.minDate) {
+            this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return;
+        }
+        if (DateOfBirth) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+          
+            this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
+
+            if (this.ageDay < 0) {
+                this.ageMonth--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
+                // this.ageDay =this.ageDay +1;
+            }
+
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
+            this.value = DateOfBirth;
+            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+            if (this.ageYear > 110)
+                this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        }
+    }
+
+  areaList: any[] = [];
+  
+    getarealist(){
+        debugger
+    this._registerService.getareaList1().subscribe(response => {
+        console.log(response)
+    this.AreaList = response;
+    });
+    }
+
+
+
+//   getAreaList() {
+//     this._registerService.getAreaCombo().subscribe(data => {
+//       this.AreaList = data;
+//       if (this.data) {
+//         const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
+//         this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
+//         this.personalFormGroup.updateValueAndValidity();
+//         return;
+//       }
+//     });
+//   }
     getDate(dateStr: string) {
         let dtStr = dateStr.split('-');
         var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];

@@ -64,24 +64,23 @@
                                                         <span class="patient-col-key">UHID No
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vRegNo}}</span>
+                                                        <span class="patient-col-value">{{registerObj.regNo}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Name
                                                         </span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{ vPatientName
-                                                            }}</span>
+                                                        <span class="patient-col-value">{{vPatientName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Doctor Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vDoctorName}}</span>
+                                                        <span class="patient-col-value">{{registerObj.doctorName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vDepartment}}</span>
+                                                        <span class="patient-col-value">{{registerObj.departmentName}}</span>
                                                     </div>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="6px">
@@ -89,21 +88,20 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vDOA |
-                                                            date:'dd/MM/YYYY'}}</span>
+                                                        <span class="patient-col-value">{{vDOA |date:'dd/MM/YYYY'}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">IPD No</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vIPDNo}}</span>
+                                                        <span class="patient-col-value">{{registerObj.ipdNo}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Age | Sex
                                                         </span>
                                                         <span>:</span>
                                                         <span
-                                                            class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
-                                                            | {{vGenderName}}</span>
+                                                            class="patient-col-value">{{registerObj.age}}Y|{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D
+                                                            | {{registerObj.genderName}}</span>
                                                     </div>
 
                                                     <div class="patient-col">

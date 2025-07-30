@@ -172,6 +172,10 @@ export class RegistrationService {
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
+
+     public getareaList1() {
+        return this._httpClient1.GetData("VisitDetail/GetAreaList");
+    }
 }
 
 

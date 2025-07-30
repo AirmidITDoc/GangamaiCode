@@ -28,21 +28,34 @@ export class PrescriptionComponent implements OnInit {
     @ViewChild('grid4') grid4: AirmidTableComponent;
     // @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
     regNo: any = ""
+    gridConfig1: gridModel = new gridModel();
+    isShowDetailTable: boolean = false;
+     hasSelectedContacts: boolean;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    gridConfig4: gridModel = new gridModel();
+    isShowDetailTable1: boolean = false;
+    
+
+     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
+        public toastr: ToastrService, private commonService: PrintserviceService,
+        public datePipe: DatePipe,) { }
+
+    ngOnInit(): void {
+    }
+
 
     ngAfterViewInit() {
         // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
     }
 
-    hasSelectedContacts: boolean;
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
+   
     allColumns1 = [
 
         { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 140 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', widh: 40 },
-
+      
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
@@ -76,7 +89,6 @@ export class PrescriptionComponent implements OnInit {
     }
 
     Clearfilter(event) {
-        console.log(event)
         if (event == 'RegNo')
             this._PrescriptionService.mysearchform.get('RegNo').setValue("")
         this.onChangeFirst();
@@ -88,7 +100,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        
         let fromDate1 = this._PrescriptionService.mysearchform.get("startdate").value || "";
         let toDate1 = this._PrescriptionService.mysearchform.get("enddate").value || "";
         fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -108,11 +120,9 @@ export class PrescriptionComponent implements OnInit {
         this.grid.bindGridData();
     }
 
-    gridConfig1: gridModel = new gridModel();
-
-    isShowDetailTable: boolean = false;
+ 
     GetDetails1(data: any): void {
-        debugger
+        
         console.log("detailList:", data)
         let ipMedID = data.ipMedID;
 
@@ -137,9 +147,9 @@ export class PrescriptionComponent implements OnInit {
     }
 
     allColumns2 = [
-        { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 10 },
+        { heading: "Prescription Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "OPIPType", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
@@ -176,7 +186,6 @@ export class PrescriptionComponent implements OnInit {
     }
 
     Clearfilter1(event) {
-        console.log(event)
         if (event == 'RegNo')
             this._PrescriptionService.mysearchform.get('RegNo').setValue("")
         this.onChangeFirst1();
@@ -188,12 +197,11 @@ export class PrescriptionComponent implements OnInit {
     }
 
     getfilterdata1() {
-        debugger
         let fromDate2 = this._PrescriptionService.mysearchform.get("startdate").value || "";
         let toDate2 = this._PrescriptionService.mysearchform.get("enddate").value || "";
         fromDate2 = fromDate2 ? this.datePipe.transform(fromDate2, "yyyy-MM-dd") : "";
         toDate2 = toDate2 ? this.datePipe.transform(toDate2, "yyyy-MM-dd") : "";
-        this.gridConfig = {
+        this.gridConfig3 = {
             apiUrl: "IPPrescription/IPPrescriptionReturnList",
             columnsList: this.allColumns1,
             sortField: "PresReId",
@@ -204,16 +212,14 @@ export class PrescriptionComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
             ]
         }
-        this.grid2.gridConfig = this.gridConfig;
+        this.grid2.gridConfig = this.gridConfig3;
         this.grid2.bindGridData();
     }
 
-    gridConfig4: gridModel = new gridModel();
-    isShowDetailTable1: boolean = false;
+ 
 
     GetDetails2(data) {
-        console.log("GetDetails2:", data)
-        let PresReId = data.presReId;
+        // let PresReId = data.presReId;
 
         this.gridConfig4 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
@@ -225,7 +231,7 @@ export class PrescriptionComponent implements OnInit {
             sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "PresReId", fieldValue: String(PresReId), opType: OperatorComparer.Equals }
+                { fieldName: "PresReId", fieldValue: String(data.presReId), opType: OperatorComparer.Equals }
             ]
         }
         this.isShowDetailTable1 = true;
@@ -233,13 +239,7 @@ export class PrescriptionComponent implements OnInit {
         this.grid4.bindGridData();
     }
 
-    constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService, private commonService: PrintserviceService,
-        public datePipe: DatePipe,) { }
-
-    ngOnInit(): void {
-    }
-
+   
     viewgetIpprescriptionReportPdf(response) {
         console.log(response)
         setTimeout(() => {
@@ -259,7 +259,7 @@ export class PrescriptionComponent implements OnInit {
                 "mode": "NurIPprescriptionReport"
             }
 
-            console.log(param)
+            // console.log(param)
             this._PrescriptionService.getReportView(param).subscribe(res => {
 
                 const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -279,9 +279,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     viewgetIpprescriptionreturnReportPdf(response) {
-        console.log(response)
-        // this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
-        setTimeout(() => {
+     setTimeout(() => {
             let param = {
                 "searchFields": [
                     {
@@ -292,10 +290,7 @@ export class PrescriptionComponent implements OnInit {
                 ],
                 "mode": "NurIPprescriptionReturnReport"
             }
-
-            console.log(param)
-            this._PrescriptionService.getReportView(param).subscribe(res => {
-
+        this._PrescriptionService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
                     {
                         maxWidth: "85vw",
@@ -313,7 +308,6 @@ export class PrescriptionComponent implements OnInit {
 
     }
     onSave(row: any = null) {
-        let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,
             {
                   maxWidth: "80vw",
@@ -327,7 +321,6 @@ export class PrescriptionComponent implements OnInit {
     }
 
     onPrescriptionReturn(row: any = null) {
-        let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
             {
                  maxWidth: "80vw",
