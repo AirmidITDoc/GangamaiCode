@@ -17,6 +17,8 @@ import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import Swal from 'sweetalert2';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-appointment',
