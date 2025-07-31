@@ -84,20 +84,54 @@ export class PatientvitalInformationComponent {
     }
   }
 
+    // showing color for vitals
+
+ getVitalColorClass(vital: string, value: any): string {
+  const num = parseFloat(value);
+  switch (vital) {
+    case 'BMI':
+      if (num < 18.5) return 'orange'; // Yellow
+      if (num <= 24.9) return 'green'; // Green
+      return 'red'; // Red
+
+    case 'SpO2':
+      return num < 95 ? 'orange' : 'green';
+
+    case 'Pulse':
+      if (num < 60) return 'orange';
+      if (num <= 100) return 'green';
+      return 'red';
+
+    case 'BP':
+      if (!value || typeof value !== 'string' || !value.includes('/')) return '';
+      const [sys, dia] = value.split('/').map(Number);
+      if (sys < 90 || dia < 60) return 'orange';
+      if (sys > 120 || dia > 80) return 'red';
+      return 'green';
+
+    case 'Temp':
+      if (num < 97) return 'orange';
+      if (num <= 99) return 'green';
+      return 'red';
+
+    default:
+      return '';
+  }
+}
+
   createMyForm() {
     return this._formBuilder.group({
       visitId: this.data.visitId,
-      height: ['', [Validators.required, Validators.minLength(0), Validators.maxLength(3),
+      height: ['', [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.pattern("^[0-9]{1,3}$")]],
-      pweight: ['', [Validators.required, Validators.minLength(0), Validators.maxLength(3),
+      pweight: ['', [Validators.required, Validators.maxLength(20),
       Validators.pattern("^[0-9]{1,3}$"), this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bmi: ['', [Validators.minLength(0), Validators.maxLength(5), Validators.pattern("^$|^[0-9]{1,5}$")]],
-      bsl: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
-      spO2: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
-      temp: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
-      pulse: ['', [Validators.minLength(0), Validators.maxLength(3), Validators.pattern("^[0-9]{1,3}$")]],
-      bp: ['', [Validators.minLength(0), Validators.maxLength(3),
-      Validators.pattern("^[0-9]{1,3}$")]]
+      bmi: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      bsl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      spO2: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      bp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
     });
   }
 
@@ -122,7 +156,7 @@ export class PatientvitalInformationComponent {
     debugger
     if (!this.MyFormGroup.invalid) {
       let visitId = this.data.visitId
-   
+      // this.MyFormGroup.get('bmi').setValue(String(this.MyFormGroup.get('bmi')?.value)),
       this.MyFormGroup.get("bsl").setValue(this.vBSL || "0")
       this.MyFormGroup.get("spO2").setValue(this.vSpO2 || "0")
       this.MyFormGroup.get("pulse").setValue(this.vPulse || "0")

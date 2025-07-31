@@ -102,11 +102,14 @@ export class NewConsentComponent {
       this.vSelectedOption = this.data.opipType === 1 ? 'IP' : 'OP';
       this.vdepartmentId = this.data.consentDeptId
       this.templateId = this.data.consentTempId
+      this.templateName=this.data.consentName
+      this.vRegNo=this.data.regNo
       this.ConsentinsertForm.patchValue(this.data);
       console.log(this.data)
       this.registerObj=this.data
-      this.getSelectedObjOP(this.data)
-      this.getSelectedObjIP(this.data)
+      // this.getSelectedObjOP(this.data)
+      // this.getSelectedObjIP(this.data)
+      this.selectChangedepartment(this.data)
     }
   }
 
@@ -144,20 +147,47 @@ export class NewConsentComponent {
   }
 
   vdepartmentId = ""
-  selectChangedepartment(obj: any) {
-    console.log(obj)
-    this.vdepartmentId = obj.value
-    // template is dependent on department
-    this._ConsentService.getConsentByDepartment(obj.value).subscribe((data: any) => {
-        this.ddlTemplate.options = data;
+   selectChangedepartment(obj: any) {
+    if(obj.value){
+      this.vdepartmentId = obj.value
+    this._ConsentService.getConsentByDepartment(obj.value).subscribe((data: any[]) => {
+      const mapped = data.map(item=>({
+        ...item,
+        value:item.consentId,
+        text:item.consentName
+      }))
+        this.ddlTemplate.options = mapped;
         this.ddlTemplate.bindGridAutoComplete();
     });
+    }else{
+      this._ConsentService.getConsentByDepartment(obj.consentDeptId).subscribe((data: any[]) => {
+      const mapped = data.map(item=>({
+        ...item,
+        value:item.consentId,
+        text:item.consentName
+      }))
+        this.ddlTemplate.options = mapped;
+
+        const incomingTempId = obj.consentTempId;
+        setTimeout(() => {
+         debugger
+
+          this.ddlTemplate.bindGridAutoComplete();
+          if (incomingTempId) {
+            const matchedTemp = mapped.find(temp => temp.value === incomingTempId);
+            if (matchedTemp) {
+              this.ddlTemplate.SetSelection(matchedTemp.value);
+            }
+          }
+        }, 100);
+    });
+    }
   }
 
   templateId = "0"
   templateName=''
   onTemplateSelect(option: any) {
-    console.log("selectedTemplateOption:", option)
+    this.isButtonDisabled = false
     this.templateId = option.consentId
     this.templateName = option.consentName
     this.selectedTemplateOption = option.consentDesc; //details of template dd should pass
@@ -173,8 +203,7 @@ export class NewConsentComponent {
         this.ConsentinsertForm.get("createdBy").setValue(this._loggedService.currentUserValue.userId)
          this.ConsentinsertForm.removeControl('modifiedBy');
 
-      }
-    if (!this.ConsentinsertForm.invalid) {
+      }   
       this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
       this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
       this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
@@ -182,9 +211,10 @@ export class NewConsentComponent {
       this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
       this.ConsentinsertForm.get("ConsentName").setValue(this.templateName)
 
+    if (!this.ConsentinsertForm.invalid) {
+
       console.log(this.ConsentinsertForm.value)
       this._ConsentService.ConsentSave(this.ConsentinsertForm.value).subscribe((response) => {
-        debugger
         this.OnViewReportPdf(response)
         this.onClose();
       });
@@ -209,8 +239,6 @@ export class NewConsentComponent {
   }
 
   addTemplateDescription() {
-    this.isButtonDisabled = false
-
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined || this.vRegNo == 0) {
       this.toastr.warning('Please select patient ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -231,9 +259,9 @@ export class NewConsentComponent {
       });
       return;
     }
-
     this.vConsentText = this.selectedTemplateOption || '';
     this.selectedTemplateOption = '';
+    this.isButtonDisabled = true
   }
 
   onClose() {
@@ -277,7 +305,7 @@ export class NewConsentComponent {
             },
             {
               "fieldName": "OP_IP_Type",
-              "fieldValue": String(element.opipType),
+              "fieldValue": String(element.opiptype),
               "opType": "Equals"
             }
           ],
