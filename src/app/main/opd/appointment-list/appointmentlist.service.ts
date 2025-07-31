@@ -266,10 +266,10 @@ export class AppointmentlistService {
       public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
     }
- // Get billing Service List 
-//  public getBillingServiceList(employee) {
-//    return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
-// }
+ 
+ public getVisitlist(employee) {
+   return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+}
 
 public getBillingServiceList(employee) {
     return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)

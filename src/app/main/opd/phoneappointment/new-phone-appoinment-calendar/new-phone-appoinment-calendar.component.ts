@@ -239,12 +239,12 @@ export class NewPhoneAppoinmentCalendarComponent {
             DepartmentId: [this._configue.configParams.OPDDefaultDepartment || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
 
-
+debugger
             this.myFilterform.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
            this.myFilterform.get("DoctorId").setValue(this._configue.configParams.OPDDefaultDoctor)
        
-        // this.DepartmentId=this._configue.configParams.OPDDefaultDepartment
-        // this.DoctorId=this._configue.configParams.OPDDefaultDoctor
+        this.DepartmentId=this._configue.configParams.OPDDefaultDepartment
+        this.DoctorId=this._configue.configParams.OPDDefaultDoctor
     }
 
 

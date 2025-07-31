@@ -251,7 +251,7 @@
                 <form [formGroup]="myformSearch">
 
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetAppointdetail()"
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">

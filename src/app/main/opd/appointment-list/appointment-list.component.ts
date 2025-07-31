@@ -25,6 +25,8 @@ import { NewAppointmentComponent } from './new-appointment/new-appointment.compo
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { element } from 'protractor';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -60,11 +62,11 @@ export class AppointmentListComponent implements OnInit {
     patientDetail1 = new VisitMaster1({});
     RegId = 0
     autocompletedepartment: string = "Department";
-
+    dataSource = new MatTableDataSource<VisitMaster1>();
     vOPIPId = 0;
-    f_name: any = ""
-    regNo=0;
-    l_name: any = ""
+    f_name: any = "%"
+    regNo = 0;
+    l_name: any = "%"
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -78,10 +80,7 @@ export class AppointmentListComponent implements OnInit {
         // menu Button List
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
-        // this.menuActions.push("Report Record");
-        this.Appointdetail(this.gridConfig)
 
-        // to disable checkin button after refresh the page 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
             this.timers = JSON.parse(savedTimers); //Restore saved check-in/out data
@@ -97,6 +96,8 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
+        debugger
+        this.GetAppointdetail()
     }
 
     allfilters = [
@@ -157,16 +158,16 @@ export class AppointmentListComponent implements OnInit {
         filters: this.allfilters
     }
 
-    onChangeStartDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
-    onChangeEndDate(value) {
-        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    }
+    // onChangeStartDate(value) {
+    //     this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    // }
+    // onChangeEndDate(value) {
+    //     this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    // }
 
-    OnClearValues() {
-        this.myformSearch.reset();
-    }
+    // OnClearValues() {
+    //     this.myformSearch.reset();
+    // }
     onChangeFirst() {
 
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
@@ -178,20 +179,20 @@ export class AppointmentListComponent implements OnInit {
 
     }
     onChangeFirst1(event) {
-debugger
+
         console.log(event)
         // if (event.key == 13) {
-            this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-            this.f_name = this.myformSearch.get('FirstName').value + "%"
-            this.l_name = this.myformSearch.get('LastName').value + "%"
-            this.regNo = this.myformSearch.get('RegNo').value
-            this.getfilterdata();
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value
+        this.getfilterdata();
         // }
     }
 
     getfilterdata() {
-debugger
+        debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -210,6 +211,7 @@ debugger
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+        this.GetAppointdetail()
     }
 
 
@@ -270,9 +272,8 @@ debugger
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
             that.grid.bindGridData();
-            // }
+            this.GetAppointdetail()
         });
     }
     createSearchForm() {
@@ -298,9 +299,8 @@ debugger
 
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+           that.grid.bindGridData();
+             this.GetAppointdetail()
         });
     }
 
@@ -409,6 +409,7 @@ debugger
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
+               this.GetAppointdetail()
         });
     }
 
@@ -427,9 +428,8 @@ debugger
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+          that.grid.bindGridData();
+             this.GetAppointdetail()
         });
     }
 
@@ -457,36 +457,7 @@ debugger
         console.log('Third action clicked for:', element);
     }
 
-    Appointdetail(data) {
-        this.Vtotalcount = 0;
-        this.VNewcount = 0;
-        this.VFollowupcount = 0;
-        this.VBillcount = 0;
-        this.VCrossConscount = 0;
-        this.VEMRcount = 0;
-        this.VCheckoutCount = 0;
-        this.VWaitingCount = 0;
-        console.log(data)
-        this.Vtotalcount;
-        console.log(data)
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].patientOldNew == 1) {
-                this.VNewcount = this.VNewcount + 1;
-            }
-            else if (data[i].patientOldNew == 2) {
-                this.VFollowupcount = this.VFollowupcount + 1;
-            }
-            if (data[i].mPbillNo == 1 || data[i].mPbillNo == 2) {
-                this.VBillcount = this.VBillcount + 1;
-            }
-            if (data[i].crossConsulFlag == 1) {
-                this.VCrossConscount = this.VCrossConscount + 1;
-            }
-
-            this.Vtotalcount = this.Vtotalcount + 1;
-        }
-
-    }
+    
 
     AppointmentCancle(contact) {
         Swal.fire({
@@ -653,7 +624,7 @@ debugger
         console.log('Total Time:', new Date(totalTime).toISOString().substr(11, 8));
     }
 
-      keyPressAlphanumeric(event) {
+    keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -662,6 +633,92 @@ debugger
             return false;
         }
     }
+
+    GetAppointdetail() {
+
+  this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.Vtotalcount = 0;
+        this.VNewcount = 0;
+        this.VFollowupcount = 0;
+        this.VBillcount = 0;
+        this.VCrossConscount = 0;
+       debugger
+        let data =
+        {
+            "first": 0,
+            "rows": 150,
+            "sortField": "VisitId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": String(this.f_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": String(this.l_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.regNo),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Doctor_Id",
+                    "fieldValue": String(this.DoctorId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": this.fromDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": this.toDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsMark",
+                    "fieldValue": "2",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+        console.log(data)
+        this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            if (this.dataSource.data.length > 0) {
+                this.Vtotalcount = this.dataSource.data.length
+                this.dataSource.data.forEach(element => {
+                    if (element.patientOldNew == 1) {
+                        this.VNewcount = this.VNewcount + 1;
+                    }
+                    else if (element.patientOldNew == 2) {
+                        this.VFollowupcount = this.VFollowupcount + 1;
+                    }
+                    if (element.mPbillNo == 1 || element.mPbillNo == 2) {
+                        this.VBillcount = this.VBillcount + 1;
+                    }
+                    if (element.crossConsulFlag == 1) {
+                        this.VCrossConscount = this.VCrossConscount + 1;
+                    }
+                });
+                console.log(this.dataSource.data)
+            }
+            });
+}
+
 
 }
 
@@ -682,7 +739,7 @@ export class VisitMaster1 {
     doctorId: number;
     departmentId: number;
     appPurposeId: number;
-    patientOldNew: Boolean;
+    patientOldNew: any;
     phoneAppId: any;
     IsCancelled: any;
     classId: any;
@@ -690,6 +747,8 @@ export class VisitMaster1 {
     addedBy: any;
     updatedBy: any;
     doctorID: any;
+    crossConsulFlag:any;
+    mPbillNo:any;
     /**
      * Constructor
      *
@@ -718,9 +777,13 @@ export class VisitMaster1 {
             this.addedBy = VisitMaster1.addedBy || 0
             this.updatedBy = VisitMaster1.updatedBy || 0;
             this.doctorID = VisitMaster1.doctorID || 0;
+            this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0; 
+this.mPbillNo = VisitMaster1.mPbillNo || 0; 
+            
+            
         }
     }
-  
+
 }
 
 

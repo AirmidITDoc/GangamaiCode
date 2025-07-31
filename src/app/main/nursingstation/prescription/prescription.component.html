@@ -111,7 +111,7 @@
                         </div>
                     </div>
 
-                        <ng-template #patientTypetemp let-element>
+                        <!-- <ng-template #patientTypetemp let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.oP_IP_Type=='1'" matTooltip="OP Patient">account_box
                             </mat-icon>
@@ -119,7 +119,7 @@
                             <mat-icon *ngIf="element.oP_IP_Type !='1'" matTooltip="IP Patient">business
                             </mat-icon>
                         </div>
-                    </ng-template>
+                    </ng-template> -->
                     <airmid-table [gridConfig]="gridConfig3" class="content" (onSelectRow)="GetDetails2($event)" #grid2>
                         <ng-container filters>
                             <form [formGroup]="_PrescriptionService.mysearchform" fxLayout="column">

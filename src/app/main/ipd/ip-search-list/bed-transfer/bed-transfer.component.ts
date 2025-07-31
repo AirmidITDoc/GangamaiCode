@@ -256,10 +256,6 @@ BedFinalform: FormGroup;
       this.admissionForm.get("bedId").setValue(parseInt(this.Bedtransfer.get("toBedId").value))
       this.admissionForm.get("wardId").setValue(parseInt(this.Bedtransfer.get("toWardId").value))
       this.admissionForm.get("classId").setValue(parseInt(this.Bedtransfer.get("toClassId").value))
-
-      debugger
-     console.log(this.Bedtransfer.value)
-
       this.BedFinalform.get("bedTransfer").setValue(this.Bedtransfer.value)
       this.BedFinalform.get("bedTofreed").setValue(this.BedtofreeForm.value)
       this.BedFinalform.get("bedUpdate").setValue(this.BedtoupdateForm.value)

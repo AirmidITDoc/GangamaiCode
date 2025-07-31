@@ -19,6 +19,8 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import Swal from 'sweetalert2';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ConfigService } from 'app/core/services/config.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { VisitMaster1 } from '../appointment-list.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -133,6 +135,8 @@ export class NewAppointmentComponent implements OnInit {
     debounceTimers: { [key: string]: any } = {};
     showEmergencyFlag: boolean = false;
     EmgId: any;
+
+     
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -368,33 +372,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-    Appointdetail(data) {
-        this.Vtotalcount = 0;
-        this.VNewcount = 0;
-        this.VFollowupcount = 0;
-        this.VBillcount = 0;
-        this.VCrossConscount = 0;
-        this.Vtotalcount;
-
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].PatientOldNew == 1) {
-                this.VNewcount = this.VNewcount + 1;
-            }
-            else if (data[i].PatientOldNew == 2) {
-                this.VFollowupcount = this.VFollowupcount + 1;
-            }
-            if (data[i].MPbillNo == 1 || data[i].MPbillNo == 2) {
-                this.VBillcount = this.VBillcount + 1;
-            }
-            if (data[i].CrossConsulFlag == 1) {
-                this.VCrossConscount = this.VCrossConscount + 1;
-            }
-
-            this.Vtotalcount = this.Vtotalcount + 1;
-        }
-
-    }
-
+   
 
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
@@ -689,8 +667,10 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnsaveNewRegister() {
+        debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
+         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
         this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
         this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
         this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
@@ -754,7 +734,7 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get("CityId").setValue(Number(this.personalFormGroup.get('CityId').value))
         this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
         this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-debugger
+
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);

@@ -26,6 +26,7 @@ export class NewRequestforlabComponent implements OnInit {
   isServiceIdSelected: boolean = false;
   isRegSearchDisabled: boolean;
   registerObj = new RegInsert({});
+  selectedAdvanceObj = new AdmissionPersonlModel({});
   PatientName: any;
   RegId: any;
   DoctorName: any;
@@ -36,7 +37,6 @@ export class NewRequestforlabComponent implements OnInit {
   vTariffId: any = 0;
   vClassId: any = 0;
   vAge: any = 0;
-  selectedAdvanceObj = new AdmissionPersonlModel({});
   vRegNo: any;
   vPatientName: any;
   vAdmissionDate: any;
@@ -90,10 +90,10 @@ export class NewRequestforlabComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _loggedService: AuthenticationService) {
     this.date = new Date();
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj)
-    }
+    // if (this.advanceDataStored.storage) {
+    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
+    //   console.log(this.selectedAdvanceObj)
+    // }
   }
 
   ngOnInit(): void {
@@ -109,7 +109,57 @@ export class NewRequestforlabComponent implements OnInit {
     this.labeRequestArray.push(this.createlabRequestFormArray());
   }
  
-  getServiceList() {
+
+
+  createMyForm(): FormGroup {
+    return this._FormBuilder.group({
+      IsPathRad: ['3'],
+      ServiceId:[''],
+      isOnFileTest: false,
+      RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      radioIp: ['1']
+    })
+  }
+
+  labRequestInsertForm(): FormGroup {
+    return this._FormBuilder.group({
+      requestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqDate:[(new Date()).toISOString().split('T')[0]],
+      reqTime:[(new Date()).toISOString()],
+      opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      isAddedBy:[this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelled:false,
+      isCancelledBy:0,
+      isCancelledDate:['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],//[(new Date()).toISOString().split('T')[0]],
+      isCancelledTime:[(new Date()).toISOString()],
+      isType:0,
+      isOnFileTest:false,
+      tDlabRequests:this._FormBuilder.array([]),
+    })
+  }
+
+    createlabRequestFormArray(element: any = {}): FormGroup {
+      return this._FormBuilder.group({
+        reqDetId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        requestId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+        serviceId: [Number(element.ServiceId) ?? 0],
+        price: [element.Price ?? 0],
+        isStatus: false,
+        addedBillingId: 0,
+        addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
+        charId: [0], //260570
+        isTestCompted: false,
+        isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
+      });
+    }
+  
+    get labeRequestArray(): FormArray {
+      return this.labRequestInsert.get('tDlabRequests') as FormArray;
+    }
+    
+      getServiceList() {
     // debugger
     let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
@@ -162,55 +212,6 @@ export class NewRequestforlabComponent implements OnInit {
       }
     }
   }
-
-  createMyForm(): FormGroup {
-    return this._FormBuilder.group({
-      IsPathRad: ['3'],
-      ServiceId: [''],
-      isOnFileTest: false,
-      RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      radioIp: ['1']
-    })
-  }
-
-  labRequestInsertForm(): FormGroup {
-    return this._FormBuilder.group({
-      requestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      reqDate:[(new Date()).toISOString().split('T')[0]],
-      reqTime:[(new Date()).toISOString()],
-      opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      isAddedBy:this._loggedService.currentUserValue.userId,
-      isCancelled:false,
-      isCancelledBy:0,
-      isCancelledDate:['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],//[(new Date()).toISOString().split('T')[0]],
-      isCancelledTime:[(new Date()).toISOString()],
-      isType:0,
-      isOnFileTest:false,
-      tDlabRequests:this._FormBuilder.array([]),
-    })
-  }
-
-    createlabRequestFormArray(element: any = {}): FormGroup {
-      return this._FormBuilder.group({
-        reqDetId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        requestId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        serviceId: [Number(element.ServiceId) ?? 0],
-        price: [element.Price ?? 0],
-        isStatus: false,
-        addedBillingId: 0,
-        addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-        addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
-        charId: [260570], //260570
-        isTestCompted: false,
-        isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
-      });
-    }
-  
-    get labeRequestArray(): FormArray {
-      return this.labRequestInsert.get('tDlabRequests') as FormArray;
-    }
-    
   OnSave() {
     debugger
     console.log(this.labRequestInsert.value)

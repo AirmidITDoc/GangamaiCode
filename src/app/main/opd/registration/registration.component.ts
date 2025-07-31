@@ -34,11 +34,10 @@ export class RegistrationComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     constructor(
-        public _RegistrationService: RegistrationService, 
+        public _RegistrationService: RegistrationService,
         public _matDialog: MatDialog,
         private commonService: PrintserviceService,
-        public toastr: ToastrService, public datePipe: DatePipe) 
-        { }
+        public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
         this.myFilterform = this._RegistrationService.filterForm();
@@ -57,15 +56,29 @@ export class RegistrationComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
-        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:130 },
+        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
         { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width:100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "AnnualIncome", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "EmgContactPersonName", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "EmgMobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "EmgLandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "EngAddress", key: "engAddress", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        //  { heading: "AnnualIncome", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
+        // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Created Date", key: "createdDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 },
+        { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 },
+        { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Updaed By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
+
         {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -95,29 +108,29 @@ export class RegistrationComponent implements OnInit {
 
         ]
     }
-   
+
     OnNewAppointment(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button 
-            let that = this;
-            const dialogRef = this._matDialog.open(NewAppointmentComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%',
-                    data: {
-                       Obj:row,
-                       FormName:"Registration-Page"  
-                    },
-                   
-                });
-            dialogRef.afterClosed().subscribe(result => { 
-                that.grid.bindGridData(); 
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button 
+        let that = this;
+        const dialogRef = this._matDialog.open(NewAppointmentComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data: {
+                    Obj: row,
+                    FormName: "Registration-Page"
+                },
+
             });
-        }
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+        });
+    }
     OnPrint(Param) {
         this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
-    } 
+    }
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -218,7 +231,7 @@ export class RegistrationComponent implements OnInit {
         }
     }
 
-       keyPressAlphanumeric(event) {
+    keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -227,7 +240,7 @@ export class RegistrationComponent implements OnInit {
             return false;
         }
     }
-        
+
 }
 
 
@@ -302,28 +315,28 @@ export class RegInsert {
     departmentName: any;
     UnitId: any;
     billNo: any;
-    departmentId:any;
-    doctorId:any;
-    campId:any;
-    emgContactPersonName:any;
-    emgRelationshipId:any;
-    emgMobileNo:any;
-    emgLandlineNo:any;
-    engAddress:any;
-    emgAadharCardNo:any;
-    emgDrivingLicenceNo:any;
-    medTourismNationalityId:any;
-    medTourismPassportNo:any;
-    medTourismVisaIssueDate:Date;
-    medTourismCitizenship:any;  
-    medTourismPortOfEntry:any;  
-    medTourismResidentialAddress:any;
-    medTourismOfficeWorkAddress:any;
-    medTourismVisaValidityDate:Date;
-    medTourismDateOfEntry:Date;
-    emgId:any
-    ipdNo:any;
-    genderName:any;
+    departmentId: any;
+    doctorId: any;
+    campId: any;
+    emgContactPersonName: any;
+    emgRelationshipId: any;
+    emgMobileNo: any;
+    emgLandlineNo: any;
+    engAddress: any;
+    emgAadharCardNo: any;
+    emgDrivingLicenceNo: any;
+    medTourismNationalityId: any;
+    medTourismPassportNo: any;
+    medTourismVisaIssueDate: Date;
+    medTourismCitizenship: any;
+    medTourismPortOfEntry: any;
+    medTourismResidentialAddress: any;
+    medTourismOfficeWorkAddress: any;
+    medTourismVisaValidityDate: Date;
+    medTourismDateOfEntry: Date;
+    emgId: any
+    ipdNo: any;
+    genderName: any;
 
 
     /**
@@ -420,9 +433,9 @@ export class RegInsert {
             this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
             this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
-            this.emgId=RegInsert.emgId || 0
-            this.ipdNo=RegInsert.ipdNo || 0
-            this.genderName=RegInsert.genderName || ''
+            this.emgId = RegInsert.emgId || 0
+            this.ipdNo = RegInsert.ipdNo || 0
+            this.genderName = RegInsert.genderName || ''
         }
     }
 }

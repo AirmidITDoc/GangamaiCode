@@ -22,17 +22,15 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 export class RequestforlabtestComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
-
-    hasSelectedContacts: boolean;
     @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
- @ViewChild('isOnFileTest') isOnFileTestIcon!: TemplateRef<any>;
-
+    @ViewChild('isOnFileTest') isOnFileTestIcon!: TemplateRef<any>;
+ hasSelectedContacts: boolean;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
         this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
 
-         this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -40,12 +38,15 @@ export class RequestforlabtestComponent implements OnInit {
     regNo: any = ""
 
     allColumns = [
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' , width:80},
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+        { heading: "Admission Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+        { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150  },
         // { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-  { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
+        { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
 
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -84,7 +85,8 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        this.isShowDetailTable = false;
+        
         let fromDate1 = this._RequestforlabtestService.mySearchForm.get("startdate").value || "";
         let toDate1 = this._RequestforlabtestService.mySearchForm.get("enddate").value || "";
         fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -125,7 +127,7 @@ export class RequestforlabtestComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
-              
+
                 { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
                 { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
 
@@ -154,7 +156,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-        debugger
+        
         setTimeout(() => {
             const param = {
                 searchFields: [
@@ -182,35 +184,35 @@ export class RequestforlabtestComponent implements OnInit {
                         title: "Template Report Viewer"
                     }
                 });
-                matDialog.afterClosed().subscribe(result => {});
+                matDialog.afterClosed().subscribe(result => { });
             });
         }, 100);
     }
 
     getPrint(contact) {
-        debugger           
-           console.log(contact)
-   
-           Swal.fire({
-               title: 'Select Report Format',
-               text: "Choose how you want to view the report:",
-               icon: "warning",
-               showDenyButton: true,
-               showCancelButton: true,
-               confirmButtonColor: "#3085d6",
-               denyButtonColor: "#6c757d",
-               cancelButtonColor: "#d33",
-               confirmButtonText: "With Header",
-               denyButtonText: "Without Header",
-           }).then((result) => {
-             
-               if (result.isConfirmed) {
-                   this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
-               } else if (result.isDenied) {
-                   this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
-               }
-           });
-       }
+        
+        console.log(contact)
+
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
+            } else if (result.isDenied) {
+                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
+            }
+        });
+    }
 
     onSave(row: any = null) {
         const dialogRef = this._matDialog.open(NewRequestforlabComponent,
@@ -223,13 +225,13 @@ export class RequestforlabtestComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
- keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
     }
-  }
 }

@@ -29,14 +29,15 @@ export class PrescriptionComponent implements OnInit {
     // @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
     regNo: any = ""
     gridConfig1: gridModel = new gridModel();
+    gridConfig4: gridModel = new gridModel();
+    
     isShowDetailTable: boolean = false;
-     hasSelectedContacts: boolean;
+    hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    gridConfig4: gridModel = new gridModel();
+   
     isShowDetailTable1: boolean = false;
     
-
      constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public datePipe: DatePipe,) { }
@@ -47,9 +48,9 @@ export class PrescriptionComponent implements OnInit {
 
     ngAfterViewInit() {
         // this.gridConfig1.columnsList.find(col => col.key === 'isClosed')!.template = this.iconisClosed;
-           this.gridConfig.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.patientTypetemp;
+        //    this.gridConfig.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.patientTypetemp;
     }
-  @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
+//   @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
    
     allColumns1 = [
 
@@ -101,7 +102,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     getfilterdata() {
-        
+          this.isShowDetailTable = false;
         let fromDate1 = this._PrescriptionService.mysearchform.get("startdate").value || "";
         let toDate1 = this._PrescriptionService.mysearchform.get("enddate").value || "";
         fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -148,7 +149,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     allColumns2 = [
-         { heading: "", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        //  { heading: "", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "Prescription Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
         { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -162,14 +163,16 @@ export class PrescriptionComponent implements OnInit {
                     action: gridActions.print, callback: (data: any) => {
                         this.viewgetIpprescriptionreturnReportPdf(data);
                     }
-                }, {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                            // this.toastr.success(response.message);
-                            this.grid2.bindGridData();
-                        });
-                    }
-                }]
+                }
+                // , {
+                //     action: gridActions.delete, callback: (data: any) => {
+                //         this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
+                //             // this.toastr.success(response.message);
+                //             this.grid2.bindGridData();
+                //         });
+                //     }
+                // }
+            ]
         },
 
     ]
@@ -199,13 +202,15 @@ export class PrescriptionComponent implements OnInit {
     }
 
     getfilterdata1() {
+        debugger
+          this.isShowDetailTable1 = false;
         let fromDate2 = this._PrescriptionService.mysearchform.get("startdate").value || "";
         let toDate2 = this._PrescriptionService.mysearchform.get("enddate").value || "";
         fromDate2 = fromDate2 ? this.datePipe.transform(fromDate2, "yyyy-MM-dd") : "";
         toDate2 = toDate2 ? this.datePipe.transform(toDate2, "yyyy-MM-dd") : "";
         this.gridConfig3 = {
             apiUrl: "IPPrescription/IPPrescriptionReturnList",
-            columnsList: this.allColumns1,
+            columnsList: this.allColumns2,
             sortField: "PresReId",
             sortOrder: 0,
             filters: [

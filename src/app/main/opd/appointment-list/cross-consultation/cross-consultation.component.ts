@@ -82,7 +82,7 @@ export class CrossConsultationComponent implements OnInit {
       firstFollowupVisit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       appPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       followupDate: ['1900-01-01'],
-      crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      crossConsulFlag: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       campId:0,
       crossConsultantDrId:0,

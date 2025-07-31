@@ -35,7 +35,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   PatientName: any;
   OP_IP_Id: any;
   sIsLoading: string = '';
-  OP_IPType: any;
+  OP_IPType: any=1;
   ItemName: any;
   ItemId: any;
   itemName: any;
@@ -66,7 +66,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vRefDocName: any;
   vPatientType: any;
   vDOA: any;
-  vSelectedOption: any = 'OP';
+  vSelectedOption: any = 'IP';
   vOPDNo: any;
   vstoreId: any = this._loggedService.currentUserValue.user.storeId;
   dateTimeObj: any;
@@ -99,6 +99,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
   ngOnInit(): void {
+    debugger
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
       this.registerObj1 = this.data;
