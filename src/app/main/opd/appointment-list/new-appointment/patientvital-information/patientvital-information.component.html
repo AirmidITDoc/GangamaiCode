@@ -9,8 +9,8 @@
                 <mat-icon>account_box</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-             Patient Vital Information
-            </span> 
+                Patient Vital Information
+            </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
             <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
@@ -18,9 +18,9 @@
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
-        </div> 
+        </div>
     </mat-toolbar>
-    
+
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="content-card">
@@ -68,14 +68,15 @@
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                                                <span
+                                                    class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
                                                     D | {{data.genderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Department</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value">{{data.departmentName}}</span>
-                                            </div> 
+                                            </div>
 
                                         </div>
                                         <div fxLayout="column" fxLayoutGap="6px" style="margin-right: 100px;">
@@ -113,63 +114,84 @@
                                 </div>
                                 <div style="border: 1px solid rgb(203, 203, 203);width: 100%;"></div>
                                 <div fxLayout="row" fxLayoutGap="4px">
-                                  <mat-form-field appearance="outline" fxFlex="12%">
+
+                                    <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Height</mat-label>
-                                        <input name="Height" formControlName="height" placeholder="Height in m" [(ngModel)]="vHeight"
-                                            matInput #EHeight (keydown)="onEnterHeight($event)"   [maxLength]="3"
-                                            (keyup)="getBMIcalculation()" (keypress)="keyPressAlphanumeric($event)">
-                                        <span matSuffix style="font-size: x-large;"> | cm</span>
-                                    </mat-form-field>
-                    
-                                       <mat-form-field appearance="outline" fxFlex="12%">
-                                        <mat-label>Weight</mat-label>
-                                        <input name="Weight" formControlName="pweight" placeholder="Weight in Kg" [(ngModel)]="vWeight"
-                                            matInput #EWeight (keydown)="onEnterWeight($event)"  [maxLength]="3"
-                                            (keyup)="getBMIcalculation()" (keypress)="keyPressAlphanumeric($event)">
-                                        <span matSuffix style="font-size: x-large;"> | kg</span>
+                                        <input matInput formControlName="height" placeholder="Height in cm" required
+                                            [maxLength]="20" (keydown)="onEnterHeight($event)" OnlyNumber
+                                            (keyup)="getBMIcalculation()" [(ngModel)]="vHeight"
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                        <span matSuffix style="font-size: x-large;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">cm</span>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
-                                        <mat-label>BMI</mat-label>
-                                        <input name="BMI" formControlName="bmi" placeholder="BMI" matInput [(ngModel)]="vBMI" #EBMI
-                                            (keydown)="onEnterBMI($event)"  readonly>
-                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                        <mat-label>Weight</mat-label>
+                                        <input matInput formControlName="pweight" placeholder="Weight in Kg" required
+                                            [maxLength]="20" (keydown)="onEnterWeight($event)" OnlyNumber
+                                            (keyup)="getBMIcalculation()" [(ngModel)]="vWeight"
+                                            (keypress)="keyPressAlphanumeric($event)">
+                                        <span matSuffix style="font-size: x-large;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
                                     </mat-form-field>
-                    
+
+                                    <!-- BMI [(ngModel)]="vBMI"-->
+                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                        <mat-label>BMI</mat-label>
+                                        <input matInput formControlName="bmi" placeholder="BMI" readonly
+                                            [(ngModel)]="vBMI" [style.color]="getVitalColorClass('BMI', vBMI)"
+                                            [style.fontWeight]="'500'" />
+                                    </mat-form-field>
+
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BSL</mat-label>
-                                        <input name="BSL" formControlName="bsl" placeholder="BSL" matInput [(ngModel)]="vBSL" #EBSL [maxLength]="3"
-                                            (keydown)="onEnterBSL($event)"  (keypress)="keyPressAlphanumeric($event)">
-                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                        <input matInput formControlName="bsl" placeholder="BSL" [maxLength]="20"
+                                            (keydown)="onEnterBSL($event)" OnlyNumber
+                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vBSL">
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>SpO2</mat-label>
-                                        <input name="SpO2" formControlName="spO2" placeholder="SpO2" [(ngModel)]="vSpO2" matInput #ESpO2 [maxLength]="3"
-                                            (keydown)="onEnterSpO2($event)"   (keypress)="keyPressAlphanumeric($event)">
-                                        <!-- <mat-icon matSuffix>KG</mat-icon> -->
+                                        <input matInput formControlName="spO2" placeholder="SpO2" [maxLength]="20"
+                                            (keydown)="onEnterSpO2($event)" OnlyNumber
+                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vSpO2"
+                                            [style.color]="getVitalColorClass('SpO2', vSpO2)"
+                                            [style.fontWeight]="'500'">
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Pulse</mat-label>
-                                        <input name="Pulse" formControlName="pulse" placeholder="Pulse" [(ngModel)]="vPulse" matInput [maxLength]="3"
-                                            #EPulse (keydown)="onEnterPulse($event)" (keypress)="keyPressAlphanumeric($event)">
-                                        <span matSuffix style="font-size: x-large;"> |bpm</span>
+                                        <input matInput formControlName="pulse" placeholder="Pulse" [maxLength]="10"
+                                            (keydown)="onEnterPulse($event)" OnlyNumber
+                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vPulse"
+                                            [style.color]="getVitalColorClass('Pulse', vPulse)"
+                                            [style.fontWeight]="'500'">
+                                        <span matSuffix style="font-size: x-large;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" fxFlex="13%">
                                         <mat-label>BP</mat-label>
-                                        <input name="BP" formControlName="bp" placeholder="BP" matInput #EBP [(ngModel)]="vBP" [maxLength]="3"
-                                            (keydown)="onEnterBP($event)" (keypress)="keyPressOk($event)">
-                                        <span matSuffix style="font-size: x-large;"> |mmHg</span>
+                                        <input matInput formControlName="bp" placeholder="BP" [maxLength]="10"
+                                            (keydown)="onEnterBP($event)" OnlyNumber (keypress)="keyPressOk($event)"
+                                            [(ngModel)]="vBP" [style.color]="getVitalColorClass('BP', vBP)"
+                                            [style.fontWeight]="'500'" placeholder="Enter 120/80">
+                                        <span matSuffix style="font-size: x-large;">|</span>
+                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Temp</mat-label>
-                                        <input name="Temp" formControlName="temp" placeholder="Temp" [(ngModel)]="vTemp" matInput #ETemp [maxLength]="3"
-                                            (keydown)="onEnterTemp($event)" (keypress)="keyPressAlphanumeric($event)">
-                                        <span matSuffix style="font-size: x-large;"> | F</span>
+                                        <input matInput formControlName="temp" placeholder="Temp" [maxLength]="10"
+                                            (keydown)="onEnterTemp($event)" OnlyNumber
+                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vTemp"
+                                            [style.color]="getVitalColorClass('Temp', vTemp)"
+                                            [style.fontWeight]="'500'">
+                                        <span matSuffix style="font-size: x-large;">|</span>
+                                        <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
+                                        <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
                                     </mat-form-field>
+
                                 </div>
                             </div>
                         </form>
@@ -177,11 +199,10 @@
 
                     <div fxLayput="row" fxLayoutAlign="end" fxLayoutGap="6px">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary"  (click)="onSave()">Save</button>
+                        <button class="btn btn-primary" (click)="onSave()">Save</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

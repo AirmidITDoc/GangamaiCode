@@ -229,7 +229,7 @@ export class AppComponent implements OnInit, OnDestroy {
             });
         this.authService.currentUser.subscribe((d: any) => {
             if ((d?.userToken ?? "") != "") {
-                debugger
+                // debugger
                 this.authService.getNavigationData();
                 this.ConfigSettingParam();
                 this.ConfigSettingParamNew();

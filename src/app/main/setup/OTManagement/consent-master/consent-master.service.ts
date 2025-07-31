@@ -30,12 +30,7 @@ export class ConsentMasterService {
                      this._FormvalidationserviceService.allowEmptyStringValidator()
                 ] 
                      ],
-                     consentDesc: ["",
-                          [
-                    Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ] 
+                     consentDesc: ["",[Validators.required] 
                      ],
                      departmentId: ["",
                          [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]

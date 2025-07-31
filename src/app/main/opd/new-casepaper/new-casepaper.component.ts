@@ -291,6 +291,41 @@ export class NewCasepaperComponent implements OnInit {
 
     this.loadGridDataForVisit(this.VisitId);
   }
+
+  // showing color for vitals
+ getVitalColorClass(vital: string, value: any): string {
+  const num = parseFloat(value);
+  switch (vital) {
+    case 'BMI':
+      if (num < 18.5) return 'orange'; // Yellow
+      if (num <= 24.9) return 'green'; // Green
+      return 'red'; // Red
+
+    case 'SpO2':
+      return num < 95 ? 'orange' : 'green';
+
+    case 'Pulse':
+      if (num < 60) return 'orange';
+      if (num <= 100) return 'green';
+      return 'red';
+
+    case 'BP':
+      if (!value || typeof value !== 'string' || !value.includes('/')) return '';
+      const [sys, dia] = value.split('/').map(Number);
+      if (sys < 90 || dia < 60) return 'orange';
+      if (sys > 120 || dia > 80) return 'red';
+      return 'green';
+
+    case 'Temp':
+      if (num < 97) return 'orange';
+      if (num <= 99) return 'green';
+      return 'red';
+
+    default:
+      return '';
+  }
+}
+
   onLangChange() {
     if (this.speechService.isListening) {
       this.speechService.stopRecognition();
@@ -2129,7 +2164,6 @@ AllColumns = [
   }
 
 loadGridDataForVisit(visitId: string) {
-  debugger
   this.gridConfig.localData  = this.LabMap[visitId] || [];
   this.gridConfig.filters = [
     { fieldName: "OPIPId", fieldValue: String(visitId), opType: OperatorComparer.Equals }
