@@ -159,7 +159,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time);
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
-        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismPortOfEntry || '1900-01-01');
+        this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismDateOfEntry || '1900-01-01');
 
         if (
             (!this.ageYear || this.ageYear == 0) &&
