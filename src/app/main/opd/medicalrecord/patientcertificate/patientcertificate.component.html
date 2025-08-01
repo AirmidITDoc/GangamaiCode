@@ -155,6 +155,13 @@
 
                           </ng-container>
 
+                          <ng-container matColumnDef="doctorName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                              Doctor Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                              {{element.doctorName}} </mat-cell>
+                          </ng-container>
+
                           <ng-container matColumnDef="Action" stickyEnd>
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                               Action </mat-header-cell>

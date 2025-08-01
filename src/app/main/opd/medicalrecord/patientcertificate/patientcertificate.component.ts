@@ -53,6 +53,7 @@ export class PatientcertificateComponent {
     'CertificateDate',
     'CertificateName',
     'CertificateText',
+    'doctorName',
     'Action'
   ]
   autocompleteModeTemplate: string = 'Template' //'OPDEMR'
@@ -245,6 +246,7 @@ export class certificateTemp {
   CreatedBy: any;
   CetificateName: any;
   CertificateText: any;
+  doctorName:any;
 
   constructor(certificateTemp) {
 
@@ -252,5 +254,6 @@ export class certificateTemp {
     this.CreatedBy = certificateTemp.CreatedBy || '';
     this.CetificateName = certificateTemp.CetificateName || '';
     this.CertificateText = certificateTemp.CertificateText || '';
+    this.doctorName = certificateTemp.doctorName || '';
   }
 }

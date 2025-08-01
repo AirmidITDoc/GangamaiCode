@@ -158,6 +158,12 @@ export class NewCanteenRequestComponent implements OnInit {
   }
 
   onAdd() {
+    if(this._CanteenRequestservice.ItemForm.get('ItemId').value=='' || this._CanteenRequestservice.ItemForm.get('ItemId').value=='%'){
+      this.toastr.warning('Please Select Item', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if(this._CanteenRequestservice.ItemForm.get('Qty').value==''){
       this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
