@@ -21,19 +21,43 @@ export class OtReservationService {
  
      createReservationForm(): FormGroup {
          return this._formBuilder.group({
-             cityId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-               opIpType:  ["OP"],
-             cityName: ["",
-                 [
-                     Validators.required,
-                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
-                 ] 
-             ],
-             stateId: [0, 
-                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
-             ],
-             isActive:[true,[Validators.required]]
+            //  cityId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            //    opIpType:  ["OP"],
+            //  cityName: ["",
+            //      [
+            //          Validators.required,
+            //          Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            //          this._FormvalidationserviceService.allowEmptyStringValidator()
+            //      ] 
+            //  ],
+            //  stateId: [0, 
+            //      [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            //  ],
+            //  isActive:[true,[Validators.required]]: 
+            otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            reservationDate:[new Date()],
+            reservationTime: [new Date()],
+            opIpId: [""],
+            opIpType:  ["OP"],
+
+            opdate: [new Date()],
+            opstartTime: [new Date()],
+            opendTime: [new Date()],
+
+            duration: [""],
+            ottableId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            surgeonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            surgeonId1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            anestheticsDr: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            anestheticsDr1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            surgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            anesthTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            instruction: [""],
+            ottypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unBooking: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+             isCancelled: [false],
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+       isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
          });
      }
      createSearchForm(): FormGroup {
@@ -51,9 +75,9 @@ export class OtReservationService {
     
  
      public requestSave(Param: any) {
-         if (Param.cityId) {
-             return this._httpClient.PutData("OTBooking/Edit/" + Param.cityId, Param);
-         } else return this._httpClient.PostData("OTBooking/InsertEDMX", Param);
+         if (Param.otreservationId) {
+             return this._httpClient.PutData("OTReservation/Edit/" + Param.otreservationId, Param);
+         } else return this._httpClient.PostData("OTReservation/InsertEDMX", Param);
      }
  
 }

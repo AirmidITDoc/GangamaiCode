@@ -70,18 +70,18 @@ export class OTReservationComponent implements OnInit {
           { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
           //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
       ]
       gridConfig: gridModel = {
-          apiUrl: "OT/OTBookinglist",
+          apiUrl: "OTReservation/OTBookinglist",
           columnsList: this.allcolumns,
-          sortField: "OTBookingID",
+          sortField: "OtreservationId",
           sortOrder: 0,
           filters: this.allFilters
       }
-      autocompleteMode: string = "CityMaster";
+     
   
       constructor(
           public _OtReservationService: OtReservationService,
@@ -128,16 +128,16 @@ export class OTReservationComponent implements OnInit {
     }
      getfilterdata() {
         this.gridConfig = {
-            apiUrl: "OutPatient/RegistrationList",
+            apiUrl: "OTReservation/OTBookinglist",
             columnsList: this.allcolumns,
-            sortField: "RegId",
+            sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
                 { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
                 //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
             ],
             row: 25

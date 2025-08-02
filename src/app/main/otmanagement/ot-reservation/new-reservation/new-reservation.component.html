@@ -14,6 +14,8 @@
               <mat-icon>close</mat-icon>
             </button>
           </div>
+
+            
         </div>
       </div>
         </div>
@@ -72,6 +74,11 @@
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
                                     </airmid-autocomplete>
+                        </div>
+                        <div class="ot-request-button" style="margin-right: 12px;">
+                            <button class="btn btn-primary " color="accent" (click)="onOTRequest()">
+                                <span>New OT Request</span>
+                            </button>
                         </div>
                     </div>
 
@@ -171,80 +178,80 @@
                  <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
            
-                <input type="hidden" name="cityId" formControlName="cityId">
+                <input type="hidden" name="otreservationId" formControlName="otreservationId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
                        <airmid-dropdown 
                             label="Surgery Name" 
-                            formControlName="reservationForm" 
+                            formControlName="surgeryId" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). SurgeryName"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                        <airmid-dropdown 
                             label="Surgeron Name 1" 
-                            formControlName="reservationForm" 
+                            formControlName="surgeonId" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). SurgeronName1"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Surgeon Name 2" 
-                            formControlName="reservationForm" 
+                            formControlName="surgeonId1" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). SurgeronName2"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Anathesia doctor 1" 
-                            formControlName="reservationForm" 
+                            formControlName="anestheticsDr" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). Anathesiadoctor1"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Anathesia doctor 2" 
-                            formControlName="reservationForm" 
+                            formControlName="anestheticsDr1" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). Anathesiadoctor2"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="OT Table" 
-                            formControlName="reservationForm" 
+                            formControlName="ottableId" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). OTTable"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
                         <airmid-dropdown 
                             label="Anathesia Type" 
-                            formControlName="reservationForm" 
+                            formControlName="anesthTypeId" 
                             [formGroup]="reservationForm"
                             [value]="data?.stateId" 
-                            [validations]="getValidationMessages(). countryName"
+                            [validations]="getValidationMessages(). AnathesiaType"
                             [mode]="autocompleteModestatus">
                         </airmid-dropdown>
                     </div>
                 </div>
- <airmid-textbox label="Enter Instruction" formControlName="Instruction" 
+ <airmid-textbox label="Enter Instruction" formControlName="instruction" 
                                     [formGroup]="reservationForm" [(ngModel)]="vInstruction">
                                 </airmid-textbox>
                 

@@ -171,8 +171,12 @@ vInstruction: any;
         { this.reservationForm.get('opIpType').setValue(1) }
     else { this.reservationForm.get('opIpType').setValue(0)  }
 
-    this.reservationForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
-  this.reservationForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
+    this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
+  this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
+    this.reservationForm.get('opstartTime').setValue(this.dateTimeObj?.time);
+  this.reservationForm.get('opendTime').setValue(this.dateTimeObj?.time);
+
+  
   this.reservationForm.get('opIpId').setValue(this.opIpId);
 //   this.reservationForm.get('isCancelledDateTime')?.setValue('1900-01-01');
 
@@ -199,14 +203,49 @@ vInstruction: any;
   
          }
      }
+
+  onOTRequest(): void {
+    console.log("OT Request button clicked");
+  }
+
  
      getValidationMessages() {
        return {
-           countryName: [
-               { name: "required", Message: "Country Name is required" },
+           SurgeryName: [
+               { name: "required", Message: "Surgery Name is required" },
+               { name: "maxlength", Message: "Surgery Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeronName1: [
+               { name: "required", Message: "Surgeron Name 1 is required" },
+               { name: "maxlength", Message: "Surgeron Name 1 should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeronName2: [
+               { name: "required", Message: "Surgeron Name 2 is required" },
                { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
-           ]
+           ],
+           Anathesiadoctor1: [
+               { name: "required", Message: "Anathesia doctor 1 Name is required" },
+               { name: "maxlength", Message: "Anathesia doctor 1 Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           Anathesiadoctor2: [
+               { name: "required", Message: "Anathesia doctor 2 Name is required" },
+               { name: "maxlength", Message: "Anathesia doctor 2 Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           OTTable: [
+               { name: "required", Message: "OT Table Name is required" },
+               { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           AnathesiaType: [
+               { name: "required", Message: "Anathesia Type is required" },
+               { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
        };
    }
  onClose() {

@@ -23,7 +23,7 @@ export class NewOTTablemasterComponent implements OnInit {
             public toastr: ToastrService
         ) { }
         
-        autocompleteModeLocation: string = "City";
+        autocompleteModeLocation: string = "Location";
     
         locationId = 0;
         
