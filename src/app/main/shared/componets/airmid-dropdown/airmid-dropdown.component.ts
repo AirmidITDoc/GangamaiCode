@@ -39,7 +39,9 @@ export class AirmidDropDownComponent implements OnInit {
     private _focused: boolean = false;
     private _placeholder: string = '';
     private _required: boolean = false;
+Focusstatus=false;
 
+//  @Input() appFocusNext: boolean = false;
     @Input()
     get disabled(): boolean {
         return this._disabled;

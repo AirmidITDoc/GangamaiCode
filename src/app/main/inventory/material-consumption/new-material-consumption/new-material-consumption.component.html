@@ -95,7 +95,7 @@
 
                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="UsedQty" formControlName="UsedQty" [(ngModel)]="vUsedQty"
-                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="ItemFormGroup"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="ItemFormGroup" (input)="QtyCondition()"
                                 [validations]="getValidationMessages().usedqty" [maxLength]="50">
                             </airmid-textbox>
                         </div>

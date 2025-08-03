@@ -98,7 +98,7 @@
                               fxLayoutGap="4px grid">
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="Prefix" formControlName="PrefixId"
-                                  [formGroup]="personalFormGroup" [value]="registerObj?.prefixId"
+                                  [formGroup]="personalFormGroup" [value]="registerObj?.prefixId" 
                                   [validations]="getValidationMessages().prefixId" ValueField="prefixId"
                                   TextField="prefixName" (selectionChange)="onChangePrefix($event)"
                                   ApiUrl="Prefix/get-prefixs"></airmid-dropdown>
@@ -167,10 +167,14 @@
                               </div>
 
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxLayout="row" class="gap-8"> -->
                                 <airmid-dropdown label="Area" formControlName="AreaId"
                                   [value]="registerObj?.areaId ?? 0" [formGroup]="personalFormGroup"
                                   [validations]="getValidationMessages().areaId"
                                   [mode]="autocompleteModearea"></airmid-dropdown>
+
+
+                                <!-- </div> -->
                               </div>
 
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -182,7 +186,7 @@
 
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="StateId" formControlName="StateId"
-                                  [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="false"
+                                  [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true"
                                   [validations]="getValidationMessages().stateId" ValueField="stateId"
                                   TextField="stateName" (selectionChange)="onChangestate($event)"
                                   ApiUrl="StateMaster/get-state"></airmid-dropdown>
@@ -428,7 +432,7 @@
                             [mode]="autocompleteModetariff"></airmid-dropdown>
                         </div>
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                          <airmid-dropdown label="Department Name" formControlName="DepartmentId"  appFocusNext="false"
                             [value]="registerObj?.departmentId" [formGroup]="VisitFormGroup"
                             [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
                             (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
@@ -598,6 +602,11 @@
   <div class="modal-footer">
     <div class="footer-navigation-container">
       <div class="modal-footer-buttons">
+        <button type="button" (click)="onSaveArea()" class="btn btn-danger-outline">
+          <span class="btn-icon">New Area
+            <mat-icon>add</mat-icon>
+          </span>
+        </button>
         <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
         <button type="button" class="btn btn-primary" (click)="onSave()"
           [disabled]="filteredOptions.length > 0">Save</button>

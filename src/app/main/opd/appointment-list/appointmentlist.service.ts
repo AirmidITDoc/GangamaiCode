@@ -124,7 +124,7 @@ export class AppointmentlistService {
             visitTime:[(new Date()).toISOString()],
             PatientTypeId:  [1, [Validators.required]],// this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            ConsultantDocId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ConsultantDocId:  ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             TariffId:  [1, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CompanyId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],

@@ -21,6 +21,8 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ConfigService } from 'app/core/services/config.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { VisitMaster1 } from '../appointment-list.component';
+import { AreaMasterComponent } from 'app/main/setup/PersonalDetails/area-master/area-master.component';
+import { NewAreaComponent } from 'app/main/setup/PersonalDetails/area-master/new-area/new-area.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -91,7 +93,7 @@ export class NewAppointmentComponent implements OnInit {
     ageYear = 0
     ageMonth = 0
     ageDay = 0
-
+ value=new Date()
     // <mat-expansion-panel> default to closed,
     isExpanded = false; // Defaults to closed
 
@@ -405,20 +407,24 @@ export class NewAppointmentComponent implements OnInit {
 
     }
     getSelectedObj(obj) {
+
+        debugger
         if (this.data?.FormName == 'Registration-Page') {
             this.PatientName = obj.firstName + ' ' + obj.lastName;
             this.RegId = obj.regId;
             this.VisitFlagDisp = true;
             if ((this.RegId ?? 0) > 0) {
-                console.log(this.data)
+                console.log(obj)
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
+                        console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
+                            // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
                             emgMobileNo: this.registerObj?.emgMobileNo ?? '',
@@ -447,15 +453,17 @@ export class NewAppointmentComponent implements OnInit {
             this.RegId = obj.value;
             this.VisitFlagDisp = true;
             if ((this.RegId ?? 0) > 0) {
-                console.log(this.data)
+                console.log(obj)
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
+                        console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
+                            // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
                             emgMobileNo: this.registerObj?.emgMobileNo ?? '',
@@ -480,12 +488,13 @@ export class NewAppointmentComponent implements OnInit {
             }
         }
                     this.value=this.registerObj.dateofBirth
+                    console.log('Bdate',this.value)
+                    this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
     PrevregisterObj: any;
     getLastDepartmetnNameList(row) {
-        // console.log(row)
-        const dialogRef = this._matDialog.open(PreviousDeptListComponent,
+       const dialogRef = this._matDialog.open(PreviousDeptListComponent,
             {
                 maxWidth: "45vw",
                 height: '45%',
@@ -495,7 +504,7 @@ export class NewAppointmentComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            //   console.log('The dialog was closed - Insert Action', result);
+              console.log('The dialog was closed - Insert Action', result);
             this.PrevregisterObj = result
             this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
             this.selectChangedepartment(this.PrevregisterObj)
@@ -584,10 +593,14 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
+
+
         if (this.Patientnewold == 2 && this.RegId == 0) {
             this.toastr.warning("Kindly select a patient from the list of registered patients.");
             return;
         }
+
+        debugger
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
@@ -619,9 +632,11 @@ export class NewAppointmentComponent implements OnInit {
             });
             return;
         }
-
+debugger
         this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+        //  this.VisitFormGroup.get('UnitId').setValue(this.accountService.currentUserValue.user.unitId)
+        // this.VisitFormGroup.get('ClassId').setValue(this.ClassId)
         this.personalFormGroup.get('City').setValue(this.CityName)
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
@@ -631,8 +646,8 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
 
-        // console.log('Personal Form : ',this.personalFormGroup.value)
-        // console.log('Visit Form : ',this.VisitFormGroup.value)
+        console.log('Personal Form : ',this.personalFormGroup.value)
+        console.log('Visit Form : ',this.VisitFormGroup.value)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -724,6 +739,8 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSaveRegistered() {
+
+        debugger
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -1150,8 +1167,9 @@ export class NewAppointmentComponent implements OnInit {
         this.prevResults = [];
     }
 
-    value=new Date()
+   
        onChangeDateofBirth(DateOfBirth: Date) {
+        debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
@@ -1178,6 +1196,7 @@ export class NewAppointmentComponent implements OnInit {
                 this.ageYear--;
                 this.ageMonth += 12;
             }
+            
             this.value = DateOfBirth;
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
             if (this.ageYear > 110)
@@ -1186,4 +1205,17 @@ export class NewAppointmentComponent implements OnInit {
             });
         }
     }
+
+    onSaveArea() {
+            const dialogRef = this._matDialog.open(NewAreaComponent,
+                {  maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '70%',
+                    // data: element
+                });
+    
+            dialogRef.afterClosed().subscribe(result => {
+               
+            });
+        }
 }

@@ -41,10 +41,10 @@ export class MaterialConsumptionComponent implements OnInit {
     }
     allcolumns = [
         { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
-        { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
-        { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "LandedTotalAmount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+        { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "LandedTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -96,8 +96,8 @@ export class MaterialConsumptionComponent implements OnInit {
             columnsList: [
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 8 },
-                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 70 },
                 { heading: "PerUnitPurchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "PerUnitLandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "PerUnitMRPRate", key: "perUnitMRPRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },

@@ -28,7 +28,7 @@ export class AirmidAutoCompleteComponent implements OnInit {
     private _disabled: boolean = false;
     //private _placeholder: string = '';
     private _required: boolean = false;
-
+Focusstatus=false
     @Input()
     get disabled(): boolean {
         return this._disabled;

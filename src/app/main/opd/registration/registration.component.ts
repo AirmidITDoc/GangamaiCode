@@ -64,20 +64,21 @@ export class RegistrationComponent implements OnInit {
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
 
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "AnnualIncome", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "EmgContactPersonName", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "EmgMobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "EmgLandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "EngAddress", key: "engAddress", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "EmgContactPerson Name", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA',width:150},
+        { heading: "Emg MobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Emg LandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Emg Address", key: "engAddress", sort: true, align: 'left', emptySign: 'NA',width:150 },
+       
         //  { heading: "AnnualIncome", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
         // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
         // { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Created Date", key: "createdDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Updaed By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
 
         {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -2109,6 +2109,18 @@ AllColumns = [
     row: 25,
     localData: []
   }
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.key === 'F2') {
+    Swal.fire("Call EMR Mark set funtion")
+ this.SetEMRMark()
+    }
+}
+
+SetEMRMark(){
+  
+}
+
 
 loadGridDataForVisit(visitId: string) {
   this.gridConfig.localData  = this.LabMap[visitId] || [];
