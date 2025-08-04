@@ -1,0 +1,342 @@
+<div class=" simple page-layout inner-scroll inner-sidebar left-sidebar">
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                New Report Config
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+
+        <div class="center p-12 pb-56" fxFlexAlign="start center">
+
+            <div class="content-card" style="border-radius:4px;">
+                <div class="nav material2">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-card>
+                            <form [formGroup]="_ReportService.MyForm" fxLayout="column">
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report Section</mat-label>
+                                        <input matAutocompletePosition="below" type="text"
+                                            placeholder="Select Report Section" matInput
+                                            (keydown)="onEnterReportSection($event)" formControlName="reportSectionId"
+                                            [matAutocomplete]="autoreportSection" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ReportService.MyForm.get('reportSectionId').setValue(''); isReportSectionSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ReportService.MyForm.get('reportSectionId').setValue(''); isReportSectionSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoreportSection="matAutocomplete"
+                                            [displayWith]="getOptionTextReportSection">
+                                            <mat-option *ngFor="let option of filteredOptionsreportSection | async"
+                                                [value]="option">
+                                                {{option.ReportSection}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report Name</mat-label>
+                                        <input name="reportName" formControlName="reportName" placeholder="Report Name"
+                                            matInput required type="text" [(ngModel)]="vreportName" #RPname
+                                            (keydown)="onEnterRname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportName').invalid && _ReportService.MyForm.get('reportName').touched">
+                                            Report Name is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Menu Name</mat-label>
+                                        <input matAutocompletePosition="below" type="text" placeholder="Select Menu"
+                                            matInput formControlName="menuId" [matAutocomplete]="autoSearchMenu" #Mname
+                                            (keydown)="onEnterMname($event)" required>
+                                        <span matSuffix style="display: flex;">
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ReportService.MyForm.get('menuId').setValue(''); isMenuSelected = false;">close</mat-icon>
+                                            <mat-icon class="mat-icon-close"
+                                                (click)="_ReportService.MyForm.get('menuId').setValue(''); isMenuSelected = false;">search</mat-icon>
+                                        </span>
+                                        <mat-autocomplete #autoSearchMenu="matAutocomplete"
+                                            [displayWith]="getOptionTextMenu">
+                                            <mat-option *ngFor="let option of filteredOptionsMenu | async"
+                                                [value]="option">
+                                                {{option.LinkName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report Mode</mat-label>
+                                        <input name="reportMode" formControlName="reportMode" placeholder="Report Name"
+                                            matInput required type="text" [(ngModel)]="vreportMode" #RMname
+                                            (keydown)="onEnterRMname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportMode').invalid && _ReportService.MyForm.get('reportMode').touched">
+                                            Report Mode is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report Title</mat-label>
+                                        <input name="reportTitle" formControlName="reportTitle"
+                                            placeholder="Report Name" matInput required type="text"
+                                            [(ngModel)]="vreportTitle" #RTname (keydown)="onEnterRTname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportTitle').invalid && _ReportService.MyForm.get('reportTitle').touched">
+                                            Report Title is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report HeaderFile</mat-label>
+                                        <input name="reportHeaderFile" formControlName="reportHeaderFile"
+                                            placeholder="Report Name" matInput required type="text"
+                                            [(ngModel)]="vreportHeaderFile" #RHFname (keydown)="onEnterRHFname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportHeaderFile').invalid && _ReportService.MyForm.get('reportHeaderFile').touched">
+                                            Report Header File is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>ReportSPName</mat-label>
+                                        <input name="reportSpname" formControlName="reportSpname"
+                                            placeholder="Report Name" matInput required type="text"
+                                            [(ngModel)]="vreportSpname" #SPname (keydown)="onEnterSPname($event)">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportSpname').invalid && _ReportService.MyForm.get('reportSpname').touched">
+                                            Report SP Name is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                    <div>
+                                        <button class="btn btn-primary" (click)="getData()">GetList</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </mat-card>
+
+                        <div class="modal-card-container table-container"
+                            style="max-height: 400px; overflow-y: auto; margin-bottom: 10px; margin-top: 10px;"
+                            cdkScrollable>
+                            <mat-table #table matSort [dataSource]="dsReportGetList" [@animateStagger]="{ value: '50' }"
+                                cdkDropList (cdkDropListDropped)="drop($event)">
+
+                                <ng-container matColumnDef="isDisplay">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                        fxShow.gt-sm>IsDisplay</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-checkbox [(ngModel)]="element.IsDisplayColumn"
+                                            (change)="onDisplayColumnChange($event, element)">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReportHeader">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ReportHeader</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="legacy">
+                                            <input matInput
+                                                [(ngModel)]="element.ReportHeaderName || element.ReportHeader"
+                                                [maxLength]="100" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReportColumn">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>ReportColumn</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                                        element.ReportColumn}}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReportColumnWidth">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                        fxShow.gt-sm>ReportColumnWidth</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="legacy">
+                                            <input matInput [(ngModel)]="element.ReportColumnWidth" type="number"
+                                                [maxLength]="50" (keypress)="keyPressCharater($event)" min="0"
+                                                (change)="ReportColumnWidthfunction(element)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReportAlign">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                        fxShow.gt-sm>ReportAlignment</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-form-field appearance="legacy" class="report-align-select" fxFlex="100%">
+                                            <mat-select [(ngModel)]="element.ReportColumnAligment"
+                                                (selectionChange)="onAlignChange(element)">
+                                                <mat-option value="Left">Left</mat-option>
+                                                <mat-option value="Center">Center</mat-option>
+                                                <mat-option value="Right">Right</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReporttotalField">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReportTotalField
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-checkbox [checked]="element.ReportTotalField == 1"
+                                            (change)="element.ReportTotalField = $event.checked ? 1 : 0">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ReportgroupByLabel">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReportgroupByLabel
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                        <mat-checkbox [checked]="element.ReportGroupByLabel == 1"
+                                            (change)="element.ReportGroupByLabel = $event.checked ? 1 : 0">
+                                        </mat-checkbox>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="summaryLabel">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>summaryLabel
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="legacy" floatLabel="never">
+                                            <input matInput [maxLength]="50" [(ngModel)]="element.SummaryLabel"
+                                                type="text">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sequence">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sequence
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                        {{ i + 1 }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">loading
+                                        data...</mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">no data
+                                        found...</mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedGetColumn;"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedGetColumn" class="element"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag
+                                    (cdkDragMoved)="onDragMoved($event)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: dsReportGetList != null }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(dsReportGetList != null && dsReportGetList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+
+                        <mat-card>
+                            <form [formGroup]="_ReportService.MyForm" fxLayout="column" style="padding: 0 20px;">
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Report Filter</mat-label>
+                                        <input name="reportFilter" formControlName="reportFilter"
+                                            placeholder="Report Filter" matInput type="text" [(ngModel)]="vreportFilter"
+                                            #RFname (keydown)="onEnterRFame($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>reportBodyFile</mat-label>
+                                        <input matInput value="MultiTotalReportFormat.html" readonly />
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report FolderName</mat-label>
+                                        <input name="reportFolderName" formControlName="reportFolderName"
+                                            placeholder="Report Name" matInput required type="text"
+                                            [(ngModel)]="vreportFolderName" #RFNname (keydown)="onEnterRFNname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportFolderName').invalid && _ReportService.MyForm.get('reportFolderName').touched">
+                                            ReportFolderName is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>Report FileName</mat-label>
+                                        <input name="reportFileName" formControlName="reportFileName"
+                                            placeholder="Report Name" matInput required type="text"
+                                            [(ngModel)]="vreportFileName" #RFiNname (keydown)="onEnterRFiNname($event)"
+                                            oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '');">
+                                        <mat-error style="margin-top: 10px;"
+                                            *ngIf="_ReportService.MyForm.get('reportFileName').invalid && _ReportService.MyForm.get('reportFileName').touched">
+                                            ReportFileName is required Enter only Alphabets</mat-error>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px 0;">
+
+                                    <mat-form-field appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>ReportPageOrientation</mat-label>
+                                        <mat-select placeholder="reportPageOrientation"
+                                            formControlName="reportPageOrientation" name="reportPageOrientation"
+                                            [(ngModel)]="selectedPageOrientation">
+                                            <mat-option *ngFor="let i of reportPageOrientation" [value]="i">{{
+                                                i}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-label>ReportPageSize</mat-label>
+                                        <mat-select placeholder="reportPageSize" formControlName="reportPageSize"
+                                            name="reportPageSize" [(ngModel)]="selectedPageSize">
+                                            <mat-option *ngFor="let i of reportPageSize" [value]="i">{{
+                                                i}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                            </form>
+                        </mat-card>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 5px;">
+        <div class="modal-footer-buttons gap-8 mt-12" fxLayout="row" fxLayoutAlign="end" style="margin-right: 15px;">
+            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+            <button class="btn btn-primary " (click)="onSave()">Save</button>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,7 @@ import { CdkTreeModule } from '@angular/cdk/tree';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { SharedModule } from '../shared/shared.module';
-import { GSTRecalculationComponent } from './gstrecalculation/gstrecalculation.component'; 
+import { GSTRecalculationComponent } from './gstrecalculation/gstrecalculation.component';
 
 
 const appRoutes: Routes = [
@@ -81,6 +81,10 @@ const appRoutes: Routes = [
 {
   path: "gstrecalculate",
   loadChildren: () => import("./gstrecalculation/gstrecalculation.module").then((m) => m.GSTRecalculationModule),
+},
+{
+  path: "reportconfiguration",
+  loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
 },
 ];
 
