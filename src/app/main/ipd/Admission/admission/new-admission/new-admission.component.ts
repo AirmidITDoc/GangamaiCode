@@ -179,6 +179,8 @@ export class NewAdmissionComponent implements OnInit {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
+              this.value=response.dateofBirth
+            this.onChangeDateofBirth(response.dateofBirth)
           console.log(this.registerObj)
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
