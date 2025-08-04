@@ -418,6 +418,8 @@ export class NewAppointmentComponent implements OnInit {
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
+                            this.value=response.dateofBirth
+                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
@@ -458,6 +460,8 @@ export class NewAppointmentComponent implements OnInit {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
                         console.log(response)
+                         this.value=response.dateofBirth
+                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
@@ -487,9 +491,10 @@ export class NewAppointmentComponent implements OnInit {
                 }, 100);
             }
         }
-                    this.value=this.registerObj.dateofBirth
+        debugger
+                    // this.value=this.registerObj.dateofBirth
                     console.log('Bdate',this.value)
-                    this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
+                    // this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
     PrevregisterObj: any;

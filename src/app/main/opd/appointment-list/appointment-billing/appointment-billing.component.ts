@@ -144,6 +144,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.handleChange('concessionAmt', () => this.updateTotalDiscountPer(), this.OPFooterForm);
   }
   openServiceTable(): void {
+    debugger
     this._matDialog.open(this.serviceTable, {
       width: '50%',
       height: '60%',
