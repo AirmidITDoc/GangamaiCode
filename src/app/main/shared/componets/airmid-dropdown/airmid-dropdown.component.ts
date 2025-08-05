@@ -31,7 +31,7 @@ export class AirmidDropDownComponent implements OnInit {
     @Input() ApiUrl: string = "";
     @Input() ReqFullObj: boolean = false;
     @Input() appearance: string = "outline";
-    @Input() Focusstatus: boolean = false;
+    // @Input() Focusstatus: boolean = false;
     // made by raksha
     @Input() readonly: boolean = false;
 

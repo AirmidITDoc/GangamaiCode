@@ -11,7 +11,7 @@ export class FocusNextDirective implements AfterViewInit {
   @Input() formGroup: FormGroup;
    @Input() Focusstatus: boolean;
 debugger
-  @Input('appFocusNext') appFocusNext: boolean=true;
+  // @Input('appFocusNext') appFocusNext: boolean=true;
 
   constructor(private el: ElementRef) {
   }
@@ -67,55 +67,55 @@ debugger
   //     }, 100);
   //   }
   // }
-  // focusNext(): void {
-  //   this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
-
-  //   if (!this.formElements.length) return;
-
-  //   const control = this.formGroup?.get(this.name);
-  //   if (control?.invalid) return;
-
-  //   // Findin the next element.
-  //   let nextElement = this.formElements
-  //     .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
-  //     .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
-
-  //   if (nextElement) {
-  //     setTimeout(() => {
-  //       const tagName = nextElement.tagName.toLowerCase();
-  //       if (['input', 'textarea', 'button'].includes(tagName)) {
-  //         nextElement.focus();
-  //       } else if (tagName === 'mat-select') {
-  //         nextElement.click();
-  //       }
-  //     }, 100);
-  //   }
-  // }
-
-
   focusNext(): void {
-    debugger
-  if (!this.appFocusNext) return; // <- Skip if false
+    this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
 
-  this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
-  if (!this.formElements.length) return;
+    if (!this.formElements.length) return;
 
-  const control = this.formGroup?.get(this.name);
-  if (control?.invalid) return;
+    const control = this.formGroup?.get(this.name);
+    if (control?.invalid) return;
 
-  let nextElement = this.formElements
-    .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
-    .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
+    // Findin the next element.
+    let nextElement = this.formElements
+      .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
+      .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
 
-  if (nextElement) {
-    setTimeout(() => {
-      const tagName = nextElement.tagName.toLowerCase();
-      if (['input', 'textarea', 'button'].includes(tagName)) {
-        nextElement.focus();
-      } else if (tagName === 'mat-select') {
-        nextElement.click();
-      }
-    }, 100);
+    if (nextElement) {
+      setTimeout(() => {
+        const tagName = nextElement.tagName.toLowerCase();
+        if (['input', 'textarea', 'button'].includes(tagName)) {
+          nextElement.focus();
+        } else if (tagName === 'mat-select') {
+          nextElement.click();
+        }
+      }, 100);
+    }
   }
-}
+
+
+//   focusNext(): void {
+//     debugger
+//   if (!this.appFocusNext) return; // <- Skip if false
+
+//   this.formElements = Array.from(this.parentElement.querySelectorAll("input, mat-select, button"));
+//   if (!this.formElements.length) return;
+
+//   const control = this.formGroup?.get(this.name);
+//   if (control?.invalid) return;
+
+//   let nextElement = this.formElements
+//     .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
+//     .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
+
+//   if (nextElement) {
+//     setTimeout(() => {
+//       const tagName = nextElement.tagName.toLowerCase();
+//       if (['input', 'textarea', 'button'].includes(tagName)) {
+//         nextElement.focus();
+//       } else if (tagName === 'mat-select') {
+//         nextElement.click();
+//       }
+//     }, 100);
+//   }
+// }
 }
