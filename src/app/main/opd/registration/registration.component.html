@@ -21,11 +21,9 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <!-- Button 1: Edit Patient Registration  -->
-               
                 <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
-
 
                 <!-- Button 2: Print Registration  -->
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
@@ -35,6 +33,11 @@
                 <!-- Button 3: Appointment Page  -->
                 <button mat-icon-button matTooltip="Visit Mark or Appointment" (click)="OnNewAppointment(element)">
                     <mat-icon>perm_identity</mat-icon>
+                </button>
+
+                <!-- Button 4: Upload Photo  -->
+                <button mat-icon-button matTooltip="Add A photo" (click)="OnNewAppointment(element)">
+                    <mat-icon>add_a_photo</mat-icon>
                 </button>
             </div>
         </ng-template>
@@ -48,6 +51,16 @@
                     formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
                     [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
                   
+                    <mat-form-field appearance="outline">
+                        <mat-label>UHID</mat-label>
+                        <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="RegNo" (input)="onChangeFirst()" (keypress)="keyPressAlphanumeric($event)"/>
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"
@@ -68,15 +81,7 @@
                         </button>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>UHID</mat-label>
-                        <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" (input)="onChangeFirst()" (keypress)="keyPressAlphanumeric($event)"/>
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                 
                    
                     <mat-form-field appearance="outline">
                         <mat-label>MobileNo</mat-label>
