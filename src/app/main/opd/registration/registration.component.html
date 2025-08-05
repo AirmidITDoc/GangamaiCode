@@ -36,9 +36,16 @@
                 </button>
 
                 <!-- Button 4: Upload Photo  -->
-                <button mat-icon-button matTooltip="Add A photo" (click)="OnNewAppointment(element)">
+                <!-- <button mat-icon-button matTooltip="Add A photo" (click)="onNewImage(element)">
                     <mat-icon>add_a_photo</mat-icon>
-                </button>
+                </button> -->
+
+                <app-airmid-photo-icon [refId]="element.regId" [refType]="signature" 
+                    [docName]="'DoctorSignature'" (onCloseDialog)="onPhotoCaptured($event)">
+                </app-airmid-photo-icon>
+
+                <airmid-signature-icon [refId]="element.regId" [refType]="signature"
+                    [multiple]="true" docName="DoctorSignature"></airmid-signature-icon>
             </div>
         </ng-template>
 

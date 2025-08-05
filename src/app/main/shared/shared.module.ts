@@ -65,11 +65,15 @@ import { AirmidFileuploadComponent } from './componets/airmid-fileupload/airmid-
 import { AirmidFileuploadIconComponent } from './componets/airmid-fileupload-icon/airmid-fileupload-icon.component';
 import { AirmidSignatureComponent } from './componets/airmid-signature/airmid-signature.component';
 import { AirmidSignatureIconComponent } from './componets/airmid-signature-icon/airmid-signature-icon.component';
+import { AirmidPhotoComponent } from './componets/airmid-photo/airmid-photo.component';
+import { AirmidPhotoIconComponent } from './componets/airmid-photo-icon/airmid-photo-icon.component';
+import { WebcamModule } from 'ngx-webcam';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
     declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent],
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -99,7 +103,9 @@ import { AirmidSignatureIconComponent } from './componets/airmid-signature-icon/
         MatSlideToggleModule,
         // added by raksha date:14/6/25
         MatChipsModule,
-        MatInputModule 
+        MatInputModule,
+        WebcamModule,
+        MatTooltipModule
     ],
     providers: [
         ExcelDownloadService,
@@ -136,6 +142,8 @@ import { AirmidSignatureIconComponent } from './componets/airmid-signature-icon/
         TableKeyboardNavigationDirective,
         AirmidChipautocompleteComponent,
         AirmidFullDatepickerComponent,
+        AirmidPhotoComponent,
+        AirmidPhotoIconComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

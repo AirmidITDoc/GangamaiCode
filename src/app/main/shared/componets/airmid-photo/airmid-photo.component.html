@@ -1,0 +1,41 @@
+<mat-card>
+  <div fxLayout="row" fxLayoutAlign="center center" class="webcam-header py-16">
+    <span class="h1">Webcam Capture</span>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" class="webcam-section px-12 gap-12">
+    <!-- Webcam Live -->
+    <div fxFlex="100" fxFlex.gt-sm="50" class="content">
+      <div fxLayout="column" class="p-12">
+        <!-- imageType-> this will take only png formate type -->
+        <webcam
+          *ngIf="showWebcam"
+          [height]="300"
+          [width]="300"
+          [trigger]="triggerObservable"
+          [allowCameraSwitch]="multipleWebcamsAvailable"
+          [switchCamera]="nextWebcamObservable"
+          (imageCapture)="captureImg($event)"
+          [imageType]="'image/png'"  
+          (initError)="handleInitError($event)">
+        </webcam>
+        <button mat-raised-button color="primary" class="mt-12" (click)="takeSnapshot()">Capture</button>
+      </div>
+    </div>
+
+    <!-- Captured Image Preview -->
+    <div fxFlex="100" fxFlex.gt-sm="50" class="content">
+      <div fxLayout="column" class="p-12">
+        <div *ngIf="sysImage">
+          <img [src]="sysImage" width="300" height="300" style="border-radius: 8px;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Buttons -->
+  <div class="footer-actions p-12" fxLayout="row" fxLayoutAlign="end center">
+    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+    <button mat-raised-button class="ml-12" (click)="onClose()">Cancel</button>
+  </div>
+</mat-card>

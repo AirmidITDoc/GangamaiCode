@@ -68,12 +68,14 @@ export class AirmidChipautocompleteComponent implements OnInit {
 
     this.chipsChange.emit(this.chips);
     this.resetInput();
+    this.filterOptions();
   }
 
 
   removeChip(value: string) {
     this.chips = this.chips.filter(chip => chip !== value);
     this.chipsChange.emit(this.chips);
+    this.filterOptions();
   }
 
   // filterOptions() {
@@ -81,15 +83,22 @@ export class AirmidChipautocompleteComponent implements OnInit {
   //   this.filteredOptions = this.allOptions.filter(opt =>
   //     (opt[this.displayKey]?.toLowerCase() || '').includes(filter)
   //   );
+  //   this.focusedIndex = this.filteredOptions.length > 0 ? 0 : -1;
+  //   this.showDropdown = true;
   // }
   filterOptions() {
-    const filter = this.inputValue.toLowerCase();
-    this.filteredOptions = this.allOptions.filter(opt =>
+  const filter = this.inputValue.toLowerCase();
+
+  this.filteredOptions = this.allOptions
+    .filter(opt =>
       (opt[this.displayKey]?.toLowerCase() || '').includes(filter)
-    );
-    this.focusedIndex = this.filteredOptions.length > 0 ? 0 : -1;
-    this.showDropdown = true;
-  }
+    )
+    .filter(opt => !this.chips.some(chip => chip[this.displayKey] === opt[this.displayKey]));
+
+  this.focusedIndex = this.filteredOptions.length > 0 ? 0 : -1;
+  this.showDropdown = true;
+}
+
 
   onKeyDown(event: KeyboardEvent) {
     const total = this.filteredOptions.length;

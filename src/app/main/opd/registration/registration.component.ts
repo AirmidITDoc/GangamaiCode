@@ -12,7 +12,7 @@ import { NewRegistrationComponent } from './new-registration/new-registration.co
 import { RegistrationService } from './registration.service';
 import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 @Component({
     selector: 'app-registration',
@@ -32,7 +32,8 @@ export class RegistrationComponent implements OnInit {
     mobileno: any = "%"
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+    signature: PageNames=PageNames.DOCTOR_SIGNATURE;
+    
     constructor(
         public _RegistrationService: RegistrationService,
         public _matDialog: MatDialog,
@@ -75,7 +76,7 @@ export class RegistrationComponent implements OnInit {
         { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
@@ -123,6 +124,15 @@ export class RegistrationComponent implements OnInit {
             that.grid.bindGridData();
         });
     }
+
+    capturedImage = '';
+     onPhotoCaptured(photoBase64: string) {
+        if (photoBase64) {
+            this.capturedImage = photoBase64;
+            // Save or display
+        }
+    }
+
     OnPrint(Param) {
         this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
     }

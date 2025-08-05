@@ -35,7 +35,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { RegistrationService } from './registration.service';
 
-
 const routes: Routes = [
     {
         path: '**',
@@ -45,8 +44,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         RegistrationComponent,
-        NewRegistrationComponent,
-         
+        NewRegistrationComponent         
     ],
     imports: [
         RouterModule.forChild(routes),

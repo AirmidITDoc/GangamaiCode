@@ -18,6 +18,7 @@ import { NewRegistrationComponent } from '../registration/new-registration/new-r
 import { RegInsert } from '../registration/registration.component';
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
 import Swal from 'sweetalert2';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -59,6 +60,7 @@ export class MedicalrecordComponent implements OnInit {
   f_name: any = ""
   regNo: any = "0"
   l_name: any = ""
+  page: PageNames=PageNames.DOCTOR;
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
     private commonService: PrintserviceService,

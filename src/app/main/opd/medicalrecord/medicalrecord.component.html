@@ -161,6 +161,9 @@
                     (click)="OnNewCrossConsultation(element)">
                     <mat-icon>cached icon</mat-icon>
                 </button>
+
+                <airmid-fileupload-icon [refId]="element.visitId" [refType]="page"
+                    [multiple]="true"></airmid-fileupload-icon>
             </div>
         </ng-template>
 
