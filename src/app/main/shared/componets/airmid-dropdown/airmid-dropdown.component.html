@@ -23,7 +23,7 @@
     <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect
         (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField"
         aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll
-        [multiple]="IsMultiPle"  appFocusNext="false"
+        [multiple]="IsMultiPle"  [appFocusNext]="Focusstatus"
         
         [disableRipple]="readonly"
     [panelClass]="readonly ? 'readonly-panel' : ''"
