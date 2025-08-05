@@ -37,6 +37,9 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { OtrequestlistComponent } from "./otrequestlist/otrequestlist.component";
+import { OtReservationService } from "./ot-reservation.service";
+
 
 const routes: Routes = [
     {
@@ -46,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent, NewReservationComponent],
+    declarations: [OTReservationComponent,NewReservationComponent ,OtrequestlistComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -84,7 +87,8 @@ const routes: Routes = [
         MatTooltipModule,
         MatButtonToggleModule,
         MatSidenavModule,
+        
     ],
-    providers: [DatePipe, OTManagementServiceService]
+    providers: [DatePipe, OtReservationService]
 })
 export class OTReservationModule { }

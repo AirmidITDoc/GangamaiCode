@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { OtReservationService } from '../ot-reservation.service';
 import { DatePipe } from '@angular/common';
+import { OtrequestlistComponent } from '../otrequestlist/otrequestlist.component';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class NewReservationComponent implements OnInit {
   reservationForm: FormGroup;
      screenFromString = 'Common-form';
 
-  opIpType: number;
+  opIpType: boolean = false;
       opIpId: any;
        RegId: string;
 
@@ -66,6 +67,7 @@ vInstruction: any;
      private ref: MatDialogRef<NewReservationComponent>,
      public _AdmissionService: AdmissionService,
      public datePipe: DatePipe,
+     private _matDialog: MatDialog,
      public toastr: ToastrService) { }
     
  
@@ -106,11 +108,11 @@ vInstruction: any;
     }
  onChangeReg(event) {
     if (event.value == 'OP') {
-      this.opIpType = 0;
+      this.opIpType = false;
       this.opIpId = "";
     }
     else if (event.value == 'IP') {
-      this.opIpType = 1;
+      this.opIpType = true;
       this.opIpId = "";
     }
     this.patientInfoReset();
@@ -168,12 +170,13 @@ vInstruction: any;
   }
  onSubmit() {
     if (this.reservationForm.get('opIpType').value == 'IP') 
-        { this.reservationForm.get('opIpType').setValue(1) }
-    else { this.reservationForm.get('opIpType').setValue(0)  }
+        { this.reservationForm.get('opIpType').setValue(true) }
+    else { this.reservationForm.get('opIpType').setValue(false)  }
 
     this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
   this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
-    this.reservationForm.get('opstartTime').setValue(this.dateTimeObj?.time);
+      this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
+   this.reservationForm.get('opstartTime').setValue(this.dateTimeObj?.time);
   this.reservationForm.get('opendTime').setValue(this.dateTimeObj?.time);
 
   
@@ -182,7 +185,7 @@ vInstruction: any;
 
      if (!this.reservationForm.invalid) {
              console.log(this.reservationForm.value)
-             this._OtReservationService.requestSave(this.reservationForm.value).subscribe((response) => {
+             this._OtReservationService.reservationSave(this.reservationForm.value).subscribe((response) => {
                  this.onClear(true);
              });
          } {
@@ -190,7 +193,7 @@ vInstruction: any;
              if (this.reservationForm.invalid) {
                  for (const controlName in this.reservationForm.controls) {
                      if (this.reservationForm.controls[controlName].invalid) {
-                         invalidFields.push(`request Form: ${controlName}`);
+                         invalidFields.push(`reservation Form: ${controlName}`);
                      }
                  }
              }
@@ -204,9 +207,26 @@ vInstruction: any;
          }
      }
 
-  onOTRequest(): void {
-    console.log("OT Request button clicked");
-  }
+ onOTRequest(): void {
+  const dialogRef = this._matDialog.open(OtrequestlistComponent, {
+    width: '80%',
+    height: '80%',
+    panelClass: 'custom-dialog'
+  });
+
+
+  dialogRef.afterClosed().subscribe(selectedData => {
+    if (selectedData) {
+     
+      this.reservationForm.patchValue({
+        patientName: selectedData.patientName,
+        surgeonId: selectedData.surgeonId,
+        categoryId: selectedData.categoryId,
+       
+      });
+    }
+  });
+}
 
  
      getValidationMessages() {

@@ -7,6 +7,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
   providedIn: 'root'
 })
 export class OtRequestService {
+  
 
  requestform: FormGroup;
     myformSearch: FormGroup;
@@ -61,6 +62,13 @@ export class OtRequestService {
     //         IsDeletedSearch: [""],
     //     });
     // }
+
+    getOtRequestList(fromDate: string, toDate: string) {
+  return this._httpClient.PostData('OTBooking/OTBookingRequestEmergencyList', {
+    fromDate,
+    toDate
+  });
+}
 
     initializeFormGroup() {
         this.createRequestForm();

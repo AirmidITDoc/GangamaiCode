@@ -151,6 +151,8 @@ export class OTRequestComponent implements OnInit {
         //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
         this.getfilterdata();
     }
+    
+    
      getfilterdata() {
         this.gridConfig = {
             apiUrl: "OTBooking/OtbookingRequestList",

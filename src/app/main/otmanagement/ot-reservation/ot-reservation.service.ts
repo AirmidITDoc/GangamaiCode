@@ -44,7 +44,7 @@ export class OtReservationService {
             opstartTime: [new Date()],
             opendTime: [new Date()],
 
-            duration: [""],
+            duration: [0],
             ottableId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeonId1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -54,7 +54,7 @@ export class OtReservationService {
             anesthTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instruction: [""],
             ottypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            unBooking: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unBooking: [false],
              isCancelled: [false],
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
        isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
@@ -74,7 +74,7 @@ export class OtReservationService {
  
     
  
-     public requestSave(Param: any) {
+     public reservationSave(Param: any) {
          if (Param.otreservationId) {
              return this._httpClient.PutData("OTReservation/Edit/" + Param.otreservationId, Param);
          } else return this._httpClient.PostData("OTReservation/InsertEDMX", Param);
