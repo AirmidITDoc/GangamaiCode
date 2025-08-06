@@ -29,7 +29,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
   public displayedPrescriptionColumns =
-    ['serviceName','userName'];
+    ['groupName','serviceName','classRate','userName'];
 
   //new
   doctorName: any
@@ -112,8 +112,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OPFooterForm.markAllAsTouched();
     if (this.data) {
       this.patientDetail = this.advanceDataStored.storage;
+
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
       console.log("Data", this.patientDetail)
+      
       this.patientDetail.formattedText = this.patientDetail.patientName
       this.patientDetail.doctorName = this.patientDetail.doctorname
       this.PatientName = this.patientDetail.patientName
@@ -153,7 +155,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     let Data = {
       "first": 0,
-      "rows": 10,
+      "rows": 100,
       "sortField": "RequestTranId",
       "sortOrder": 0,
       "filters": [
@@ -198,20 +200,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const newRow = {
         ServiceId: contact.serviceId,
         ServiceName: contact.serviceName,
-        Price: 0,// formValue.price,
-        Qty: 0,//formValue.qty,
-        TotalAmt: 0,// totalAmount,
-        DiscPer: 0,// formValue.discountPer || 0,
-        DiscAmt: 0,// discountAmount || 0,
-        NetAmount: 0,// netAmount,
-        DoctorName: '',// this.doctorName || '-',
-        ClassName: '',// this.className || '-',
-        DoctorId: 0,// formValue.DoctorID,
-        ChargesAddedName: contact.userName,
-        IsPathology: 0,// this.IsPathology,
-        IsRadiology: 0,// this.IsRadiology,
-        IsPackage: 0,// this.vIsPackage, 
-
+        Price: contact.classRate,
+        Qty: 1,
+        TotalAmt: contact.classRate * 1 ,// totalAmount,
+        DiscPer: 0,
+        DiscAmt: 0,
+        NetAmount: contact.classRate * 1 ,
+        DoctorName: '-',
+        ClassName: contact.className || '-',
+        DoctorId: 0,
+        ChargesAddedName:  this.accountService.currentUserValue.userName,
+        IsPathology: contact.IsPathology,
+        IsRadiology: contact.IsRadiology,
+        IsPackage: contact.IsPackage, 
       };
 
       
