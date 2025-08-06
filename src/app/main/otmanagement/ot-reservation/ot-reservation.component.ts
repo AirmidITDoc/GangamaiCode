@@ -39,7 +39,7 @@ export class OTReservationComponent implements OnInit {
   
        allcolumns = [
         { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
-        { heading: "OPDate&Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "OPDate&Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Surgeon Name1", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 130 },
@@ -67,9 +67,9 @@ export class OTReservationComponent implements OnInit {
     ];
   
       allFilters = [
-          { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        //   { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        //     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
           //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
@@ -120,9 +120,9 @@ export class OTReservationComponent implements OnInit {
        onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-        this.f_name = this.myFilterform.get('FirstName').value + "%"
-        this.l_name = this.myFilterform.get('LastName').value + "%"
-        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        // this.f_name = this.myFilterform.get('FirstName').value + "%"
+        // this.l_name = this.myFilterform.get('LastName').value + "%"
+        // this.regNo = this.myFilterform.get('RegNo').value || "0"
         //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
         this.getfilterdata();
     }
@@ -133,9 +133,9 @@ export class OTReservationComponent implements OnInit {
             sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                // { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
                 //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }

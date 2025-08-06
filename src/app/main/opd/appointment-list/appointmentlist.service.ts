@@ -17,10 +17,10 @@ export class AppointmentlistService {
     VisitFormGroup: FormGroup;
 
     constructor(public _httpClient1: ApiCaller, private _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
-        public _httpClient: HttpClient,  private accountService: AuthenticationService , private _FormvalidationserviceService: FormvalidationserviceService
+        public _httpClient: HttpClient, private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.filterForm();
-       
+
     }
 
 
@@ -28,18 +28,18 @@ export class AppointmentlistService {
         return this._formBuilder.group({
             RegNo: '',
             FirstName: ['', [
-                     Validators.maxLength(50),
-             Validators.pattern("^[A-Za-z / () ]*$")
-                
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z / () ]*$")
+
             ]],
             LastName: ['', [
-                     Validators.maxLength(50),
-           Validators.pattern("^[A-Za-z / () ]*$")
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z / () ]*$")
             ]],
-            DoctorId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            departmentId:[0],
-            fromDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-            enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+            DoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [0],
+            fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+            enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
         });
     }
     createSearchForm(): FormGroup {
@@ -48,68 +48,68 @@ export class AppointmentlistService {
             IsDeletedSearch: ["2"],
         });
     }
- createPesonalForm() {
+    createPesonalForm() {
         return this._formBuilder.group({
-                RegId: [0],
-                RegNo: "0",
-                PrefixId: ['', [Validators.required]],
-                FirstName: ['', [
-                    Validators.required,
-                 Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z/() ]*$")          
-                ]],
-                MiddleName: ['', [
-                   Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z/() ]*$")
-                ]],
-                LastName: ['', [
-                    Validators.required,
-                    Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z/() ]*$")
-                ]],
-                GenderId: new FormControl('', [Validators.required]),
-                Address: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-                Age: ['0'],
-                AgeYear: ['0', [
-                    // Validators.required,
-                    Validators.maxLength(3),
-                    Validators.pattern("^[0-9]*$")]],
-                AgeMonth: ['0', [
-                    Validators.pattern("^[0-9]*$")]],
-                AgeDay: ['0', [
-                    Validators.pattern("^[0-9]*$")]],
-                PhoneNo: ['', [Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-                MobileNo: ['', [Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-                ]],
-                aadharCardNo: ['', [
+            RegId: [0],
+            RegNo: "0",
+            PrefixId: ['', [Validators.required]],
+            FirstName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            MiddleName: ['', [
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            LastName: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z/() ]*$")
+            ]],
+            GenderId: new FormControl('', [Validators.required]),
+            Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+            Age: ['0'],
+            AgeYear: ['0', [
+                // Validators.required,
+                Validators.maxLength(3),
+                Validators.pattern("^[0-9]*$")]],
+            AgeMonth: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            AgeDay: ['0', [
+                Validators.pattern("^[0-9]*$")]],
+            PhoneNo: ['', [Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            MobileNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            aadharCardNo: ['', [
                 Validators.minLength(12),
                 Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$")
-                ]],
-    
-                panCardNo: '',
-                MaritalStatusId:0,
-                ReligionId: 0,
-                AreaId: 0,
-                CityId: ['', [Validators.required]],
-                City: [''],
-                StateId:  ['', [Validators.required]],
-                CountryId:  [0, [Validators.required]],
-                IsCharity: false,
-                IsSeniorCitizen: false,
-                AddedBy:this.accountService.currentUserValue.userId,
-                updatedBy: this.accountService.currentUserValue.userId,
-                RegDate: [(new Date()).toISOString()],
-                RegTime: [(new Date()).toISOString()],
-                Photo: [''],
-                PinNo: ['']
+            ]],
+
+            panCardNo: '',
+            MaritalStatusId: 0,
+            ReligionId: 0,
+            AreaId: 0,
+            CityId: ['', [Validators.required]],
+            City: [''],
+            StateId: ['', [Validators.required]],
+            CountryId: [0, [Validators.required]],
+            IsCharity: false,
+            IsSeniorCitizen: false,
+            AddedBy: this.accountService.currentUserValue.userId,
+            updatedBy: this.accountService.currentUserValue.userId,
+            RegDate: [(new Date()).toISOString()],
+            RegTime: [(new Date()).toISOString()],
+            Photo: [''],
+            PinNo: ['']
 
         });
 
@@ -118,38 +118,38 @@ export class AppointmentlistService {
     createVisitdetailForm() {
         return this._formBuilder.group({
 
-            visitId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            regId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            visitDate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-            visitTime:[(new Date()).toISOString()],
-            PatientTypeId:  [1, [Validators.required]],// this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+            visitTime: [(new Date()).toISOString()],
+            PatientTypeId: [1, [Validators.required]],// this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            ConsultantDocId:  ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            RefDocId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            TariffId:  [1, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            CompanyId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            SubCompanyId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            addedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.onlyNumberValidator()],
-            updatedBy: [this.accountService.currentUserValue.userId,this._FormvalidationserviceService.onlyNumberValidator()],
+            ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            TariffId: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             isCancelledBy: 0,
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
-            ClassId: [1, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-            DepartmentId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-            patientOldNew: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            ClassId: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            DepartmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            patientOldNew: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             firstFollowupVisit: 0,
-            AppPurposeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            AppPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             campId: [0],
             followupDate: [(new Date()).toISOString()],
-            crossConsulFlag: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            phoneAppId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
         });
     }
 
     createAbhadetailForm() {
         return this._formBuilder.group({
-            hipCode: ['',this._FormvalidationserviceService.onlyNumberValidator()],
+            hipCode: ['', this._FormvalidationserviceService.onlyNumberValidator()],
             abhaAddress: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
             abhaNumber: ['', this._FormvalidationserviceService.onlyNumberValidator()],
             fullName: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
@@ -166,14 +166,14 @@ export class AppointmentlistService {
     }
 
     public NewappointmentSave(Param: any) {
-       return this._httpClient1.PostData("VisitDetail/Insert", Param);
-       
+        return this._httpClient1.PostData("VisitDetail/Insert", Param);
+
     }
 
     public RregisteredappointmentSave(Param: any) {
 
         return this._httpClient1.PostData("VisitDetail/Update", Param);
-        
+
     }
 
     public EditConDoctor(Param: any) {
@@ -185,7 +185,7 @@ export class AppointmentlistService {
 
         return this._httpClient1.PutData("VisitDetail/RefDoctorUpdate", Param);
     }
-    
+
     public RefDoctorCancle(Param: any) {
 
         return this._httpClient1.PutData("VisitDetail/RefDoctorUpdate", Param);
@@ -243,7 +243,7 @@ export class AppointmentlistService {
     }
 
 
-    
+
     public doctordepartmentData(Id) {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
@@ -252,54 +252,55 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
-    
+
     public getRegVisitdetail(keyword) {
         return this._httpClient1.GetData("VisitDetail/search-patient?Keyword=" + keyword);
     }
 
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
-      }
-
-    
-
-      public getDoctorsByDepartment(deptId) {
-        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
-    }
- 
- public getVisitlist(employee) {
-   return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
-}
-
-public getBillingServiceList(employee) {
-    return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
- }
-
-public InsertOPBillingCredit(employee) {
-    return this._httpClient1.PostData("OPBill/OPCreditBillingInsert",employee)
-}
-
-
-public InsertOPBillingpayment(employee) {
-    return this._httpClient1.PostData("Payment/PaymentInsert", employee)
-}
-
-  public InsertOPBilling(employee) {
-        return this._httpClient1.PostData("OPBill/OPBillingInsert", employee)
     }
 
-    public InsertVitalInfo(visitId,element){
-        
-           return this._httpClient1.PutData("VisitDetail/EditVital/"+visitId,element);
-    } 
-    
-    
-    public getLastVisitDoctorList(param) {
-      
-        return this._httpClient1.PostData("VisitDetail/OPprevDoctorVisitList", param)
+
+
+    public getDoctorsByDepartment(deptId) {
+        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
 
   
+    public getVisitlist(employee) {
+        return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+    }
+
+    public getBillingServiceList(employee) {
+        return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", employee)
+    }
+
+    public InsertOPBillingCredit(employee) {
+        return this._httpClient1.PostData("OPBill/OPCreditBillingInsert", employee)
+    }
+
+
+    public InsertOPBillingpayment(employee) {
+        return this._httpClient1.PostData("Payment/PaymentInsert", employee)
+    }
+
+    public InsertOPBilling(employee) {
+        return this._httpClient1.PostData("OPBill/OPBillingInsert", employee)
+    }
+
+    public InsertVitalInfo(visitId, element) {
+
+        return this._httpClient1.PutData("VisitDetail/EditVital/" + visitId, element);
+    }
+
+
+    public getLastVisitDoctorList(param) {
+
+        return this._httpClient1.PostData("VisitDetail/OPprevDoctorVisitList", param)
+    }
+
+
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);
     }
@@ -311,19 +312,19 @@ public InsertOPBillingpayment(employee) {
     public updateEndTime(Id) {
         return this._httpClient1.PutData("VisitDetail/CheckOutProcess/", Id);
     }
-    public getSuggestions(apiUrl:string, inputValue: string): Observable<any[]> {
+    public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
 
     // OPD Certificate apis
 
-     public getCertificateList(param) {
-        return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList",param);
+    public getCertificateList(param) {
+        return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList", param);
     }
 
     public CertificateInsertUpdate(Param) {
-    if (Param.certificateId) {
-      return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
-    } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
-  }
+        if (Param.certificateId) {
+            return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
+        } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
+    }
 }

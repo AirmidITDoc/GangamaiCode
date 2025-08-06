@@ -46,4 +46,8 @@ export class AppointmentBillService {
   } 
     return this._httpClient1.PostData("IPBill/IPAddchargesdelete" , m_data);
   }  
+
+    public getOPDEmrId(param) {
+        return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
+    }
 }

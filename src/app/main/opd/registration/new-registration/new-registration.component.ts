@@ -125,27 +125,27 @@ export class NewRegistrationComponent implements OnInit {
 
 
     OnSubmit() {
-        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-        if (DateOfBirth1) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth1);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-            this.ageDay = (todayDate.getDate() - dob.getDate());
+        // let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        // if (DateOfBirth1) {
+        //     const todayDate = new Date();
+        //     const dob = new Date(DateOfBirth1);
+        //     const timeDiff = Math.abs(Date.now() - dob.getTime());
+        //     this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+        //     this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+        //     this.ageDay = (todayDate.getDate() - dob.getDate());
 
-            if (this.ageDay < 0) {
-                (this.ageMonth)--;
-                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay += previousMonth.getDate(); // Days in previous month
+        //     if (this.ageDay < 0) {
+        //         (this.ageMonth)--;
+        //         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        //         this.ageDay += previousMonth.getDate(); // Days in previous month
 
-            }
+        //     }
 
-            if (this.ageMonth < 0) {
-                this.ageYear--;
-                this.ageMonth += 12;
-            }
-        }
+        //     if (this.ageMonth < 0) {
+        //         this.ageYear--;
+        //         this.ageMonth += 12;
+        //     }
+        // }
 
         let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
         this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
@@ -379,6 +379,7 @@ export class NewRegistrationComponent implements OnInit {
 
     value=new Date()
        onChangeDateofBirth(DateOfBirth: Date) {
+        debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
@@ -437,6 +438,37 @@ export class NewRegistrationComponent implements OnInit {
 //       }
 //     });
 //   }
+
+  CalcDOB(mode, e) {
+debugger
+        let d = new Date();
+        if (mode == "Day") {
+            d.setDate(d.getDate() - Number(e.target.value));
+            this.value = d;
+            this.ageDay = Number(e.target.value);
+        }
+        else if (mode == "Month") {
+            d.setMonth(d.getMonth() - Number(e.target.value));
+            this.value = d;
+            this.ageMonth = Number(e.target.value);
+        }
+        else if (mode == "Year") {
+            d.setFullYear(d.getFullYear() - Number(e.target.value));
+            this.value = d;
+            this.ageYear = Number(e.target.value);
+        }
+        this.personalFormGroup.controls["DateOfBirth"].setValue(d);
+
+        if (this.ageYear > 110) {
+            this.ageYear = 0
+            // Swal.fire("Please Enter Valid BirthDate..")
+            this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+        }
+    }
+
+    
     getDate(dateStr: string) {
         let dtStr = dateStr.split('-');
         var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];

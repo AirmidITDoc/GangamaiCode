@@ -93,7 +93,7 @@ export class NewAppointmentComponent implements OnInit {
     ageYear = 0
     ageMonth = 0
     ageDay = 0
- value=new Date()
+    value = new Date()
     // <mat-expansion-panel> default to closed,
     isExpanded = false; // Defaults to closed
 
@@ -138,7 +138,7 @@ export class NewAppointmentComponent implements OnInit {
     showEmergencyFlag: boolean = false;
     EmgId: any;
 
-     
+
 
     constructor(
         public _AppointmentlistService: AppointmentlistService,
@@ -153,7 +153,7 @@ export class NewAppointmentComponent implements OnInit {
         private accountService: AuthenticationService,
         public matDialog: MatDialog,
         private commonService: PrintserviceService,
-         private _configue: ConfigService,
+        private _configue: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
 
@@ -162,9 +162,9 @@ export class NewAppointmentComponent implements OnInit {
     chkregisterd: boolean = false;
     ngOnInit(): void {
 
-      console.log(this._configue.configParams.OPDDefaultDepartment)
-       console.log(this._configue.configParams.OPDDefaultDoctor)
-
+        console.log(this._configue.configParams.OPDDefaultDepartment)
+        console.log(this._configue.configParams.OPDDefaultDoctor)
+        // Swal.fire("Doc", this._configue.configParams.OPDDefaultDoctor)
 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAllAsTouched();
@@ -172,7 +172,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
 
-        this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
+        // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
 
@@ -219,8 +219,33 @@ export class NewAppointmentComponent implements OnInit {
         }
 
         this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
-        this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
-       
+        
+        this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
+        this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
+        this.selectChangedepartment(this.registerObj)
+
+
+        // this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
+        if (this._configue.configParams.OPDDefaultDoctor > 0)
+            this.setdoctor(this._configue.configParams.OPDDefaultDoctor)
+    }
+
+
+    setdoctor(data) {
+
+        debugger
+        this._AppointmentlistService.getDoctorsByDepartment(data).subscribe((data: any) => {
+            console.log(data)
+            this.ddlDoctor.options = data;
+            this.ddlDoctor.bindGridAutoComplete();
+            const incomingDoctorId = data || 0;
+            if (incomingDoctorId) {
+                const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                if (matchedDoctor) {
+                    this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                }
+            }
+        });
     }
     createSearchForm() {
         return this.formBuilder.group({
@@ -231,40 +256,6 @@ export class NewAppointmentComponent implements OnInit {
             UnitId: [this.accountService.currentUserValue.user.unitId]
         });
     }
-    // onChangeReg(event) {
-    //     //
-    //     if (event.value == 'registration') {
-    //         this.personalFormGroup.reset();
-    //         this.personalFormGroup.get('RegId').reset();
-    //         this.searchFormGroup.get('RegId').disable();
-    //         this.isRegSearchDisabled = false;
-    //         this.Patientnewold = 1;
-
-    //         this.personalFormGroup = this.createPesonalForm();
-    //         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
-    //         this.Regflag = false;
-    //         this.IsPhoneAppflag = true;
-
-    //     } else if (event.value == 'registrered') {
-
-    //         this.personalFormGroup.get('RegId').enable();
-    //         this.searchFormGroup.get('RegId').enable();
-    //         this.searchFormGroup.get('RegId').reset();
-    //         this.personalFormGroup.reset();
-    //         this.Patientnewold = 2;
-
-    //         this.personalFormGroup = this.createPesonalForm();
-    //         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
-
-    //         this.Regflag = true;
-    //         this.IsPhoneAppflag = false;
-    //         this.isRegSearchDisabled = true;
-    //     }
-
-    //     this.personalFormGroup.markAllAsTouched();
-    //     this.VisitFormGroup.markAllAsTouched();
-
-    // }
 
     onChangeReg(event) {
         if (event.value === 'registration') {
@@ -374,8 +365,6 @@ export class NewAppointmentComponent implements OnInit {
     }
 
 
-   
-
     WhatsAppAppointmentSend(el, vmono) {
         var m_data = {
             "insertWhatsappsmsInfo": {
@@ -418,8 +407,8 @@ export class NewAppointmentComponent implements OnInit {
                 setTimeout(() => {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
-                            this.value=response.dateofBirth
-                         this.onChangeDateofBirth(response.dateofBirth)
+                        this.value = response.dateofBirth
+                        this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
@@ -449,7 +438,7 @@ export class NewAppointmentComponent implements OnInit {
 
                 }, 100);
             }
-           
+
         } else {
             this.PatientName = obj.PatientName;
             this.RegId = obj.value;
@@ -460,8 +449,8 @@ export class NewAppointmentComponent implements OnInit {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
                         console.log(response)
-                         this.value=response.dateofBirth
-                         this.onChangeDateofBirth(response.dateofBirth)
+                        this.value = response.dateofBirth
+                        this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
@@ -492,14 +481,14 @@ export class NewAppointmentComponent implements OnInit {
             }
         }
         debugger
-                    // this.value=this.registerObj.dateofBirth
-                    console.log('Bdate',this.value)
-                    // this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
-                    this.onChangeDateofBirth(this.registerObj.dateofBirth)
+        // this.value=this.registerObj.dateofBirth
+        console.log('Bdate', this.value)
+        // this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
+        this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
     PrevregisterObj: any;
     getLastDepartmetnNameList(row) {
-       const dialogRef = this._matDialog.open(PreviousDeptListComponent,
+        const dialogRef = this._matDialog.open(PreviousDeptListComponent,
             {
                 maxWidth: "45vw",
                 height: '45%',
@@ -509,7 +498,7 @@ export class NewAppointmentComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed - Insert Action', result);
+            console.log('The dialog was closed - Insert Action', result);
             this.PrevregisterObj = result
             this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
             this.selectChangedepartment(this.PrevregisterObj)
@@ -637,11 +626,9 @@ export class NewAppointmentComponent implements OnInit {
             });
             return;
         }
-debugger
+
         this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-        //  this.VisitFormGroup.get('UnitId').setValue(this.accountService.currentUserValue.user.unitId)
-        // this.VisitFormGroup.get('ClassId').setValue(this.ClassId)
         this.personalFormGroup.get('City').setValue(this.CityName)
         this.personalFormGroup.get('Age').setValue(String(this.ageYear))
         this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
@@ -651,8 +638,8 @@ debugger
         this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
 
-        console.log('Personal Form : ',this.personalFormGroup.value)
-        console.log('Visit Form : ',this.VisitFormGroup.value)
+        console.log('Personal Form : ', this.personalFormGroup.value)
+        console.log('Visit Form : ', this.VisitFormGroup.value)
         if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
             if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
@@ -690,7 +677,7 @@ debugger
         debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
-         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
+        this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
         this.personalFormGroup.get("GenderId").setValue(Number(this.personalFormGroup.get('GenderId').value))
         this.personalFormGroup.get("ReligionId").setValue(Number(this.personalFormGroup.get('ReligionId').value))
         this.personalFormGroup.get("AreaId").setValue(Number(this.personalFormGroup.get('AreaId').value))
@@ -722,8 +709,8 @@ debugger
     rawDate3: Date | string = '1900-01-01';
 
     onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
-    console.log('Visa date selected:', event.value);
-    this.rawDate1 = event.value || '1900-01-01';
+        console.log('Visa date selected:', event.value);
+        this.rawDate1 = event.value || '1900-01-01';
     }
 
     onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
@@ -739,8 +726,8 @@ debugger
     }
 
     onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
-    console.log('Entry date selected:', event.value);
-    this.rawDate3 = event.value || '1900-01-01';
+        console.log('Entry date selected:', event.value);
+        this.rawDate3 = event.value || '1900-01-01';
     }
 
     onSaveRegistered() {
@@ -760,9 +747,6 @@ debugger
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
-        //  this.personalFormGroup.get("StateId").setValue(Number(this.personalFormGroup.get('StateId').value))
-        //     this.personalFormGroup.get("CountryId").setValue(Number(this.personalFormGroup.get('CountryId').value))
-
         this.VisitFormGroup.get("DepartmentId").setValue(Number(this.VisitFormGroup.get('DepartmentId').value))
         this.VisitFormGroup.get("RefDocId").setValue(Number(this.VisitFormGroup.get('RefDocId').value))
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
@@ -810,6 +794,7 @@ debugger
     }
 
     selectChangedepartment(obj: any) {
+        debugger
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
@@ -1172,8 +1157,8 @@ debugger
         this.prevResults = [];
     }
 
-   
-       onChangeDateofBirth(DateOfBirth: Date) {
+
+    onChangeDateofBirth(DateOfBirth: Date) {
         debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
@@ -1185,7 +1170,7 @@ debugger
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-          
+
             this.ageYear = todayDate.getFullYear() - dob.getFullYear();
             this.ageMonth = (todayDate.getMonth() - dob.getMonth());
             this.ageDay = (todayDate.getDate() - dob.getDate());
@@ -1201,26 +1186,27 @@ debugger
                 this.ageYear--;
                 this.ageMonth += 12;
             }
-            
+
             this.value = DateOfBirth;
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
             if (this.ageYear > 110)
                 this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
         }
     }
 
     onSaveArea() {
-            const dialogRef = this._matDialog.open(NewAreaComponent,
-                {  maxWidth: "50vw",
+        const dialogRef = this._matDialog.open(NewAreaComponent,
+            {
+                maxWidth: "50vw",
                 maxHeight: '50%',
                 width: '70%',
-                    // data: element
-                });
-    
-            dialogRef.afterClosed().subscribe(result => {
-               
+                // data: element
             });
-        }
+
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+    }
 }

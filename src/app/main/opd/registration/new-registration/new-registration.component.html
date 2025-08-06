@@ -104,17 +104,14 @@
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
-                                                    <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%"
-                                                        [(value)]="ageYear" [formGroup]="personalFormGroup"
-                                                        [readonly]="true">
+                                                    <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Year',$event)"
+                                                        [(value)]="ageYear" [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
-                                                    <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%"
-                                                        [(value)]="ageMonth" [formGroup]="personalFormGroup"
-                                                        [readonly]="true">
+                                                    <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Month',$event)"
+                                                        [(value)]="ageMonth" [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
-                                                    <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%"
-                                                        [(value)]="ageDay" [formGroup]="personalFormGroup"
-                                                        [readonly]="true">
+                                                    <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Day',$event)"
+                                                        [(value)]="ageDay" [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
                                                 </div>
                                             </div>

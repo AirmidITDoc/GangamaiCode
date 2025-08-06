@@ -47,10 +47,10 @@
                 <form [formGroup]="myFilterform">
                     
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                    [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                    [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
                   
-                    <mat-form-field appearance="outline">
+                    <!-- <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
                         <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"
                         (input)="onChangeFirst()"/>
@@ -78,7 +78,7 @@
                         (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
                 </form>
             </ng-container>

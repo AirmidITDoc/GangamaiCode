@@ -6,11 +6,11 @@
             </mat-icon>
             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
         </div>
-        <!-- <div class="close-icon">
-        <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
+        <div class="close-icon">
+        <!-- <button mat-icon-button tabIndex="-1" (click)="CloseService()" aria-label="Close dialog">
           <mat-icon>close</mat-icon>
-        </button>
-      </div> -->
+        </button> -->
+      </div>
     </mat-toolbar>
 
     <div class="service-table1 p-12" fxFlex="100%">
@@ -18,25 +18,25 @@
             <div class="airmid-table">
                 <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{value:'50'}">
 
-                    <ng-container matColumnDef="ServiceName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
-                            Item Name
+                    <ng-container matColumnDef="serviceName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-480">
+                            Service Name
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-180">
-                            <span> {{contact.ServiceName}}</span>
+                        <mat-cell *matCellDef="let contact" class="w-480">
+                            <span> {{contact.serviceName}}</span>
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Price">
+                    <ng-container matColumnDef="userName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Price
+                            UserName
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
-                            <span> {{contact.Price | currency:'INR' }}</span>
+                            <span> {{contact.userName }}</span>
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Qty">
+                   <!--  <ng-container matColumnDef="Qty">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
@@ -51,7 +51,7 @@
                         <mat-cell *matCellDef="let contact" class="w-110">
                             <span> {{contact.TotalAmt | currency:'INR' }}</span>
                         </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
 
 
                     <ng-container matColumnDef="NoData">
@@ -62,8 +62,9 @@
 
                     <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
                     </mat-header-row>
+
                     <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns;"
-                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getService(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['NoData']"
                         [ngClass]="{'hide':dsServiceList.data.length > 0}"></mat-footer-row>
                 </mat-table>
@@ -105,7 +106,7 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
 
                                     <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" #regIdfocus
-                                        [formGroup]="searchForm" formControlName="regId" 
+                                        [formGroup]="searchForm" formControlName="regId"
                                         placeholderText="Enter Patient Name/RegId.." fxFlex="50%"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObj($event)" TextField="formattedText"
@@ -316,16 +317,24 @@
                                                             [@animateStagger]="{value:'50'}" class="airmid-table ">
 
                                                             <ng-container matColumnDef="Status" sticky>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">Status</mat-header-cell>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-90">Status</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" class="w-90">
-                                                                    <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
-                                                                        <img width="15px" height="8px" src="/assets/images/logos/radiology.png">
+                                                                    <mat-icon *ngIf="contact.IsRadiology == 1"
+                                                                        matTooltip="IsRadiology">
+                                                                        <img width="15px" height="8px"
+                                                                            src="/assets/images/logos/radiology.png">
                                                                     </mat-icon>
-                                                                    <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
-                                                                        <img width="15px" height="9px" src="/assets/images/logos/pathology.png">
-                                                                    </mat-icon> 
-                                                                    <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="Package Edit" (click)="getPacakgeDetail(contact)">
-                                                                        <img width="15px" height="9px" src="/assets/images/logos/package.png">
+                                                                    <mat-icon *ngIf="contact.IsPathology == 1"
+                                                                        matTooltip="IsPatholgy">
+                                                                        <img width="15px" height="9px"
+                                                                            src="/assets/images/logos/pathology.png">
+                                                                    </mat-icon>
+                                                                    <mat-icon *ngIf="contact.IsPackage == '1'"
+                                                                        matTooltip="Package Edit"
+                                                                        (click)="getPacakgeDetail(contact)">
+                                                                        <img width="15px" height="9px"
+                                                                            src="/assets/images/logos/package.png">
                                                                     </mat-icon>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -498,9 +507,9 @@
                                             </mat-tab>
                                             <mat-tab label="Package List">
                                                 <div fxLayout="column" class="h-100-p">
-                                                    <div class="airmid-table-container "> 
+                                                    <div class="airmid-table-container ">
                                                         <mat-table #table1 matSort [dataSource]="dsPackageList"
-                                                            [@animateStagger]="{value:'50'}" class="airmid-table"> 
+                                                            [@animateStagger]="{value:'50'}" class="airmid-table">
 
                                                             <ng-container matColumnDef="IsCheck" sticky>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
