@@ -4,12 +4,12 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Request list</span>
         </div>
         <div class="close-icon">
-        <!-- <button mat-icon-button tabIndex="-1" (click)="CloseService()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button> -->
+        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog"
+            matTooltip="Close"> <mat-icon>close</mat-icon>
+        </button>
       </div>
     </mat-toolbar>
 
@@ -18,12 +18,30 @@
             <div class="airmid-table">
                 <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{value:'50'}">
 
+                      <ng-container matColumnDef="groupName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Group Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.groupName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="serviceName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-480">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
                             Service Name
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-480">
+                        <mat-cell *matCellDef="let contact" class="w-280">
                             <span> {{contact.serviceName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                   <ng-container matColumnDef="classRate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            class Rate
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.classRate}}</span>
                         </mat-cell>
                     </ng-container>
 
@@ -35,24 +53,6 @@
                             <span> {{contact.userName }}</span>
                         </mat-cell>
                     </ng-container>
-
-                   <!--  <ng-container matColumnDef="Qty">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <span> {{contact.Qty}}</span>
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="TotalAmt">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">
-                            Total Amt
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-110">
-                            <span> {{contact.TotalAmt | currency:'INR' }}</span>
-                        </mat-cell>
-                    </ng-container> -->
-
 
                     <ng-container matColumnDef="NoData">
                         <mat-footer-cell *matFooterCellDef>
@@ -71,6 +71,14 @@
             </div>
         </div>
     </div>
+      <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
+                        aria-label="Close dialog" matTooltip="Close">Close</button>
+                </div>
+            </div>
+        </div>
 </ng-template>
 
 <div class="modal-page page-layout inner-scroll">
