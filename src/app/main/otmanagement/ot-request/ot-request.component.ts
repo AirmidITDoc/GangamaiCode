@@ -41,15 +41,15 @@ export class OTRequestComponent implements OnInit {
 
        allcolumns = [
         { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
-        { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8,width: 200 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         // {
         //     heading: "AddedBy", key: "action", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
@@ -70,6 +70,7 @@ export class OTRequestComponent implements OnInit {
                        
                     }}]
         }
+        
     ];
   
       allFilters = [

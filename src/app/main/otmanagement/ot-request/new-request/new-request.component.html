@@ -170,9 +170,27 @@
                 </div>
                 <div class="modal-body" fusePerfectScrollbar>
                     <div class="modal-body-container">
-
+                         
                         <input type="hidden" name="otbookingId" formControlName="otbookingId">
                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>OT request Date</mat-label>
+    <input matInput [matDatepicker]="requestDatePicker" formControlName="otrequestDate">
+    <mat-datepicker-toggle matSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #requestDatePicker></mat-datepicker>
+  </mat-form-field>
+</div>
+
+<div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>OT request Time</mat-label>
+    <input matInput type="time" formControlName="otrequestTime">
+  </mat-form-field>
+</div>
+
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Department Name" formControlName="departmentId"
                                     [formGroup]="requestForm" [value]="data?.departmentId"
