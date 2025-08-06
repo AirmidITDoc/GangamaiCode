@@ -268,4 +268,8 @@ export class DoctorMasterService {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
     }
+
+     public getSignData(refId,refType){
+    return this._httpClient.GetData("Files/get-signature?RefId=" + refId + "&RefType=" + refType);
+  }
 }

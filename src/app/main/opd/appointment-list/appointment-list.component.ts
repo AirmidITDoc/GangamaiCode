@@ -96,7 +96,7 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        debugger
+        // debugger
         this.GetAppointdetail()
     }
 
@@ -192,7 +192,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -643,7 +643,7 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-       debugger
+    //    debugger
         let data =
         {
             "first": 0,

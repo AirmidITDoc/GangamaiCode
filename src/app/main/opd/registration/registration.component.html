@@ -35,17 +35,14 @@
                     <mat-icon>perm_identity</mat-icon>
                 </button>
 
-                <!-- Button 4: Upload Photo  -->
-                <!-- <button mat-icon-button matTooltip="Add A photo" (click)="onNewImage(element)">
-                    <mat-icon>add_a_photo</mat-icon>
-                </button> -->
-
-                <app-airmid-photo-icon [refId]="element.regId" [refType]="signature" 
-                    [docName]="'DoctorSignature'" (onCloseDialog)="onPhotoCaptured($event)">
+                 <app-airmid-photo-icon [refId]="element.regId" [refType]="photo" 
+                    [docName]="'PatientPhoto'" (onCloseDialog)="onPhotoCaptured($event)">
                 </app-airmid-photo-icon>
 
+                <!-- <airmid-signature-icon [refId]="element.regId" [refType]="signature"
+                    [multiple]="true" docName="DoctorSignature"></airmid-signature-icon> -->
                 <airmid-signature-icon [refId]="element.regId" [refType]="signature"
-                    [multiple]="true" docName="DoctorSignature"></airmid-signature-icon>
+                    [multiple]="true" docName="PatientSignature"></airmid-signature-icon>
             </div>
         </ng-template>
 

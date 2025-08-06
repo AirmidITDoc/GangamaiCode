@@ -356,6 +356,7 @@ export class NewPhoneAppoinmentCalendarComponent {
                     "endDate": event.end
                 }
                 this._service.getDateTimeChange(data).subscribe(response => {
+                    this.bindData();
                     this._matDialog.closeAll();
                 });
             }

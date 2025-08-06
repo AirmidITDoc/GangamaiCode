@@ -25,6 +25,8 @@ import { DatePipe } from "@angular/common";
 import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
 import { indexOf } from "lodash";
 import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
+import { ApiCaller } from "app/core/services/apiCaller";
 
 
 @Component({
@@ -155,8 +157,19 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     autocompleteModedoctorty: string = "DoctorType";
     autocompleteSignpage: string = "DoctorSignPage";
 
-
     sanitizeImagePreview: any;
+    isEditMode: boolean = false;
+
+    // added by raksha
+    refId: any;
+    refType: any = "Doctor_Signature";
+    docName = "DoctorSignature";
+    isFileUpload: boolean = false;
+    @ViewChild('signaturePad') signaturePadElement!: ElementRef<HTMLCanvasElement>;
+    // @ViewChild('signaturePad', { static: false }) signaturePadElement!: ElementRef<HTMLCanvasElement>;
+    private signaturePad!: SignaturePad;
+    private canvas!: HTMLCanvasElement;
+    objFile: AirmidFileModel;
     constructor(
         public _doctorService: DoctorMasterService, private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
@@ -165,7 +178,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         public dialogRef: MatDialogRef<NewDoctorComponent>,
         private readonly changeDetectorRef: ChangeDetectorRef,
         public datePipe: DatePipe,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _service: ApiCaller,
     ) { }
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -195,6 +209,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     doctorId = 0
     ngOnInit(): void {
+        this.isEditMode = this.data?.formMode === 'edit';
         this.myForm = this.createdDoctormasterForm();
         this.myForm.markAllAsTouched();
         this.signatureForm = this.createSignatureForm();
@@ -205,14 +220,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.registerObj = response;
                 console.log(this.registerObj)
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
-                debugger
+                // debugger
                 if (this.registerObj.signature) {
-                    
+
                     this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                         this.sanitizeImagePreview = data;
                         console.log(data)
                         this.myForm.value.signature = data;
-                        
+
                     });
                 }
                 this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
@@ -244,8 +259,111 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.leaveDetailsArray.push(this.createLeave());
         this.signatureDetailsArray.push(this.createsignature());
 
+        this.refId = this.doctorId
+        if (this.refId > 0) {
+            this._doctorService.getSignData(this.refId, this.refType).subscribe((data) => {
+                if (data.data) {
+                    if (data.type == "signature") {
+                        this.signaturePad.fromDataURL(data.data);
+                        this.isFileUpload = false;
+                    }
+                    else {
+                        this.sanitizeImagePreview = data.data;
+                        this.isFileUpload = true;
+                    }
+                }
+            });
+        }
 
     }
+    ///////////////////// start tyed /////////////////////
+    ngAfterViewInit(): void {
+        this.canvas = this.signaturePadElement.nativeElement;
+        this.setupSignaturePad();
+    }
+
+    private setupSignaturePad(): void {
+        // Set canvas size
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+
+        // Initialize signature pad
+        this.signaturePad = new SignaturePad(this.canvas, {
+            backgroundColor: 'rgb(255, 255, 255)',
+            penColor: 'rgb(0, 0, 0)'
+        });
+        window.addEventListener('resize', this.resizeCanvas.bind(this));
+    }
+    
+    private resizeCanvas(): void {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        this.canvas.width = this.canvas.offsetWidth * ratio;
+        this.canvas.height = this.canvas.offsetHeight * ratio;
+        this.canvas.getContext('2d')?.scale(ratio, ratio);
+        this.signaturePad.clear();
+    }
+
+    onImageChange(event: any) {
+        if (!event.target.files.length) return;
+        const file = event.target.files[0];
+
+        const dialogRef = this.matDialog.open(ImageCropComponent, {
+            width: '600px',
+            data: { file }
+        });
+
+        dialogRef.afterClosed().subscribe((croppedBase64) => {
+            console.log("Dialog closed. Received:", croppedBase64);
+            if (croppedBase64) {
+                this.sanitizeImagePreview = croppedBase64;
+            } else {
+                console.warn("Dialog returned empty or null.");
+            }
+        });
+    }
+    clear(): void {
+        this.signaturePad.clear();
+    }
+
+    OnSubmit() {
+        debugger
+        if (this.isFileUpload) {
+            this.objFile = {
+                srNo: 1,
+                id: 0,
+                docName: this.docName + '_File',
+                docSavedName: '',
+                Document: null,
+                isDelete: false,
+                base64: this.sanitizeImagePreview,
+                refId: this.refId,
+                refType: this.refType
+            }
+        }
+        else {
+            if (this.signaturePad.isEmpty()) {
+                alert('Please provide a signature first.');
+                return;
+            }
+            this.objFile = {
+                srNo: 1,
+                id: 0,
+                docName: this.docName + '_Signature',
+                docSavedName: '',
+                Document: null,
+                isDelete: false,
+                base64: this.signaturePad.toDataURL(),
+                refId: this.refId,
+                refType: this.refType
+            }
+        }
+        this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe((data) => {
+            this.dialogRef.close(this.signaturePad.toDataURL());
+        });
+    }
+
+    ///////////////////// end tyed /////////////////////
+
     createdDoctormasterForm(): FormGroup {
         return this._formBuilder.group({
             DoctorId: [0],
@@ -509,7 +627,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
     onSubmit() {
-        
+
         let a = this.attachedFiles;
 
         console.log(this.myForm.value)
@@ -557,7 +675,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             });
         }
 
-        
+
         //sign detail
         let charge = []
         console.log(this.signatureForm.value)
@@ -592,7 +710,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
         console.log(this.myForm.value)
-debugger
+        debugger
         if (!this.myForm.invalid) {
 
             let data = this.myForm.value;
@@ -614,7 +732,7 @@ debugger
                 data.signature = this.registerObj.signature || this.signature
                 //  data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
                 console.log(data)
-                  data.signature = this.registerObj.signature || this.signature
+                data.signature = this.registerObj.signature || this.signature
 
                 //    data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
 
@@ -1218,7 +1336,7 @@ debugger
     tempsignidlist: any[] = [];
 
     getSignpagelist() {
-        
+
         var data = {
             "first": 0,
             "rows": 10,

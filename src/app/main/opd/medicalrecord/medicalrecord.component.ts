@@ -61,7 +61,7 @@ VMarkcount = 0;
   f_name: any = "%"
   regNo: any = "0"
   l_name: any = "%"
-  page: PageNames=PageNames.DOCTOR;
+  page: PageNames=PageNames.PATIENT;
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
     private commonService: PrintserviceService,
@@ -464,11 +464,10 @@ VMarkcount = 0;
             ]
         }
         console.log(data)
-        debugger
         this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
             this.dataSource.data = response.data;
              console.log(response)
-             debugger
+            //  debugger
             if (this.dataSource.data.length > 0) {
                 this.Vtotalcount = this.dataSource.data.length
                 this.dataSource.data.forEach(element => {

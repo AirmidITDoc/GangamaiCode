@@ -35,8 +35,8 @@
                                     <mat-tab label="Qualification Details"></mat-tab>
                                     <mat-tab label="Schedule Details"></mat-tab>
                                     <mat-tab label="Doctor Charges Details"></mat-tab>
-                                    <mat-tab label="Digital Signature"></mat-tab>
-                                    <mat-tab label="Attachments"></mat-tab>
+                                    <mat-tab label="Digital Signature" *ngIf="isEditMode"></mat-tab>
+                                    <mat-tab label="Attachments" *ngIf="isEditMode"></mat-tab>
                                 </mat-tab-group>
                             </div>
                         </mat-expansion-panel-header>
@@ -780,10 +780,69 @@
 
                                         </div>
                                     </div> -->
-                                    <airmid-signature></airmid-signature>
+                                    <!-- <airmid-signature></airmid-signature> -->
+
+                                    <mat-card>
+                                        <div class="toggle-container">
+                                            Use Signature
+                                            <mat-slide-toggle [(ngModel)]="isFileUpload" color="primary">Select
+                                                File</mat-slide-toggle>
+                                        </div>
+                                        <div [hidden]="!isFileUpload" class="section">
+                                            <h3>Select File</h3>
+                                            <div class="photo-capture p-16 border border-radius-4 gap-12"
+                                                fxLayout="column">
+                                                <div class="photp-capture-image">
+                                                    <img class="h-100-p w-100-p border-radius-4"
+                                                        style="height: 250px !important;"
+                                                        [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
+                                                </div>
+                                                <div class="img-container">
+                                                    <input formControlName="imageFile" type="file" #attachments
+                                                        accept="image/*" multiple name="file" id="file"
+                                                        class="inputfile" (change)="onImageChange($event)"
+                                                        style="margin-right: 10px;display: none;" />
+
+                                                    <label class="file-lable1" for="file">
+                                                        <mat-icon
+                                                            style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                                        Browse
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div [hidden]="isFileUpload" class="section">
+                                            <h3>Draw Signature</h3>
+                                            <div class="photo-capture p-16 border border-radius-4 gap-12"
+                                                fxLayout="column">
+                                                <div class="photp-capture-image signature-pad-container"
+                                                    style="border:1px solid grey;border-radius: 5px;">
+                                                    <!-- <ngx-signature-pad [config]="config" #testPad></ngx-signature-pad> -->
+                                                    <canvas #signaturePad class="signature-pad"></canvas>
+                                                </div>
+                                                <div class="img-container">
+                                                    <label class="file-lable1" (click)="clear()">
+                                                        <mat-icon
+                                                            style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                                        Clear
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="footer-actions">
+                                            <label class="file-lable1" (click)="OnSubmit()">
+                                                <mat-icon
+                                                    style="margin-right: 15px; font-size: 30px;">cloud_upload</mat-icon>
+                                                Submit
+                                            </label>
+                                        </div>
+                                    </mat-card>
                                 </div>
 
                             </div>
+
                             <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
                                 <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"
                                     [(files)]="attachedFiles" [refId]="doctorId"></airmid-fileupload>

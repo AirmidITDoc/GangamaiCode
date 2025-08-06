@@ -32,7 +32,8 @@ export class RegistrationComponent implements OnInit {
     mobileno: any = "%"
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    signature: PageNames=PageNames.DOCTOR_SIGNATURE;
+    photo: PageNames=PageNames.PATIENT_PHOTO;
+    signature: PageNames=PageNames.PATIENT_SIGNATURE;
     
     constructor(
         public _RegistrationService: RegistrationService,

@@ -85,29 +85,17 @@ export class AirmidPhotoComponent implements OnInit {
     alert('Please capture an image first.');
     return;
   }
-
-  // this.objFile = {
-  //   srNo: 1,
-  //   id: 0,
-  //   docName: this.docName + '_Photo',
-  //   docSavedName: '',
-  //   Document: null,
-  //   isDelete: false,
-  //   base64: imageToSubmit,
-  //   refId: this.refId,
-  //   refType: this.refType
-  // };
-   this.objFile = {
-      srNo: 1,
-      id: 0,
-      docName: this.docName + '_Signature',
-      docSavedName: '',
-      Document: null,
-      isDelete: false,
-      base64: this.sysImage,
-      refId: this.refId,
-      refType: this.refType
-  }
+  this.objFile = {
+    srNo: 1,
+    id: 0,
+    docName: this.docName + '_Photo',
+    docSavedName: '',
+    Document: null,
+    isDelete: false,
+    base64: imageToSubmit,
+    refId: this.refId,
+    refType: this.refType
+  };
 
   this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe(() => {
     this.dialogRef.close(imageToSubmit);
