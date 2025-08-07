@@ -52,3 +52,44 @@ signature-box {
   border: 1px solid #eee;
   background-color: white;
 }
+
+// folder css
+.input_fileupload--hidden{
+  display:none;
+}
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8f8f8;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.preview-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.file-icon {
+  font-size: 20px;
+  color: #666;
+}
+
+.file-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.file-actions button {
+  margin-left: 4px;
+}

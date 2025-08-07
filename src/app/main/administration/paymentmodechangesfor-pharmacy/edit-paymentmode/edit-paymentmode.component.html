@@ -20,7 +20,7 @@
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius:  4px;">
             <div class="content-card">
-                <form [formGroup]="_Paymentmodesevice.paymentform">
+                <form [formGroup]="_Paymentmodesevice.paymentInsertform">
                     <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
                         <mat-card>
@@ -102,11 +102,11 @@
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>Cash Pay</mat-label>
                                         <!-- (keydown)="onEnterCashpay($event)" -->
-                                        <input name="CashPayAmt" formControlName="CashPayAmt" matInput
+                                        <input name="CashPayAmount" formControlName="CashPayAmount" matInput
                                             [(ngModel)]="vcashpay" #cashpay (keyup)="getbalAmt()">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('CashPayAmt').invalid && _Paymentmodesevice.paymentform.get('CashPayAmt').touched">
-                                            CashPayAmt is required
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('CashPayAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('CashPayAmount')?.touched">
+                                            CashPayAmount is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -119,12 +119,12 @@
 
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>Debit / Credit Card Pay</mat-label>
-                                        <!-- (keydown)="onEnterCardPayAmt($event)" -->
-                                        <input name="CardPayAmt" formControlName="CardPayAmt" matInput
+                                        <!-- (keydown)="onEnterCardPayAmount($event)" -->
+                                        <input name="CardPayAmount" formControlName="CardPayAmount" matInput
                                             [(ngModel)]="vcardpay" (keyup)="getbalAmt()">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('CardPayAmt').invalid && _Paymentmodesevice.paymentform.get('CardPayAmt').touched">
-                                            CardPayAmt is required
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('CardPayAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('CardPayAmount')?.touched">
+                                            CardPayAmount is required
                                         </mat-error>
                                     </mat-form-field>
 
@@ -138,13 +138,13 @@
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                             required="required" value="987665868888">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('CardNo').invalid && _Paymentmodesevice.paymentform.get('CardNo').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('CardNo')?.invalid && _Paymentmodesevice.paymentInsertform.get('CardNo')?.touched">
                                             Card No is required
                                         </mat-error>
                                     </mat-form-field>
 
                                     <airmid-dropdown label="Cash Bank Name" formControlName="CardBankName"
-                                        [formGroup]="_Paymentmodesevice.paymentform"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
                                         [validations]="getValidationMessages().CardBankName"
                                         [mode]="autocompleteModeBankName"
                                         (selectionChange)="selectChangeBankName($event)">
@@ -161,11 +161,11 @@
                                     </mat-checkbox>
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>Cheque Pay</mat-label>
-                                        <input name="ChequePayAmt" formControlName="ChequePayAmt" matInput required
-                                            [(ngModel)]="vchequepay" #CardPayAmt (keyup)="getbalAmt()"
+                                        <input name="ChequePayAmount" formControlName="ChequePayAmount" matInput required
+                                            [(ngModel)]="vchequepay" #CardPayAmount (keyup)="getbalAmt()"
                                             (keydown)="onEnterCheckPayAmt($event)">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('ChequePayAmt').invalid && _Paymentmodesevice.paymentform.get('ChequePayAmt').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('ChequePayAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('ChequePayAmount')?.touched">
                                             Cheque is required
                                         </mat-error>
                                     </mat-form-field>
@@ -180,13 +180,13 @@
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                             required="required" value="987665868888">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('ChequeNo').invalid && _Paymentmodesevice.paymentform.get('ChequeNo').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('ChequeNo')?.invalid && _Paymentmodesevice.paymentInsertform.get('ChequeNo')?.touched">
                                             Cheque is required
                                         </mat-error>
                                     </mat-form-field>
 
                                     <airmid-dropdown label="Cheque Bank Name" formControlName="ChequeBankName"
-                                        [formGroup]="_Paymentmodesevice.paymentform"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
                                         [validations]="getValidationMessages().ChequeBankName"
                                         [mode]="autocompleteModeBankName"
                                         (selectionChange)="selectChangeBankName($event)">
@@ -202,10 +202,10 @@
 
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>NEFTPayAmount Pay</mat-label>
-                                        <input name="NEFTPayAmount" formControlName="NEFTPayAmount" matInput required
-                                            [(ngModel)]="vneftpay" #NEFTPayAmount (keyup)="getbalAmt()">
+                                        <input name="NeftpayAmount" formControlName="NeftpayAmount" matInput required
+                                            [(ngModel)]="vneftpay" #NeftpayAmount (keyup)="getbalAmt()">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('NEFTPayAmount').invalid && _Paymentmodesevice.paymentform.get('NEFTPayAmount').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('NeftpayAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('NeftpayAmount')?.touched">
                                             Card is required
                                         </mat-error>
                                     </mat-form-field>
@@ -213,20 +213,20 @@
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>NEFT No</mat-label>
 
-                                        <input name="NEFTNo" formControlName="NEFTNo" matInput
-                                            [(ngModel)]="registerObj.NEFTNo" [(ngModel)]="vNEFTNo" #NEFTNo
-                                            (keydown)="onEnterNEFTNo($event)" min="100000000000" autocomplete="off"
+                                        <input name="Neftno" formControlName="Neftno" matInput
+                                            [(ngModel)]="registerObj.NEFTNo" [(ngModel)]="vNeftno" #Neftno
+                                            (keydown)="onEnterNeftno($event)" min="100000000000" autocomplete="off"
                                             maxlength="12" minlength="4"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                             required="required" value="987665868888">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('NEFTNo').invalid && _Paymentmodesevice.paymentform.get('NEFTNo').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('Neftno')?.invalid && _Paymentmodesevice.paymentInsertform.get('Neftno')?.touched">
                                             Cheque is required
                                         </mat-error>
                                     </mat-form-field>
 
                                     <airmid-dropdown label="Neft Bank Name" formControlName="NEFTBankName"
-                                        [formGroup]="_Paymentmodesevice.paymentform"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
                                         [validations]="getValidationMessages().NEFTBankName"
                                         [mode]="autocompleteModeBankName"
                                         (selectionChange)="selectChangeBankName($event)">
@@ -243,12 +243,12 @@
                                     </mat-checkbox>
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>PayTMAmount </mat-label>
-                                        <input name="PayTMAmount" formControlName="PayTMAmount" matInput required
+                                        <input name="PayTmamount" formControlName="PayTmamount" matInput required
                                             [(ngModel)]="vpaytmpay" (keyup)="getbalAmt()"
                                             (keydown)="onEnterPayTMamt($event)">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('PayTMAmount').invalid && _Paymentmodesevice.paymentform.get('PayTMAmount').touched">
-                                            PayTMTranNo is required
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('PayTmamount')?.invalid && _Paymentmodesevice.paymentInsertform.get('PayTmamount')?.touched">
+                                            PayTMAmount is required
                                         </mat-error>
                                     </mat-form-field>
 
@@ -256,13 +256,13 @@
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>PayTMTranNo </mat-label>
 
-                                        <input name="PayTMTranNo" formControlName="PayTMTranNo" matInput required
-                                            [(ngModel)]="vPayTMTranNo" #PayTMTranNo min="100000000000"
+                                        <input name="PayTmtranNo" formControlName="PayTmtranNo" matInput required
+                                            [(ngModel)]="vPayTmtranNo" #PayTmtranNo min="100000000000"
                                             autocomplete="off" maxlength="12" minlength="4"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                             required="required" value="987665868888">
                                         <mat-error class="error"
-                                            *ngIf="_Paymentmodesevice.paymentform.get('PayTMTranNo').invalid && _Paymentmodesevice.paymentform.get('PayTMTranNo').touched">
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.invalid && _Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.touched">
                                             PayTMTranNo is required
                                         </mat-error>
                                     </mat-form-field>
@@ -277,7 +277,7 @@
                                     <input name="PaidAmount" formControlName="PaidAmount" matInput required
                                         [(ngModel)]="vnetPayAmt" #PaidAmount readonly>
                                     <mat-error class="error"
-                                        *ngIf="_Paymentmodesevice.paymentform.get('PaidAmount').invalid && _Paymentmodesevice.paymentform.get('PaidAmount').touched">
+                                        *ngIf="_Paymentmodesevice.paymentInsertform.get('PaidAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('PaidAmount')?.touched">
                                         PaidAmount is required
                                     </mat-error>
                                 </mat-form-field>
@@ -287,7 +287,7 @@
                                     <input name="BalAmount" formControlName="BalAmount" matInput required
                                         [(ngModel)]="vbalanceAmt" #BalAmount readonly>
                                     <mat-error class="error"
-                                        *ngIf="_Paymentmodesevice.paymentform.get('BalAmount').invalid && _Paymentmodesevice.paymentform.get('BalAmount').touched">
+                                        *ngIf="_Paymentmodesevice.paymentInsertform.get('BalAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('BalAmount')?.touched">
                                         BalAmount is required
                                     </mat-error>
                                 </mat-form-field>

@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { BillDateUpdateComponent } from '../cancellation/bill-date-update/bill-date-update.component';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
+import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -106,16 +107,16 @@ onNameFieldChange(): void {
 
 allColumns=[
   { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-  { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-  { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
-  { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+  { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+  { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
+  { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
   {
     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
     template: this.actionButtonTemplateSale  // Assign ng-template to the column
@@ -188,16 +189,16 @@ Clearfilteropd(event) {
 allColumns1=[
 
   { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "PayDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-  { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-  { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
-  { heading: "CashAmount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "ChequeAmount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "CardAmount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "NEFTPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "PayATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+  { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+  { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
+  { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
+  { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
   {
     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
     template: this.actionButtonTemplateSale  // Assign ng-template to the column
@@ -359,7 +360,16 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
       IsInchIndVfy: m.IsInchIndVfy,
     };
     this.advanceDataStored.storage = new PaymentPharmayList(xx);
-    const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
+    // const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
+    //   {
+    //     height: "85%",
+    //     width: '75%',
+    //     data: {
+    //       registerObj: m,
+    //       FromName: "Pharma-PaymentModeChange"
+    //     }
+    //   });
+     const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
         height: "85%",
         width: '75%',

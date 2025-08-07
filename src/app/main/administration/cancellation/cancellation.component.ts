@@ -133,13 +133,13 @@ export class CancellationComponent implements OnInit {
         { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
-        { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
-        { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //not there in payload
-        { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
-        { heading: "NetAmt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+        { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
+        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //not there in payload
+        { heading: "Discount Amt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+        { heading: "Net Amt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
         {
           heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
           template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -214,13 +214,13 @@ ClearfilterOPD(event) {
     { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
-    { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
-    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:250 },
-    { heading: "BillAmount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "DiscountAmt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "NetAmt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+    { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+    { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:250 },
+    { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Discount Amt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Net Amt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIP  // Assign ng-template to the column
@@ -321,13 +321,13 @@ onRadioChange(event: MatRadioChange) {
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
     { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200, },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200, },
     { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
     { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount, 
       columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount,
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount,
       columnClass: (element) => element["refundAmount"] > 0 ? Color.GREEN : "" },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Use rName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPAdvance
@@ -397,12 +397,12 @@ ClearfilterAdvance(event) {
   // 3rd table
 
   allColumnsOfIpRefund= [
-    { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
-    { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "PaymentDate", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 150,sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPRefundBill  // Assign ng-template to the column
@@ -466,14 +466,14 @@ ClearfilterIPRefund(event) {
   // 4th table
 
   allColumnsOfRefundAd=[
-    { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
-    { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
-    { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "AdvanceUsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "PaymentDate", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9  },
+    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
+    { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Advance UsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9  },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPRefundAdv  // Assign ng-template to the column

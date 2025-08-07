@@ -326,44 +326,95 @@ export class NewPhoneAppoinmentCalendarComponent {
         this.handleEvent('Dropped or resized', event);
     }
 
+    // handleEvent(action: string, event: CalendarEvent): void {
+    //     if (action == "CellClicked") {
+    //         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //         buttonElement.blur(); // Remove focus from the button
+    //         if (!event["end"]) {
+    //             event["end"] = event["start"];
+    //             event["end"].setMinutes(event["end"].getMinutes() + 10);
+    //         }
+    //         let that = this;
+    //         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
+    //             {
+    //                 maxWidth: "95vw",
+    //                 maxHeight: '80%',
+    //                 width: '90%',
+    //                 data: { fromDate: event["start"], toDate: event["end"], deptNames: this.depName, departmentId: this.depId, doctorName: this.objDoctor.text, doctorId: this.objDoctor.value }
+    //             });
+    //         dialogRef.afterClosed().subscribe(result => {
+    //             if (result) {
+    //                 this.bindData();
+    //             }
+    //         });
+    //     }
+    //     else if (action == "Dropped or resized") {
+    //         if (Number(event.id) > 0) {
+    //             var data = {
+    //                 "phoneAppId": event.id,
+    //                 "startDate": event.start,
+    //                 "endDate": event.end
+    //             }
+    //             this._service.getDateTimeChange(data).subscribe(response => {
+    //                 this.bindData();
+    //                 this._matDialog.closeAll();
+    //             });
+    //         }
+    //     }
+    //     //this.modalData = { event, action };
+    //     //this.modal.open(this.modalContent, { size: 'lg' });
+    // }
+
     handleEvent(action: string, event: CalendarEvent): void {
-        if (action == "CellClicked") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-            if (!event["end"]) {
-                event["end"] = event["start"];
-                event["end"].setMinutes(event["end"].getMinutes() + 10);
+    if (action == "CellClicked") {
+        const buttonElement = document.activeElement as HTMLElement;
+        buttonElement?.blur();
+
+        const fromDate = new Date(event.start);
+        let toDate: Date;
+
+        if (event.end) {
+            toDate = new Date(event.end);
+        } else {
+            toDate = new Date(fromDate);
+            toDate.setMinutes(toDate.getMinutes() + 10);
+        }
+
+        const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent, {
+            maxWidth: "95vw",
+            maxHeight: '80%',
+            width: '90%',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate,
+                deptNames: this.depName,
+                departmentId: this.depId,
+                doctorName: this.objDoctor.text,
+                doctorId: this.objDoctor.value
             }
-            let that = this;
-            const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
-                {
-                    maxWidth: "95vw",
-                    maxHeight: '80%',
-                    width: '90%',
-                    data: { fromDate: event["start"], toDate: event["end"], deptNames: this.depName, departmentId: this.depId, doctorName: this.objDoctor.text, doctorId: this.objDoctor.value }
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    this.bindData();
-                }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.bindData();
+            }
+        });
+    }
+    else if (action == "Dropped or resized") {
+        if (Number(event.id) > 0) {
+            const data = {
+                phoneAppId: event.id,
+                startDate: event.start,
+                endDate: event.end
+            };
+            this._service.getDateTimeChange(data).subscribe(response => {
+                this.bindData();
+                this._matDialog.closeAll();
             });
         }
-        else if (action == "Dropped or resized") {
-            if (Number(event.id) > 0) {
-                var data = {
-                    "phoneAppId": event.id,
-                    "startDate": event.start,
-                    "endDate": event.end
-                }
-                this._service.getDateTimeChange(data).subscribe(response => {
-                    this.bindData();
-                    this._matDialog.closeAll();
-                });
-            }
-        }
-        //this.modalData = { event, action };
-        //this.modal.open(this.modalContent, { size: 'lg' });
     }
+}
+
 
     addEvent(): void {
         this.events = [

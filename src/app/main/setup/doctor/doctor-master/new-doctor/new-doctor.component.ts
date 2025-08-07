@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
@@ -56,8 +56,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     selectedFile: File | null = null;
     previewUrl: string | null = null;
 
-
-
     autocompleteModepage: string = "DoctorSignPage";
     displayedColumnsEdu = [
 
@@ -86,8 +84,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         'slot',
         'action'
     ];
-
-
 
     displayedColumnscharges = [
         // 'serviceId',
@@ -124,7 +120,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     ];
 
-
     dataSourceeducation = new MatTableDataSource<EducationDetail>();
     dataSourceeexperience = new MatTableDataSource<ExperienceDetail>();
     dataSourceSchdule = new MatTableDataSource<SchduleDetail>();
@@ -133,15 +128,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     dataSourcedrsign = new MatTableDataSource<SignDetail>();
     AttachDataSource = new MatTableDataSource<any>();
 
-
     public chargeschList: SchduleDetail[] = [];
     public chargechargesList: ChargesDetail[] = [];
     public chargeexpList: ExperienceDetail[] = [];
     public chargeeduList: EducationDetail[] = [];
     public chargeleaveList: LeaveDetail[] = [];
     public chargesignList: SignDetail[] = [];
-
-
 
     @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
     @ViewChild('ddlsignpage') ddlsignpage: AirmidDropDownComponent;
@@ -163,13 +155,31 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     // added by raksha
     refId: any;
     refType: any = "Doctor_Signature";
+    refType1: any = "Doctor";
     docName = "DoctorSignature";
     isFileUpload: boolean = false;
-    @ViewChild('signaturePad') signaturePadElement!: ElementRef<HTMLCanvasElement>;
-    // @ViewChild('signaturePad', { static: false }) signaturePadElement!: ElementRef<HTMLCanvasElement>;
+    // to add & retrive signature process
+    private signatureData: string | null = null;
+    @ViewChild('signaturePad')
+    set signaturePadElement(el: ElementRef<HTMLCanvasElement> | undefined) {
+        if (el) {
+            this.canvas = el.nativeElement;
+            this.setupSignaturePad();
+
+            if (this.signatureData && this.signaturePad) {
+                this.signaturePad.fromDataURL(this.signatureData);
+                this.signatureData = null; // clear after use
+            }
+        }
+    }
+
     private signaturePad!: SignaturePad;
     private canvas!: HTMLCanvasElement;
     objFile: AirmidFileModel;
+    files: AirmidFileModel[] = [];
+    filesChange = new EventEmitter<AirmidFileModel[]>();
+    @ViewChild('fileUpload') fileUpload: ElementRef
+    
     constructor(
         public _doctorService: DoctorMasterService, private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
@@ -261,10 +271,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
         this.refId = this.doctorId
         if (this.refId > 0) {
+            // Load signature or uploaded image
             this._doctorService.getSignData(this.refId, this.refType).subscribe((data) => {
                 if (data.data) {
                     if (data.type == "signature") {
-                        this.signaturePad.fromDataURL(data.data);
+                        // this.signaturePad.fromDataURL(data.data);
+                        this.signatureData = data.data;
                         this.isFileUpload = false;
                     }
                     else {
@@ -273,14 +285,15 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                     }
                 }
             });
+
+            // Load files
+             this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
+                this.files = data;
+            });
         }
 
     }
-    ///////////////////// start tyed /////////////////////
-    ngAfterViewInit(): void {
-        this.canvas = this.signaturePadElement.nativeElement;
-        this.setupSignaturePad();
-    }
+    ///////////////////// digital signature code started /////////////////////
 
     private setupSignaturePad(): void {
         // Set canvas size
@@ -294,7 +307,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
         window.addEventListener('resize', this.resizeCanvas.bind(this));
     }
-    
+
     private resizeCanvas(): void {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
         this.canvas.width = this.canvas.offsetWidth * ratio;
@@ -362,7 +375,76 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
     }
 
-    ///////////////////// end tyed /////////////////////
+    ///////////////////// digital signature code ended /////////////////////
+
+     ///////////////////// Attachment code started /////////////////////
+    get filteredFiles() {
+        return this.files?.filter(x => !x.isDelete) || [];
+    }
+    getFileIcon(fileName: string): string {
+        const ext = fileName.split('.').pop()?.toLowerCase();
+
+        switch (ext) {
+            case 'pdf':
+                return 'picture_as_pdf';
+            case 'doc':
+            case 'docx':
+                return 'description';
+            case 'xls':
+            case 'xlsx':
+                return 'table_chart';
+            case 'ppt':
+            case 'pptx':
+                return 'slideshow';
+            case 'txt':
+                return 'article';
+            case 'zip':
+            case 'rar':
+                return 'folder_zip';
+            case 'mp3':
+            case 'wav':
+                return 'audiotrack';
+            case 'mp4':
+            case 'mov':
+            case 'avi':
+                return 'movie';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+            case 'bmp':
+            case 'webp':
+                return 'image';
+            default:
+                return 'insert_drive_file'; // default generic file icon
+        }
+    }
+
+    getPreview(file: File): string | null {
+        if (file == null || !file.type.startsWith('image/')) return null;
+        return URL.createObjectURL(file);
+    }
+
+    downloadFile(file: AirmidFileModel): void {
+        this._service.downloadFile("Files/get-file?Id=" + file.id, null, 2, file.docName).subscribe((data) => {
+
+        });
+    }
+     removeFile(event, srNO) {
+        let ix
+        if (this.files && -1 !== (ix = this.files.findIndex(x => x.srNo == srNO))) {
+            if (this.files[ix].docSavedName)
+                this.files[ix].isDelete = true;
+            else
+                this.files.splice(ix, 1)
+            this.clearInputElement()
+            this.filesChange.emit(this.files);
+        }
+    }
+    clearInputElement() {
+        this.fileUpload.nativeElement.value = ''
+    }
+    ///////////////////// Attachment code ended /////////////////////
 
     createdDoctormasterForm(): FormGroup {
         return this._formBuilder.group({

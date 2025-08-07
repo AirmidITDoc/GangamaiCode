@@ -56,7 +56,7 @@ export class EditPaymentmodeComponent implements OnInit {
   vchequepay: any = 0;
   vneftpay: any = 0;
   vpaytmpay: any = 0;
-  vPayTMTranNo: any;
+  vPayTmtranNo: any;
   label: any;
   vPaidAmount: any;
   vCashCheckStatus: boolean = false;
@@ -66,7 +66,7 @@ export class EditPaymentmodeComponent implements OnInit {
   vPayTMCheckStatus: boolean = false;
   vCardNo: any;
   vchequeNo: any;
-  vNEFTNo: any;  
+  vNeftno: any;  
   vBillNo:any;
   autocompleteModeBankName: string = "Bank";
   constructor(
@@ -123,19 +123,19 @@ export class EditPaymentmodeComponent implements OnInit {
       + (this.vchequepay ? parseFloat(this.vchequepay) : 0)
       + (this.vneftpay ? parseFloat(this.vneftpay) : 0)
       + (this.vpaytmpay ? parseFloat(this.vpaytmpay) : 0));
-      // let cashpay = this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0;
+      // let cashpay = this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').value || 0;
       // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(cashpay)).toFixed(2);
   
-      // let chardPay = this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0;
+      // let chardPay = this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').value || 0;
       // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(chardPay)).toFixed(2);
   
-      // let chequePay = this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0;
+      // let chequePay = this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').value || 0;
       // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(chequePay)).toFixed(2);
   
-      // let NEFTPay =this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0;
+      // let NEFTPay =this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').value || 0;
       // this.vbalanceAmt = (parseFloat(this.vbalanceAmt) - parseFloat(NEFTPay)).toFixed(2);
 
-      // let PaytmPay =this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0;
+      // let PaytmPay =this._Paymentmodesevice.paymentInsertform.get('PayTmamount').value || 0;
       if(totalAmountAdded > this.vnetPayAmt){
         Swal.fire('Amount is greater than Paid amount', 'warning!',)
         // this.toastr.warning('Amount is greater than Paid amount', 'warning!', {
@@ -155,7 +155,9 @@ export class EditPaymentmodeComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-  
+  CardBankdd:any;
+  ChequeBankdd:any;
+  NFTBankdd:any
   Save(){
     
     const currentDate = new Date();
@@ -163,53 +165,52 @@ export class EditPaymentmodeComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
   if(this.data.FromName == 'IP-PaymentModeChange'){
-    if (this._Paymentmodesevice.paymentform.get('BalAmount').value == 0){
+    if (this._Paymentmodesevice.paymentInsertform.get('BalAmount').value == 0){
     
-
-      if(this._Paymentmodesevice.paymentform.get('CardPayAmt').value){
+      if(this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').value){
         if ((this.vCardNo == '' || this.vCardNo == null || this.vCardNo == undefined)) {
           this.toastr.warning('Please enter a Card No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }  
-        if(!this._Paymentmodesevice.paymentform.get('CardBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('CardBankName').value){
           this.toastr.warning('Please Select Card Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         }
       } 
-      if(this._Paymentmodesevice.paymentform.get('ChequePayAmt').value){
+      if(this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').value){
         if ((this.vchequeNo == '' || this.vchequeNo == null || this.vchequeNo == undefined)) {
           this.toastr.warning('Please enter a Cheque No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }
-        if(!this._Paymentmodesevice.paymentform.get('ChequeBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').value){
           this.toastr.warning('Please Select Cheque Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         }
       }
-      if(this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value){
-        if ((this.vNEFTNo == '' || this.vNEFTNo == null || this.vNEFTNo == undefined)) {
+      if(this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').value){
+        if ((this.vNeftno == '' || this.vNeftno == null || this.vNeftno == undefined)) {
           this.toastr.warning('Please enter a NEFT No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }
-        if(!this._Paymentmodesevice.paymentform.get('NEFTBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value){
           this.toastr.warning('Please Select NEFT Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         } 
       }
-      if(this._Paymentmodesevice.paymentform.get('PayTMAmount').value){
-        if ((this.vPayTMTranNo == '' || this.vPayTMTranNo == null || this.vPayTMTranNo == undefined)) {
+      if(this._Paymentmodesevice.paymentInsertform.get('PayTmamount').value){
+        if ((this.vPayTmtranNo == '' || this.vPayTmtranNo == null || this.vPayTmtranNo == undefined)) {
           this.toastr.warning('Please enter a vPayTMTran No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
@@ -217,64 +218,49 @@ export class EditPaymentmodeComponent implements OnInit {
         }
       }  
       let CardBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('CardBankName').value)
-      CardBank = this._Paymentmodesevice.paymentform.get('CardBankName').value;
+      if (this._Paymentmodesevice.paymentInsertform.get('CardBankName').value)
+      CardBank = this.CardBankdd;
   
       let ChequeBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('ChequeBankName').value)
-      ChequeBank = this._Paymentmodesevice.paymentform.get('ChequeBankName').value;
+      if (this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').value)
+      ChequeBank = this.ChequeBankdd;
   
       let NFTBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('NEFTBankName').value)
-      NFTBank = this._Paymentmodesevice.paymentform.get('NEFTBankName').value;
-      let paymentModeUpdateObj = {
-          "PaymentId": this.registerObj.paymentId || 0,         
-          "BillNo": this.vBillNo || 0,    
-          "ReceiptNo": this.registerObj.receiptNo || "0",    
-          "PaymentDate": formattedDate,    
-          "PaymentTime": formattedTime,    
-          "CashPayAmount": this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0,    
-          "ChequePayAmount": this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0,  
-          "ChequeNo": this._Paymentmodesevice.paymentform.get('ChequeNo').value || "",    
-          "BankName": "Bank",    
-          "ChequeDate": this.registerObj.chequeDate || "1900-01-01",    
-          "CardPayAmount": this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0,    
-          "CardNo": this._Paymentmodesevice.paymentform.get('CardNo').value || "",    
-          "CardBankName": CardBank || "",    
-          "CardDate": this.registerObj.cardDate || "1900-01-01",    
-          "AdvanceUsedAmount": this.registerObj.advanceUsedAmount || 0,    
-          "AdvanceId": this.registerObj.advanceId || 0,    
-          "RefundId": this.registerObj.refundId || 0,    
-          "TransactionType": this.registerObj.transactionType || 0,    
-          "Remark": this.registerObj.remark || "",    
-          "AddBy": this.registerObj.addBy || 0,    
-          "IsCancelled": true,    
-          "IsCancelledBy": 0,    
-          "IsCancelledDate": "1900-01-01",    
-          "NeftpayAmount": this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0,    
-          "Neftno": this._Paymentmodesevice.paymentform.get('NEFTNo').value || "",    
-          "NeftbankMaster": NFTBank || "",    
-          "Neftdate": "1900-01-01",    
-          "PayTmamount": this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0,    
-          "PayTmtranNo": this._Paymentmodesevice.paymentform.get('PayTMTranNo').value || "",    
-          "PayTmdate": "1900-01-01",    
-          "Tdsamount": 0
-        
-      };
-      console.log(paymentModeUpdateObj);
-      this._Paymentmodesevice.PaymentPhyUpdate(paymentModeUpdateObj).subscribe(response => {
-        console.log(response);
-        if (response) {
-          this.toastr.success('Payment Mode Detail Updated', 'Save !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
+      if (this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value)
+      NFTBank = this.NFTBankdd
+
+      this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo)
+      this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
+      this._Paymentmodesevice.paymentInsertform.get('PaymentDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+      this._Paymentmodesevice.paymentInsertform.get('PaymentTime').setValue(datePipe.transform(new Date(), 'shortTime'))
+      this._Paymentmodesevice.paymentInsertform.get('BankName').setValue(ChequeBank || '')
+      this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue(this.registerObj.chequeDate || "1900-01-01")
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(CardBank || "")
+      this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue(this.registerObj.cardDate || "1900-01-01")
+      this._Paymentmodesevice.paymentInsertform.get('AdvanceUsedAmount').setValue(this.registerObj.advanceUsedAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('AdvanceId').setValue(this.registerObj.advanceId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
+      this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
+      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.registerObj.addBy || 0)
+      this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
+
+      const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
+      controlsToRemove.forEach(controlName => {
+        const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);
+        if (ctrl) {
+          ctrl.disable();
+        }
+      });
+      console.log(this._Paymentmodesevice.paymentInsertform.value);
+      this._Paymentmodesevice.PaymentUpdate(this._Paymentmodesevice.paymentInsertform.value).subscribe(response => {
           this.dialogRef.close();
           this.Reset();
-        } else {
-          this.toastr.error('API Error!', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
       });
     }else{
       this.toastr.error('Please check Balance Amount', 'Check !', {
@@ -282,52 +268,52 @@ export class EditPaymentmodeComponent implements OnInit {
       });
     }
   }else if(this.data.FromName == 'Pharma-PaymentModeChange'){
-    if (this._Paymentmodesevice.paymentform.get('BalAmount').value == 0){
+    if (this._Paymentmodesevice.paymentInsertform.get('BalAmount').value == 0){
     
-      if(this._Paymentmodesevice.paymentform.get('CardPayAmt').value){
+      if(this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').value){
         if ((this.vCardNo == '' || this.vCardNo == null || this.vCardNo == undefined)) {
           this.toastr.warning('Please enter a Card No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }  
-        if(!this._Paymentmodesevice.paymentform.get('CardBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('CardBankName').value){
           this.toastr.warning('Please Select Card Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         }
       } 
-      if(this._Paymentmodesevice.paymentform.get('ChequePayAmt').value){
+      if(this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').value){
         if ((this.vchequeNo == '' || this.vchequeNo == null || this.vchequeNo == undefined)) {
           this.toastr.warning('Please enter a Cheque No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }
-        if(!this._Paymentmodesevice.paymentform.get('ChequeBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').value){
           this.toastr.warning('Please Select Cheque Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         }
       }
-      if(this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value){
-        if ((this.vNEFTNo == '' || this.vNEFTNo == null || this.vNEFTNo == undefined)) {
+      if(this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').value){
+        if ((this.vNeftno == '' || this.vNeftno == null || this.vNeftno == undefined)) {
           this.toastr.warning('Please enter a NEFT No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
         }
-        if(!this._Paymentmodesevice.paymentform.get('NEFTBankName').value){
+        if(!this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value){
           this.toastr.warning('Please Select NEFT Bank Name', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return; 
         }
       }
-      if(this._Paymentmodesevice.paymentform.get('PayTMAmount').value){
-        if ((this.vPayTMTranNo == '' || this.vPayTMTranNo == null || this.vPayTMTranNo == undefined)) {
+      if(this._Paymentmodesevice.paymentInsertform.get('PayTmamount').value){
+        if ((this.vPayTmtranNo == '' || this.vPayTmtranNo == null || this.vPayTmtranNo == undefined)) {
           this.toastr.warning('Please enter a vPayTMTran No', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
@@ -335,63 +321,47 @@ export class EditPaymentmodeComponent implements OnInit {
         }
       } 
       let CardBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('CardBankName').value)
-      CardBank = this._Paymentmodesevice.paymentform.get('CardBankName').value;
+      if (this._Paymentmodesevice.paymentInsertform.get('CardBankName').value)
+      CardBank = this.CardBankdd;
   
       let ChequeBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('ChequeBankName').value)
-      ChequeBank = this._Paymentmodesevice.paymentform.get('ChequeBankName').value;
+      if (this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').value)
+      ChequeBank = this.ChequeBankdd;
   
       let NFTBank = 0;
-      if (this._Paymentmodesevice.paymentform.get('NEFTBankName').value)
-      NFTBank = this._Paymentmodesevice.paymentform.get('NEFTBankName').value;
-      let paymentModeUpdateObj = {
-        "PaymentId": this.registerObj.paymentId || 0,    
-          "BillNo": this.vBillNo || 0,    
-          "ReceiptNo": this.registerObj.receiptNo || "0",    
-          "PaymentDate": formattedDate,    
-          "PaymentTime": formattedTime,    
-          "CashPayAmount": this._Paymentmodesevice.paymentform.get('CashPayAmt').value || 0,    
-          "ChequePayAmount": this._Paymentmodesevice.paymentform.get('ChequePayAmt').value || 0,  
-          "ChequeNo": this._Paymentmodesevice.paymentform.get('ChequeNo').value || "",    
-          "BankName": "Bank",    
-          "ChequeDate": "2024-08-10",    
-          "CardPayAmount": this._Paymentmodesevice.paymentform.get('CardPayAmt').value || 0,    
-          "CardNo": this._Paymentmodesevice.paymentform.get('CardNo').value || "",    
-          "CardBankName": CardBank || "",    
-          "CardDate": "2024-08-10",    
-          "AdvanceUsedAmount": this.registerObj.advanceUsedAmount || 0,    
-          "AdvanceId": this.registerObj.advanceId || 0,    
-          "RefundId": this.registerObj.refundId || 0,    
-          "TransactionType": this.registerObj.transactionType || 0,    
-          "Remark": this.registerObj.remark || "",    
-          "AddBy": this.registerObj.addBy || 0,    
-          "IsCancelled": true,    
-          "IsCancelledBy": 0,    
-          "IsCancelledDate": "2024-08-10",    
-          "NeftpayAmount": this._Paymentmodesevice.paymentform.get('NEFTPayAmount').value || 0,    
-          "Neftno": this._Paymentmodesevice.paymentform.get('NEFTNo').value || "",    
-          "NeftbankMaster": NFTBank || "",    
-          "Neftdate": "2024-08-10",    
-          "PayTmamount": this._Paymentmodesevice.paymentform.get('PayTMAmount').value || 0,    
-          "PayTmtranNo": this._Paymentmodesevice.paymentform.get('PayTMTranNo').value || "",    
-          "PayTmdate": "2024-08-10",    
-          "Tdsamount": 0
-      };
-      console.log(paymentModeUpdateObj);
-      this._Paymentmodesevice.PaymentPhyUpdate(paymentModeUpdateObj).subscribe(response => {
-        console.log(response);
-        if (response) {
-          this.toastr.success('Payment Mode Detail Updated', 'Save !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });
+      if (this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value)
+      NFTBank = this.NFTBankdd
+      this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo || 0)
+      this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
+      this._Paymentmodesevice.paymentInsertform.get('PaymentDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+      this._Paymentmodesevice.paymentInsertform.get('PaymentTime').setValue(datePipe.transform(new Date(), 'shortTime'))
+      this._Paymentmodesevice.paymentInsertform.get('BankName').setValue(ChequeBank)
+      this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue("2024-08-10")
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(CardBank || "")
+      this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue("2024-08-10")
+      this._Paymentmodesevice.paymentInsertform.get('AdvanceUsedAmount').setValue(this.registerObj.advanceUsedAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('AdvanceId').setValue(this.registerObj.advanceId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
+      this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
+      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.registerObj.addBy || 0)
+      this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
+      this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
+      const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
+      controlsToRemove.forEach(controlName => {
+        const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);
+        if (ctrl) {
+          ctrl.disable(); // will not be submitted
+        }
+      });
+      console.log(this._Paymentmodesevice.paymentInsertform.value);
+      this._Paymentmodesevice.PaymentPhyUpdate(this._Paymentmodesevice.paymentInsertform.value).subscribe(response => {
           this.dialogRef.close();
           this.Reset();
-        } else {
-          this.toastr.error('API Error!', 'Error !', {
-            toastClass: 'tostr-tost custom-toast-error',
-          });
-        }
       });
     }else{
       this.toastr.error('Please check Balance Amount', 'Check !', {
@@ -416,15 +386,29 @@ getValidationMessages(){
     NEFTBankName:[]
   }
 }
-  Reset() {
-    this._Paymentmodesevice.paymentform.reset();
+ Reset() {
+    this._Paymentmodesevice.paymentInsertform.reset();
+    const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount', 'NEFTBankName', 'IsNEFTpay', 'IsCardpay', 'IsChequepay', 'ChequeBankName', 'IsCashpay'];
+    controlsToRemove.forEach(controlName => {
+      const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);
+      if (ctrl) {
+        ctrl.enable();
+      }
+    });
+
+    this._Paymentmodesevice.paymentInsertform.get('IsCancelled').setValue(false)
+    this._Paymentmodesevice.paymentInsertform.get('IsCancelledBy').setValue(0)
+    this._Paymentmodesevice.paymentInsertform.get('IsCancelledDate').setValue('1900-01-01')
+    this._Paymentmodesevice.paymentInsertform.get('Neftdate').setValue('1900-01-01')
+    this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue('1900-01-01')
+    this._Paymentmodesevice.paymentInsertform.get('Tdsamount').setValue(0)
   }
   amount:any = 0;
  
   getPaidAmount(event) {
     let amount = this.registerObj.paidAmount 
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
-    //   || this.registerObj.ChequePayAmount || this.registerObj.NEFTPayAmount || this.registerObj.PayTMAmount;
+    //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
       this.vCashCheckStatus = true;
       if(this.amount > 0){
@@ -436,21 +420,21 @@ getValidationMessages(){
       if(!this.vcardpay){
         this.vcardpay = 0
         this.vCardNo = 0
-        this._Paymentmodesevice.paymentform.get('CardBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(''); 
       }
       if(!this.vchequepay){
         this.vchequepay = 0
         this.vchequeNo = 0
-        this._Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').setValue(''); 
       }
       if(!this.vneftpay){
         this.vneftpay = 0
-        this.vNEFTNo = 0
-        this._Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); 
+        this.vNeftno = 0
+        this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').setValue(''); 
       }
       if(!this.vpaytmpay){
         this.vpaytmpay = 0
-        this.vPayTMTranNo = 0
+        this.vPayTmtranNo = 0
       } 
       this.getbalAmt();
     } else {
@@ -461,7 +445,7 @@ getValidationMessages(){
   getCardPayAmount(event) {
     let amount = this.registerObj.paidAmount 
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
-    //   || this.registerObj.ChequePayAmount || this.registerObj.NEFTPayAmount || this.registerObj.PayTMAmount;
+    //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
       this.vCardCheckStatus = true;
       if(this.amount > 0){
@@ -476,16 +460,16 @@ getValidationMessages(){
       if(!this.vchequepay){
         this.vchequepay = 0
         this.vchequeNo = 0
-        this._Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').setValue(''); 
       }
       if(!this.vneftpay){
         this.vneftpay = 0
-        this.vNEFTNo = 0
-        this._Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); 
+        this.vNeftno = 0
+        this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').setValue(''); 
       }
       if(!this.vpaytmpay){
         this.vpaytmpay = 0
-        this.vPayTMTranNo = 0
+        this.vPayTmtranNo = 0
       } 
       this.getbalAmt();
       if ((this.vCardNo == '' || this.vCardNo == null || this.vCardNo == undefined)) {
@@ -505,7 +489,7 @@ getValidationMessages(){
   getCheckPayAmount(event) {
     let amount = this.registerObj.paidAmount 
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
-    //   || this.registerObj.ChequePayAmount || this.registerObj.NEFTPayAmount || this.registerObj.PayTMAmount;
+    //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
       this.vCheckCheckStatus = true;
       if(this.amount > 0){
@@ -520,16 +504,16 @@ getValidationMessages(){
       if(!this.vcardpay){
         this.vcardpay = 0
         this.vCardNo = 0
-        this._Paymentmodesevice.paymentform.get('CardBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(''); 
       }
       if(!this.vneftpay){
         this.vneftpay = 0
-        this.vNEFTNo = 0
-        this._Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); 
+        this.vNeftno = 0
+        this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').setValue(''); 
       }
       if(!this.vpaytmpay){
         this.vpaytmpay = 0
-        this.vPayTMTranNo = 0
+        this.vPayTmtranNo = 0
       } 
       this.getbalAmt(); 
       if ((this.vchequeNo == '' || this.vchequeNo == null || this.vchequeNo == undefined)) {
@@ -549,7 +533,7 @@ getValidationMessages(){
   getNFTPayAmount(event) {
     let amount = this.registerObj.paidAmount 
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
-    //   || this.registerObj.ChequePayAmount || this.registerObj.NEFTPayAmount || this.registerObj.PayTMAmount;
+    //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
       this.vNFTPayCheckStatus = true;
       if(this.amount > 0){
@@ -563,26 +547,26 @@ getValidationMessages(){
       if(!this.vcardpay){
         this.vcardpay = 0
         this.vCardNo = 0
-        this._Paymentmodesevice.paymentform.get('CardBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(''); 
       }
       if(!this.vchequepay){
         this.vchequepay = 0
         this.vchequeNo = 0
-        this._Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').setValue(''); 
       }
       if(!this.vpaytmpay){
         this.vpaytmpay = 0
-        this.vPayTMTranNo = 0
+        this.vPayTmtranNo = 0
       } 
       this.getbalAmt(); 
-      if ((this.vNEFTNo == '' || this.vNEFTNo == null || this.vNEFTNo == undefined)) {
+      if ((this.vNeftno == '' || this.vNeftno == null || this.vNeftno == undefined)) {
         this.toastr.warning('Please enter a NEFT No', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     
-      // this.NEFTNo.nativeElement.focus(); 
+      // this.Neftno.nativeElement.focus(); 
     } else {
       this.vneftpay = 0;
       this.getbalAmt();
@@ -592,7 +576,7 @@ getValidationMessages(){
   getPayTMPayAmount(event) {
     let amount = this.registerObj.paidAmount 
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
-    //   || this.registerObj.ChequePayAmount || this.registerObj.NEFTPayAmount || this.registerObj.PayTMAmount;
+    //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
       this.vPayTMCheckStatus = true;
       if(this.amount > 0){
@@ -606,37 +590,37 @@ getValidationMessages(){
       if(!this.vcardpay){
         this.vcardpay = 0
         this.vCardNo = 0
-        this._Paymentmodesevice.paymentform.get('CardBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(''); 
       }
       if(!this.vchequepay){
         this.vchequepay = 0
         this.vchequeNo = 0
-        this._Paymentmodesevice.paymentform.get('ChequeBankName').setValue(''); 
+        this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').setValue(''); 
       }
       if(!this.vneftpay){
         this.vneftpay = 0
-        this.vNEFTNo = 0
-        this._Paymentmodesevice.paymentform.get('NEFTBankName').setValue(''); 
+        this.vNeftno = 0
+        this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').setValue(''); 
       }
       this.getbalAmt();
-      if ((this.vPayTMTranNo == '' || this.vPayTMTranNo == null || this.vPayTMTranNo == undefined)) {
+      if ((this.vPayTmtranNo == '' || this.vPayTmtranNo == null || this.vPayTmtranNo == undefined)) {
         this.toastr.warning('Please enter a vPayTMTran No', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('CardBankName').reset();
-      this._Paymentmodesevice.paymentform.get('CardBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('CardBankName').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').reset();
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').updateValueAndValidity();
-      // this.PayTMTranNo.nativeElement.focus();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').updateValueAndValidity();
+      // this.PayTmtranNo.nativeElement.focus();
    
     } else {
       this.vpaytmpay = 0;
@@ -645,20 +629,20 @@ getValidationMessages(){
  
   }
   @ViewChild('cashpay') cashpay: ElementRef;
-  @ViewChild('CardPayAmt') CardPayAmt: ElementRef;
+  @ViewChild('CardPayAmount') CardPayAmount: ElementRef;
   @ViewChild('CardNo') CardNo : ElementRef;
   @ViewChild('CardBankName') CardBankName: ElementRef;
   @ViewChild('ChequeNo') ChequeNo: ElementRef;
   @ViewChild('chequebank') chequebank: ElementRef;
-  @ViewChild('NEFTNo') NEFTNo: ElementRef;
+  @ViewChild('Neftno') Neftno: ElementRef;
   @ViewChild('nftbank') nftbank: ElementRef;
-  @ViewChild('PayTMTranNo') PayTMTranNo: ElementRef;
+  @ViewChild('PayTmtranNo') PayTmtranNo: ElementRef;
   onEnterCashpay(event) {
     if (event.which === 13) {
-      this.CardPayAmt.nativeElement.focus();
+      this.CardPayAmount.nativeElement.focus();
     }
   }
-  onEnterCardPayAmt(event) {
+  onEnterCardPayAmount(event) {
     if (event.which === 13) {
       this.CardNo.nativeElement.focus();
     }
@@ -680,31 +664,31 @@ getValidationMessages(){
   }
   onEnterNFTPayAmt(event) {
     if (event.which === 13) {
-     this.NEFTNo.nativeElement.focus(); 
+     this.Neftno.nativeElement.focus(); 
     }
   }
-  onEnterNEFTNo(event) {
+  onEnterNeftno(event) {
     if (event.which === 13) {
      this.nftbank.nativeElement.focus();
     }
   }
   onEnterPayTMamt(event) {
     if (event.which === 13) {
-     this.PayTMTranNo.nativeElement.focus();
+     this.PayTmtranNo.nativeElement.focus();
     }
   }
 
   chkcashpay(event) {
     if (event.checked == true) {
       this.chkcash = true;
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').enable();
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').enable();
     } else {
       this.chkcash = false;
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').clearValidators();
-      this._Paymentmodesevice.paymentform.get('CashPayAmt').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('CashPayAmount').updateValueAndValidity();
 
     }
 
@@ -713,31 +697,31 @@ getValidationMessages(){
   chkcardpay(event) {
     if (event.checked == true) {
       this.chkcard = true;
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').enable();
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').enable();
 
-      this._Paymentmodesevice.paymentform.get('CardNo').reset();
-      this._Paymentmodesevice.paymentform.get('CardNo').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('CardNo').enable();
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').enable();
 
-      this._Paymentmodesevice.paymentform.get('CardBankName').reset();
-      this._Paymentmodesevice.paymentform.get('CardBankName').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('CardBankName').enable();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').enable();
 
     } else {
       this.chkcard = false;
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').clearValidators();
-      this._Paymentmodesevice.paymentform.get('CardPayAmt').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('CardPayAmount').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('CardNo').reset();
-      this._Paymentmodesevice.paymentform.get('CardNo').clearValidators();
-      this._Paymentmodesevice.paymentform.get('CardNo').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('CardNo').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('CardBankName').reset();
-      this._Paymentmodesevice.paymentform.get('CardBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('CardBankName').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('CardBankName').updateValueAndValidity();
     }
 
 
@@ -746,33 +730,33 @@ getValidationMessages(){
   chkchequepay(event) {
     if (event.checked == true) {
       this.chkcheque = true;
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').enable();
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').enable();
 
 
-      this._Paymentmodesevice.paymentform.get('ChequeNo').reset();
-      this._Paymentmodesevice.paymentform.get('ChequeNo').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('ChequeNo').enable();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').enable();
 
 
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').reset();
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').enable();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').enable();
 
     } else {
       this.chkcheque = false;
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').reset();
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').clearValidators();
-      this._Paymentmodesevice.paymentform.get('ChequePayAmt').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('ChequeNo').reset();
-      this._Paymentmodesevice.paymentform.get('ChequeNo').clearValidators();
-      this._Paymentmodesevice.paymentform.get('ChequeNo').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeNo').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').reset();
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('ChequeBankName').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('ChequeBankName').updateValueAndValidity();
 
     }
 
@@ -782,33 +766,33 @@ getValidationMessages(){
   chkNeftpay(event) { 
     if (event.checked == true) {
       this.chkneft = true;
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').enable();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').enable();
 
 
-      this._Paymentmodesevice.paymentform.get('NEFTNo').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTNo').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('NEFTNo').enable();
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').reset();
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').enable();
 
 
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').enable();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').enable();
 
     } else {
       this.chkneft = false;
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').clearValidators();
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('NEFTNo').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTNo').clearValidators();
-      this._Paymentmodesevice.paymentform.get('NEFTNo').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').reset();
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('Neftno').updateValueAndValidity();
 
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').clearValidators();
-      this._Paymentmodesevice.paymentform.get('NEFTBankName').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').updateValueAndValidity();
 
     }
 
@@ -817,14 +801,14 @@ getValidationMessages(){
   chkpayTmpay(event) {
     if (event.checked == true) {
       this.chkpaytm = true
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').setValidators([Validators.required]);
-      this._Paymentmodesevice.paymentform.get('NEFTPayAmount').enable();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').setValidators([Validators.required]);
+      this._Paymentmodesevice.paymentInsertform.get('NeftpayAmount').enable();
     } else {
       this.chkpaytm = false
-      this._Paymentmodesevice.paymentform.get('NEFTBankMaster').reset();
-      this._Paymentmodesevice.paymentform.get('NEFTBankMaster').clearValidators();
-      this._Paymentmodesevice.paymentform.get('NEFTBankMaster').updateValueAndValidity();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankMaster').reset();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankMaster').clearValidators();
+      this._Paymentmodesevice.paymentInsertform.get('NEFTBankMaster').updateValueAndValidity();
     }
   }
 }
