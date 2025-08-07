@@ -24,37 +24,27 @@ export class OtRequestService {
     createRequestForm(): FormGroup {
         return this._formBuilder.group({
             otbookingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opIpId:[""],
-            departmentId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            categoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            siteDescId:[""],
-            surgeonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opIpId:["",[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeryId:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            categoryId:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            siteDescId:["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeonId:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             otbookingDate:  [new Date()],
             otbookingTime: [new Date()],
             opIpType:  ["OP"],
-            surgeryTypeId:[1],
+            surgeryTypeId:[1,[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
          
-           surgeryCategoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            otrequestDate: [new Date()],
+           surgeryCategoryId:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            otrequestDate: [new Date(),[Validators.required,this._FormvalidationserviceService.validDateValidator()]],
             otrequestId: [0],
-            otrequestTime: [new Date()],
+            otrequestTime: [new Date(),[Validators.required]],
              isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-       isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+       isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator()]],
 
            
-            // cityName: ["",
-            //     [
-            //         Validators.required,
-            //         Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            //         this._FormvalidationserviceService.allowEmptyStringValidator()
-            //     ] 
-            // ],
-            // stateId: [0, 
-            //     [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
-            // ],
-            // isActive:[true,[Validators.required]]
+            
         });
     }
     // createSearchForm(): FormGroup {

@@ -38,9 +38,20 @@ export class OTRequestComponent implements OnInit {
   //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+ ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
+    }
+     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  
        allcolumns = [
-        { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
+        { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+
         { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8,width: 200 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -51,25 +62,25 @@ export class OTRequestComponent implements OnInit {
         { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        // {
-        //     heading: "AddedBy", key: "action", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
-        //    template: this.actionButtonTemplate  // Assign ng-template to the column
-        // },
+       {
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
 
-        {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-                {action: gridActions.edit, callback: (data: any) => {
-                        this.OnEditRegistration(data);
+        // {
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.OnEditRegistration(data);
                      
-                        this.grid.bindGridData();
-                    }}
-                ,
-            {action: gridActions.print, callback: (data: any) => {
-                        this.OnPrint(data);
+        //                 this.grid.bindGridData();
+        //             }}
+        //         ,
+        //     {action: gridActions.print, callback: (data: any) => {
+        //                 this.OnPrint(data);
                      
                        
-                    }}]
-        }
+        //             }}]
+        // }
         
     ];
   
@@ -141,7 +152,9 @@ export class OTRequestComponent implements OnInit {
          OnPrint(Param) {
         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
     } 
-
+ OnCancel(Param) {
+        this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+    } 
 
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

@@ -82,8 +82,9 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
      
      if ((this.data?.otbookingId??0) > 0) 
          {
+          console.log(this.data)
              //this.isActive=this.data.isActive
-             this.requestForm.patchValue(this.data);
+            // this.requestForm.patchValue(this.data);
          }
           this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
@@ -202,6 +203,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
   this.requestForm.get('opIpId').setValue(this.opIpId);
 //   this.requestForm.get('isCancelledDateTime')?.setValue('1900-01-01');
+    this.requestForm.get('otrequestDate').setValue(this.datePipe.transform(this.requestForm.get('otrequestDate').value, 'yyyy-MM-dd'));
 
      if (!this.requestForm.invalid) {
              console.log(this.requestForm.value)
@@ -245,28 +247,28 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
        return {
            DepartmentName: [
                { name: "required", Message: "Department Name is required" },
-               { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              // { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
+              // { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeryCategory: [
                { name: "required", Message: "SurgeryCategory  is required" },
-               { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            Site: [
                { name: "required", Message: "Site Name is required" },
-               { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeryProcedure: [
                { name: "required", Message: "SurgeryProcedure Name is required" },
-               { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeonName: [
                { name: "required", Message: "Surgeon Name is required" },
-               { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
             SurgeryType: [
                { name: "required", Message: "SurgeryType Name is required" },
@@ -280,8 +282,9 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     this.ref.close();
   }
  onClear(val: boolean) {
-     this.requestForm.reset();
+    // this.requestForm.reset();
      this.dialogRef.close(val);
+     this.requestForm.get('opIpType').setValue('OP')
  }
 }
 
