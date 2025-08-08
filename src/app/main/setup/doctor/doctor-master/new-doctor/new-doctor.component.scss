@@ -93,3 +93,8 @@ signature-box {
 .file-actions button {
   margin-left: 4px;
 }
+.readonly-wrapper {
+  pointer-events: none;
+  opacity: 0.6; /* optional faded look */
+}
+

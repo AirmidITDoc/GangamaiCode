@@ -523,6 +523,8 @@ export class NewAdmissionComponent implements OnInit {
     }
 
     this.personalFormGroup.get('medTourismCitizenship').setValue(Number(this.personalFormGroup.get('medTourismCitizenship').value) ?? 0)
+    this.personalFormGroup.removeControl('IsNRI')
+
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
       let submitData = {

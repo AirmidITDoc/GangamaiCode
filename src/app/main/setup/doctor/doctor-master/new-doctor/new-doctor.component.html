@@ -768,7 +768,7 @@
 
                                             <!-- File Upload Section -->
                                             <div *ngIf="isFileUpload">
-                                                <h3 style="margin-bottom: 16px;">Select File</h3>
+                                                <h3 style="margin-bottom: 16px;">File</h3>
                                                 <div
                                                     style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
                                                     <div
@@ -776,23 +776,12 @@
                                                         <img [src]="sanitizeImagePreview || '/assets/images/noimage.jpg'"
                                                             style="height: 250px; width: auto; max-width: 100%; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />
                                                     </div>
-
-                                                    <div style="display: flex; justify-content: center;">
-                                                        <input formControlName="imageFile" type="file" #attachments
-                                                            accept="image/*" multiple name="file" id="file"
-                                                            (change)="onImageChange($event)" style="display: none;" />
-                                                        <label for="file"
-                                                            style="display: inline-flex; align-items: center; cursor: pointer; padding: 8px 16px; background-color: #1976d2; color: white; border-radius: 4px;">
-                                                            <mat-icon style="margin-right: 8px;">cloud_upload</mat-icon>
-                                                            Browse
-                                                        </label>
-                                                    </div>
                                                 </div>
                                             </div>
 
                                             <!-- Signature Drawing Section -->
-                                            <div *ngIf="!isFileUpload">
-                                                <h3 style="margin-bottom: 16px;">Draw Signature</h3>
+                                            <div *ngIf="!isFileUpload"  [class.readonly-wrapper]="true">
+                                                <h3 style="margin-bottom: 16px;">Signature</h3>
                                                 <div
                                                     style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
                                                     <div
@@ -803,34 +792,22 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Submit Button -->
-                                            <div
-                                                style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
-
-                                                <button type="button" (click)="clear()"
-                                                    style="display: flex; align-items: center; padding: 6px 16px; border: 1px solid #f44336; color: #f44336; background-color: transparent; border-radius: 4px; font-size: 14px; cursor: pointer;">
-                                                    <mat-icon style="margin-right: 6px;">clear</mat-icon>
-                                                    Clear
+                                            <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
+                                                <button mat-raised-button color="primary" (click)="loadSignaturePreview()">Refresh
                                                 </button>
 
-                                                <button mat-raised-button color="primary" (click)="OnSubmit()"
-                                                    style="display: flex; align-items: center; font-size: 14px;">
-                                                    <mat-icon style="margin-right: 6px;">cloud_upload</mat-icon>
-                                                    Submit
+                                                <button mat-raised-button color="primary" (click)="editSignature()">Edit
+                                                    <!-- <airmid-signature-icon [refId]="refId" [refType]="refType"
+                                                        [multiple]="true" docName="DoctorSignature"></airmid-signature-icon> -->
                                                 </button>
                                             </div>
 
                                         </mat-card>
                                     </div>
                                 </div>
-
-
                             </div>
 
                             <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
-                                <!-- <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"
-                                    [(files)]="attachedFiles" [refId]="doctorId"></airmid-fileupload> -->
-                                <!-- Upload Section -->
                                 <div class="file-list">
                                     <div *ngFor="let file of filteredFiles; let i = index" class="file-item">
                                         <ng-container *ngIf="getPreview(file.Document); else fileIcon">
@@ -853,6 +830,15 @@
                                                 <mat-icon>delete</mat-icon>
                                             </button> -->
                                         </div>
+                                    </div>
+                                    <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
+                                        <button mat-raised-button color="primary" (click)="loadFolderPreview()">Refresh
+                                        </button>
+
+                                        <button mat-raised-button color="primary">Edit
+                                            <airmid-fileupload-icon [refId]="refId" [refType]="refType1"
+                                                [multiple]="true" [title]="'Doctor Master'"></airmid-fileupload-icon>
+                                        </button>
                                     </div>
                                 </div>
 

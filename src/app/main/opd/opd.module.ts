@@ -59,6 +59,12 @@ const appRoutes: Routes = [
   path: "disccapproval",
     loadChildren: () =>import("./disc-approval/disc-approval.module").then((m) => m.DiscApprovalModule),
 },
+{
+    path: "opadvance",
+    loadChildren: () =>import("./op-advance/op-advance.module").then((m) => m.OpAdvanceModule),
+    // loadChildren: () =>import("./disc-approval/disc-approval.module").then((m) => m.DiscApprovalModule),
+
+},
 
 
 ];

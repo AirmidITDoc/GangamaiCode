@@ -43,7 +43,7 @@ export class AirmidFileuploadComponent implements OnInit {
     onSubmit(): void {
         if (this.files.length > 0) {
             this._service.PostFromData("Files/save-files", { MDoctorFiles: this.files }).subscribe((data) => {
-
+                this.dialogRef.close();
             });
         }
     }

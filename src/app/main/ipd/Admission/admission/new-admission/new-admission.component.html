@@ -185,7 +185,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <div fxLayout="row" class="gap-8">
+                                        <div fxLayout="row" class="gap-4">
 
                                             <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%"
                                                 fxFlex.sm="50%" formControlName="MaritalStatusId"
@@ -202,7 +202,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <div fxLayout="row" class="gap-8">
+                                        <div fxLayout="row" class="gap-4">
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                 label="MobileNo" formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)"
@@ -225,6 +225,11 @@
                                             [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
                                             [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
                                         </airmid-textbox>
+                                    </div>
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-checkbox formControlName="IsNRI">
+                                            ISNRI
+                                        </mat-checkbox>
                                     </div>
                                 </div>
                             </mat-card-content>

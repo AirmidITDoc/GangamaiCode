@@ -122,8 +122,6 @@ export class NewRegistrationComponent implements OnInit {
     }
   }
 
-
-
     OnSubmit() {
         // let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         // if (DateOfBirth1) {
@@ -171,9 +169,12 @@ export class NewRegistrationComponent implements OnInit {
             });
             return;
         }
-        console.log(this.personalFormGroup.value)
         if (this.personalFormGroup.valid) {
-
+            console.log(this.personalFormGroup.value)
+            this.personalFormGroup.get('aadharCardNo').setValue(this.aadharRaw || this.registerObj.aadharCardNo || '');
+            this.personalFormGroup.get('emgAadharCardNo').setValue(this.aadharRaw1 || this.registerObj.emgAadharCardNo || '');
+            console.log(this.personalFormGroup.get('aadharCardNo').value)
+            this.personalFormGroup.removeControl('IsNRI')
             this._registerService.RegstrationtSaveData(this.personalFormGroup.value).subscribe((response) => {
                 this.onClear(true);
                 this.OnPrint(response);
@@ -232,7 +233,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     onChangedate(event){
-        debugger
+        // debugger
     const selectedDate = new Date(event);
     const vday = this.personalFormGroup.get("medTourismVisaIssueDate").value
 
@@ -280,7 +281,6 @@ export class NewRegistrationComponent implements OnInit {
 
     }
 
-
     onChangestate(e) {
     }
 
@@ -292,7 +292,6 @@ export class NewRegistrationComponent implements OnInit {
         });
 
     }
-
 
     getValidationMessages() {
         return {
@@ -350,7 +349,7 @@ export class NewRegistrationComponent implements OnInit {
 
             ],
             aadharCardNo: [
-                { name: "pattern", Message: "Only numbers allowed" },
+                // { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "AAdharcard No is required" },
                 { name: "minLength", Message: "12 digit required." },
                 { name: "maxLength", Message: "More than 12 digits not allowed." }
@@ -379,7 +378,7 @@ export class NewRegistrationComponent implements OnInit {
 
     value=new Date()
        onChangeDateofBirth(DateOfBirth: Date) {
-        debugger
+        // debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
@@ -440,7 +439,7 @@ export class NewRegistrationComponent implements OnInit {
 //   }
 
   CalcDOB(mode, e) {
-debugger
+// debugger
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
@@ -468,7 +467,6 @@ debugger
         }
     }
 
-    
     getDate(dateStr: string) {
         let dtStr = dateStr.split('-');
         var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
@@ -478,4 +476,27 @@ debugger
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
+
+aadharRaw = '';
+aadharRaw1 = '';
+
+onAadhaarInput(e: any) {
+  const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
+  this.aadharRaw = v;
+
+  const displayValue = (v.length === 12)
+    ? 'xxxxxxxx' + v.slice(-4)
+    : v;
+  this.personalFormGroup.get('aadharCardNo')?.setValue(displayValue, { emitEvent: false });
+}
+onAadhaarInput1(e: any) {
+  const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
+  this.aadharRaw1 = v;
+
+  const displayValue = (v.length === 12)
+    ? 'xxxxxxxx' + v.slice(-4)
+    : v;
+  this.personalFormGroup.get('emgAadharCardNo')?.setValue(displayValue, { emitEvent: false });
+}
+
 }

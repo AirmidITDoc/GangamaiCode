@@ -27,7 +27,8 @@ import { indexOf } from "lodash";
 import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
 import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
 import { ApiCaller } from "app/core/services/apiCaller";
-
+import { filter } from 'rxjs/operators';
+import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
 
 @Component({
     selector: "app-new-doctor",
@@ -172,6 +173,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             }
         }
     }
+    onCloseDialog = new EventEmitter<any>();
+    multiple: boolean = false
 
     private signaturePad!: SignaturePad;
     private canvas!: HTMLCanvasElement;
@@ -179,7 +182,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     files: AirmidFileModel[] = [];
     filesChange = new EventEmitter<AirmidFileModel[]>();
     @ViewChild('fileUpload') fileUpload: ElementRef
-    
+
     constructor(
         public _doctorService: DoctorMasterService, private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
@@ -287,7 +290,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             });
 
             // Load files
-             this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
+            this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
                 this.files = data;
             });
         }
@@ -316,68 +319,44 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.signaturePad.clear();
     }
 
-    onImageChange(event: any) {
-        if (!event.target.files.length) return;
-        const file = event.target.files[0];
-
-        const dialogRef = this.matDialog.open(ImageCropComponent, {
-            width: '600px',
-            data: { file }
-        });
-
-        dialogRef.afterClosed().subscribe((croppedBase64) => {
-            console.log("Dialog closed. Received:", croppedBase64);
-            if (croppedBase64) {
-                this.sanitizeImagePreview = croppedBase64;
-            } else {
-                console.warn("Dialog returned empty or null.");
+    editSignature() {
+        const dialogRef = this.matDialog.open(AirmidSignatureComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: "70vh",
+                width: "100%",
+                data: { refId: this.refId, refType: this.refType, multiple: this.multiple, docName: this.docName }
             }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            this.onCloseDialog.emit(result);
         });
     }
-    clear(): void {
-        this.signaturePad.clear();
-    }
 
-    OnSubmit() {
-        debugger
-        if (this.isFileUpload) {
-            this.objFile = {
-                srNo: 1,
-                id: 0,
-                docName: this.docName + '_File',
-                docSavedName: '',
-                Document: null,
-                isDelete: false,
-                base64: this.sanitizeImagePreview,
-                refId: this.refId,
-                refType: this.refType
+    loadSignaturePreview(): void {
+        this._doctorService.getSignData(this.refId, this.refType).subscribe((data) => {
+            if (data.data) {
+                if (data.type === 'signature') {
+                    this.isFileUpload = false;
+
+                    if (this.signaturePad) {
+                        this.signaturePad.clear();
+                        this.signaturePad.fromDataURL(data.data);
+                    } else {
+                        this.signatureData = data.data; // fallback for first load
+                    }
+                } else {
+                    this.sanitizeImagePreview = data.data; // cache-buster
+                    this.isFileUpload = true;
+                }
             }
-        }
-        else {
-            if (this.signaturePad.isEmpty()) {
-                alert('Please provide a signature first.');
-                return;
-            }
-            this.objFile = {
-                srNo: 1,
-                id: 0,
-                docName: this.docName + '_Signature',
-                docSavedName: '',
-                Document: null,
-                isDelete: false,
-                base64: this.signaturePad.toDataURL(),
-                refId: this.refId,
-                refType: this.refType
-            }
-        }
-        this._service.PostFromData("Files/save-signature", { objSignature: this.objFile }).subscribe((data) => {
-            this.dialogRef.close(this.signaturePad.toDataURL());
         });
     }
 
     ///////////////////// digital signature code ended /////////////////////
 
-     ///////////////////// Attachment code started /////////////////////
+    ///////////////////// Attachment code started /////////////////////
     get filteredFiles() {
         return this.files?.filter(x => !x.isDelete) || [];
     }
@@ -430,19 +409,21 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
         });
     }
-     removeFile(event, srNO) {
+    removeFile(event, srNO) {
         let ix
         if (this.files && -1 !== (ix = this.files.findIndex(x => x.srNo == srNO))) {
             if (this.files[ix].docSavedName)
                 this.files[ix].isDelete = true;
             else
                 this.files.splice(ix, 1)
-            this.clearInputElement()
             this.filesChange.emit(this.files);
         }
     }
-    clearInputElement() {
-        this.fileUpload.nativeElement.value = ''
+
+    loadFolderPreview(): void {
+        this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
+            this.files = data;
+        });
     }
     ///////////////////// Attachment code ended /////////////////////
 

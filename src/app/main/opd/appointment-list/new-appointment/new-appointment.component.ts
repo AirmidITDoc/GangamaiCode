@@ -709,6 +709,7 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.removeControl('updatedBy')
+        this.personalFormGroup.removeControl('IsNRI')
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -770,7 +771,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
         this.VisitFormGroup.removeControl('SubCompanyId');
-        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen'].forEach(control => {
+        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen','IsNRI'].forEach(control => {
             this.personalFormGroup.removeControl(control)
         })
 
@@ -1085,6 +1086,9 @@ export class NewAppointmentComponent implements OnInit {
             medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+
+            // extra field
+            IsNRI: [false],
         });
     }
 

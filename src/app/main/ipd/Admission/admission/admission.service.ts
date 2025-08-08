@@ -138,6 +138,9 @@ export class AdmissionService {
             medTourismDateOfEntry: [''], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+
+            // extra field
+            IsNRI: [false],
         });
     }
     // this.accountService.currentUserValue.user.unitId

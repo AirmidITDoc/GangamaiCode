@@ -220,7 +220,7 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
                                                     [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"
-                                                    [maxLength]="12"
+                                                    [maxLength]="12" (input)="onAadhaarInput($event)"
                                                     [validations]="getValidationMessages().aadharCardNo"
                                                     (keypress)="keyPressAlphanumeric($event)">
                                                 </airmid-textbox>
@@ -293,7 +293,7 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo"
                                 [validations]="getValidationMessages().aadharCardNo" [formGroup]="personalFormGroup"
-                                [maxLength]="12" [value]="registerObj.emgAadharCardNo ?? ''"
+                                [maxLength]="12" [value]="registerObj.emgAadharCardNo ?? ''" (input)="onAadhaarInput1($event)"
                                 (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
                         </div>
 
@@ -393,10 +393,19 @@
 
     <div class="modal-footer">
         <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
-            </div>
+            <form [formGroup]="personalFormGroup">
+                <div class="modal-footer-container">
+                    <div class="checkbox-container">
+                        <mat-checkbox formControlName="IsNRI">
+                            ISNRI
+                        </mat-checkbox>
+                    </div>
+                    <div class="modal-footer-buttons">                      
+                        <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                `       <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
