@@ -1,7 +1,7 @@
 <div class="airmid-dob-container" fxLayoutGap="12px">
     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
         <div class="toggle-group-cion">
-            <mat-button-toggle-group [(ngModel)]="dateStyle" (change)="OnChangeDobType($event)" aria-label="Font Style" fxFlex="100%">
+            <mat-button-toggle-group [value]="dateStyle" (change)="OnChangeDobType($event)" aria-label="Font Style" fxFlex="100%">
                 <mat-button-toggle value="Date" fxFlex>Date</mat-button-toggle>
                 <mat-button-toggle value="Day" fxFlex>Day</mat-button-toggle>
                 <mat-button-toggle value="Month" fxFlex>Month</mat-button-toggle>

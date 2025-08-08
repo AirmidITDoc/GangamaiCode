@@ -14,7 +14,7 @@ export class AirmidDateofbirthComponent implements OnInit {
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() value: Date;
-    dateStyle?: string = 'Date';
+    @Input() dateStyle?: string;
     ageYear: number = 0;
     ageMonth: number = 0;
     ageDay: number = 0;
@@ -58,7 +58,7 @@ export class AirmidDateofbirthComponent implements OnInit {
     onChangeDateofBirth(DateOfBirth: Date) {
         if (DateOfBirth > this.minDate) {
             // Swal.fire("Enter Proper Birth Date.. ")
-             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+            this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
             });
             return;
@@ -92,12 +92,15 @@ export class AirmidDateofbirthComponent implements OnInit {
             this.formGroup.get('DateOfBirth').setValue(DateOfBirth);
             if (this.ageYear > 110)
                 // Swal.fire("Please Enter Valid BirthDate..")
-             this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
+                this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
         }
     }
     ngOnInit(): void {
+        if (!this.dateStyle) {
+            this.dateStyle = 'Date';
+        }
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.value?.firstChange && changes.value?.currentValue) {
@@ -116,7 +119,7 @@ export class AirmidDateofbirthComponent implements OnInit {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(@Optional() @Self() public ngControl: NgControl | null,public toastr: ToastrService) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null, public toastr: ToastrService) {
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
