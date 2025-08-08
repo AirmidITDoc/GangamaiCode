@@ -55,11 +55,11 @@ export class OTRequestComponent implements OnInit {
         { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8,width: 200 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
-        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
                 { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
        {

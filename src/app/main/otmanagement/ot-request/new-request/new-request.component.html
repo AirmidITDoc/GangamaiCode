@@ -99,9 +99,11 @@
                                                             <span class="patient-col-value">{{vRegNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">OPD No</span>
+                                                            <span class="patient-col-key">
+                                                                {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
+                                                            </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{vOPDNo}}</span>
+                                                            <span>{{ vSelectedOption === 'OP' ? vOPDNo : vIPDNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
@@ -137,7 +139,7 @@
                                                             <span class="patient-col-value">{{vDoctorName}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">tariff</span>
+                                                            <span class="patient-col-key">Tariff</span>
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{vTariffName}}</span>
                                                         </div>
@@ -194,7 +196,7 @@
 
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                    [formGroup]="requestForm" [value]="data?.departmentId"
+                                    [formGroup]="requestForm" [value]="registerObj?.departmentId"
                                     [validations]="getValidationMessages(). DepartmentName"
                                     [mode]="autocompleteModeDepartment"
                                     >
@@ -202,27 +204,27 @@
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgery Category" formControlName="surgeryCategoryId"
-                                    [formGroup]="requestForm" [value]="data?.surgeryCategoryId"
+                                    [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
                                     [validations]="getValidationMessages(). SurgeryCategory"
                                     [mode]="autocompleteModeSurgeryCategory">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Site" formControlName="siteDescId" [formGroup]="requestForm"
-                                    [value]="data?.siteDescId" [validations]="getValidationMessages(). Site"
+                                    [value]="registerObj?.siteDescId" [validations]="getValidationMessages(). Site"
                                     [mode]="autocompleteModeSiteDescriptionId">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgery Procedure" formControlName="surgeryId"
-                                    [formGroup]="requestForm" [value]="data?.surgeryId"
+                                    [formGroup]="requestForm" [value]="registerObj?.surgeryId"
                                     [validations]="getValidationMessages(). SurgeryProcedure"
                                     [mode]="autocompleteModeSurgeryMaster">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Doctor Type" formControlName="categoryId"
-                                    [formGroup]="requestForm" [value]="data?.categoryId"
+                                    [formGroup]="requestForm" [value]="registerObj?.categoryId"
                                     [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>

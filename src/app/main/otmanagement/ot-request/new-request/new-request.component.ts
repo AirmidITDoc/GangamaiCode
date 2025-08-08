@@ -50,15 +50,15 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   vAge: any;
   //vGenderName: any;
   //vAdmissionTime: any;
-  //vAgeMonth: any;
-  //vAgeDay: any;
+  vAgeMonth: any;
+  vAgeDay: any;
   vDepartment: any;
   vMobNo: any;
   //vPatientType: any;
   //vDOA: any;
   //vstoreId: any = '';
   //vAdmissionID: any;
-
+vIPDNo:any;
 
    screenFromString = 'Common-form';
     opIpId: any;
@@ -66,7 +66,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
   opIpType: number;
   RegId: string;
-
+registerObj: any;
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
      @Inject(MAT_DIALOG_DATA) public data: any,
@@ -80,11 +80,21 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
      this.requestForm = this._OtRequestService.createRequestForm();
      this.requestForm.markAllAsTouched();
      
-     if ((this.data?.otbookingId??0) > 0) 
+     if ((this.data?.otBookingId) > 0) 
          {
-          console.log(this.data)
+          this.registerObj=this.data
+
+          if(this.registerObj.opIpType==0) {
+             this.vSelectedOption="OP"
+            
+          }
+        else{
+            this.vSelectedOption="IP"
+        }
+  
+          console.log(this.registerObj)
              //this.isActive=this.data.isActive
-            // this.requestForm.patchValue(this.data);
+             this.requestForm.patchValue(this.registerObj);
          }
           this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
@@ -103,7 +113,10 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     // this.vBedName = '';
     // this.vGenderName = '';
     this.vAge = '';
+    this.vAgeDay='';
+    this.vAgeMonth='';
     this.vDepartment = '';
+    this.vMobNo='';
    // this.vDOA = ''
   }
  dateTimeObj: any;
@@ -152,10 +165,10 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       this.vDepartment = obj.departmentName
     //   this.vAdmissionDate = obj.admissionDate
     //   this.vAdmissionTime = obj.admissionTime
-    //   this.vIPDNo = obj.ipdNo
+       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
+       this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
     //   this.vGenderName = obj.genderName
     //   this.vRefDocName = obj.refDocName
     //   this.vRoomName = obj.roomName
@@ -165,6 +178,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       this.vCompanyName = obj.companyName
     //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
+      this.vMobNo = obj.MobNo;
     }
   }
   getSelectedObjOP(obj) {
@@ -178,8 +192,8 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
+     this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
     //   this.vGenderName = obj.genderName
     //   this.vRefDocName = obj.refDocName
     //   this.vRoomName = obj.roomName
@@ -191,6 +205,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
+       this.vMobNo = obj.MobNo;
     }
   }
 
