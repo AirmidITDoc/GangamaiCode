@@ -203,8 +203,8 @@
                 </button>
 
                 <!-- Button 7: Patient i card Print  -->
-                <button mat-icon-button matTooltip="print Patient Card" (click)="OnPrintPatientIcard(element)">
-                    <mat-icon [disabled]="element.IsCancelled">print</mat-icon>
+                <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                    <mat-icon [disabled]="element.IsCancelled">pages</mat-icon>
                 </button>
 
                 <!-- Button 8: Patient i card Print  -->
@@ -290,6 +290,12 @@
                         [validations]="getValidationdoctorMessages().DoctorId" (selectionChange)="ListView($event)"
                         (keyup)="ListView($event)">
                     </airmid-dropdown>
+
+                     <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button value="1">Marked</mat-radio-button>
+                        <mat-radio-button value="0">NotMarked</mat-radio-button>
+                    </mat-radio-group>
 
                 </form>
             </ng-container>

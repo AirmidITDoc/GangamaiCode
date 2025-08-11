@@ -95,7 +95,9 @@ export class NewAppointmentComponent implements OnInit {
     ageDay = 0
     value = new Date()
     // <mat-expansion-panel> default to closed,
-    isExpanded = false; // Defaults to closed
+    isExpanded1 = false; // Defaults to closed
+    isExpanded2 = false;
+    ApiUrl="PhoneAppointment2/auto-complete?Keyword=a"
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -223,6 +225,7 @@ export class NewAppointmentComponent implements OnInit {
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
         this.selectChangedepartment(this.registerObj)
+        // this.getSelectedObjphone()
 
 
         // this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
@@ -445,6 +448,8 @@ export class NewAppointmentComponent implements OnInit {
             if ((this.RegId ?? 0) > 0) {
                 console.log(obj)
                 setTimeout(() => {
+                    this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                    this.onChangeReg({ value: 'registrered' });
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
                         console.log(response)

@@ -98,9 +98,9 @@ export class CommonDateComponent implements OnInit {
             this.isDatePckrDisabled = false;
         }
          else if (this.screenFromString == 'OPDEMR') {
-            this.dateLabel = 'OPDEMR Date';
-            this.timeLabel = 'OPDEMR Time';
-            this.isDatePckrDisabled = false;
+            this.dateLabel = 'Date';
+            this.timeLabel = 'Time';
+            this.isDatePckrDisabled = true;
         }
          else if (this.screenFromString == 'Emergency') {
             this.dateLabel = 'Emergency Date';

@@ -107,7 +107,7 @@ export class NewCasepaperComponent implements OnInit {
   vTemp: any;
   vSpO2: any;
   vPulse: any;
-  screenFromString = 'Common-form';
+  screenFromString = 'OPDEMR';
   vChiefComplaint: any;
   vDiagnosis: any;
   vExamination: any;

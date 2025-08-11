@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from "../shared/shared.module";
 import { DiscApprovalComponent } from './disc-approval/disc-approval.component';
+import { OpRefundOfAdvanceComponent } from './op-refund-of-advance/op-refund-of-advance.component';
 
 
 const appRoutes: Routes = [
@@ -62,18 +63,21 @@ const appRoutes: Routes = [
 {
     path: "opadvance",
     loadChildren: () =>import("./op-advance/op-advance.module").then((m) => m.OpAdvanceModule),
-    // loadChildren: () =>import("./disc-approval/disc-approval.module").then((m) => m.DiscApprovalModule),
-
 },
+{
+  path: "op-advance-browse",
+  loadChildren:()=>import("./browse-op-advance/browse-op-advance.module").then((m)=>m.BrowseOpAdvanceModule)
+},
+{
+  path: "op-refund-browse",
+  loadChildren:()=>import("./op-refund-of-advance/op-refund-of-advance.module").then((m)=>m.OpRefundOfAdvanceModule)
+}
 
 
 ];
 
 @NgModule({
-  declarations: [ 
-  
-    
-  ],
+  declarations: [ ],
   imports: [
     RouterModule.forChild(appRoutes),
     SharedModule

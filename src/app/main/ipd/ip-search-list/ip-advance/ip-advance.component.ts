@@ -355,7 +355,7 @@ export class IPAdvanceComponent implements OnInit {
   }
   viewgetAdvanceReceiptReportPdf(data) {
     console.log(data)
-    this.commonService.Onprint("AdvanceDetailID", data, "IpAdvanceReceipt");
+    this.commonService.Onprint("AdvanceDetailID",data.advanceDetailID || data, "IpAdvanceReceipt");
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);

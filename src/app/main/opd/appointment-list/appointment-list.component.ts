@@ -67,6 +67,8 @@ export class AppointmentListComponent implements OnInit {
     f_name: any = "%"
     regNo = 0;
     l_name: any = "%"
+    IsMark = "2"
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -187,6 +189,7 @@ export class AppointmentListComponent implements OnInit {
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value
+        this.IsMark = this.myformSearch.get('IsMark').value
         this.getfilterdata();
         // }
     }
@@ -205,7 +208,7 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "Doctor_Id", fieldValue: String(this.DoctorId), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+                { fieldName: "IsMark", fieldValue: this.IsMark, opType: OperatorComparer.Equals }
 
             ]
         }
@@ -451,13 +454,12 @@ export class AppointmentListComponent implements OnInit {
 
     OnPrintPatientIcard(element) {
         console.log('Third action clicked for:', element);
+        this.commonService.Onprint("VisitId", element.visitId, "OPStickerPrint");
     }
 
     OnWhatsAppAppointmentSend(element) {
         console.log('Third action clicked for:', element);
     }
-
-    
 
     AppointmentCancle(contact) {
         Swal.fire({

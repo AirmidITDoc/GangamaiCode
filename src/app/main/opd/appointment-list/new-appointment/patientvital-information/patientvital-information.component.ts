@@ -157,11 +157,11 @@ export class PatientvitalInformationComponent {
     if (!this.MyFormGroup.invalid) {
       let visitId = this.data.visitId
       // this.MyFormGroup.get('bmi').setValue(String(this.MyFormGroup.get('bmi')?.value)),
-      this.MyFormGroup.get("bsl").setValue(this.vBSL || "0")
-      this.MyFormGroup.get("spO2").setValue(this.vSpO2 || "0")
-      this.MyFormGroup.get("pulse").setValue(this.vPulse || "0")
-      this.MyFormGroup.get("bp").setValue(this.vBP || "0")
-      this.MyFormGroup.get("temp").setValue(this.vTemp || "0")
+      this.MyFormGroup.get("bsl").setValue(this.vBSL || "")
+      this.MyFormGroup.get("spO2").setValue(this.vSpO2 || "")
+      this.MyFormGroup.get("pulse").setValue(this.vPulse || "")
+      this.MyFormGroup.get("bp").setValue(this.vBP || "")
+      this.MyFormGroup.get("temp").setValue(this.vTemp || "")
          console.log(this.MyFormGroup.value)
       this._OpAppointmentService.InsertVitalInfo(visitId, this.MyFormGroup.value).subscribe((response) => {
         this._matDialog.closeAll();

@@ -150,7 +150,7 @@ export class AdmissionComponent implements OnInit {
     { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+    { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "IPDNo", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
@@ -159,7 +159,7 @@ export class AdmissionComponent implements OnInit {
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' , width: 170 },
     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Relativ Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
+    { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -512,6 +512,11 @@ export class AdmissionComponent implements OnInit {
   getAdmittedPatientCasepaperTempview(element) {
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
   }
+
+   OnPrintPatientIcard(element) {
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("AdmissionId", element.admissionId, "IPStickerPrint");
+    }
 
   NewMLc(contact) {
 
