@@ -83,13 +83,14 @@
                                                 </airmid-dropdown>
                                             </div>
 
-                                            <!-- <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
+                                            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
                                                 <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                                     formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
-                                                    (dateChange)="chkChange()"></app-airmid-dateofbirth>
-                                            </div> -->
+                                                    (dateChange)="chkChange()" [hideButtons]="true"
+                                                    dateStyle="Date"></app-airmid-dateofbirth>
+                                            </div>
 
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <input matInput [matDatepicker]="validFromPicker"
                                                         formControllName="DateOfBirth" #bday [value]="value"
@@ -104,17 +105,20 @@
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
-                                                    <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Year',$event)"
-                                                        [(value)]="ageYear" [formGroup]="personalFormGroup">
+                                                    <airmid-textbox label="Age (Y)" appearance="outline" fxFlex="30%"
+                                                        (keyup)="CalcDOB('Year',$event)" [(value)]="ageYear"
+                                                        [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
-                                                    <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Month',$event)"
-                                                        [(value)]="ageMonth" [formGroup]="personalFormGroup">
+                                                    <airmid-textbox label="Age (M)" appearance="outline" fxFlex="30%"
+                                                        (keyup)="CalcDOB('Month',$event)" [(value)]="ageMonth"
+                                                        [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
-                                                    <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%" (keyup)="CalcDOB('Day',$event)"
-                                                        [(value)]="ageDay" [formGroup]="personalFormGroup">
+                                                    <airmid-textbox label="Age (D)" appearance="outline" fxFlex="30%"
+                                                        (keyup)="CalcDOB('Day',$event)" [(value)]="ageDay"
+                                                        [formGroup]="personalFormGroup">
                                                     </airmid-textbox>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Address" formControlName="Address"
@@ -281,7 +285,8 @@
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Landline" formControlName="emgLandlineNo"
-                                [formGroup]="personalFormGroup" [maxLength]="10" [value]="registerObj.emgLandlineNo ?? ''"
+                                [formGroup]="personalFormGroup" [maxLength]="10"
+                                [value]="registerObj.emgLandlineNo ?? ''"
                                 (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
                         </div>
 
@@ -293,7 +298,8 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo"
                                 [validations]="getValidationMessages().aadharCardNo" [formGroup]="personalFormGroup"
-                                [maxLength]="12" [value]="registerObj.emgAadharCardNo ?? ''" (input)="onAadhaarInput1($event)"
+                                [maxLength]="12" [value]="registerObj.emgAadharCardNo ?? ''"
+                                (input)="onAadhaarInput1($event)"
                                 (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
                         </div>
 
@@ -400,9 +406,10 @@
                             ISNRI
                         </mat-checkbox>
                     </div>
-                    <div class="modal-footer-buttons">                      
+                    <div class="modal-footer-buttons">
                         <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                `       <button type="button" class="btn btn-primary" (click)="OnSubmit()" [disabled]="isSaving">Save</button>
+                        ` <button type="button" class="btn btn-primary" (click)="OnSubmit()"
+                            [disabled]="isSaving">Save</button>
                     </div>
                 </div>
             </form>

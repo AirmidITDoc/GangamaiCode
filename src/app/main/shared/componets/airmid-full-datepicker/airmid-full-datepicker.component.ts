@@ -1,6 +1,6 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -9,6 +9,7 @@ import {
 } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: 'airmid-full-datepicker',
@@ -19,7 +20,7 @@ import { takeUntil } from "rxjs/operators";
         '(focusout)': 'onTouched()',
     },
 })
-export class AirmidFullDatepickerComponent implements
+export class AirmidFullDatepickerComponent extends BaseFormControlComponent implements
 
     OnInit,
     OnDestroy {
@@ -122,7 +123,8 @@ export class AirmidFullDatepickerComponent implements
         return this.ngControl.control !== null ? !!this.ngControl.control : false;
     }
 
-    constructor(@Optional() @Self() public ngControl: NgControl | null, public datePipe: DatePipe) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null, public datePipe: DatePipe, el: ElementRef) {
+        super(el);
         if (ngControl) {
             // Set the value accessor directly (instead of providing NG_VALUE_ACCESSOR) to avoid running into a circular import
             this.ngControl.valueAccessor = this;
@@ -171,7 +173,7 @@ export class AirmidFullDatepickerComponent implements
     public onDateChange($event) {
 
         const isValid = this.formGroup.controls[this.formControlName].valid;
-        if(isValid){
+        if (isValid) {
             this.formGroup.controls[this.formControlName].setValue($event.value);
             this.dateChange.emit(this.datePipe.transform($event.value, this.format));
         }

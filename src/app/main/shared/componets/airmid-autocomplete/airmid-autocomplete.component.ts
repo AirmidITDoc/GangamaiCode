@@ -1,9 +1,10 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Optional, Output, Self } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: "airmid-autocomplete",
@@ -11,7 +12,7 @@ import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/o
     styleUrls: ["./airmid-autocomplete.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AirmidAutoCompleteComponent implements OnInit {
+export class AirmidAutoCompleteComponent extends BaseFormControlComponent implements OnInit {
     @Input() filteredOptions: Observable<any[]>;
     @Output() selectionChange = new EventEmitter<any>();
     @Output() onClearSelection = new EventEmitter<any>();
@@ -28,7 +29,7 @@ export class AirmidAutoCompleteComponent implements OnInit {
     private _disabled: boolean = false;
     //private _placeholder: string = '';
     private _required: boolean = false;
-Focusstatus=false
+    Focusstatus = false
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -92,7 +93,9 @@ Focusstatus=false
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null) {
+    constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null,
+        el: ElementRef) {
+        super(el);
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
@@ -118,10 +121,10 @@ Focusstatus=false
     getSuggestions(inputValue: string): Observable<any[]> {
         return this._httpClient.GetData(this.ApiUrl + inputValue);
     }
-    onSearchData(e:string){
-        this.value=e;
+    onSearchData(e: string) {
+        this.value = e;
     }
-    displayFn(user: any): string {  
+    displayFn(user: any): string {
         return user?.[this["ariaLabel"]];
     }
     selectedOption(e: any) {

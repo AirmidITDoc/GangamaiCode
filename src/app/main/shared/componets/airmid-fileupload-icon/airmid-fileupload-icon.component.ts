@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AirmidFileuploadComponent, PageNames } from '../airmid-fileupload/airmid-fileupload.component';
 import { fuseAnimations } from '@fuse/animations';
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: 'airmid-fileupload-icon',
@@ -13,14 +14,16 @@ import { fuseAnimations } from '@fuse/animations';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class AirmidFileuploadIconComponent {
+export class AirmidFileuploadIconComponent extends BaseFormControlComponent {
     @Output() onCloseDialog = new EventEmitter<any>();
-    @Input() refId:number=0;
-    @Input() refType:PageNames=PageNames.NONE;
-    @Input() multiple:boolean=false;
+    @Input() refId: number = 0;
+    @Input() refType: PageNames = PageNames.NONE;
+    @Input() multiple: boolean = false;
     @Input() title: string = '';
     @Input() patientName: string = '';
-    constructor(public _matDialog: MatDialog) { }
+    constructor(public _matDialog: MatDialog, el: ElementRef) {
+        super(el);
+    }
 
     get computedTitle(): string {
         return this.patientName ? `${this.patientName} ${this.title}` : this.title;
@@ -33,7 +36,7 @@ export class AirmidFileuploadIconComponent {
                 maxWidth: "50vw",
                 maxHeight: "60vh",
                 width: "100%",
-                data: { refId: this.refId, refType: this.refType, multiple: this.multiple,title: this.computedTitle }
+                data: { refId: this.refId, refType: this.refType, multiple: this.multiple, title: this.computedTitle }
             }
         );
 

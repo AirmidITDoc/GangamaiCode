@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: 'app-airmid-dateofbirth',
@@ -10,11 +11,12 @@ import Swal from 'sweetalert2';
     styleUrls: ['./airmid-dateofbirth.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AirmidDateofbirthComponent implements OnInit {
+export class AirmidDateofbirthComponent extends BaseFormControlComponent implements OnInit {
     @Input() formGroup: FormGroup;
     @Input() formControlName: string;
     @Input() value: Date;
     @Input() dateStyle?: string;
+    @Input() hideButtons:boolean=false;
     ageYear: number = 0;
     ageMonth: number = 0;
     ageDay: number = 0;
@@ -119,7 +121,8 @@ export class AirmidDateofbirthComponent implements OnInit {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(@Optional() @Self() public ngControl: NgControl | null, public toastr: ToastrService) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null, public toastr: ToastrService, el: ElementRef) {
+        super(el);
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
