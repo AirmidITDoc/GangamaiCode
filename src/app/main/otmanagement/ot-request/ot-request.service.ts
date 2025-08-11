@@ -71,6 +71,9 @@ populateForm(param) {
         return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId="+doctTypeId)
     }
 
+     public OnCancel(param){
+    return this._httpClient.PostData('OTBooking/Cancel',param)
+  }
     public requestSave(Param: any) {
         if (Param.otbookingId) {
             return this._httpClient.PutData("OTBooking/Edit/" + Param.otbookingId, Param);

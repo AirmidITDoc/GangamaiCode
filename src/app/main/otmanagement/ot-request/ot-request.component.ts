@@ -10,6 +10,7 @@ import { NewRequestComponent } from "./new-request/new-request.component";
 import { DatePipe } from "@angular/common";
 import { FormGroup } from "@angular/forms";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-ot-request',
@@ -98,7 +99,7 @@ export class OTRequestComponent implements OnInit {
           sortOrder: 0,
           filters: this.allFilters
       }
-      autocompleteMode: string = "Department";
+     // autocompleteMode: string = "Department";
   
       constructor(
           public _OtRequestService: OtRequestService,
@@ -152,9 +153,41 @@ export class OTRequestComponent implements OnInit {
          OnPrint(Param) {
         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
     } 
- OnCancel(Param) {
-        this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
-    } 
+//  OnCancel(Param) {
+//         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+//     } 
+ OnCancel(data) {
+  Swal.fire({
+    title: 'Do you want to cancel OT request?',
+    text: "Please provide a reason for cancellation",
+    icon: "warning",
+    input: 'text',  // Add text box
+    inputPlaceholder: 'Enter cancellation reason...',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Cancel it!",
+    preConfirm: (reason) => {
+      if (!reason || reason.trim() === '') {
+        Swal.showValidationMessage('Reason is required');
+      }
+      return reason;
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let submitData = { 
+        otBookingId: data.otBookingId,
+        cancelReason: result.value // Capture the reason
+      };
+      console.log(submitData);
+
+      this._OtRequestService.OnCancel(submitData).subscribe((res) => {
+        this.grid.bindGridData();
+        Swal.fire('Cancelled!', 'OT request has been cancelled.', 'success');
+      });
+    }
+  });
+}
 
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

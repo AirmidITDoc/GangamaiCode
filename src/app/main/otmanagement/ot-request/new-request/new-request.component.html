@@ -180,7 +180,8 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
   <mat-form-field appearance="outline" style="width: 100%;">
     <mat-label>OT request Date</mat-label>
-    <input matInput [matDatepicker]="requestDatePicker" formControlName="otrequestDate">
+    <input matInput [matDatepicker]="requestDatePicker" formControlName="otrequestDate"
+    [formGroup]="requestForm" [value]="registerObj?.otrequestDate">
     <mat-datepicker-toggle matSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #requestDatePicker></mat-datepicker>
     
@@ -190,7 +191,7 @@
 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
   <mat-form-field appearance="outline" style="width: 100%;">
     <mat-label>OT request Time</mat-label>
-    <input matInput type="time" formControlName="otrequestTime">
+    <input matInput type="time" [formGroup]="requestForm" [value]="registerObj?.otrequestTime" formControlName="otrequestTime">
   </mat-form-field>
 </div>
 

@@ -83,6 +83,17 @@ registerObj: any;
      if ((this.data?.otBookingId) > 0) 
          {
           this.registerObj=this.data
+          
+          this.vRegNo=this.registerObj.regNo
+          this.vOPDNo=this.registerObj.opdNo
+          this.vIPDNo=this.registerObj.ipdNo
+          this.vPatientName=this.registerObj.firstName+ " " + this.registerObj.middleName + " " + this.registerObj.lastName
+          this.vAge=this.registerObj.age
+          this.vDepartment=this.registerObj.departmentName
+          this.vMobNo=this.registerObj.MobNo
+          this.vDoctorName=this.registerObj.doctorName
+          this.vTariffName=this.registerObj.tariffName
+          this.vCompanyName=this.registerObj.companyName
 
           if(this.registerObj.opIpType==0) {
              this.vSelectedOption="OP"

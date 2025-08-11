@@ -72,7 +72,12 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-               <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+               <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                <mat-icon> cancel</mat-icon>
+            </button> -->
+
+            <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
                 <mat-icon> cancel</mat-icon>
             </button>
             </div>
@@ -89,7 +94,7 @@
                         <mat-label>UHID No</mat-label>
                         <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"
                         (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -100,7 +105,7 @@
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="FirstName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('LastName')">
+                        (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -110,7 +115,7 @@
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="LastName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('RegNo')">
+                        (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
