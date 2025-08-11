@@ -165,17 +165,41 @@
                                     </div>
                                     <div class="notification-list">
                                         <div *ngFor="let notification of notifications" class="notification-item">
-                                            <div class="notification-icon">
-                                                <mat-icon>assignment</mat-icon>
-                                            </div>
-                                            <div class="notification-content">
-                                                <div class="notification-title">{{notification.notiTitle}}</div>
-                                                <div class="notification-message">{{notification.notiBody}}</div>
-                                                <div class="notification-time">{{notification.createdDate|
-                                                    date:'dd/MM/yy h:mm:ss a'}}</div>
-                                            </div>
+
+                                            <!-- With link -->
+                                            <ng-container *ngIf="notification.redirectUrl; else noLink">
+                                                <a [href]="notification.redirectUrl">
+                                                    <div class="notification-icon">
+                                                        <mat-icon>assignment</mat-icon>
+                                                    </div>
+                                                    <div class="notification-content">
+                                                        <div class="notification-title">{{notification.notiTitle}}</div>
+                                                        <div class="notification-message">{{notification.notiBody}}
+                                                        </div>
+                                                        <div class="notification-time">
+                                                            {{notification.createdDate | date:'dd/MM/yy h:mm:ss a'}}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </ng-container>
+
+                                            <!-- Without link -->
+                                            <ng-template #noLink>
+                                                <div class="notification-icon">
+                                                    <mat-icon>assignment</mat-icon>
+                                                </div>
+                                                <div class="notification-content">
+                                                    <div class="notification-title">{{notification.notiTitle}}</div>
+                                                    <div class="notification-message">{{notification.notiBody}}</div>
+                                                    <div class="notification-time">
+                                                        {{notification.createdDate | date:'dd/MM/yy h:mm:ss a'}}
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+
                                         </div>
                                     </div>
+
                                 </mat-menu>
                             </div>
                             <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
