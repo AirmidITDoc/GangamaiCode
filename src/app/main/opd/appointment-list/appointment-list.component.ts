@@ -82,6 +82,7 @@ export class AppointmentListComponent implements OnInit {
         // menu Button List
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
+        this.menuActions.push("Request For IP");
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -387,6 +388,24 @@ export class AppointmentListComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
                     that.grid.bindGridData();
+                }
+            });
+        }
+        else if (m == "Request For IP") {
+            Swal.fire({
+                title: 'Do you want to convert OP to IP?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    // this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+                    //     this.toastr.success(response.message);
+                    //     this.grid.bindGridData();
+                    // });
                 }
             });
         }

@@ -267,10 +267,12 @@ export class AdmissionService {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
 
-
-
     public getMLCById(Id) {
         return this._httpClient1.GetData("MlcInformation/" + Id);
+    }
+
+    public getCompanyIdDetail(deptId) {
+        return this._httpClient1.GetData("CompanyMaster/" + deptId)
     }
 
     public getstateId(Id) {
