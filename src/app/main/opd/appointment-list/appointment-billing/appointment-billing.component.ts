@@ -29,7 +29,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
   public displayedPrescriptionColumns =
-    ['serviceName','userName'];
+    ['groupName','serviceName','classRate','userName'];
 
   //new
   doctorName: any
@@ -58,6 +58,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   AgeYear: any;
   ConcessionId = 0;
   ConcessionReason = "";
+  chkIsEditable: boolean = true;
   Regstatus: boolean = true;
   Consessionres: boolean = false;
   savebtn: boolean = true;
@@ -113,8 +114,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OPFooterForm.markAllAsTouched();
     if (this.data) {
       this.patientDetail = this.advanceDataStored.storage;
+
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
       console.log("Data", this.patientDetail)
+      
       this.patientDetail.formattedText = this.patientDetail.patientName
       this.patientDetail.doctorName = this.patientDetail.doctorname
       this.PatientName = this.patientDetail.patientName
@@ -127,6 +130,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.vClassId = this.patientDetail.classId
       this.savebtn = false
       this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
+      this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
     }
 
 
@@ -154,7 +158,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     let Data = {
       "first": 0,
-      "rows": 10,
+      "rows": 100,
       "sortField": "RequestTranId",
       "sortOrder": 0,
       "filters": [
@@ -199,20 +203,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       const newRow = {
         ServiceId: contact.serviceId,
         ServiceName: contact.serviceName,
-        Price: 0,// formValue.price,
-        Qty: 0,//formValue.qty,
-        TotalAmt: 0,// totalAmount,
-        DiscPer: 0,// formValue.discountPer || 0,
-        DiscAmt: 0,// discountAmount || 0,
-        NetAmount: 0,// netAmount,
-        DoctorName: '',// this.doctorName || '-',
-        ClassName: '',// this.className || '-',
-        DoctorId: 0,// formValue.DoctorID,
-        ChargesAddedName: contact.userName,
-        IsPathology: 0,// this.IsPathology,
-        IsRadiology: 0,// this.IsRadiology,
-        IsPackage: 0,// this.vIsPackage, 
-
+        Price: contact.classRate,
+        Qty: 1,
+        TotalAmt: contact.classRate * 1 ,// totalAmount,
+        DiscPer: 0,
+        DiscAmt: 0,
+        NetAmount: contact.classRate * 1 ,
+        DoctorName: '-',
+        ClassName: contact.className || '-',
+        DoctorId: 0,
+        ChargesAddedName:  this.accountService.currentUserValue.userName,
+        IsPathology: contact.IsPathology,
+        IsRadiology: contact.IsRadiology,
+        IsPackage: contact.IsPackage, 
       };
 
       
@@ -603,7 +606,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
     }
-    console.log(vdata)
+    //console.log(vdata)
     this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
       this.dsPackageList.data = data.data as ChargesList[];
       this.dsPackageList.data.forEach(element => {
@@ -886,12 +889,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     } else {
       console.log(obj)
       this.SrvcName1 = obj.serviceName;
-      this.serviceId = obj.serviceId;
-      this.vPrice = obj.classRate;
+      this.serviceId = obj.serviceId; 
       this.vQty = 1;
       this.IsPathology = obj.isPathology;
       this.IsRadiology = obj.isRadiology;
       this.vIsPackage = obj.isPackage;
+      this.chargeForm.patchValue({
+        price: obj.classRate
+      })
       if (obj?.creditedtoDoctor == true) {
         this.isDoctor = true;
         this.chargeForm.get('DoctorID').reset();
@@ -903,6 +908,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeForm.get('DoctorID').clearValidators();
         this.chargeForm.get('DoctorID').updateValueAndValidity();
         this.chargeForm.get('DoctorID').disable();
+      }
+      if(obj?.isEditable == true){
+        this.chkIsEditable = false;
+      }else{
+      this.chkIsEditable = true;
       }
       this.serviceSelct = true
     }
@@ -925,6 +935,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     if (this.vOPIPId > 0)
       this.savebtn = false
     this.Regstatus = false
+    this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
   }
   getSelectedTariffObj(event) {
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
@@ -1130,6 +1141,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       tariffId: [
         { name: "pattern", Message: "only Char allowed." }
       ],
+    }
+  }
+  checkCompanypatient(companyId){
+    if(companyId > 0){
+        this.OPFooterForm.get('paymentType').setValue('CreditPay');
+    } else{
+      this.OPFooterForm.get('paymentType').setValue('CashPay'); 
     }
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
@@ -25,7 +25,10 @@ import { DatePipe } from "@angular/common";
 import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
 import { indexOf } from "lodash";
 import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
-
+import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
+import { ApiCaller } from "app/core/services/apiCaller";
+import { filter } from 'rxjs/operators';
+import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
 
 @Component({
     selector: "app-new-doctor",
@@ -53,8 +56,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     signpage: any[] = [];
     selectedFile: File | null = null;
     previewUrl: string | null = null;
-
-
 
     autocompleteModepage: string = "DoctorSignPage";
     displayedColumnsEdu = [
@@ -84,8 +85,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         'slot',
         'action'
     ];
-
-
 
     displayedColumnscharges = [
         // 'serviceId',
@@ -122,7 +121,6 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     ];
 
-
     dataSourceeducation = new MatTableDataSource<EducationDetail>();
     dataSourceeexperience = new MatTableDataSource<ExperienceDetail>();
     dataSourceSchdule = new MatTableDataSource<SchduleDetail>();
@@ -131,15 +129,12 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     dataSourcedrsign = new MatTableDataSource<SignDetail>();
     AttachDataSource = new MatTableDataSource<any>();
 
-
     public chargeschList: SchduleDetail[] = [];
     public chargechargesList: ChargesDetail[] = [];
     public chargeexpList: ExperienceDetail[] = [];
     public chargeeduList: EducationDetail[] = [];
     public chargeleaveList: LeaveDetail[] = [];
     public chargesignList: SignDetail[] = [];
-
-
 
     @ViewChild('ddlDepartment') ddlDepartment: AirmidDropDownComponent;
     @ViewChild('ddlsignpage') ddlsignpage: AirmidDropDownComponent;
@@ -155,8 +150,39 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     autocompleteModedoctorty: string = "DoctorType";
     autocompleteSignpage: string = "DoctorSignPage";
 
-
     sanitizeImagePreview: any;
+    isEditMode: boolean = false;
+
+    // added by raksha
+    refId: any;
+    refType: any = "Doctor_Signature";
+    refType1: any = "Doctor";
+    docName = "DoctorSignature";
+    isFileUpload: boolean = false;
+    // to add & retrive signature process
+    private signatureData: string | null = null;
+    @ViewChild('signaturePad')
+    set signaturePadElement(el: ElementRef<HTMLCanvasElement> | undefined) {
+        if (el) {
+            this.canvas = el.nativeElement;
+            this.setupSignaturePad();
+
+            if (this.signatureData && this.signaturePad) {
+                this.signaturePad.fromDataURL(this.signatureData);
+                this.signatureData = null; // clear after use
+            }
+        }
+    }
+    onCloseDialog = new EventEmitter<any>();
+    multiple: boolean = false
+
+    private signaturePad!: SignaturePad;
+    private canvas!: HTMLCanvasElement;
+    objFile: AirmidFileModel;
+    files: AirmidFileModel[] = [];
+    filesChange = new EventEmitter<AirmidFileModel[]>();
+    @ViewChild('fileUpload') fileUpload: ElementRef
+
     constructor(
         public _doctorService: DoctorMasterService, private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
@@ -165,7 +191,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         public dialogRef: MatDialogRef<NewDoctorComponent>,
         private readonly changeDetectorRef: ChangeDetectorRef,
         public datePipe: DatePipe,
-        private _formBuilder: UntypedFormBuilder
+        private _formBuilder: UntypedFormBuilder,
+        private _service: ApiCaller,
     ) { }
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -195,6 +222,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     doctorId = 0
     ngOnInit(): void {
+        this.isEditMode = this.data?.formMode === 'edit';
         this.myForm = this.createdDoctormasterForm();
         this.myForm.markAllAsTouched();
         this.signatureForm = this.createSignatureForm();
@@ -205,14 +233,14 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.registerObj = response;
                 console.log(this.registerObj)
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
-                debugger
+                // debugger
                 if (this.registerObj.signature) {
-                    
+
                     this._doctorService.getSignature(this.registerObj.signature).subscribe(data => {
                         this.sanitizeImagePreview = data;
                         console.log(data)
                         this.myForm.value.signature = data;
-                        
+
                     });
                 }
                 this.myForm.controls["MahRegDate"].setValue(this.registerObj.mahRegDate);
@@ -244,8 +272,161 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.leaveDetailsArray.push(this.createLeave());
         this.signatureDetailsArray.push(this.createsignature());
 
+        this.refId = this.doctorId
+        if (this.refId > 0) {
+            // Load signature or uploaded image
+            this._doctorService.getSignData(this.refId, this.refType).subscribe((data) => {
+                if (data.data) {
+                    if (data.type == "signature") {
+                        // this.signaturePad.fromDataURL(data.data);
+                        this.signatureData = data.data;
+                        this.isFileUpload = false;
+                    }
+                    else {
+                        this.sanitizeImagePreview = data.data;
+                        this.isFileUpload = true;
+                    }
+                }
+            });
+
+            // Load files
+            this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
+                this.files = data;
+            });
+        }
 
     }
+    ///////////////////// digital signature code started /////////////////////
+
+    private setupSignaturePad(): void {
+        // Set canvas size
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.offsetHeight;
+
+        // Initialize signature pad
+        this.signaturePad = new SignaturePad(this.canvas, {
+            backgroundColor: 'rgb(255, 255, 255)',
+            penColor: 'rgb(0, 0, 0)'
+        });
+        window.addEventListener('resize', this.resizeCanvas.bind(this));
+    }
+
+    private resizeCanvas(): void {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        this.canvas.width = this.canvas.offsetWidth * ratio;
+        this.canvas.height = this.canvas.offsetHeight * ratio;
+        this.canvas.getContext('2d')?.scale(ratio, ratio);
+        this.signaturePad.clear();
+    }
+
+    editSignature() {
+        const dialogRef = this.matDialog.open(AirmidSignatureComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: "70vh",
+                width: "100%",
+                data: { refId: this.refId, refType: this.refType, multiple: this.multiple, docName: this.docName }
+            }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            this.onCloseDialog.emit(result);
+        });
+    }
+
+    loadSignaturePreview(): void {
+        this._doctorService.getSignData(this.refId, this.refType).subscribe((data) => {
+            if (data.data) {
+                if (data.type === 'signature') {
+                    this.isFileUpload = false;
+
+                    if (this.signaturePad) {
+                        this.signaturePad.clear();
+                        this.signaturePad.fromDataURL(data.data);
+                    } else {
+                        this.signatureData = data.data; // fallback for first load
+                    }
+                } else {
+                    this.sanitizeImagePreview = data.data; // cache-buster
+                    this.isFileUpload = true;
+                }
+            }
+        });
+    }
+
+    ///////////////////// digital signature code ended /////////////////////
+
+    ///////////////////// Attachment code started /////////////////////
+    get filteredFiles() {
+        return this.files?.filter(x => !x.isDelete) || [];
+    }
+    getFileIcon(fileName: string): string {
+        const ext = fileName.split('.').pop()?.toLowerCase();
+
+        switch (ext) {
+            case 'pdf':
+                return 'picture_as_pdf';
+            case 'doc':
+            case 'docx':
+                return 'description';
+            case 'xls':
+            case 'xlsx':
+                return 'table_chart';
+            case 'ppt':
+            case 'pptx':
+                return 'slideshow';
+            case 'txt':
+                return 'article';
+            case 'zip':
+            case 'rar':
+                return 'folder_zip';
+            case 'mp3':
+            case 'wav':
+                return 'audiotrack';
+            case 'mp4':
+            case 'mov':
+            case 'avi':
+                return 'movie';
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+            case 'bmp':
+            case 'webp':
+                return 'image';
+            default:
+                return 'insert_drive_file'; // default generic file icon
+        }
+    }
+
+    getPreview(file: File): string | null {
+        if (file == null || !file.type.startsWith('image/')) return null;
+        return URL.createObjectURL(file);
+    }
+
+    downloadFile(file: AirmidFileModel): void {
+        this._service.downloadFile("Files/get-file?Id=" + file.id, null, 2, file.docName).subscribe((data) => {
+
+        });
+    }
+    removeFile(event, srNO) {
+        let ix
+        if (this.files && -1 !== (ix = this.files.findIndex(x => x.srNo == srNO))) {
+            if (this.files[ix].docSavedName)
+                this.files[ix].isDelete = true;
+            else
+                this.files.splice(ix, 1)
+            this.filesChange.emit(this.files);
+        }
+    }
+
+    loadFolderPreview(): void {
+        this._service.GetData("Files/get-files?RefId=" + this.refId + "&RefType=" + this.refType1).subscribe((data) => {
+            this.files = data;
+        });
+    }
+    ///////////////////// Attachment code ended /////////////////////
+
     createdDoctormasterForm(): FormGroup {
         return this._formBuilder.group({
             DoctorId: [0],
@@ -509,7 +690,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
     onSubmit() {
-        
+
         let a = this.attachedFiles;
 
         console.log(this.myForm.value)
@@ -557,7 +738,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             });
         }
 
-        
+
         //sign detail
         let charge = []
         console.log(this.signatureForm.value)
@@ -592,7 +773,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
         console.log(this.myForm.value)
-debugger
+        debugger
         if (!this.myForm.invalid) {
 
             let data = this.myForm.value;
@@ -614,7 +795,7 @@ debugger
                 data.signature = this.registerObj.signature || this.signature
                 //  data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
                 console.log(data)
-                  data.signature = this.registerObj.signature || this.signature
+                data.signature = this.registerObj.signature || this.signature
 
                 //    data.mDoctorDepartmentDets = this.registerObj.mDoctorDepartmentDets
 
@@ -1218,7 +1399,7 @@ debugger
     tempsignidlist: any[] = [];
 
     getSignpagelist() {
-        
+
         var data = {
             "first": 0,
             "rows": 10,

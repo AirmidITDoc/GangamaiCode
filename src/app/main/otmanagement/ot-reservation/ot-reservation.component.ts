@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
@@ -25,10 +25,10 @@ export class OTReservationComponent implements OnInit {
       
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    f_name: any = ""
+    FirstName: any = ""
     regNo: any = "0"
-    l_name: any = ""
-    mobileno: any = "%"
+    LastName: any = ""
+    
   
   //   VBillcount = 0;
   // VOPtoIPcount = 0;
@@ -36,18 +36,27 @@ export class OTReservationComponent implements OnInit {
   // VAdmissioncount = 0;
   //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  
+  ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+       //  this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
+    }
+     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+        @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+      
        allcolumns = [
         { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
         { heading: "OPDate&Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Surgeon Name1", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Surgeon Name2", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "AnathesDrName1", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "AnathesDrName2", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Surgery name", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "OTTableName", key: "ottable", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Surgeon Name1", key: "surgeonId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Surgeon Name2", key: "surgeonId1", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "OTTableName", key: "ottableId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "AnesthType", key: "AnesthType", sort: true, align: 'left', emptySign: 'NA', width: 130},
         { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
@@ -67,12 +76,11 @@ export class OTReservationComponent implements OnInit {
     ];
   
       allFilters = [
-        //   { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "LastName", fieldValue: "%", opType:OperatorComparer.StartsWith },
+            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-          //  { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
       ]
       gridConfig: gridModel = {
           apiUrl: "OTReservation/OTBookinglist",
@@ -120,10 +128,9 @@ export class OTReservationComponent implements OnInit {
        onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-        // this.f_name = this.myFilterform.get('FirstName').value + "%"
-        // this.l_name = this.myFilterform.get('LastName').value + "%"
-        // this.regNo = this.myFilterform.get('RegNo').value || "0"
-        //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.FirstName = this.myFilterform.get('FirstName').value + "%"
+        this.LastName = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.getfilterdata();
     }
      getfilterdata() {
@@ -133,12 +140,11 @@ export class OTReservationComponent implements OnInit {
             sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
-                // { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
+                { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
+                { fieldName: "RegNo", fieldValue:"0", opType: OperatorComparer.StartsWith },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-                //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
             ],
             row: 25
         }
@@ -154,8 +160,7 @@ export class OTReservationComponent implements OnInit {
                 this.myFilterform.get('LastName').setValue("")
         if (event == 'RegNo')
             this.myFilterform.get('RegNo').setValue("")
-        // if (event == 'MobileNo')
-        //     this.myFilterform.get('MobileNo').setValue("")
+       
 
         this.onChangeFirst();
     }

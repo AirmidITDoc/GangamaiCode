@@ -3,13 +3,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: 'airmid-fileupload',
     templateUrl: './airmid-fileupload.component.html',
     styleUrls: ['./airmid-fileupload.component.scss']
 })
-export class AirmidFileuploadComponent implements OnInit {
+export class AirmidFileuploadComponent extends BaseFormControlComponent implements OnInit {
     @Input() multiple: boolean = false;
     @Input() accept
     @Input() auto = true
@@ -24,9 +25,9 @@ export class AirmidFileuploadComponent implements OnInit {
     @ViewChild('fileUpload')
     fileUpload: ElementRef
     inputFileName: string
-    constructor(private sanitizer: DomSanitizer, private _service: ApiCaller,
+    constructor(private sanitizer: DomSanitizer, private _service: ApiCaller, el: ElementRef,
         @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AirmidFileuploadComponent>) {
-
+        super(el);
     }
     ngOnInit(): void {
         if (this.data) {
@@ -43,7 +44,7 @@ export class AirmidFileuploadComponent implements OnInit {
     onSubmit(): void {
         if (this.files.length > 0) {
             this._service.PostFromData("Files/save-files", { MDoctorFiles: this.files }).subscribe((data) => {
-
+                this.dialogRef.close();
             });
         }
     }
@@ -170,5 +171,5 @@ export class AirmidFileModel {
     }
 }
 export enum PageNames {
-    NONE = "NONE", DOCTOR = "Doctor", DOCTOR_SIGNATURE = "Doctor_Signature",PATIENT = "Patient", PATIENT_SIGNATURE = "Patient_Signature"
+    NONE = "NONE", DOCTOR = "Doctor", DOCTOR_SIGNATURE = "Doctor_Signature", PATIENT = "Patient_Files", PATIENT_SIGNATURE = "Patient_Signature", PATIENT_PHOTO = "Patient_Photo"
 }

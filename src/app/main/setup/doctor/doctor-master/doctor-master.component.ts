@@ -36,6 +36,7 @@ export class DoctorMasterComponent implements OnInit {
     signature: PageNames=PageNames.DOCTOR_SIGNATURE;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -221,13 +222,17 @@ export class DoctorMasterComponent implements OnInit {
 
     onEdit(row) {
         console.log(row)
+        const editData = {
+            ...row,              // spread existing doctor data
+            formMode: 'edit'     // add form mode
+        };
         const dialogRef = this._matDialog.open(
             NewDoctorComponent,
             {
                 maxWidth: "95vw",
                 maxHeight: "94vh",
                 width: "100%",
-                data: row
+                data: editData
             }
         );
 
@@ -295,6 +300,9 @@ export class DoctorMasterComponent implements OnInit {
             // height: "100%",
             autoFocus: false,
             ariaModal: true,
+            data: {
+                formMode: 'new'
+            }
         });
         dialogRef.afterClosed().subscribe((result) => {
             console.log("The dialog was closed - Insert Action", result);

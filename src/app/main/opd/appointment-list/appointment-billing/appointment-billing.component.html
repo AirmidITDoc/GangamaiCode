@@ -4,12 +4,12 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Request list</span>
         </div>
         <div class="close-icon">
-        <!-- <button mat-icon-button tabIndex="-1" (click)="CloseService()" aria-label="Close dialog">
-          <mat-icon>close</mat-icon>
-        </button> -->
+        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog"
+            matTooltip="Close"> <mat-icon>close</mat-icon>
+        </button>
       </div>
     </mat-toolbar>
 
@@ -18,12 +18,30 @@
             <div class="airmid-table">
                 <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{value:'50'}">
 
+                      <ng-container matColumnDef="groupName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Group Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.groupName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="serviceName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-480">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
                             Service Name
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-480">
+                        <mat-cell *matCellDef="let contact" class="w-280">
                             <span> {{contact.serviceName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                   <ng-container matColumnDef="classRate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            class Rate
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.classRate}}</span>
                         </mat-cell>
                     </ng-container>
 
@@ -35,24 +53,6 @@
                             <span> {{contact.userName }}</span>
                         </mat-cell>
                     </ng-container>
-
-                   <!--  <ng-container matColumnDef="Qty">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Qty
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <span> {{contact.Qty}}</span>
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="TotalAmt">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">
-                            Total Amt
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-110">
-                            <span> {{contact.TotalAmt | currency:'INR' }}</span>
-                        </mat-cell>
-                    </ng-container> -->
-
 
                     <ng-container matColumnDef="NoData">
                         <mat-footer-cell *matFooterCellDef>
@@ -71,6 +71,14 @@
             </div>
         </div>
     </div>
+      <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
+                        aria-label="Close dialog" matTooltip="Close">Close</button>
+                </div>
+            </div>
+        </div>
 </ng-template>
 
 <div class="modal-page page-layout inner-scroll">
@@ -199,7 +207,8 @@
                                                         <span class="patient-col-key">Company Name</span>
                                                         <span>:</span>
                                                         <span
-                                                            class="patient-col-value">{{patientDetail?.companyName}}</span>
+                                                            class="patient-col-value"
+                                                            style="background-color: khaki;">{{patientDetail?.companyName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Ref-Doctor Name</span>
@@ -238,7 +247,7 @@
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="chargeForm" [validations]="getValidationMessages().price"
-                                                [type]="'number'" [value]="vPrice">
+                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -364,12 +373,13 @@
                                                                     *matHeaderCellDef>Price</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field floatLabel="never">
+                                                                    {{contact.Price}}
+                                                                    <!-- <mat-form-field floatLabel="never">
                                                                         <input matInput placeholder="Price"
                                                                             type="number" [(ngModel)]="contact.Price"
                                                                             required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
-                                                                    </mat-form-field>
+                                                                    </mat-form-field> -->
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -377,12 +387,13 @@
                                                                 <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field floatLabel="never"
+                                                                    {{contact.Qty}}
+                                                                    <!-- <mat-form-field floatLabel="never"
                                                                         appearance="fill">
                                                                         <input matInput placeholder="Qty" type="number"
                                                                             min="1" [(ngModel)]="contact.Qty" required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
-                                                                    </mat-form-field>
+                                                                    </mat-form-field> -->
                                                                 </mat-cell>
                                                             </ng-container>
 

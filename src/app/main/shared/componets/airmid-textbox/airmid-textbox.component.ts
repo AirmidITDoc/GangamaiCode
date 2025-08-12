@@ -8,12 +8,13 @@ import {
 } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { BaseFormControlComponent } from "../base-form-control-component";
 
 @Component({
     selector: "airmid-textbox",
     templateUrl: "./airmid-textbox.component.html",
     styleUrls: ["./airmid-textbox.component.scss"],
-        // providers: [
+    // providers: [
     //     {
     //         provide: NG_VALUE_ACCESSOR,
     //         useExisting: forwardRef(() => AirmidTextboxComponent),
@@ -31,7 +32,7 @@ import { takeUntil } from "rxjs/operators";
         '(focusout)': 'onTouched()',
     },
 })
-export class AirmidTextboxComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class AirmidTextboxComponent extends BaseFormControlComponent implements ControlValueAccessor, OnInit, OnDestroy {
     static nextId: number = 0;
 
     private _disabled: boolean = false;
@@ -55,8 +56,8 @@ export class AirmidTextboxComponent implements ControlValueAccessor, OnInit, OnD
     @Input() readonly: boolean = false;
     @Input() width: number = 100;
     @Input() isMovable = true;
-    @Input() min:number = -Infinity;
-    @Input() max:number = 99999;
+    @Input() min: number = -Infinity;
+    @Input() max: number = 99999;
 
 
     @Input()
@@ -132,8 +133,9 @@ export class AirmidTextboxComponent implements ControlValueAccessor, OnInit, OnD
     }
     constructor(
         @Optional() @Self() public ngControl: NgControl | null,
-        private el: ElementRef
+         el: ElementRef
     ) {
+        super(el);
         if (ngControl) {
             this.ngControl.valueAccessor = this;
         }

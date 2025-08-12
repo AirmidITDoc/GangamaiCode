@@ -41,7 +41,24 @@
             </div>
         </div>
     </div>
-    
+    <ng-template #actionsTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP"
+                                class="pill green-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+                    <ng-template #actionsTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.surgeryTypeId=='2'" matTooltip="Emergency"
+                                class="pill red-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.surgeryTypeId=='1'" matTooltip="Normal"
+                                class="pill blue-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
  <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -55,7 +72,14 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-               
+               <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                <mat-icon> cancel</mat-icon>
+            </button> -->
+
+            <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
+                <mat-icon> cancel</mat-icon>
+            </button>
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content" >
@@ -70,7 +94,7 @@
                         <mat-label>UHID No</mat-label>
                         <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"
                         (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -81,7 +105,7 @@
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="FirstName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('LastName')">
+                        (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -91,7 +115,7 @@
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="LastName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('RegNo')">
+                        (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>

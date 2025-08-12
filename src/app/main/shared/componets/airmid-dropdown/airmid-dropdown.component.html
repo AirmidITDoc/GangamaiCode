@@ -23,16 +23,11 @@
     <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect
         (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField"
         aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'" [compareWith]="comparer" msInfiniteScroll
-        [multiple]="IsMultiPle"  appFocusNext
-        
-        [disableRipple]="readonly"
-    [panelClass]="readonly ? 'readonly-panel' : ''"
-    (click)="onClick($event)"
-    (keydown)="readonly ? $event.preventDefault() : null">
+        [multiple]="IsMultiPle" appFocusNext [disableRipple]="readonly" [panelClass]="readonly ? 'readonly-panel' : ''"
+        (click)="onClick($event)">
         <mat-option>
             <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
-                noEntriesFoundLabel="No results found"
-                *ngIf="!readonly"></ngx-mat-select-search>
+                noEntriesFoundLabel="No results found" *ngIf="!readonly"></ngx-mat-select-search>
         </mat-option>
         <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
             {{ddl[TextField]}}

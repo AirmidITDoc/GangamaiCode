@@ -1,10 +1,11 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Optional, Output, Self, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Optional, Output, Self, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { BaseFormControlComponent } from '../base-form-control-component';
 
 @Component({
     selector: "airmid-dropdown",
@@ -12,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ["./airmid-dropdown.component.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AirmidDropDownComponent implements OnInit {
+export class AirmidDropDownComponent extends BaseFormControlComponent implements OnInit {
     //@Input() label: string;
     //@Input() ddlCtrl: FormControl = new FormControl();
     //@Input() selectedValue: string;
@@ -39,9 +40,9 @@ export class AirmidDropDownComponent implements OnInit {
     private _focused: boolean = false;
     private _placeholder: string = '';
     private _required: boolean = false;
-// Focusstatus=false;
+    // Focusstatus=false;
 
-//  @Input() appFocusNext: boolean = false;
+    //  @Input() appFocusNext: boolean = false;
     @Input()
     get disabled(): boolean {
         return this._disabled;
@@ -77,7 +78,7 @@ export class AirmidDropDownComponent implements OnInit {
             }
             // Find active validation 
             return this.validations
-                .filter((validation: any) =>  typeof validation?.name === 'string' && this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
+                .filter((validation: any) => typeof validation?.name === 'string' && this.formGroup.controls[this.formControlName].hasError(validation.name.toLowerCase()))
                 .map((validation: any) => validation.Message);
         } catch (error) {
             console.log("Textbox Error => ", error);
@@ -105,7 +106,9 @@ export class AirmidDropDownComponent implements OnInit {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null) {
+    constructor(private _httpClient: ApiCaller, private changeDetectorRefs: ChangeDetectorRef, @Optional() @Self() public ngControl: NgControl | null,
+        el: ElementRef) {
+        super(el);
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
@@ -128,13 +131,13 @@ export class AirmidDropDownComponent implements OnInit {
                 this.filterDdls();
             });
 
-            // changed by raksha
+        // changed by raksha
         if (this.readonly && this.singleSelect) {
             this.disableDropdown();
         }
     }
 
-     // changed by raksha
+    // changed by raksha
     disableDropdown() {
         if (this.singleSelect) {
             // Override open method to block opening
@@ -246,20 +249,20 @@ export class AirmidDropDownComponent implements OnInit {
             // control.reset();
         }
     }
-//     clearSelection(event: Event): void {
-//         debugger
-//     event.stopPropagation();
-//     const control = this.formGroup.controls[this.formControlName];
+    //     clearSelection(event: Event): void {
+    //         debugger
+    //     event.stopPropagation();
+    //     const control = this.formGroup.controls[this.formControlName];
 
-//     if (control) {
-//         const emptyStringControls = ['MenuName']; // List of control names needing string
-//         const isEmptyStringField = emptyStringControls.includes(this.formControlName);
+    //     if (control) {
+    //         const emptyStringControls = ['MenuName']; // List of control names needing string
+    //         const isEmptyStringField = emptyStringControls.includes(this.formControlName);
 
-//         control.setValue(isEmptyStringField ? "" : "0");
-//         this.value = isEmptyStringField ? "" : "0";
-//         this.ddlFilterCtrl.setValue("");
-//     }
-// }
+    //         control.setValue(isEmptyStringField ? "" : "0");
+    //         this.value = isEmptyStringField ? "" : "0";
+    //         this.ddlFilterCtrl.setValue("");
+    //     }
+    // }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.value?.firstChange && changes.value?.currentValue) {

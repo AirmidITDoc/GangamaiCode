@@ -37,8 +37,8 @@
                       <div class="radio-container" fxLayout="row" fxLayoutAlign="start center">
                         <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
                           (change)="onChangeReg($event)">
-                          <mat-radio-button value="registration" [disabled]="chkregisterd">New
-                            Registration</mat-radio-button>
+                          <mat-radio-button value="registration" [disabled]="chkregisterd">
+                            New Registration / Phone Appointment</mat-radio-button>
                           <mat-radio-button value="registrered">Registered</mat-radio-button>
                         </mat-radio-group>
 
@@ -57,11 +57,15 @@
                           ApiUrl="OutPatient/auto-complete?Keyword="
                           (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
-                        <airmid-autocomplete class="w-450" label="Phone Appointment" [formGroup]="searchFormGroup"
+                        <!-- <airmid-autocomplete class="w-450" label="Phone Appointment" [formGroup]="searchFormGroup"
                           formControlName="PhoneRegId" *ngIf="IsPhoneAppflag"
                           placeholderText="Search Reg No / Patient Name / Mobile No"
                           ApiUrl="PhoneAppointment2/auto-complete?Keyword="
-                          (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete>
+                          (selectionChange)="getSelectedObjphone($event)"></airmid-autocomplete> -->
+
+                               <airmid-dropdown class="w-450" label="Phone Appointment" formControlName="PhoneRegId"
+                              [formGroup]="searchFormGroup"  *ngIf="IsPhoneAppflag" ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
+                              (selectionChange)="getSelectedObjphone($event)"></airmid-dropdown>
                       </div>
                     </div>
                   </mat-card-content>
@@ -132,7 +136,7 @@
                               </div>
 
                               <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                  <app-airmid-dateofbirth [formGroup]="personalFormGroup" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                  <app-airmid-dateofbirth [formGroup]="personalFormGroup" dateStyle="Year" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                 </div>
                               <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <mat-form-field appearance="outline" fxFlex="100%">
@@ -200,13 +204,13 @@
                               </div>
 
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <div fxLayout="row" class="gap-8">
+                                <div fxLayout="row" class="gap-4">
                                   <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                     formControlName="MaritalStatusId" [value]="registerObj?.maritalStatusId ?? 0"
                                     [formGroup]="personalFormGroup"
                                     [validations]="getValidationMessages().MaritalStatusId"
                                     [mode]="autocompleteModemstatus"></airmid-dropdown>
-                                  <airmid-dropdown label="Religion Name" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                  <airmid-dropdown label="Religion Name" fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="50%"
                                     formControlName="ReligionId" [value]="registerObj?.religionId ?? 0"
                                     [formGroup]="personalFormGroup" [validations]="getValidationMessages().religionId"
                                     [mode]="autocompleteModereligion"></airmid-dropdown>
@@ -214,7 +218,7 @@
                               </div>
 
                               <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <div fxLayout="row" class="gap-8">
+                                <div fxLayout="row" class="gap-4">
                                   <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" label="MobileNo"
                                     formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)"
                                     [value]="registerObj.mobileNo ?? ''" [formGroup]="personalFormGroup"
@@ -234,6 +238,11 @@
                                   (keypress)="keyPressAlphanumeric($event)" [maxLength]="12"
                                   [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
                               </div>
+                              <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-checkbox formControlName="IsNRI">
+                                    ISNRI
+                                </mat-checkbox>
+                            </div>
                               <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">   
                                      <airmid-dropdown
                                       label="Special Courtesy"
@@ -420,10 +429,22 @@
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="patientType" formControlName="PatientTypeId"
+                          <airmid-dropdown label="Paying Type" formControlName="PatientTypeId"
                             [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"  
                             [validations]="getValidationMessages().patientTypeId" [mode]="autocompleteModepatienttype"
                             (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup"
+                            [value]="data?.companyId" [validations]="getValidationMessages().CompanyId"
+                            [mode]="autocompleteModecompany"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
+                            [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId"
+                            [mode]="autocompleteModesubcompany"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -433,7 +454,7 @@
                         </div>
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                           <airmid-dropdown label="Department Name" formControlName="DepartmentId" 
-                            [value]="registerObj?.departmentId" [formGroup]="VisitFormGroup"
+                            [value]="registerObj?.departmentId || vDepId" [formGroup]="VisitFormGroup"
                             [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
                             (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
                         </div>
@@ -462,7 +483,7 @@
                             [mode]="autocompleteModecamp"></airmid-dropdown>
                         </div>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                        <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
                           <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup"
                             [value]="data?.companyId" [validations]="getValidationMessages().CompanyId"
                             [mode]="autocompleteModecompany"></airmid-dropdown>
@@ -472,12 +493,12 @@
                           <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
                             [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId"
                             [mode]="autocompleteModesubcompany"></airmid-dropdown>
-                        </div>
+                        </div> -->
                       </div>
                     </form>
                   </mat-expansion-panel>
 
-                  <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded">
+                  <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded1">
                     <mat-expansion-panel-header>
                       <mat-panel-title>Health Card Details</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -504,7 +525,7 @@
                     </form>
                   </mat-expansion-panel>
 
-                  <mat-expansion-panel expanded class="mt-12">
+                  <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded2">
                     <mat-expansion-panel-header>
                       <mat-panel-title>ABHA</mat-panel-title>
                     </mat-expansion-panel-header>

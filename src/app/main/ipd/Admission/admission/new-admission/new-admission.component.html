@@ -35,18 +35,25 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid"
                                     fxLayoutAlign="space-between center">
                                     <div class="radio-container" fxLayout="row" fxLayoutAlign="start center">
-                                        <mat-radio-group aria-label="Select an option" formControlName="regRadio"
-                                            name="regRadio" (change)="onChangeReg($event)">
+                                        <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
+                                            (change)="onChangeReg($event)">
                                             <mat-radio-button value="registration">New Registration </mat-radio-button>
                                             <mat-radio-button value="registrered">Registered</mat-radio-button>
                                         </mat-radio-group>
-
-                                        <div *ngIf="showEmergencyFlag">
+                                    
+                                        <div *ngIf="showEmergencyFlag" style="margin-left: 30px;">
                                             <span style="font-size: 28px;">🚨</span>
                                             <strong style="color: red;font-size: 20px;">Emergency Patient</strong>
                                         </div>
                                     </div>
+
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+
+                                        <div *ngIf="showOPtoIPFlag">
+                                            <button mat-icon-button (click)="openOPTable()" style="padding: 0px;">
+                                                <mat-icon style="font-size: 24px;">notifications_none</mat-icon>
+                                            </button>
+                                        </div>
 
                                         <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                                             formControlName="RegId" *ngIf="Regflag" class="w-350"
@@ -111,13 +118,13 @@
                                             [disabled]="true" [mode]="autocompleteModegender"> </airmid-dropdown>
                                     </div>
 
-                                    <!-- <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                             formControlName="DateOfBirth"
                                             [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                                    </div> -->
+                                    </div>
 
-                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <input matInput [matDatepicker]="validFromPicker"
                                                         formControllName="DateOfBirth" #bday [value]="value"
@@ -145,7 +152,7 @@
                                                         [readonly]="true">
                                                     </airmid-textbox>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                  
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -185,7 +192,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <div fxLayout="row" class="gap-8">
+                                        <div fxLayout="row" class="gap-4">
 
                                             <airmid-dropdown label="MaritalStatus" fxFlex="50%" fxFlex.xs="100%"
                                                 fxFlex.sm="50%" formControlName="MaritalStatusId"
@@ -202,7 +209,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <div fxLayout="row" class="gap-8">
+                                        <div fxLayout="row" class="gap-4">
 
                                             <airmid-textbox fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                 label="MobileNo" formControlName="MobileNo" (keypress)="keyPressAlphanumeric($event)"
@@ -225,6 +232,11 @@
                                             [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
                                             [maxLength]="12" [validations]="getValidationMessages().aadharCardNo">
                                         </airmid-textbox>
+                                    </div>
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-checkbox formControlName="IsNRI">
+                                            ISNRI
+                                        </mat-checkbox>
                                     </div>
                                 </div>
                             </mat-card-content>
@@ -491,13 +503,31 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="PatientType" formControlName="PatientTypeId"
+                                        <airmid-dropdown label="Paying Type" formControlName="PatientTypeId"
                                             [value]="registerObj1?.patientTypeID ?? 0" [formGroup]="admissionFormGroup"
                                             [validations]="getValidationMessages().PatientTypeId"
                                             [mode]="autocompleteModepatienttype"
                                             (selectionChange)="onChangePatient($event)">
                                         </airmid-dropdown>
                                     </div>
+                                    
+                                    <ng-container *ngIf="isCompanySelected">
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                            <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                                [value]="registerObj1?.companyId" [formGroup]="admissionFormGroup"
+                                                [validations]="getValidationMessages().CompanyId"
+                                                [mode]="autocompleteModeCompany">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                            <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId"
+                                                [value]="registerObj1?.subTpaComId" [formGroup]="admissionFormGroup"
+                                                [validations]="getValidationMessages().SubTpaComId"
+                                                [mode]="autocompleteModeSubCompany">
+                                            </airmid-dropdown>
+                                        </div>
+                                    </ng-container>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Tariff Name" formControlName="TariffId"
@@ -524,7 +554,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-dropdown label="AdmittedDoctor1" formControlName="AdmittedDoctor1"
+                                        <airmid-dropdown label="Treating Doctor1" formControlName="AdmittedDoctor1"
                                             [value]="registerObj1?.admittedDoctor1" [formGroup]="admissionFormGroup"
                                             [validations]="getValidationMessages().AdmittedDoctor1"
                                             [mode]="autocompleteModeDoctor">
@@ -532,7 +562,7 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                        <airmid-dropdown label="AdmittedDoctor2" formControlName="AdmittedDoctor2"
+                                        <airmid-dropdown label="Treating Doctor2" formControlName="AdmittedDoctor2"
                                             [value]="registerObj1?.admittedDoctor2" [formGroup]="admissionFormGroup"
                                             [validations]="getValidationMessages().AdmittedDoctor2"
                                             [mode]="autocompleteModeDoctor">
@@ -547,23 +577,6 @@
                                         </airmid-dropdown>
                                     </div>
 
-                                    <ng-container *ngIf="isCompanySelected">
-                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                            <airmid-dropdown label="Company Name" formControlName="CompanyId"
-                                                [value]="registerObj1?.companyId" [formGroup]="admissionFormGroup"
-                                                [validations]="getValidationMessages().CompanyId"
-                                                [mode]="autocompleteModeCompany">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                            <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId"
-                                                [value]="registerObj1?.subTpaComId" [formGroup]="admissionFormGroup"
-                                                [validations]="getValidationMessages().SubTpaComId"
-                                                [mode]="autocompleteModeSubCompany">
-                                            </airmid-dropdown>
-                                        </div>
-                                    </ng-container>
                                 </div>
                             </mat-card-content>
                         </mat-card>
@@ -723,3 +736,88 @@
         </div>
     </div>
 </div>
+
+<!-- op to ip converted patient table -->
+
+<ng-template #opTable>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> OP Convert list</span>
+        </div>
+        <div class="close-icon">
+        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog"
+            matTooltip="Close"> <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxFlex="100%">
+        <div class="table-body">
+            <div class="airmid-table">
+                <mat-table matSort [dataSource]="dsOpList" [@animateStagger]="{value:'50'}">
+
+                      <ng-container matColumnDef="RegNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            UHID No
+                        </mat-header-cell>
+                        <!-- <mat-cell *matCellDef="let contact">
+                            <span> {{contact.groupName}}</span>
+                        </mat-cell> -->
+                    </ng-container>
+
+                    <ng-container matColumnDef="PatientName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
+                            Patient Name
+                        </mat-header-cell>
+                        <!-- <mat-cell *matCellDef="let contact" class="w-280">
+                            <span> {{contact.serviceName}}</span>
+                        </mat-cell> -->
+                    </ng-container>
+
+                   <ng-container matColumnDef="DepartmentName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Department Rate
+                        </mat-header-cell>
+                        <!-- <mat-cell *matCellDef="let contact">
+                            <span> {{contact.classRate}}</span>
+                        </mat-cell> -->
+                    </ng-container>
+
+                    <ng-container matColumnDef="DoctorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Doctor Name
+                        </mat-header-cell>
+                        <!-- <mat-cell *matCellDef="let contact">
+                            <span> {{contact.userName }}</span>
+                        </mat-cell> -->
+                    </ng-container>
+
+                    <ng-container matColumnDef="NoData">
+                        <mat-footer-cell *matFooterCellDef>
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedOpdColumns; sticky: true">
+                    </mat-header-row>
+
+                    <mat-row *matRowDef="let contact; columns: displayedOpdColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="dialogRef.close(contact)"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['NoData']"
+                        [ngClass]="{'hide':dsOpList.data.length > 0}"></mat-footer-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+      <!-- <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
+                        aria-label="Close dialog" matTooltip="Close">Close</button>
+                </div>
+            </div>
+        </div> -->
+</ng-template>

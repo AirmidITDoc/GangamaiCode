@@ -41,8 +41,9 @@ export class NewOPListComponent implements OnInit {
     f_name: any = ""
     regNo: any = "0"
     l_name: any = ""
-    DoctorId = 0
+    CompanyId = 0
     PBillNo: any = "%"
+    autocompleteModecompany: string = "Company";
 
     pf_name: any = ""
     pregNo: any = "0"
@@ -75,9 +76,10 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals }
-
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+        // { fieldName: "Company_Id", fieldValue: '0', opType: OperatorComparer.Equals }
     ];
+
     allOPbillcolumns = [
         { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
         { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -382,7 +384,8 @@ debugger
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals }
+            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+            // { fieldName: "Company_Id", fieldValue: String(this.CompanyId), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -400,8 +403,16 @@ debugger
             this.myFilterbillform.get('RegNo').setValue("")
         if (event == 'PBillNo')
             this.myFilterbillform.get('PBillNo').setValue("")
-        if (event == 'PBillNo')
-            this.myFilterbillform.get('PBillNo').setValue("")
+
+        this.onChangeOPBill();
+    }
+
+     ListView(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.CompanyId = value.value
+        else
+            this.CompanyId = 0
 
         this.onChangeOPBill();
     }

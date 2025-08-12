@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { AdmissionPersonlModel, RegInsert } from '../admission.component';
 import { AdmissionService } from '../admission.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-new-admission',
@@ -114,6 +115,8 @@ export class NewAdmissionComponent implements OnInit {
 
   autocompleteModehospital: string = "Hospital";
   showEmergencyFlag: boolean = false;
+  showOPtoIPFlag: boolean = false;
+  public opdList: OpList[] = [];
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
@@ -145,6 +148,7 @@ export class NewAdmissionComponent implements OnInit {
         });
         this.selectChangedepartment(this.registerObj1)
       });
+      this.dsOpList = new MatTableDataSource(this.opdList);
     }
 
     //  if ((this.data?.emgId) > 0) {
@@ -523,6 +527,8 @@ export class NewAdmissionComponent implements OnInit {
     }
 
     this.personalFormGroup.get('medTourismCitizenship').setValue(Number(this.personalFormGroup.get('medTourismCitizenship').value) ?? 0)
+    this.personalFormGroup.removeControl('IsNRI')
+
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
       let submitData = {
@@ -881,5 +887,81 @@ export class NewAdmissionComponent implements OnInit {
       event.preventDefault();
       return false;
     }
+  }
+
+  // op to ip convert code
+  @ViewChild('opTable') opTable!: TemplateRef<any>;
+  public dsOpList = new MatTableDataSource<OpList>();
+  public displayedOpdColumns = ['RegNo','PatientName','DepartmentName','DoctorName'];
+
+  openOPTable(): void {
+    const dialogRef = this._matDialog.open(this.opTable, {
+      width: '40%',
+      height: '60%',
+    });
+     dialogRef.afterClosed().subscribe((selectedRow) => {
+      console.log(selectedRow)
+    // if (selectedRow) {
+    //   this.searchFormGroup.patchValue({
+    //     RegNo: selectedRow.RegNo
+    //   });
+    // }
+  });
+    // let Data = {
+    //   "first": 0,
+    //   "rows": 100,
+    //   "sortField": "RequestTranId",
+    //   "sortOrder": 0,
+    //   "filters": [
+    //     {
+    //       "fieldName": "VisitId",
+    //       "fieldValue": String(this.vOPIPId),//"364435",
+    //       "opType": "Equals"
+    //     }
+    //   ],
+    //   "exportType": "JSON",
+    //   "columns": [
+    //     {
+    //       "data": "string",
+    //       "name": "string"
+    //     }
+    //   ]
+    // }
+    // debugger
+    // this._AdmissionService.getOPDEmrId(Data).subscribe((response) => {
+    //   this.dsOpList.data = response.data;
+    //   console.log(this.dsOpList.data)
+    // });
+  }
+}
+
+export class OpList {
+  DoctorId: number;
+  departmentId:number;
+  patientName:string;
+  ChargeDoctorName: String;
+  ClassId: number;
+  ClassName: string;
+  DoctorName: any;
+  OpdIpdId: any;
+  doctorName: any;
+  doctorId: any;
+  userName:any;
+  regNo:number;
+  regId:number;
+  constructor(OpList) {
+    this.DoctorId = OpList.DoctorId || 0;
+    this.DoctorName = OpList.DoctorName || '';
+    this.ChargeDoctorName = OpList.ChargeDoctorName || '';
+    this.ClassId = OpList.ClassId || 0;
+    this.ClassName = OpList.ClassName || '';
+    this.OpdIpdId = OpList.OpdIpdId || '';
+    this.doctorName = OpList.doctorName || 0;
+    this.doctorId = OpList.doctorId || 0;
+    this.userName = OpList.userName || '';
+    this.patientName = OpList.patientName || '';
+    this.departmentId = OpList.departmentId || '';
+    this.regId = OpList.regId || '';
+    this.regNo = OpList.regNo || '';
   }
 }

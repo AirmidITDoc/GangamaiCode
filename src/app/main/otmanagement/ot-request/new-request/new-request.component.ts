@@ -50,15 +50,15 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   vAge: any;
   //vGenderName: any;
   //vAdmissionTime: any;
-  //vAgeMonth: any;
-  //vAgeDay: any;
+  vAgeMonth: any;
+  vAgeDay: any;
   vDepartment: any;
   vMobNo: any;
   //vPatientType: any;
   //vDOA: any;
   //vstoreId: any = '';
   //vAdmissionID: any;
-
+vIPDNo:any;
 
    screenFromString = 'Common-form';
     opIpId: any;
@@ -66,7 +66,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
   opIpType: number;
   RegId: string;
-
+registerObj: any;
    constructor( public _OtRequestService: OtRequestService,
      public dialogRef: MatDialogRef<NewRequestComponent>,
      @Inject(MAT_DIALOG_DATA) public data: any,
@@ -80,11 +80,37 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
      this.requestForm = this._OtRequestService.createRequestForm();
      this.requestForm.markAllAsTouched();
      
-     if ((this.data?.otbookingId??0) > 0) 
+     if ((this.data?.otBookingId) > 0) 
          {
+          this.registerObj=this.data
+                    console.log(this.registerObj)
+                   
+//this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
+// console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
+          this.vRegNo=this.registerObj.regNo
+          this.vOPDNo=this.registerObj.opdNo
+          this.vIPDNo=this.registerObj.ipdNo
+          this.vPatientName=this.registerObj.patientName
+          this.vAge=this.registerObj.ageYear
+          this.vDepartment=this.registerObj.departmentName
+          this.vMobNo=this.registerObj.mobileNo
+          this.vDoctorName=this.registerObj.doctorName
+          this.vTariffName=this.registerObj.tariffName
+          this.vCompanyName=this.registerObj.companyName
+
+          if(this.registerObj.opIpType==0) {
+             this.vSelectedOption="OP"
+            
+          }
+        else{
+            this.vSelectedOption="IP"
+        }
+  
+          console.log(this.registerObj)
              //this.isActive=this.data.isActive
-             this.requestForm.patchValue(this.data);
-         }
+             this.requestForm.patchValue(this.registerObj);
+         this.selectChangedoctorType(this.registerObj)
+            }
           this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
  patientInfoReset() {
@@ -102,7 +128,10 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     // this.vBedName = '';
     // this.vGenderName = '';
     this.vAge = '';
+    this.vAgeDay='';
+    this.vAgeMonth='';
     this.vDepartment = '';
+    this.vMobNo='';
    // this.vDOA = ''
   }
  dateTimeObj: any;
@@ -151,10 +180,10 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       this.vDepartment = obj.departmentName
     //   this.vAdmissionDate = obj.admissionDate
     //   this.vAdmissionTime = obj.admissionTime
-    //   this.vIPDNo = obj.ipdNo
+       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
+       this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
     //   this.vGenderName = obj.genderName
     //   this.vRefDocName = obj.refDocName
     //   this.vRoomName = obj.roomName
@@ -164,6 +193,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       this.vCompanyName = obj.companyName
     //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
+      this.vMobNo = obj.mobileNo;
     }
   }
   getSelectedObjOP(obj) {
@@ -177,8 +207,8 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
+     this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
     //   this.vGenderName = obj.genderName
     //   this.vRefDocName = obj.refDocName
     //   this.vRoomName = obj.roomName
@@ -190,6 +220,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
+       this.vMobNo = obj.mobileNo;
     }
   }
 
@@ -202,6 +233,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
   this.requestForm.get('opIpId').setValue(this.opIpId);
 //   this.requestForm.get('isCancelledDateTime')?.setValue('1900-01-01');
+    this.requestForm.get('otRequestDate').setValue(this.datePipe.transform(this.requestForm.get('otRequestDate').value, 'yyyy-MM-dd'));
 
      if (!this.requestForm.invalid) {
              console.log(this.requestForm.value)
@@ -227,46 +259,58 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
          }
      }
  selectChangedoctorType(obj: any){
-  const categoryId = obj?.value;
+ 
 
-  if (categoryId) {
-    this._OtRequestService.getSurgeonsByDoctorType(categoryId).subscribe((data: any[]) => {
+  if (obj.value) {
+    this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
       this.surgeonList.options = data ;
        this.surgeonList.bindGridAutoComplete();
-      // Do NOT reset surgeonId — retain selected value even if not found in filtered list
     });
   } else {
-    this.surgeonList.options = [];
-    // Optionally retain surgeonId here too — no reset
+    this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
+      this.surgeonList.options = data;
+      console.log(data)
+                this.surgeonList.bindGridAutoComplete();
+                const incomingDoctorId =  obj.surgeonId;
+                debugger
+                if (incomingDoctorId) {
+                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                    if (matchedDoctor) {
+                        this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
+                    }
+                }
+            
+      
+    });
   }
 }
-
+ 
      getValidationMessages() {
        return {
            DepartmentName: [
                { name: "required", Message: "Department Name is required" },
-               { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              // { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
+              // { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeryCategory: [
                { name: "required", Message: "SurgeryCategory  is required" },
-               { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            Site: [
                { name: "required", Message: "Site Name is required" },
-               { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeryProcedure: [
                { name: "required", Message: "SurgeryProcedure Name is required" },
-               { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
            SurgeonName: [
                { name: "required", Message: "Surgeon Name is required" },
-               { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
+              //  { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
+              //  { name: "pattern", Message: "Special char not allowed." }
            ],
             SurgeryType: [
                { name: "required", Message: "SurgeryType Name is required" },
@@ -280,8 +324,9 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
     this.ref.close();
   }
  onClear(val: boolean) {
-     this.requestForm.reset();
+    // this.requestForm.reset();
      this.dialogRef.close(val);
+     this.requestForm.get('opIpType').setValue('OP')
  }
 }
 

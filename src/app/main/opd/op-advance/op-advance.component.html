@@ -1,0 +1,188 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    OP Search List
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+            <!-- <ng-template #iconPatientCategory let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.patientType =='Self'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
+
+                    <mat-icon *ngIf="element.patientType !== 'Self'" matTooltip="Patient Category Company">business
+                    </mat-icon>
+
+                </div>
+            </ng-template> -->
+
+            <!-- <ng-template #iconBillCancle let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isBillGenerated=='1'; else noMLC " matTooltip="Bill Generated"
+                        class="pill green-600 s-16">
+                    </mat-icon>
+                    <ng-template #noMLC>
+                        <span>--</span>
+                    </ng-template>
+
+                </div>
+            </ng-template> -->
+
+            <!-- <ng-template #iconMlc let-element>
+                <div>
+
+                    <button mat-icon-button *ngIf="element.isMLC==1; else noMLC" matTooltip="IsMLC"
+                        (click)="NewMLc(element)">
+                        <mat-icon>edit</mat-icon>
+
+                    </button>
+                    <ng-template #noMLC>
+                        <span>--</span>
+                    </ng-template>
+                    <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
+                        (click)="getMLCdetailview(element.amissionId)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                </div>
+            </ng-template> -->
+
+
+            <!-- <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <button mat-icon-button (click)="printDischargeslip(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Slip Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/dischargesummary.jpeg"
+                                style="background:-moz-linear-gradient(00,9,22);">
+                        </mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button (click)="printDischargesummary(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Summary Print">
+                        <mat-icon>
+                            <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
+                                style="background-color: transparent;">
+                        </mat-icon>
+
+                    </button>
+
+
+                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
+                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
+                        <mat-icon>
+                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
+                                style="background-color: transparent;">
+                        </mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
+                        <mat-icon style="color: black;">feedback</mat-icon>
+                    </button>
+
+                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                        <mat-icon class="secondary-text">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                            <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                <span>{{m}}</span>
+                            </button>
+                        </ng-container>
+                    </mat-menu>
+                </div>
+            </ng-template> -->
+
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+                <ng-container filters>
+                    <form [formGroup]="myFilterform">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onChangeFirst($event)">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>UHID No</mat-label>
+                            <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="RegNo" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="FirstName"
+                                (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput placeholder="Search Middle Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="MiddleName"
+                                (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
+                            [mode]="autocompleteModedeptdoc">
+                        </airmid-dropdown>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>OPDNo</mat-label>
+                            <input matInput placeholder="Search OPDNo" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="OPDNo" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('OPDNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-slide-toggle name="IsDischarge" (change)="onChangeFirst($event)"
+                            formControlName="IsDischarge" [(ngModel)]="IsDischarge">
+                            IsDischarge
+                        </mat-slide-toggle>
+
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+    </div>
+
+</div>

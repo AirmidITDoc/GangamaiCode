@@ -10,6 +10,7 @@ import { NewRequestComponent } from "./new-request/new-request.component";
 import { DatePipe } from "@angular/common";
 import { FormGroup } from "@angular/forms";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-ot-request',
@@ -38,38 +39,50 @@ export class OTRequestComponent implements OnInit {
   //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+ ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
+    }
+     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  
        allcolumns = [
-        { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
-        { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-        { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+
+        { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8,width: 200 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+       {
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
 
         // {
-        //     heading: "AddedBy", key: "action", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
-        //    template: this.actionButtonTemplate  // Assign ng-template to the column
-        // },
-
-        {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-                {action: gridActions.edit, callback: (data: any) => {
-                        this.OnEditRegistration(data);
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.OnEditRegistration(data);
                      
-                        this.grid.bindGridData();
-                    }}
-                ,
-            {action: gridActions.print, callback: (data: any) => {
-                        this.OnPrint(data);
+        //                 this.grid.bindGridData();
+        //             }}
+        //         ,
+        //     {action: gridActions.print, callback: (data: any) => {
+        //                 this.OnPrint(data);
                      
                        
-                    }}]
-        }
+        //             }}]
+        // }
+        
     ];
   
       allFilters = [
@@ -86,7 +99,7 @@ export class OTRequestComponent implements OnInit {
           sortOrder: 0,
           filters: this.allFilters
       }
-      autocompleteMode: string = "Department";
+     // autocompleteMode: string = "Department";
   
       constructor(
           public _OtRequestService: OtRequestService,
@@ -140,7 +153,41 @@ export class OTRequestComponent implements OnInit {
          OnPrint(Param) {
         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
     } 
+//  OnCancel(Param) {
+//         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+//     } 
+ OnCancel(data) {
+  Swal.fire({
+    title: 'Do you want to cancel OT request?',
+    text: "Please provide a reason for cancellation",
+    icon: "warning",
+    input: 'text',  // Add text box
+    inputPlaceholder: 'Enter cancellation reason...',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Cancel it!",
+    preConfirm: (reason) => {
+      if (!reason || reason.trim() === '') {
+        Swal.showValidationMessage('Reason is required');
+      }
+      return reason;
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let submitData = { 
+        otBookingId: data.otBookingId,
+        cancelReason: result.value // Capture the reason
+      };
+      console.log(submitData);
 
+      this._OtRequestService.OnCancel(submitData).subscribe((res) => {
+        this.grid.bindGridData();
+        Swal.fire('Cancelled!', 'OT request has been cancelled.', 'success');
+      });
+    }
+  });
+}
 
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

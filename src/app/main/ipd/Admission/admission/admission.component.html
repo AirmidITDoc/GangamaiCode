@@ -46,10 +46,17 @@
         <div fxLayout="row" fxLayoutAlign="center center">
             <mat-icon *ngIf="element.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
             </mat-icon>
-
+    
             <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
-            </mat-icon>
-            
+            </mat-icon>    
+        </div>
+    </ng-template>
+
+     <ng-template #actionCompany let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">    
+            <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
+                <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
+            </button>    
         </div>
     </ng-template>
 
@@ -85,13 +92,16 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Print IP Case papaer" (click)="getAdmittedPatientCasepaperview(element,true)">
+            <!-- <button mat-icon-button matTooltip="Print IP Case papaer" (click)="getAdmittedPatientCasepaperview(element,true)">
                 <mat-icon> print</mat-icon>
-            </button>
-
+            </button> -->
 
             <button mat-icon-button matTooltip="Template Print" (click)="getAdmittedPatientCasepaperTempview(element,m)">
                 <mat-icon>print</mat-icon>
+            </button>
+
+             <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                <mat-icon>pages</mat-icon>
             </button>
 
             <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">

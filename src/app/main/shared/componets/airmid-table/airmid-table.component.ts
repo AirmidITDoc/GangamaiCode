@@ -130,9 +130,12 @@ export class AirmidTableComponent implements OnInit {
             'table-row-gray': row === this.selectedRow,
             // You can add more classes dynamically
 
-            'table-row-green': row?.flagAppDone && row.flagAppDone !== '0',
+            // 'table-row-green': row?.flagAppDone && row.flagAppDone !== '0',
 
             'table-row-blue': row?.balanceAmt && row.balanceAmt !== '0',
+
+             // added by raksha on 6/8/25 from reg list
+            'table-row-green': row?.isMark == true,
         }
 
 

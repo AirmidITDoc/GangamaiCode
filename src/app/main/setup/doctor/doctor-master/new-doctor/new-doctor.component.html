@@ -35,8 +35,8 @@
                                     <mat-tab label="Qualification Details"></mat-tab>
                                     <mat-tab label="Schedule Details"></mat-tab>
                                     <mat-tab label="Doctor Charges Details"></mat-tab>
-                                    <mat-tab label="Digital Signature"></mat-tab>
-                                    <mat-tab label="Attachments"></mat-tab>
+                                    <mat-tab label="Digital Signature" *ngIf="isEditMode"></mat-tab>
+                                    <mat-tab label="Attachments" *ngIf="isEditMode"></mat-tab>
                                 </mat-tab-group>
                             </div>
                         </mat-expansion-panel-header>
@@ -733,11 +733,9 @@
                                     <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="column"
                                         fxLayoutGap="10px">
                                         <form [formGroup]="signatureForm">
-
                                             <!-- Title -->
-                                            <span style="font-size: 1.2rem; font-weight: 600;padding: 20;">Page
-                                                Selection For
-                                                Signature:</span>
+                                            <span style="font-size: 1.2rem; font-weight: 600; padding: 20px 0;">Page
+                                                Selection For Signature:</span>
 
                                             <!-- Multi-select Dropdown -->
                                             <airmid-dropdown label="Page" formControlName="pageId"
@@ -755,39 +753,94 @@
                                                     <mat-icon matChipRemove>close</mat-icon>
                                                 </mat-chip>
                                             </mat-chip-listbox>
-
                                         </form>
                                     </div>
 
-                                    <!-- RIGHT SECTION: Signature Preview -->
-                                    <!-- <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                        <div class="photo-capture p-16 border border-radius-4" fxLayout="column"
-                                            fxLayoutAlign="start stretch" fxLayoutGap="12px">
-
-                                            <div class="photp-capture-image">
-                                                <img class="border-radius-4"
-                                                    style="height: 200px; width: 100%; object-fit: contain;"
-                                                    [src]="sanitizeImagePreview ? sanitizeImagePreview : '/assets/images/noimage.jpg'" />
+                                    <!-- RIGHT SECTION: Signature Capture -->
+                                    <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                        <mat-card style="padding: 16px; width: 100%;">
+                                            <!-- Toggle -->
+                                            <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                                                <span style="margin-right: 12px;">Use Signature</span>
+                                                <mat-slide-toggle [(ngModel)]="isFileUpload" color="primary">Select
+                                                    File</mat-slide-toggle>
                                             </div>
 
-                                            <div class="photo-capture-button">
-                                                <button mat-raised-button color="primary" class="w-100"
-                                                    (click)="onViewSignature()">
-                                                    <mat-icon>camera_enhance</mat-icon>
-                                                    <span style="margin-left: 8px;width: auto;">Capture Signature</span>
+                                            <!-- File Upload Section -->
+                                            <div *ngIf="isFileUpload">
+                                                <h3 style="margin-bottom: 16px;">File</h3>
+                                                <div
+                                                    style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+                                                    <div
+                                                        style="display: flex; justify-content: center; align-items: center;">
+                                                        <img [src]="sanitizeImagePreview || '/assets/images/noimage.jpg'"
+                                                            style="height: 250px; width: auto; max-width: 100%; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Signature Drawing Section -->
+                                            <div *ngIf="!isFileUpload"  [class.readonly-wrapper]="true">
+                                                <h3 style="margin-bottom: 16px;">Signature</h3>
+                                                <div
+                                                    style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+                                                    <div
+                                                        style="border: 1px solid grey; border-radius: 5px; display: flex; justify-content: center; align-items: center;">
+                                                        <canvas #signaturePad class="signature-pad" width="400"
+                                                            height="250" style="border-radius: 4px;"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
+                                                <button mat-raised-button color="primary" (click)="loadSignaturePreview()">Refresh
+                                                </button>
+
+                                                <button mat-raised-button color="primary" (click)="editSignature()">Edit
+                                                    <!-- <airmid-signature-icon [refId]="refId" [refType]="refType"
+                                                        [multiple]="true" docName="DoctorSignature"></airmid-signature-icon> -->
                                                 </button>
                                             </div>
 
-                                        </div>
-                                    </div> -->
-                                    <airmid-signature></airmid-signature>
+                                        </mat-card>
+                                    </div>
                                 </div>
-
                             </div>
+
                             <div *ngSwitchCase="5" style="height: 700px; padding: 16px; box-sizing: border-box;">
-                                <airmid-fileupload [multiple]="true" chooseLabel="Upload Doctor's Documents"
-                                    [(files)]="attachedFiles" [refId]="doctorId"></airmid-fileupload>
-                                <!-- Upload Section -->
+                                <div class="file-list">
+                                    <div *ngFor="let file of filteredFiles; let i = index" class="file-item">
+                                        <ng-container *ngIf="getPreview(file.Document); else fileIcon">
+                                            <img [src]="getPreview(file.Document)!" alt="preview" class="preview-img" />
+                                        </ng-container>
+
+                                        <ng-template #fileIcon>
+                                            <mat-icon class="file-icon">{{ getFileIcon(file.docName) }}</mat-icon>
+                                        </ng-template>
+
+                                        <span class="file-name">{{ file.docName }}</span>
+
+                                        <div class="file-actions">
+                                            <button mat-icon-button (click)="downloadFile(file)" title="Download"
+                                                *ngIf="file.id>0">
+                                                <mat-icon>cloud_download</mat-icon>
+                                            </button>
+                                            <!-- <button mat-icon-button color="warn" (click)="removeFile($event,file.srNo)"
+                                                title="Delete">
+                                                <mat-icon>delete</mat-icon>
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
+                                        <button mat-raised-button color="primary" (click)="loadFolderPreview()">Refresh
+                                        </button>
+
+                                        <button mat-raised-button color="primary">Edit
+                                            <airmid-fileupload-icon [refId]="refId" [refType]="refType1"
+                                                [multiple]="true" [title]="'Doctor Master'"></airmid-fileupload-icon>
+                                        </button>
+                                    </div>
+                                </div>
 
                             </div>
                         </ng-container>

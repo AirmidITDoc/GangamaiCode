@@ -67,6 +67,8 @@ export class AppointmentListComponent implements OnInit {
     f_name: any = "%"
     regNo = 0;
     l_name: any = "%"
+    IsMark = "2"
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
@@ -80,6 +82,7 @@ export class AppointmentListComponent implements OnInit {
         // menu Button List
         this.menuActions.push("Update Consultant Doctor");
         this.menuActions.push("Update Referred Doctor");
+        this.menuActions.push("Request For IP");
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -96,7 +99,7 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        debugger
+        // debugger
         this.GetAppointdetail()
     }
 
@@ -187,12 +190,13 @@ export class AppointmentListComponent implements OnInit {
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value
+        this.IsMark = this.myformSearch.get('IsMark').value
         this.getfilterdata();
         // }
     }
 
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -205,7 +209,7 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "Doctor_Id", fieldValue: String(this.DoctorId), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+                { fieldName: "IsMark", fieldValue: this.IsMark, opType: OperatorComparer.Equals }
 
             ]
         }
@@ -387,6 +391,24 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
+        else if (m == "Request For IP") {
+            Swal.fire({
+                title: 'Do you want to convert OP to IP?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    // this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
+                    //     this.toastr.success(response.message);
+                    //     this.grid.bindGridData();
+                    // });
+                }
+            });
+        }
 
     }
 
@@ -451,13 +473,12 @@ export class AppointmentListComponent implements OnInit {
 
     OnPrintPatientIcard(element) {
         console.log('Third action clicked for:', element);
+        this.commonService.Onprint("VisitId", element.visitId, "OPStickerPrint");
     }
 
     OnWhatsAppAppointmentSend(element) {
         console.log('Third action clicked for:', element);
     }
-
-    
 
     AppointmentCancle(contact) {
         Swal.fire({
@@ -643,7 +664,7 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-       debugger
+    //    debugger
         let data =
         {
             "first": 0,

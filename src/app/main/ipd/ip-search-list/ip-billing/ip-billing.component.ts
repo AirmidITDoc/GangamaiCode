@@ -1736,17 +1736,27 @@ checkAdvBalAmt:any=0;
     })  
   }
   AddBedCharge(){ 
+    debugger
       Swal.fire({
         title: 'Do you want to calculate the Bed Charges',
-        text: "Do you want to change the all the rate or not!",
+        text:  "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Change it!"
+        confirmButtonText: "Yes,it !"
       }).then((flag) => {
         if (flag.isConfirmed) {
-
+           var submitData = {
+            "opdIpdId": this.opD_IPD_Id
+           }
+           console.log(submitData)
+           this._IpSearchListService.InsertBedChargesService(submitData).subscribe(response =>{
+          this.toastr.success(response.message);
+          this.getChargesList();
+          this.CalculateAdminCharge();
+          this.CalFinalDiscper();
+           }) 
         }
       })
     } 

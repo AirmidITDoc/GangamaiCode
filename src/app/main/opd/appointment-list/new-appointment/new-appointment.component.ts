@@ -95,7 +95,9 @@ export class NewAppointmentComponent implements OnInit {
     ageDay = 0
     value = new Date()
     // <mat-expansion-panel> default to closed,
-    isExpanded = false; // Defaults to closed
+    isExpanded1 = false; // Defaults to closed
+    isExpanded2 = false;
+    ApiUrl="PhoneAppointment2/auto-complete?Keyword=a"
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -223,6 +225,7 @@ export class NewAppointmentComponent implements OnInit {
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
         this.selectChangedepartment(this.registerObj)
+        // this.getSelectedObjphone()
 
 
         // this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
@@ -232,8 +235,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     setdoctor(data) {
-
-        debugger
+        // debugger
         this._AppointmentlistService.getDoctorsByDepartment(data).subscribe((data: any) => {
             console.log(data)
             this.ddlDoctor.options = data;
@@ -397,7 +399,7 @@ export class NewAppointmentComponent implements OnInit {
     }
     getSelectedObj(obj) {
 
-        debugger
+        // debugger
         if (this.data?.FormName == 'Registration-Page') {
             this.PatientName = obj.firstName + ' ' + obj.lastName;
             this.RegId = obj.regId;
@@ -446,6 +448,8 @@ export class NewAppointmentComponent implements OnInit {
             if ((this.RegId ?? 0) > 0) {
                 console.log(obj)
                 setTimeout(() => {
+                    this.searchFormGroup.get('regRadio')?.setValue('registrered');
+                    this.onChangeReg({ value: 'registrered' });
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
                         console.log(response)
@@ -480,7 +484,7 @@ export class NewAppointmentComponent implements OnInit {
                 }, 100);
             }
         }
-        debugger
+        // debugger
         // this.value=this.registerObj.dateofBirth
         console.log('Bdate', this.value)
         // this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
@@ -506,6 +510,8 @@ export class NewAppointmentComponent implements OnInit {
         });
     }
 
+    vDepId=0;
+    vDocId=0;
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
         console.log("Phone data:", obj)
@@ -527,14 +533,14 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId);
         this.VisitFlagDisp = false;
         this.registerObj = obj;
-        // console.log(obj)
+        this.vDepId=this.registerObj.departmentId
+        this.vDocId=this.registerObj.doctorId
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
                 this.searchFormGroup.get('regRadio')?.setValue('registrered');
                 this.onChangeReg({ value: 'registrered' });
                 this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                     this.registerObj = response;
-                    this.getLastDepartmetnNameList(this.registerObj)
                     this.personalFormGroup.patchValue({
                         FirstName: this.registerObj.firstName,
                         MiddleName: this.registerObj.middleName,
@@ -557,6 +563,8 @@ export class NewAppointmentComponent implements OnInit {
                         medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                         medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                     })
+                    this.VisitFormGroup.get('DepartmentId').setValue(this.vDepId)
+                    this.selectChangedepartmentForPhone(this.vDepId)
                 });
 
             }, 100);
@@ -584,6 +592,21 @@ export class NewAppointmentComponent implements OnInit {
                 });
             }, 500);
         }
+    }
+     selectChangedepartmentForPhone(obj: any) {
+        debugger
+        this._AppointmentlistService.getDoctorsByDepartment(obj).subscribe((data: any) => {
+            // console.log(data)
+            this.ddlDoctor.options = data;
+            this.ddlDoctor.bindGridAutoComplete();
+            const incomingDoctorId = this.vDocId;
+            if (incomingDoctorId) {
+                const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                if (matchedDoctor) {
+                    this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                }
+            }
+        });
     }
 
     onSave() {
@@ -691,6 +714,7 @@ export class NewAppointmentComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.removeControl('updatedBy')
+        this.personalFormGroup.removeControl('IsNRI')
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -752,7 +776,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
         this.VisitFormGroup.removeControl('SubCompanyId');
-        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen'].forEach(control => {
+        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen','IsNRI'].forEach(control => {
             this.personalFormGroup.removeControl(control)
         })
 
@@ -794,7 +818,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     selectChangedepartment(obj: any) {
-        debugger
+        // debugger
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
@@ -1067,6 +1091,9 @@ export class NewAppointmentComponent implements OnInit {
             medTourismDateOfEntry: [''],// [(new Date()).toISOString()],
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+
+            // extra field
+            IsNRI: [false],
         });
     }
 

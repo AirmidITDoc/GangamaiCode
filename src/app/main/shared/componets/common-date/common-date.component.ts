@@ -66,7 +66,7 @@ export class CommonDateComponent implements OnInit {
         } else if (this.screenFromString == 'registration') {
             this.dateLabel = 'Registration Date';
             this.timeLabel = 'Registration Time';
-            this.isDatePckrDisabled = false;
+            this.isDatePckrDisabled = true;
         } else if (this.screenFromString == 'discharge') {
             this.dateLabel = 'Discharge Date';
             this.timeLabel = 'Discharge Time';
@@ -85,7 +85,7 @@ export class CommonDateComponent implements OnInit {
         else if (this.screenFromString == 'appointment') {
             this.dateLabel = 'Visit Date';
             this.timeLabel = 'Visit Time';
-            this.isDatePckrDisabled = false;
+            this.isDatePckrDisabled = true;
         }
         else if (this.screenFromString == 'phoneAppointment') {
             this.dateLabel = 'Phone Appointment Date';
@@ -98,9 +98,9 @@ export class CommonDateComponent implements OnInit {
             this.isDatePckrDisabled = false;
         }
          else if (this.screenFromString == 'OPDEMR') {
-            this.dateLabel = 'OPDEMR Date';
-            this.timeLabel = 'OPDEMR Time';
-            this.isDatePckrDisabled = false;
+            this.dateLabel = 'Date';
+            this.timeLabel = 'Time';
+            this.isDatePckrDisabled = true;
         }
          else if (this.screenFromString == 'Emergency') {
             this.dateLabel = 'Emergency Date';

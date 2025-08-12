@@ -138,6 +138,9 @@ export class AdmissionService {
             medTourismDateOfEntry: [''], //"2025-10-25",
             medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+
+            // extra field
+            IsNRI: [false],
         });
     }
     // this.accountService.currentUserValue.user.unitId
@@ -264,10 +267,12 @@ export class AdmissionService {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
 
-
-
     public getMLCById(Id) {
         return this._httpClient1.GetData("MlcInformation/" + Id);
+    }
+
+    public getCompanyIdDetail(deptId) {
+        return this._httpClient1.GetData("CompanyMaster/" + deptId)
     }
 
     public getstateId(Id) {

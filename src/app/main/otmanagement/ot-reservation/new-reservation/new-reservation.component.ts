@@ -39,6 +39,10 @@ vInstruction: any;
    isActive:boolean=true;
  
  autocompleteModestatus: string = "State";
+  autocompleteModeSurgery: String = "SurgeryMaster";
+   autocompleteModeConDoctor: String = "ConDoctor";
+    autocompleteModeRefDoctor: String = "RefDoctor";
+     autocompleteModeOTTable: String = "OttableMaster";
    // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;

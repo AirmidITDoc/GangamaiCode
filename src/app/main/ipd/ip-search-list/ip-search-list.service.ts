@@ -639,7 +639,7 @@ public getPaymentPrint (paymentid){
   } 
   return this._httpClient1.PutData("IPBill/UpdateAddcharges/"+Id,employee) 
   } 
-  public InsertIPpacakgeAddCharges(employee, loader = true) {
+  public InsertIPpaInsertBedChargesServicecakgeAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
   } 
@@ -1148,8 +1148,13 @@ public getbedbyRoom(deptId) {
  public getRtevIPPackageDetList(param) {
         return this._httpClient1.PostData("IPBill/Retrivepackagedetaillist", param);
     }
-
-
+//Inserting auto bed charges
+  public InsertBedChargesService(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+  return this._httpClient1.PostData("IPBill/AddBedServiceCharge" ,employee)
+  } 
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"
