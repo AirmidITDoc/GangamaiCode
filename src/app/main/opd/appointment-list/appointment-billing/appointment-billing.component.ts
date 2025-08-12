@@ -66,6 +66,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   autocompleteModedeptdoc: string = "ConDoctor";
   autocompleteModeService: string = "Service";
   autocompleteModeConcession: string = "Concession";
+  autocompleteModeGroup: string = "GroupName";
 
   public dataSource = new MatTableDataSource<any>();
   public subscription: Array<Subscription> = [];
@@ -320,7 +321,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       discountPer: [0, [Validators.min(0), Validators.max(100)]],
       discountAmount: [0, [Validators.required, Validators.min(0)]],
       netAmount: [0, [Validators.min(0)]],
-      DoctorID: [0]
+      DoctorID: [0],
+      GroupId:[0]
     });
   }
   //Footer Form

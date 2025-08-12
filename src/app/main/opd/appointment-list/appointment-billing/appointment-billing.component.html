@@ -222,6 +222,12 @@
                                     <div fxLayout="row" fxLayoutGap="5px">
                                         <!-- [disabled]="Regstatus"
                                  [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='" -->
+                                         <div fxFlex="15%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                           <airmid-dropdown label="Group Name" formControlName="GroupId"
+                            [formGroup]="chargeForm" 
+                            [mode]="autocompleteModeGroup"></airmid-dropdown>
+                                        </div>
+                                 
                                         <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
                                             <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm"
                                                 formControlName="serviceName" placeholderText="Enter Service Name"
