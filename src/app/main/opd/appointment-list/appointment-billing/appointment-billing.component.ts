@@ -58,6 +58,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   AgeYear: any;
   ConcessionId = 0;
   ConcessionReason = "";
+  chkIsEditable: boolean = true;
   Regstatus: boolean = true;
   Consessionres: boolean = false;
   savebtn: boolean = true;
@@ -128,6 +129,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.vClassId = this.patientDetail.classId
       this.savebtn = false
       this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
+      this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
     }
 
 
@@ -602,7 +604,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
     }
-    console.log(vdata)
+    //console.log(vdata)
     this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
       this.dsPackageList.data = data.data as ChargesList[];
       this.dsPackageList.data.forEach(element => {
@@ -885,12 +887,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     } else {
       console.log(obj)
       this.SrvcName1 = obj.serviceName;
-      this.serviceId = obj.serviceId;
-      this.vPrice = obj.classRate;
+      this.serviceId = obj.serviceId; 
       this.vQty = 1;
       this.IsPathology = obj.isPathology;
       this.IsRadiology = obj.isRadiology;
       this.vIsPackage = obj.isPackage;
+      this.chargeForm.patchValue({
+        price: obj.classRate
+      })
       if (obj?.creditedtoDoctor == true) {
         this.isDoctor = true;
         this.chargeForm.get('DoctorID').reset();
@@ -902,6 +906,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.chargeForm.get('DoctorID').clearValidators();
         this.chargeForm.get('DoctorID').updateValueAndValidity();
         this.chargeForm.get('DoctorID').disable();
+      }
+      if(obj?.isEditable == true){
+        this.chkIsEditable = false;
+      }else{
+      this.chkIsEditable = true;
       }
       this.serviceSelct = true
     }
@@ -924,6 +933,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     if (this.vOPIPId > 0)
       this.savebtn = false
     this.Regstatus = false
+    this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
   }
   getSelectedTariffObj(event) {
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
@@ -1129,6 +1139,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       tariffId: [
         { name: "pattern", Message: "only Char allowed." }
       ],
+    }
+  }
+  checkCompanypatient(companyId){
+    if(companyId > 0){
+        this.OPFooterForm.get('paymentType').setValue('CreditPay');
+    } else{
+      this.OPFooterForm.get('paymentType').setValue('CashPay'); 
     }
   }
 }

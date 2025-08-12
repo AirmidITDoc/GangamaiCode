@@ -207,7 +207,8 @@
                                                         <span class="patient-col-key">Company Name</span>
                                                         <span>:</span>
                                                         <span
-                                                            class="patient-col-value">{{patientDetail?.companyName}}</span>
+                                                            class="patient-col-value"
+                                                            style="background-color: khaki;">{{patientDetail?.companyName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Ref-Doctor Name</span>
@@ -240,7 +241,7 @@
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                                             <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="chargeForm" [validations]="getValidationMessages().price"
-                                                [type]="'number'" [value]="vPrice">
+                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable">
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -366,12 +367,13 @@
                                                                     *matHeaderCellDef>Price</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field floatLabel="never">
+                                                                    {{contact.Price}}
+                                                                    <!-- <mat-form-field floatLabel="never">
                                                                         <input matInput placeholder="Price"
                                                                             type="number" [(ngModel)]="contact.Price"
                                                                             required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
-                                                                    </mat-form-field>
+                                                                    </mat-form-field> -->
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -379,12 +381,13 @@
                                                                 <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
                                                                 <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field floatLabel="never"
+                                                                    {{contact.Qty}}
+                                                                    <!-- <mat-form-field floatLabel="never"
                                                                         appearance="fill">
                                                                         <input matInput placeholder="Qty" type="number"
                                                                             min="1" [(ngModel)]="contact.Qty" required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
-                                                                    </mat-form-field>
+                                                                    </mat-form-field> -->
                                                                 </mat-cell>
                                                             </ng-container>
 
