@@ -22,6 +22,7 @@ export class OPListService {
      enddate: [(new Date()).toISOString()],
      PBillNo: '', 
       RegNo: '',
+      CompanyId:0
     //  ReceiptNo: '',
     });
   }

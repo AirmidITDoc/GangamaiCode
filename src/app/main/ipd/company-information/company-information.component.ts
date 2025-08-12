@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from '../Admission/admission/admission.component';
 import { AdmissionService } from '../Admission/admission/admission.service';
 import { AdvanceDataStored } from '../advance';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-company-information',
@@ -20,10 +22,20 @@ import { AdvanceDataStored } from '../advance';
 export class CompanyInformationComponent implements OnInit {
   companyFormGroup: FormGroup;
   dateTimeObj: any;
-  screenFromString = 'discharge';
-  selectedAdvanceObj: AdmissionPersonlModel;
-  registerObj: AdmissionPersonlModel;
+  screenFromString = 'Common-form';
+  // registerObj: AdmissionPersonlModel;
   AdmissionID: any;
+  dsCompanyList = new MatTableDataSource<CompanyDetails>();
+  Chargelist: any = [];
+  displayedColumns: string[] = [
+    'EstimateAmt',
+    'ApprovedAmt',
+    'Alentry',
+    'ValidDate',
+    'Remark',
+    'Active',
+    'Action'
+  ]
 
   constructor(
     public _AdmissionService: AdmissionService,
@@ -33,54 +45,60 @@ export class CompanyInformationComponent implements OnInit {
     private dialogRef: MatDialogRef<CompanyInformationComponent>,
     private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private accountService: AuthenticationService,
-
     public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+  ) { }
 
-
-  ) {
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      console.log(this.selectedAdvanceObj);
-
-      this.AdmissionID = this.selectedAdvanceObj.AdmissionID
-
-    }
-  }
-
-  registerObj1 = new CompanyDetails({});
+  registerObj = new CompanyDetails({});
 
   ngOnInit(): void {
     this.companyFormGroup = this.createCompanyForm();
+    this.companyFormGroup.markAllAsTouched();
 
-    // if (this.data) {
-    //   this.registerObj1 = this.data.registerObj;
-    // let Query = "Select * from Admission where  AdmissionID=" + this.AdmissionID + " ";
-    // this._AdmissionService.getCompanyIdDetail(Query).subscribe(data => {
-    //   this.registerObj1 = data[0];
-    //   console.log(this.registerObj1);
-    // });
+    console.log("company data:", this.data.registerObj)
+    this.registerObj = this.data.registerObj
+    if ((this.data?.companyId) > 0) {
+      this._AdmissionService.getCompanyIdDetail(this.data.companyId).subscribe(res => {
+        // this.registerObj = res
+        console.log("company get data:", res);
+      });
+    }
 
+    this.companyFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
+      if (selectedDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // remove time portion
+        const chosen = new Date(selectedDate);
+        chosen.setHours(0, 0, 0, 0);
 
-    // }
-    this.companyFormGroup = this.createCompanyForm();
+        if (chosen < today) {
+          this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+            { toastClass: 'tostr-tost custom-toast-warning' }
+          );
+          this.companyFormGroup.get('validDate')?.setValue(null);
+        }
+      }
+    });
   }
 
-
-
   createCompanyForm() {
-
     return this.formBuilder.group({
-      PolicyNo: [''],
+      PolicyNo: ['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      PolicyLimit: ['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      validDate: [new Date()],
+      dateApproved: [new Date()],
+      reason: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      amt: '',
+      Alentry: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      ApprovalAmt: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      EstimatAmt: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
       MemberNo: [''],
       ClaimNo: [''],
       BillToTpa: '',
       PAdvance: '',
-      EstimatAmt: '',
       ApprovBYTpa: '',
       InvestigationPaid: '',
-      AppHospitalAmt: '',
       DisallowAmt: '',
       NetAmtRefund: '',
       PathAmt: '',
@@ -91,15 +109,12 @@ export class CompanyInformationComponent implements OnInit {
       PharmacyAmt: '',
       RecoverAmtbyPatient: '',
       MedicalAmt: ''
-
-
     });
-
   }
 
-  keyPressCharater(event) {
+  keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -107,6 +122,60 @@ export class CompanyInformationComponent implements OnInit {
     }
   }
 
+  onActiveChange(element: any) {
+    console.log('IsActive changed:', element);
+  }
+
+  onAdd() {
+    if (!this.companyFormGroup.invalid) {
+      this.dsCompanyList.data = [];
+      const selectedDate = this.companyFormGroup.get('dateApproved').value;
+      const formattedDate = selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : '';
+      
+      this.Chargelist.push(
+        {
+          EstimateAmt: this.companyFormGroup.get('EstimatAmt').value || '',
+          ApprovedAmt: this.companyFormGroup.get('ApprovalAmt').value || '',
+          Alentry: this.companyFormGroup.get('Alentry').value || '',
+          ValidDate: formattedDate,
+          Remark: this.companyFormGroup.get('reason').value || ''
+        });
+      this.dsCompanyList.data = this.Chargelist
+      this.companyFormGroup.get('EstimatAmt').reset('');
+      this.companyFormGroup.get('ApprovalAmt').reset('');
+      this.companyFormGroup.get('Alentry').reset('');
+      this.companyFormGroup.get('dateApproved').reset(new Date());
+      this.companyFormGroup.get('reason').reset('');
+    } else {
+      let invalidFields = [];
+      if (this.companyFormGroup.invalid) {
+        for (const controlName in this.companyFormGroup.controls) {
+          if (this.companyFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Company Form: ${controlName}`);
+          }
+        }
+      }
+
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
+
+  deleteTableRow(event, element) {
+    let index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dsCompanyList.data = [];
+      this.dsCompanyList.data = this.Chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
 
   Save() {
     var m_data = {
@@ -116,7 +185,7 @@ export class CompanyInformationComponent implements OnInit {
         "claimNo": this.companyFormGroup.get('ClaimNo').value || "",
         "estimatedAmount": this.companyFormGroup.get('EstimatAmt').value || 0,
         "approvedAmount": this.companyFormGroup.get('ApprovBYTpa').value || 0,
-        "hosApreAmt": this.companyFormGroup.get('AppHospitalAmt').value || 0,
+        "hosApreAmt": this.companyFormGroup.get('ApprovalAmt').value || 0,
         "pathApreAmt": this.companyFormGroup.get('PathAmt').value || 0,
         "PharApreAmt": this.companyFormGroup.get('PharmacyAmt').value || 0,
         "radiApreAmt": this.companyFormGroup.get('RadiAmt').value || 0,
@@ -184,23 +253,50 @@ export class CompanyInformationComponent implements OnInit {
 }
 
 
-
-
 export class CompanyDetails {
   PolicyNo: any;
   MemberNo: any;
-
-  AprovAmount
-  CompDOD
-  IsPharClearance
-  IPNumber
-  EstimatedAmount
-  ApprovedAmount
-  HosApreAmt
-  PathApreAmt
-  PharApreAmt
-  RadiApreAmt
-  PharDisc
+  companyId: any;
+  regNo: any;
+  admissionDate: any;
+  admissionTime: any;
+  ipdno: any;
+  patientName: any;
+  genderName: any;
+  ageDay: any;
+  ageMonth: any;
+  ageYear: any;
+  doctorname: any;
+  roomName: any;
+  bedName: any;
+  refDocName: any;
+  departmentName: any;
+  companyName: any;
+  tariffName: any;
+  patientType: any;
+  policyNo: any;
+  claimNo: any;
+  EstimatAmt: any;
+  BillToTpa: any;
+  InvestigationPaid: any;
+  ApprovalAmt: any;
+  ApprovBYTpa: any;
+  NetAmtRefund: any;
+  PathAmt: any;
+  DisallowAmt: any;
+  RefundAmt: any;
+  RadiAmt: any;
+  DiscByTpa: any;
+  PharmacyAmt: any;
+  DiscByManagement: any;
+  MedicalAmt: any;
+  RecoverAmtbyPatient: any;
+  PolicyLimit: any;
+  validDate: any;
+  Alentry: any;
+  dateApproved: any;
+  reason: any;
+  amt: any;
 
   ClaimNo: any;
   CompBillNo: any;
@@ -234,18 +330,47 @@ export class CompanyDetails {
     {
       this.PolicyNo = CompanyDetails.PolicyNo || '';
       this.MemberNo = CompanyDetails.MemberNo || '';
+      this.companyId = CompanyDetails.companyId || 0
+      this.regNo = CompanyDetails.regNo || 0
+      this.admissionDate = CompanyDetails.admissionDate || new Date()
+      this.ipdno = CompanyDetails.ipdno || 0
+      this.patientName = CompanyDetails.patientName || ''
+      this.genderName = CompanyDetails.genderName || ''
+      this.ageDay = CompanyDetails.ageDay || ''
+      this.ageMonth = CompanyDetails.ageMonth || ''
+      this.ageYear = CompanyDetails.ageYear || ''
+      this.doctorname = CompanyDetails.doctorname || ''
+      this.roomName = CompanyDetails.roomName || ''
+      this.bedName = CompanyDetails.bedName || ''
+      this.refDocName = CompanyDetails.refDocName || ''
+      this.departmentName = CompanyDetails.departmentName || ''
+      this.companyName = CompanyDetails.companyName || ''
+      this.tariffName = CompanyDetails.tariffName || ''
+      this.patientType = CompanyDetails.patientType || ''
+      this.policyNo = CompanyDetails.policyNo || 0
+      this.claimNo = CompanyDetails.claimNo || 0
+      this.EstimatAmt = CompanyDetails.EstimatAmt || 0
+      this.BillToTpa = CompanyDetails.BillToTpa || 0
+      this.InvestigationPaid = CompanyDetails.InvestigationPaid || 0
+      this.ApprovalAmt = CompanyDetails.ApprovalAmt || 0
+      this.ApprovBYTpa = CompanyDetails.ApprovBYTpa || 0
+      this.NetAmtRefund = CompanyDetails.NetAmtRefund || 0
+      this.PathAmt = CompanyDetails.PathAmt || 0
+      this.DisallowAmt = CompanyDetails.DisallowAmt || 0
+      this.RefundAmt = CompanyDetails.RefundAmt || 0
+      this.PolicyLimit = CompanyDetails.PolicyLimit || 0
+      this.validDate = CompanyDetails.validDate || '1900-01-01'
+      this.dateApproved = CompanyDetails.dateApproved || '1900-01-01'
+      this.Alentry = CompanyDetails.Alentry || ''
+      this.reason = CompanyDetails.reason || ''
+      this.amt = CompanyDetails.amt || ''
 
-      this.AprovAmount = CompanyDetails.AprovAmount || '';
-      this.CompDOD = CompanyDetails.CompDOD || '';
-      this.IsPharClearance = CompanyDetails.IsPharClearance || '';
-      this.IPNumber = CompanyDetails.IPNumber || '';
-      this.EstimatedAmount = CompanyDetails.EstimatedAmount || '';
-      this.ApprovedAmount = CompanyDetails.ApprovedAmount || '';
-      this.HosApreAmt = CompanyDetails.HosApreAmt || '';
-      this.PathApreAmt = CompanyDetails.PathApreAmt || '';
-      this.PharApreAmt = CompanyDetails.PharApreAmt || '';
-      this.RadiApreAmt = CompanyDetails.RadiApreAmt || '';
-      this.PharDisc = CompanyDetails.HDiscAmt || '';
+      this.RadiAmt = CompanyDetails.RadiAmt || 0
+      this.DiscByTpa = CompanyDetails.DiscByTpa || 0
+      this.PharmacyAmt = CompanyDetails.PharmacyAmt || 0
+      this.DiscByManagement = CompanyDetails.DiscByManagement || 0
+      this.MedicalAmt = CompanyDetails.MedicalAmt || 0
+      this.RecoverAmtbyPatient = CompanyDetails.RecoverAmtbyPatient || 0
 
       this.ClaimNo = CompanyDetails.ClaimNo || '';
       this.CompBillNo = CompanyDetails.CompBillNo || '';

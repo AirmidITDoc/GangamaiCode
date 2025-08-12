@@ -46,10 +46,17 @@
         <div fxLayout="row" fxLayoutAlign="center center">
             <mat-icon *ngIf="element.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
             </mat-icon>
-
+    
             <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
-            </mat-icon>
-            
+            </mat-icon>    
+        </div>
+    </ng-template>
+
+     <ng-template #actionCompany let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">    
+            <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
+                <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
+            </button>    
         </div>
     </ng-template>
 

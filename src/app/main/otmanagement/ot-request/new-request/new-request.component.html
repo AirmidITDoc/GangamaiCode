@@ -180,8 +180,8 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
   <mat-form-field appearance="outline" style="width: 100%;">
     <mat-label>OT request Date</mat-label>
-    <input matInput [matDatepicker]="requestDatePicker" formControlName="otrequestDate"
-    [formGroup]="requestForm" [value]="registerObj?.otrequestDate">
+    <input matInput [matDatepicker]="requestDatePicker" formControlName="otRequestDate"
+    [formGroup]="requestForm" [value]="registerObj?.otRequestDate">
     <mat-datepicker-toggle matSuffix [for]="requestDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #requestDatePicker></mat-datepicker>
     
@@ -191,7 +191,7 @@
 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
   <mat-form-field appearance="outline" style="width: 100%;">
     <mat-label>OT request Time</mat-label>
-    <input matInput type="time" [formGroup]="requestForm" [value]="registerObj?.otrequestTime" formControlName="otrequestTime">
+    <input matInput type="time" [formGroup]="requestForm" [value]="registerObj?.otbookingTime" formControlName="otbookingTime">
   </mat-form-field>
 </div>
 
@@ -206,7 +206,6 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgery Category" formControlName="surgeryCategoryId"
                                     [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
-                                    [validations]="getValidationMessages(). SurgeryCategory"
                                     [mode]="autocompleteModeSurgeryCategory">
                                 </airmid-dropdown>
                             </div>
@@ -224,15 +223,15 @@
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                                <airmid-dropdown label="Doctor Type" formControlName="categoryId"
-                                    [formGroup]="requestForm" [value]="registerObj?.categoryId"
+                                <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
+                                    [formGroup]="requestForm" [value]="registerObj?.doctorTypeId"
                                     [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                  <airmid-dropdown  label="Surgeon Name" formControlName="surgeonId"
-                                   [value]="requestForm?.get('surgeonId')?.value" [formGroup]="requestForm"
+                                   [value]="registerObj?.surgeonId" [formGroup]="requestForm"
                                    [validations]="getValidationMessages().SurgeonName" #surgeonList>
                                  </airmid-dropdown>
                             </div>

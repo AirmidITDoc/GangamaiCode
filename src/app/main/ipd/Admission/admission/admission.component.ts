@@ -134,6 +134,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -141,6 +142,7 @@ export class AdmissionComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
     this.gridConfig.columnsList.find(col => col.key === 'isOpToIpconv')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
 
   }
 
@@ -158,7 +160,8 @@ export class AdmissionComponent implements OnInit {
     { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14, width: 170 },
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' , width: 170 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120},
+    { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -531,7 +534,6 @@ export class AdmissionComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
-
 
   getMLCdetailview(element) {
 

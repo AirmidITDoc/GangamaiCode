@@ -83,14 +83,17 @@ registerObj: any;
      if ((this.data?.otBookingId) > 0) 
          {
           this.registerObj=this.data
-          
+                    console.log(this.registerObj)
+                   
+//this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
+// console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
           this.vRegNo=this.registerObj.regNo
           this.vOPDNo=this.registerObj.opdNo
           this.vIPDNo=this.registerObj.ipdNo
-          this.vPatientName=this.registerObj.firstName+ " " + this.registerObj.middleName + " " + this.registerObj.lastName
-          this.vAge=this.registerObj.age
+          this.vPatientName=this.registerObj.patientName
+          this.vAge=this.registerObj.ageYear
           this.vDepartment=this.registerObj.departmentName
-          this.vMobNo=this.registerObj.MobNo
+          this.vMobNo=this.registerObj.mobileNo
           this.vDoctorName=this.registerObj.doctorName
           this.vTariffName=this.registerObj.tariffName
           this.vCompanyName=this.registerObj.companyName
@@ -106,7 +109,8 @@ registerObj: any;
           console.log(this.registerObj)
              //this.isActive=this.data.isActive
              this.requestForm.patchValue(this.registerObj);
-         }
+         this.selectChangedoctorType(this.registerObj)
+            }
           this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
  patientInfoReset() {
@@ -189,7 +193,7 @@ registerObj: any;
       this.vCompanyName = obj.companyName
     //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
-      this.vMobNo = obj.MobNo;
+      this.vMobNo = obj.mobileNo;
     }
   }
   getSelectedObjOP(obj) {
@@ -216,7 +220,7 @@ registerObj: any;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
-       this.vMobNo = obj.MobNo;
+       this.vMobNo = obj.mobileNo;
     }
   }
 
@@ -229,7 +233,7 @@ registerObj: any;
   this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
   this.requestForm.get('opIpId').setValue(this.opIpId);
 //   this.requestForm.get('isCancelledDateTime')?.setValue('1900-01-01');
-    this.requestForm.get('otrequestDate').setValue(this.datePipe.transform(this.requestForm.get('otrequestDate').value, 'yyyy-MM-dd'));
+    this.requestForm.get('otRequestDate').setValue(this.datePipe.transform(this.requestForm.get('otRequestDate').value, 'yyyy-MM-dd'));
 
      if (!this.requestForm.invalid) {
              console.log(this.requestForm.value)
@@ -255,20 +259,32 @@ registerObj: any;
          }
      }
  selectChangedoctorType(obj: any){
-  const categoryId = obj?.value;
+ 
 
-  if (categoryId) {
-    this._OtRequestService.getSurgeonsByDoctorType(categoryId).subscribe((data: any[]) => {
+  if (obj.value) {
+    this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
       this.surgeonList.options = data ;
        this.surgeonList.bindGridAutoComplete();
-      // Do NOT reset surgeonId — retain selected value even if not found in filtered list
     });
   } else {
-    this.surgeonList.options = [];
-    // Optionally retain surgeonId here too — no reset
+    this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
+      this.surgeonList.options = data;
+      console.log(data)
+                this.surgeonList.bindGridAutoComplete();
+                const incomingDoctorId =  obj.surgeonId;
+                debugger
+                if (incomingDoctorId) {
+                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                    if (matchedDoctor) {
+                        this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
+                    }
+                }
+            
+      
+    });
   }
 }
-
+ 
      getValidationMessages() {
        return {
            DepartmentName: [

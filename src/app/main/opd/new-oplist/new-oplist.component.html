@@ -123,9 +123,7 @@
                                         (click)=" ClearfilterOPbill('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                </mat-form-field>
-
-                          
+                                </mat-form-field>                          
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>PBillNo</mat-label>
@@ -137,7 +135,6 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
-
                            
                                 <mat-form-field appearance="outline">
                                     <mat-label>UHID</mat-label>
@@ -149,6 +146,10 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
+
+                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myFilterbillform"
+                                    (selectionChange)="ListView($event)" [mode]="autocompleteModecompany"></airmid-dropdown>
+                                    <!-- [(ngModel)]="gridConfig.filters[6].fieldValue"   -->
                             </form>
                         </ng-container>
                     </airmid-table>
