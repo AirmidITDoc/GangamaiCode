@@ -50,11 +50,11 @@
                     formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
                     [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
                   
-                    <!-- <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"
                         (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -63,9 +63,9 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()"/>
+                            formControlName="FirstName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('LastName')">
+                        (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -73,12 +73,12 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" (input)="onChangeFirst()"/>
+                            formControlName="LastName" (input)="onChangeFirst()"/>
                         <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('RegNo')">
+                        (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field> -->
+                    </mat-form-field>
 
                 </form>
             </ng-container>

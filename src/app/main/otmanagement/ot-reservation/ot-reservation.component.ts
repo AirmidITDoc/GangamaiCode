@@ -25,9 +25,9 @@ export class OTReservationComponent implements OnInit {
       
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    f_name: any = ""
+    FirstName: any = ""
     regNo: any = "0"
-    l_name: any = ""
+    LastName: any = ""
     
   
   //   VBillcount = 0;
@@ -76,9 +76,9 @@ export class OTReservationComponent implements OnInit {
     ];
   
       allFilters = [
-        //   { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-        //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+          { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "LastName", fieldValue: "%", opType:OperatorComparer.StartsWith },
+            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
       ]
@@ -128,10 +128,9 @@ export class OTReservationComponent implements OnInit {
        onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-        // this.f_name = this.myFilterform.get('FirstName').value + "%"
-        // this.l_name = this.myFilterform.get('LastName').value + "%"
-        // this.regNo = this.myFilterform.get('RegNo').value || "0"
-        //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
+        this.FirstName = this.myFilterform.get('FirstName').value + "%"
+        this.LastName = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.getfilterdata();
     }
      getfilterdata() {
@@ -141,12 +140,11 @@ export class OTReservationComponent implements OnInit {
             sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
-                // { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
+                { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
+                { fieldName: "RegNo", fieldValue:"0", opType: OperatorComparer.StartsWith },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-                //{ fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
             ],
             row: 25
         }
@@ -162,8 +160,7 @@ export class OTReservationComponent implements OnInit {
                 this.myFilterform.get('LastName').setValue("")
         if (event == 'RegNo')
             this.myFilterform.get('RegNo').setValue("")
-        // if (event == 'MobileNo')
-        //     this.myFilterform.get('MobileNo').setValue("")
+       
 
         this.onChangeFirst();
     }
