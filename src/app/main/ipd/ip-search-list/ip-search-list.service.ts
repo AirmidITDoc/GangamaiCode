@@ -1153,7 +1153,7 @@ public getbedbyRoom(deptId) {
     if (loader) {
       this._loaderService.show();
   } 
-  return this._httpClient1.PostData("IPBill/AddBedServiceCharge" ,employee)
+  return this._httpClient1.PostData("IPBill/AddBedServiceCharges" ,employee)
   } 
 }
 

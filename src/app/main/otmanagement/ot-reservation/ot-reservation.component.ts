@@ -47,16 +47,16 @@ export class OTReservationComponent implements OnInit {
         @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
       
        allcolumns = [
-        { heading: "Status", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
+        { heading: "Date", key: "opdate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
         { heading: "OPDate&Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Surgeon Name1", key: "surgeonId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Surgeon Name2", key: "surgeonId1", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Surgeon Name2", key: "surgenName1", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "OTTableName", key: "ottableId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "AnesthType", key: "AnesthType", sort: true, align: 'left', emptySign: 'NA', width: 130},
         { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
@@ -76,11 +76,12 @@ export class OTReservationComponent implements OnInit {
     ];
   
       allFilters = [
+          { fieldName: "From_Dt", fieldValue: "2025-08-04", opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: "2025-08-05", opType: OperatorComparer.Equals },
           { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "LastName", fieldValue: "%", opType:OperatorComparer.StartsWith },
-            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+          
       ]
       gridConfig: gridModel = {
           apiUrl: "OTReservation/OTBookinglist",
@@ -134,17 +135,19 @@ export class OTReservationComponent implements OnInit {
         this.getfilterdata();
     }
      getfilterdata() {
+        debugger
         this.gridConfig = {
             apiUrl: "OTReservation/OTBookinglist",
             columnsList: this.allcolumns,
             sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
+                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
                 { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
-                { fieldName: "RegNo", fieldValue:"0", opType: OperatorComparer.StartsWith },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "RegNo", fieldValue:"0", opType: OperatorComparer.Equals },
+               
             ],
             row: 25
         }
