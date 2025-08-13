@@ -10,6 +10,11 @@
                 </span>
             </div>
         </div>
+        
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onNew()">New Advacne
+            </button>
+        </div>
     </div>
 
     <div class="content">
@@ -174,10 +179,10 @@
                             </button>
                         </mat-form-field>
 
-                        <mat-slide-toggle name="IsDischarge" (change)="onChangeFirst($event)"
+                        <!-- <mat-slide-toggle name="IsDischarge" (change)="onChangeFirst($event)"
                             formControlName="IsDischarge" [(ngModel)]="IsDischarge">
                             IsDischarge
-                        </mat-slide-toggle>
+                        </mat-slide-toggle> -->
 
                     </form>
                 </ng-container>

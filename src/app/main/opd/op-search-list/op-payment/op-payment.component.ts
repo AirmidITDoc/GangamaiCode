@@ -46,7 +46,7 @@ export class OpPaymentComponent implements OnInit {
       this.patientDetailsFormGrp.get('bankName1').clearValidators();
       this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
-    else if (this.selectedPaymnet1 == 'tds') {
+    else if (this.selectedPaymnet1 == 'tds' || this.selectedPaymnet1 == 'wf') {
       this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('regDate1').clearValidators();
@@ -140,7 +140,7 @@ export class OpPaymentComponent implements OnInit {
     this.patientDetailsFormGrp.get("paymentType1").setValue(null);
     this.BindPaymentTypes();
     this.GetBalanceAmt();
-  }
+  } 
   getNewId() {
     return Math.max(...this.Payments.data.map(o => o.Id), 0) + 1;
   }
@@ -346,11 +346,12 @@ export class OpPaymentComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     this.onAddPayment();
-    if (this.balanceAmt != 0) {
+    
+    if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill') {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return
     }
-    if (this.amount1 != 0) {
+    if (this.amount1 != 0 && this.data?.FromName != 'OP-Bill') {
       let balamt = this.netPayAmt - this.paidAmt
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       return

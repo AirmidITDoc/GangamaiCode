@@ -12,8 +12,7 @@ export class OpAdvanceService {
   myFilterform: FormGroup;
 
   constructor(
-    public _httpClient: HttpClient, 
-    public _httpClient1: ApiCaller,
+    public _httpClient: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
   ) {
@@ -39,4 +38,8 @@ export class OpAdvanceService {
 
     });
   }
+
+   public getRegistraionById(Id) {
+        return this._httpClient.GetData("OutPatient/" + Id);
+    }
 }

@@ -465,17 +465,22 @@ export class PackageDetailsComponent {
         OpPacakgesave['DoctorName'] = element.doctorName || 0;
         this.SavePacList.push(OpPacakgesave)
       });
-      this.dialogRef.close(this.SavePacList)
+      
     } 
     this.vBillWiseTotalAmt = '';
     this.onClose();
   }
   onClose() { 
+     if (this.data.FormName == 'IPD Package')
+    this.dialogRef.close();
+    else
+    this.dialogRef.close(this.SavePacList);
+
     this.SavePacList = [];
     this.PacakgeList = [];
     this.dsPackageDet.data = [];
     this.PacakgeUpdateForm.reset();
-    this.dialogRef.close();
+   
   }
   //doctor editable
   DocenableEditing(row: ChargesList) {
