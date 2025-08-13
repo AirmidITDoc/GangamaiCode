@@ -238,7 +238,7 @@
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef
                                                 class="table-actions">Action</mat-header-cell>
-                                             <mat-cell *matCellDef="let contact">
+                                            <mat-cell *matCellDef="let contact">
                                                 <ng-container class="actions">
                                                     <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
                                                         delete
@@ -258,22 +258,16 @@
                         </mat-card>
                     </div>
 
-
-                    <!-- <div class="detail-container">
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
-                                <div class="detail-header">
-                                    Details
+                    <div class="detail-container" style="margin: 10px 0 10px 0;">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
+                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <strong>Total Approved Amount (Active):</strong>
+                                    {{ getActiveApprovedAmtTotal() }}
                                 </div>
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Active Approved Amount:" formControlName="amt"
-                                            [value]="registerObj.amt || ''" [formGroup]="companyFormGroup"
-                                            [maxLength]="15"></airmid-textbox>
-                                    </div>
-                                </div>
-                            </mat-card>
-                        </div> -->
+                            </div>
+                        </mat-card>
+                    </div>
 
                 </div>
             </div>

@@ -64,6 +64,7 @@ export class CompanyInformationComponent implements OnInit {
       });
     }
 
+    // date validation
     this.companyFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
       if (selectedDate) {
         const today = new Date();
@@ -80,6 +81,12 @@ export class CompanyInformationComponent implements OnInit {
       }
     });
   }
+
+ getActiveApprovedAmtTotal(): number {
+  return this.dsCompanyList.data
+    .filter(row => row.isActive)
+    .reduce((sum, row) => sum + (Number(row.ApprovedAmt) || 0), 0);
+}
 
   createCompanyForm() {
     return this.formBuilder.group({
@@ -297,6 +304,8 @@ export class CompanyDetails {
   dateApproved: any;
   reason: any;
   amt: any;
+  isActive:any;
+ApprovedAmt:any;
 
   ClaimNo: any;
   CompBillNo: any;
@@ -364,6 +373,8 @@ export class CompanyDetails {
       this.Alentry = CompanyDetails.Alentry || ''
       this.reason = CompanyDetails.reason || ''
       this.amt = CompanyDetails.amt || ''
+      this.isActive = CompanyDetails.isActive || ''
+      this.ApprovedAmt = CompanyDetails.ApprovedAmt || ''
 
       this.RadiAmt = CompanyDetails.RadiAmt || 0
       this.DiscByTpa = CompanyDetails.DiscByTpa || 0
