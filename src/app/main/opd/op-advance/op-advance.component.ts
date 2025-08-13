@@ -14,6 +14,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { OpAdvanceService } from './op-advance.service';
+import { NewOpAdvanceComponent } from './new-op-advance/new-op-advance.component';
 
 @Component({
   selector: 'app-op-advance',
@@ -35,7 +36,7 @@ export class OpAdvanceComponent {
   IsDischarge: boolean = false
   autocompleteModedeptdoc: string = "ConDoctor";
 
-@ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   constructor(
     public _opAdvanceService: OpAdvanceService,
     public _matDialog: MatDialog,
@@ -64,8 +65,8 @@ export class OpAdvanceComponent {
     { heading: "Adv Amount", key: "AdvanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Charges Amount", key: "ChargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     {
-        heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 200,
-        // template: this.actionButtonTemplate  // Assign ng-template to the column
+      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 200,
+      // template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
 
@@ -135,7 +136,20 @@ export class OpAdvanceComponent {
     this.onChangeFirst(event);
   }
 
-   getSelectedRow(row: any): void {
-        console.log("Selected row : ", row);
-    }
+  getSelectedRow(row: any): void {
+    console.log("Selected row : ", row);
+  }
+
+  onNew() {
+    const dialogRef = this._matDialog.open(NewOpAdvanceComponent,
+      {
+        maxWidth: "100%",
+        maxHeight: '95%',
+        width: '80%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
+    });
+  }
 }
