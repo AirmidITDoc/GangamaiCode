@@ -45,7 +45,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.patientDetailsFormGrp.get('bankName1').clearValidators();
             this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
         }
-        else if (this.selectedPaymnet1 == 'tds') {
+        else if (this.selectedPaymnet1 == 'tds' || this.selectedPaymnet1 == 'wf') {
             this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
             this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
             this.patientDetailsFormGrp.get('regDate1').clearValidators();

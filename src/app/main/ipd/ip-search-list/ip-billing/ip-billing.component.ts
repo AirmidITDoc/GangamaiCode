@@ -27,6 +27,7 @@ import { IPSearchListService } from '../ip-search-list.service';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component'; 
 import { element } from 'protractor';
 import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
+import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
 
 @Component({
   selector: 'app-ip-billing',
@@ -1702,38 +1703,34 @@ checkAdvBalAmt:any=0;
   }
 
   ChangeTariffname(){
-  Swal.fire({ 
-       title: 'Do you want to change Tariff Name',
-       text: "Do you want to change the all the rate or not!",
-       icon: "warning",
-       showCancelButton: true,
-       confirmButtonColor: "#3085d6",
-       cancelButtonColor: "#d33",
-       confirmButtonText: "Yes, Change it!" 
-    }).then((flag)=>{
-      if(flag.isConfirmed){
-
-      }else{
-
-      }
-    })  
+       const dialogRef =  this._matDialog.open(IPUpdatesComponent,
+        {
+          maxWidth: "40vw",
+          width: '100%',
+          height: "40%",
+          data: {
+            PatientHeaderObj: this.selectedAdvanceObj,
+            FormName:'Update TariffName'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => { 
+            this.getChargesList(); 
+        });  
   }
-    ChangeClassname(){
-      Swal.fire({ 
-       title: 'Do you want to change Class Name',
-       text: "Do you want to change the all the rate or not!",
-       icon: "warning",
-       showCancelButton: true,
-       confirmButtonColor: "#3085d6",
-       cancelButtonColor: "#d33",
-       confirmButtonText: "Yes, Change it!" 
-    }).then((flag)=>{
-      if(flag.isConfirmed){
-
-      }else{
-
-      }
-    })  
+    ChangeClassname(){ 
+       const dialogRef =  this._matDialog.open(IPUpdatesComponent,
+        {
+          maxWidth: "40vw",
+          width: '100%',
+          height: "40%",
+          data: {
+            PatientHeaderObj: this.selectedAdvanceObj,
+            FormName:'Update ClassName'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => { 
+            this.getChargesList(); 
+        }); 
   }
   AddBedCharge(){ 
     debugger
@@ -1750,13 +1747,12 @@ checkAdvBalAmt:any=0;
            var submitData = {
             "opdIpdId": this.opD_IPD_Id
            }
-           console.log(submitData)
-           this._IpSearchListService.InsertBedChargesService(submitData).subscribe(response =>{
-          this.toastr.success(response.message);
-          this.getChargesList();
-          this.CalculateAdminCharge();
-          this.CalFinalDiscper();
-           }) 
+           console.log(submitData) 
+            this._IpSearchListService.AddBedCharges(submitData).subscribe(response => {
+              this.getChargesList();
+            this.CalculateAdminCharge();
+            this.CalFinalDiscper();
+          }) 
         }
       })
     } 

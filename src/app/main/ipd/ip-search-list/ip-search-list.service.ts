@@ -1148,13 +1148,18 @@ public getbedbyRoom(deptId) {
  public getRtevIPPackageDetList(param) {
         return this._httpClient1.PostData("IPBill/Retrivepackagedetaillist", param);
     }
-//Inserting auto bed charges
-  public InsertBedChargesService(employee, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-  } 
-  return this._httpClient1.PostData("IPBill/AddBedServiceCharge" ,employee)
-  } 
+ 
+   public UpdateIpClassName(param) {
+        return this._httpClient1.PostData("IPBill/ClasswiseRatechange", param);
+    }
+       public UpdateIpTariffName(param) {
+        return this._httpClient1.PostData("IPBill/TariffwiseClassRatechange", param);
+    }
+
+
+       public AddBedCharges(param) {
+        return this._httpClient1.PostData("IPBill/AddBedServiceCharge", param);
+    }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

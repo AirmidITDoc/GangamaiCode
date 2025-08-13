@@ -1,0 +1,76 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    {{FormName}}
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <form [formGroup]="IpUpdateForm">
+
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="8px">
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                                <airmid-textbox label="Class Name" formControlName="OldClassId"
+                                    [formGroup]="IpUpdateForm" [validations]="getValidationMessages().OldClassId"
+                                    [type]="'text'" [readonly]="true" fxFlex
+                                    [(ngModel)]="data?.PatientHeaderObj.className" [readonly]="true">
+                                </airmid-textbox>
+
+                                <airmid-textbox label="Tariff Name" formControlName="OldTariffId"
+                                    [formGroup]="IpUpdateForm" [validations]="getValidationMessages().OldTariffId"
+                                    [type]="'text'" [readonly]="true" fxFlex
+                                    [(ngModel)]="data?.PatientHeaderObj.tariffName" [readonly]="true">
+                                </airmid-textbox>
+                            </div>
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                <div fxFlex>
+                                    <airmid-dropdown label="New Class Name" formControlName="NewclassId" [formGroup]="IpUpdateForm"
+                                        aria-placeholder="Select New Class Name" [validations]="getValidationMessages().NewclassId"
+                                        [mode]="autocompleteModeClass"></airmid-dropdown>
+                                </div>
+                            
+                                <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
+                                    <airmid-dropdown label="New Tariff Name" formControlName="NewTariffId" [formGroup]="IpUpdateForm"
+                                        aria-placeholder="Select New Tariff Name" [validations]="getValidationMessages().NewTariffId"
+                                        [mode]="autocompleteModetariff"></airmid-dropdown>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="end">
+        <div class="next-div button-row-group" style="padding-right: 20px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" color="accent" (click)="onSave()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>

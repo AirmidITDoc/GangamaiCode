@@ -1,104 +1,188 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OP Patient Settlement
-                </span>
-            </div>
-        </div>
-    </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <div class="modal-body-container">
-            <mat-card style="padding: 5px;">
-                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
-                        <div class="redio-container" style="padding: 10px;">
-                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
-                                [formGroup]="searchFormGroup" formControlName="RegId"
-                                placeholderText="Search Reg No / Patient Name / Mobile No"
-                                ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
-                                fxFlex="40%"></airmid-autocomplete> 
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label=" OP Patient Settlement">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Patient Settlement
+                            </span>
                         </div>
                     </div>
-                </form>
-            </mat-card>
-
-            <div fxlayout="row" style="padding: 0px 5px 0px 5px">
-                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                    <mat-card style="padding: 5px;">
-                        <div class="patient-info-container">
-                            <div class="patient-info-box">
-                                <div class="patient-info-title border-bottom pb-2">
-                                    <span class="h1">Patient Information</span>
-                                </div>
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row ">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">UHID No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.regNo}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key ">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.patientName}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Age | Gender</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.ageYear}}Y
-                                                {{registerObj.genderId}}</span>
-                                        </div>
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Mobile No</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{registerObj.mobileNo}}</span>
-                                        </div>
-
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <div class="modal-body-container">
+                        <mat-card style="padding: 5px;">
+                            <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                                <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
+                                    <div class="redio-container" style="padding: 10px;">
+                                        <airmid-autocomplete class="w-350"
+                                            label="Search Reg No / Patient Name / Mobile No"
+                                            [formGroup]="searchFormGroup" formControlName="RegId"
+                                            placeholderText="Search Reg No / Patient Name / Mobile No"
+                                            ApiUrl="OutPatient/auto-complete?Keyword="
+                                            (selectionChange)="getSelectedObj($event)"
+                                            fxFlex="40%"></airmid-autocomplete>
                                     </div>
                                 </div>
+                            </form>
+                        </mat-card>
+
+                        <div fxlayout="row" style="padding: 0px 5px 0px 5px">
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <mat-card style="padding: 5px;">
+                                    <div class="patient-info-container">
+                                        <div class="patient-info-box">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="patient-info-box my-8">
+                                                <div class="patient-info-row ">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj.regNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key ">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{registerObj.patientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Gender</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj.ageYear}}Y
+                                                            {{registerObj.genderId}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Mobile No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj.mobileNo}}</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
                             </div>
                         </div>
-                    </mat-card>
-                </div>
-            </div>
-        </div>  
+                    </div>
 
-        <ng-template #actionsTemplate let-element>
-            <div>
-                <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
-                </mat-icon>
+                    <ng-template #actionsTemplate let-element>
+                        <div>
+                            <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
+                            </mat-icon>
 
-                <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
-                </mat-icon>
-            </div>
-        </ng-template>
+                            <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
+                            </mat-icon>
+                        </div>
+                    </ng-template>
 
 
 
-        <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
-                    *ngIf="element.balanceAmt!='0'">
-                    <mat-icon title="Settlement">receipt</mat-icon>
-                </button>
-                <!-- <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                                *ngIf="element.balanceAmt!='0'">
+                                <mat-icon title="Settlement">receipt</mat-icon>
+                            </button>
+                            <!-- <button mat-icon-button matTooltip="Paid" *ngIf="element.balanceAmt=='0'">
                     <mat-icon title="Settlement">payment</mat-icon>
                 </button> -->
 
 
-                <!-- <button mat-icon-button matTooltip="Print Payment Receipt" (click)="viewgetOPPayemntPdf(element,false)">
+                            <!-- <button mat-icon-button matTooltip="Print Payment Receipt" (click)="viewgetOPPayemntPdf(element,false)">
                     <mat-icon> print</mat-icon>
                 </button> -->
+                        </div>
+                    </ng-template>
+
+
+                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                    </airmid-table>
+                </div>
             </div>
-        </ng-template>
+        </mat-tab>
+        <mat-tab label="Multiple Settlement"> 
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Op Multiple Settlement
+                            </span>
+                        </div>
+                    </div>
 
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #opMultiple>
+                        <ng-container filters>
+                            <form [formGroup]="OPMultipleSettlForm">
+                                <airmid-datepicker [formGroup]="OPMultipleSettlForm" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate" ></airmid-datepicker>
 
-        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"> 
-        </airmid-table>
-    </div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="OPMultipleSettlForm" formControlName="FirstName"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="OPMultipleSettlForm" formControlName="LastName"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>                          
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>PBillNo</mat-label>
+                                    <input matInput placeholder="Search PBillNo" autocomplete="off"
+                                        [formGroup]="OPMultipleSettlForm" formControlName="PBillNo" (keypress)="keyPressAlphanumeric($event)"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('PBillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                           
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="OPMultipleSettlForm" formControlName="RegNo" (keypress)="keyPressAlphanumeric($event)"
+                                        (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="OPMultipleSettlForm"
+                                    (selectionChange)="ListView($event)" [mode]="autocompleteModecompany"></airmid-dropdown>
+                                    <!-- [(ngModel)]="gridConfig.filters[6].fieldValue"   -->
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div> 
+        </mat-tab>
+    </mat-tab-group>
 </div>
