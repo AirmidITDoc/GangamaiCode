@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../advance';
@@ -102,6 +102,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Id", fieldValue: "0", opType: OperatorComparer.Equals },
         ],
         row: 25
     }
@@ -117,8 +118,12 @@ export class IPSearchListComponent implements OnInit {
         public datePipe: DatePipe,
         private _configue: ConfigService,
         public toastr: ToastrService,
-        private advanceDataStored: AdvanceDataStored) { }
-
+        private route: ActivatedRoute,
+        private advanceDataStored: AdvanceDataStored) {
+    }
+    IsShowGrid: boolean = false;
+    id:string;
+    mode:string;
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
@@ -172,10 +177,21 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Nursing Note');
 
         }
+        this.id = this.route.snapshot.queryParamMap.get('Id');
+        this.mode = this.route.snapshot.queryParamMap.get('Mode');
+        if (this.mode == "Bill" && Number(this.id)) {
+            this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
+        }
+        this.IsShowGrid = true;
 
     }
 
-
+    handleNotificationEvent(data) {
+        if (this.mode == "Bill" && Number(this.id)) {
+            //this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = id;
+            this.OngetRecord(data,'Bill');
+        }
+    }
     OngetRecord(element, m) {
 
         console.log('Third action clicked for:', element);
@@ -326,7 +342,7 @@ export class IPSearchListComponent implements OnInit {
                 // if (result) {
                 //     this.grid.bindGridData();
                 // }
-                  this.grid.bindGridData();
+                this.grid.bindGridData();
             });
         }
         else if (m == "Bed Transfer") {
@@ -782,11 +798,11 @@ export class ChargesList {
     packageId: any;
     serviceId: any;
     serviceName: any;
-    totalAmt:any;
-    concessionPercentage:any;
-    concessionAmount:any;
-    netAmount:any;
- 
+    totalAmt: any;
+    concessionPercentage: any;
+    concessionAmount: any;
+    netAmount: any;
+
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
