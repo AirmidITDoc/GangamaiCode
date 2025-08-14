@@ -180,12 +180,41 @@
            
                 <input type="hidden" name="otreservationId" formControlName="otreservationId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                   
+<div fxLayout="row" fxLayoutGap="16px" fxFlexFill>
+
+  <div fxFlex="33%">
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>OP Date</mat-label>
+      <input matInput [matDatepicker]="opDatePicker" formControlName="opdate" placeholder="Select date">
+      <mat-datepicker-toggle matSuffix [for]="opDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #opDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="33%">
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>OP Start Time</mat-label>
+      <input matInput type="time" formControlName="opstartTime">
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="33%">
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>OP End Time</mat-label>
+      <input matInput type="time" formControlName="opendTime">
+    </mat-form-field>
+  </div>
+
+</div>
+
                     <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
                        <airmid-dropdown 
                             label="Surgery Name" 
                             formControlName="surgeryId" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.surgeryId" 
                             [validations]="getValidationMessages(). SurgeryName"
                             [mode]="autocompleteModeSurgery">
                         </airmid-dropdown>
@@ -195,7 +224,7 @@
                             label="Surgeron Name 1" 
                             formControlName="surgeonId" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.surgeonId" 
                             [validations]="getValidationMessages(). SurgeronName1"
                             [mode]="autocompleteModeConDoctor">
                         </airmid-dropdown>
@@ -205,7 +234,7 @@
                             label="Surgeon Name 2" 
                             formControlName="surgeonId1" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.surgeonId1" 
                             [validations]="getValidationMessages(). SurgeronName2"
                             [mode]="autocompleteModeConDoctor">
                         </airmid-dropdown>
@@ -215,7 +244,7 @@
                             label="Anathesia doctor 1" 
                             formControlName="anestheticsDr" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.anestheticsDr" 
                             [validations]="getValidationMessages(). Anathesiadoctor1"
                             [mode]="autocompleteModeRefDoctor">
                         </airmid-dropdown>
@@ -225,7 +254,7 @@
                             label="Anathesia doctor 2" 
                             formControlName="anestheticsDr1" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.anestheticsDr1" 
                             [validations]="getValidationMessages(). Anathesiadoctor2"
                             [mode]="autocompleteModeRefDoctor">
                         </airmid-dropdown>
@@ -235,9 +264,9 @@
                             label="OT Table" 
                             formControlName="ottableId" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.ottableId" 
                             [validations]="getValidationMessages(). OTTable"
-                            [mode]="autocompleteModestatus">
+                            [mode]="autocompleteModeOTTable">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
@@ -245,9 +274,9 @@
                             label="Anathesia Type" 
                             formControlName="anesthTypeId" 
                             [formGroup]="reservationForm"
-                            [value]="data?.stateId" 
+                            [value]="registerObj?.anesthTypeId" 
                             [validations]="getValidationMessages(). AnathesiaType"
-                            [mode]="autocompleteModestatus">
+                            [mode]="autocompleteModeAnesthesiatypes">
                         </airmid-dropdown>
                     </div>
                 </div>

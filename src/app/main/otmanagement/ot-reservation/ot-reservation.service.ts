@@ -67,7 +67,9 @@ export class OtReservationService {
              
          });
      }
- 
+ populateForm(param) {
+        // this.personalFormGroup.patchValue(param);
+    }
      initializeFormGroup() {
          this.createReservationForm();
      }

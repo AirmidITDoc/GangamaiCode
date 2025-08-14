@@ -9,6 +9,9 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { OTManagementServiceService } from '../ot-management-service.service';
+import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
+import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -16,620 +19,175 @@ import { OTManagementServiceService } from '../ot-management-service.service';
   templateUrl: './ot-note.component.html',
   styleUrls: ['./ot-note.component.scss']
 })
-export class OTNoteComponent implements OnInit {
+export class OTNoteComponent  {
 
-  personalFormGroup: FormGroup;
+   OTNoteform: FormGroup;
+ opIpType: number;
+ opIpId: any;
 
-  submitted = false;
-  now = Date.now();
-  searchFormGroup: FormGroup;
-  isRegSearchDisabled: boolean = true;
-  newRegSelected: any = 'registration';
-  selectedAdvanceObj: OPIPPatientModel;
-  msg: any = [];
-  DoctorList: any = [];
-  Doctor1List: any = [];
-  Doctor2List: any = [];
-  SurgeryList: any = [];
-  OTtableList: any = [];
-  CategoryList:any=[];
-  Anesthestishdoclist1: any = [];
-  Anesthestishdoclist2: any = [];
-  Today: Date=new Date();
-  registerObj = new OPIPPatientModel({});
-  isLoading: string = '';
-  Prefix: any;
-  OPDate: any;
-  ID: any;
-//   registerObj1 = new OTReservationDetail({});
-
-  IsPathRad: any;
-  PatientName: any = '';
-  OPIP: any = '';
-  
-  Bedname: any = '';
-
-  wardname: any = '';
-  classname: any = '';
-  tariffname: any = '';
-  AgeYear: any = '';
-  ipno: any = '';
-  patienttype: any = '';
-  Adm_Vit_ID: any = 0;
-  public dateValue: Date = new Date();
-  options = [];
-
-  // @Input() panelWidth: string | number;
-  // @ViewChild('multiUserSearch') multiUserSearchInput: ElementRef;
+       vSelectedOption: any = "OP";
 
 
-  screenFromString = 'registration';
-  selectedPrefixId: any;
+ vRegNo: any;
+vPatientName: any;
+vDoctorName: any;
+vTariffName: any;
+vCompanyName: any;
+vAge: any;
+vAgeDay: any;
+vAgeMonth: any;
+vDepartment: any;
+vMobNo: any;
+vOPDNo: any;
+vIPDNo: any;
 
-  // @Input() childName: string[];
-  // @Output() parentFunction: EventEmitter<any> = new EventEmitter();
-  matDialogRef: any;
+autocompleteModestatus: string = "State";
+  autocompleteModeSurgery: String = "SurgeryMaster";
+   autocompleteModeConDoctor: String = "ConDoctor";
+    autocompleteModeRefDoctor: String = "RefDoctor";
+     autocompleteModeOTTable: String = "OttableMaster";
 
-  //doctorone filter
-  public doctoroneFilterCtrl: FormControl = new FormControl();
-  public filteredDoctorone: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctorone filter
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //doctortwo filter
-  public doctortwoFilterCtrl: FormControl = new FormControl();
-  public filteredDoctortwo: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //AnesthDoct filter
-  public AnesthDoctFilterCtrl1: FormControl = new FormControl();
-  public filteredAnesthDoctor1: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-
-  //Category filter
-  public CategoryFilterCtrl1: FormControl = new FormControl();
-  public filteredCategory: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  //AnesthDoct filter
-  public AnesthDoctFilterCtrl2: FormControl = new FormControl();
-  public filteredAnesthDoctor2: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-
-  private _onDestroy = new Subject<void>();
-
-  constructor(
-    public _OtManagementService: OTManagementServiceService,
-    private formBuilder: UntypedFormBuilder,
-    private accountService: AuthenticationService,
-    // public notification: NotificationService,
-    public _matDialog: MatDialog,
-    // @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<OtNotesComponent>,
-    // public datePipe: DatePipe,
-    private advanceDataStored: AdvanceDataStored,
-    private router: Router) { }
-
-
-  ngOnInit(): void {
-    // console.log(this.data)
-    // this.personalFormGroup = this.createOtCathlabForm();
-
-    // if (this.data) {
-
-    //   this.registerObj1 = this.data.PatObj;
-    
-    //   console.log(this.registerObj1);
-
-    //   this.setDropdownObjs1();
-    // }
-
-    this.getSergeryList();
-    this.getOttableList();
-    this.getDoctorList();
-    this.getDoctor1List();
-    this.getDoctor2List();
-    this.getCategoryList();
-    this.getAnesthestishDoctorList1();
-    this.getAnesthestishDoctorList2();
-    // this.addEmptyRow();
-
-    if (this.advanceDataStored.storage) {
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.selectedAdvanceObj = this.advanceDataStored.storage;
-      this.PatientName = this.selectedAdvanceObj.PatientName;
-      this.OPIP = this.selectedAdvanceObj.IP_OP_Number;
-      this.AgeYear = this.selectedAdvanceObj.AgeYear;
-      this.classname = this.selectedAdvanceObj.ClassName;
-      this.tariffname = this.selectedAdvanceObj.TariffName;
-      this.ipno = this.selectedAdvanceObj.IPNumber;
-      this.Bedname = this.selectedAdvanceObj.Bedname;
-      this.wardname = this.selectedAdvanceObj.WardId;
-      // this.Adm_Vit_ID = this.selectedAdvanceObj.OP_IP_ID;
+//       constructor( 
+//           @Inject(MAT_DIALOG_DATA) public data: any,
+         
+//           ) { }
+//            ngOnInit(): void {
+//     // this.reservationForm = this._OtReservationService.createReservationForm();
+//      this.OTNoteform.markAllAsTouched();
+     
+//      if ((this.data?.countryId??0) > 0) 
+//          {
+//              //this.isActive=this.data.isActive
+//              this.OTNoteform.patchValue(this.data);
+//          }
+//  }
+ 
+ onChangeReg(event) {
+    if (event.value == 'OP') {
+      this.opIpType = 0;
+      this.opIpId = "";
     }
-    console.log(this.selectedAdvanceObj);
-    
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.doctoroneFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctorone();
-      });
-
-    this.doctortwoFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctortwo();
-      });
-
-
-    this.AnesthDoctFilterCtrl1.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterAnesthDoctor1();
-      });
-
-      
-    this.CategoryFilterCtrl1.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.filterCategory();
-    });
-
-    this.AnesthDoctFilterCtrl2.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterAnesthDoctor2();
-      });
-
-    setTimeout(function () {
-
-      let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
-      element.click();
-
-    }, 1000);
-
-  }
-
-  closeDialog() {
-    console.log("closed")
-    // this.dialogRef.close();
-    // this.personalFormGroup.reset();
-  }
-  createOtCathlabForm() {
-    return this.formBuilder.group({
-      OTCathLabBokingID: '',
-      TranDate: [new Date().toISOString()],
-      TranTime: [new Date().toISOString()],
-      OP_IP_ID: '',
-      OP_IP_Type: '',
-      OPDate: [new Date().toISOString()],
-      OPTime: [new Date().toISOString()],
-      SurgeryId: '',
-      Duration: '',
-      OTTableId: '',
-      SurgeonId: '',
-      SurgeonId1: ' ',
-      AnestheticsDr: '',
-      AnestheticsDr1: '',
-      Surgeryname: '',
-      ProcedureId: '',
-      AnesthType: '',
-      UnBooking: '',
-      Instruction: '',
-      IsAddedBy: '',
-      OTBookingID: '',
-      Assistantscrub:'',
-      Circulatingstaff:'',
-      AnathesticNAme:'',
-      OtNote:'',
-      Extra:'',
-      Pre:''
-
-    });
-  }
-
-
-  setDropdownObjs1() {
-    ;
-
-    // this._OtManagementService.populateFormpersonal(this.registerObj1);
-
-    // const toSelect = this.SurgeryList.find(c => c.SurgeryId == this.registerObj1.SurgeryId);
-    // this.personalFormGroup.get('SurgeryId').setValue(toSelect);
-
-    console.log(this.DoctorList);
-    console.log(this.OTtableList);
-    console.log(this.Anesthestishdoclist1);
-    console.log(this.Anesthestishdoclist2);
-
-    // const toSurgeonId1 = this.DoctorList.find(c => c.DoctorId == this.registerObj1.SurgeonId);
-    // this._OtManagementService.otreservationFormGroup.get('SurgeonId').setValue(toSurgeonId1);
-
-    // const toOTTableId = this.OTtableList.find(c => c.OTTableId == this.registerObj1.OTTableID);
-    // this._OtManagementService.otreservationFormGroup.get('OTTableId').setValue(toOTTableId);
-
-    // const toSelectAnestheticsDr = this.Anesthestishdoclist1.find(c => c.DoctorId == this.registerObj1.AnestheticsDr);
-    // this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').setValue(toSelectAnestheticsDr);
-
-    // const toSelectAnestheticsDr1 = this.Anesthestishdoclist2.find(c => c.Anesthestishdoclist2 == this.registerObj1.AnestheticsDr1);
-    // this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').setValue(toSelectAnestheticsDr1);
-
-
-
-    this.personalFormGroup.updateValueAndValidity();
-
-
-  }
-
-  // doctorone filter code  
-  private filterDoctor() {
-    if (!this.DoctorList) {
-      return;
+    else if (event.value == 'IP') {
+      this.opIpType = 1;
+      this.opIpId = "";
     }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
+    this.patientInfoReset();
+  }
+
+  patientInfoReset() {
+    this.OTNoteform.get('opIpId').setValue('');
+    this.OTNoteform.get('opIpId').reset();
+    this.vRegNo = '';
+    this.vPatientName = '';
+    // this.vAdmissionDate = '';
+    // this.vAdmissionTime = '';
+    // this.vIPDNo = '';
+    this.vDoctorName = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    // this.vRoomName = '';
+    // this.vBedName = '';
+    // this.vGenderName = '';
+    this.vAge = '';
+    this.vAgeDay='';
+    this.vAgeMonth='';
+    this.vDepartment = '';
+    this.vMobNo='';
+   // this.vDOA = ''
+  }
+
+   getSelectedObjIP(obj) {
+
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment = obj.departmentName
+    //   this.vAdmissionDate = obj.admissionDate
+    //   this.vAdmissionTime = obj.admissionTime
+       this.vIPDNo = obj.ipdNo
+      this.vAge = obj.age
+       this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
+    //   this.vGenderName = obj.genderName
+    //   this.vRefDocName = obj.refDocName
+    //   this.vRoomName = obj.roomName
+    //   this.vBedName = obj.bedName
+    //   this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+    //   this.vDOA = obj.admissionDate
+      this.opIpId = obj.admissionID;
+      this.vMobNo = obj.mobileNo;
     }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
   }
+  getSelectedObjOP(obj) {
 
-
-  // doctorone filter code  
-  private filterDoctorone() {
-
-    if (!this.Doctor1List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctoroneFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctorone.next(
-      this.Doctor1List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // doctorone filter code  
-  private filterDoctortwo() {
-
-    if (!this.Doctor2List) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctortwoFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctortwo.next(this.Doctor2List.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctortwo.next(
-      this.Doctor2List.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  // area filter code  
-  private filterAnesthDoctor1() {
-
-    if (!this.Anesthestishdoclist1) {
-      return;
-    }
-    // get the search keyword
-    let search = this.AnesthDoctFilterCtrl1.value;
-    if (!search) {
-      this.filteredAnesthDoctor1.next(this.Anesthestishdoclist1.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredAnesthDoctor1.next(
-      this.Anesthestishdoclist1.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-
-
-  // area filter code  
-  private filterAnesthDoctor2() {
-    if (!this.Anesthestishdoclist2) {
-      return;
-    }
-    // get the search keyword
-    let search = this.AnesthDoctFilterCtrl2.value;
-    if (!search) {
-      this.filteredAnesthDoctor2.next(this.Anesthestishdoclist2.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredAnesthDoctor2.next(
-      this.Anesthestishdoclist2.filter(bank => bank.DoctorName.toLowerCase().indexOf(search) > -1)
-    );
-
-
-  }
-
-  
-  // area filter code  
-  private filterCategory() {
-
-    if (!this.CategoryList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.CategoryFilterCtrl1.value;
-    if (!search) {
-      this.filteredCategory.next(this.CategoryList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredCategory.next(
-      this.CategoryList.filter(bank => bank.SurgeryCategoryName.toLowerCase().indexOf(search) > -1)
-    );
-
-  }
-
-  ngOnDestroys() {
-    // this.isAlive = false;
-  }
-
-
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj ==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-
-  getOttableList() {
-    this._OtManagementService.getOTtableCombo().subscribe(data => { this.OTtableList = data; })
-  }
-
-
-  getSergeryList() {
-    this._OtManagementService.getSurgeryCombo().subscribe(data => { this.SurgeryList = data; })
-  }
-
-
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegId + ')';
-  }
-
-
-
-  getAnesthestishDoctorList1() {
-    this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
-      this.Anesthestishdoclist1 = data;
-      console.log(data);
-      this.filteredAnesthDoctor1.next(this.Anesthestishdoclist1.slice());
-
-    })
-  }
-
-
-  getAnesthestishDoctorList2() {
-    this._OtManagementService.getAnesthestishDoctorCombo().subscribe(data => {
-      this.Anesthestishdoclist2 = data;
-      console.log(data);
-      this.filteredAnesthDoctor2.next(this.Anesthestishdoclist2.slice());
-
-    })
-  }
-
-
-  // getDoctor1List() {
-  //   this._registerService.getDoctorMaster1Combo().subscribe(data => { this.Doctor1List = data; })
-  // }
-
-
-  getDoctorList() {
-    this._OtManagementService.getDoctorMaster().subscribe(
-      data => {
-        this.DoctorList = data;
-        console.log(data)
-        // data => {
-        //   this.DoctorList = data;
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
-  }
-
-  getDoctor1List() {
-
-    this._OtManagementService.getDoctorMaster1Combo().subscribe(data => {
-      this.Doctor1List = data;
-      console.log(this.Doctor1List);
-      this.filteredDoctorone.next(this.Doctor1List.slice());
-    })
-  }
-
-  getDoctor2List() {
-    this._OtManagementService.getDoctorMaster2Combo().subscribe(data => {
-      this.Doctor2List = data;
-      this.filteredDoctortwo.next(this.Doctor2List.slice())
-    })
-  }
-
-  
-  getCategoryList() {
-    this._OtManagementService.getCategoryCombo().subscribe(data => {
-      this.CategoryList = data;
-      console.log(data);
-      this.filteredCategory.next(this.CategoryList.slice());
-
-    })
-  }
-
-
-
-
-  searchPatientList() {
-    // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
-    //   {
-    //     maxWidth: "90%",
-    //     height: "530px !important ", width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     console.log(result);
-    //     this.registerObj = result as OPIPPatientModel;
-    //     if (result) {
-    //       this.PatientName = this.registerObj.PatientName;
-    //       this.OPIP = this.registerObj.IP_OP_Number;
-    //       this.AgeYear = this.registerObj.AgeYear;
-    //       this.classname = this.registerObj.ClassName;
-    //       this.tariffname = this.registerObj.TariffName;
-    //       this.ipno = this.registerObj.IPNumber;
-    //       this.Bedname = this.registerObj.Bedname;
-    //       this.wardname = this.registerObj.WardId;
-    //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
-    //     }
-    //   }
-    //   // console.log(this.registerObj);
-    // });
-  }
-
-  onClose() {
-    // this.dialogRef.close();
-  }
-
-
-  onSubmit() {
-    ;
-    // let otBookingID = this.registerObj1.OTBookingID;
-
-    this.isLoading = 'submit';
-
-    if (this.Adm_Vit_ID) {
-    //   if (!otBookingID) {
-    //     var m_data = {
-    //       "otTableBookingDetailInsert": {
-    //         "OTBookingID": 0,// this._registerService.mySaveForm.get("RegId").value || "0",
-    //         "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-    //         "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-    //         "oP_IP_ID": this.Adm_Vit_ID,// this._OtManagementService.otreservationFormGroup.get('OP_IP_ID').value | 0,
-    //         "oP_IP_Type": 1,
-    //         "opDate":this.dateTimeObj.date,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-    //         "opTime":this.dateTimeObj.time,// this.datePipe.transform(this._OtManagementService.otreservationFormGroup.get("OPDate").value,"yyyy-MM-dd 00:00:00.000"),
-    //         "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-    //         "otTableID":1,// this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-    //         "surgeonId": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-    //         "surgeonId1": 1,//this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
-    //         "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
-    //         "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
-    //         "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || '',// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
-    //         "procedureId": 0,
-    //         "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
-    //         "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
-    //         // "PatientName": this.PatientName || '',
-    //         "isAddedBy": this.accountService.currentUserValue.userId || 0,
-    //         "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-    //         // "isNormalOrFuture": 0
-
-    //       }
-    //     }
-    //     console.log(m_data);
-    //     this._OtManagementService.ReservationInsert(m_data).subscribe(response => {
-    //       if (response) {
-    //         this._OtManagementService
-    //         Swal.fire('Congratulations !', 'OT Note  Data save Successfully !', 'success').then((result) => {
-    //           if (result.isConfirmed) {
-    //             this._matDialog.closeAll();
-    //             //  this.addEmptyRow();
-
-    //           }
-    //         });
-    //       } else {
-    //         Swal.fire('Error !', 'Ot Note Data  not saved', 'error');
-    //       }
-
-    //     });
-    //   }
-    //   else {
-    //     ;
-    //     var m_data1 = {
-    //       "otTableBookingDetailUpdate": {
-    //         "OTBookingID": otBookingID,
-    //         "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
-    //         "tranTime": this.dateTimeObj.time, // this._registerService.mySaveForm.get("RegTime").value || "2021-03-31T12:27:24.771Z",
-    //         "opDate": this.dateTimeObj.date,// this.datePipe.transform(this.personalFormGroup.get('OPDate').value,"yyyy-Mm-dd") ,// this.dateTimeObj.date,//
-    //         "opTime": this.dateTimeObj.time,
-    //         "duration": this._OtManagementService.otreservationFormGroup.get('Duration').value || 0,
-    //         "otTableID": this._OtManagementService.otreservationFormGroup.get('OTTableId').value.OTTableId || 0,
-    //         "surgeonId": this._OtManagementService.otreservationFormGroup.get('SurgeonId').value.DoctorId || 0,
-    //         "surgeonId1": this._OtManagementService.otreservationFormGroup.get('SurgeonId1').value.DoctorID || 0,
-    //         "anestheticsDr": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr').value.DoctorId || 0,
-    //         "anestheticsDr1": this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value ? this._OtManagementService.otreservationFormGroup.get('AnestheticsDr1').value.DoctorId : 0,
-    //         "surgeryname": this._OtManagementService.otreservationFormGroup.get('SurgeryId').value.SurgeryName || 0,// ? this.personalFormGroup.get('SurgeryId').value.SurgeryId : 0,
-    //         "procedureId": 0,
-    //         "anesthType": this._OtManagementService.otreservationFormGroup.get('AnesthType').value || '',
-    //         "instruction": this._OtManagementService.otreservationFormGroup.get('Instruction').value || '',
-    //         // "PatientName": this.PatientName || '',
-    //         "IsUpdatedBy": this.accountService.currentUserValue.userId || 0,
-    //         "unBooking": false,// Boolean(JSON.parse(this.personalFormGroup.get("IsCharity").value)) || "0",
-            
-
-    //       }
-    //     }
-    //     console.log(m_data1);
-    //     this._OtManagementService.ReservationUpdate(m_data1).subscribe(response => {
-    //       if (response) {
-    //         Swal.fire('Congratulations !', 'OT NOTE Data Updated Successfully !', 'success').then((result) => {
-    //           if (result.isConfirmed) {
-    //             this._matDialog.closeAll();
-    //           }
-    //         });
-    //       } else {
-    //         Swal.fire('Error !', 'OT Note Data  not saved', 'error');
-    //       }
-    //     });
-    //   }
+    if ((obj.regId ?? 0) > 0) {
+      console.log("Visite Patient:", obj)
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vDepartment = obj.departmentName
+    //   this.vAdmissionDate = obj.admissionDate
+    //   this.vAdmissionTime = obj.admissionTime
+      this.vOPDNo = obj.opdNo
+      this.vAge = obj.age
+     this.vAgeMonth = obj.ageMonth
+       this.vAgeDay = obj.ageDay
+    //   this.vGenderName = obj.genderName
+    //   this.vRefDocName = obj.refDocName
+    //   this.vRoomName = obj.roomName
+    //   this.vBedName = obj.bedName
+    //   this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+      let nameField = obj.formattedText;
+      let extractedName = nameField.split('|')[0].trim();
+      this.vPatientName = extractedName;
+      this.opIpId = obj.visitId;
+       this.vMobNo = obj.mobileNo;
     }
   }
 
-
-
-
+   getValidationMessages() {
+       return {
+           SurgeryName: [
+               { name: "required", Message: "Surgery Name is required" },
+               { name: "maxlength", Message: "Surgery Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeronName1: [
+               { name: "required", Message: "Surgeron Name 1 is required" },
+               { name: "maxlength", Message: "Surgeron Name 1 should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           SurgeronName2: [
+               { name: "required", Message: "Surgeron Name 2 is required" },
+               { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           Anathesiadoctor1: [
+               { name: "required", Message: "Anathesia doctor 1 Name is required" },
+               { name: "maxlength", Message: "Anathesia doctor 1 Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           Anathesiadoctor2: [
+               { name: "required", Message: "Anathesia doctor 2 Name is required" },
+               { name: "maxlength", Message: "Anathesia doctor 2 Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           OTTable: [
+               { name: "required", Message: "OT Table Name is required" },
+               { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+           AnathesiaType: [
+               { name: "required", Message: "Anathesia Type is required" },
+               { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
+               { name: "pattern", Message: "Special char not allowed." }
+           ],
+       };
+   }
 }
 

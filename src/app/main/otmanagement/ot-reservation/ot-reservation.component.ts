@@ -10,6 +10,7 @@ import { FormGroup } from "@angular/forms";
 import { NewReservationComponent } from "./new-reservation/new-reservation.component";
 import { OtReservationService } from "./ot-reservation.service";
 import { DatePipe } from "@angular/common";
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
 
 @Component({
   selector: 'app-ot-reservation',
@@ -36,34 +37,38 @@ export class OTReservationComponent implements OnInit {
   // VAdmissioncount = 0;
   //  VNewcount = 0;
       @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+         @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
   ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
-       //  this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
      @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
         @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
       
        allcolumns = [
+        { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "Date", key: "opdate", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
         { heading: "OPDate&Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Surgeon Name2", key: "surgenName1", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Surgeon Name2", key: "surgenName1", sort: true, align: 'left', emptySign: 'NA',width: 250 },
+        { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA' , width: 250},
+        { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AnesthType", key: "AnesthType", sort: true, align: 'left', emptySign: 'NA', width: 130},
-        { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
 
 
         {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-           // template: this.actionButtonTemplate  // Assign ng-template to the column
+           template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
         // {
@@ -95,6 +100,7 @@ export class OTReservationComponent implements OnInit {
       constructor(
           public _OtReservationService: OtReservationService,
           public toastr: ToastrService, public _matDialog: MatDialog,
+         private commonService: PrintserviceService,
           public datePipe: DatePipe
       ) { }
   
@@ -124,7 +130,27 @@ export class OTReservationComponent implements OnInit {
               }
           });
       }
-  
+
+
+   OnEditRegistration(row) {
+               this._OtReservationService.populateForm(row);
+               const dialogRef = this._matDialog.open(
+                   NewReservationComponent,
+                   {
+                       maxWidth: "95vw",
+                       maxHeight: '90%',
+                       width: '94%',
+                       data: row
+                   }
+               );
+               dialogRef.afterClosed().subscribe((result) => {
+                   console.log("The dialog was closed - Insert Action", result);
+                   this.grid.bindGridData();
+               });
+           }
+           OnPrint(Param) {
+          this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+      } 
      
        onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
