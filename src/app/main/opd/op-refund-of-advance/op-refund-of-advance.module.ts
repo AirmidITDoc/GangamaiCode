@@ -42,6 +42,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { OpRefundOfAdvanceComponent } from './op-refund-of-advance.component';
+import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-of-advance.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OpRefundOfAdvanceComponent],
+  declarations: [OpRefundOfAdvanceComponent, NewRefundOfAdvanceComponent],
    imports: [
          CommonModule,
          RouterModule.forChild(routes),

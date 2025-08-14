@@ -1,1 +1,165 @@
-<p>browse-op-advance works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <!-- 1st -->
+        <mat-tab label="OP Browse Advance List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionButtonTemplateone let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="OPD Advance"
+                                (click)="OnAdvanceViewReportPdf(element,true)">
+                                <mat-icon> print</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Send message On WhatsApp"
+                                (click)="whatsappAppoitment(element)">
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig" class="content" #opBrowse>
+                        <ng-container filters>
+                            <form [formGroup]="_BrowseOpAdvanceService.UserFormGroup">
+                                <airmid-datepicker [formGroup]="_BrowseOpAdvanceService.UserFormGroup"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Advance No</mat-label>
+                                    <input matInput placeholder="Search Advance No" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.UserFormGroup" formControlName="PBillNo"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('PBillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.UserFormGroup" formControlName="RegNo"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.UserFormGroup" formControlName="FirstName"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.UserFormGroup" formControlName="LastName"
+                                        (input)="onChangeAdvance()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvance('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                             
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- 2nd -->
+        <mat-tab label="OP Refund Of Advance">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <ng-template #actionButtonTemplateone let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button mat-icon-button matTooltip="OPD Refund Of Advance" (click)="getAdvreturnview(element,true)">
+                            <mat-icon> print</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Send message On WhatsApp"
+                            (click)="whatsappAppoitment(element)">
+                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                        </button>
+                    </div>
+                </ng-template>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button (click)="getAdvreturnview(element)"
+                                matTooltip="OPD Return Advance Receipt">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #opRefund>
+                        <ng-container filters>
+                            <form [formGroup]="_BrowseOpAdvanceService.AdvanceOfRefund">
+                                <airmid-datepicker [formGroup]="_BrowseOpAdvanceService.AdvanceOfRefund"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue"></airmid-datepicker>
+
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.AdvanceOfRefund" formControlName="RegNo"
+                                        (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.AdvanceOfRefund"
+                                        formControlName="FirstName" (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="_BrowseOpAdvanceService.AdvanceOfRefund" formControlName="LastName"
+                                        (input)="onChangeAdvanceOfRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterAdvanceOfRefund('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

@@ -9,8 +9,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { CanteenRequestService } from './canteen-request.service';
 import { NewCanteenRequestComponent } from './new-canteen-request/new-canteen-request.component';
-
-
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-canteen-request',
@@ -48,7 +47,9 @@ export class CanteenRequestComponent implements OnInit {
         ]
 
         
-    constructor(public _CanteenRequestService: CanteenRequestService, public _matDialog: MatDialog, private _formBuilder: FormBuilder,
+    constructor(public _CanteenRequestService: CanteenRequestService, 
+        public _matDialog: MatDialog, private _formBuilder: FormBuilder,
+        private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
     ngOnInit(): void {
         this.myFilterform = this.filterForm()
@@ -133,7 +134,9 @@ export class CanteenRequestComponent implements OnInit {
         this.grid1.bindGridData();
     }
     
-    onPrint() { }
+    onPrint(element) { 
+        this.commonService.Onprint("ReqId", element.reqId, "CanteenRequestprint");
+    }
 
     NewRequest(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

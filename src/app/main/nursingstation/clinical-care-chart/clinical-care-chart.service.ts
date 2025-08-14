@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class ClinicalCareChartService {
 
   constructor(
     public _formbuilder:UntypedFormBuilder,
-    public _httpClient:HttpClient
+    public _httpClient:HttpClient,
+    public _httpClient1:ApiCaller
   )
    { this.MyForm = this.createMyForm(),
      this.VitalsForm = this.createVitalsForm(),
@@ -160,5 +162,9 @@ export class ClinicalCareChartService {
     public getPatientList(param){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
     }
+
+     public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
   
 }
