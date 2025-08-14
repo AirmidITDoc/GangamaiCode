@@ -53,7 +53,9 @@ createIPUpdateForm(){
     NewclassId:[''],
     OldClassId:[''],
     OldTariffId:[''],
-    NewTariffId:['']
+    NewTariffId:[''],
+    fromDate:[new Date()],
+    enddate:[new Date()]
   })
 }
 ClassChangeForm(){
@@ -101,6 +103,7 @@ ClassChangeForm(){
           this.IpClassChangeForm.get('ClassChangeForm.tariffId').setValue(this.registerObj?.tariffId)
           this.IpClassChangeForm.get('ClassChangeForm.opdIpdId').setValue(this.registerObj?.admissionId)
           this.IpClassChangeForm.get('ClassChangeForm.newClassId').setValue(FormValue?.NewclassId)
+          console.log(this.IpClassChangeForm.value.ClassChangeForm)
           this._IpSearchListService.UpdateIpClassName(this.IpClassChangeForm.value.ClassChangeForm).subscribe(response => {
             this.onClose();
           })
@@ -128,7 +131,7 @@ ClassChangeForm(){
           this.IpClassChangeForm.get('TariffChangeForm.opdIpdId').setValue(this.registerObj?.admissionId)
           this.IpClassChangeForm.get('TariffChangeForm.newClassId').setValue(FormValue?.NewclassId)
           this.IpClassChangeForm.get('TariffChangeForm.newTariffId').setValue(FormValue?.NewTariffId)
-
+           console.log(this.IpClassChangeForm.value.TariffChangeForm)
           this._IpSearchListService.UpdateIpTariffName(this.IpClassChangeForm.value.TariffChangeForm).subscribe(response => {
             this.onClose();
           })
