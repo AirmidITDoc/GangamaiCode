@@ -224,6 +224,7 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm = this.CreateIPBillForm();
         this.draftSaveform = this.createDraftSaveForm();
         this.IpbillFooterform.markAllAsTouched();
+        debugger
         if (this.data) {
             this.selectedAdvanceObj = this.data.Obj;
             console.log(this.selectedAdvanceObj)
@@ -260,12 +261,14 @@ export class IPBillingComponent implements OnInit {
             this.IpbillFooterform.get('CreditBill').setValue(false);
         }
 
-        this.setupFormListener();
         let id = this.route.snapshot.queryParamMap.get('Id');
         let mode = this.route.snapshot.queryParamMap.get('Mode');
         if (mode == "Bill" && Number(id) > 0) {
-            this.openServiceTable();
+            setTimeout(() => {
+                this.openServiceTable();
+            }, 1000);
         }
+        this.setupFormListener();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -906,7 +909,6 @@ export class IPBillingComponent implements OnInit {
     //Admin calculation
     AdminShowAmt: any;
     CalculateAdminCharge() {
-        // debugger
         let finalNetAmt = 0
         let finalDiscAmt = 0
         let discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
@@ -956,7 +958,6 @@ export class IPBillingComponent implements OnInit {
     }
     // Total Bill Disc Per cal 
     CalFinalDiscper() {
-        // debugger
         let netAmount = this.FinalNetAmt;
         const perControl = this.IpbillFooterform.get("totaldiscPer");
         let discper = perControl.value;
@@ -1006,7 +1007,6 @@ export class IPBillingComponent implements OnInit {
     //Total Bill DiscAMt cal
     vTotalAmount: any;
     getDiscAmtCal() {
-        // debugger
         const perControl = this.IpbillFooterform.get("totalconcessionAmt");
         let netAmount = this.FinalNetAmt;
         let totalAmount = this.TotalShowAmt;
@@ -1053,7 +1053,6 @@ export class IPBillingComponent implements OnInit {
     }
     //Save PopUp MSG
     onSave() {
-        debugger
         let invalidFields = [];
         if (this.IpbillFooterform.invalid) {
             for (const controlName in this.IpbillFooterform.controls) {
@@ -1234,7 +1233,6 @@ export class IPBillingComponent implements OnInit {
     }
     //Save with credit
     onSaveDraft() {
-        debugger
         this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
         this.draftSaveform.get('tDrbill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value)
         this.draftSaveform.get('tDrbill.netPayableAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)

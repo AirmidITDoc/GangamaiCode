@@ -119,11 +119,12 @@ export class IPSearchListComponent implements OnInit {
         private _configue: ConfigService,
         public toastr: ToastrService,
         private route: ActivatedRoute,
+        private router: Router,
         private advanceDataStored: AdvanceDataStored) {
     }
     IsShowGrid: boolean = false;
-    id:string;
-    mode:string;
+    id: string;
+    mode: string;
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
@@ -189,7 +190,7 @@ export class IPSearchListComponent implements OnInit {
     handleNotificationEvent(data) {
         if (this.mode == "Bill" && Number(this.id)) {
             //this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = id;
-            this.OngetRecord(data,'Bill');
+            this.OngetRecord(data[0], 'Bill');
         }
     }
     OngetRecord(element, m) {
@@ -342,7 +343,10 @@ export class IPSearchListComponent implements OnInit {
                 // if (result) {
                 //     this.grid.bindGridData();
                 // }
+                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
+                const currentPath = this.router.url.split('?')[0];
                 this.grid.bindGridData();
+                this.router.navigate([currentPath], { queryParams: {} });
             });
         }
         else if (m == "Bed Transfer") {

@@ -125,7 +125,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
-                this.notifications.unshift({ notiTitle: data.NotiTitle, notiBody: data.NotiBody, id: data.Id, createdDate: data.CreatedDate });
+                this.notifications.unshift({ notiTitle: data.NotiTitle, notiBody: data.NotiBody, id: data.Id, createdDate: data.CreatedDate, redirectUrl: data.RedirectUrl });
                 this.unreadCount++;
             }
         });
