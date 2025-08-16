@@ -145,6 +145,7 @@ export class IPSearchListComponent implements OnInit {
                 this.menuActions.push('Discharge Summary Template');
             else
                 this.menuActions.push('Discharge Summary');
+                this.menuActions.push('Discharge Summary Template');
 
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
