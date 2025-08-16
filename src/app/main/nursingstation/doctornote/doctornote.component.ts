@@ -16,6 +16,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
 
 @Component({
   selector: 'app-doctornote',
@@ -90,6 +91,7 @@ export class DoctornoteComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
+       private commonService: PrintserviceService,
   ) {}
 
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
@@ -275,6 +277,7 @@ export class DoctornoteComponent implements OnInit {
         // this.initializeGridConfig()
         this.grid.bindGridData();
         this.onClear();
+        this.ViewDoctorNote(response);
       });
     } else {
       let invalidFields = [];
@@ -295,6 +298,9 @@ export class DoctornoteComponent implements OnInit {
     }
   }
 
+     ViewDoctorNote(element) {
+        this.commonService.Onprint("AdmId", element, "DoctorNotesReceipt");
+    }
   onSubmitHandOver() {
     debugger
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {

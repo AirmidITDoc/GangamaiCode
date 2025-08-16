@@ -298,6 +298,10 @@ export class AdmissionService {
     public CompanyUpdate(param) {
         return this._httpClient1.PostData("VisitDetail/DeptDoctorList", param)
     }
+
+     public getVisitlist(employee) {
+        return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+    }
 }
 
 

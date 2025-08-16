@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { NursingnoteService } from './nursingnote.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-nursingnote',
@@ -169,7 +170,7 @@ export class NursingnoteComponent implements OnInit {
     sortOrder: 0,
     filters: this.allMedicationFilters
   }
-
+// 40923
   getMedicationList() {
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
@@ -247,6 +248,7 @@ export class NursingnoteComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
+       private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -350,7 +352,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
   Chargelist: any[] = [];
-
+// 1
   getSchedulerlist() {
     // debugger
     var param = {
@@ -361,7 +363,7 @@ export class NursingnoteComponent implements OnInit {
       "filters": [
         {
           "fieldName": "AdmissionId",
-          "fieldValue": String(this.OP_IP_Id), //1
+          "fieldValue":String(this.OP_IP_Id), //1
           "opType": "Equals"
         }
       ],
@@ -369,8 +371,9 @@ export class NursingnoteComponent implements OnInit {
       "columns": []
     }
     console.log(param)
-    this._NursingStationService.getSchedulerlist(param).subscribe(data => {
+    this._NursingStationService.getSchedulerdatalist(param).subscribe(data => {
       this.dsItemList.data = data.data as MedicineItemList[];
+      console.log(this.dsItemList.data)
       this.Chargelist = data.data as MedicineItemList[];
          })
   }
@@ -426,6 +429,7 @@ deleteTableRow(event, element) {
         // this.initializeGridConfig()
         this.grid.bindGridData();
         this.onClear();
+        this.ViewNusrsingNote(response)
       });
     } else {
       let invalidFields = [];
@@ -445,6 +449,11 @@ deleteTableRow(event, element) {
       }
     }
   }
+
+
+     ViewNusrsingNote(element) {
+        this.commonService.Onprint("AdmId", element, "NursingNotesReceipt");
+    }
 
   onClear() {
     this.vDoctNoteId = null;

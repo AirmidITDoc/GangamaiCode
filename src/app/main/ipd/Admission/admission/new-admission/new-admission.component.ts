@@ -17,6 +17,7 @@ import { AdmissionPersonlModel, RegInsert } from '../admission.component';
 import { AdmissionService } from '../admission.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatTableDataSource } from '@angular/material/table';
+import { VisitMaster1 } from 'app/main/opd/appointment-list/appointment-list.component';
 
 @Component({
   selector: 'app-new-admission',
@@ -176,12 +177,60 @@ export class NewAdmissionComponent implements OnInit {
 
   getSelectedObj(obj) {
     console.log(obj)
+    debugger
+  
     this.RegId = obj.value;
     if ((obj.value ?? 0) > 0) {
 
       console.log(this.data)
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
+          this.registerObj = response;
+              this.value=response.dateofBirth
+            this.onChangeDateofBirth(response.dateofBirth)
+          console.log(this.registerObj)
+          // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
+          this.personalFormGroup.patchValue({
+            FirstName: this.registerObj.firstName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo.trim(),
+            // MaritalStatusId: this.registerObj.maritalStatusId,
+            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+            engAddress: this.registerObj?.engAddress ?? '',
+            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+          });
+
+        });
+
+      }, 500);
+    }
+
+  }
+
+
+    getSelectedObj1(obj) {
+    console.log(obj)
+    debugger
+  
+    this.RegId = obj;
+    if ((obj ?? 0) > 0) {
+
+      console.log(this.data)
+      setTimeout(() => {
+        this._AdmissionService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
               this.value=response.dateofBirth
             this.onChangeDateofBirth(response.dateofBirth)
@@ -902,10 +951,11 @@ export class NewAdmissionComponent implements OnInit {
      dialogRef.afterClosed().subscribe((selectedRow) => {
       console.log(selectedRow)
     // if (selectedRow) {
-    //   this.searchFormGroup.patchValue({
-    //     RegNo: selectedRow.RegNo
-    //   });
+    //   this.searchFormGroup.patchValue(selectedRow
+    //     // RegNo: selectedRow.RegNo
+    //   );
     // }
+    this.getPatientobj(selectedRow)
   });
     // let Data = {
     //   "first": 0,
@@ -932,7 +982,126 @@ export class NewAdmissionComponent implements OnInit {
     //   this.dsOpList.data = response.data;
     //   console.log(this.dsOpList.data)
     // });
+
   }
+
+
+   public dsIPConvertPatientList = new MatTableDataSource<VisitMaster1>();
+    @ViewChild('IPConvertTable') IPConvertTable!: TemplateRef<any>;
+    pconverListCount = 0
+    openPatientTable() {
+
+        this._matDialog.open(this.IPConvertTable, {
+            width: '80%',
+            height: '60%',
+
+        })
+        this.GetAppointdetail();
+        // let Data = {
+        //   "first": 0,
+        //   "rows": 100,
+        //   "sortField": "RequestTranId",
+        //   "sortOrder": 0,
+        //   "filters": [
+        //     {
+        //       "fieldName": "VisitId",
+        //       "fieldValue":"0",//"364435",
+        //       "opType": "Equals"
+        //     }
+        //   ],
+        //   "exportType": "JSON",
+        //   "columns": [
+        //     {
+        //       "data": "string",
+        //       "name": "string"
+        //     }
+        //   ]
+        // }
+        // debugger
+        // this._AppointmentlistService.getOPDToIpConvertList(Data).subscribe((response) => {
+        //   this.dsIPConvertPatientList.data = response.data;
+        //   if(response.data)
+        //     this.pconverListCount=this.dsIPConvertPatientList.data.length
+        //   console.log(this.dsIPConvertPatientList.data)
+        // });
+    }
+
+
+    public displayedColumns =
+        ['opdNo', 'vistDateTime', 'patientName', 'address', 'mobileNo', 'departmentName'];
+
+    getPatientobj(contact) {
+      
+          // this.getSelectedObj1(contact.regId)
+          this.getSelectedObj(contact)
+     }
+
+    dataSource = new MatTableDataSource<VisitMaster1>();
+    GetAppointdetail() {
+
+      let data =
+        {
+            "first": 0,
+            "rows": 20,
+            "sortField": "VisitId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": "%",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": "%",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Doctor_Id",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": "2025-08-01",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": "2025-08-17",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsMark",
+                    "fieldValue": "2",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+        console.log(data)
+        this._AdmissionService.getVisitlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            if (this.dataSource.data.length > 0){
+                this.showOPtoIPFlag = true
+                this.searchFormGroup.get("regRadio").setValue("registrered")
+                this.admissionFormGroup.get("IsOpToIpconv").setValue(true)
+
+            }
+        });
+    }
 }
 
 export class OpList {

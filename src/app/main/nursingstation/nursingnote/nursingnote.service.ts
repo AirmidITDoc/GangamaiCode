@@ -85,7 +85,7 @@ export class NursingnoteService {
   public insertMedicationChart(employee) {
     return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
   }
-  public getSchedulerlist(employee) {
+  public getSchedulerdatalist(employee) {
     return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
   }
 }

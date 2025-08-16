@@ -171,6 +171,9 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Doctor Note');
             this.menuActions.push('Nursing Note');
 
+        } else if (this._ActRoute.url == '/nursingstation/patientrefvisit') {
+            this.menuActions.push('Add Charges');
+
         }
 
     }
@@ -323,10 +326,7 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             dialogRef.afterClosed().subscribe(result => {
-                // if (result) {
-                //     this.grid.bindGridData();
-                // }
-                  this.grid.bindGridData();
+                this.grid.bindGridData();
             });
         }
         else if (m == "Bed Transfer") {
@@ -345,6 +345,18 @@ export class IPSearchListComponent implements OnInit {
                     that.grid.bindGridData();
                 }
             });
+        } else if (m = "Add Charges") {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            this.advanceDataStored.storage = new AdvanceDetailObj(element);
+            const dialogRef = this._matDialog.open(IPBillingComponent,
+                {
+                    maxWidth: "100%",
+                    width: '95%',
+                    height: '95%',
+                      data: element
+                });
         }
         else if (m == "Advance") {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
@@ -782,11 +794,11 @@ export class ChargesList {
     packageId: any;
     serviceId: any;
     serviceName: any;
-    totalAmt:any;
-    concessionPercentage:any;
-    concessionAmount:any;
-    netAmount:any;
- 
+    totalAmt: any;
+    concessionPercentage: any;
+    concessionAmount: any;
+    netAmount: any;
+
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';

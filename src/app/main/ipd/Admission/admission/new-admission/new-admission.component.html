@@ -1,3 +1,96 @@
+
+<ng-template #IPConvertTable >
+  <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+        style="color: white;">account_box
+      </mat-icon>
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">OP To IP Request list</span>
+    </div>
+    <div class="close-icon">
+      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+  <div class="service-table1 p-12" fxFlex="100%" fusePerfectScrollbar>
+    <div class="table-body">
+      <div class="airmid-table">
+        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+          <ng-container matColumnDef="opdNo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              OPDNO
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.opdNo}}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="vistDateTime">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              vistDateTime
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.vistDateTime }}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="patientName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Patient Name
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.patientName}}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="address">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              Address
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.address}}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mobileNo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              MobileNo
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.mobileNo}}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="departmentName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              DepartmentName
+            </mat-header-cell>
+            <mat-cell *matCellDef="let contact">
+              <span> {{contact.departmentName}}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="NoData">
+            <mat-footer-cell *matFooterCellDef>
+              <span>No Data Found</span>
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+          </mat-header-row>
+
+          <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
+            (click)="getPatientobj(contact)"></mat-row> -->
+              <mat-row *matRowDef="let contact; columns: displayedOpdColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="dialogRef.close(contact)"></mat-row>
+          <mat-footer-row *matFooterRowDef="['NoData']"
+            [ngClass]="{'hide':dataSource.data.length > 0}"></mat-footer-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+ 
+</ng-template>
+
 <div class="modal-wrapper grid-container">
 
     <!-- Modal header -->
@@ -48,9 +141,9 @@
                                     </div>
 
                                     <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
-
-                                        <div *ngIf="showOPtoIPFlag">
-                                            <button mat-icon-button (click)="openOPTable()" style="padding: 0px;">
+<!-- *ngIf="showOPtoIPFlag" -->
+                                        <div >
+                                            <button mat-icon-button (click)="openPatientTable()" style="padding: 0px;">
                                                 <mat-icon style="font-size: 24px;">notifications_none</mat-icon>
                                             </button>
                                         </div>
@@ -739,7 +832,7 @@
 
 <!-- op to ip converted patient table -->
 
-<ng-template #opTable>
+<!-- <ng-template #opTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -763,36 +856,36 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                             UHID No
                         </mat-header-cell>
-                        <!-- <mat-cell *matCellDef="let contact">
+                        <mat-cell *matCellDef="let contact">
                             <span> {{contact.groupName}}</span>
-                        </mat-cell> -->
+                        </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="PatientName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
                             Patient Name
                         </mat-header-cell>
-                        <!-- <mat-cell *matCellDef="let contact" class="w-280">
+                        <mat-cell *matCellDef="let contact" class="w-280">
                             <span> {{contact.serviceName}}</span>
-                        </mat-cell> -->
+                        </mat-cell>
                     </ng-container>
 
                    <ng-container matColumnDef="DepartmentName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                             Department Rate
                         </mat-header-cell>
-                        <!-- <mat-cell *matCellDef="let contact">
+                        <mat-cell *matCellDef="let contact">
                             <span> {{contact.classRate}}</span>
-                        </mat-cell> -->
+                        </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="DoctorName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                             Doctor Name
                         </mat-header-cell>
-                        <!-- <mat-cell *matCellDef="let contact">
+                        <mat-cell *matCellDef="let contact">
                             <span> {{contact.userName }}</span>
-                        </mat-cell> -->
+                        </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="NoData">
@@ -812,12 +905,5 @@
             </div>
         </div>
     </div>
-      <!-- <div class="modal-footer">
-            <div class="footer-navigation-container">
-                <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
-                        aria-label="Close dialog" matTooltip="Close">Close</button>
-                </div>
-            </div>
-        </div> -->
-</ng-template>
+    
+</ng-template> -->
