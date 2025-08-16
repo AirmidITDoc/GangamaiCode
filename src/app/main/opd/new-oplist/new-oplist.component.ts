@@ -77,7 +77,7 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-        // { fieldName: "Company_Id", fieldValue: '0', opType: OperatorComparer.Equals }
+        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
     ];
 
     allOPbillcolumns = [
@@ -385,8 +385,8 @@ debugger
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-            // { fieldName: "Company_Id", fieldValue: String(this.CompanyId), opType: OperatorComparer.Equals }
-            ]
+            { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals}
+        ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

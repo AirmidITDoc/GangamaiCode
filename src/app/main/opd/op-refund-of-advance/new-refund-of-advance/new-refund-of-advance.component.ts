@@ -33,6 +33,7 @@ export class NewRefundOfAdvanceComponent {
 
   screenFromString = 'Common-form';
   RefundOfAdvanceFormGroup: FormGroup;
+  searchFormGroup: FormGroup
   dateTimeObj: any;
   registerObj: any;
   AdvanceId: any;
@@ -42,7 +43,8 @@ export class NewRefundOfAdvanceComponent {
   autocompleteModeCashcounter: string = "CashCounter";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  RegId = 0;
+  vPatientName: any;
   dsrefundlist = new MatTableDataSource<OPRefundofAdvance>();
 
   constructor(public _opSearchListService: OpRefundOfAdvanceService,
@@ -60,11 +62,18 @@ export class NewRefundOfAdvanceComponent {
   ngOnInit(): void {
     this.RefundOfAdvanceFormGroup = this.createRefAdvForm();
     this.RefundOfAdvanceFormGroup.markAllAsTouched();
+    this.searchFormGroup = this.createSearchForm();
     if (this.data) {
       this.registerObj = this.data
       console.log(this.registerObj)
       this.getRefundofAdvanceListRegIdwise();
     }
+  }
+
+    createSearchForm(): FormGroup {
+    return this.formBuilder.group({
+      RegId: [0]  // Initial value is 0
+    });
   }
 
   createRefAdvForm() {
@@ -107,6 +116,19 @@ export class NewRefundOfAdvanceComponent {
       AdvDetailsnew: this.formBuilder.array([]),
       AdvDetailsUpdate: this.formBuilder.array([]),
     });
+  }
+
+    getSelectedObj(obj) {
+    this.RegId = obj.value;
+    if ((this.RegId ?? 0) > 0) {
+      setTimeout(() => {
+        this._opSearchListService.getRegistraionById(this.RegId).subscribe((response) => {
+          this.registerObj = response;
+          this.vPatientName = this.registerObj.firstName + " " + this.registerObj.middleName + " " + this.registerObj.lastName
+          console.log(response)
+        });
+      }, 500);
+    }
   }
 
   onSave(){
