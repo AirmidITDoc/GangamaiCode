@@ -83,7 +83,7 @@ vInstruction: any;
      this.reservationForm = this._OtReservationService.createReservationForm();
      this.reservationForm.markAllAsTouched();
      
-     if ((this.data?.otBookingId) > 0) 
+     if ((this.data?.otreservationId) > 0) 
          {
           this.registerObj=this.data
                     console.log(this.registerObj)
@@ -103,6 +103,7 @@ vInstruction: any;
 
           if(this.registerObj.opIpType==0) {
              this.vSelectedOption="OP"
+             
             
           }
         else{
