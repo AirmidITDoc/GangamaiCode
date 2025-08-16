@@ -94,4 +94,8 @@ export class OpRefundOfAdvanceService {
    public getRefundofAdvanceList(Id) {
     return this._httpClient.PostData("Advance/PatientRefundOfAdvancesList" , Id);
 }
+
+ public getRegistraionById(Id) {
+        return this._httpClient.GetData("OutPatient/" + Id);
+    }
 }

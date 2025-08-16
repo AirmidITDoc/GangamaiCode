@@ -148,8 +148,9 @@
                                 </mat-form-field>
 
                                 <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myFilterbillform"
+                                [(ngModel)]="gridConfig.filters[6].fieldValue"
                                     (selectionChange)="ListView($event)" [mode]="autocompleteModecompany"></airmid-dropdown>
-                                    <!-- [(ngModel)]="gridConfig.filters[6].fieldValue"   -->
+
                             </form>
                         </ng-container>
                     </airmid-table>
