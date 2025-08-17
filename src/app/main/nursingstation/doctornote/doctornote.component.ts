@@ -273,11 +273,10 @@ export class DoctornoteComponent implements OnInit {
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
-        // this.OP_IP_Id=0;
-        // this.initializeGridConfig()
-        this.grid.bindGridData();
-        this.onClear();
-        this.ViewDoctorNote(response);
+      //  this.grid.bindGridData();
+      console.log(this.OP_IP_Id)
+        this.ViewDoctorNote(this.OP_IP_Id);
+          this.onClear();
       });
     } else {
       let invalidFields = [];
@@ -318,6 +317,7 @@ export class DoctornoteComponent implements OnInit {
         data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
         data.docHandId = this.vdocHandId || 0
       this._NursingStationService.HandOverInsert(data).subscribe(response => {
+         console.log(response)
         this.getHandOverNotelist()
         this.onClear();
       });
@@ -400,6 +400,27 @@ export class DoctornoteComponent implements OnInit {
     this.vDoctNoteId = null;
     this.vDescription = null;
     // this.onClearPatientInfo()
+     this.myform.get('RegID').setValue('');
+
+         this.vRegNo = '';
+    this.vPatientName = '';
+    this.vWardName = '';
+    this.vBedName = '';
+    this.vGender = '';
+    this.vIPDNo = '';
+    this.vDepartment = '';
+    this.vDoctorName = '';
+    this.vAgeyear = '';
+    this.vAgeMonth = '';
+    this.vAgeDay = '';
+     this.vAge = '';
+    this.vGenderName = '';
+    this.vAdmissionDate = '';
+    this.vRefDocName = '';
+    this.vPatientType = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    this.vDOA='';
   }
 
   onClose() {

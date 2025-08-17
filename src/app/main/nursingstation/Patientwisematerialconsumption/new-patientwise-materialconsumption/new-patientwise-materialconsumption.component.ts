@@ -487,92 +487,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   
 
-  //Addcharges
-//   onInsertAddCharges() { ;
-// if(this.dataSource.data.length >0){
-//     this.isLoading = 'save';
-//     let InsertAdddetArr = [];
-
-//     this.dataSource.data.forEach((element) => {
-//       console.log(element);
-//       let InsertAddChargesObj = {};
-//       InsertAddChargesObj['ChargeID'] = 0,
-//         InsertAddChargesObj['ChargesDate'] = this.dateTimeObj.date,
-//         InsertAddChargesObj['OPD_IPD_Type'] = 0,
-//         InsertAddChargesObj['opD_IPD_Id'] = 0,//this.selectedAdvanceObj.AdmissionID,
-//         InsertAddChargesObj['ServiceId'] = element.ServiceId,
-//         InsertAddChargesObj['Price'] = element.Price,
-//         InsertAddChargesObj['Qty'] = element.Qty,
-//         InsertAddChargesObj['TotalAmt'] = element.TotalAmt,
-//         InsertAddChargesObj['ConcessionPercentage'] = element.DiscPer || 0,
-//         InsertAddChargesObj['ConcessionAmount'] = element.DiscAmt || 0,
-//         InsertAddChargesObj['NetAmount'] = element.NetAmount,
-//         InsertAddChargesObj['DoctorId'] = this.registeredForm.get('DoctorID').value;
-//         InsertAddChargesObj['DocPercentage'] = 0;// this.registeredForm.get('DoctorId').value;
-//         InsertAddChargesObj['DocAmt'] = 0,
-//         InsertAddChargesObj['HospitalAmt'] = element.NetAmount,
-//         InsertAddChargesObj['IsGenerated'] = 0,
-//         InsertAddChargesObj['AddedBy'] = this.accountService.currentUserValue.userId,
-//         InsertAddChargesObj['IsCancelled'] = 0,
-//         InsertAddChargesObj['IsCancelledBy'] = 0,
-//         InsertAddChargesObj['IsCancelledDate'] = "01/01/1900",
-//         InsertAddChargesObj['IsPathology'] = element.IsPathology,
-//         InsertAddChargesObj['IsRadiology'] = element.IsRadiology,
-//         InsertAddChargesObj['IsPackage'] = 0,
-//         InsertAddChargesObj['PackageMainChargeID'] = 0,
-//         InsertAddChargesObj['IsSelfOrCompanyService'] = false,
-//         InsertAddChargesObj['PackageId'] = 0,
-//         InsertAddChargesObj['ChargeTime'] = this.dateTimeObj.time,
-//         InsertAddChargesObj['ClassId'] = this.selectedAdvanceObj.ClassId,// this.registeredForm.get('ClassId').value;
-//         InsertAdddetArr.push(InsertAddChargesObj);
-
-//       let submitData = {
-//         "opdAddChargesInsert": InsertAdddetArr
-//       };
-//      console.log(submitData);
-//       this._NursingStationService.InsertIPAddCharges(submitData).subscribe(data => {
-//         this.msg = data;
-//         if (data) {
-//           Swal.fire('Congratulations !', 'OP Addcharges  data saved Successfully !', 'success').then((result) => {
-//             if (result.isConfirmed) {
-//             //  this.getChargesList();
-              
-//             }
-//           });
-//         } else {
-//           Swal.fire('Error !', 'OP Addcharges data not saved', 'error');
-//         }
-
-//       });
-//       // this.onClearServiceAddList();
-//       this.isLoading = '';
-//     });
-//   }
-//   }
-
-  // getChargesList() {
-  //   // ;
-  //   this.chargeslist = [];
-  //   this.dataSource.data = [];
-  //   this.isLoading = 'list-loading';
-  //   let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=0 Order by Chargesid"
-  //   console.log(Query);
-  //   this._NursingStationService.getchargesList(Query).subscribe(data => {
-  //     this.chargeslist = data as ChargesList[];
-  //     this.dataSource.data = this.chargeslist;
-  //     this.getNetAmtSum(this.dataSource.data);
-    
-  //     // if (this.dataSource.data.length > 0) {
-  //     //   this.onSaveFooter();
-  //     // }
-  //     this.isLoading = 'list-loaded';
-  //   },
-  //     (error) => {
-  //       this.isLoading = 'list-loaded';
-  //     });
-  // }
-  //Save Billing 
-
   onSaveFooter() {
     ;
    
@@ -589,13 +503,6 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
       
   }
 
-//   getValidationMessages() {
-//     return {
-//       Departmentid: [
-//             { name: "required", Message: "Department Name is required" }
-//         ]
-//     };
-//   }
 
   OnSave() {
     // console.log(this.myForm.get('WardName').value.RoomId)
@@ -726,20 +633,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
  
    deleteTableRow(element) {
-   // ;
-    //  console.log(element.ChargesId);
-    //  var m_data= {
-    //    "G_ChargesId":element.ChargesId,
-    //    "G_UserId": this.accountService.currentUserValue.userId
-    //  }
-    //  console.log(m_data);
-    //  this._NursingStationService.deleteCharges(m_data).subscribe(data =>{ 
-    //    this.msg=data;
-    //   this.getChargesList();
-    // });
-
-   // Delete row in datatable level
-  // ;
+   
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index,1);

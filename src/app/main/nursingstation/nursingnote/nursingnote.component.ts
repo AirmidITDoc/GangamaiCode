@@ -425,11 +425,9 @@ deleteTableRow(event, element) {
       console.log(this.myNursingForm.value)
 
       this._NursingStationService.NursingNoteInsert(this.myNursingForm.value).subscribe(response => {
-        // this.OP_IP_Id=0
-        // this.initializeGridConfig()
-        this.grid.bindGridData();
+       console.log(response)
         this.onClear();
-        this.ViewNusrsingNote(response)
+        this.ViewNusrsingNote(this.OP_IP_Id)
       });
     } else {
       let invalidFields = [];
@@ -460,6 +458,25 @@ deleteTableRow(event, element) {
     this.IsAddFlag = true
     this.vDescription = null;
     // this.onClearPatientInfo()
+    this.myform.get('RegID').setValue('')
+     this.vRegNo = '';
+    this.vPatientName = '';
+    this.vWardName = '';
+    this.vBedName = '';
+    this.vGender = '';
+    this.vIPDNo = '';
+    this.vDepartment = '';
+    this.vDoctorName = '';
+    this.vAgeyear = '';
+    this.vAgeMonth = '';
+    this.vAgeDay = '';
+     this.vAge = '';
+    this.vGenderName = '';
+    this.vRefDocName = '';
+    this.vPatientType = '';
+    this.vTariffName = '';
+    this.vCompanyName = '';
+    this.vDOA='';
   }
   // patient hand over
   onSubmitHandOver() {

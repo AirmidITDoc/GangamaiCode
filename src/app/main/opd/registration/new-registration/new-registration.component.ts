@@ -123,27 +123,27 @@ export class NewRegistrationComponent implements OnInit {
   }
 
     OnSubmit() {
-        // let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-        // if (DateOfBirth1) {
-        //     const todayDate = new Date();
-        //     const dob = new Date(DateOfBirth1);
-        //     const timeDiff = Math.abs(Date.now() - dob.getTime());
-        //     this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-        //     this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-        //     this.ageDay = (todayDate.getDate() - dob.getDate());
+        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        if (DateOfBirth1) {
+            const todayDate = new Date();
+            const dob = new Date(DateOfBirth1);
+            const timeDiff = Math.abs(Date.now() - dob.getTime());
+            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+            this.ageDay = (todayDate.getDate() - dob.getDate());
 
-        //     if (this.ageDay < 0) {
-        //         (this.ageMonth)--;
-        //         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-        //         this.ageDay += previousMonth.getDate(); // Days in previous month
+            if (this.ageDay < 0) {
+                (this.ageMonth)--;
+                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                this.ageDay += previousMonth.getDate(); // Days in previous month
 
-        //     }
+            }
 
-        //     if (this.ageMonth < 0) {
-        //         this.ageYear--;
-        //         this.ageMonth += 12;
-        //     }
-        // }
+            if (this.ageMonth < 0) {
+                this.ageYear--;
+                this.ageMonth += 12;
+            }
+        }
 
         let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
         this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
@@ -158,7 +158,7 @@ export class NewRegistrationComponent implements OnInit {
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismDateOfEntry || '1900-01-01');
-
+debugger
         if (
             (!this.ageYear || this.ageYear == 0) &&
             (!this.ageMonth || this.ageMonth == 0) &&

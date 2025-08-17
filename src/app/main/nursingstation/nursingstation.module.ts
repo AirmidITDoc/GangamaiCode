@@ -28,9 +28,14 @@ const approtes: Routes = [
   path:"dialysissms",
   loadChildren: () => import("./consent/consent.module").then((m)=>m.ConsentModule), 
 },
+// {
+//   path:"patientrefvisit",
+//   loadChildren: () => import("./patient-ref-visit/patientrefvisit.module").then((m)=>m.PatientrefvisitModule), 
+// },
+
 {
   path:"patientrefvisit",
-  loadChildren: () => import("./patient-ref-visit/patientrefvisit.module").then((m)=>m.PatientrefvisitModule), 
+  loadChildren: () => import("../ipd/ip-search-list/ip-searchlist.module").then((m)=>m.IPSearchlistModule), 
 },
 {
   path:"bedtransfer",

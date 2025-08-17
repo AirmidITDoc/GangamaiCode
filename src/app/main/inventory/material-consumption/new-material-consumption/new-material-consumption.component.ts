@@ -376,45 +376,13 @@ debugger
     }
     this.Savebtn = true;
 
-    // let insertMaterialConsDetail = [];
-    // this.dsNewmaterialList.data.forEach((element) => {
-    //   let insertMaterialConstDetailObj = {};
-    //   insertMaterialConstDetailObj['materialConDetId'] = 0;
-    //   insertMaterialConstDetailObj['materialConsumptionId'] = 0;
-    //   insertMaterialConstDetailObj['itemId'] = element.ItemId;
-    //   insertMaterialConstDetailObj['batchNo'] = element.BatchNo;
-    //   insertMaterialConstDetailObj['batchExpDate'] = element.BatchExpDate;
-    //   insertMaterialConstDetailObj['qty'] = Number(element.UsedQty);
-    //   insertMaterialConstDetailObj['perUnitLandedRate'] = element.LandedRate || 0
-    //   insertMaterialConstDetailObj['parUnitPurchaseRate'] = element.PurchaseRate || 0;
-    //   insertMaterialConstDetailObj['perUnitMRPRate'] = element.UnitMRP || 0;
-    //   insertMaterialConstDetailObj['landedRateTotalAmount'] = element.LandedTotalAmt || 0;
-    //   insertMaterialConstDetailObj['purchaseRateTotalAmount'] = element.PurTotalAmt || 0;
-    //   insertMaterialConstDetailObj['mrpTotalAmount'] = element.MRPTotalAmt || 0;
-    //   insertMaterialConstDetailObj['startDate'] = element.StartDate || 0;
-    //   insertMaterialConstDetailObj['endDate'] = element.EndDate || 0;
-    //   insertMaterialConstDetailObj['remark'] = element.Remark || 0;
-    //   insertMaterialConstDetailObj['admId'] = this.vAdmissionId || 0;
-    //   insertMaterialConsDetail.push(insertMaterialConstDetailObj);
-    // })
-
-    // let updateCurrentStock = [];
-    // this.dsNewmaterialList.data.forEach((element) => {
-    //   let updateCurrentStockObj = {};
-    //   updateCurrentStockObj['itemId'] = element.ItemId;
-    //   updateCurrentStockObj['issueQty'] = element.UsedQty;
-    //   updateCurrentStockObj['storeID'] = 2,// this._loggedService.currentUserValue.user.storeId;
-    //     updateCurrentStockObj['stkId'] = element.StockId;
-    //   updateCurrentStock.push(updateCurrentStockObj);
-    // })
-
      // Material table detail assign to array
       this.MaterialConDetailsArray.clear();
       this.dsNewmaterialList.data.forEach(item => {
         this.MaterialConDetailsArray.push(this.creatematerialconsDetail(item));
       });
 
-debugger
+
     // changed by raksha
     this.MaterialInsertForm.get("consumptionDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.MaterialInsertForm.get("consumptionTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))

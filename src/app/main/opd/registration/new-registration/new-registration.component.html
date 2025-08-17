@@ -83,13 +83,17 @@
                                                 </airmid-dropdown>
                                             </div>
 
-                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                            <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                 <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                                     formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
                                                     (dateChange)="chkChange()" [hideButtons]="true"
                                                     dateStyle="Date"></app-airmid-dateofbirth>
+                                            </div> -->
+                                            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                                    formControlName="DateOfBirth"
+                                                    [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                             </div>
-
                                             <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <input matInput [matDatepicker]="validFromPicker"
@@ -204,23 +208,19 @@
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <!-- <div fxLayout="row" class="gap-4"> -->
+                                                <div fxLayout="row" class="gap-4">
 
-                                                    <airmid-textbox
-                                                        label="MobileNo" formControlName="MobileNo"
+                                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"  fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                         [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().mobileNo"
                                                         (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
                                                     </airmid-textbox>
-                                            </div>
-                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                    <airmid-textbox
-                                                        label="PhoneNo" formControlName="PhoneNo"
+                                                 <airmid-textbox label="PhoneNo" formControlName="PhoneNo"  fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                         [validations]="getValidationMessages().phoneNo"
                                                         [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
                                                         [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
                                                     </airmid-textbox>
-                                                <!-- </div> -->
+                                                </div>
                                             </div>
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
