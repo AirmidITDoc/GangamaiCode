@@ -24,6 +24,7 @@ export class NewReservationComponent implements OnInit {
   opIpType: boolean = false;
       opIpId: any;
        RegId: string;
+registerObj: any;
 
 
    personalFormGroup: FormGroup;
@@ -43,6 +44,8 @@ vInstruction: any;
    autocompleteModeConDoctor: String = "ConDoctor";
     autocompleteModeRefDoctor: String = "RefDoctor";
      autocompleteModeOTTable: String = "OttableMaster";
+      autocompleteModeAnesthesiatypes: string = "Anesthesiatypes";
+
    // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
@@ -64,6 +67,7 @@ vInstruction: any;
   //vDOA: any;
   //vstoreId: any = '';
   //vAdmissionID: any;
+  vIPDNo:any;
 
    constructor( public _OtReservationService: OtReservationService,
      public dialogRef: MatDialogRef<NewReservationComponent>,
@@ -75,15 +79,43 @@ vInstruction: any;
      public toastr: ToastrService) { }
     
  
-   ngOnInit(): void {
+    ngOnInit(): void {
      this.reservationForm = this._OtReservationService.createReservationForm();
      this.reservationForm.markAllAsTouched();
      
-     if ((this.data?.countryId??0) > 0) 
+     if ((this.data?.otreservationId) > 0) 
          {
-             this.isActive=this.data.isActive
-             this.reservationForm.patchValue(this.data);
-         }
+          this.registerObj=this.data
+                    console.log(this.registerObj)
+                   
+//this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
+// console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
+          this.vRegNo=this.registerObj.regNo
+          this.vOPDNo=this.registerObj.opdNo
+          this.vIPDNo=this.registerObj.ipdNo
+          this.vPatientName=this.registerObj.patientName
+          this.vAge=this.registerObj.ageYear
+          this.vDepartment=this.registerObj.departmentName
+          this.vMobNo=this.registerObj.mobileNo
+          this.vDoctorName=this.registerObj.doctorName
+          this.vTariffName=this.registerObj.tariffName
+          this.vCompanyName=this.registerObj.companyName
+
+          if(this.registerObj.opIpType==0) {
+             this.vSelectedOption="OP"
+             
+            
+          }
+        else{
+            this.vSelectedOption="IP"
+        }
+  
+          console.log(this.registerObj)
+             //this.isActive=this.data.isActive
+             this.reservationForm.patchValue(this.registerObj);
+        // this.selectChangedoctorType(this.registerObj)
+            }
+          this.reservationForm.get("this.isCancelledDate")?.setValue('1900-01-01')
  }
 
   patientInfoReset() {
@@ -179,7 +211,7 @@ vInstruction: any;
 
     this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
   this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
-      this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
+      this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.reservationForm.get('opdate').value, 'yyyy-MM-dd'));
    this.reservationForm.get('opstartTime').setValue(this.dateTimeObj?.time);
   this.reservationForm.get('opendTime').setValue(this.dateTimeObj?.time);
 

@@ -27,7 +27,7 @@ export class AirmidTableComponent implements OnInit {
     @Input() gridConfig: gridModel; // or whatever type of datasource you have
     resultsLength = 0;
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+    @ViewChild(MatTable, { static: false }) table!: MatTable<any>;
     // @ContentChildren(MatColumnDef) columnDefs: QueryList<MatColumnDef>;
     dataSource = new MatTableDataSource<any>();
     // @ViewChild(MatSort) set sort(sort: MatSort) {
@@ -40,6 +40,7 @@ export class AirmidTableComponent implements OnInit {
     headers = [];
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @Output() onSelectRow = new EventEmitter<any>();
+    @Output() afterLoadData = new EventEmitter<any>();
     @Input() ShowFilter: boolean = true;
     @Input() ShowButtons: boolean = true;
     @Input() FullWidth: boolean = false;
@@ -47,6 +48,8 @@ export class AirmidTableComponent implements OnInit {
     pageSize: number = 25;
     public selectedRow: any = null;
     public defaultColumnWidth = 120;
+    private hasEmitted = false;
+
     ngOnInit(): void {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
@@ -65,7 +68,7 @@ export class AirmidTableComponent implements OnInit {
     gridDataRequest: gridRequest = new gridRequest();
     bindGridData() {
         // this.updateFilters();
-// debugger
+        // debugger
         this.gridDataRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
             sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
@@ -78,6 +81,10 @@ export class AirmidTableComponent implements OnInit {
             this.dataSource.data = data.data as [];
             this.dataSource.sort = this.sort;
             this.resultsLength = data["recordsFiltered"];
+            if (!this.hasEmitted) {
+                this.afterLoadData.emit(data.data);
+                this.hasEmitted = true;
+            }
         });
     }
     // updateFilters(): void {
@@ -134,7 +141,7 @@ export class AirmidTableComponent implements OnInit {
 
             'table-row-blue': row?.balanceAmt && row.balanceAmt !== '0',
 
-             // added by raksha on 6/8/25 from reg list
+            // added by raksha on 6/8/25 from reg list
             'table-row-green': row?.isMark == true,
         }
 
@@ -153,7 +160,7 @@ export class AirmidTableComponent implements OnInit {
             filename = filename + ".pdf";
         else if (type == gridResponseType.Excel)
             filename = filename + ".xlsx";
-        this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest,1, filename).subscribe((data) => {
+        this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest, 1, filename).subscribe((data) => {
 
         });
     }

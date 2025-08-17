@@ -1158,7 +1158,7 @@ public getbedbyRoom(deptId) {
 
 
        public AddBedCharges(param) {
-        return this._httpClient1.PostData("IPBill/AddBedServiceCharge", param);
+        return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
     }
 }
 

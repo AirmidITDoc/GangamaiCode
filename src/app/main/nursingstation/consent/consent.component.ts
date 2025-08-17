@@ -227,7 +227,7 @@ export class ConsentComponent implements OnInit {
                 "opType": "Equals"
               },
               {
-                "fieldName": "OP_IP_Type",
+                "fieldName": "OPIPType",
                 "fieldValue": String(element.opipType),
                 "opType": "Equals"
               }

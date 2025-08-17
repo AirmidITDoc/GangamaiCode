@@ -20,7 +20,7 @@
         <div fxLayout="column" class="gap-10 p-10">
 
             <!-- IP Radio & Autocomplete -->
-            <mat-card>
+            <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">
                     <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
                         <mat-radio-group formControlName="radioIp">
@@ -38,7 +38,7 @@
             </mat-card>
 
             <!-- Patient Info -->
-            <mat-card>
+            <mat-card style="padding: 10px;">
                 <div fxLayout="row wrap" fxLayoutGap="32px">
                     <div fxFlex="30%">
                         <div class="patient-col"><b>UHID No:</b> {{vRegNo}}</div>
@@ -62,7 +62,7 @@
             </mat-card>
 
             <!-- Service Selection -->
-            <mat-card>
+            <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">
                     <div fxLayout="column" fxLayoutGap="10px">
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="12px">

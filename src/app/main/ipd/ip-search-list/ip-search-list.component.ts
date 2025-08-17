@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../advance';
@@ -102,6 +102,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Id", fieldValue: "0", opType: OperatorComparer.Equals },
         ],
         row: 25
     }
@@ -117,8 +118,13 @@ export class IPSearchListComponent implements OnInit {
         public datePipe: DatePipe,
         private _configue: ConfigService,
         public toastr: ToastrService,
-        private advanceDataStored: AdvanceDataStored) { }
-
+        private route: ActivatedRoute,
+        private router: Router,
+        private advanceDataStored: AdvanceDataStored) {
+    }
+    IsShowGrid: boolean = false;
+    id: string;
+    mode: string;
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
@@ -139,6 +145,7 @@ export class IPSearchListComponent implements OnInit {
                 this.menuActions.push('Discharge Summary Template');
             else
                 this.menuActions.push('Discharge Summary');
+                this.menuActions.push('Discharge Summary Template');
 
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
@@ -175,10 +182,21 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Add Charges');
 
         }
+        this.id = this.route.snapshot.queryParamMap.get('Id');
+        this.mode = this.route.snapshot.queryParamMap.get('Mode');
+        if (this.mode == "Bill" && Number(this.id)) {
+            this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
+        }
+        this.IsShowGrid = true;
 
     }
 
-
+    handleNotificationEvent(data) {
+        if (this.mode == "Bill" && Number(this.id)) {
+            //this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = id;
+            this.OngetRecord(data[0], 'Bill');
+        }
+    }
     OngetRecord(element, m) {
 
         console.log('Third action clicked for:', element);
@@ -327,6 +345,13 @@ export class IPSearchListComponent implements OnInit {
                 });
             dialogRef.afterClosed().subscribe(result => {
                 this.grid.bindGridData();
+                // if (result) {
+                //     this.grid.bindGridData();
+                // }
+                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
+                const currentPath = this.router.url.split('?')[0];
+                this.grid.bindGridData();
+                this.router.navigate([currentPath], { queryParams: {} });
             });
         }
         else if (m == "Bed Transfer") {

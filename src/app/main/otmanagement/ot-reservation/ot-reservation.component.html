@@ -41,7 +41,48 @@
             </div>
         </div>
     </div>
+    <ng-template #actionsTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP"
+                                class="pill green-600 s-16">circle</mat-icon>
 
+                            <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+                    <ng-template #actionsTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.surgeryTypeId=='2'" matTooltip="Emergency"
+                                class="pill red-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.surgeryTypeId=='1'" matTooltip="Normal"
+                                class="pill blue-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+<ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- Button 1: Edit Patient Registration  -->
+                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Button 2: Print Registration  -->
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+               <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                <mat-icon title="OTNote">note_add</mat-icon>
+
+            </button>
+
+            <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
+                <mat-icon> cancel</mat-icon>
+            </button> -->
+            </div>
+        </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">

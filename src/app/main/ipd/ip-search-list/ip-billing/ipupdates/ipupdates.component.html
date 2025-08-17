@@ -31,7 +31,24 @@
                 <div class="content-card">
                     <form [formGroup]="IpUpdateForm">
 
-                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="8px">
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">  
+
+                                <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                
+                                    <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="picker">
+                                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                                <input matEndDate formControlName="enddate" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #picker></mat-date-range-picker>
+                                        </mat-form-field>
+                                    </div>
+                                
+                                </div>
+
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
 
                                 <airmid-textbox label="Class Name" formControlName="OldClassId"
@@ -48,17 +65,19 @@
                             </div>
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
                                 <div fxFlex>
-                                    <airmid-dropdown label="New Class Name" formControlName="NewclassId" [formGroup]="IpUpdateForm"
-                                        aria-placeholder="Select New Class Name" [validations]="getValidationMessages().NewclassId"
+                                    <airmid-dropdown label="New Class Name" formControlName="NewclassId"
+                                        [formGroup]="IpUpdateForm" aria-placeholder="Select New Class Name"
+                                        [validations]="getValidationMessages().NewclassId"
                                         [mode]="autocompleteModeClass"></airmid-dropdown>
                                 </div>
-                            
+
                                 <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
-                                    <airmid-dropdown label="New Tariff Name" formControlName="NewTariffId" [formGroup]="IpUpdateForm"
-                                        aria-placeholder="Select New Tariff Name" [validations]="getValidationMessages().NewTariffId"
+                                    <airmid-dropdown label="New Tariff Name" formControlName="NewTariffId"
+                                        [formGroup]="IpUpdateForm" aria-placeholder="Select New Tariff Name"
+                                        [validations]="getValidationMessages().NewTariffId"
                                         [mode]="autocompleteModetariff"></airmid-dropdown>
                                 </div>
-                            
+
                             </div>
                         </div>
                     </form>

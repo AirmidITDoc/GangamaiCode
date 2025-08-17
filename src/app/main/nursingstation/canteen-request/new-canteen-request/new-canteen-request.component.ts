@@ -11,6 +11,7 @@ import { CanteenList } from '../canteen-request.component';
 import { CanteenRequestService } from '../canteen-request.service';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-new-canteen-request',
@@ -43,12 +44,13 @@ export class NewCanteenRequestComponent implements OnInit {
   ItemName: any;
   Chargelist: any = [];
   vOpDId: any = 0;
-  
-  vstoreId=this._loggedService.currentUserValue.user.storeId
+
+  vstoreId = this._loggedService.currentUserValue.user.storeId
 
   price = 0
   isBatchRequired: boolean = false;
 
+  dsCanteenDateList = new MatTableDataSource<CanteenList>();
   CanteenInsertForm: FormGroup;
   CanteendetailForm: FormGroup;
 
@@ -61,6 +63,7 @@ export class NewCanteenRequestComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -158,13 +161,13 @@ export class NewCanteenRequestComponent implements OnInit {
   }
 
   onAdd() {
-    if(this._CanteenRequestservice.ItemForm.get('ItemId').value=='' || this._CanteenRequestservice.ItemForm.get('ItemId').value=='%'){
+    if (this._CanteenRequestservice.ItemForm.get('ItemId').value == '' || this._CanteenRequestservice.ItemForm.get('ItemId').value == '%') {
       this.toastr.warning('Please Select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if(this._CanteenRequestservice.ItemForm.get('Qty').value==''){
+    if (this._CanteenRequestservice.ItemForm.get('Qty').value == '') {
       this.toastr.warning('Please enter a qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -258,6 +261,7 @@ export class NewCanteenRequestComponent implements OnInit {
       console.log(this.CanteenInsertForm.value)
       this._CanteenRequestservice.CanteenReqSave(this.CanteenInsertForm.value).subscribe(response => {
         // this._matDialog.closeAll();
+        this.onPrint(response)
         this.onClose();
       });
     } else {
@@ -279,7 +283,10 @@ export class NewCanteenRequestComponent implements OnInit {
 
     }
   }
-  dsCanteenDateList = new MatTableDataSource<CanteenList>();
+
+  onPrint(element) {
+    this.commonService.Onprint("ReqId", element, "CanteenRequestprint");
+  }
 
   onClose() {
     this._matDialog.closeAll();

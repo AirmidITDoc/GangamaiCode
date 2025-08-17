@@ -304,7 +304,7 @@ export class NewConsentComponent {
               "opType": "Equals"
             },
             {
-              "fieldName": "OP_IP_Type",
+              "fieldName": "OPIPType",
               "fieldValue": String(element.opiptype),
               "opType": "Equals"
             }

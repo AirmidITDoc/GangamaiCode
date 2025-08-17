@@ -38,7 +38,7 @@ export class RequestforlabtestComponent implements OnInit {
     regNo: any = ""
 
     allColumns = [
-        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         { heading: "Admission Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
