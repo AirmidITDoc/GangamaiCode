@@ -97,6 +97,9 @@ export class DischargeSummaryTemplateComponent {
     public datePipe: DatePipe) { }
 
   ngOnInit(): void {
+
+     
+
     this.DischargesumForm = this.showDischargeSummaryForm();
     this.DischargesumForm.markAllAsTouched();
 
@@ -192,6 +195,13 @@ export class DischargeSummaryTemplateComponent {
   }
 
   OnSave() {
+
+     this.DischargesumForm.get('templateDescriptionHtml')?.valueChanges.subscribe(val => {
+    console.log('Editor output:', val);
+  });
+
+
+  
     if (!this.DischargesumForm.invalid) {
       Swal.fire({
         title: 'Do you want to Save the Discharge Summary Template',
