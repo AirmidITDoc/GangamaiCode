@@ -184,7 +184,7 @@ export class IPSearchListComponent implements OnInit {
         }
         this.id = this.route.snapshot.queryParamMap.get('Id');
         this.mode = this.route.snapshot.queryParamMap.get('Mode');
-        if (this.mode == "Bill" && Number(this.id)) {
+        if (this.mode == "Bill" && Number(this.id)>0) {
             this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
         }
         this.IsShowGrid = true;
@@ -192,8 +192,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
     handleNotificationEvent(data) {
-        if (this.mode == "Bill" && Number(this.id)) {
-            //this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = id;
+        if (this.mode == "Bill" && Number(this.id)>0) {
             this.OngetRecord(data[0], 'Bill');
         }
     }
@@ -344,14 +343,14 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             dialogRef.afterClosed().subscribe(result => {
-                this.grid.bindGridData();
+                //this.grid.bindGridData();
                 // if (result) {
                 //     this.grid.bindGridData();
                 // }
-                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
                 const currentPath = this.router.url.split('?')[0];
-                this.grid.bindGridData();
                 this.router.navigate([currentPath], { queryParams: {} });
+                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
+                this.grid.bindGridData();
             });
         }
         else if (m == "Bed Transfer") {
