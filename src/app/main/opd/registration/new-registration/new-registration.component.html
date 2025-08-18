@@ -90,10 +90,13 @@
                                                     dateStyle="Date"></app-airmid-dateofbirth>
                                             </div> -->
                                             <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                <app-airmid-dateofbirth [formGroup]="personalFormGroup"
+                                                <!-- <app-airmid-dateofbirth [formGroup]="personalFormGroup"
                                                     formControlName="DateOfBirth"
                                                     [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                                            </div>
+                                          -->
+                                         
+                                            <app-airmid-dateofbirth [formGroup]="personalFormGroup" dateStyle="Year" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                                </div>
                                             <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <input matInput [matDatepicker]="validFromPicker"
