@@ -164,11 +164,11 @@
                                         <h3>Notifications</h3>
                                     </div>
                                     <div class="notification-list">
-                                        <div *ngFor="let notification of notifications" class="notification-item">
+                                        <div *ngFor="let notification of notifications" class="notification-item" [ngClass]="notification.isRead ? 'notification-read' : ''">
 
                                             <!-- With link -->
                                             <ng-container *ngIf="notification.redirectUrl; else noLink">
-                                                <a [href]="notification.redirectUrl">
+                                                <a [href]="notification.redirectUrl" (click)="readNotification(notification.id)">
                                                     <div class="notification-icon">
                                                         <mat-icon>assignment</mat-icon>
                                                     </div>

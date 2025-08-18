@@ -153,6 +153,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             });
         }
     }
+    readNotification(id) {
+        this._notificationService.readNotifications(id).subscribe((data) => {
+            this.unreadCount--;
+        });
+    }
 
     logout() {
         this.accountService.logout().subscribe((data) => { });

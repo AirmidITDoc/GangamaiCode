@@ -58,3 +58,14 @@ toolbar {
     }
 }
 
+
+/* ✅ Style for read notification */
+.notification-read {
+    opacity: 0.6;
+    background: #f0f0f0;
+}
+
+.notification-read .notification-title {
+    font-weight: normal;
+    color: #666;
+}
