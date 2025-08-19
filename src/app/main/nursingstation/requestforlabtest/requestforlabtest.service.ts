@@ -109,6 +109,13 @@ export class RequestforlabtestService {
     }
     return this._httpClient.get("Pathology/view-PathReportMultiple?OP_IP_Type=" + OP_IP_Type);
   }
+   // Admitted Doctor Master Combobox List
+  public getAdmittedDoctorCombo(param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_DoctorListMasterForCombo",param)
+  } 
 }
 
 

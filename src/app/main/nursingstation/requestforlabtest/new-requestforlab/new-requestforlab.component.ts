@@ -129,7 +129,8 @@ export class NewRequestforlabComponent implements OnInit {
       RegId:'',
       AdmissionID:0,
       Requestdate:'',
-      IsOnFileTest:''
+      IsOnFileTest:'',
+      EditDoctor:''
     })
   }
   createSearchForm():FormGroup{
@@ -414,20 +415,83 @@ export class NewRequestforlabComponent implements OnInit {
       });
     });
   }
+  EditDoctor: boolean = false;
+  DocenableEditing(row: LabRequest) {
+    row.EditDoctor = true;
+    row.DoctorName = '';
+  }
+  DoctorisableEditing(row: LabRequest) {
+    row.EditDoctor = false;
+    this.EditedDocValue = '';
+     this.OnSaveEditDoc(row)
+  }
+  EditedDocValue: any;
+  DropDownValue(Obj, contact) {
+    console.log(Obj)
+    this.EditedDocValue = Obj
+  }
 
-    
+  //Doctor list 
+  filteredOptionsDoctorsEdit: any
+  getAdmittedDoctorEditable() {
+    var vdata = {
+      "Keywords": this.myFormGroup.get('EditDoctor').value + "%" || "%"
+    }
+    this._RequestforlabtestService.getAdmittedDoctorCombo(vdata).subscribe(data => {
+      this.filteredOptionsDoctorsEdit = data;
+      if (this.filteredOptionsDoctorsEdit.length == 0) {
+        this.noOptionFound = true;
+      } else {
+        this.noOptionFound = false;
+      }
+    });
+  }
+  getOptionTextDoctorEdit(option) {
+    return option && option.Doctorname ? option.Doctorname : '';
+  }
+
+  OnSaveEditDoc(row) {
+    debugger
+    console.log(row)
+    this.chargeslist = this.dstable1.data.filter(i => i.ServiceId != row.ServiceId)
+    console.log(this.chargeslist)
+    this.chargeslist.push(
+      {
+        ServiceId: row.ServiceId,
+        ServiceName: row.ServiceName,
+        Price: row.Price || 0,
+        DoctorName: this.EditedDocValue?.Doctorname || '',
+        DoctorId: this.EditedDocValue?.DoctorId || 0
+      });
+    this.isLoading = '';
+    console.log(this.chargeslist);
+    this.dstable1.data = this.chargeslist;
+    this.dstable1.sort = this.sort;
+    this.dstable1.paginator = this.paginator;
+
+    this.toastr.success('Record Successfuly Updated', 'Updated !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    })
+
+
+
+  }
+
 }
 export class LabRequest {
   ServiceName: any;
   Price: number;
   ServiceId: any;
   DoctorId:any;
+  DoctorName:any;
+  EditDoctor:any;
   
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
     this.DoctorId = LabRequest.DoctorId || 0;
+     this.DoctorName = LabRequest.DoctorName || '';
   }
 }
 

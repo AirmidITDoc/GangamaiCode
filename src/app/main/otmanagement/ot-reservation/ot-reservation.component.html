@@ -185,7 +185,7 @@
 
                   <ng-container matColumnDef="PatientName" sticky>
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                      PatientName
+                      Patient Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
                       {{contact.PatientName}}
@@ -194,7 +194,7 @@
 
                   <ng-container matColumnDef="SurgeonName1">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                      SurgeonName1
+                      Surgeon Name1
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
                       {{contact.SurgeonName1 ? contact.SurgeonName1 : '-'}}
@@ -203,7 +203,7 @@
 
                   <ng-container matColumnDef="SurgeonName2">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                      SurgeonName2
+                      Surgeon Name2
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
                       {{contact.SurgeonName2 ? contact.SurgeonName2 : '-'}}
@@ -231,7 +231,7 @@
 
                   <ng-container matColumnDef="Surgeryname">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                      Surgeryname
+                      Surgery name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
                       matTooltip="{{contact.Surgeryname}}">

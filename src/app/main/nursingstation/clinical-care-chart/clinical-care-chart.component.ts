@@ -585,7 +585,7 @@ OnSavePainAsses(){
     if(reponse){
       this.toastr.success('Record Saved Successfully.', 'Saved !', {
         toastClass: 'tostr-tost custom-toast-success',
-      }); 
+      });  
       this.getpainAssesmentList();
     } else {
       this.toastr.error('Record Data not saved !, Please check API error..', 'Error !', {
@@ -615,7 +615,7 @@ OnSavePainAsses(){
       if(reponse){
         this.toastr.success('Record Updated Successfully.', 'Updated !', {
           toastClass: 'tostr-tost custom-toast-success',
-        }); 
+        });  
         this.getpainAssesmentList();
       } else {
         this.toastr.error('Record Data not Updated !, Please check API error..', 'Error !', {

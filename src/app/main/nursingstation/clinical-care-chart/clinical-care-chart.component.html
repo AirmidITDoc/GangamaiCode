@@ -111,7 +111,7 @@
                                     <div fxFlex.gt-sm="98%" fxFlex>
                                         <mat-tab-group style="overflow: auto;">
                                             <mat-tab label="Pain Assessment">
-                                                <div class="content" style="overflow: auto;height:500px">
+                                                <div class="content" style="overflow: auto;height:680px">
                                                     <div class="center p-12 pb-56"
                                                         style="border-radius: 4px;overflow: auto;">
 
@@ -249,25 +249,25 @@
                                                                                 <ng-container matColumnDef="givendate">
                                                                                     <mat-header-cell *matHeaderCellDef
                                                                                         mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
+                                                                                        fxShow.gt-sm class="w-150">
                                                                                         PainAssessment Date/Time
                                                                                     </mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.PatWeightDate |
+                                                                                        fxHide fxShow.gt-sm class="w-150">
+                                                                                        {{element.givendate |
                                                                                         date:'dd/MM/YYYY'}}-
-                                                                                        {{element.PatWeightTime |
+                                                                                        {{element.giventime |
                                                                                         date:'shortTime'}}-</mat-cell>
                                                                                 </ng-container>
 
                                                                                 <ng-container matColumnDef="PainAssess">
                                                                                     <mat-header-cell *matHeaderCellDef
                                                                                         mat-sort-header fxHide
-                                                                                        fxShow.gt-sm>
+                                                                                        fxShow.gt-sm class="w-100">
                                                                                         PWeight </mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element"
-                                                                                        fxHide fxShow.gt-sm>
-                                                                                        {{element.PatWeightValue}}
+                                                                                        fxHide fxShow.gt-sm class="w-100">
+                                                                                        {{element.PainAssess}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
@@ -279,7 +279,7 @@
                                                                                         CreatedBy</mat-header-cell>
                                                                                     <mat-cell *matCellDef="let element"
                                                                                         fxHide fxShow.gt-sm>
-                                                                                        {{element.CreatedBy}}
+                                                                                        {{element.Employeename}}
                                                                                     </mat-cell>
                                                                                 </ng-container>
 
@@ -493,7 +493,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Lab Reports">
-                                                <div class="content" style="overflow: auto;height: 500px">
+                                                <div class="content" style="overflow: auto;height: 680px">
                                                     <div class="center p-12 pb-56"
                                                         style="border-radius: 4px;overflow: auto;">
                                                         <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
@@ -510,7 +510,7 @@
                                                                 </div>
                                                                 <mat-table matSort [dataSource]="datasource"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height: 370px;">
+                                                                    style="overflow: auto;height: 500px;">
 
                                                                     <ng-container matColumnDef="Date">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -588,7 +588,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="IP Prescription">
-                                                <div class="content" style="overflow: auto;height:500px;">
+                                                <div class="content" style="overflow: auto;height:680px;">
                                                     <div class="center p-12 pb-56"
                                                         style="border-radius: 4px;overflow: auto;">
                                                         <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
@@ -616,7 +616,7 @@
                                                                 <mat-table class="Tab1" matSort
                                                                     [dataSource]="dsprescritionList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow:auto;height: 200px;">
+                                                                    style="overflow:auto;height: 250px;">
 
                                                                     <ng-container matColumnDef="action">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -715,7 +715,7 @@
                                                                 <mat-table class="Tab2" matSort
                                                                     [dataSource]="dsprescriptiondetList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow:auto;height: 200px;">
+                                                                    style="overflow:auto;height: 250px;">
 
                                                                     <ng-container matColumnDef="Status">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -787,7 +787,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Lab Request">
-                                                <div class="content" style="overflow: auto;height:500px;">
+                                                <div class="content" style="overflow: auto;height:680px;">
                                                     <div class="center p-12 pb-56"
                                                         style="border-radius: 4px;overflow: auto;">
                                                         <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
@@ -815,7 +815,7 @@
                                                                 <mat-table class="Tab1" matSort
                                                                     [dataSource]="dsrequestList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height: 200px;">
+                                                                    style="overflow: auto;height: 250px;">
 
                                                                     <ng-container matColumnDef="ReqDate">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -926,7 +926,7 @@
                                                                 <mat-table class="Tab2" matSort
                                                                     [dataSource]="dsrequestdetList"
                                                                     [@animateStagger]="{value:'50'}"
-                                                                    style="overflow: auto;height: 200px;">
+                                                                    style="overflow: auto;height: 250px;">
 
                                                                     <ng-container matColumnDef="IsStatus">
                                                                         <mat-header-cell *matHeaderCellDef
@@ -1053,7 +1053,7 @@
 
                                             <!-- //seconds tab -->
                                             <mat-tab label="Vitals">
-                                                <div class="content" style="overflow: auto;height:500px;">
+                                                <div class="content" style="overflow: auto;height:680px;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
 
                                                         <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
@@ -1061,7 +1061,7 @@
                                                             <div fxFlex.gt-sm="100%" fxFlex>
                                                                 <mat-card style="padding: 5px;">
                                                                     <mat-table class="table2" matSort [dataSource]="dsvitalsList" [@animateStagger]="{value:'50'}"
-                                                                        style="overflow: auto;">
+                                                                        style="overflow: auto;height: 300px;">
 
                                                                         <ng-container matColumnDef="date" sticky>
                                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
@@ -1473,7 +1473,7 @@
 
                                             <!-- Third Tab -->
                                             <mat-tab label="Sugar Level">
-                                                <div class="content" style="height:500px ;overflow: auto;">
+                                                <div class="content" style="height:680px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.SugarForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
@@ -1751,7 +1751,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Oxygen/ventilation">
-                                                <div class="content" style="height:500px ;overflow: auto;">
+                                                <div class="content" style="height:680px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.OxygenForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="2px">
@@ -2099,7 +2099,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Input/Output">
-                                                <div class="content" style="height:500px ;overflow: auto;">
+                                                <div class="content" style="height:680px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.InPutOutputForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="3px">
@@ -2588,7 +2588,7 @@
                                             </mat-tab>
 
                                             <mat-tab label="Apache Score">
-                                                <div class="content" style="height:500px ;overflow: auto;">
+                                                <div class="content" style="height:680px ;overflow: auto;">
                                                     <div class="center p-12 pb-56" style="border-radius: 4px;">
                                                         <form [formGroup]="_ClinicalcareService.ApacheScoreForm">
                                                             <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
@@ -2931,7 +2931,7 @@
                                 <div class="spinner-border text-danger"></div>
                             </div>
                             <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient"
-                                [@animateStagger]="{value:'50'}" style="overflow: auto;height:410px">
+                                [@animateStagger]="{value:'50'}" style="overflow: auto;height:600px">
 
                                 <ng-container matColumnDef="patientId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm

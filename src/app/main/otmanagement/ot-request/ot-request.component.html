@@ -186,7 +186,7 @@
 
                                             <ng-container matColumnDef="Patientname" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                                                    PatientName
+                                                    Patient Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150">
                                                     {{ contact.PatientName}}
@@ -195,7 +195,7 @@
 
                                             <ng-container matColumnDef="SurgeonName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                                    SurgeonName
+                                                    Surgeon Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                                     {{ contact.DoctorName ? contact.DoctorName : '-' }}
@@ -204,7 +204,7 @@
 
                                             <ng-container matColumnDef="SurgeryCategoryName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                                                    CategoryName
+                                                    Category Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
                                                 matTooltip="{{contact.SurgeryCategoryName}}">
@@ -214,7 +214,7 @@
 
                                             <ng-container matColumnDef="SiteDesc">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md class="w-150">
-                                                    SiteDescription
+                                                    Site Description
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md class="w-150 ellipsis"
                                                 matTooltip="{{contact.SiteDescriptionName}}">
@@ -224,7 +224,7 @@
 
                                             <ng-container matColumnDef="SurgeryName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                                    SurgeryName
+                                                    Surgery Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                                     {{contact.SurgeryName}}
@@ -233,7 +233,7 @@
 
                                             <ng-container matColumnDef="DepartmentName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                                    DepartmentName
+                                                    Department Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                                     {{contact.DepartmentName}}

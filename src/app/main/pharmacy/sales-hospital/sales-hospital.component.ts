@@ -2587,7 +2587,7 @@ export class SalesHospitalComponent implements OnInit {
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.dateTimeObj.date;
     PatientHeaderObj['RegNo'] = this.RegNo;
-    PatientHeaderObj['PatientName'] = this.PatientName;
+    PatientHeaderObj['PatientName'] = ExternalPatient;
     if (this.vPatientType == 'IP') {
       PatientHeaderObj['OPD_IPD_Id'] = this.IPDNo;
     } else {

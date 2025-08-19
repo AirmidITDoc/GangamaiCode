@@ -97,7 +97,7 @@
                             style="overflow: auto;">
         
                             <ng-container matColumnDef="RegNo">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md style=" margin-top: 8px; ">RegNo
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md style=" margin-top: 8px; ">UHID No
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.RegNo}}
@@ -106,7 +106,7 @@
         
                             <ng-container matColumnDef="PatientName" fxLayoutAlign="start center">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm style=" margin-top: 8px; ">
-                                PatientName</mat-header-cell>
+                                Patient Name</mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.PatientName}}
                               </mat-cell>
@@ -114,7 +114,7 @@
         
         
                             <ng-container matColumnDef="OPDate">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>OPDate
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>OP Date
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.OPDate | date:'shortDate'}}
@@ -132,7 +132,7 @@
         
                             <ng-container matColumnDef="DoctorName">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md style=" margin-top: 8px; ">
-                                DoctorName
+                                Doctor Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.DoctorName}}
@@ -140,7 +140,7 @@
                             </ng-container>
         
                             <ng-container matColumnDef="OTTableName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>OTTableName
+                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>OTTable Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.OTTableName}}
@@ -149,7 +149,7 @@
         
                             <ng-container matColumnDef="SurgeonName">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                SurgeonName
+                                Surgeon Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.SurgeonName}}
@@ -159,7 +159,7 @@
         
                             <ng-container matColumnDef="AnathesDrName1">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                AnathesDrName1
+                                AnathesDr Name1
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.AnathesDrName1}}
@@ -168,7 +168,7 @@
         
                             <ng-container matColumnDef="AnathesDrName">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                AnathesDrName
+                                AnathesDr Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.AnathesDrName}}
@@ -178,7 +178,7 @@
         
                             <ng-container matColumnDef="Surgeryname">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                Surgeryname
+                                Surgery name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.Surgeryname}}
@@ -222,7 +222,7 @@
         
                             <ng-container matColumnDef="instruction">
                               <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>
-                                instruction
+                                Instruction
                               </mat-header-cell>
                               <mat-cell *matCellDef="let contact" fxShow.gt-md>
                                 {{contact.instruction}}
