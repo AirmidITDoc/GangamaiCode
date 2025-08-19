@@ -32,7 +32,9 @@ export class PrescriptionService {
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       PrescriptionStatus:['Pending'],
-      RegNo:''
+      RegNo:'',
+      fName:"",
+            lName:"",
     })  
   }
 // dd form
@@ -169,4 +171,7 @@ public getDoseMasterById(Id) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
 
+  public PrescriptionCancle(Param){
+  return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

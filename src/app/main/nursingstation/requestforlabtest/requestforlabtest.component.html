@@ -16,6 +16,37 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+
+        <ng-template #isOnFileTestIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.isOnFileTest =='false'" matTooltip="Is File ON">flip_to_front
+                </mat-icon>
+
+                <mat-icon *ngIf="element.isOnFileTest !== 'false'" matTooltip="Is File Off">markunread_mailbox
+                </mat-icon>
+
+            </div>
+        </ng-template>
+
+
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button (click)="viewLabRequestPdf(element)" matTooltip="Lab Request Print">
+                    <mat-icon title="Request Print">print</mat-icon>
+                </button>
+                <button mat-icon-button (click)="Labrequestcancle(element)" matTooltip="Lab Request  Cancel">
+                    <mat-icon title="Cancel Lab Request">cancel</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+
+
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)"
             :ShowButtons="false">
             <ng-container filters>
@@ -27,10 +58,33 @@
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>UHID</mat-label>
-                        <input matInput placeholder="Search UHID" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
+                        <input matInput placeholder="Search UHID" autocomplete="off"
+                            (keypress)="keyPressAlphanumeric($event)"
                             [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="RegNo"
-                            (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            (input)="onChangeFirst1()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off"
+                            [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="fName"
+                            (input)="onChangeFirst1()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('fName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off"
+                            [formGroup]="_RequestforlabtestService.mySearchForm" formControlName="lName"
+                            (input)="onChangeFirst1()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('lName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -41,36 +95,35 @@
 
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-
-        <ng-template #isStatusIcon let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isStatus == true" matTooltip="Bill Generated"
-                    class="active-icon green-500 s-16">
-                    check_circle
-                </mat-icon>
-
-                <mat-icon *ngIf="element.isStatus == false" matTooltip="Bill Not Generated"
-                    class="active-icon red-500 s-16">
-                    hourglass_empty
-                </mat-icon>
-
-            </div>
-        </ng-template>
-
-        <ng-template #isTestCompletedIcon let-element>
+<ng-template #isTestCompletedIcon let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready"
                 (click)="getPrint(element)">
                     remove_red_eye
                 </mat-icon>
-
+ 
                 <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
                     class="active-icon red-500 s-16">
                     hourglass_empty
                 </mat-icon>
             </div>
         </ng-template>
-
+ 
+<ng-template #isStatusIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isStatus == true" matTooltip="Bill Generated"
+                    class="active-icon green-500 s-16">
+                    check_circle
+                </mat-icon>
+ 
+                <mat-icon *ngIf="element.isStatus == false" matTooltip="Bill Not Generated"
+                    class="active-icon red-500 s-16">
+                    hourglass_empty
+                </mat-icon>
+ 
+            </div>
+        </ng-template>
+ 
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
         </airmid-table>
     </div>

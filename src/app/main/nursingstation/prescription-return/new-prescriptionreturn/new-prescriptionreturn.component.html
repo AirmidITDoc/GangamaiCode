@@ -44,7 +44,8 @@
 
                                     <airmid-autocomplete lbl="RgId" *ngIf="ItemSubform.get('PatientType').value == 'OP'"
                                         [formGroup]="ItemSubform" formControlName="RegID"
-                                        placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        placeholderText="OP-RegNo/Patient Name/Mobile No"
+                                        label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="VisitDetail/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                         ValueField="regId">
@@ -52,7 +53,8 @@
 
                                     <airmid-autocomplete lbl="RgId" *ngIf="ItemSubform.get('PatientType').value == 'IP'"
                                         [formGroup]="ItemSubform" formControlName="RegID"
-                                        placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
+                                        placeholderText="IP-RegNo/Patient Name/Mobile No"
+                                        label="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
@@ -226,7 +228,8 @@
                                 </airmid-textbox>
 
                                 <airmid-textbox label="Qty" formControlName="Qty" fxFlex="25%" [formGroup]="ItemSubform"
-                                    [(ngModel)]="Qty" [validations]="getValidationMessages().Qty" (keypress)="keyPressAlphanumeric($event)">
+                                    [(ngModel)]="Qty" [validations]="getValidationMessages().Qty"
+                                    (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- [disabled]="!add" -->
@@ -342,6 +345,13 @@
                         </mat-card>
                     </div>
 
+                </form>
+
+                <form [formGroup]="prescriptionReturnForm">
+                    <airmid-dropdown label="Store Name" formControlName="toStoreId" [formGroup]="prescriptionReturnForm"
+                        [value]="vstoreId" fxFlex="50%"
+                        [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
+                    </airmid-dropdown>
                 </form>
             </div>
 

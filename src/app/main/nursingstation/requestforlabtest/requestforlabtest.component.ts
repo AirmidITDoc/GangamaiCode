@@ -24,13 +24,20 @@ export class RequestforlabtestComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
-    @ViewChild('isOnFileTest') isOnFileTestIcon!: TemplateRef<any>;
- hasSelectedContacts: boolean;
-    ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
-        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+    @ViewChild('isOnFileTestIcon') isOnFileTestIcon!: TemplateRef<any>;
+    hasSelectedContacts: boolean;
+    fname = "%"
+    lname = "%"
 
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
+          this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+ 
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -38,30 +45,41 @@ export class RequestforlabtestComponent implements OnInit {
     regNo: any = ""
 
     allColumns = [
+      
+        { heading: "IsFileON", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
         { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-        { heading: "Admission Date", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
-        { heading: "BedName", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-        { heading: "RequestType", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150  },
-        // { heading: "IsOnFileTest", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "IsOnFileTest", key: "isOnFileTest", type: gridColumnTypes.status, align: "center" },
+        { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+
+        { heading: "WardName | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        
+        { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        // {
+        //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        //         {
+        //             action: gridActions.print, callback: (data: any) => {
+        //                 this.viewLabRequestPdf(data);
+        //                 this.grid.bindGridData();
+        //             }
+        //         }]
+        // }
 
         {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.print, callback: (data: any) => {
-                        this.viewLabRequestPdf(data);
-                        this.grid.bindGridData();
-                    }
-                }]
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
     allFilters = [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
@@ -72,21 +90,30 @@ export class RequestforlabtestComponent implements OnInit {
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        console.log(event)
+    Clearfilter1(event) {
         if (event == 'RegNo')
             this._RequestforlabtestService.mySearchForm.get('RegNo').setValue("")
-        this.onChangeFirst();
+        if (event == 'fName')
+            this._RequestforlabtestService.mySearchForm.get('fName').setValue("")
+
+        if (event == 'lName')
+            this._RequestforlabtestService.mySearchForm.get('lName').setValue("")
+
+        this.onChangeFirst1();
     }
 
-    onChangeFirst() {
-        this.regNo = this._RequestforlabtestService.mySearchForm.get('RegNo').value
+    onChangeFirst1() {
+        this.regNo = this._RequestforlabtestService.mySearchForm.get('RegNo').value || '0'
+        this.fname = this._RequestforlabtestService.mySearchForm.get('fName').value + "%"
+        this.lname = this._RequestforlabtestService.mySearchForm.get('lName').value + "%"
+
         this.getfilterdata();
     }
 
+
     getfilterdata() {
         this.isShowDetailTable = false;
-        
+
         let fromDate1 = this._RequestforlabtestService.mySearchForm.get("startdate").value || "";
         let toDate1 = this._RequestforlabtestService.mySearchForm.get("enddate").value || "";
         fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -99,7 +126,9 @@ export class RequestforlabtestComponent implements OnInit {
             filters: [
                 { fieldName: "FromDate", fieldValue: fromDate1, opType: OperatorComparer.Equals },
                 { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+                { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -123,22 +152,17 @@ export class RequestforlabtestComponent implements OnInit {
 
         console.log("Selected row : ", row);
         let vRequestId = row.requestId
-
+        debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
 
                 { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
                 { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
-
-
-                { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "AddedBy", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Add Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "BillDateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA',width:250 },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+                { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+                
 
             ],
             sortField: "RequestId",
@@ -156,7 +180,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-        
+
         setTimeout(() => {
             const param = {
                 searchFields: [
@@ -190,7 +214,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     getPrint(contact) {
-        
+
         console.log(contact)
 
         Swal.fire({
@@ -233,5 +257,24 @@ export class RequestforlabtestComponent implements OnInit {
             event.preventDefault();
             return false;
         }
+    }
+
+    Labrequestcancle(data) {
+        Swal.fire({
+            title: 'Do you want to cancel the Lab Request?',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                this._RequestforlabtestService.labreqCancle(data.prscId).subscribe((response: any) => {
+                    this.toastr.success(response.message);
+                    this.grid.bindGridData();
+                });
+            }
+        });
     }
 }

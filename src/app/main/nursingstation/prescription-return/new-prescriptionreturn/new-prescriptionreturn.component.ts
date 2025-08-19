@@ -72,6 +72,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   dateTimeObj: any;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   add: boolean = false;
+   autocompletestore: string = "PharmacyStore";
 
   constructor(
     public _PrescriptionReturnService: PrescriptionReturnService,
@@ -501,6 +502,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
            }, 100);
          
   }
+    selectChangeStore(obj: any) {
+    console.log(obj)
+    this.vstoreId = obj.value
+  }
+
 
 }
 export class IndentList {

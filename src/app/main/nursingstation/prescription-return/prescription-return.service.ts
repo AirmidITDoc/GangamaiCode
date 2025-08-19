@@ -22,7 +22,10 @@ export class PrescriptionReturnService {
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       RegNo:'',
-      PrescriptionStatus:['Pending']
+      PrescriptionStatus:['Pending'],
+       fName:"",
+      mName:"",
+      lName:"",
     })
   }
   

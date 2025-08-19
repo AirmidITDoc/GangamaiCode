@@ -71,7 +71,7 @@ export class NewPrescriptionComponent implements OnInit {
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
 
-  autocompletestore: string = "Store";
+  autocompletestore: string = "PharmacyStore";
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
   Regstatus: boolean = true;
@@ -117,8 +117,8 @@ export class NewPrescriptionComponent implements OnInit {
 
     this.prescForm = this._PrescriptionService.createPrescForm();
     this.prescriptionArray.push(this.createPrescriptionFormInsert());
-    this.vstoreId = this._loggedService.currentUserValue.user.storeId
-    this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
+    // this.vstoreId = this._loggedService.currentUserValue.user.storeId
+    // this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
   }
 
 
@@ -152,6 +152,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeStore(obj: any) {
+    console.log(obj)
     this.vstoreId = obj.value
   }
 
@@ -166,7 +167,7 @@ export class NewPrescriptionComponent implements OnInit {
   // }
 
   selectChangeItem(obj: any) {
-
+debugger
     if (this.vstoreId == 0) {
       this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
@@ -337,7 +338,7 @@ export class NewPrescriptionComponent implements OnInit {
       remark: [element.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isClosed: [false],
       isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [Number(this.vstoreId) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [ this.vstoreId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       wardId: [Number(this.myForm.get('WardName').value) ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }

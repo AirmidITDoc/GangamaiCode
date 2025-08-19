@@ -25,7 +25,9 @@ export class RequestforlabtestService {
     return this._FormBuilder.group({
       startdate :[(new Date()).toISOString()],
       enddate :[(new Date()).toISOString()],
-      RegNo :''
+      RegNo :'',
+       fName:"",
+      lName:"",
     })
 
   }
@@ -138,6 +140,10 @@ export class RequestforlabtestService {
     }
     public LabRequestSave(employee) {
     return this._httpClient1.PostData("IPPrescription/LabRequestInsert", employee);
+    }
+
+   public labreqCancle(employee) {
+    return this._httpClient1.PostData("IPPrescription/LabRequestCancle", employee);
     }
 }
 
