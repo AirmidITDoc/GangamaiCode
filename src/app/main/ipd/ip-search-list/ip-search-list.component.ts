@@ -182,6 +182,7 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Add Charges');
 
         }
+        debugger;
         this.id = this.route.snapshot.queryParamMap.get('Id');
         this.mode = this.route.snapshot.queryParamMap.get('Mode');
         if (this.mode == "Bill" && Number(this.id)>0) {

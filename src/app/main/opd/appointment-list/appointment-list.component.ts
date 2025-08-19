@@ -27,6 +27,7 @@ import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
+import { ActivatedRoute, Router } from '@angular/router';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -69,11 +70,17 @@ export class AppointmentListComponent implements OnInit {
     l_name: any = "%"
     IsMark = "2"
 
+    // Notitifcation Veriable
+    IsShowGrid: boolean = false;
+    id: string;
+    mode: string;
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public toastr: ToastrService, public datePipe: DatePipe,
+        private _ActRoute: Router, private route: ActivatedRoute,
     ) { }
 
     ngOnInit(): void {
@@ -99,8 +106,29 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        // debugger
+        
+        debugger
         this.GetAppointdetail()
+         if (this._ActRoute.url == '/opd/appointment') {
+            this.id = this.route.snapshot.queryParamMap.get('Id');
+            this.mode = this.route.snapshot.queryParamMap.get('Mode');
+            if (this.mode == "Bill" && Number(this.id)>0) {
+                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
+            }
+            this.IsShowGrid = true;
+         }
+          this.id = this.route.snapshot.queryParamMap.get('Id');
+          this.mode = this.route.snapshot.queryParamMap.get('Mode');
+          if (this.mode == "Bill" && Number(this.id)>0) {
+                this.gridConfig.filters.find(x => x.fieldName == "visitId").fieldValue = this.id;
+          }
+          this.IsShowGrid = true;
+    }
+
+    handleNotificationEvent(data) {
+        if (this.mode == "Bill" && Number(this.id)>0) {
+            this.OnBillPayment(data[0]);
+        }
     }
 
     allfilters = [
@@ -409,7 +437,6 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-
     }
 
     OnViewReportPdf(element) {
@@ -434,6 +461,24 @@ export class AppointmentListComponent implements OnInit {
                this.GetAppointdetail()
         });
     }
+    //  OnBill(row,m) {
+    //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //     buttonElement.blur(); // Remove focus from the button
+    //     this.advanceDataStored.storage = new SearchInforObj1(row);
+    //     let that = this;
+    //     console.log("Row Selected Appointment Page : ", this.advanceDataStored.storage)
+    //     const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+    //         maxWidth: "99vw",
+    //         height: "98vh",
+    //         width: "100%",
+    //         data: row
+
+    //     });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         this.grid.bindGridData();
+    //            this.GetAppointdetail()
+    //     });
+    // }
 
     OnNewCrossConsultation(element) {
         console.log('Third action clicked for:', element);
