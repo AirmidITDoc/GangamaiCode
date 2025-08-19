@@ -141,7 +141,7 @@ ClassChangeForm(){
   }
    onClose(){
    this.IpUpdateForm.reset();
-   this.dialogRef.close();
+   this._matDialog.closeAll()
    }
      getValidationMessages() {
     return {
