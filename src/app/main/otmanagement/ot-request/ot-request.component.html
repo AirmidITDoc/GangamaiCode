@@ -39,6 +39,10 @@
                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                 <span class="blue-600-fg">normal </span>
             </div>
+             <!-- <div style="color: yellow;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill yellow-600 s-16">circle</mat-icon>
+                <span class="yellow-600-fg">cancel </span>
+            </div> -->
         </div>
     </div>
     <ng-template #actionsTemplate let-element>
@@ -63,12 +67,14 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <!-- Button 1: Edit Patient Registration  -->
-                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)"
+                 [disabled]="element.isCancelled">
                     <mat-icon>edit</mat-icon>
                 </button>
 
                 <!-- Button 2: Print Registration  -->
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)"
+                 [disabled]="element.isCancelled">
                     <mat-icon> print</mat-icon>
                 </button>
 
@@ -80,6 +86,9 @@
             *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
                 <mat-icon> cancel</mat-icon>
             </button>
+            <mat-icon *ngIf="element.isCancelled==true"  matTooltip="Cancelled">
+      block
+    </mat-icon>
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content" >

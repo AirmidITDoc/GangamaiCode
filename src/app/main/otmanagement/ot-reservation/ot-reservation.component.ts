@@ -81,8 +81,8 @@ export class OTReservationComponent implements OnInit {
     ];
   
       allFilters = [
-          { fieldName: "From_Dt", fieldValue: "2025-08-04", opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: "2025-08-05", opType: OperatorComparer.Equals },
+          { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
           { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "LastName", fieldValue: "%", opType:OperatorComparer.StartsWith },
             { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },

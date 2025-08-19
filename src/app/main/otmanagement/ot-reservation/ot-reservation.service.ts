@@ -34,29 +34,29 @@ export class OtReservationService {
             //      [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             //  ],
             //  isActive:[true,[Validators.required]]: 
-            otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            reservationDate:[new Date()],
-            reservationTime: [new Date()],
+            otreservationId: [0],
+            reservationDate:[new Date(),[Validators.required]],
+            reservationTime: [new Date(),[Validators.required]],
             opIpId: [""],
             opIpType:  ["OP"],
 
-            opdate: [new Date()],
-            opstartTime: [new Date()],
-            opendTime: [new Date()],
+            opdate: [new Date(),[Validators.required]],
+            opstartTime: [new Date(),[Validators.required]],
+            opendTime: [new Date(),[Validators.required]],
 
             duration: [0],
-            ottableId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeonId1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            anestheticsDr: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            anestheticsDr1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            anesthTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ottableId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeonId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeonId1: [0],
+            anestheticsDr: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            anestheticsDr1: [0],
+            surgeryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            anesthTypeId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             instruction: [""],
-            ottypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ottypeId: [0],
             unBooking: [false],
              isCancelled: [false],
-            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
        isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
          });
      }
@@ -75,7 +75,7 @@ export class OtReservationService {
      }
  
     
-     
+
  
      public reservationSave(Param: any) {
          if (Param.otreservationId) {

@@ -156,7 +156,7 @@ export class OTRequestComponent implements OnInit {
 //  OnCancel(Param) {
 //         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
 //     } 
- OnCancel(data) {
+OnCancel(data: any) {
   Swal.fire({
     title: 'Do you want to cancel OT request?',
     text: "Please provide a reason for cancellation",
@@ -179,15 +179,21 @@ export class OTRequestComponent implements OnInit {
         otBookingId: data.otBookingId,
         cancelReason: result.value // Capture the reason
       };
-      console.log(submitData);
 
       this._OtRequestService.OnCancel(submitData).subscribe((res) => {
-        this.grid.bindGridData();
+        // ✅ Mark cancelled in UI without reload
+        data.isCancelled = true;
+        data.cancelReason = result.value;
+
+        // OR if you always want fresh data, keep your grid refresh:
+        // this.grid.bindGridData();
+
         Swal.fire('Cancelled!', 'OT request has been cancelled.', 'success');
       });
     }
   });
 }
+
 
        onChangeFirst() {
         this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
