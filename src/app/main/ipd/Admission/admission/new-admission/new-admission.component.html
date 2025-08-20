@@ -118,8 +118,8 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container detail-wrapper">
-            <!-- <mat-drawer-container class="main-container h-100-p">
-                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden"> -->
+            <mat-drawer-container class="main-container h-100-p">
+                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)">
                     <div fxLayout="column" fxLayoutGap="8px">
                         <!-- Search section -->
                         <div class="detail-container input-error-hidden">
@@ -867,32 +867,35 @@
                             </form>
                         </div>
                     </div>
-                <!-- </mat-drawer-content>
+                </mat-drawer-content>
 
                 <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
                     class="service-drawer" style="min-width: 430px;">
                     <mat-card class="sidebar h-100-p">
                         <div class="airmid-table-container overflow-hidden">
                             <mat-table class="airmid-table" [dataSource]="filteredOptions">
-                               
+                                <!-- Reg No Column -->
                                 <ng-container matColumnDef="regNo">
                                     <mat-header-cell *matHeaderCellDef class="w-120">Reg No</mat-header-cell>
                                     <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.regNo
                                             }}</span></mat-cell>
                                 </ng-container>
 
+                                <!-- Patient Name Column -->
                                 <ng-container matColumnDef="patientName">
                                     <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
                                     <mat-cell *matCellDef="let element"><span>{{ element.patientName
                                             }}</span></mat-cell>
                                 </ng-container>
 
+                                <!-- Mobile No Column -->
                                 <ng-container matColumnDef="mobileNo">
                                     <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
                                     <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
                                             }}</span></mat-cell>
                                 </ng-container>
 
+                                <!-- No Data Row -->
                                 <ng-container matColumnDef="NoData">
                                     <mat-footer-cell *matFooterCellDef>
                                         <span>No Data Found</span>
@@ -909,7 +912,7 @@
                         </div>
                     </mat-card>
                 </mat-drawer>
-            </mat-drawer-container> -->
+            </mat-drawer-container>
         </div>
     </div>
 
