@@ -109,7 +109,7 @@
               <form [formGroup]="Serviceform" fxLayout="column">
                 <div style="width: 260px">
                   <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Service Date</mat-label>
+                    <mat-label>Charge Date</mat-label>
                     <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="chargesDate" (dateChange)="OnDateChange()" />
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>

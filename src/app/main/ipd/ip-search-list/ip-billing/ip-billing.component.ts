@@ -1536,21 +1536,28 @@ export class IPBillingComponent implements OnInit {
         this.getChargesList()
     }
     OnDateChange() {
-        // if (this.selectedAdvanceObj.AdmDateTime) {
-        //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
-        //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
-        //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
+        debugger;
 
-        //  // this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-        // }
-        //const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"dd/MM/yyyy") || 0;
-        // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
-        // if(serviceDate > AdmissionDate){
-        //   Swal.fire('should not chnage');
-        // }
-        // else{
-        //   Swal.fire('ok');
-        // }
+    // Get values as strings in dd/MM/yyyy format
+const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
+const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
+
+// Check that both dates are available
+if (serviceDateStr && admissionDateStr) {
+  // Convert to Date objects
+  const [sDay, sMonth, sYear] = serviceDateStr.split('/').map(Number);
+  const [aDay, aMonth, aYear] = admissionDateStr.split('/').map(Number);
+
+  const serviceDate = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+  const admissionDate = new Date(aYear, aMonth - 1, aDay);
+
+  // Check if service date is earlier than admission date
+  if (serviceDate < admissionDate) {
+    Swal.fire('The Charge Date should not be less than the Admission Date.');
+    this.Serviceform.get('chargesDate').setValue(new Date())
+  } 
+}
+
 
     }
     getDateTime(dateTimeObj) {
