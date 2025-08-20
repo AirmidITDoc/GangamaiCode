@@ -56,7 +56,7 @@ export class NewTemplateComponent implements OnInit {
         ]
       ],
       templateDesc: this.vTemplateDesc,
-      isActive: [1]
+      isActive: [true]
     });
   }
 
@@ -75,10 +75,7 @@ export class NewTemplateComponent implements OnInit {
         console.log('json mdata:', mdata);
         
         this._TemplatedescriptionService.TemplateSave(mdata).subscribe((response) => {
-          this.toastr.success(response.message);
           this.onClose();
-        }, (error) => {
-          this.toastr.error(error.message);
         });
       }  else {
         let invalidFields = [];

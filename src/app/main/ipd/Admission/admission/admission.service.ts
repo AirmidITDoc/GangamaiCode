@@ -6,6 +6,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -301,6 +302,10 @@ export class AdmissionService {
 
      public getVisitlist(employee) {
         return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+    }
+
+    public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+        return this._httpClient1.GetData(apiUrl + inputValue);
     }
 }
 

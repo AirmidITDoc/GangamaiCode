@@ -143,6 +143,9 @@ export class AirmidTableComponent implements OnInit {
 
             // added by raksha on 6/8/25 from reg list
             'table-row-green': row?.isMark == true,
+
+            // added by raksha on 20/8/25 for admission list if company present
+            'table-row-yellow' : row?.companyId > 0
         }
 
 

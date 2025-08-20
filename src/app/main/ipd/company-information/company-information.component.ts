@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -11,6 +11,8 @@ import { AdmissionService } from '../Admission/admission/admission.service';
 import { AdvanceDataStored } from '../advance';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel } from 'app/core/models/gridRequest';
 
 @Component({
   selector: 'app-company-information',
@@ -36,7 +38,7 @@ export class CompanyInformationComponent implements OnInit {
     'Active',
     'Action'
   ]
-
+  @ViewChild('grid') grid: AirmidTableComponent;
   constructor(
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
@@ -82,23 +84,23 @@ export class CompanyInformationComponent implements OnInit {
     });
   }
 
- getActiveApprovedAmtTotal(): number {
-  return this.dsCompanyList.data
-    .filter(row => row.isActive)
-    .reduce((sum, row) => sum + (Number(row.ApprovedAmt) || 0), 0);
-}
+  getActiveApprovedAmtTotal(): number {
+    return this.dsCompanyList.data
+      .filter(row => row.isActive)
+      .reduce((sum, row) => sum + (Number(row.ApprovedAmt) || 0), 0);
+  }
 
   createCompanyForm() {
     return this.formBuilder.group({
-      PolicyNo: ['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-      PolicyLimit: ['',[Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      PolicyNo: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      PolicyLimit: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
       validDate: [new Date()],
       dateApproved: [new Date()],
-      reason: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      reason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       amt: '',
-      Alentry: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      ApprovalAmt: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      EstimatAmt: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Alentry: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      ApprovalAmt: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      EstimatAmt: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
       MemberNo: [''],
       ClaimNo: [''],
@@ -129,6 +131,26 @@ export class CompanyInformationComponent implements OnInit {
     }
   }
 
+  allColumns = [
+    { heading: "Estimate Amt", key: "amt1", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Approved Amt", key: "amt2", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Al Entry", key: "enter", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Valid Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "IsActive", key: "active", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Action", key: "ac", sort: true, align: 'left', emptySign: 'NA'},
+  ]
+
+  allFilters = []
+
+  gridConfig: gridModel = {
+    apiUrl: "",
+    columnsList: this.allColumns,
+    sortField: "",
+    sortOrder: 0,
+    filters: this.allFilters
+  }
+
   onActiveChange(element: any) {
     console.log('IsActive changed:', element);
   }
@@ -138,7 +160,7 @@ export class CompanyInformationComponent implements OnInit {
       this.dsCompanyList.data = [];
       const selectedDate = this.companyFormGroup.get('dateApproved').value;
       const formattedDate = selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : '';
-      
+
       this.Chargelist.push(
         {
           EstimateAmt: this.companyFormGroup.get('EstimatAmt').value || '',
@@ -304,8 +326,8 @@ export class CompanyDetails {
   dateApproved: any;
   reason: any;
   amt: any;
-  isActive:any;
-ApprovedAmt:any;
+  isActive: any;
+  ApprovedAmt: any;
 
   ClaimNo: any;
   CompBillNo: any;
