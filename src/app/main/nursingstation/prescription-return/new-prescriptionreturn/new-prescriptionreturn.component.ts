@@ -68,7 +68,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   vDOA: any;
   vSelectedOption: any = 'IP';
   vOPDNo: any;
-  vstoreId: any = this._loggedService.currentUserValue.user.storeId;
+  vstoreId: any = 0//this._loggedService.currentUserValue.user.storeId;
   dateTimeObj: any;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   add: boolean = false;
@@ -250,6 +250,16 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   selectChangeItem(obj: any) {
+
+     if (this.vstoreId == 0) {
+      this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+      this.ItemSubform.get('ItemId').reset();
+      this.ItemSubform.get('ItemId').updateValueAndValidity();
+      return;
+    }
+
 
     if (!obj || typeof obj !== 'object') {
       this.toastr.error('Invalid item selection. Please choose a valid item from the list.', 'Error!');

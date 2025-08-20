@@ -152,6 +152,7 @@ export class NewCanteenRequestComponent implements OnInit {
     }
     else {
       this.registerObj = obj;
+      console.log(obj)
       this.RegNo = obj.regNo;
       this.vAdmissionID = obj.admissionID;
       this.vOpDId = obj.admissionID;
@@ -260,7 +261,6 @@ export class NewCanteenRequestComponent implements OnInit {
     if (!this.CanteenInsertForm.invalid) {
       console.log(this.CanteenInsertForm.value)
       this._CanteenRequestservice.CanteenReqSave(this.CanteenInsertForm.value).subscribe(response => {
-        // this._matDialog.closeAll();
         this.onPrint(response)
         this.onClose();
       });

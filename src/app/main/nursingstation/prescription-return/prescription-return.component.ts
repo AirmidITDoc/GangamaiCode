@@ -9,6 +9,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
 import { PrescriptionReturnService } from './prescription-return.service';
+import Swal from 'sweetalert2';
 @Component({
     selector: 'app-prescription-return',
     templateUrl: './prescription-return.component.html',
@@ -88,23 +89,10 @@ export class PrescriptionReturnComponent implements OnInit {
             { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
              { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-            {
-                heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.print, callback: (data: any) => {
-                            this.viewgetIpprescriptionreturnReportPdf(data);
-                        }
-                    }
-                    // , {
-                    //     action: gridActions.delete, callback: (data: any) => {
-                    //         this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                    //             // this.toastr.success(response.message);
-                    //             this.grid2.bindGridData();
-                    //         });
-                    //     }
-                    // }
-                ]
-            },
+              {
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
 
         ],
         sortField: "RegNo",
@@ -161,14 +149,14 @@ export class PrescriptionReturnComponent implements OnInit {
 
 
     viewgetIpprescriptionreturnReportPdf(response) {
-
+console.log(response)
         setTimeout(() => {
             let param = {
 
                 "searchFields": [
                     {
                         "fieldName": "PresReId",
-                        "fieldValue": "10012",
+                        "fieldValue": String(response.presReId),
                         "opType": "Equals"
                     }
                 ],
@@ -239,7 +227,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
     // isShowDetailTable: boolean = false;
     GetDetails2(data) {
-
+debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
             columnsList: [
@@ -268,4 +256,23 @@ export class PrescriptionReturnComponent implements OnInit {
             return false;
         }
     }
+
+    Prescretruncancle(data) {
+            Swal.fire({
+                title: 'Do you want to cancel the Prescription Return?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Cancel it!"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    this._PrescriptionReturnService.PrescriptionReturnCancle(data.prscId).subscribe((response: any) => {
+                        this.toastr.success(response.message);
+                        this.grid.bindGridData();
+                    });
+                }
+            });
+        }
 }

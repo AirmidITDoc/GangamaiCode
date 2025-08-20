@@ -139,7 +139,7 @@ export class NewPrescriptionComponent implements OnInit {
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
-      this.vRefDocName = obj.refDocName
+      this.vRefDocName = obj.refDoctorName
       this.vRoomName = obj.roomName
       this.vBedName = obj.bedName
       this.vPatientType = obj.patientType

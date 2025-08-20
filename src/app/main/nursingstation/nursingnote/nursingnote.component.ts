@@ -427,6 +427,7 @@ deleteTableRow(event, element) {
       this._NursingStationService.NursingNoteInsert(this.myNursingForm.value).subscribe(response => {
        console.log(response)
         this.onClear();
+         console.log(this.OP_IP_Id)
         this.ViewNusrsingNote(this.OP_IP_Id)
       });
     } else {

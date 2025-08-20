@@ -120,6 +120,9 @@ public deactivateTheStatus(m_data) {
   getPrscretbyId(companyId: any) {
         return this._httpClient1.GetData("CompanyMaster/" + companyId);
     }
+    public PrescriptionReturnCancle(Param){
+  return this._httpClient1.PostData("Prescription/PrescriptionReturnCancel", Param);
+  }
   
 }
 

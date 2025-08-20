@@ -51,4 +51,9 @@ export class CanteenRequestService {
     public deactivateTheStatus(m_data) {
       return this._httpClient1.PostData("PhoneApp", m_data);
     }
+    
+
+      public CanrequestCancle(Param){
+  return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

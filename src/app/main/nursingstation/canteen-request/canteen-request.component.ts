@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CanteenRequestService } from './canteen-request.service';
 import { NewCanteenRequestComponent } from './new-canteen-request/new-canteen-request.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-canteen-request',
@@ -23,23 +24,32 @@ export class CanteenRequestComponent implements OnInit {
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     regNo: any = ""
-
+  fname = "%"
+    lname = "%"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+   @ViewChild('Billstatus') Billstatus!: TemplateRef<any>;
+
     ngAfterViewInit() {
-        // this.gridConfig.columnsList.find(col => col.key === 'admId')!.template = this.Status;
+        this.gridConfig.columnsList.find(col => col.key === 'isBillGenerated')!.template = this.Billstatus;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     allcolumns=[
+          
+              { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+  
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
-            { heading: "Visit/AdmDate", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-            { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+              { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+             { heading: "IPD NO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+            { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:300 },
+           
+            { heading: "WardName | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsBillGenerated", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA' },
+           
             {
                 heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
                 template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -60,6 +70,8 @@ export class CanteenRequestComponent implements OnInit {
             RegNo: '',
             fromDate: [(new Date()).toISOString()],
             enddate: [(new Date()).toISOString()],
+              fName:"",
+            lName:"",
         });
     }
 
@@ -79,11 +91,20 @@ export class CanteenRequestComponent implements OnInit {
         console.log(event)
         if (event == 'RegNo')
             this.myFilterform.get('RegNo').setValue("")
+         if (event == 'fName')
+            this.myFilterform.get('fName').setValue("")
+       
+        if (event == 'lName')
+            this.myFilterform.get('lName').setValue("")
+
         this.onChangeFirst();
     }
 
     onChangeFirst() {
         this.regNo = this.myFilterform.get('RegNo').value
+          this.fname = this.myFilterform.get('fName').value  + "%"
+        this.lname = this.myFilterform.get('lName').value + "%"
+
         this.getfilterdata();
     }
 
@@ -100,7 +121,9 @@ export class CanteenRequestComponent implements OnInit {
             filters: [
                 { fieldName: "FromDate", fieldValue: fromDate1, opType: OperatorComparer.Equals },
                 { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals }
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                    { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -117,7 +140,7 @@ export class CanteenRequestComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "CanteenRequest/CanteenRequestList",
             columnsList: [
-                // { heading: "Code", key: "reqId", sort: true, align: 'left', emptySign: 'NA' },
+                
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 // { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
@@ -165,6 +188,24 @@ export class CanteenRequestComponent implements OnInit {
             return false;
         }
     }
+    Canteencancle(data) {
+            Swal.fire({
+                title: 'Do you want to cancel the Prescription?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Cancel it!"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    this._CanteenRequestService.CanrequestCancle(data.prscId).subscribe((response: any) => {
+                        this.toastr.success(response.message);
+                        this.grid.bindGridData();
+                    });
+                }
+            });
+        }
 }
 
 

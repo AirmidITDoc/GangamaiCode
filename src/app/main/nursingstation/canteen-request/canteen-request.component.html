@@ -19,12 +19,26 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+            <ng-template #Billstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.isBillGenerated =='1'" matTooltip="Bill Generated">account_box
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+
+
             <ng-template #actionButtonTemplate let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
 
                     <button mat-icon-button matTooltip="Print Canteen Request" (click)="onPrint(element)">
                         <mat-icon>print</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="Canteencancle(element)" matTooltip="Canteen Request Cancel">
+                        <mat-icon title="Cancel Request">cancel</mat-icon>
                     </button>
 
                 </div>
@@ -35,19 +49,41 @@
                 :ShowButtons="false">
                 <ng-container filters>
                     <form [formGroup]="myFilterform" fxLayout="column">
-                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>UHID</mat-label>
-                        <input matInput placeholder="Search UHID" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
-                        [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                            (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterform"
+                                formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="fName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('fName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="lName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
                     </form>
                 </ng-container>
             </airmid-table>

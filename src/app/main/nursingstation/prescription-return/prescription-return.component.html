@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" 
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
@@ -8,7 +8,7 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon> -->
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-              Prescription Return List
+                Prescription Return List
             </span>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
@@ -19,79 +19,76 @@
     </mat-toolbar>
 
     <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                     <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button (click)="viewLabRequestPdf(element)" matTooltip="Lab Request Print">
-                    <mat-icon title="Request Print">print</mat-icon>
-                </button>
-                <button mat-icon-button (click)="Labrequestcancle(element)" matTooltip="Lab Request  Cancel">
-                    <mat-icon title="Cancel Lab Request">cancel</mat-icon>
-                </button>
+                    <button mat-icon-button (click)="viewgetIpprescriptionreturnReportPdf(element)" matTooltip="Prescription Retrun Print">
+                        <mat-icon title="Request Print">print</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="Prescretruncancle(element)" matTooltip="Prescription RetrunCancel">
+                        <mat-icon title="Cancel Prescription Retrun">cancel</mat-icon>
+                    </button>
 
-            </div>
-        </ng-template>
-                    <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails2($event)" #grid>
-                     
-                         <ng-container filters>
-                            <form [formGroup]="_PrescriptionReturnService.mySearchForm" fxLayout="column">
-                                <airmid-datepicker [formGroup]="_PrescriptionReturnService.mySearchForm" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate"
-                                (dateChange)="getfilterdata1()">
-                            </airmid-datepicker>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>UHID</mat-label>
-                                <input matInput placeholder="Search UHID" autocomplete="off"  (keypress)="keyPressAlphanumeric($event)"
-                                     [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="RegNo"
-                                    (input)="onChangeFirst1()"/>
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="Clearfilter1('RegNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                              <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput placeholder="Search First Name" autocomplete="off"
-                                        [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="fName"
-                                        (input)="onChangeFirst1()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="Clearfilter1('fName')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="lName"
-                                        (input)="onChangeFirst1()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="Clearfilter1('lName')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                
-                            </form>
-
-                        </ng-container>
-                    </airmid-table>
                 </div>
-                
-                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-                    *ngIf="isShowDetailTable">
-                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
-                    </airmid-table>
-                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails2($event)" #grid>
 
-            </div>
+                <ng-container filters>
+                    <form [formGroup]="_PrescriptionReturnService.mySearchForm" fxLayout="column">
+                        <airmid-datepicker [formGroup]="_PrescriptionReturnService.mySearchForm" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            (dateChange)="getfilterdata1()">
+                        </airmid-datepicker>
 
-<!--         
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off"
+                                (keypress)="keyPressAlphanumeric($event)"
+                                [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="RegNo"
+                                (input)="onChangeFirst1()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="fName"
+                                (input)="onChangeFirst1()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('fName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off"
+                                [formGroup]="_PrescriptionReturnService.mySearchForm" formControlName="lName"
+                                (input)="onChangeFirst1()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter1('lName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+                    </form>
+
+                </ng-container>
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+            </airmid-table>
+        </div>
+
+    </div>
+
+    <!--         
                  <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
                     <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">

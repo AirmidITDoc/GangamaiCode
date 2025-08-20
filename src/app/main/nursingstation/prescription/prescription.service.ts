@@ -172,6 +172,6 @@ public getDoseMasterById(Id) {
   }
 
   public PrescriptionCancle(Param){
-  return this._httpClient1.PostData("Report/ViewReport", Param);
+  return this._httpClient1.PostData("Prescription/PrescriptionCancel", Param);
   }
 }

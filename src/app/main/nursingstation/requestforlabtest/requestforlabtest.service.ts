@@ -143,7 +143,7 @@ export class RequestforlabtestService {
     }
 
    public labreqCancle(employee) {
-    return this._httpClient1.PostData("IPPrescription/LabRequestCancle", employee);
+    return this._httpClient1.PostData("IPPrescription/LabRequestCancel", employee);
     }
 }
 
