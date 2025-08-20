@@ -63,7 +63,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AnesthType", key: "AnesthType", sort: true, align: 'left', emptySign: 'NA', width: 130},
-        { heading: "Instruction", key: "Instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "Instruction", key: "instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
 
 
         {
@@ -89,7 +89,7 @@ export class OTReservationComponent implements OnInit {
           
       ]
       gridConfig: gridModel = {
-          apiUrl: "OTReservation/OTBookinglist",
+          apiUrl: "OTReservation/OTReservationlist",
           columnsList: this.allcolumns,
           sortField: "OtreservationId",
           sortOrder: 0,
@@ -149,7 +149,7 @@ export class OTReservationComponent implements OnInit {
                });
            }
            OnPrint(Param) {
-          this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+          this.commonService.Onprint("otreservationId", Param.otreservationId, "RequestName");
       } 
      
        onChangeFirst() {
@@ -163,7 +163,7 @@ export class OTReservationComponent implements OnInit {
      getfilterdata() {
         debugger
         this.gridConfig = {
-            apiUrl: "OTReservation/OTBookinglist",
+            apiUrl: "OTReservation/OTReservationlist",
             columnsList: this.allcolumns,
             sortField: "OtreservationId",
             sortOrder: 0,

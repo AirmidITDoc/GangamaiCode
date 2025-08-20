@@ -13,8 +13,45 @@
 
         </div>
     </div>
-    <div class="info-badge-top p-12 border-bottom">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                <!-- New Admissions -->
+                <div class="dashboard-card admissions">
+                    <div class="card-label">New Admissions</div>
+                    <div class="card-value">{{VAdmissioncount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+                <!-- Admissions New/Follow-up -->
+                <div class="dashboard-card admissions-split">
+                    <div class="card-label">Total Admissions</div>
+                    <div class="card-value">
+                        <div>New {{VNewcount}}</div>
+                        <div>Follow-up {{VFollowupcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                <!-- Bills -->
+                <div class="dashboard-card bills">
+                    <div class="card-label">Total BillGenerated</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+                <!-- today discharge -->
+                <div class="dashboard-card discharge">
+                    <div class="card-label">Today's Discharges</div>
+                    <div class="card-value">{{vIsDischarg}}</div>
+                    <mat-icon class="card-icon">exit_to_app</mat-icon>
+                </div>
+                <!-- op to ip convert -->
+                <div class="dashboard-card opipconvert">
+                    <div class="card-label">OPTOIPConvert</div>
+                    <div class="card-value">{{VOPtoIPcount}}</div>
+                    <mat-icon class="card-icon">assignment_turned_in</mat-icon>
+                </div>
+            </div>
+        <!-- <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
             <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                 <span class="blue-600-fg">New Admissions : {{VNewcount}}</span>
@@ -39,7 +76,8 @@
                 <span class="red-600-fg">OPTOIPConvert :
                     {{VOPtoIPcount}}</span>
             </div>
-        </div>
+        </div> -->
+    </div>
     </div>
 
     <ng-template #actionsTemplate let-element>

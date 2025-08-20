@@ -59,7 +59,6 @@ export class IPBillingComponent implements OnInit {
         'ServiceName',
         'Price',
         'reqDate',
-        'reqTime',
         'billingUser',
         'Action'
     ];
@@ -407,12 +406,12 @@ export class IPBillingComponent implements OnInit {
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [this.opD_IPD_Id, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [item?.serviceId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            price: [item?.price, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionPercentage: [item?.ConcessionPercentage, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmount: [item?.DiscAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             doctorId: [item?.doctorId ?? 0],
             docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -677,7 +676,7 @@ export class IPBillingComponent implements OnInit {
                 this.PackageDatasource.data.forEach(item => {
                     this.PackageDetArray.push(this.createPacakgeForm(item));
                 });
-            }
+            } 
             console.log('valida service form', this.Serviceform.value)
             this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
                 this.getChargesList();
@@ -701,7 +700,8 @@ export class IPBillingComponent implements OnInit {
         this.interimArray = [];
         this.isDoctor = false;
         this.onClearServiceAddList();
-        const serviceIdElement = document.querySelector(`[name='serviceId']`) as HTMLElement;
+         this.PackageDetArray.clear();
+        const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
         if (serviceIdElement) {
             serviceIdElement.focus();
         }
@@ -716,7 +716,7 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get('doctorId').reset();
         this.Serviceform.get('concessionPercentage').reset();
         this.Serviceform.get('concessionAmount').reset();
-        this.Serviceform.get('netAmount').reset();
+        this.Serviceform.get('netAmount').reset(); 
     }
     deletecharges(contact) {
         if (contact.isPathTestCompleted == 1) {
@@ -1536,21 +1536,28 @@ export class IPBillingComponent implements OnInit {
         this.getChargesList()
     }
     OnDateChange() {
-        // if (this.selectedAdvanceObj.AdmDateTime) {
-        //   const day = +this.selectedAdvanceObj.AdmDateTime.substring(0, 2);
-        //   const month = +this.selectedAdvanceObj.AdmDateTime.substring(3, 5);
-        //   const year = +this.selectedAdvanceObj.AdmDateTime.substring(6, 10);
+        debugger;
 
-        //  // this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-        // }
-        //const serviceDate = this.datePipe.transform(this.Serviceform.get('Date').value,"dd/MM/yyyy") || 0;
-        // const AdmissionDate = this.datePipe.transform(this.selectedAdvanceObj.AdmDateTime,"yyyy-MM-dd 00:00:00.000") || 0;
-        // if(serviceDate > AdmissionDate){
-        //   Swal.fire('should not chnage');
-        // }
-        // else{
-        //   Swal.fire('ok');
-        // }
+    // Get values as strings in dd/MM/yyyy format
+const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
+const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
+
+// Check that both dates are available
+if (serviceDateStr && admissionDateStr) {
+  // Convert to Date objects
+  const [sDay, sMonth, sYear] = serviceDateStr.split('/').map(Number);
+  const [aDay, aMonth, aYear] = admissionDateStr.split('/').map(Number);
+
+  const serviceDate = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+  const admissionDate = new Date(aYear, aMonth - 1, aDay);
+
+  // Check if service date is earlier than admission date
+  if (serviceDate < admissionDate) {
+    Swal.fire('The Charge Date should not be less than the Admission Date.');
+    this.Serviceform.get('chargesDate').setValue(new Date())
+  } 
+}
+
 
     }
     getDateTime(dateTimeObj) {
@@ -1716,7 +1723,7 @@ export class IPBillingComponent implements OnInit {
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update TariffName'
+                    FormName: 'Update Tariff Name'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -1731,7 +1738,7 @@ export class IPBillingComponent implements OnInit {
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update ClassName'
+                    FormName: 'Update Class Name'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

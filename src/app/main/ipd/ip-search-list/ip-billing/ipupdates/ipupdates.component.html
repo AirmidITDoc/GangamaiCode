@@ -49,33 +49,34 @@
                                 
                                 </div>
 
-                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
-
-                                <airmid-textbox label="Class Name" formControlName="OldClassId"
-                                    [formGroup]="IpUpdateForm" [validations]="getValidationMessages().OldClassId"
-                                    [type]="'text'" [readonly]="true" fxFlex
-                                    [(ngModel)]="data?.PatientHeaderObj.className" [readonly]="true">
-                                </airmid-textbox>
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px"> 
 
                                 <airmid-textbox label="Tariff Name" formControlName="OldTariffId"
                                     [formGroup]="IpUpdateForm" [validations]="getValidationMessages().OldTariffId"
                                     [type]="'text'" [readonly]="true" fxFlex
                                     [(ngModel)]="data?.PatientHeaderObj.tariffName" [readonly]="true">
                                 </airmid-textbox>
+
+                                 <airmid-textbox label="Class Name" formControlName="OldClassId"
+                                    [formGroup]="IpUpdateForm" [validations]="getValidationMessages().OldClassId"
+                                    [type]="'text'" [readonly]="true" fxFlex
+                                    [(ngModel)]="data?.PatientHeaderObj.className" [readonly]="true">
+                                </airmid-textbox>
                             </div>
-                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
-                                <div fxFlex>
-                                    <airmid-dropdown label="New Class Name" formControlName="NewclassId"
-                                        [formGroup]="IpUpdateForm" aria-placeholder="Select New Class Name"
-                                        [validations]="getValidationMessages().NewclassId"
-                                        [mode]="autocompleteModeClass"></airmid-dropdown>
-                                </div>
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px"> 
 
                                 <div *ngIf="data?.FormName == 'Update TariffName'" fxFlex>
                                     <airmid-dropdown label="New Tariff Name" formControlName="NewTariffId"
                                         [formGroup]="IpUpdateForm" aria-placeholder="Select New Tariff Name"
                                         [validations]="getValidationMessages().NewTariffId"
                                         [mode]="autocompleteModetariff"></airmid-dropdown>
+                                </div>
+
+                                 <div fxFlex>
+                                    <airmid-dropdown label="New Class Name" formControlName="NewclassId"
+                                        [formGroup]="IpUpdateForm" aria-placeholder="Select New Class Name"
+                                        [validations]="getValidationMessages().NewclassId"
+                                        [mode]="autocompleteModeClass"></airmid-dropdown>
                                 </div>
 
                             </div>

@@ -140,6 +140,12 @@
                                             [value]="registerObj.PolicyLimit || ''" [formGroup]="companyFormGroup"
                                             [maxLength]="15"></airmid-textbox>
                                     </div>
+
+                                    <div class="input-add-button" fxFlex="10%" fxLayoutAlign="center center">
+                                        <button mat-raised-button color="primary">
+                                            Save
+                                        </button>
+                                    </div>
                                 </div>
                             </mat-card>
                         </div>
@@ -182,16 +188,19 @@
 
                                     <!-- Add Button -->
                                     <div class="input-add-button" fxFlex="10%" fxLayoutAlign="center center">
-                                        <button mat-raised-button color="primary" (click)="onAdd()">
+                                        <!-- <button mat-raised-button color="primary" (click)="onAdd()">
                                             <mat-icon>add</mat-icon>
                                             Add
+                                        </button> -->
+                                        <button mat-raised-button color="primary">
+                                            Save
                                         </button>
                                     </div>
                                 </div>
                             </form>
 
                             <!-- Table Section -->
-                            <div class="modal-card-container table-container mt-16">
+                            <!-- <div class="modal-card-container table-container mt-16">
                                 <mat-card>
                                     <mat-table class="h-280" matSort [dataSource]="dsCompanyList"
                                         [@animateStagger]="{value:'50'}">
@@ -253,12 +262,19 @@
                                             [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                     </mat-table>
                                 </mat-card>
+                            </div> -->
+
+                            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <airmid-table [gridConfig]="gridConfig" #grid [ShowFilter]="false"
+                                    [ShowButtons]="false">
+                                </airmid-table>
                             </div>
 
                         </mat-card>
                     </div>
 
-                    <div class="detail-container" style="margin: 10px 0 10px 0;">
+                    <!-- <div class="detail-container" style="margin: 10px 0 10px 0;">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                             <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -267,18 +283,18 @@
                                 </div>
                             </div>
                         </mat-card>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
+    <!-- <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="Save()">Save</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

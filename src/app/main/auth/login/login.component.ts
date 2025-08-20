@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
     captcha: string;
     captchaToken: string;
     obj: any;
+    autocompleteModeUnitName: string = "Hospital";
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -70,6 +71,7 @@ export class LoginComponent implements OnInit {
             Username: ["", [Validators.required]],
             Password: ["", Validators.required],
             CaptchaCode: ["", Validators.required],
+            unitId:[0]
         });
         this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
         this.loadCaptcha();
@@ -128,4 +130,11 @@ export class LoginComponent implements OnInit {
             }
         );
     }
+
+
+      getValidationMessages() {
+    return {
+      unitId:  { name: "required", Message: "Unit Name is required" }, 
+    };
+  }
 }
