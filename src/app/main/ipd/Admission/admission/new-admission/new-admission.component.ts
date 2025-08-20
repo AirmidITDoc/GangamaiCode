@@ -184,6 +184,8 @@ export class NewAdmissionComponent implements OnInit {
 
       console.log(this.data)
       setTimeout(() => {
+        this.searchFormGroup.get('regRadio')?.setValue('registrered');
+        this.onChangeReg({ value: 'registrered' });
         this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
               this.value=response.dateofBirth
@@ -985,7 +987,6 @@ export class NewAdmissionComponent implements OnInit {
 
   }
 
-
    public dsIPConvertPatientList = new MatTableDataSource<VisitMaster1>();
     @ViewChild('IPConvertTable') IPConvertTable!: TemplateRef<any>;
     pconverListCount = 0
@@ -1025,7 +1026,6 @@ export class NewAdmissionComponent implements OnInit {
         //   console.log(this.dsIPConvertPatientList.data)
         // });
     }
-
 
     public displayedColumns =
         ['opdNo', 'vistDateTime', 'patientName', 'address', 'mobileNo', 'departmentName'];
@@ -1101,6 +1101,79 @@ export class NewAdmissionComponent implements OnInit {
 
             }
         });
+    }
+    
+    debounceTimers: { [key: string]: any } = {};
+     handleInputChange(changedField: string): void {
+        // Get all current field values
+        const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
+        const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
+        const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
+
+        // If all fields are empty, clear everything
+        if (!firstName && !lastName && !mobileNo) {
+            this.resetFilteredOptions();
+            return;
+        }
+
+        // Count how many fields are filled
+        const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+        // If only one field is filled, and it's FirstName or MobileNo, call API
+        if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
+            const keyword = firstName || mobileNo;
+            this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                this.prevResults = results || [];
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            });
+            return;
+        }
+
+        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'LastName') {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            return;
+        }
+
+        // If more than one field is filled, filter from prevResults
+        if (this.prevResults.length > 0) {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+        } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
+            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+            const keyword = this.personalFormGroup.get(changedField).value?.trim();
+            if (keyword) {
+                this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                    this.prevResults = results || [];
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                });
+            }
+        } else {
+            // If changedField is LastName and prevResults is empty, do nothing
+            this.filteredOptions = [];
+        }
+    }
+    // Helper function to filter results by all non-empty fields
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+        const { firstName, lastName, mobileNo } = fields;
+        return results.filter(item => {
+            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+        });
+    }
+    handleInputChangeDebounced(changedField: string): void {
+        // Clear any existing timer for this field
+        if (this.debounceTimers[changedField]) {
+            clearTimeout(this.debounceTimers[changedField]);
+        }
+        // Set a new timer
+        this.debounceTimers[changedField] = setTimeout(() => {
+            this.handleInputChange(changedField);
+        }, 300); // 300ms debounce
+    }
+    onSelectPatient(row: any) {
+        this.getSelectedObj(row);
+        this.resetFilteredOptions();
     }
 }
 

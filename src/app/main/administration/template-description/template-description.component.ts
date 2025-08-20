@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { gridModel } from 'app/core/models/gridRequest';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,7 @@ export class TemplateDescriptionComponent implements OnInit {
         gridConfig: gridModel = {
             apiUrl: "Administration/BrowseReportTemplateConfigList",
             columnsList: [
-                { heading: "TemplateId", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
                 {
                     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -43,7 +43,7 @@ export class TemplateDescriptionComponent implements OnInit {
             sortField: "TemplateId",
             sortOrder: 0,
             filters: [
-                
+                { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains }                
             ]
         }
     
