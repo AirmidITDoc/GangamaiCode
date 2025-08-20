@@ -21,19 +21,7 @@ export class OtReservationService {
  
      createReservationForm(): FormGroup {
          return this._formBuilder.group({
-            //  cityId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            //    opIpType:  ["OP"],
-            //  cityName: ["",
-            //      [
-            //          Validators.required,
-            //          Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            //          this._FormvalidationserviceService.allowEmptyStringValidator()
-            //      ] 
-            //  ],
-            //  stateId: [0, 
-            //      [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
-            //  ],
-            //  isActive:[true,[Validators.required]]: 
+             
             otreservationId: [0],
             reservationDate:[new Date(),[Validators.required]],
             reservationTime: [new Date(),[Validators.required]],
@@ -58,6 +46,7 @@ export class OtReservationService {
              isCancelled: [false],
             isCancelledBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
        isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+       departmentId:[0]
          });
      }
      createSearchForm(): FormGroup {
