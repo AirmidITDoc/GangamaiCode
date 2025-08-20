@@ -5,12 +5,12 @@
         style="color: white;">account_box
       </mat-icon>
       <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
-    </div>
-    <!-- <div class="close-icon">
-      <button mat-icon-button tabIndex="-1" (click)="openServiceTable()" aria-label="Close dialog">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div> -->
+    </div> 
+    <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
   </mat-toolbar>
  
    <div class="service-table1 p-12" fxFlex="100%" >
@@ -30,18 +30,11 @@
       </ng-container>
 
       <ng-container matColumnDef="reqDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">ReqDate</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-          <span>{{ contact.reqDate }}</span>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ReqDateTime</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+          <span>{{ contact.reqDate }}-{{ contact.reqTime }}</span>
         </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="reqTime">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">ReqTime</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
-          <span>{{ contact.reqTime }}</span>
-        </mat-cell>
-      </ng-container>
+      </ng-container>  
 
       <ng-container matColumnDef="billingUser">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >User Name</mat-header-cell>
@@ -56,6 +49,10 @@
           <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)"
           *ngIf="!contact.isStatus">
             <mat-icon color="warn">add</mat-icon>
+          </button>
+           <button mat-icon-button matTooltip="Cancel Service"  
+          *ngIf="!contact.isStatus">
+            <mat-icon color="warn">close</mat-icon>
           </button>
         </mat-cell>
       </ng-container>

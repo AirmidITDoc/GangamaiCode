@@ -59,7 +59,6 @@ export class IPBillingComponent implements OnInit {
         'ServiceName',
         'Price',
         'reqDate',
-        'reqTime',
         'billingUser',
         'Action'
     ];
@@ -407,12 +406,12 @@ export class IPBillingComponent implements OnInit {
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [this.opD_IPD_Id, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [item?.serviceId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            price: [item?.price, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionPercentage: [item?.ConcessionPercentage, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmount: [item?.DiscAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             doctorId: [item?.doctorId ?? 0],
             docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -677,7 +676,7 @@ export class IPBillingComponent implements OnInit {
                 this.PackageDatasource.data.forEach(item => {
                     this.PackageDetArray.push(this.createPacakgeForm(item));
                 });
-            }
+            } 
             console.log('valida service form', this.Serviceform.value)
             this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
                 this.getChargesList();
@@ -701,7 +700,8 @@ export class IPBillingComponent implements OnInit {
         this.interimArray = [];
         this.isDoctor = false;
         this.onClearServiceAddList();
-        const serviceIdElement = document.querySelector(`[name='serviceId']`) as HTMLElement;
+         this.PackageDetArray.clear();
+        const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
         if (serviceIdElement) {
             serviceIdElement.focus();
         }
@@ -716,7 +716,7 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get('doctorId').reset();
         this.Serviceform.get('concessionPercentage').reset();
         this.Serviceform.get('concessionAmount').reset();
-        this.Serviceform.get('netAmount').reset();
+        this.Serviceform.get('netAmount').reset(); 
     }
     deletecharges(contact) {
         if (contact.isPathTestCompleted == 1) {
@@ -1716,7 +1716,7 @@ export class IPBillingComponent implements OnInit {
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update TariffName'
+                    FormName: 'Update Tariff Name'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -1731,7 +1731,7 @@ export class IPBillingComponent implements OnInit {
                 height: "40%",
                 data: {
                     PatientHeaderObj: this.selectedAdvanceObj,
-                    FormName: 'Update ClassName'
+                    FormName: 'Update Class Name'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
