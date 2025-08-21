@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog'; 
-import { fuseAnimations } from '@fuse/animations'; 
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
@@ -13,6 +13,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { FormGroup } from '@angular/forms';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-phar-advance',
@@ -26,7 +27,7 @@ export class PharAdvanceComponent implements OnInit {
   dateTimeObj: any;
   sIsLoading: string = '';
   isLoading = true;
-  myFilterform: FormGroup; 
+  myFilterform: FormGroup;
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
   @ViewChild('grid1', { static: false }) grid1: AirmidTableComponent;
 
@@ -45,7 +46,7 @@ export class PharAdvanceComponent implements OnInit {
   l_name1: any = ""
   storeId1: any = this._loggedService.currentUserValue.user.storeId
 
-    allfilters1 = [
+  allfilters1 = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -54,36 +55,38 @@ export class PharAdvanceComponent implements OnInit {
     { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
   ]
-    allfiltersRefund = [
+  allfiltersRefund = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "StoreId", fieldValue: String(this.storeId1), opType: OperatorComparer.Equals }
-  ] 
+  ]
 
-    allColumns1 = [
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA',width: 180, type: 9 },
+  allColumns1 = [
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180 },
     { heading: "Advance.No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 260 },
     { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CashPay Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "ChequePay Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CardPay Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right",width: 80, type: gridColumnTypes.action, actions: [
+      heading: "Action", key: "action", align: "right", width: 80, type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.print, callback: (data: any) => { 
-          }
+          action: gridActions.print, callback: (data: any) => {
+              this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IPPharmaAdvanceReport");
+            }
         }]
     }
-  ] 
-    allColumnsRefund = [
-    { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA',width: 160, type: 9 },
+  ]
+  allColumnsRefund = [
+    { heading: "Refund Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
     { heading: "Refund No", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 260 },
@@ -94,22 +97,23 @@ export class PharAdvanceComponent implements OnInit {
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right",width: 80, type: gridColumnTypes.action, actions: [
+      heading: "Action", key: "action", align: "right", width: 80, type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.print, callback: (data: any) => { 
-          }
+          action: gridActions.print, callback: (data: any) => {
+              this.commonService.Onprint("RefundId", data.refundId, "IPPharmaAdvanceReturnReport");
+            }
         }]
     }
-  ] 
+  ]
 
-    gridConfig: gridModel = {
+  gridConfig: gridModel = {
     apiUrl: "Sales/BrowseIPPharAdvanceReceiptList",
     columnsList: this.allColumns1,
     sortField: "StoreId",
     sortOrder: 0,
     filters: this.allfilters1
   }
-    gridConfig1: gridModel = {
+  gridConfig1: gridModel = {
     apiUrl: "Sales/PhAdvRefundReceiptList",
     columnsList: this.allColumnsRefund,
     sortField: "StoreId",
@@ -120,19 +124,20 @@ export class PharAdvanceComponent implements OnInit {
   constructor(
     public _PharAdvanceService: PharAdvanceService,
     private _loggedService: AuthenticationService,
-    public _matDialog: MatDialog, 
+    public _matDialog: MatDialog,
     public datePipe: DatePipe,
     public _WhatsAppEmailService: WhatsAppEmailService,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
     this.myFilterform = this._PharAdvanceService.CreaterSearchForm();
-  } 
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } 
-  onChangeGrid() { 
+  }
+  onChangeGrid() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
@@ -141,7 +146,7 @@ export class PharAdvanceComponent implements OnInit {
     this.PBillNo = this.myFilterform.get('AdvanceNo').value || "0"
     // this.storeId = this.myFilterform.get('IsInterimOrFinal').value
     this.getfilterGridAdv();
-  } 
+  }
   getfilterGridAdv() {
     this.gridConfig = {
       apiUrl: "Sales/BrowseIPPharAdvanceReceiptList",
@@ -157,7 +162,7 @@ export class PharAdvanceComponent implements OnInit {
         { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
       ]
-    } 
+    }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
@@ -173,15 +178,15 @@ export class PharAdvanceComponent implements OnInit {
     if (event == 'AdvanceNo')
       this.myFilterform.get('AdvanceNo').setValue("")
     this.onChangeGrid();
-  } 
-  onChangeGrid1() { 
+  }
+  onChangeGrid1() {
     this.fromDate1 = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate1 = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.f_name1 = this.myFilterform.get('FirstName').value + "%"
     this.l_name1 = this.myFilterform.get('LastName').value + "%"
     this.regNo1 = this.myFilterform.get('RegNo').value || "0"
     this.getfilterGridRefund();
-  } 
+  }
   getfilterGridRefund() {
     this.gridConfig1 = {
       apiUrl: "Sales/PhAdvRefundReceiptList",
@@ -200,7 +205,7 @@ export class PharAdvanceComponent implements OnInit {
     console.log(this.gridConfig1)
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
-  } 
+  }
   ClearfilterGrid1(event) {
     if (event == 'FirstName')
       this.myFilterform.get('FirstName').setValue("")
@@ -230,7 +235,7 @@ export class PharAdvanceComponent implements OnInit {
   }
   newAdvanceRef() {
     const dialogRef = this._matDialog.open(NewIPRefundAdvanceComponent,
-      {  
+      {
         maxWidth: "95vw",
         maxHeight: '95vh',
         height: '90%',
@@ -241,8 +246,8 @@ export class PharAdvanceComponent implements OnInit {
       // this.getIPAdvanceRefundList();
       this.grid1.bindGridData();
     });
-  } 
-  viewgetIPAdvanceReportPdf(contact) { 
+  }
+  viewgetIPAdvanceReportPdf(contact) {
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
 
@@ -266,8 +271,8 @@ export class PharAdvanceComponent implements OnInit {
 
     }, 100)
 
-  } 
-  viewgetRefundofAdvanceReportPdf(contact) { 
+  }
+  viewgetRefundofAdvanceReportPdf(contact) {
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
 
@@ -291,7 +296,7 @@ export class PharAdvanceComponent implements OnInit {
 
     }, 100)
 
-  } 
+  }
   currentDate = new Date();
   getWhatsappsAdvance(el, vmono) {
 
@@ -326,7 +331,7 @@ export class PharAdvanceComponent implements OnInit {
     }
   }
 }
-export class IPAdvanceList { 
+export class IPAdvanceList {
   Date: any;
   AdvanceNo: number;
   RegNo: number;
@@ -353,7 +358,7 @@ export class IPAdvanceList {
     }
   }
 }
-export class IPAdvanceRefList { 
+export class IPAdvanceRefList {
   RefundDate: any;
   RefundNo: any;
   RegNo: any;

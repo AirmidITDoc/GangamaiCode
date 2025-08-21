@@ -15,6 +15,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-new-advance',
@@ -28,9 +29,9 @@ export class NewAdvanceComponent implements OnInit {
   dateTimeObj: any;
   screenFromString = 'Common-form';
   vRegNo: any;
-  vPatienName: any; 
+  vPatienName: any;
   vadvanceAmount: any;
-  vRegId: any; 
+  vRegId: any;
   regObj: any;
   dsIpItemList = new MatTableDataSource<IpItemList>();
   insertForm: FormGroup
@@ -38,7 +39,7 @@ export class NewAdvanceComponent implements OnInit {
 
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
-    AllColumns = [
+  AllColumns = [
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -53,7 +54,11 @@ export class NewAdvanceComponent implements OnInit {
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        { action: gridActions.print, callback: (data: any) => { } }]
+        {
+          action: gridActions.print, callback: (data: any) => {
+            this.commonService.Onprint("AdvanceDetailID", data.advanceDetailId, "IPPharmaAdvanceReport");
+          }
+        }]
     }
   ]
   gridConfig: gridModel = {
@@ -65,7 +70,7 @@ export class NewAdvanceComponent implements OnInit {
       { fieldName: "AdmissionID", fieldValue: "0", opType: OperatorComparer.Equals }, //String(this.vAdmissionID)
     ],
     row: 25
-  } 
+  }
 
   constructor(
     public _PharAdvanceService: PharAdvanceService,
@@ -77,13 +82,14 @@ export class NewAdvanceComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NewAdvanceComponent>,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
     this.MainForm = this._PharAdvanceService.NewAdvanceForm
     this.MainForm.markAllAsTouched()
     this.insertForm = this.IPAdvacneFormInsert();
-  } 
+  }
   IPAdvacneFormInsert(): FormGroup {
     return this.formBuilder.group({
 
@@ -116,7 +122,7 @@ export class NewAdvanceComponent implements OnInit {
         time: '',
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        transactionId: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionId: [8, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -137,19 +143,19 @@ export class NewAdvanceComponent implements OnInit {
       paymentPharmacy: ''
 
     });
-  } 
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } 
+  }
   getSelectedObjIP(obj) {
     if ((obj.regID ?? 0) > 0) {
       this.regObj = obj
       console.log("Admitted patient:", this.regObj)
-      this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName 
+      this.vPatienName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.getAdvanceList(obj);
       this.getListdata(obj);
     }
-  }  
+  }
   getListdata(obj) {
     this.gridConfig = {
       apiUrl: "Sales/PharAdvanceList",
@@ -162,7 +168,7 @@ export class NewAdvanceComponent implements OnInit {
     }
     this.grid.gridConfig = { ...this.gridConfig };
     this.grid.bindGridData();
-  } 
+  }
   vAdvanceId: any = 0;
   vAdvanceDetailID: any = 0;
   getAdvanceList(obj) {
@@ -171,24 +177,24 @@ export class NewAdvanceComponent implements OnInit {
       "rows": 10,
       "sortField": "AdmissionID",
       "sortOrder": 0,
-      "filters": [ {  "fieldName": "AdmissionID",  "fieldValue": String(obj.admissionID), "opType": "Equals" } ],
+      "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(obj.admissionID), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": []
-    } 
-    this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => { 
+    }
+    this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
       this.dsIpItemList.data = Visit.data as IpItemList[];
       this.vAdvanceId = this.dsIpItemList.data[0]?.advanceId || 0;
       this.vAdvanceDetailID = this.dsIpItemList.data[0]?.advanceDetailId || 0;
       console.log(this.dsIpItemList.data)
     });
-  } 
+  }
   onSave() {
     if (!this.MainForm.get('RegID')?.value && !this.vRegId) {
       this.toastr.warning('Please Select Patient', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
+    }
     this.insertForm?.get("pharmacyAdvance.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
@@ -215,47 +221,47 @@ export class NewAdvanceComponent implements OnInit {
         OPD_IPD_Id: this.regObj.ipdNo,
         Age: this.regObj.age,
         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
-        AdvanceDetailId: 0, 
-      }; 
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-          {
-            maxWidth: "80vw",
-            height: '650px',
-            width: '80%',
-            data: {
-              vPatientHeaderObj: PatientHeaderObj,
-              FromName: "IP-Pharma-Advance",
-              advanceObj: PatientHeaderObj,
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result && result.submitDataPay) { 
-             if (!this.vAdvanceId){
-             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
-            this.insertForm.removeControl('pharmacyHeader'); 
+        AdvanceDetailId: 0,
+      };
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "IP-Pharma-Advance",
+            advanceObj: PatientHeaderObj,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.submitDataPay) {
+          if (!this.vAdvanceId) {
+            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+            this.insertForm.removeControl('pharmacyHeader');
             console.log(this.insertForm?.value);
             this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
             });
-             }else{
+          } else {
             this.insertForm.removeControl('pharmacyAdvance');
             this.insertForm?.get("pharmacyHeader.advanceId")?.setValue(this.vAdvanceId || 0);
-           this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-           this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-           this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert); 
+            this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+            this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
+            this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
             console.log(this.insertForm?.value);
             this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => {
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
             });
-             } 
           }
-        }); 
+        }
+      });
     } else {
-      let invalidFields: string[] = []; 
+      let invalidFields: string[] = [];
       if (this._PharAdvanceService.CreaterNewAdvanceForm().invalid) {
         for (const controlName in this._PharAdvanceService.CreaterNewAdvanceForm().controls) {
           if (this._PharAdvanceService.CreaterNewAdvanceForm().controls[controlName].invalid) {
@@ -285,8 +291,8 @@ export class NewAdvanceComponent implements OnInit {
           );
         });
       }
-    } 
-  }  
+    }
+  }
   OnReset() {
     this.MainForm.reset();
     this.MainForm.get('Op_ip_id').setValue('1');
@@ -294,11 +300,12 @@ export class NewAdvanceComponent implements OnInit {
     this.dsIpItemList.data = [];
     this.vAdvanceId = 0;
     this.vAdvanceDetailID = 0;
-    this._matDialog.closeAll(); 
-  } 
-  viewgetIPAdvanceReportPdf(contact) { 
+    this._matDialog.closeAll();
   }
-  
+  viewgetIPAdvanceReportPdf(contact) {
+    this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "IPPharmaAdvanceReport");
+  }
+
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
