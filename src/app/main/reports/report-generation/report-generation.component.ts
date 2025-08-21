@@ -479,4 +479,167 @@ export class ReportGenerationComponent implements OnInit {
 
         }, 100);
     }
+    GetExcel() {
+        setTimeout(() => {
+            let paramFilterList = [
+                {
+                "fieldName": "FromDate",
+                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"yyyy-MM-dd"),//"10-01-2024",
+                "opType": OperatorComparer.Equals
+                },
+                {
+                "fieldName": "ToDate",
+                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"yyyy-MM-dd"),//"12-12-2024",
+                "opType": OperatorComparer.Equals
+                }
+            ];
+            if(this.flagUserSelected)
+                paramFilterList.push({
+                    "fieldName": "UserId",
+                    "fieldValue": this.UserId.toString() || "0",
+                    "opType": OperatorComparer.Equals         
+                });
+            if(this.flagDoctorSelected)
+                paramFilterList.push({
+                    "fieldName": "DoctorId",
+                    "fieldValue": (this.DoctorId || "0").toString(),
+                    "opType": OperatorComparer.Equals        
+                });  
+            if(this.flagDepartmentSelected)
+                paramFilterList.push({
+                    "fieldName": "DepartmentId",
+                    "fieldValue": this.DepartmentId.toString() || "0",
+                    "opType": OperatorComparer.Equals          
+                });      
+            if(this.flagServiceSelected)
+                paramFilterList.push({
+                    "fieldName": "ServiceId",
+                    "fieldValue": this.ServiceId.toString() || "0",
+                    "opType": OperatorComparer.Equals          
+                });
+            if(this.flagCashcounterSelected)
+                paramFilterList.push({
+                    "fieldName": "CashCounterId",
+                    "fieldValue": this.CashCounterId.toString() || "0",
+                    "opType": OperatorComparer.Equals          
+                });   
+                // created by raksha date:7/6/25
+            if (this.flagGroupSelected)
+                paramFilterList.push({
+                    "fieldName": "GroupId",
+                    "fieldValue": this.GroupId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                }); 
+            if (this.flagClassSelected)
+                paramFilterList.push({
+                    "fieldName": "ClassId",
+                    "fieldValue": this.ClassId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagWardSelected)
+                paramFilterList.push({
+                    "fieldName": "WardId",
+                    "fieldValue": this.WardId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });      
+            if (this.flagDischargeTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "dischargeTypeId",
+                    "fieldValue": this.dischargeTypeId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                }); 
+            if (this.flagCompanySelected)
+                paramFilterList.push({
+                    "fieldName": "CompanyId",
+                    "fieldValue": this.CompanyId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagStoreSelected)
+                paramFilterList.push({
+                    "fieldName": "StoreId",
+                    "fieldValue": this.StoreId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagSupplierelected)
+                paramFilterList.push({
+                    "fieldName": "SupplierId",
+                    "fieldValue": this.SupplierId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagDrugTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "DrugTypeId",
+                    "fieldValue": this.DrugTypeId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPaymentSelected)
+                paramFilterList.push({
+                    "fieldName": "PaymentId",
+                    "fieldValue": this.PaymentId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagItemSelected)
+                paramFilterList.push({
+                    "fieldName": "ItemId",
+                    "fieldValue": this.ItemId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            // if (this.flagOPIPTypeSelected)
+            //     paramFilterList.push({
+            //         "fieldName": "OPIPType",
+            //         "fieldValue": this.OPIPType.toString() || "2",
+            //         "opType": OperatorComparer.Equals
+            //     });
+            if (this.flagOPIPTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "OPIPType",
+                    "fieldValue": this._ReportService.userForm.get('OPIPType').value || "2",
+                    "opType": OperatorComparer.Equals
+                });
+                //   
+            let param = {
+                "searchFields": paramFilterList,
+                "mode": this.reportDetail?.reportMode,
+                "repoertName": this.reportDetail?.reportName,
+                "headerList":  this.reportDetail?.reportHeader?.split(",") || [],
+                "colList": this.reportDetail?.reportColumn?.split(",") || [],
+                "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
+                "groupByLabel": this.reportDetail?.reportGroupByLabel,
+                "summaryLabel": this.reportDetail?.summaryLabel,
+                "columnWidths": this.reportDetail?.reportColumnWidth?.split(",") || [],
+                "htmlFilePath": this.reportDetail?.reportBodyFile,
+                "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
+                "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
+                // "spName": this.reportDetail?.reportSpname,
+                "folderName": this.reportDetail?.reportFolderName,
+                "fileName": this.reportDetail?.reportFileName,
+                "vPageOrientation": this.reportDetail?.reportPageOrientation
+              }
+            console.log(param)
+            debugger
+            this._ReportService.getExcelReport(param).subscribe(res => {
+                debugger
+                // const matDialog = this._matDialog.open(PdfviewerComponent,
+                // {
+                //     maxWidth: "85vw",
+                //     height: '750px',
+                //     width: '100%',
+                //     data: {
+                //         base64: res["base64"] as string,
+                //         title: this.reportDetail.reportMode + " " + "Viewer"
+                //     }
+                // });
+
+                // matDialog.afterClosed().subscribe(result => {
+                //     // this._ReportService.userForm.get("StartDate").setValue(new Date())
+                //     // this._ReportService.userForm.get("EndDate").setValue(new Date())
+                // });
+            },
+            (error) => {
+                debugger
+                this.toastr.error(error.message);
+            });
+
+        }, 100);
+    }
 }

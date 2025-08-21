@@ -34,17 +34,17 @@ export class ReportService {
             CashCounterId: [""],
 
             // added by raksha date:6/6/25
-            GroupId:[""],
-            ClassId:[""],
-            WardId:[""],
-            dischargeTypeId:[""],
-            CompanyId:[""],
-            StoreId:[""],
-            SupplierId:[""],
-            PaymentId:[""],
-            DrugTypeId:[""],
-            ItemId:[""],
-            OPIPType:["2"]
+            GroupId: [""],
+            ClassId: [""],
+            WardId: [""],
+            dischargeTypeId: [""],
+            CompanyId: [""],
+            StoreId: [""],
+            SupplierId: [""],
+            PaymentId: [""],
+            DrugTypeId: [""],
+            ItemId: [""],
+            OPIPType: ["2"]
             // 
         });
     }
@@ -57,7 +57,10 @@ export class ReportService {
         return this._httpClient1.PostData("Report/NewList", Param);
         // return this._httpClient1.PostData("Report/ReportList", Param);
     }
-    public getReportView(Param){
-        return this._httpClient1.PostData("Report/NewViewReport",Param);   
-    } 
+    public getReportView(Param) {
+        return this._httpClient1.PostData("Report/NewViewReport", Param);
+    }
+    public getExcelReport(Param) {
+        return this._httpClient1.downloadFile("Report/NewExportExcelReport", Param,1,"Report.xlsx");
+    }
 }
