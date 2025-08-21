@@ -155,7 +155,7 @@ export class ReportGenerationComponent implements OnInit {
         var param: any =
         {
             "first": 0,
-            "rows": 100,
+            "rows": 300,
             "sortField": "reportId",
             "sortOrder": 1,
             "filters": paramFilter || [],
