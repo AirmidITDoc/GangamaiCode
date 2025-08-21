@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PharAdvanceService } from '../phar-advance.service'; 
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -59,6 +60,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     public formBuilder:FormBuilder,
     public _FormvalidationserviceService:FormvalidationserviceService,
     public dialogRef: MatDialogRef<NewIPRefundAdvanceComponent>,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -78,7 +80,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
           opdIpdId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-          transactionId:0,
+          transactionId:9,
           addBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           isCancelled: [false],
           isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -264,30 +266,11 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
     this.AdvanceId = 0;
     this._matDialog.closeAll();
   } 
-  viewgetRefundofAdvanceReportPdf(contact) { 
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => { 
-    this._PharAdvanceService.getViewPahrmaRefundAdvanceReceipt(
-   contact
-    ).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Pharma Refund Of Advance Viewer"
-          }
-        });
-        matDialog.afterClosed().subscribe(result => {
-                  this.sIsLoading = '';
-        });
-    });
-   
-    },100)
-    
-  } 
+
+   viewgetRefundofAdvanceReportPdf(contact) { 
+    this.commonService.Onprint("RefundId", contact.refundId, "IPPharmaAdvanceReturnReport");
+  }
+
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
@@ -309,7 +292,9 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
   "columns": []
 }  
     this._PharAdvanceService.getPreRefundofAdvance(m_data).subscribe(Visit => {
-      this.dsPreRefundList.data =  Visit.data as IpItemList[]; 
+      this.dsPreRefundList.data =  Visit.data as IpItemList[];       
+      this.dsPreRefundList.sort = this.sort;
+      this.dsPreRefundList.paginator = this.paginator;
       console.log(this.dsPreRefundList.data); 
     });  
   }
