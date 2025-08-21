@@ -26,23 +26,23 @@ export class ExampleFlatNode {
     id: number;
     name: string;
     mode: string;
-    children?:ExampleFlatNode[];
+    children?: ExampleFlatNode[];
 }
-  
-  let TREE_DATA: FoodNode[] = [
+
+let TREE_DATA: FoodNode[] = [
     {
-      id: 1,
-      name: 'Appointment Date',
-      mode: 'Report',
-      children: [
-        {id: 1, name: 'Appointment Date 1:01/01/2023',  mode: 'Report'},
-        {id: 2, name: 'Appointment Date 2:15/01/2023',  mode: 'Report'},
-        {id: 3, name: 'Appointment Date 3:30/01/2023',  mode: 'Report'},
-        {id: 4, name: 'Appointment Date 4:15/02/2023',  mode: 'Report'}
-      ]
+        id: 1,
+        name: 'Appointment Date',
+        mode: 'Report',
+        children: [
+            { id: 1, name: 'Appointment Date 1:01/01/2023', mode: 'Report' },
+            { id: 2, name: 'Appointment Date 2:15/01/2023', mode: 'Report' },
+            { id: 3, name: 'Appointment Date 3:30/01/2023', mode: 'Report' },
+            { id: 4, name: 'Appointment Date 4:15/02/2023', mode: 'Report' }
+        ]
     }
-    
-  ];
+
+];
 @Component({
     selector: "app-report-generation",
     templateUrl: "./report-generation.component.html",
@@ -57,17 +57,17 @@ export class ReportGenerationComponent implements OnInit {
     DepartmentId: any;
     CashCounterId: any;
     // added by raksha date:6/6/25
-    GroupId:any;
-    ClassId:any;
-    WardId:any;
-    dischargeTypeId:any;
-    CompanyId:any;
-    StoreId:any;
-    SupplierId:any;
-    PaymentId:any;
-    DrugTypeId:any;
-    ItemId:any;
-    OPIPType:any='2';
+    GroupId: any;
+    ClassId: any;
+    WardId: any;
+    dischargeTypeId: any;
+    CompanyId: any;
+    StoreId: any;
+    SupplierId: any;
+    PaymentId: any;
+    DrugTypeId: any;
+    ItemId: any;
+    OPIPType: any = '2';
     // 
     rid: number = 0;
     UId: any = 0;
@@ -75,8 +75,8 @@ export class ReportGenerationComponent implements OnInit {
     ReportName: any;
     reportsData: any = [];
     reportDetail: any;
-    sIsLoading= '';
-    selectedNode:ExampleFlatNode | null = null;
+    sIsLoading = '';
+    selectedNode: ExampleFlatNode | null = null;
     private transformer = (node: FoodNode, level: number) => {
         return {
             expandable: !!node.children && node.children.length > 0,
@@ -86,32 +86,32 @@ export class ReportGenerationComponent implements OnInit {
             level: level,
         };
     }
-    treeControl = new FlatTreeControl<ExampleFlatNode>(node => node.level,  node => node.expandable);
+    treeControl = new FlatTreeControl<ExampleFlatNode>(node => node.level, node => node.expandable);
     treeFlattener = new MatTreeFlattener(this.transformer, node => node.level, node => node.expandable, node => node.children);
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    
+
     filteredOptionsCashCounter: Observable<string[]>;
-    searchCashCounterList:any=[];
+    searchCashCounterList: any = [];
 
     flagDoctorSelected: boolean = false;
     flagUserSelected: boolean = false;
-    flagDepartmentSelected: boolean = false;    
+    flagDepartmentSelected: boolean = false;
     flagServiceSelected: boolean = false;
     flagCashcounterSelected: boolean = false;
 
     //created by raksha
-    flagGroupSelected:boolean=false; 
-    flagClassSelected:boolean=false; 
-    flagWardSelected:boolean=false; 
-    flagAdmissionSelected:boolean=false; 
-    flagCompanySelected:boolean=false; 
-    flagDischargeTypeSelected:boolean=false; 
-    flagStoreSelected:boolean=false; 
-    flagSupplierelected:boolean=false;
-    flagPaymentSelected:boolean=false;
-    flagDrugTypeSelected:boolean=false;
-    flagItemSelected:boolean=false;
-    flagOPIPTypeSelected:boolean=false;
+    flagGroupSelected: boolean = false;
+    flagClassSelected: boolean = false;
+    flagWardSelected: boolean = false;
+    flagAdmissionSelected: boolean = false;
+    flagCompanySelected: boolean = false;
+    flagDischargeTypeSelected: boolean = false;
+    flagStoreSelected: boolean = false;
+    flagSupplierelected: boolean = false;
+    flagPaymentSelected: boolean = false;
+    flagDrugTypeSelected: boolean = false;
+    flagItemSelected: boolean = false;
+    flagOPIPTypeSelected: boolean = false;
     // 
 
     constructor(
@@ -128,13 +128,13 @@ export class ReportGenerationComponent implements OnInit {
         console.log(this.UId);
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
             return false;
-          }
-      
-          this.router.events.subscribe((evt) => {
+        }
+
+        this.router.events.subscribe((evt) => {
             if (evt instanceof NavigationEnd) {
-              this.router.navigated = false;
+                this.router.navigated = false;
             }
-          });
+        });
     }
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
@@ -142,7 +142,7 @@ export class ReportGenerationComponent implements OnInit {
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 0);
         });
-        if(this.rid == 0)
+        if (this.rid == 0)
             this.toastr.error("Report not found");
         this.GetAllReporConfig();
     }
@@ -159,17 +159,17 @@ export class ReportGenerationComponent implements OnInit {
             "sortField": "reportId",
             "sortOrder": 1,
             "filters": paramFilter || [],
-            "Columns":[],
+            "Columns": [],
             "exportType": "JSON"
         }
         console.log(param)
         this._ReportService.getAllReporConfig(param).subscribe(
             (response) => {
                 this.reportsData = response.data;
-                console.log("Daaaaaaa:",this.reportsData)
-                let mainData = this.reportsData.filter(x => (x.parentid == undefined ||x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId , name: x.reportName , mode: x.reportMode }));
+                console.log("Daaaaaaa:", this.reportsData)
+                let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
                 mainData.forEach(element => {
-                    element.children = this.reportsData.filter(x => (x.parentid == element.id)).map((x) => ({ id: x.reportId , name: x.reportName , mode: x.reportMode }));
+                    element.children = this.reportsData.filter(x => (x.parentid == element.id)).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
                 });
                 TREE_DATA = mainData
                 this.dataSource.data = TREE_DATA;
@@ -182,44 +182,44 @@ export class ReportGenerationComponent implements OnInit {
             }
         );
     }
-    GetReportDeails(node: any){
+    GetReportDeails(node: any) {
         this.OnClose();
         this.selectedNode = node;
         this.reportDetail = this.reportsData?.find(x => (x.reportId == node?.id));
         this.ReportName = this.reportDetail?.reportName;
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");
-        if(controllerPermission.filter(x => x == "Doctor")?.length > 0)
+        if (controllerPermission.filter(x => x == "Doctor")?.length > 0)
             this.flagDoctorSelected = true;
-        if(controllerPermission.filter(x => x == "User")?.length > 0)
+        if (controllerPermission.filter(x => x == "User")?.length > 0)
             this.flagUserSelected = true;
-        if(controllerPermission.filter(x => x == "Department")?.length > 0)
+        if (controllerPermission.filter(x => x == "Department")?.length > 0)
             this.flagDepartmentSelected = true;
-        if(controllerPermission.filter(x => x == "Service")?.length > 0)
+        if (controllerPermission.filter(x => x == "Service")?.length > 0)
             this.flagServiceSelected = true;
-        if(controllerPermission.filter(x => x == "CashCounter")?.length > 0)
+        if (controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
         // created by raksha date:7/6/25
-        if(controllerPermission.filter(x => x == "GroupName")?.length > 0)
+        if (controllerPermission.filter(x => x == "GroupName")?.length > 0)
             this.flagGroupSelected = true;
-        if(controllerPermission.filter(x => x == "Class")?.length > 0)
+        if (controllerPermission.filter(x => x == "Class")?.length > 0)
             this.flagClassSelected = true;
-        if(controllerPermission.filter(x => x == "Room")?.length > 0)
+        if (controllerPermission.filter(x => x == "Room")?.length > 0)
             this.flagWardSelected = true;
-        if(controllerPermission.filter(x => x == "DichargeType")?.length > 0)
+        if (controllerPermission.filter(x => x == "DichargeType")?.length > 0)
             this.flagDischargeTypeSelected = true;
-        if(controllerPermission.filter(x => x == "Company")?.length > 0)
+        if (controllerPermission.filter(x => x == "Company")?.length > 0)
             this.flagCompanySelected = true;
-        if(controllerPermission.filter(x => x == "Store")?.length > 0)
+        if (controllerPermission.filter(x => x == "Store")?.length > 0)
             this.flagStoreSelected = true;
-        if(controllerPermission.filter(x => x == "SupplierMaster")?.length > 0)
+        if (controllerPermission.filter(x => x == "SupplierMaster")?.length > 0)
             this.flagSupplierelected = true;
-        if(controllerPermission.filter(x => x == "Bank")?.length > 0)
+        if (controllerPermission.filter(x => x == "Bank")?.length > 0)
             this.flagPaymentSelected = true;
-        if(controllerPermission.filter(x => x == "ItemDrugType")?.length > 0)
+        if (controllerPermission.filter(x => x == "ItemDrugType")?.length > 0)
             this.flagDrugTypeSelected = true;
-        if(controllerPermission.filter(x => x == "Item")?.length > 0)
-            this.flagItemSelected = true;        
-        if(controllerPermission.filter(x => x == "OPIPType")?.length > 0)
+        if (controllerPermission.filter(x => x == "Item")?.length > 0)
+            this.flagItemSelected = true;
+        if (controllerPermission.filter(x => x == "OPIPType")?.length > 0)
             this.flagOPIPTypeSelected = true;
         // 
     }
@@ -263,11 +263,11 @@ export class ReportGenerationComponent implements OnInit {
     SelectedPaymentObj(obj) {
         this.PaymentId = obj.value;
     }
-    SelectedDrugTypeObj(obj){
-        this.DrugTypeId=obj.value;
+    SelectedDrugTypeObj(obj) {
+        this.DrugTypeId = obj.value;
     }
-    SelectedItemObj(obj){
-        this.ItemId=obj.value;
+    SelectedItemObj(obj) {
+        this.ItemId = obj.value;
     }
     // 
     OnClose() {
@@ -296,11 +296,11 @@ export class ReportGenerationComponent implements OnInit {
         this.ClassId = 0;
         this.WardId = 0;
         this.StoreId = 0;
-        this.SupplierId=0;
-        this.PaymentId=0
+        this.SupplierId = 0;
+        this.PaymentId = 0
         this.CompanyId = 0;
-        this.DrugTypeId=0;
-        this.ItemId=0;
+        this.DrugTypeId = 0;
+        this.ItemId = 0;
         this.dischargeTypeId = 0;
         this.flagDoctorSelected = false;
         this.flagUserSelected = false;
@@ -308,68 +308,68 @@ export class ReportGenerationComponent implements OnInit {
         this.flagServiceSelected = false;
         this.flagCashcounterSelected = false;
         this.flagGroupSelected = false;
-        this.flagClassSelected= false;
-        this.flagWardSelected=false;
-        this.flagDischargeTypeSelected=false;
-        this.flagCompanySelected=false;
-        this.flagStoreSelected=false;
-        this.flagSupplierelected=false;
-        this.flagPaymentSelected=false;
-        this.flagDrugTypeSelected=false;
-        this.flagItemSelected=false;
-        this.flagOPIPTypeSelected=false;
+        this.flagClassSelected = false;
+        this.flagWardSelected = false;
+        this.flagDischargeTypeSelected = false;
+        this.flagCompanySelected = false;
+        this.flagStoreSelected = false;
+        this.flagSupplierelected = false;
+        this.flagPaymentSelected = false;
+        this.flagDrugTypeSelected = false;
+        this.flagItemSelected = false;
+        this.flagOPIPTypeSelected = false;
     }
-    GetPrint() {
+    CallReportData(type) {
         setTimeout(() => {
             let paramFilterList = [
                 {
-                "fieldName": "FromDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"yyyy-MM-dd"),//"10-01-2024",
-                "opType": OperatorComparer.Equals
+                    "fieldName": "FromDate",
+                    "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value, "yyyy-MM-dd"),//"10-01-2024",
+                    "opType": OperatorComparer.Equals
                 },
                 {
-                "fieldName": "ToDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"yyyy-MM-dd"),//"12-12-2024",
-                "opType": OperatorComparer.Equals
+                    "fieldName": "ToDate",
+                    "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value, "yyyy-MM-dd"),//"12-12-2024",
+                    "opType": OperatorComparer.Equals
                 }
             ];
-            if(this.flagUserSelected)
+            if (this.flagUserSelected)
                 paramFilterList.push({
                     "fieldName": "UserId",
                     "fieldValue": this.UserId.toString() || "0",
-                    "opType": OperatorComparer.Equals         
+                    "opType": OperatorComparer.Equals
                 });
-            if(this.flagDoctorSelected)
+            if (this.flagDoctorSelected)
                 paramFilterList.push({
                     "fieldName": "DoctorId",
                     "fieldValue": (this.DoctorId || "0").toString(),
-                    "opType": OperatorComparer.Equals        
-                });  
-            if(this.flagDepartmentSelected)
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagDepartmentSelected)
                 paramFilterList.push({
                     "fieldName": "DepartmentId",
                     "fieldValue": this.DepartmentId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
-                });      
-            if(this.flagServiceSelected)
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagServiceSelected)
                 paramFilterList.push({
                     "fieldName": "ServiceId",
                     "fieldValue": this.ServiceId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
+                    "opType": OperatorComparer.Equals
                 });
-            if(this.flagCashcounterSelected)
+            if (this.flagCashcounterSelected)
                 paramFilterList.push({
                     "fieldName": "CashCounterId",
                     "fieldValue": this.CashCounterId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
-                });   
-                // created by raksha date:7/6/25
+                    "opType": OperatorComparer.Equals
+                });
+            // created by raksha date:7/6/25
             if (this.flagGroupSelected)
                 paramFilterList.push({
                     "fieldName": "GroupId",
                     "fieldValue": this.GroupId.toString() || "0",
                     "opType": OperatorComparer.Equals
-                }); 
+                });
             if (this.flagClassSelected)
                 paramFilterList.push({
                     "fieldName": "ClassId",
@@ -381,13 +381,13 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldName": "WardId",
                     "fieldValue": this.WardId.toString() || "0",
                     "opType": OperatorComparer.Equals
-                });      
+                });
             if (this.flagDischargeTypeSelected)
                 paramFilterList.push({
                     "fieldName": "dischargeTypeId",
                     "fieldValue": this.dischargeTypeId.toString() || "0",
                     "opType": OperatorComparer.Equals
-                }); 
+                });
             if (this.flagCompanySelected)
                 paramFilterList.push({
                     "fieldName": "CompanyId",
@@ -436,12 +436,12 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this._ReportService.userForm.get('OPIPType').value || "2",
                     "opType": OperatorComparer.Equals
                 });
-                //   
+            //   
             let param = {
                 "searchFields": paramFilterList,
                 "mode": this.reportDetail?.reportMode,
                 "repoertName": this.reportDetail?.reportName,
-                "headerList":  this.reportDetail?.reportHeader?.split(",") || [],
+                "headerList": this.reportDetail?.reportHeader?.split(",") || [],
                 "colList": this.reportDetail?.reportColumn?.split(",") || [],
                 "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
                 "groupByLabel": this.reportDetail?.reportGroupByLabel,
@@ -454,192 +454,36 @@ export class ReportGenerationComponent implements OnInit {
                 "folderName": this.reportDetail?.reportFolderName,
                 "fileName": this.reportDetail?.reportFileName,
                 "vPageOrientation": this.reportDetail?.reportPageOrientation
-              }
-            console.log(param)
-            this._ReportService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: this.reportDetail.reportMode + " " + "Viewer"
-                    }
-                });
+            }
+            if (type == 2) {
+                this._ReportService.getExcelReport(param).subscribe(res => {
 
-                matDialog.afterClosed().subscribe(result => {
-                    // this._ReportService.userForm.get("StartDate").setValue(new Date())
-                    // this._ReportService.userForm.get("EndDate").setValue(new Date())
+                }, (error) => {
+                    this.toastr.error(error.message);
                 });
-            },
-            (error) => {
-                this.toastr.error(error.message);
-            });
+            }
+            else {
+                this._ReportService.getReportView(param).subscribe(res => {
+                    const matDialog = this._matDialog.open(PdfviewerComponent,
+                        {
+                            maxWidth: "85vw",
+                            height: '750px',
+                            width: '100%',
+                            data: {
+                                base64: res["base64"] as string,
+                                title: this.reportDetail.reportMode + " " + "Viewer"
+                            }
+                        });
 
-        }, 100);
-    }
-    GetExcel() {
-        setTimeout(() => {
-            let paramFilterList = [
-                {
-                "fieldName": "FromDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value,"yyyy-MM-dd"),//"10-01-2024",
-                "opType": OperatorComparer.Equals
+                    matDialog.afterClosed().subscribe(result => {
+                        // this._ReportService.userForm.get("StartDate").setValue(new Date())
+                        // this._ReportService.userForm.get("EndDate").setValue(new Date())
+                    });
                 },
-                {
-                "fieldName": "ToDate",
-                "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("EndDate").value,"yyyy-MM-dd"),//"12-12-2024",
-                "opType": OperatorComparer.Equals
-                }
-            ];
-            if(this.flagUserSelected)
-                paramFilterList.push({
-                    "fieldName": "UserId",
-                    "fieldValue": this.UserId.toString() || "0",
-                    "opType": OperatorComparer.Equals         
-                });
-            if(this.flagDoctorSelected)
-                paramFilterList.push({
-                    "fieldName": "DoctorId",
-                    "fieldValue": (this.DoctorId || "0").toString(),
-                    "opType": OperatorComparer.Equals        
-                });  
-            if(this.flagDepartmentSelected)
-                paramFilterList.push({
-                    "fieldName": "DepartmentId",
-                    "fieldValue": this.DepartmentId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
-                });      
-            if(this.flagServiceSelected)
-                paramFilterList.push({
-                    "fieldName": "ServiceId",
-                    "fieldValue": this.ServiceId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
-                });
-            if(this.flagCashcounterSelected)
-                paramFilterList.push({
-                    "fieldName": "CashCounterId",
-                    "fieldValue": this.CashCounterId.toString() || "0",
-                    "opType": OperatorComparer.Equals          
-                });   
-                // created by raksha date:7/6/25
-            if (this.flagGroupSelected)
-                paramFilterList.push({
-                    "fieldName": "GroupId",
-                    "fieldValue": this.GroupId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                }); 
-            if (this.flagClassSelected)
-                paramFilterList.push({
-                    "fieldName": "ClassId",
-                    "fieldValue": this.ClassId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagWardSelected)
-                paramFilterList.push({
-                    "fieldName": "WardId",
-                    "fieldValue": this.WardId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });      
-            if (this.flagDischargeTypeSelected)
-                paramFilterList.push({
-                    "fieldName": "dischargeTypeId",
-                    "fieldValue": this.dischargeTypeId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                }); 
-            if (this.flagCompanySelected)
-                paramFilterList.push({
-                    "fieldName": "CompanyId",
-                    "fieldValue": this.CompanyId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagStoreSelected)
-                paramFilterList.push({
-                    "fieldName": "StoreId",
-                    "fieldValue": this.StoreId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagSupplierelected)
-                paramFilterList.push({
-                    "fieldName": "SupplierId",
-                    "fieldValue": this.SupplierId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagDrugTypeSelected)
-                paramFilterList.push({
-                    "fieldName": "DrugTypeId",
-                    "fieldValue": this.DrugTypeId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagPaymentSelected)
-                paramFilterList.push({
-                    "fieldName": "PaymentId",
-                    "fieldValue": this.PaymentId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            if (this.flagItemSelected)
-                paramFilterList.push({
-                    "fieldName": "ItemId",
-                    "fieldValue": this.ItemId.toString() || "0",
-                    "opType": OperatorComparer.Equals
-                });
-            // if (this.flagOPIPTypeSelected)
-            //     paramFilterList.push({
-            //         "fieldName": "OPIPType",
-            //         "fieldValue": this.OPIPType.toString() || "2",
-            //         "opType": OperatorComparer.Equals
-            //     });
-            if (this.flagOPIPTypeSelected)
-                paramFilterList.push({
-                    "fieldName": "OPIPType",
-                    "fieldValue": this._ReportService.userForm.get('OPIPType').value || "2",
-                    "opType": OperatorComparer.Equals
-                });
-                //   
-            let param = {
-                "searchFields": paramFilterList,
-                "mode": this.reportDetail?.reportMode,
-                "repoertName": this.reportDetail?.reportName,
-                "headerList":  this.reportDetail?.reportHeader?.split(",") || [],
-                "colList": this.reportDetail?.reportColumn?.split(",") || [],
-                "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
-                "groupByLabel": this.reportDetail?.reportGroupByLabel,
-                "summaryLabel": this.reportDetail?.summaryLabel,
-                "columnWidths": this.reportDetail?.reportColumnWidth?.split(",") || [],
-                "htmlFilePath": this.reportDetail?.reportBodyFile,
-                "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
-                "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
-                // "spName": this.reportDetail?.reportSpname,
-                "folderName": this.reportDetail?.reportFolderName,
-                "fileName": this.reportDetail?.reportFileName,
-                "vPageOrientation": this.reportDetail?.reportPageOrientation
-              }
-            console.log(param)
-            debugger
-            this._ReportService.getExcelReport(param).subscribe(res => {
-                debugger
-                // const matDialog = this._matDialog.open(PdfviewerComponent,
-                // {
-                //     maxWidth: "85vw",
-                //     height: '750px',
-                //     width: '100%',
-                //     data: {
-                //         base64: res["base64"] as string,
-                //         title: this.reportDetail.reportMode + " " + "Viewer"
-                //     }
-                // });
-
-                // matDialog.afterClosed().subscribe(result => {
-                //     // this._ReportService.userForm.get("StartDate").setValue(new Date())
-                //     // this._ReportService.userForm.get("EndDate").setValue(new Date())
-                // });
-            },
-            (error) => {
-                debugger
-                this.toastr.error(error.message);
-            });
-
+                    (error) => {
+                        this.toastr.error(error.message);
+                    });
+            }
         }, 100);
     }
 }
