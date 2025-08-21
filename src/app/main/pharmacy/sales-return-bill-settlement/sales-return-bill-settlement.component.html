@@ -220,8 +220,8 @@
                                                     fxLayoutAlign="start center" fxFlex>
                                                     <mat-radio-group aria-label="Select an option"
                                                         formControlName="PatientType" [formGroup]="MutliSettlemForm"
-                                                        (change)="onChangePatientType($event)"
-                                                        (blur)="onChangePatientType($event)" fxLayout="row">
+                                                        (change)="onChangePatientTypeMultiple($event)"
+                                                        (blur)="onChangePatientTypeMultiple($event)" fxLayout="row">
                                                         <mat-radio-button value="0">OP</mat-radio-button>
                                                         <mat-radio-button value="1">IP</mat-radio-button>
                                                         <mat-radio-button value="2">External</mat-radio-button>

@@ -111,12 +111,12 @@ export class IpSalesReturnComponent implements OnInit {
         salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opIpId: [this.selcteditemObj.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         opIpType: [1],
-        totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         isSellted: false,
         isPrint: true,
         isFree: false,
@@ -137,16 +137,16 @@ export class IpSalesReturnComponent implements OnInit {
         billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         chequeDate: ['1999-01-01'],
-        cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardDate: ['1999-01-01'],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -156,11 +156,11 @@ export class IpSalesReturnComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1999-01-01'],
         opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftdate: ['1999-01-01'],
-        payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
       })
@@ -275,13 +275,14 @@ export class IpSalesReturnComponent implements OnInit {
     }
     this._IpSalesRetService.getSalesReturnitemlist(param).subscribe(response => {
       this.Itemlist = response
+      console.log(this.Itemlist)
       this.ItemfilteredOptions = this.ItemFormGroup.get('ItemName').valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterItemname(value) : this.Itemlist.slice()),
       );
     })
   }
-  getOptionTextitemname(option) {
+  getOptionTextitemname(option) { 
     return option && option.ItemName ? option.ItemName : '';
   }
   getSelectedItemObj(obj) {
@@ -519,11 +520,11 @@ export class IpSalesReturnComponent implements OnInit {
         this.SalesDetArray.push(this.createSalesDetails(element));
       });
       if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(0)
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
-        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
@@ -532,7 +533,7 @@ export class IpSalesReturnComponent implements OnInit {
       }
       else {
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
-        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
 
