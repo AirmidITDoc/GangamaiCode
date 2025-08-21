@@ -374,8 +374,8 @@ export class SalesHospitalNewComponent implements OnInit {
         dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
         time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator]],
         totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -386,7 +386,7 @@ export class SalesHospitalNewComponent implements OnInit {
         concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isSellted: [true],
         isPrint: [true],
-        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this._loggedService.currentUserValue.userId],
         externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -395,8 +395,8 @@ export class SalesHospitalNewComponent implements OnInit {
         creditReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isClosed: [false],
         isPrescription: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       }),
@@ -576,7 +576,7 @@ export class SalesHospitalNewComponent implements OnInit {
         BatchNo: result.batchNo,
         BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
         BalanceQty: result.balanceQty,
-        Qty: 0,
+        Qty: '',
         DiscAmt: 0,
         GSTPer: result.vatPercentage,
         MRP: result.unitMRP,
@@ -699,7 +699,7 @@ export class SalesHospitalNewComponent implements OnInit {
       BatchExpDate: [this.datePipe.transform(this.selectedItem?.batchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
       Qty: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       UnitMRP: [this.selectedItem?.unitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      GSTPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      GSTPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       TotalMRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       DiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -921,6 +921,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('concessionReasonId').reset();
       this.ItemSubform.get('concessionReasonId').clearValidators();
       this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+      this.ItemSubform.get('concessionReasonId').disable();
     }
     this.ItemSubform.patchValue({
       discAmount: FinalDiscAmt,
@@ -1042,12 +1043,12 @@ export class SalesHospitalNewComponent implements OnInit {
           PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails.ipdNo;
         }
         PatientHeaderObj['Age'] = this.Patientdetails.age;
-        PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value;
+        PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value; 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
-            height: '700px',
-            width: '80%',
+            height: '800px',
+            width: '75%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
               FromName: "Phar-SalesPay",
@@ -1137,6 +1138,7 @@ export class SalesHospitalNewComponent implements OnInit {
     } as IndentList;
 
     Object.assign(item, updatedItem);
+    this.updateCellDiscount(item);
     this.calculateCellNetAmount(item);
   }
   calculateCellNetAmount(item: IndentList): void {
@@ -1267,23 +1269,20 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     if (this.ItemSubform.get('opIpType').value == '2') {
       if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
-        this.toastr.warning('Please select Customer Detail', 'Warning !', {
+        this.toastr.warning('Please select Patient Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
       }
     } 
+    debugger
     this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-    this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
-    this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.Patientdetails?.admissionID)
+    this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm')) 
     this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue.opIpType)
     this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
     this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
     this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number(Math.round(formValue.discAmount)))
-    this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue.netAmount)))
-    this.PharmaSalesDraftForm.get('salesDraft.unitId').setValue(this.Patientdetails?.hospitalID)
-    this.PharmaSalesDraftForm.get('salesDraft.wardId').setValue(this.Patientdetails?.wardId)
-    this.PharmaSalesDraftForm.get('salesDraft.bedId').setValue(this.Patientdetails?.bedId)
+    this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue.netAmount))) 
     this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
     this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue.netAmount)))
 
@@ -1296,6 +1295,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
       this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails.doctorName)
     }
+      console.log(this.PharmaSalesDraftForm.value)
     if (this.PharmaSalesDraftForm.valid) {
       this.SalesDraftDetailsAarry.clear();
       this.saleSelectedDatasource.data.forEach((element) => {
@@ -1351,8 +1351,8 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('externalPatientName').enable();
       this.ItemSubform.updateValueAndValidity();
       this.ItemSubform.get('extMobileNo').setValue(contact.extMobileNo)
-      this.ItemSubform.get('externalPatientName').setValue(contact.PatientName)
-      this.ItemSubform.get('DoctorName').setValue(contact.AdmDoctorName)
+      this.ItemSubform.get('externalPatientName').setValue(contact.patientName)
+      this.ItemSubform.get('doctorName').setValue(contact.admDoctorName)
       this.ItemSubform.get('extAddress').setValue(contact.extAddress)
       this.paymethod = false;
       this.RegId = '';
@@ -1406,8 +1406,7 @@ export class SalesHospitalNewComponent implements OnInit {
       }
     });
   }
-  onAddDraftListTosale(contact, DraftQty) {
-
+  onAddDraftListTosale(contact, DraftQty) { 
     console.log(contact)
     this.Tempchargeslist = [];
     this.QtyBalchk = 0;
@@ -1946,6 +1945,15 @@ vExpDate:any;
       ],
       concessionId: [
         // { name: "required", Message: "Invoice No is required" }
+      ],
+       doctorName: [
+        { name: "required", Message: "Doctor Name No is required" }
+      ],
+       extAddress: [
+        { name: "required", Message: "Address No is required" }
+      ],
+        PatientName: [
+        { name: "required", Message: "Patient Name No is required" }
       ],
     };
   }

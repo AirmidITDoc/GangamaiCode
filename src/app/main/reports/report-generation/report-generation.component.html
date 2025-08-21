@@ -188,9 +188,13 @@
 
                                 <!-- Print Button -->
                                 <div fxLayout="row" fxLayoutAlign="start none">
-                                    <button mat-fab extended color="primary" [disabled]="!ReportName" (click)="GetPrint()">
+                                    <button mat-fab extended color="primary" [disabled]="!ReportName" (click)="CallReportData(1)">
                                         <mat-icon>print</mat-icon>
                                         <span>Print</span>
+                                    </button>
+                                    <button mat-fab extended color="primary" [disabled]="!ReportName" (click)="CallReportData(2)">
+                                        <mat-icon>insert_drive_file</mat-icon>
+                                        <span>Export Excel</span>
                                     </button>
                                 </div>
                             </form>

@@ -138,7 +138,7 @@
                                         (optionSelected)='getSelectedItemObj($event.option.value)'
                                         [displayWith]="getOptionTextitemname">
                                         <mat-option *ngFor="let option of ItemfilteredOptions | async" [value]="option">
-                                            {{option.ItemName}} | BalQty :{{option.Qty}} | MRP:{{option.UnitMRP}}
+                                            {{option.ItemName}} | BalQty :{{option.Qty}} | MRP:{{option.UnitMRP}} |  SalesNo:{{option.SalesNo}} 
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field> 
@@ -169,7 +169,7 @@
             <div class="modal-card-container">
                 <div class="airmid-table-container">
                     <mat-table #table class="airmid-table  max-h-700" matSort [dataSource]="dsIpSaleItemList"
-                        [@animateStagger]="{ value: '50' }" style="overflow: auto">
+                        [@animateStagger]="{ value: '50' }" style="overflow: auto;height: 300px;">
 
                         <ng-container matColumnDef="SalesNo" sticky>
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">

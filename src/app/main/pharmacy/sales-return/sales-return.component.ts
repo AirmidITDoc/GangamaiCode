@@ -271,28 +271,28 @@ getbillllist(){
     this.Itemselectedlist = [];   
     var vdata = { 
     "first": 0,
-    "rows": 10,
+    "rows": 25,
     "sortField": "SalesId",
     "sortOrder": 0,
-    "filters": [
-      { "fieldName": "FName", "fieldValue":  this.firstName, "opType": "Equals" },
+    "filters": [ 
       { "fieldName": "LName", "fieldValue": this.LastName, "opType": "Equals" },
+      { "fieldName": "FName", "fieldValue":  this.firstName, "opType": "Equals" },
       { "fieldName": "FromDt", "fieldValue": this.FromDate, "opType": "Equals" },
-      { "fieldName": "ToDt", "fieldValue":this.ToDate, "opType": "Equals" },
+      { "fieldName": "ToDt", "fieldValue":this.ToDate, "opType": "Equals" }, 
+      { "fieldName": "StoreId", "fieldValue": String(this.StoreId1), "opType": "Equals" },
       { "fieldName": "RegNo", "fieldValue":String(this.regNo), "opType": "Equals" },
       { "fieldName": "SalesNo", "fieldValue": String(this.salesNo), "opType": "Equals" },
       { "fieldName": "OPIPType", "fieldValue": "3", "opType": "Equals" },
-      { "fieldName": "StoreId", "fieldValue": String(this.StoreId1), "opType": "Equals" }
     ],
     "exportType": "JSON",
     "columns": [
       { "data": "string",  "name": "string" }
-    ] 
+    ]  
     }
     setTimeout(() => {
       this.isLoadingStr = 'loading';
       this._SalesReturnService.getSalesBillList(vdata).subscribe((response) => {
-          this.dssaleList.data = response.data as SaleBillList[];
+          this.dssaleList.data = response.data as SaleBillList[]; 
           console.log(this.dssaleList.data);
           this.dssaleList.sort = this.sort;
           this.dssaleList.paginator = this.paginator;
@@ -379,6 +379,10 @@ getbillllist(){
         return
       }
     }
+
+    let totalAmt = contact?.Qty *  contact?.UnitMRP || 0
+    let NetAmount = totalAmt -  contact?.DiscAmount || 0
+    let TotalLandedAmount = contact?.Qty *  contact?.LandedPrice || 0
     let CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
     let SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
     let IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(contact.Qty)).toFixed(2);
@@ -391,14 +395,14 @@ getbillllist(){
         Qty: contact.Qty,
         ReturnQty: contact.Qty,
         UnitMRP: contact.UnitMRP,
-        TotalAmount: contact.TotalAmount,
+        TotalAmount: totalAmt,
         VatPer: contact.VatPer,
         VatAmount: contact.VatAmount,
         DiscPer: contact.DiscPer,
         DiscAmount: contact.DiscAmount,
-        GrossAmount: contact.GrossAmount,
+        GrossAmount: NetAmount,
         LandedPrice: contact.LandedPrice,
-        TotalLandedAmount: contact.TotalLandedAmount,
+        TotalLandedAmount: TotalLandedAmount,
         PurRateWf: contact.PurRateWf,
         PurTotAmt: contact.PurTotAmt,
         CGSTPer: contact.CGSTPer,
@@ -415,9 +419,9 @@ getbillllist(){
         StkID: contact.StkID,
         isCashOrCredit:contact.isCashOrCredit
       });
-    this.selectedssaleDetailList.data = this.Itemselectedlist;
-    this.getUpdateTotalAmtSum()
+    this.selectedssaleDetailList.data = this.Itemselectedlist; 
     this.IpSalesReturnForm = this.CreateSalesReturnForm();
+      this.getCellCalculation(contact, contact.Qty)
   }
   deleteTableRow(element) {
     let index = this.Itemselectedlist.indexOf(element);
@@ -492,6 +496,7 @@ getbillllist(){
       });
       return 
     } 
+    this.getUpdateTotalAmtSum()
   }  
    //Save code 
    onSave() {

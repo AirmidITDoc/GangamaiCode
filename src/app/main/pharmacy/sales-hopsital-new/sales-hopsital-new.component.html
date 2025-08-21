@@ -236,7 +236,7 @@
                               <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform" formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
-                                ApiUrl="VisitDetail/search-patient?Keyword="
+                                  ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
                                 TextField="formattedText"></airmid-autocomplete>
                             </div>
@@ -252,33 +252,46 @@
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <airmid-textbox label="MobileNo" [(ngModel)]="MobileNo" formControlName="extMobileNo"
+                              <!-- <airmid-textbox label="MobileNo" [(ngModel)]="MobileNo" formControlName="extMobileNo"
                                 [formGroup]="ItemSubform" [validations]="getValidationMessages().mobileNo"
-                                [type]="'number'" [maxLength]="10"></airmid-textbox>
+                                [type]="'number'" [maxLength]="10"></airmid-textbox> -->
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                  <mat-label>MobileNo</mat-label>
+                                  <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."  
+                                   autocomplete="off" maxlength="10" minlength="10"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" > 
+                                </mat-form-field>
                             </div>
 
                             <!-- Patient Name autocomplete pending -->
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <airmid-autocomplete label="Patient Name" [(ngModel)]="PatientName"
+                              <!-- <airmid-autocomplete label="Patient Name" [(ngModel)]="PatientName"
                                 [formGroup]="ItemSubform" formControlName="externalPatientName"
                                 placeholderText="Patient Name" fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)" TextField="formattedText"
-                                ></airmid-autocomplete>
+                                ></airmid-autocomplete> -->
+                                  <airmid-textbox label="Patient Name" [(ngModel)]="PatientName" formControlName="externalPatientName"
+                                placeholder="extAddress" [formGroup]="ItemSubform"  [type]="'text'"   [validations]="getValidationMessages().PatientName"
+                                ></airmid-textbox>
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <airmid-autocomplete label="DoctorName" [formGroup]="ItemSubform" [(ngModel)]="DoctorName"
+                              <!-- <airmid-autocomplete label="DoctorName" [formGroup]="ItemSubform" [(ngModel)]="DoctorName"
                                 formControlName="doctorName" placeholderText="DoctorName" fxFlex
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)"
-                                TextField="formattedText"></airmid-autocomplete>
+                                TextField="formattedText"></airmid-autocomplete> -->
+                                  <airmid-textbox label="Patient Name" [(ngModel)]="DoctorName" formControlName="doctorName"
+                                placeholder="DoctorName" [formGroup]="ItemSubform"
+                                [validations]="getValidationMessages().doctorName" [type]="'text'" ></airmid-textbox>
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
                                 placeholder="extAddress" [formGroup]="ItemSubform"
-                                [validations]="getValidationMessages().mobileNo" [type]="'text'"
+                                [validations]="getValidationMessages().extAddress" [type]="'text'"
                                 (input)="onEnterAddress($event)"></airmid-textbox>
                             </div>
                           </div>
@@ -735,8 +748,8 @@
 
 
                   <ng-container matColumnDef="UHID">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">UHID No</mat-header-cell>
-                    <mat-cell *matCellDef="let row" class="w-90">{{ row.regNo }}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">UHID No</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="w-100">{{ row.regNo }}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="PatientName">
@@ -752,8 +765,8 @@
                   </ng-container>
 
                   <ng-container matColumnDef="MobileNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile No</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.extMobileNo || '0'}}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">Mobile No</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="w-100">{{ row.extMobileNo || '0'}}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="UserName">
