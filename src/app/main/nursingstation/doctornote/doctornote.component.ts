@@ -262,7 +262,8 @@ export class DoctornoteComponent implements OnInit {
       });
       return;
     }
-
+  console.log(this.myNoteform.value)
+debugger
     if (!this.myNoteform.invalid) {
       this.myNoteform.get('admId').setValue(this.OP_IP_Id);
       this.myNoteform.get('tdate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
@@ -273,7 +274,6 @@ export class DoctornoteComponent implements OnInit {
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
-      //  this.grid.bindGridData();
       console.log(this.OP_IP_Id)
         this.ViewDoctorNote(this.OP_IP_Id);
           this.onClear();
@@ -397,8 +397,8 @@ export class DoctornoteComponent implements OnInit {
     this.myNoteform.reset();
     this.myform.get('TemplateId').setValue('');
     this.IsAddFlag = true
-    this.vDoctNoteId = null;
-    this.vDescription = null;
+    this.vDoctNoteId = 0;
+    this.vDescription = 0;
     // this.onClearPatientInfo()
      this.myform.get('RegID').setValue('');
 
@@ -421,6 +421,8 @@ export class DoctornoteComponent implements OnInit {
     this.vTariffName = '';
     this.vCompanyName = '';
     this.vDOA='';
+  this.myNoteform = this._NursingStationService.createDoctorNoteForm();
+    this.myNoteform.markAllAsTouched()
   }
 
   onClose() {

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
@@ -16,7 +17,8 @@ export class BrowsSalesBillService {
 
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient, 
+    public _httpClient1: ApiCaller, 
     private _formBuilder: UntypedFormBuilder,
     private _loaderService: LoaderService,
     private _loggedService: AuthenticationService,
@@ -189,4 +191,7 @@ public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,
     return this._httpClient.get("Sales/view-PatientStatement?OP_IP_ID=" + OP_IP_ID +"&StoreId=" + StoreId);
   }
   
+    public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

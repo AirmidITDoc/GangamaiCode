@@ -26,7 +26,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
@@ -34,7 +33,10 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { BrowsSalesBillComponent } from '../brows-sales-bill/brows-sales-bill.component';
+import { BrowsSalesBillComponent } from './brows-sales-bill.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const routes: Routes = [
   { 
@@ -44,50 +46,48 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [
-        BrowsSalesBillComponent,
-    ],
+    declarations: [BrowsSalesBillComponent],
     imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        CommonModule,
-        MatExpansionModule,
-        MatSlideToggleModule,
-        MatListModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatTabsModule,
-        MatCardModule,
-        MatDividerModule,
-        MatDialogModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        ReactiveFormsModule,
-        MatSnackBarModule,
-        MatStepperModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
-        MatBadgeModule,
-        MatSelectModule,
-        MatSelectModule,
-        MatChipsModule,
-        // NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule,
+       RouterModule.forChild(routes),
+            CommonModule,
+                  MatButtonModule,
+                  MatCheckboxModule,
+                  MatDatepickerModule,
+                  MatFormFieldModule,
+                  MatIconModule,
+                  MatInputModule,
+                  MatMenuModule,
+                  MatRippleModule,
+                  MatTableModule,
+                  MatToolbarModule,
+                  MatPaginatorModule,
+                  MatSortModule,
+                  MatSelectModule,
+                  MatRadioModule,
+                  MatTabsModule,
+                  MatCardModule,
+                  MatDividerModule,
+                  MatDialogModule,
+                  FuseSharedModule,
+                  FuseConfirmDialogModule,
+                  FuseSidebarModule,
+                  MatChipsModule,
+                  MatProgressSpinnerModule,
+                  // WebcamModule,
+                  ReactiveFormsModule,
+                  MatAutocompleteModule,
+                  MatSidenavModule,
+                  MatExpansionModule,
+                  MatGridListModule,
+                  MatSnackBarModule,
+                  MatSlideToggleModule,
+                  MatListModule,
+                  SharedModule,
+                  MatStepperModule,
+                  NgxMatSelectSearchModule,
+                  MatDatepickerModule,
+                  //  NgMultiSelectDropDownModule.forRoot(),
+                  MatTooltipModule
     ],
     providers: [
         DatePipe,

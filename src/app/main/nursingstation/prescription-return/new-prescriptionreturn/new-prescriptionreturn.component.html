@@ -210,9 +210,21 @@
                     </div>
                 </div>
 
+                <div class="modal-card-container" style="padding:1px 2px 5px 0px ;">
+                    <mat-card style="padding: 5px;">
+                        <form [formGroup]="prescriptionReturnForm">
+                            <airmid-dropdown label="Store Name" formControlName="toStoreId"
+                                [formGroup]="prescriptionReturnForm" [value]="vstoreId" fxFlex="30%"
+                                [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
+                            </airmid-dropdown>
+                        </form>
+                    </mat-card>
+                </div>
+
                 <form [formGroup]="ItemSubform">
                     <div class="modal-card-container">
                         <mat-card>
+
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
@@ -347,12 +359,7 @@
 
                 </form>
 
-                <form [formGroup]="prescriptionReturnForm">
-                    <airmid-dropdown label="Store Name" formControlName="toStoreId" [formGroup]="prescriptionReturnForm"
-                        [value]="vstoreId" fxFlex="30%"
-                        [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
-                    </airmid-dropdown>
-                </form>
+
             </div>
 
         </div>

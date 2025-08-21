@@ -42,7 +42,7 @@ export class MaterialConsumptionComponent implements OnInit {
     allcolumns = [
         { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
         { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
-        { heading: "StoteName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "LandedTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
@@ -96,7 +96,7 @@ export class MaterialConsumptionComponent implements OnInit {
             columnsList: [
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
+                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 170 },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 70 },
                 { heading: "PerUnitPurchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "PerUnitLandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -104,8 +104,8 @@ export class MaterialConsumptionComponent implements OnInit {
                 { heading: "PurTotalAmt", key: "purTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "LandedTotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "MRPTotalAmt", key: "mrpTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "StartDate", key: "startDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-                { heading: "EndDate", key: "endDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+                { heading: "StartDate", key: "startDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "EndDate", key: "endDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],

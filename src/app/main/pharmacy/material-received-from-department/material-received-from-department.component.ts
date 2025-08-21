@@ -31,6 +31,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
   SpinLoading: boolean = false;
   labelPosition: 'before' | 'after' = 'after';
 
+   autocompletestore: string = "Store";
   DsIssuetodept = new MatTableDataSource<Issuetodept>();
 
   dsItemList = new MatTableDataSource<ItemList>();
@@ -205,7 +206,11 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
         });
     }, 1000);
 }
-
+vstoreId=0
+  selectChangeStore(obj: any) {
+    console.log(obj)
+    this.vstoreId = obj.value
+  }
 
 
   onClear() {

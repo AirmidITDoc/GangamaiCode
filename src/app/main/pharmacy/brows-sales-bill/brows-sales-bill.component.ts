@@ -24,6 +24,7 @@ import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -93,7 +94,31 @@ export class BrowsSalesBillComponent implements OnInit {
   middle_N: any = "%";
   ipdno: any = "0";
   status :any="0";
+salesForm:FormGroup;
+  constructor(
+    public _AdmissionService: IPSearchListService,
+    public _BrowsSalesBillService: BrowsSalesBillService,
+    public _BrowsSalesService: SalesService,
+    private _loggedService: AuthenticationService,
+    public _matDialog: MatDialog,
+    private _fuseSidebarService: FuseSidebarService,
+    public datePipe: DatePipe,
+    public toastr: ToastrService, 
+    private _ActRoute: Router,
+  ) { }
 
+  ngOnInit(): void {  
+    if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
+      this.menuActions.push('Patient Ledger');
+      this.menuActions.push("Patient Statement");
+      this.menuActions.push("Patient Sales Summary");
+      this.menuActions.push("Patient Sales Detail");
+    }
+
+     this.salesForm = this._BrowsSalesBillService.SearchFilter();
+    // this.onChangeFirst();
+    // this.onChangeFirst_Retrun(); 
+  }
 
   autocompletestore: string = "Store";
   @ViewChild('grid') grid: AirmidTableComponent;
@@ -102,11 +127,13 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild('grid3') grid3: AirmidTableComponent;
   @ViewChild('grid4') grid4: AirmidTableComponent; 
 
+ gridConfig1: gridModel = new gridModel();
+
 
   //Sales 
   @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('patientTypetempReturn') isPrintTemplate!: TemplateRef<any>;
+  @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>;
 
   //Sales Return
   @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
@@ -131,21 +158,23 @@ export class BrowsSalesBillComponent implements OnInit {
   //Sales header list columns
   BrowseHColumns = [
     {
-      heading: "", key: "Status", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetemp
+      heading: "-", key: "Status", align: "right", sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetemp,width: 50,
     },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
-    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
-    { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
-      heading: "IsPrint", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.template,
+      heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA',  type: gridColumnTypes.template,width: 50,
       template: this.isPrintTemplate
     },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
+    // { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+   
     {
       heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -153,29 +182,47 @@ export class BrowsSalesBillComponent implements OnInit {
   ]
   //Sales detail list columns
   BrowseDetColumns = [
-    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 180, },
-    { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300, },
+    { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
-    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
-    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
-    { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
-    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-    { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
-    { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
-    { heading: "cGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
-    { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
-    { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 110, type: gridColumnTypes.amount },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Unit MRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Disc%", key: "discPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Gross Amt", key: "grossAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "GST%", key: "vatPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "CGST%", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "SGST%", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
 
   ]
-  gridConfig1: gridModel = new gridModel();
+  // gridConfig1: gridModel = new gridModel();
 
-  gridConfig: gridModel = {
-    apiUrl: "Sales/salesbrowselist",
-    columnsList: this.BrowseHColumns,
-    sortField: "SalesId",
-    sortOrder: 0,
-    filters: [
+  // gridConfig: gridModel = {
+  //   apiUrl: "Sales/salesbrowselist",
+  //   columnsList: this.BrowseHColumns,
+  //   sortField: "SalesId",
+  //   sortOrder: 0,
+  //   filters: [
+  //     { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
+  //     { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
+  //     { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
+  //     { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
+  //     { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
+  //     { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+  //     { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
+  //     { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
+  //   ],
+  //   row: 25
+  // }
+
+   gridConfig: gridModel = {
+          apiUrl: "Sales/salesbrowselist",
+          columnsList: this.BrowseHColumns,
+          sortField: "SalesId",
+          sortOrder: 0,
+          filters: [
       { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
       { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
       { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
@@ -185,8 +232,72 @@ export class BrowsSalesBillComponent implements OnInit {
       { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
     ],
-    row: 25
+      }
+  
+      onChangeFirst() { 
+    this.isShowDetailTable = false;
+    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
+    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
+    this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 2
+    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
+    this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
+    this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
+    this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
+    this.getSaleslistdata();
   }
+  getSaleslistdata() {
+    debugger
+    this.gridConfig = {
+      apiUrl: "Sales/salesbrowselist",
+      columnsList: this.BrowseHColumns,
+      sortField: "SalesId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "LName", fieldValue: this.firstName, opType: OperatorComparer.Equals },
+        { fieldName: "FName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
+        { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
+        { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "SalesNo", fieldValue: this.salesNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
+      ],
+    }
+    // this.grid.bindGridData();
+  }
+
+
+  getsalesdetaillist(event) {
+    console.log(event)
+  
+        this.gridConfig1 = {
+            apiUrl: "Sales/SalesBrowseDetailList",
+            columnsList:this.BrowseDetColumns,
+            sortField: "SalesId",
+            sortOrder: 0,
+             filters: [
+        { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals }
+      ]
+        };
+        this.isShowDetailTable = true;
+        setTimeout(() => {
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
+        }, 500);
+  }
+
+
+  selectChangeStore(value) {
+    if (value.value !== 0)
+      this.StoreId1 = value.value
+    else
+      this.StoreId1 = "0"
+
+    this.onChangeFirst();
+  }
+
 
   ///tab 2 return
   //Sales return header list columns
@@ -194,12 +305,12 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "", key: "Status", align: "right", width:40, sticky: true, type: gridColumnTypes.template,
       template: this.patientTypetempReturn},
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
-    { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    // { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
-    { heading: "Type", key: "label", sort: true, align: 'left', emptySign: 'NA', width: 140 },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Type", key: "label", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateRetrun  // Assign ng-template to the column
     }
@@ -231,15 +342,17 @@ export class BrowsSalesBillComponent implements OnInit {
   
   PatientlistColumns = [
       { heading: "", key: "Status", sort: true, align: 'left', type: gridColumnTypes.template, width: 50, template: this.isPatientTemplate },
-      { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    
+        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+      { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
       { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
       { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    
       { heading: "Patient Type", key: "patientType", sort: true, align: 'left', width: 120 },
-      { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+      { heading: "Ward Name | BedNo", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+      // { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
       { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
       { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 220 }, 
       { heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 80,
@@ -274,85 +387,8 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(
-    public _AdmissionService: IPSearchListService,
-    public _BrowsSalesBillService: BrowsSalesBillService,
-    public _BrowsSalesService: SalesService,
-    private _loggedService: AuthenticationService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService, 
-    private _ActRoute: Router,
-  ) { }
-
-  ngOnInit(): void {  
-    if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
-      this.menuActions.push('Patient Ledger');
-      this.menuActions.push("Patient Statement");
-      this.menuActions.push("Patient Sales Summary");
-      this.menuActions.push("Patient Sales Detail");
-    }
-    this.onChangeFirst();
-    this.onChangeFirst_Retrun(); 
-  }
-  onChangeFirst() { 
-    this.isShowDetailTable = false;
-    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
-    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
-    this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 2
-    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
-    this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
-    this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
-    this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
-    this.getSaleslistdata();
-  }
-  getSaleslistdata() {
-    debugger
-    this.gridConfig = {
-      apiUrl: "Sales/salesbrowselist",
-      columnsList: this.BrowseHColumns,
-      sortField: "SalesId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "LName", fieldValue: this.firstName, opType: OperatorComparer.Equals },
-        { fieldName: "FName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
-        { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
-        { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
-        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-        { fieldName: "SalesNo", fieldValue: this.salesNo, opType: OperatorComparer.Equals },
-        { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
-      ],
-    }
-    // this.grid.bindGridData();
-  }
-  selectChangeStore(value) {
-    if (value.value !== 0)
-      this.StoreId1 = value.value
-    else
-      this.StoreId1 = "0"
-
-    this.onChangeFirst();
-  }
-  getsalesdetaillist(event) {
-    console.log(event)
-    this.isShowDetailTable = true;
-    this.gridConfig1 = {
-      apiUrl: "Sales/SalesBrowseDetailList",
-      columnsList: this.BrowseDetColumns,
-      sortField: "SalesId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals }
-      ],
-    }
-    this.grid1.gridConfig = this.gridConfig1;
-    this.grid1.bindGridData();
-  }
-
+  
+ 
 
   //Sales Retrun list 
   onChangeFirst_Retrun() { 
@@ -613,9 +649,7 @@ apiUrl:any='';
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    //
-
-
+    
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
       this.getWhatsappshareSales(this.rowid);
@@ -625,47 +659,103 @@ apiUrl:any='';
 
 
 
-  getPrint2(el) {
-    //
-    if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
-      this.type = "Credit"
-      this.Creditflag = true;
-    } else if (!(el.PaidType == 'Credit' && el.IsRefundFlag == false)) {
-      this.type = " "
-      this.Creditflag = false;
-    }
-    var D_data = {
-      "SalesID": el.SalesId,// 
-      "OP_IP_Type": el.OP_IP_Type
-    }
+  // getPrint2(el) {
+  //   //
+  //   if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
+  //     this.type = "Credit"
+  //     this.Creditflag = true;
+  //   } else if (!(el.PaidType == 'Credit' && el.IsRefundFlag == false)) {
+  //     this.type = " "
+  //     this.Creditflag = false;
+  //   }
+  //   var D_data = {
+  //     "SalesID": el.SalesId,// 
+  //     "OP_IP_Type": el.OP_IP_Type
+  //   }
 
-    let printContents;
-    this.subscriptionArr.push(
-      this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+  //   let printContents;
 
-        this.reportPrintObjList = res as Printsal[];
-        console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as Printsal;
+  // }
 
-        // if(this.reportPrintObj.ChequePayAmount !=0){
-        //   this.UTRNO = this.reportPrintObj.ChequeNo;
-        // }else if(this.reportPrintObj.CardPayAmount !=0){
-        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.ChequeNo;
-        // }else if(this.reportPrintObj.NEFTPayAmount !=0){
-        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.NEFTNo;
-        // }else if(this.reportPrintObj.PayTMAmount !=0){
-        //   this.UTRNO =  this.UTRNO +','+ this.reportPrintObj.PayTMTranNo;
-        // }
-
-
-        console.log(this.reportPrintObj);
+      viewgetSalesBillReportPdf(response) {
+        console.log(response)
         setTimeout(() => {
-          this.print3();
-        }, 1000);
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "SalesID",
+                        "fieldValue": String(response.SalesId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": String(response.OP_IP_Type),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "SalesBill"
+            }
 
-      })
-    );
-  }
+            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Sales Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
+
+    viewgetSalesreturnBillReportPdf(response) {
+        console.log(response)
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "SalesID",
+                        "fieldValue": String(response.SalesId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": String(response.OP_IP_Type),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "SalesReturnBill"
+            }
+
+            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Sales Return Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
+
+
+
+
   viewSalesPdf(el) {
     // 
     this.sIsLoading = 'loading-data';
