@@ -18,7 +18,7 @@ import { BrowsSalesBillService } from './brows-sales-bill.service';
 const jsPDF = require('jspdf');
 // require('jspdf-autotable'); 
 import { Router } from '@angular/router';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
@@ -84,7 +84,7 @@ export class BrowsSalesBillComponent implements OnInit {
   Last_Name: any = "%";
 
 
-    //Patient list
+  //Patient list
   Fr_Date = '' //this.datePipe.transform(new Date(), "yyyy-MM-dd")
   T_Date = '' // this.datePipe.transform(new Date(), "yyyy-MM-dd")   
   sales_No_pt: any = "0";
@@ -93,8 +93,8 @@ export class BrowsSalesBillComponent implements OnInit {
   Last_N: any = "%";
   middle_N: any = "%";
   ipdno: any = "0";
-  status :any="0";
-salesForm:FormGroup;
+  status: any = "0";
+  salesForm: FormGroup;
   constructor(
     public _AdmissionService: IPSearchListService,
     public _BrowsSalesBillService: BrowsSalesBillService,
@@ -103,11 +103,11 @@ salesForm:FormGroup;
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    public toastr: ToastrService, 
+    public toastr: ToastrService,
     private _ActRoute: Router,
   ) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
       this.menuActions.push('Patient Ledger');
       this.menuActions.push("Patient Statement");
@@ -115,7 +115,7 @@ salesForm:FormGroup;
       this.menuActions.push("Patient Sales Detail");
     }
 
-     this.salesForm = this._BrowsSalesBillService.SearchFilter();
+    this.salesForm = this._BrowsSalesBillService.SearchFilter();
     // this.onChangeFirst();
     // this.onChangeFirst_Retrun(); 
   }
@@ -125,9 +125,9 @@ salesForm:FormGroup;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   @ViewChild('grid2') grid2: AirmidTableComponent;
   @ViewChild('grid3') grid3: AirmidTableComponent;
-  @ViewChild('grid4') grid4: AirmidTableComponent; 
+  @ViewChild('grid4') grid4: AirmidTableComponent;
 
- gridConfig1: gridModel = new gridModel();
+  gridConfig1: gridModel = new gridModel();
 
 
   //Sales 
@@ -140,8 +140,8 @@ salesForm:FormGroup;
   @ViewChild('actionButtonTemplateRetrun') actionButtonTemplateRetrun!: TemplateRef<any>;
 
   //patient list
-   @ViewChild('isPatientTemplate') isPatientTemplate!: TemplateRef<any>;
-   @ViewChild('isPatientPrintTemplate') isPatientPrintTemplate!: TemplateRef<any>;
+  @ViewChild('isPatientTemplate') isPatientTemplate!: TemplateRef<any>;
+  @ViewChild('isPatientPrintTemplate') isPatientPrintTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp;
@@ -151,40 +151,40 @@ salesForm:FormGroup;
     this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
     //patient list
-     this.gridConfig4.columnsList.find(col => col.key === 'Status')!.template = this.isPatientTemplate; 
-     this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.isPatientPrintTemplate; 
+    this.gridConfig4.columnsList.find(col => col.key === 'Status')!.template = this.isPatientTemplate;
+    this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.isPatientPrintTemplate;
   }
 
   //Sales header list columns
   BrowseHColumns = [
     {
       heading: "-", key: "Status", align: "right", sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetemp,width: 50,
+      template: this.patientTypetemp, width: 50,
     },
     {
-      heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA',  type: gridColumnTypes.template,width: 50,
+      heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50,
       template: this.isPrintTemplate
     },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    
+
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  
- { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
- { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
 
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-   
+
     { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
 
-   
-    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
+    // { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     { heading: "GST Amt", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-   
+
     { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-   
+
     {
       heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -227,12 +227,12 @@ salesForm:FormGroup;
   //   row: 25
   // }
 
-   gridConfig: gridModel = {
-          apiUrl: "Sales/salesbrowselist",
-          columnsList: this.BrowseHColumns,
-          sortField: "SalesId",
-          sortOrder: 0,
-          filters: [
+  gridConfig: gridModel = {
+    apiUrl: "Sales/salesbrowselist",
+    columnsList: this.BrowseHColumns,
+    sortField: "SalesId",
+    sortOrder: 0,
+    filters: [
       { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
       { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
       { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
@@ -242,13 +242,13 @@ salesForm:FormGroup;
       { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "OPIPType", fieldValue: "3", opType: OperatorComparer.Equals }
     ],
-      }
-  
-      onChangeFirst() { 
+  }
+
+  onChangeFirst() {
     this.isShowDetailTable = false;
     this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
     this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
-    this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || 2
+    this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || "0"
     this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
     this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
@@ -280,22 +280,22 @@ salesForm:FormGroup;
 
   getsalesdetaillist(event) {
     console.log(event)
-  
-        this.gridConfig1 = {
-            apiUrl: "Sales/SalesBrowseDetailList",
-            columnsList:this.BrowseDetColumns,
-            sortField: "SalesId",
-            sortOrder: 0,
-             filters: [
+
+    this.gridConfig1 = {
+      apiUrl: "Sales/SalesBrowseDetailList",
+      columnsList: this.BrowseDetColumns,
+      sortField: "SalesId",
+      sortOrder: 0,
+      filters: [
         { fieldName: "SalesID", fieldValue: String(event.salesId), opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: String(event.oP_IP_Type), opType: OperatorComparer.Equals }
       ]
-        };
-        this.isShowDetailTable = true;
-        setTimeout(() => {
-            this.grid1.gridConfig = this.gridConfig1;
-            this.grid1.bindGridData();
-        }, 500);
+    };
+    this.isShowDetailTable = true;
+    setTimeout(() => {
+      this.grid1.gridConfig = this.gridConfig1;
+      this.grid1.bindGridData();
+    }, 500);
   }
 
 
@@ -312,16 +312,30 @@ salesForm:FormGroup;
   ///tab 2 return
   //Sales return header list columns
   SalesReturnHColumns = [
-    { heading: "", key: "Status", align: "right", width:40, sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetempReturn},
+    {
+      heading: "", key: "Status", align: "right", width: 40, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypetempReturn
+    },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
-    // { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+
+
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    // { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+  
+   { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
+   
+    { heading: "GST Amt", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+
     { heading: "Type", key: "label", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
+    {
+      heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateRetrun  // Assign ng-template to the column
     }
   ]
@@ -349,59 +363,60 @@ salesForm:FormGroup;
   ///tab 3 return
   //patient  list columns
 
-  
+
   PatientlistColumns = [
-      { heading: "", key: "Status", sort: true, align: 'left', type: gridColumnTypes.template, width: 50, template: this.isPatientTemplate },
-    
-        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-      { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-      { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    
-      { heading: "Patient Type", key: "patientType", sort: true, align: 'left', width: 120 },
-      { heading: "Ward Name | BedNo", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-      // { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-      { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 220 }, 
-      { heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 80,
-            template: this.isPatientPrintTemplate  // Assign ng-template to the column
-      }
-  ]  
-    gridConfig4: gridModel = {
-        apiUrl: "Admission/AdmissionList",
-        columnsList: this.PatientlistColumns,
-        sortField: "AdmissionId",
-        sortOrder: 1,
-        filters: [
-            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue:  this.T_Date, opType: OperatorComparer.Equals },
-            { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
-            { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-            { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-        ],
-        row: 25
+    { heading: "", key: "Status", sort: true, align: 'left', type: gridColumnTypes.template, width: 50, template: this.isPatientTemplate },
+
+    { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+
+    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', width: 120 },
+    { heading: "Ward Name | BedNo", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    // { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+    {
+      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 80,
+      template: this.isPatientPrintTemplate  // Assign ng-template to the column
     }
+  ]
+  gridConfig4: gridModel = {
+    apiUrl: "Admission/AdmissionList",
+    columnsList: this.PatientlistColumns,
+    sortField: "AdmissionId",
+    sortOrder: 1,
+    filters: [
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.Fr_Date, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
+      { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+      { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
+    ],
+    row: 25
+  }
 
 
 
- 
+
   isChecked: boolean = false;
 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  
- 
+
+
 
   //Sales Retrun list 
-  onChangeFirst_Retrun() { 
+  onChangeFirst_Retrun() {
     this.isShowDetailTableRetrun = false;
     this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value || "%"
     this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value || "%"
@@ -413,7 +428,7 @@ salesForm:FormGroup;
     this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type_Return').value || "0"
     this.getSalesRetrunlistdata();
   }
-  getSalesRetrunlistdata() { 
+  getSalesRetrunlistdata() {
     this.gridConfig2 = {
       apiUrl: "SalesReturn/SalesReturnBrowseList",
       columnsList: this.SalesReturnHColumns,
@@ -456,8 +471,8 @@ salesForm:FormGroup;
     this.grid3.bindGridData();
   }
 
-/// Patient list  
-apiUrl:any='';
+  /// Patient list  
+  apiUrl: any = '';
   onChangeFirstPatient() {
     debugger
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
@@ -476,7 +491,7 @@ apiUrl:any='';
       this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date());
       this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd")
       this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
-     
+
     }
     this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value || "%"
     this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value || "%"
@@ -488,7 +503,7 @@ apiUrl:any='';
   getPatientlistdata() {
     debugger
     this.gridConfig4 = {
-        apiUrl: this.apiUrl ,
+      apiUrl: this.apiUrl,
       columnsList: this.PatientlistColumns,
       sortField: "AdmissionId",
       sortOrder: 0,
@@ -501,11 +516,11 @@ apiUrl:any='';
         { fieldName: "To_Dt", fieldValue: this.T_Date, opType: OperatorComparer.Equals },
         { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
         { fieldName: "M_Name", fieldValue: this.middle_N, opType: OperatorComparer.Contains },
-        { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }  
+        { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
       ],
-    } 
-        this.grid4.gridConfig = this.gridConfig4;
-        this.grid4.bindGridData();
+    }
+    this.grid4.gridConfig = this.gridConfig4;
+    this.grid4.bindGridData();
   }
   getValidationMessages() {
     return {
@@ -562,7 +577,7 @@ apiUrl:any='';
 
 
 
- 
+
   OnPayment(contact) {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
@@ -659,7 +674,7 @@ apiUrl:any='';
 
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    
+
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
       this.getWhatsappshareSales(this.rowid);
@@ -687,80 +702,80 @@ apiUrl:any='';
 
   // }
 
-      viewgetSalesBillReportPdf(response) {
-        console.log(response)
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "SalesID",
-                        "fieldValue": String(response.SalesId),
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "OP_IP_Type",
-                        "fieldValue": String(response.OP_IP_Type),
-                        "opType": "Equals"
-                    }
-                ],
-                "mode": "SalesBill"
+  viewgetSalesBillReportPdf(response) {
+    console.log(response)
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "SalesID",
+            "fieldValue": String(response.SalesId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OP_IP_Type",
+            "fieldValue": String(response.OP_IP_Type),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "SalesBill"
+      }
+
+      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Bill" + " " + "Viewer"
             }
-
-            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
-
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Sales Bill" + " " + "Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
-    }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
 
 
-    viewgetSalesreturnBillReportPdf(response) {
-        console.log(response)
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "SalesID",
-                        "fieldValue": String(response.SalesId),
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "OP_IP_Type",
-                        "fieldValue": String(response.OP_IP_Type),
-                        "opType": "Equals"
-                    }
-                ],
-                "mode": "SalesReturnBill"
+  viewgetSalesreturnBillReportPdf(response) {
+    console.log(response)
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "SalesID",
+            "fieldValue": String(response.SalesId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OP_IP_Type",
+            "fieldValue": String(response.OP_IP_Type),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "SalesReturnBill"
+      }
+
+      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Return Bill" + " " + "Viewer"
             }
-
-            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
-
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Sales Return Bill" + " " + "Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
-    }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
 
 
 
@@ -1620,6 +1635,13 @@ apiUrl:any='';
   WhatsSalesRetPdf(el) {
 
   }
+
+  printpatient(){
+    
+  }
+
+  printsummary(){}
+  printdetail(){}
 }
 
 export class SaleList {
