@@ -14,8 +14,8 @@
             <button mat-raised-button (click)="onSave()">New Issue To Department
             </button>
         </div>
-       
-        </mat-toolbar>
+
+    </mat-toolbar>
 
     <!-- <mat-tab-group> -->
     <!-- <mat-tab label="Indent List"> -->
@@ -26,13 +26,13 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIssuetodeptReportPdf(element)">
+                    <button mat-icon-button matTooltip="Print IssueToDept" (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
                 </div>
             </ng-template>
 
-        
+
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted"
@@ -62,11 +62,26 @@
                             (selectionChange)="ListView1($event)" [formGroup]="IssueSearchGroup"
                             [mode]="autocompletestore">
                         </airmid-dropdown>
+
+ <!-- [(ngModel)]="Status" -->
+                        <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
+                            IsVerify
+                        </mat-slide-toggle>
+
                     </form>
                 </ng-container>
             </airmid-table>
         </div>
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+               <ng-template #detailstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.status=='1'" matTooltip="Status True"
+                        class="pill green-600 s-16">circle</mat-icon>
+
+                    <mat-icon *ngIf="element.status=='0'" matTooltip="Status False"
+                        class="pill red-600 s-16">circle</mat-icon>
+                </div>
+            </ng-template>
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
             </airmid-table>
         </div>

@@ -10,13 +10,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class IssueToDepartmentService {
 
-  // NewIssueGroup: FormGroup;
-  // IssueSearchGroup :FormGroup;
-  // StoreFrom:FormGroup;
-  // IndentFrom:FormGroup;
-  // IssueFinalForm:FormGroup;
-  
-
   constructor(
     public _httpClient: HttpClient,  public _httpClient1: ApiCaller,private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder,private _FormvalidationserviceService: FormvalidationserviceService
@@ -29,7 +22,7 @@ export class IssueToDepartmentService {
       FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-     
+      IsVerify:[0]
     });
   }
   getNewIssueForm() {

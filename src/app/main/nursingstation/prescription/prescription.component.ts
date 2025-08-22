@@ -377,6 +377,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     Presccancle(data) {
+        console.log(data)
         Swal.fire({
             title: 'Do you want to cancel the Prescription?',
             text: "You won't be able to revert this!",

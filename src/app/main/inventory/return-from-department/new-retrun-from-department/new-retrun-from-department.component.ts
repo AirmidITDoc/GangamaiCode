@@ -11,6 +11,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { ReturnFromDepartmentService } from '../return-from-department.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-new-retrun-from-department',
@@ -20,6 +21,9 @@ import { ReturnFromDepartmentService } from '../return-from-department.service';
   animations: fuseAnimations,
 })
 export class NewRetrunFromDepartmentComponent implements OnInit {
+   userFormGroup: FormGroup;
+
+
   displayedColumns = [
     'ItemName',
     'IssueQty',
@@ -76,7 +80,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   dsItemDetailsList = new MatTableDataSource<ItemList>();
 
   autocompletestore: string = "Store";
-
+autocompletestore1: string = "Store";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('secondPaginator', { static: true }) public secondPaginator: MatPaginator;
@@ -94,55 +98,31 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.gePharStoreList();
-    // this.getToStoreSearchList();
-
-    // this.filteredOptionsStore = this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterToStore(value)),
-    // );
+    
+    this.userFormGroup=this._ReturnToDepartmentList.ReturnSearchFrom();
+    this.userFormGroup.get("StoreId").setValue(this._loggedService.currentUserValue.storeId )
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  // gePharStoreList() {
-  //   var vdata = {
-  //     Id: this._loggedService.currentUserValue.storeId
-  //   }
-  //   this._ReturnToDepartmentList.getLoggedStoreList(vdata).subscribe(data => {
-  //     this.StoreList = data;
-  //     this._ReturnToDepartmentList.userFormGroup.get('StoreId').setValue(this.StoreList[0]);
-  //   });
-  // }
-  // getToStoreSearchList() {
-  //   this._ReturnToDepartmentList.getToStoreSearchList().subscribe(data => {
-  //     this.ToStoreList = data;
-  //   });
-  // }
-  // private _filterToStore(value: any): string[] {
-  //   if (value) {
-  //     const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-  //     return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-  //   }
-  // }
-  // getOptionTextStoresList(option) {
-  //   return option && option.StoreName ? option.StoreName : '';
-  // }
 
   getNewReturnToDepartmentList() {
+    debugger
     this.sIsLoading = 'loading-data';
     var vdata = {
-      "FromStoreId": this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').value.StoreId || 0,
-      "ToStoreId":  this._loggedService.currentUserValue.storeId || 0,
-      "FromDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate": this.datePipe.transform(this._ReturnToDepartmentList.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "FromStoreId":this.userFormGroup.get('StoreId').value || 0,
+      "ToStoreId":   this.userFormGroup.get('ToStoreId').value || 0,
+      "FromDate": this.datePipe.transform(this.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+      "ToDate": this.datePipe.transform(this.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
     }
     this._ReturnToDepartmentList.getNewReturnToDepartmentList(vdata).subscribe(data => {
+      console.log(data)
       this.dsIssueList.data = data as IssueList[];
       this.dsIssueList.sort = this.sort;
       this.dsIssueList.paginator = this.paginator;
       this.sIsLoading = '';
     },
+
       error => {
         this.sIsLoading = '';
       });
@@ -245,20 +225,20 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
       });
       return;
     }
-    if ((this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').value == '')) {
+    if ((this.userFormGroup.get('ToStoreId').value == '')) {
       this.toastr.warning('Plz Select Return  To Store Value.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    const isCheckReturnQty = this.dsItemDetailsList.data.some(item => item.ReturnQty === this._ReturnToDepartmentList.userFormGroup.get('ReturnQty').value);
+    const isCheckReturnQty = this.dsItemDetailsList.data.some(item => item.ReturnQty === this.userFormGroup.get('ReturnQty').value);
     if(!isCheckReturnQty){
     this.Savebtn = true;
     let insertReturnDepartmentHeader = {};
     insertReturnDepartmentHeader['returnDate'] = this.dateTimeObj.date;
     insertReturnDepartmentHeader['returnTime'] = this.dateTimeObj.time;
     insertReturnDepartmentHeader['fromStoreId'] = this._loggedService.currentUserValue.storeId
-    insertReturnDepartmentHeader['toStoreId'] = this._ReturnToDepartmentList.userFormGroup.get('ToStoreId').value.StoreId || 0;
+    insertReturnDepartmentHeader['toStoreId'] = this.userFormGroup.get('ToStoreId').value.StoreId || 0;
     insertReturnDepartmentHeader['landedRateTotalAmount'] = this.vLandedTotalAmount || 0;
     insertReturnDepartmentHeader['mrpTotalAmount'] = this.vMRPTotalAmount || 0;
     insertReturnDepartmentHeader['purchaseTotalAmount'] = this.vPurTotalAmount || 0;
@@ -363,7 +343,7 @@ export class NewRetrunFromDepartmentComponent implements OnInit {
     this.dsItemList.data = [];
     this.chargeslist.data =[];
    this._ReturnToDepartmentList.NewReturnFinalForm.reset();
-    this._ReturnToDepartmentList.userFormGroup.reset()
+    this.userFormGroup.reset()
   }
   onClose() {
     this._matDialog.closeAll();

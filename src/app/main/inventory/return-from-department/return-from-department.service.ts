@@ -1,30 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReturnFromDepartmentService {
 
-  userFormGroup: FormGroup;
+ 
   ReturnSearchGroup :FormGroup;
   NewReturnFinalForm:FormGroup;
 
 
   constructor(
-    public _httpClient: HttpClient,
+    public _httpClient: HttpClient,   public _loggedService: AuthenticationService, public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder
   ) { 
-   
+    
   }
 
   ReturnSearchFrom() {
     return this._formBuilder.group({
       ToStoreId: '',
-      startdate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
-      StoreId: '' 
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      StoreId:this._loggedService.currentUserValue.storeId ,
+      ReturnQty:''
     });
   }
   CreateNewReturnForm() {
@@ -57,7 +60,7 @@ export class ReturnFromDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=rptReturnFromDepartment",Param);
   }
   public getNewReturnToDepartmentList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ReturnToDepartmentIssueList_1",Param);
+    return this._httpClient1.PostData("Generic/GetByProc?procName=Retrieve_ReturnToDepartmentIssueList_1",Param);
   }
   public getNewReturnItemList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IssueToDepartmentItemDet_1",Param);

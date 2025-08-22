@@ -38,45 +38,7 @@ export class PrescriptionReturnComponent implements OnInit {
     }
 
     allColumns2 = [
-        //  { heading: "", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "Prescription Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-        { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        // { heading: "OPIPType", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-
-        {
-            heading: "Action", key: "action", width: 50, align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.print, callback: (data: any) => {
-                        this.viewgetIpprescriptionreturnReportPdf(data);
-                    }
-                }
-                // , {
-                //     action: gridActions.delete, callback: (data: any) => {
-                //         this._PrescriptionService.deactivateTheStatus(data.presReId).subscribe((response: any) => {
-                //             // this.toastr.success(response.message);
-                //             this.grid2.bindGridData();
-                //         });
-                //     }
-                // }
-            ]
-        },
-
-    ]
-
-    allFilters2 = [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-        { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
-        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
-    ]
-    gridConfig: gridModel = {
-        apiUrl: "IPPrescription/IPPrescriptionReturnList",
-        columnsList: [
-            { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
+     { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
             { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -94,7 +56,38 @@ export class PrescriptionReturnComponent implements OnInit {
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
-        ],
+    ]
+
+    allFilters2 = [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        apiUrl: "IPPrescription/IPPrescriptionReturnList",
+        columnsList:this.allColumns2,
+        //  [
+        //     { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
+        //     { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
+        //     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        //     { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        //     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        //     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+          
+        //     { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        //     { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+           
+        //     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        //      { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        //       {
+        //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        //     template: this.actionButtonTemplate  // Assign ng-template to the column
+        // }
+
+        // ],
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
@@ -268,7 +261,7 @@ debugger
                 confirmButtonText: "Yes, Cancel it!"
             }).then((flag) => {
                 if (flag.isConfirmed) {
-                    this._PrescriptionReturnService.PrescriptionReturnCancle(data.prscId).subscribe((response: any) => {
+                    this._PrescriptionReturnService.PrescriptionReturnCancle(data.presReId).subscribe((response: any) => {
                         this.toastr.success(response.message);
                         this.grid.bindGridData();
                     });

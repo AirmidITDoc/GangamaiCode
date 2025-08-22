@@ -28,26 +28,26 @@
 
                         <div fxLayout="column">
 
-                            <form [formGroup]="_ReturnToDepartmentList.userFormGroup" style="padding-bottom: 10px;">
+                            <form [formGroup]="userFormGroup" style="padding-bottom: 10px;">
                                 <div fxLayout="row" fxLayoutAlign="center center" fxLayout="row" fxLayoutGap="8px">
 
                                     <mat-card fxFlex="75%" fxLayout="row" fxLayoutAlign="start center"
                                         fxLayoutGap="10px">
                                         <input name="ReturnQty" formControlName="ReturnQty" type="hidden">
-
-                                        <airmid-dropdown label="From Store" formControlName="StoreId"
-                                            [formGroup]="_ReturnToDepartmentList.userFormGroup" fxFlex="25%"
-                                            [value]="data?.StoreId" [mode]="autocompletestore">
+  <!-- [value]="data?.StoreId"   [value]="data?.ToStoreId"-->
+                                         <airmid-dropdown label="From Store" formControlName="StoreId"
+                                            [formGroup]="userFormGroup" fxFlex="25%" 
+                                           [mode]="autocompletestore">
                                         </airmid-dropdown>
 
                                         <airmid-dropdown label="To Store" formControlName="ToStoreId"
-                                            [formGroup]="_ReturnToDepartmentList.userFormGroup" fxFlex="25%"
-                                            [value]="data?.ToStoreId" [mode]="autocompletestore">
+                                            [formGroup]="userFormGroup" fxFlex="25%"
+                                            [mode]="autocompletestore1">
                                         </airmid-dropdown>
 
-                                        <app-common-date [screenFrom]="screenFromString"
+                                        <!-- <app-common-date [screenFrom]="screenFromString"
                                             (dateTimeEventEmitter)="getDateTime($event)">
-                                        </app-common-date>
+                                        </app-common-date> -->
                                     </mat-card>
 
 
@@ -74,10 +74,7 @@
                             <div style="width: 100%;" fxLayoutGap="10px">
 
                                 <div fxFlex="60%">
-                                    <!-- <div matColumnDef="loading" style="height: 150px;width: 700px;"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}" class="backgroundBlur">
-                                    <div class="spinner-border text-danger"></div>
-                                   </div> -->
+                                  
                                     <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
                                         style="overflow:auto; height:160px;">
 

@@ -30,7 +30,7 @@ export class GSTAdjustmentComponent implements OnInit {
 
   constructor(
     public _StockAdjustment: StockAdjustmentService,
-    private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<GSTAdjustmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -106,7 +106,7 @@ export class GSTAdjustmentComponent implements OnInit {
     this.Savebtn = true;
 
     let submitData = {
-      "storeId": this._loggedService.currentUserValue.storeId || 0,
+      "storeId": this.accountService.currentUserValue.user.storeId || 0,
       "stkId": this.registerObj.stockId || 0,
       "itemId": this.registerObj.itemId || 0,
       "batchNo": this.registerObj.batchNo || '',
@@ -116,12 +116,11 @@ export class GSTAdjustmentComponent implements OnInit {
       "cgstper": this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value || 0,
       "sgstper": this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value || 0,
       "igstper": this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0,
-      "addedBy": this._loggedService.currentUserValue.userId || 0
+      "addedBy": this.accountService.currentUserValue.user.storeId  || 0
     };
     console.log(submitData);
     this._StockAdjustment.GSTAdjSave(submitData).subscribe(response => {
-      this.toastr.success(response.message);
-      this._matDialog.closeAll();
+    this._matDialog.closeAll();
 
     });
   }

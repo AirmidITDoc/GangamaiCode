@@ -22,7 +22,7 @@ import { IssueToDepartmentService } from './issue-to-department.service';
 })
 export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
-    IssueSearchGroup:FormGroup;
+    IssueSearchGroup: FormGroup;
     dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
     dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
     dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
@@ -30,45 +30,57 @@ export class IssueToDepartmentComponent implements OnInit {
     tempdata: any = [];
     ItemSamelist: any = [];
     BatchSamelist: any = [];
-    Addflag: boolean = false;
-   
-    DraftQty: any = 0;  
-    Tostore="0"
-    FromStore:any = String(this.accountService.currentUserValue.user.storeId);
-    Status="0"
+    DraftQty: any = 0;
+    Tostore = "0"
+    FromStore: any = String(this.accountService.currentUserValue.user.storeId);
+    Status = "0"
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType"; //Item
-    fromDate ="2025-01-01"// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-   
-     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
-   
-      }
+    AgainstInd: boolean = true;
+    Addflag: boolean = false;
 
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
- 
-     allcolumns = [
-    
-        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:100 },
-          { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    constructor(
+        public _IssueToDep: IssueToDepartmentService,
+        public toastr: ToastrService, private commonService: PrintserviceService,
+        public _matDialog: MatDialog, private accountService: AuthenticationService,
+        public datePipe: DatePipe
+    ) { }
+
+    ngOnInit(): void {
+        this.IssueSearchGroup = this._IssueToDep.IssueSearchFrom();
+    }
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
+        this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+
+    }
+
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+    @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+    allcolumns = [
+
+        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-       {
-             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-             template: this.actionButtonTemplate  // Assign ng-template to the column
-         } 
-      ];
-    
+        { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        // { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ];
+
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     gridConfig: gridModel = {
@@ -88,24 +100,24 @@ export class IssueToDepartmentComponent implements OnInit {
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        let IssueId=data.issueId
+        let IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA',widthh:70 },
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',widthh:250 },
+                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
-                { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-                { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }
+                { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+                { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+                { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+                { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 }
             ],
             sortField: "IssueId",
             sortOrder: 0,
             filters: [
                 { fieldName: "IssueId", fieldValue: String(IssueId), opType: OperatorComparer.Equals },
-                
+
             ]
         }
         this.isShowDetailTable = true;
@@ -113,19 +125,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.grid1.bindGridData();
     }
 
-    constructor(
-        public _IssueToDep: IssueToDepartmentService,
-        public toastr: ToastrService,private commonService: PrintserviceService,
-         public _matDialog: MatDialog,private accountService: AuthenticationService,
-         public datePipe: DatePipe
-    ) { }
 
-    ngOnInit(): void {
-        this.IssueSearchGroup=this._IssueToDep.IssueSearchFrom();
-     }
-
-   
-    AgainstInd: boolean = true;
     getAgainstIndet(event) {
         if (event.checked == true) {
             this.AgainstInd = false;
@@ -135,7 +135,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     }
 
-   
+
     barcodeItemfetch() {
         this.Addflag = true;
         var d = {
@@ -144,7 +144,7 @@ export class IssueToDepartmentComponent implements OnInit {
         }
         this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
             this.tempDatasource.data = data as any;
-            
+
             if (this.tempDatasource.data.length >= 1) {
                 this.tempDatasource.data.forEach((element) => {
                     this.DraftQty = 1;
@@ -162,58 +162,66 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     onAddBarcodeItemList(contact, DraftQty) {
-      
+
     }
     selectChangeStore(obj: any) {
         console.log(obj)
     }
-   
+
     ListView(value) {
         if (value.value !== 0)
-        this.FromStore = value.value
-      else
-        this.FromStore = "0"
+            this.FromStore = value.value
+        else
+            this.FromStore = "0"
         this.onChangeFirst(value);
-  }
-
-  ListView1(value) {
-    if (value.value !== 0)
-    this.Tostore = value.value
-  else
-    this.Tostore = "0"
-    this.onChangeFirst(value);
-}
-
-  onChangeFirst(value) {
-    debugger
-    this.isShowDetailTable = false;
-    this.fromDate = this.datePipe.transform(this.IssueSearchGroup.get('startdate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
-    this.FromStore = this.IssueSearchGroup.get("ToStoreId").value || this.FromStore
-    this.Tostore =this.IssueSearchGroup.get("FromStoreId").value || this.Tostore
-    this.getfilterdata();
-  }
-
-  getfilterdata() {
-    debugger
-    this.gridConfig = {
-        apiUrl: "IssueToDepartment/IssueToDeptList",
-        columnsList: this.allcolumns,
-        sortField: "IssueId",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
-            { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      ],
-      row: 25
     }
-   
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
 
-  }
+    ListView1(value) {
+        if (value.value !== 0)
+            this.Tostore = value.value
+        else
+            this.Tostore = "0"
+        this.onChangeFirst(value);
+    }
+
+    onChangeFirst(value) {
+        debugger
+        let IsVerify = "0"
+        if (this.IssueSearchGroup.get("IsVerify").value)
+            IsVerify = "1"
+        else
+            IsVerify = "0"
+        this.isShowDetailTable = false;
+        this.fromDate = this.datePipe.transform(this.IssueSearchGroup.get('startdate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
+        this.FromStore = this.IssueSearchGroup.get("FromStoreId").value || this.FromStore
+        this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
+        this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
+
+            this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+            apiUrl: "IssueToDepartment/IssueToDeptList",
+            columnsList: this.allcolumns,
+            sortField: "IssueId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+                { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+
+    }
 
 
     onSave(row: any = null) {
@@ -226,17 +234,17 @@ export class IssueToDepartmentComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-           that.grid.bindGridData();
-           
+            that.grid.bindGridData();
+
         });
     }
 
     viewgetIssuetodeptReportPdf(element) {
         console.log(element)
         this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
-      }
-    
- 
+    }
+
+
 }
 
 export class NewIssueList3 {

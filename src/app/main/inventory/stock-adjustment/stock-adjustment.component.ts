@@ -266,7 +266,6 @@ debugger
                 const lastDay1 = this.getLastDayOfMonth(month, year);
                 this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-                //console.log(this.lastDay2)
                 contact.ExpDateEdit = this.lastDay1;
                 this.vExpDateEdit = this.lastDay1;
             } else {
@@ -417,7 +416,7 @@ debugger
             }
             console.log(submitData);
             this._StockAdjustmentService.BatchAdjSave(submitData).subscribe(response => {
-                this.toastr.success(response.message);
+                // this.toastr.success(response.message);
                 this._matDialog.closeAll();
                 this.dsStockAdjList.data=[];
             });

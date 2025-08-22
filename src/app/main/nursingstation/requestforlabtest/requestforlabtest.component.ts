@@ -260,6 +260,8 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     Labrequestcancle(data) {
+        debugger
+        console.log(data)
         Swal.fire({
             title: 'Do you want to cancel the Lab Request?',
             text: "You won't be able to revert this!",
@@ -270,7 +272,7 @@ export class RequestforlabtestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                this._RequestforlabtestService.labreqCancle(data.prscId).subscribe((response: any) => {
+                this._RequestforlabtestService.labreqCancle(data.requestId).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

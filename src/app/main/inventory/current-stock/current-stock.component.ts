@@ -135,20 +135,20 @@ export class CurrentStockComponent implements OnInit {
 
     allcurrentColumn = [
         {
-            heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
+            heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
             type: gridColumnTypes.template, template: this.eyeIcon1
         },
         {
-            heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon2
         },
         {
-            heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon3
         },
-        { heading: "BalanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
-            heading: "ReturnQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+            heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon4
         },
     ]
@@ -243,15 +243,15 @@ export class CurrentStockComponent implements OnInit {
 
     alldayWiseColumn = [
         { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Unit MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PurUnitRate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "LandedRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BalanceQty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PurUnit Rate", key: "purUnitRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     alldayWiseFilter = [
         {
@@ -389,10 +389,10 @@ export class CurrentStockComponent implements OnInit {
 
     // Issue wise item summery
     allItemColumn = [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Received Qty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allItemFilter = [

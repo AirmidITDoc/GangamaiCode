@@ -28,7 +28,7 @@ export class MRPAdjustmentComponent implements OnInit {
 
   constructor(
     public _StockAdjustment: StockAdjustmentService,
-    private _loggedService: AuthenticationService,
+    private accountService: AuthenticationService,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<MRPAdjustmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -118,9 +118,9 @@ export class MRPAdjustmentComponent implements OnInit {
    
   this.Savebtn = true;
   let insertMRPAdju = {};
-  insertMRPAdju['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-  insertMRPAdju['itemId'] = this. registerObj.ItemId || 0;
-  insertMRPAdju['batchNo'] =  this. registerObj.BatchNo || '';
+  insertMRPAdju['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+  insertMRPAdju['itemId'] = this. registerObj.itemId || 0;
+  insertMRPAdju['batchNo'] =  this. registerObj.batchNo || '';
   insertMRPAdju['oldMrp'] = this._StockAdjustment.MRPAdjform.get('OldMRP').value || 0;
   insertMRPAdju['oldLandedRate'] = this._StockAdjustment.MRPAdjform.get('LandedRate').value || 0;
   insertMRPAdju['oldPurRate'] = this._StockAdjustment.MRPAdjform.get('PurchaseRate').value || 0;
@@ -128,14 +128,14 @@ export class MRPAdjustmentComponent implements OnInit {
   insertMRPAdju['mrp'] = this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
   insertMRPAdju['landedRate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
   insertMRPAdju['purRate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
-  insertMRPAdju['addedBy'] = this._loggedService.currentUserValue.userId || 0;
+  insertMRPAdju['addedBy'] = this.accountService.currentUserValue.user.storeId || 0;
   insertMRPAdju['addedDateTime'] = new Date();
 
   let insertMRPAdjuNew = {};
-  insertMRPAdjuNew['storeId'] = this._loggedService.currentUserValue.storeId || 0;
-  insertMRPAdjuNew['stockid'] = this. registerObj.StockId || 0;
-  insertMRPAdjuNew['itemId'] = this. registerObj.ItemId || 0;
-  insertMRPAdjuNew['batchNo'] =  this. registerObj.BatchNo || '';
+  insertMRPAdjuNew['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
+  insertMRPAdjuNew['stockid'] = this. registerObj.stockId || 0;
+  insertMRPAdjuNew['itemId'] = this. registerObj.itemId || 0;
+  insertMRPAdjuNew['batchNo'] =  this. registerObj.batchNo || '';
   insertMRPAdjuNew['unitMrp'] =  this._StockAdjustment.MRPAdjform.get('NewMRP').value ||  0;
   insertMRPAdjuNew['purchaserate'] = this._StockAdjustment.MRPAdjform.get('newLandedRate').value ||  0;
   insertMRPAdjuNew['landedRate'] = this._StockAdjustment.MRPAdjform.get('NewPurchaseRate').value || 0;
@@ -150,24 +150,10 @@ export class MRPAdjustmentComponent implements OnInit {
   };
   console.log(submitData);
   this._StockAdjustment.MRPAdjSave(submitData).subscribe(response => {
-    if (response) {
-      this.toastr.success('Record Saved Successfully.', 'Saved !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      }); this._matDialog.closeAll();
+     this._matDialog.closeAll();
       this.Savebtn = false;
+     });
     }
-    else {
-      this.toastr.error('MRP Adjustment Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    }
-
-  }, error => {
-    this.toastr.error('MRP Adjustment Data not saved !, Please check API error..', 'Error !', {
-      toastClass: 'tostr-tost custom-toast-error',
-    });
-  });
-  }
   OnReset(){
     this._StockAdjustment.MRPAdjform.reset(); 
     this._matDialog.closeAll();
