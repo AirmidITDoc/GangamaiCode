@@ -166,13 +166,23 @@ salesForm:FormGroup;
       template: this.isPrintTemplate
     },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
-    // { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
   
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+ { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+ { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+   
+    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+
+   
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "GST Amt", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+   
     { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
    
     {
@@ -230,7 +240,7 @@ salesForm:FormGroup;
       { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
       { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
+      { fieldName: "OPIPType", fieldValue: "3", opType: OperatorComparer.Equals }
     ],
       }
   
