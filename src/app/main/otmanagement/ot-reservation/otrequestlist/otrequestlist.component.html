@@ -19,6 +19,52 @@
  </airmid-table>
  
 </div> -->
-<airmid-table [gridConfig]="gridConfig" class="content" >
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+<div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">OT Request List</span>
+            </div>
+            <div class="modal-header-right">
+               
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+              
+            </div>
+        </div>
+    </div>
+<div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
+  <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid" class="p-12">
 
- </airmid-table>
+    <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
+      <!-- <airmid-datepicker [formGroup]="_otreservationService.myformSearch" [isRangePicker]="true" formStartControlName="start"
+        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+        [(toValue)]="gridConfig.filters[1].fieldValue">
+      </airmid-datepicker> -->
+      <airmid-datepicker [formGroup]="_otreservationService.myformSearch"
+            [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
+            (dateChange)="getfilterdata()">
+        </airmid-datepicker>
+    </div>
+
+    <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                      <mat-form-field appearance="outline">
+                        <mat-label>UHID No/Patient Name/Mobile No</mat-label>
+                        <input matInput placeholder="Search UHID No/Patient Name/Mobile No" autocomplete="off" [formGroup]="myFilterForm" formControlName="RegNo"
+                        (input)="onChangeFirst()"/>
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                                </div> -->
+  </div>
+</div>
+<airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowFilter="false" :ShowButtons="false"
+ (onSelectRow)="GetRecord($event)">
+
+</airmid-table>
+</div>

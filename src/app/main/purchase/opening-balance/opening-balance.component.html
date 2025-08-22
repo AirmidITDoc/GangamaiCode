@@ -38,7 +38,7 @@
                             <form [formGroup]="mysearchform" fxLayout="column">
                                 <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
                                     formStartControlName="startdate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[1].fieldValue" (dateChange)="ListView($event)"
+                                    [(fromValue)]="gridConfig.filters[1].fieldValue" (dateChange)="getfilterdata()"
                                     [(toValue)]="gridConfig.filters[2].fieldValue">
                                 </airmid-datepicker>
 

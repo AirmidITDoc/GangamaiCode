@@ -1,5 +1,8 @@
-<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -17,55 +20,58 @@
         </div>
     </div>
 
-        <div fusePerfectScrollbar
-            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-            dynamicTableHeight>
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                <ng-template #ColorCode let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-                      <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
-                      <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
-                    </div>
-                  </ng-template>                  
+            <ng-template #ColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending"
+                        class="pill red-600 s-16">circle</mat-icon>
+                    <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified"
+                        class="pill green-600 s-16">circle</mat-icon>
+                </div>
+            </ng-template>
 
-                <ng-template #actionButtonTemplate let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">        
-                        <button mat-icon-button matTooltip="Print">
-                            <mat-icon>print</mat-icon>
-                        </button>
-                        <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)" *ngIf="!element.isVerified">
-                            <mat-icon>verified_user</mat-icon>
-                        </button>        
-                        
-                    </div>
-                </ng-template>
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"
+                        *ngIf="!element.isVerified">
+                        <mat-icon>verified_user</mat-icon>
+                    </button>
 
-                <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid (onSelectRow)="GetDetails1($event)">
-                    <ng-container filters>
-                        <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom" fxLayout="column">
-                            <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
+                </div>
+            </ng-template>
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid
+                (onSelectRow)="GetDetails1($event)">
+                <ng-container filters>
+                    <form [formGroup]="_GRNReturnService.GRNReturnSearchFrom" fxLayout="column">
+                        <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[1].fieldValue"
-                            [(toValue)]="gridConfig.filters[2].fieldValue"
-                            (dateChange)="onChangeFirst()">
+                            [(toValue)]="gridConfig.filters[2].fieldValue" (dateChange)="onChangeFirst()">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
-                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
-                          [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true"
-                            [mode]="autocompletestore" (selectionChange)="ListView($event)">
+                            [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true" [mode]="autocompletestore"
+                            (selectionChange)="ListView($event)">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                         [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
-                          [(ngModel)]="gridConfig.filters[3].fieldValue"
-                            [mode]="autocompleteSupplier" (selectionChange)="ListView1($event)">
+                            [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue" [mode]="autocompleteSupplier"
+                            (selectionChange)="ListView1($event)">
                         </airmid-dropdown>
 
                         <div fxFlex fxLayout="row">
-                            <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
+                            <!-- <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
                              formControlName="Status" (change)="onChangeFirst()"
                                 style="padding: 6px;" class="gap-4">
                                 <mat-label>Status:</mat-label>
@@ -73,21 +79,24 @@
                                     <mat-radio-button value='1'>Close</mat-radio-button>
                                     <mat-radio-button value='0'>Pending</mat-radio-button>
                                 </div>
-                            </mat-radio-group>
+                            </mat-radio-group> -->
+                            <span style="font-weight: bold;">Status :</span>
+                            <mat-slide-toggle name="Status" (change)="onChangeFirst()" formControlName="Status">
+                                Verify / Pending
+                            </mat-slide-toggle>
                         </div>
-                        </form>
+                    </form>
 
-                    </ng-container>
-                </airmid-table>
-            </div>
-
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-                *ngIf="isShowDetailTable">
-
-                <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
-                </airmid-table>
-            </div>
+                </ng-container>
+            </airmid-table>
         </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+            </airmid-table>
+        </div>
+    </div>
 
 </div>
 
@@ -486,7 +495,7 @@
             </div>
  </div> -->
 
-    <!-- <mat-tab label="New GRN Retrun">
+<!-- <mat-tab label="New GRN Retrun">
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <mat-toolbar style="width: 100%;height: 50px;justify-content: space-between;">
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -835,4 +844,4 @@
                 </div>
             </div>
         </div>
-    </mat-tab> --> 
+    </mat-tab> -->

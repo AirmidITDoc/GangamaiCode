@@ -49,11 +49,12 @@
 
                             <airmid-autocomplete label="Enter Item Name" [formGroup]="_GRNReturnService.NewGRNReturnFrom"
                                     formControlName="ItemName" placeholderText="Enter Item Name" fxFlex="25%"
-                                    [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '2') + '&ItemName='"
+                                    ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                     (selectionChange)="selectChangeItem($event)"
                                     TextField="formattedText"
                                     ValueField="ItemId">
-                                </airmid-autocomplete>
+                                </airmid-autocomplete>                                
+                                    <!-- [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + (vstoreId || '2') + '&ItemName='" -->
 
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>Batch No</mat-label>

@@ -51,9 +51,8 @@ export class OtReservationService {
      }
      createSearchForm(): FormGroup {
          return this._formBuilder.group({
-             CityNameSearch: [""],
-             IsDeletedSearch: [""],
-             
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
          });
      }
  populateForm(param) {

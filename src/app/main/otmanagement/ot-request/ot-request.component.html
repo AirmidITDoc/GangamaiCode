@@ -80,8 +80,7 @@
             </button> -->
 
                 <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                    *ngIf="element.isCancelled==false"
-                    [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
+                    *ngIf="element.isCancelled==false">
                     <mat-icon> cancel</mat-icon>
                 </button>
                 <mat-icon *ngIf="element.isCancelled==true" matTooltip="Cancelled">

@@ -17,6 +17,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-grn-return',
@@ -99,6 +100,7 @@ export class GRNReturnComponent implements OnInit {
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    private commonService: PrintserviceService,
   ) { }
 
   isDataAvailableInColumn(column: string): boolean {
@@ -124,7 +126,6 @@ export class GRNReturnComponent implements OnInit {
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.ColorCode; 
-
   }
   
   ToStoreId: any = this.accountService.currentUserValue.user.storeId
@@ -164,18 +165,21 @@ export class GRNReturnComponent implements OnInit {
   }
 
   onChangeFirst() {
-    debugger
     this.isShowDetailTable = false;
+     if (this._GRNReturnService.GRNReturnSearchFrom.get('Status').value == true) {
+            this.Status = "1"
+        } else {
+            this.Status = "0"
+        }
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
     // this.Supplier = this.vSupplier || "1"
-    this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "0"
+    // this.Status = this._GRNReturnService.GRNReturnSearchFrom.get('Status').value || "0"
     this.getfilterdata();
   }
 
   getfilterdata() {
-    debugger
     this.gridConfig = {
       apiUrl: "GRNReturn/GRNReturnlistbynameList",
       columnsList: this.allColumns,
@@ -221,14 +225,14 @@ export class GRNReturnComponent implements OnInit {
   isShowDetailTable: boolean = false;
 
   GetDetails1(data: any): void {
-    debugger
+    // debugger
     console.log("detailList:", data)
     let grnReturnId = data.grnReturnId;
 
     this.gridConfig1 = {
       apiUrl: "GRNReturn/GRNReturnList",
       columnsList: [
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 150 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
         { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
@@ -239,8 +243,8 @@ export class GRNReturnComponent implements OnInit {
         { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "GSt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "NetAmount", key: "netAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "StkId", key: "StkId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA' }, //landedTotalAmount if i provide same name then shows error
+        { heading: "StkId", key: "stkId", sort: true, align: 'left', emptySign: 'NA' },
       ],
       sortField: "GRNReturnId",
       sortOrder: 0,
@@ -265,7 +269,6 @@ export class GRNReturnComponent implements OnInit {
 
   onClear() { }
   getVerify(row) {
-    debugger
     let submitObj = {
       "grnreturnId": row.grnReturnId
     }
@@ -320,34 +323,8 @@ export class GRNReturnComponent implements OnInit {
   
     }
     
-  viewgetGRNreturnReportPdf(row) {
-
-    setTimeout(() => {
-      this.SpinLoading = true;
-      this._GRNReturnService.getGRNreturnreportview(
-        row.GRNReturnId
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "95vw",
-            height: '850px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "GRN RETURN REPORT Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.AdList=false;
-          this.SpinLoading = false;
-        });
-      });
-
-    }, 100);
+  onPrint(row) {
+    this.commonService.Onprint("GRNReturnId", row.grnReturnId, "GRNReturnReport");
   }
 }
 
