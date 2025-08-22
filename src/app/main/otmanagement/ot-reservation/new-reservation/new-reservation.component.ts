@@ -125,7 +125,7 @@ vInstruction: any;
     this.vPatientName = '';
     // this.vAdmissionDate = '';
     // this.vAdmissionTime = '';
-    // this.vIPDNo = '';
+    this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
     this.vCompanyName = '';
@@ -163,7 +163,7 @@ vInstruction: any;
       this.vDepartment = obj.departmentName
     //   this.vAdmissionDate = obj.admissionDate
     //   this.vAdmissionTime = obj.admissionTime
-    //   this.vIPDNo = obj.ipdNo
+      this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
     //   this.vAgeMonth = obj.ageMonth
     //   this.vAgeDay = obj.ageDay
@@ -249,16 +249,23 @@ vInstruction: any;
     height: '80%',
     panelClass: 'custom-dialog'
   });
-
-
   dialogRef.afterClosed().subscribe(selectedData => {
+    console.log("Back Side data:",selectedData)
     if (selectedData) {
+      this.vRegNo=selectedData.regNo
+      this.vOPDNo=selectedData.opdNo
+      this.vIPDNo=selectedData.ipdNo
+      this.vPatientName=selectedData.patientName
+      this.vAge=selectedData.ageYear
+      this.vDepartment=selectedData.departmentName
+      this.vMobNo=selectedData.mobileNo
+      this.vDoctorName=selectedData.doctorName
+      this.vTariffName=selectedData.tariffName
+      this.vCompanyName=selectedData.companyName
      
       this.reservationForm.patchValue({
-        patientName: selectedData.patientName,
         surgeonId: selectedData.surgeonId,
-        categoryId: selectedData.categoryId,
-       
+        surgeryId: selectedData.surgeryId,       
       });
     }
   });

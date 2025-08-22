@@ -41,7 +41,7 @@ export class OTRequestComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
     // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
@@ -50,7 +50,7 @@ export class OTRequestComponent implements OnInit {
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
 
     { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },

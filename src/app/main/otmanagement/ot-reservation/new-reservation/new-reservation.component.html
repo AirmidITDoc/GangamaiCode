@@ -5,19 +5,19 @@
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Reservation</span>
             </div>
             <div class="modal-header-right">
-        <div class="comman-date-container">
-          <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-          </div>
-          <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-
-            
-        </div>
-      </div>
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -26,9 +26,6 @@
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="reservationForm">
                 <div class="modal-card-container">
- 
-
-
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
                         <!-- <div class="radio-container">
                                         <mat-radio-group aria-label="Select an option" formControlName="opIpType"
@@ -38,9 +35,9 @@
                                         </mat-radio-group>
                                     </div> -->
                         <div class="radio-container">
-                            <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm" formControlName="opIpType" name="opIpType"
-                                (change)="onChangeReg($event)" (blur)="onChangeReg($event)"
-                                [(ngModel)]="vSelectedOption">
+                            <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm"
+                                formControlName="opIpType" name="opIpType" (change)="onChangeReg($event)"
+                                (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
                                 <mat-radio-button value="OP">OP</mat-radio-button>
                                 <mat-radio-button value="IP">IP</mat-radio-button>
                             </mat-radio-group>
@@ -60,20 +57,21 @@
                         <div class="input-container gap-8" fxFlex>
 
                             <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'OP'"
-                                        [formGroup]="reservationForm" formControlName="opIpId"
-                                        placeholderText="OP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
-                                        ApiUrl="VisitDetail/search-patient?Keyword="
-                                        (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
-                                        ValueField="opIpId">
-                                    </airmid-autocomplete>
+                                [formGroup]="reservationForm" formControlName="opIpId"
+                                placeholderText="OP-RegNo/Patient Name/Mobile No"
+                                label="Search Reg No / Patient Name / Mobile No"
+                                ApiUrl="VisitDetail/search-patient?Keyword="
+                                (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
+                                ValueField="opIpId">
+                            </airmid-autocomplete>
 
                             <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'IP'"
-                                        [formGroup]="reservationForm" formControlName="opIpId"
-                                        placeholderText="IP-RegNo/Patient Name/Mobile No" label="Search Reg No / Patient Name / Mobile No"
-                                        ApiUrl="Admission/search-patient?Keyword="
-                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
-                                        TextField="formattedText">
-                                    </airmid-autocomplete>
+                                [formGroup]="reservationForm" formControlName="opIpId"
+                                placeholderText="IP-RegNo/Patient Name/Mobile No"
+                                label="Search Reg No / Patient Name / Mobile No"
+                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
+                                ValueField="admissionID" TextField="formattedText">
+                            </airmid-autocomplete>
                         </div>
                         <div class="ot-request-button" style="margin-right: 12px;">
                             <button class="btn btn-danger-outline" (click)="onOTRequest()">
@@ -97,7 +95,7 @@
                                             fxLayoutAlign="space-between center" class="patient-info">
                                             <div class="patient-sub">
                                                 <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                    fxLayoutAlign="space-between" >
+                                                    fxLayoutAlign="space-between">
                                                     <div fxLayout="column" fxFlex="32" fxLayoutGap="6px">
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">UHID No
@@ -106,9 +104,11 @@
                                                             <span class="patient-col-value">{{vRegNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">OPD No</span>
+                                                            <span class="patient-col-key">
+                                                                {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
+                                                            </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{vOPDNo}}</span>
+                                                            <span>{{ vSelectedOption === 'OP' ? vOPDNo : vIPDNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
@@ -175,116 +175,93 @@
                         </div>
                     </div>
                 </div>
-                 <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-           
-                <input type="hidden" name="otreservationId" formControlName="otreservationId">
-                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                <div class="modal-body" fusePerfectScrollbar>
+                    <div class="modal-body-container">
 
-                   
-<div fxLayout="row" fxLayoutGap="16px" fxFlexFill>
+                        <input type="hidden" name="otreservationId" formControlName="otreservationId">
+                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-  <div fxFlex="33%">
-    <mat-form-field appearance="fill" style="width: 100%;">
-      <mat-label>OP Date</mat-label>
-      <input matInput [matDatepicker]="opDatePicker" formControlName="opdate" placeholder="Select date">
-      <mat-datepicker-toggle matSuffix [for]="opDatePicker"></mat-datepicker-toggle>
-      <mat-datepicker #opDatePicker></mat-datepicker>
-    </mat-form-field>
-  </div>
 
-  <div fxFlex="33%">
-    <mat-form-field appearance="fill" style="width: 100%;">
-      <mat-label>OP Start Time</mat-label>
-      <input matInput type="time" formControlName="opstartTime">
-    </mat-form-field>
-  </div>
+                            <div fxLayout="row" fxLayoutGap="16px" fxFlexFill>
 
-  <div fxFlex="33%">
-    <mat-form-field appearance="fill" style="width: 100%;">
-      <mat-label>OP End Time</mat-label>
-      <input matInput type="time" formControlName="opendTime">
-    </mat-form-field>
-  </div>
+                                <div fxFlex="33%">
+                                    <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-label>OP Date</mat-label>
+                                        <input matInput [matDatepicker]="opDatePicker" formControlName="opdate"
+                                            placeholder="Select date">
+                                        <mat-datepicker-toggle matSuffix [for]="opDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #opDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
 
-</div>
+                                <div fxFlex="33%">
+                                    <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-label>OP Start Time</mat-label>
+                                        <input matInput type="time" formControlName="opstartTime">
+                                    </mat-form-field>
+                                </div>
 
-                    <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
-                       <airmid-dropdown 
-                            label="Surgery Name" 
-                            formControlName="surgeryId" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.surgeryId" 
-                            [validations]="getValidationMessages(). SurgeryName"
-                            [mode]="autocompleteModeSurgery">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
-                       <airmid-dropdown 
-                            label="Surgeron Name 1" 
-                            formControlName="surgeonId" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.surgeonId" 
-                            [validations]="getValidationMessages(). SurgeronName1"
-                            [mode]="autocompleteModeConDoctor">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
-                        <airmid-dropdown 
-                            label="Surgeon Name 2" 
-                            formControlName="surgeonId1" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.surgeonId1" 
-                           
-                            [mode]="autocompleteModeConDoctor">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
-                        <airmid-dropdown 
-                            label="Anathesia doctor 1" 
-                            formControlName="anestheticsDr" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.anestheticsDr" 
-                            [validations]="getValidationMessages(). Anathesiadoctor1"
-                            [mode]="autocompleteModeRefDoctor">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
-                        <airmid-dropdown 
-                            label="Anathesia doctor 2" 
-                            formControlName="anestheticsDr1" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.anestheticsDr1" 
-                           
-                            [mode]="autocompleteModeRefDoctor">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
-                        <airmid-dropdown 
-                            label="OT Table" 
-                            formControlName="ottableId" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.ottableId" 
-                            [validations]="getValidationMessages(). OTTable"
-                            [mode]="autocompleteModeOTTable">
-                        </airmid-dropdown> 
+                                <div fxFlex="33%">
+                                    <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-label>OP End Time</mat-label>
+                                        <input matInput type="time" formControlName="opendTime">
+                                    </mat-form-field>
+                                </div>
 
-                    </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
-                        <airmid-dropdown 
-                            label="Anathesia Type" 
-                            formControlName="anesthTypeId" 
-                            [formGroup]="reservationForm"
-                            [value]="registerObj?.anesthTypeId" 
-                            [validations]="getValidationMessages(). AnathesiaType"
-                            [mode]="autocompleteModeAnesthesiatypes">
-                        </airmid-dropdown>
-                    </div>
-                </div>
- <airmid-textbox label="Enter Instruction" formControlName="instruction" 
-                                    [formGroup]="reservationForm" [(ngModel)]="vInstruction">
-                                </airmid-textbox>
-                
+                            </div>
+
+                            <div fxFlex="100%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                    [formGroup]="reservationForm" [value]="registerObj?.surgeryId"
+                                    [validations]="getValidationMessages(). SurgeryName"
+                                    [mode]="autocompleteModeSurgery">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Surgeron Name 1" formControlName="surgeonId"
+                                    [formGroup]="reservationForm" [value]="registerObj?.surgeonId"
+                                    [validations]="getValidationMessages(). SurgeronName1"
+                                    [mode]="autocompleteModeConDoctor">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Surgeon Name 2" formControlName="surgeonId1"
+                                    [formGroup]="reservationForm" [value]="registerObj?.surgeonId1"
+                                    [mode]="autocompleteModeConDoctor">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Anathesia doctor 1" formControlName="anestheticsDr"
+                                    [formGroup]="reservationForm" [value]="registerObj?.anestheticsDr"
+                                    [validations]="getValidationMessages(). Anathesiadoctor1"
+                                    [mode]="autocompleteModeRefDoctor">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Anathesia doctor 2" formControlName="anestheticsDr1"
+                                    [formGroup]="reservationForm" [value]="registerObj?.anestheticsDr1"
+                                    [mode]="autocompleteModeRefDoctor">
+                                </airmid-dropdown>
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                <airmid-dropdown label="OT Table" formControlName="ottableId"
+                                    [formGroup]="reservationForm" [value]="registerObj?.ottableId"
+                                    [validations]="getValidationMessages(). OTTable" [mode]="autocompleteModeOTTable">
+                                </airmid-dropdown>
+
+                            </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="10%">
+                                <airmid-dropdown label="Anathesia Type" formControlName="anesthTypeId"
+                                    [formGroup]="reservationForm" [value]="registerObj?.anesthTypeId"
+                                    [validations]="getValidationMessages(). AnathesiaType"
+                                    [mode]="autocompleteModeAnesthesiatypes">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
+                        <airmid-textbox label="Enter Instruction" formControlName="instruction"
+                            [formGroup]="reservationForm" [(ngModel)]="vInstruction">
+                        </airmid-textbox>
+
                         <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
                           <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
                             <span>surgery Type:</span>
@@ -292,21 +269,32 @@
                             <mat-radio-button value="Emergency">Emergency</mat-radio-button>
                           </mat-radio-group>
                         </div> -->
-                <div class="modal-footer" style="margin-top: 10px;">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                            <span>Save</span>
-                        </button>
-            </div>
-        </div>
-    </div>
-            </div>
-         </div>
+                        <!-- <div class="modal-footer" style="margin-top: 10px;">
+                            <div class="footer-navigation-container">
+                                <div class="modal-footer-buttons">
+                                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
 
             </form>
 
+        </div>
+    </div>
+
+    <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

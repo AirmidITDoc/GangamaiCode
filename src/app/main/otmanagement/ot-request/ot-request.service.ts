@@ -52,12 +52,12 @@ export class OtRequestService {
     //     });
     // }
 
-    getOtRequestList(fromDate: string, toDate: string) {
-        return this._httpClient.PostData('OTBooking/OTBookingRequestEmergencyList', {
-            fromDate,
-            toDate
-        });
-    }
+    // getOtRequestList(fromDate: string, toDate: string) {
+    //     return this._httpClient.PostData('OTBooking/OTBookingRequestEmergencyList', {
+    //         fromDate,
+    //         toDate
+    //     });
+    // }
 
     initializeFormGroup() {
         this.createRequestForm();
