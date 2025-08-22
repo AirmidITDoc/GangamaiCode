@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -26,8 +26,6 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-
 
   displayedColumns = [
     'ItemName',
@@ -80,24 +78,48 @@ export class NewOpeningBalanceComponent implements OnInit {
     this.StoreForm.markAllAsTouched();
     this.OPeningtemForm.markAllAsTouched();
 
+    this.openingBalArray.push(this.createOpeningBalInsert());
   }
 
   CreateStorForm() {
     return this._formbuilder.group({
       storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      openingDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      openingTime: this.datePipe.transform(new Date(), 'shortTime'),
-      // storeId
-      addedby: this.accountService.currentUserValue.userId,
-      openingHId: 0,
-      // openingTransaction: '',
-      openingTranItemStock: '',
-      openingBal: '',
-      openingTransaction:''
+      openingBal: this._formbuilder.group({
+        storeId: [
+          this.accountService.currentUserValue.user.storeId,
+          [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+        ],
+        openingDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        openingTime: [this.datePipe.transform(new Date(), 'shortTime')],
+        addedby: [this.accountService.currentUserValue.userId],
+        openingHId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      openingTransaction: this._formbuilder.array([]),
     })
   }
 
+  createOpeningBalInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formbuilder.group({
+      storeId: [this.StoreId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      openingDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',
+      openingTime: this.dateTimeObj?.time,
+      openingDocNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.ItemID || 0],
+      batchNo: [element.BatchNo || ''],
+      batchExpDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',
+      perUnitPurRate: [element.PerRate || 0],
+      perUnitMrp: [element.UnitMRP || 0],
+      vatPer: [element.GST || 0],
+      balQty: [element.BalQty || 0],
+      addedby: [this._loggedService.currentUserValue.userId],
+      updatedby: [this._loggedService.currentUserValue.userId],
+    });
+  }
 
+  get openingBalArray(): FormArray {
+    return this.StoreForm.get('openingTransaction') as FormArray;
+  }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -209,7 +231,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
         const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
         this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+        const QtyElement = document.querySelector(`[name='BalanceQty']`) as HTMLElement;
         if (QtyElement) {
           QtyElement.focus();
         }
@@ -235,10 +257,10 @@ export class NewOpeningBalanceComponent implements OnInit {
       return;
     }
 
-      const ExpDateElement = document.querySelector(`[name='ExpDate']`) as HTMLElement;
-        if (ExpDateElement) {
-            ExpDateElement.focus();
-        }
+    const ExpDateElement = document.querySelector(`[name='ExpDate']`) as HTMLElement;
+    if (ExpDateElement) {
+      ExpDateElement.focus();
+    }
   }
 
   getLastDayOfMonth(month: number, year: number): number {
@@ -309,77 +331,122 @@ export class NewOpeningBalanceComponent implements OnInit {
     });
   }
 
+  // OnSave() {
+
+  //   if (!(this.StoreForm.get("storeId").value > 0)) {
+  //     Swal.fire('Please enter To Store');
+  //     return;
+  //   }
+
+
+  //   if ((!this.dsItemNameList.data.length)) {
+  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   this.Savebtn = true;
+
+
+  //   // let insert_OpeningTransaction_Header_1 = {};
+  //   // insert_OpeningTransaction_Header_1['openingDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+  //   // insert_OpeningTransaction_Header_1['openingTime'] = this.dateTimeObj.time;
+  //   // insert_OpeningTransaction_Header_1['storeId'] =  this.StoreId;
+  //   // insert_OpeningTransaction_Header_1['addedby'] = this._loggedService.currentUserValue.userId,
+  //   //   insert_OpeningTransaction_Header_1['openingHId'] = 0;
+
+
+  //   let openingBalanceParamInsertdetail = [];
+  //   this.dsItemNameList.data.forEach((element) => {
+  //     if (element.ExpDate && element.ExpDate.length === 10) {
+  //       const day = +element.ExpDate.substring(0, 2);
+  //       const month = +element.ExpDate.substring(3, 5);
+  //       const year = +element.ExpDate.substring(6, 10);
+
+  //       this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+  //     }
+  //     let openingBalanceParamInsertObj = {};
+  //     openingBalanceParamInsertObj['storeId'] = this.StoreId;
+  //     openingBalanceParamInsertObj['openingDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+  //       openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
+  //     openingBalanceParamInsertObj['openingDocNo'] = 0;
+  //     openingBalanceParamInsertObj['itemId'] = element.ItemID || 0,
+  //       openingBalanceParamInsertObj['batchNo'] = element.BatchNo || ''
+  //     openingBalanceParamInsertObj['batchExpDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',
+  //       openingBalanceParamInsertObj['perUnitPurRate'] = element.PerRate || 0
+  //     openingBalanceParamInsertObj['perUnitMrp'] = element.UnitMRP || 0
+  //     openingBalanceParamInsertObj['vatPer'] = element.GST || 0
+  //     openingBalanceParamInsertObj['balQty'] = element.BalQty || 0
+  //     openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.userId,
+  //       openingBalanceParamInsertObj['updatedby'] = this._loggedService.currentUserValue.userId,
+  //       // openingBalanceParamInsertObj['openingId'] = 0;
+  //       openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
+  //   });
+
+  //   let insert_Update_OpeningTran_ItemStock_1 = {};
+  //   insert_Update_OpeningTran_ItemStock_1['openingHId'] = 0;
+
+  //   // this.StoreForm.get("openingTransaction").setValue(openingBalanceParamInsertdetail)
+  //   console.log(this.StoreForm.value)
+  //   let submitData = {
+  //     "openingBal": this.StoreForm.value,
+  //     "openingTransaction": openingBalanceParamInsertdetail,
+  //     // "openingTranItemStock": insert_Update_OpeningTran_ItemStock_1
+  //   };
+  //   console.log(submitData);
+  //   this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
+  //     this.toastr.success(response);
+  //     this.viewgetReportPdf(response)
+  //     this._matDialog.closeAll();
+
+  //   });
+  // }
+
   OnSave() {
 
-    if (!(this.StoreForm.get("storeId").value > 0)) {
-      Swal.fire('Please enter To Store');
-      return;
-    }
-
-
-    if ((!this.dsItemNameList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.Savebtn = true;
-
-
-    // let insert_OpeningTransaction_Header_1 = {};
-    // insert_OpeningTransaction_Header_1['openingDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-    // insert_OpeningTransaction_Header_1['openingTime'] = this.dateTimeObj.time;
-    // insert_OpeningTransaction_Header_1['storeId'] =  this.StoreId;
-    // insert_OpeningTransaction_Header_1['addedby'] = this._loggedService.currentUserValue.userId,
-    //   insert_OpeningTransaction_Header_1['openingHId'] = 0;
-
-
-    let openingBalanceParamInsertdetail = [];
-    this.dsItemNameList.data.forEach((element) => {
-      if (element.ExpDate && element.ExpDate.length === 10) {
-        const day = +element.ExpDate.substring(0, 2);
-        const month = +element.ExpDate.substring(3, 5);
-        const year = +element.ExpDate.substring(6, 10);
-
-        this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+    if (!this.StoreForm.invalid) {
+      if (!(this.StoreForm.get("storeId").value > 0)) {
+        Swal.fire('Please enter To Store');
+        return;
       }
-      let openingBalanceParamInsertObj = {};
-      openingBalanceParamInsertObj['storeId'] = this.StoreId;
-      openingBalanceParamInsertObj['openingDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-        openingBalanceParamInsertObj['openingTime'] = this.dateTimeObj.time;
-      openingBalanceParamInsertObj['openingDocNo'] = 0;
-      openingBalanceParamInsertObj['itemId'] = element.ItemID || 0,
-        openingBalanceParamInsertObj['batchNo'] = element.BatchNo || ''
-      openingBalanceParamInsertObj['batchExpDate'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',
-        openingBalanceParamInsertObj['perUnitPurRate'] = element.PerRate || 0
-      openingBalanceParamInsertObj['perUnitMrp'] = element.UnitMRP || 0
-      openingBalanceParamInsertObj['vatPer'] = element.GST || 0
-      openingBalanceParamInsertObj['balQty'] = element.BalQty || 0
-      openingBalanceParamInsertObj['addedby'] = this._loggedService.currentUserValue.userId,
-        openingBalanceParamInsertObj['updatedby'] = this._loggedService.currentUserValue.userId,
-        // openingBalanceParamInsertObj['openingId'] = 0;
-        openingBalanceParamInsertdetail.push(openingBalanceParamInsertObj);
-    });
+      if ((!this.dsItemNameList.data.length)) {
+        this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      this.Savebtn = true;
+      this.openingBalArray.clear();
+      this.dsItemNameList.data.forEach(item => {
+        this.openingBalArray.push(this.createOpeningBalInsert(item));
+      });
+      this.StoreForm.removeControl('storeId')
+      console.log(this.StoreForm.value)
+      this._OpeningBalanceService.InsertOpeningBalSave(this.StoreForm.value).subscribe(response => {
+        this.viewgetReportPdf(response)
+        this._matDialog.closeAll();
+      });
+    } else {
+      let invalidFields = [];
 
-    let insert_Update_OpeningTran_ItemStock_1 = {};
-    insert_Update_OpeningTran_ItemStock_1['openingHId'] = 0;
+      if (this.StoreForm.invalid) {
+        for (const controlName in this.StoreForm.controls) {
+          if (this.StoreForm.controls[controlName].invalid) {
+            invalidFields.push(`Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
 
-// this.StoreForm.get("openingTransaction").setValue(openingBalanceParamInsertdetail)
-    console.log(this.StoreForm.value)
-  let submitData = {
-      "openingBal": this.StoreForm.value,
-      "openingTransaction": openingBalanceParamInsertdetail,
-      // "openingTranItemStock": insert_Update_OpeningTran_ItemStock_1
-    };
-    console.log(submitData);
-    this._OpeningBalanceService.InsertOpeningBalSave(submitData).subscribe(response => {
-      this.toastr.success(response);
-      this.viewgetReportPdf(response)
-      this._matDialog.closeAll();
-      
-    });
   }
- viewgetReportPdf(element) {
+
+  viewgetReportPdf(element) {
     var Param = {
       "searchFields": [
         {
@@ -415,9 +482,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       matDialog.afterClosed().subscribe(result => {
       });
     });
-
   }
-
 
   OnReset() {
     this.OPeningtemForm.reset();

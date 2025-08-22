@@ -34,7 +34,7 @@ createsearchFormGroup(){
   createNewItemForm(){
     return this._formbuilder.group({ 
       ItemName:['', [Validators.required]],
-      BatchNo:['', [Validators.required]],
+      BatchNo:['', [Validators.required,Validators.maxLength(50)]],
       ExpDate:[''],//['',this._FormvalidationserviceService.validDateValidator()],
       BalanceQty:[0, [Validators.required]],
       GST:[0, [Validators.required]],

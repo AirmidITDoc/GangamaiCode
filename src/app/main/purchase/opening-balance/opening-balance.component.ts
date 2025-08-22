@@ -51,9 +51,9 @@ export class OpeningBalanceComponent {
 
   allcolumns = [
 
-    { heading: "UHID", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 }, //changed by raksha
+    { heading: "UHID", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
@@ -77,7 +77,6 @@ export class OpeningBalanceComponent {
 
   isShowDetailTable: boolean = false;
   GetDetails1(data: any): void {
-    debugger
     console.log("detailList:", data)
     let ID = data.openingHId;
 
@@ -86,7 +85,7 @@ export class OpeningBalanceComponent {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA'},
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Pure.Rate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
 
@@ -121,17 +120,17 @@ export class OpeningBalanceComponent {
       "searchFields": [
         {
           "fieldName": "Storeid",
-          "fieldValue": "2",
+          "fieldValue": String(this.accountService.currentUserValue.user.storeId),
           "opType": "Equals"
         },
         {
           "fieldName": "From_Dt",
-          "fieldValue": "2025-05-27",
+          "fieldValue": this.fromDate,
           "opType": "Equals"
         },
         {
           "fieldName": "To_Dt",
-          "fieldValue": "2025-05-27",
+          "fieldValue": this.toDate,
           "opType": "Equals"
         }
       ],
@@ -179,12 +178,12 @@ export class OpeningBalanceComponent {
       this.StoreId = value.value
     else
       this.StoreId = "0"
-    this.onChangeFirst(value);
+    this.onChangeFirst();
   }
 
 
-  onChangeFirst(value) {
-    debugger
+  onChangeFirst() {
+    // debugger
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     this.StoreId = String(this.StoreId)
@@ -192,7 +191,7 @@ export class OpeningBalanceComponent {
   }
 
   getfilterdata() {
-    debugger
+    // debugger
     this.gridConfig = {
       apiUrl: "OpeningBalance/OpeningBalanceList",
       columnsList: this.allcolumns,
