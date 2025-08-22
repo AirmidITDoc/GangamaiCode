@@ -203,6 +203,10 @@ export class SalesHospitalNewComponent implements OnInit {
       this.vCondition = true;
     }
   }
+  ngOnDestroy() {
+ this.ItemFormreset();
+ this.Formreset();
+}
   //sales footer form
   getSalesFooterform() {
     this.ItemSubform = this.formBuilder.group({
@@ -483,6 +487,7 @@ export class SalesHospitalNewComponent implements OnInit {
       if (ItemIdElement) {
         ItemIdElement.focus();
       }
+      this.ItemFormreset();
   }
   getSelectedObjOP(obj) {
     console.log(obj);
@@ -500,6 +505,7 @@ export class SalesHospitalNewComponent implements OnInit {
       if (ItemIdElement) {
         ItemIdElement.focus();
       }
+       this.ItemFormreset();
   }
   onPatientChange(event: any): void {
     console.log(event);
