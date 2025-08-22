@@ -18,28 +18,29 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 export class NewRequestComponent implements OnInit {
   requestForm: FormGroup;
 
-   personalFormGroup: FormGroup;
-    Regflag: boolean = false;
-     Patientnewold: any = 1;
-     admissionFormGroup: FormGroup;
-      Regdisplay: boolean = false;
-       searchFormGroup: FormGroup;
+  personalFormGroup: FormGroup;
+  Regflag: boolean = false;
+  Patientnewold: any = 1;
+  admissionFormGroup: FormGroup;
+  Regdisplay: boolean = false;
+  searchFormGroup: FormGroup;
 
 
-       vSelectedOption: any = "OP";
-       vsurgeryType:any="1";
-    
-   isActive:boolean=true;
+  vSelectedOption: any = "OP";
+  vsurgeryType: any = "1";
+
+  isActive: boolean = true;
   autocompleteModeDepartment: String = "Department";
-   autocompleteModeSiteDescriptionId: String = "SiteDescription";
- autocompleteModeSurgeryCategory: String = "SurgeryCategory";
-autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeSiteDescriptionId: String = "SiteDescription";
+  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
 
-   // vClassId: any = 0;
+  // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
+  vbookingId:any;
   //vAdmissionDate: any; 
   vOPDNo: any;
   vTariffName: any;
@@ -48,7 +49,7 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   //vRoomName: any;
   //vBedName: any;
   vAge: any;
-  //vGenderName: any;
+  vGenderName: any;
   //vAdmissionTime: any;
   vAgeMonth: any;
   vAgeDay: any;
@@ -58,62 +59,63 @@ autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   //vDOA: any;
   //vstoreId: any = '';
   //vAdmissionID: any;
-vIPDNo:any;
+  vIPDNo: any;
 
-   screenFromString = 'Common-form';
-    opIpId: any;
-  
-    @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
+  screenFromString = 'Common-form';
+  opIpId: any;
+
+  @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
   opIpType: number;
   RegId: string;
-registerObj: any;
-   constructor( public _OtRequestService: OtRequestService,
-     public dialogRef: MatDialogRef<NewRequestComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: any,
-     private ref: MatDialogRef<NewRequestComponent>,
-     public _AdmissionService: AdmissionService,
-         public datePipe: DatePipe,
-     public toastr: ToastrService) { }
-    
- 
-   ngOnInit(): void {
-     this.requestForm = this._OtRequestService.createRequestForm();
-     this.requestForm.markAllAsTouched();
-     
-     if ((this.data?.otBookingId) > 0) 
-         {
-          this.registerObj=this.data
-                    console.log(this.registerObj)
-                   
-//this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
-// console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
-          this.vRegNo=this.registerObj.regNo
-          this.vOPDNo=this.registerObj.opdNo
-          this.vIPDNo=this.registerObj.ipdNo
-          this.vPatientName=this.registerObj.patientName
-          this.vAge=this.registerObj.ageYear
-          this.vDepartment=this.registerObj.departmentName
-          this.vMobNo=this.registerObj.mobileNo
-          this.vDoctorName=this.registerObj.doctorName
-          this.vTariffName=this.registerObj.tariffName
-          this.vCompanyName=this.registerObj.companyName
+  registerObj: any;
+  constructor(public _OtRequestService: OtRequestService,
+    public dialogRef: MatDialogRef<NewRequestComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private ref: MatDialogRef<NewRequestComponent>,
+    public _AdmissionService: AdmissionService,
+    public datePipe: DatePipe,
+    public toastr: ToastrService) { }
 
-          if(this.registerObj.opIpType==0) {
-             this.vSelectedOption="OP"
-            
-          }
-        else{
-            this.vSelectedOption="IP"
-        }
-  
-          console.log(this.registerObj)
-             //this.isActive=this.data.isActive
-             this.requestForm.patchValue(this.registerObj);
-         this.selectChangedoctorType(this.registerObj)
-            }
-          this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
- }
- patientInfoReset() {
+
+  ngOnInit(): void {
+    this.requestForm = this._OtRequestService.createRequestForm();
+    this.requestForm.markAllAsTouched();
+
+    if ((this.data?.otBookingId) > 0) {
+      this.registerObj = this.data
+      console.log(this.registerObj)
+
+      //this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
+      // console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
+      this.vbookingId=this.registerObj.otBookingId
+      this.opIpId=this.registerObj.visitId
+      this.vRegNo = this.registerObj.regNo
+      this.vOPDNo = this.registerObj.opdNo
+      this.vIPDNo = this.registerObj.ipdNo
+      this.vPatientName = this.registerObj.patientName
+      this.vAge = this.registerObj.ageYear
+      this.vDepartment = this.registerObj.departmentName
+      this.vMobNo = this.registerObj.mobileNo
+      this.vDoctorName = this.registerObj.doctorName
+      this.vTariffName = this.registerObj.tariffName
+      this.vCompanyName = this.registerObj.companyName
+
+      if (this.registerObj.opIpType == 0) {
+        this.vSelectedOption = "OP"
+
+      }
+      else {
+        this.vSelectedOption = "IP"
+      }
+
+      console.log(this.registerObj)
+      //this.isActive=this.data.isActive
+      this.requestForm.patchValue(this.registerObj);
+      this.selectChangedoctorType(this.registerObj)
+    }
+    this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
+  }
+  patientInfoReset() {
     this.requestForm.get('opIpId').setValue('');
     this.requestForm.get('opIpId').reset();
     this.vRegNo = '';
@@ -126,20 +128,20 @@ registerObj: any;
     this.vCompanyName = '';
     // this.vRoomName = '';
     // this.vBedName = '';
-    // this.vGenderName = '';
+    this.vGenderName = '';
     this.vAge = '';
-    this.vAgeDay='';
-    this.vAgeMonth='';
+    this.vAgeDay = '';
+    this.vAgeMonth = '';
     this.vDepartment = '';
-    this.vMobNo='';
-   // this.vDOA = ''
+    this.vMobNo = '';
+    // this.vDOA = ''
   }
- dateTimeObj: any;
-    getDateTime(dateTimeObj) {
-       
-        this.dateTimeObj = dateTimeObj;
-         console.log(this.dateTimeObj)
-    }
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+
+    this.dateTimeObj = dateTimeObj;
+    console.log(this.dateTimeObj)
+  }
   onChangeReg(event) {
     if (event.value == 'OP') {
       this.opIpType = 0;
@@ -156,7 +158,7 @@ registerObj: any;
 
   //   if ((obj.regID ?? 0) > 0) {
   //       console.log(obj)
-     
+
   //     this.vRegNo = obj.regNo
   //     this.vDoctorName = obj.doctorName
   //     this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
@@ -167,10 +169,10 @@ registerObj: any;
   //     this.vTariffName = obj.tariffName
   //     this.vCompanyName = obj.companyName
   //     this.opIpId = obj
-     
+
   //   }
   // }
- getSelectedObjIP(obj) {
+  getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
@@ -178,20 +180,20 @@ registerObj: any;
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
-    //   this.vAdmissionDate = obj.admissionDate
-    //   this.vAdmissionTime = obj.admissionTime
-       this.vIPDNo = obj.ipdNo
+      //   this.vAdmissionDate = obj.admissionDate
+      //   this.vAdmissionTime = obj.admissionTime
+      this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
-       this.vAgeMonth = obj.ageMonth
-       this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
-    //   this.vRefDocName = obj.refDocName
-    //   this.vRoomName = obj.roomName
-    //   this.vBedName = obj.bedName
-    //   this.vPatientType = obj.patientType
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+        this.vGenderName = obj.genderName
+      //   this.vRefDocName = obj.refDocName
+      //   this.vRoomName = obj.roomName
+      //   this.vBedName = obj.bedName
+      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-    //   this.vDOA = obj.admissionDate
+      //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
       this.vMobNo = obj.mobileNo;
     }
@@ -203,131 +205,133 @@ registerObj: any;
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vDepartment = obj.departmentName
-    //   this.vAdmissionDate = obj.admissionDate
-    //   this.vAdmissionTime = obj.admissionTime
+      //   this.vAdmissionDate = obj.admissionDate
+      //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
-     this.vAgeMonth = obj.ageMonth
-       this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
-    //   this.vRefDocName = obj.refDocName
-    //   this.vRoomName = obj.roomName
-    //   this.vBedName = obj.bedName
-    //   this.vPatientType = obj.patientType
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+        this.vGenderName = obj.genderName
+      //   this.vRefDocName = obj.refDocName
+      //   this.vRoomName = obj.roomName
+      //   this.vBedName = obj.bedName
+      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       let nameField = obj.formattedText;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
-       this.vMobNo = obj.mobileNo;
+      this.vMobNo = obj.mobileNo;
     }
   }
 
-   onSubmit() {
-    if (this.requestForm.get('opIpType').value == 'IP') 
-        { this.requestForm.get('opIpType').setValue(1) }
-    else { this.requestForm.get('opIpType').setValue(0)  }
-
+onChangeTime(event: any) {
+  let time = event.target.value;
+  if (time && time.length >= 5) {
+    time = time.substring(0, 5);
+  }
+  console.log("Time changed:", time); // "11:51"
+  this.requestForm.get('otbookingTime')?.setValue(time, { emitEvent: false });
+}
+  onSubmit() {
+    if (this.requestForm.get('opIpType').value == 'IP') { this.requestForm.get('opIpType').setValue(1) }
+    else { this.requestForm.get('opIpType').setValue(0) }
     this.requestForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
-  this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
-  this.requestForm.get('opIpId').setValue(this.opIpId);
-//   this.requestForm.get('isCancelledDateTime')?.setValue('1900-01-01');
+    this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
+    this.requestForm.get('opIpId').setValue(this.opIpId);
+    this.requestForm.get('otbookingId')?.setValue(this.vbookingId || 0);
     this.requestForm.get('otRequestDate').setValue(this.datePipe.transform(this.requestForm.get('otRequestDate').value, 'yyyy-MM-dd'));
 
-     if (!this.requestForm.invalid) {
-             console.log(this.requestForm.value)
-             this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
-                 this.onClear(true);
-             });
-         } {
-             let invalidFields = [];
-             if (this.requestForm.invalid) {
-                 for (const controlName in this.requestForm.controls) {
-                     if (this.requestForm.controls[controlName].invalid) {
-                         invalidFields.push(`request Form: ${controlName}`);
-                     }
-                 }
-             }
-             if (invalidFields.length > 0) {
-                 invalidFields.forEach(field => {
-                     this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                     );
-                 });
-             }
-  
-         }
-     }
- selectChangedoctorType(obj: any){
- 
+      console.log(this.requestForm.value)
+    if (!this.requestForm.invalid) {
+      console.log(this.requestForm.value)
+      this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
+        this.onClear(true);
+      });
+    } {
+      let invalidFields = [];
+      if (this.requestForm.invalid) {
+        for (const controlName in this.requestForm.controls) {
+          if (this.requestForm.controls[controlName].invalid) {
+            invalidFields.push(`request Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
 
-  if (obj.value) {
-    this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
-      this.surgeonList.options = data ;
-       this.surgeonList.bindGridAutoComplete();
-    });
-  } else {
-    this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
-      this.surgeonList.options = data;
-      console.log(data)
-                this.surgeonList.bindGridAutoComplete();
-                const incomingDoctorId =  obj.surgeonId;
-                debugger
-                if (incomingDoctorId) {
-                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                    if (matchedDoctor) {
-                        this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
-                    }
-                }
-            
-      
-    });
+    }
   }
-}
- 
-     getValidationMessages() {
-       return {
-           DepartmentName: [
-               { name: "required", Message: "Department Name is required" },
-              // { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
-              // { name: "pattern", Message: "Special char not allowed." }
-           ],
-           SurgeryCategory: [
-               { name: "required", Message: "SurgeryCategory  is required" },
-              //  { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
-              //  { name: "pattern", Message: "Special char not allowed." }
-           ],
-           Site: [
-               { name: "required", Message: "Site Name is required" },
-              //  { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
-              //  { name: "pattern", Message: "Special char not allowed." }
-           ],
-           SurgeryProcedure: [
-               { name: "required", Message: "SurgeryProcedure Name is required" },
-              //  { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
-              //  { name: "pattern", Message: "Special char not allowed." }
-           ],
-           SurgeonName: [
-               { name: "required", Message: "Surgeon Name is required" },
-              //  { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
-              //  { name: "pattern", Message: "Special char not allowed." }
-           ],
-            SurgeryType: [
-               { name: "required", Message: "SurgeryType Name is required" },
-               { name: "maxlength", Message: "SurgeryType Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-  
-       };
-   }
- onClose() {
+  selectChangedoctorType(obj: any) {
+    if (obj.value) {
+      this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
+        this.surgeonList.options = data;
+        this.surgeonList.bindGridAutoComplete();
+      });
+    } else {
+      this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
+        this.surgeonList.options = data;
+        console.log(data)
+        this.surgeonList.bindGridAutoComplete();
+        const incomingDoctorId = obj.surgeonId;
+        if (incomingDoctorId) {
+          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+          if (matchedDoctor) {
+            this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
+          }
+        }
+      });
+    }
+  }
+
+  getValidationMessages() {
+    return {
+      DepartmentName: [
+        { name: "required", Message: "Department Name is required" },
+        // { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
+        // { name: "pattern", Message: "Special char not allowed." }
+      ],
+      SurgeryCategory: [
+        { name: "required", Message: "SurgeryCategory  is required" },
+        //  { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
+        //  { name: "pattern", Message: "Special char not allowed." }
+      ],
+      Site: [
+        { name: "required", Message: "Site Name is required" },
+        //  { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
+        //  { name: "pattern", Message: "Special char not allowed." }
+      ],
+      SurgeryProcedure: [
+        { name: "required", Message: "SurgeryProcedure Name is required" },
+        //  { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
+        //  { name: "pattern", Message: "Special char not allowed." }
+      ],
+      SurgeonName: [
+        { name: "required", Message: "Surgeon Name is required" },
+        //  { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
+        //  { name: "pattern", Message: "Special char not allowed." }
+      ],
+      SurgeryType: [
+        { name: "required", Message: "SurgeryType Name is required" },
+        { name: "maxlength", Message: "SurgeryType Name should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ],
+
+    };
+  }
+  onClose() {
     this.ref.close();
   }
- onClear(val: boolean) {
+  onClear(val: boolean) {
     // this.requestForm.reset();
-     this.dialogRef.close(val);
-     this.requestForm.get('opIpType').setValue('OP')
- }
+    this.dialogRef.close(val);
+    this.requestForm.get('opIpType').setValue('OP')
+  }
 }
 
 
