@@ -278,7 +278,15 @@
 
                     <ng-template #isPatientPrintTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button matTooltip="Print">
+                            <button mat-icon-button matTooltip="Print" (Click)="printpatient()">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                             <button mat-icon-button matTooltip="Print Summary"  (Click)="printsummary()">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                             <button mat-icon-button matTooltip="Print Detail"  (Click)="printdetail()">
                                 <mat-icon>print</mat-icon>
                             </button>
                         </div>
