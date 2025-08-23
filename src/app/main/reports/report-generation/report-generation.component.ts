@@ -439,21 +439,22 @@ export class ReportGenerationComponent implements OnInit {
             //   
             let param = {
                 "searchFields": paramFilterList,
-                "mode": this.reportDetail?.reportMode,
-                "repoertName": this.reportDetail?.reportName,
-                "headerList": this.reportDetail?.reportHeader?.split(",") || [],
-                "colList": this.reportDetail?.reportColumn?.split(",") || [],
-                "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
-                "groupByLabel": this.reportDetail?.reportGroupByLabel,
-                "summaryLabel": this.reportDetail?.summaryLabel,
-                "columnWidths": this.reportDetail?.reportColumnWidth?.split(",") || [],
-                "htmlFilePath": this.reportDetail?.reportBodyFile,
-                "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
-                "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
-                // "spName": this.reportDetail?.reportSpname,
-                "folderName": this.reportDetail?.reportFolderName,
-                "fileName": this.reportDetail?.reportFileName,
-                "vPageOrientation": this.reportDetail?.reportPageOrientation
+                "reportId":this.reportDetail.reportId
+                // "mode": this.reportDetail?.reportMode,
+                // "repoertName": this.reportDetail?.reportName,
+                // "headerList": this.reportDetail?.reportHeader?.split(",") || [],
+                // "colList": this.reportDetail?.reportColumn?.split(",") || [],
+                // "totalFieldList": this.reportDetail?.reportTotalField?.split(",") || [],
+                // "groupByLabel": this.reportDetail?.reportGroupByLabel,
+                // "summaryLabel": this.reportDetail?.summaryLabel,
+                // "columnWidths": this.reportDetail?.reportColumnWidth?.split(",") || [],
+                // "htmlFilePath": this.reportDetail?.reportBodyFile,
+                // "htmlHeaderFilePath": this.reportDetail?.reportHeaderFile,
+                // "spName": this.reportDetail?.reportSpname || this.reportDetail?.spName,
+                // // "spName": this.reportDetail?.reportSpname,
+                // "folderName": this.reportDetail?.reportFolderName,
+                // "fileName": this.reportDetail?.reportFileName,
+                // "vPageOrientation": this.reportDetail?.reportPageOrientation
             }
             if (type == 2) {
                 this._ReportService.getExcelReport(param).subscribe(res => {
