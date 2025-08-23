@@ -182,8 +182,9 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>OT request Time</mat-label>
-                                    <input matInput type="time" [formGroup]="requestForm" [value]="registerObj?.otbookingTime"
-                                        formControlName="otbookingTime" (change)="onChangeTime($event)">
+                                    <input matInput type="time" [formGroup]="requestForm"
+                                        formControlName="otRequestTime"
+                                        (change)="onChangeTime($event)">
                                 </mat-form-field>
                             </div>
 
@@ -216,7 +217,7 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <!-- i am pass categoryid formcontrolname to doctortype because doctortypeid field is not in payload
                                  but during retrive doctortype id is coming -->
-                                <airmid-dropdown label="Doctor Type" formControlName="categoryId"
+                                <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
                                     [formGroup]="requestForm" [value]="registerObj?.doctorTypeId"
                                     [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">

@@ -83,13 +83,13 @@
                         <mat-table matSort [dataSource]="dsSupplierpayList" [@animateStagger]="{ value: '50' }"
                             class="airmid-table">
                             <ng-container matColumnDef="CheckBox">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
                                     <mat-checkbox (change)="$event ? masterToggle() : null"
                                         [checked]="selection.hasValue()"
                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                                     </mat-checkbox>
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" required class="w-70">
+                                <mat-cell *matCellDef="let contact" required class="w-150">
                                     <mat-checkbox (click)="$event.stopPropagation()"
                                         (change)="OnSelectSUpplier($event,contact)"
                                         (change)="$event ? selection.toggle(contact) : null"
@@ -99,57 +99,57 @@
                             </ng-container>
 
                             <ng-container matColumnDef="grnNumber">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                     GRN No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                     {{contact.grnNumber}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="grnTime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                     GRN Date</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
                                     {{contact.grnDate}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="supplierName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-270">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">
                                     SupplierName </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-270">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                     {{contact.supplierName}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="invoiceNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                     InvoiceNo</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.invoiceNo}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="invDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                     InvDate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.invDate}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="netAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                     NetAmount</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.netAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="paidAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                     PaidAmount</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.paidAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
@@ -173,9 +173,9 @@
                                 </mat-footer-cell>
                             </ng-container>
 
-                            <mat-header-row class="accent min-width-600"
+                            <mat-header-row class="accent min-width-900"
                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-600"
+                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-900"
                                 [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                         </mat-table>
 

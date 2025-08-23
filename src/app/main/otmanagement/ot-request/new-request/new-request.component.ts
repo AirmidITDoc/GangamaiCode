@@ -40,7 +40,7 @@ export class NewRequestComponent implements OnInit {
   // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
-  vbookingId:any;
+  vbookingId: any;
   //vAdmissionDate: any; 
   vOPDNo: any;
   vTariffName: any;
@@ -83,15 +83,11 @@ export class NewRequestComponent implements OnInit {
 
     if ((this.data?.otBookingId) > 0) {
       this.registerObj = this.data
-      console.log(this.registerObj)
-
-      //this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
-      // console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
-      this.vbookingId=this.registerObj.otBookingId
-      this.opIpId=this.registerObj.visitId
+      this.vbookingId = this.registerObj.otBookingId
+      this.opIpId = this.registerObj.visitId
       this.vRegNo = this.registerObj.regNo
       this.vOPDNo = this.registerObj.opdNo
-      this.vIPDNo = this.registerObj.ipdNo
+      this.vIPDNo = this.registerObj.opdNo
       this.vPatientName = this.registerObj.patientName
       this.vAge = this.registerObj.ageYear
       this.vDepartment = this.registerObj.departmentName
@@ -99,13 +95,42 @@ export class NewRequestComponent implements OnInit {
       this.vDoctorName = this.registerObj.doctorName
       this.vTariffName = this.registerObj.tariffName
       this.vCompanyName = this.registerObj.companyName
-
       if (this.registerObj.opIpType == 0) {
         this.vSelectedOption = "OP"
+        if (this.registerObj?.otRequestTime) {
+          const date = new Date(this.registerObj.otRequestTime);
 
+          let hours = date.getHours();
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+
+          hours = hours % 12 || 12; // convert 0 -> 12
+          const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+
+          console.log(formattedTime); // "01:01 PM"
+          // but note: <input type="time"> only accepts "HH:mm" (24-hr), not "AM/PM"
+          this.requestForm.get('otRequestTime').setValue(formattedTime, { emitEvent: false })
+          // this.requestForm.patchValue({ otRequestTime: `${hours.toString().padStart(2, '0')}:${minutes}` });
+        }
       }
       else {
         this.vSelectedOption = "IP"
+        if (this.registerObj?.otRequestTime) {
+          const date = new Date(this.registerObj.otRequestTime);
+
+          let hours = date.getHours();
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+
+          hours = hours % 12 || 12; // convert 0 -> 12
+          const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+
+          console.log(formattedTime); // "01:01 PM"
+          // but note: <input type="time"> only accepts "HH:mm" (24-hr), not "AM/PM"
+          this.requestForm.get('otRequestTime').setValue(formattedTime, { emitEvent: false })
+          // this.requestForm.patchValue({ otRequestTime: `${hours.toString().padStart(2, '0')}:${minutes}` });
+        }
+
       }
 
       console.log(this.registerObj)
@@ -122,7 +147,7 @@ export class NewRequestComponent implements OnInit {
     this.vPatientName = '';
     // this.vAdmissionDate = '';
     // this.vAdmissionTime = '';
-     this.vIPDNo = '';
+    this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
     this.vCompanyName = '';
@@ -153,25 +178,7 @@ export class NewRequestComponent implements OnInit {
     }
     this.patientInfoReset();
   }
-  // getSelectedObjOT(obj) {
 
-
-  //   if ((obj.regID ?? 0) > 0) {
-  //       console.log(obj)
-
-  //     this.vRegNo = obj.regNo
-  //     this.vDoctorName = obj.doctorName
-  //     this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-  //     this.vDepartment = obj.departmentName
-  //     this.vOPDNo = obj.ipdNo
-  //     this.vAge = obj.age
-  //     this.vMobNo = obj.refDocName
-  //     this.vTariffName = obj.tariffName
-  //     this.vCompanyName = obj.companyName
-  //     this.opIpId = obj
-
-  //   }
-  // }
   getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
@@ -186,7 +193,7 @@ export class NewRequestComponent implements OnInit {
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
-        this.vGenderName = obj.genderName
+      this.vGenderName = obj.genderName
       //   this.vRefDocName = obj.refDocName
       //   this.vRoomName = obj.roomName
       //   this.vBedName = obj.bedName
@@ -211,7 +218,7 @@ export class NewRequestComponent implements OnInit {
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
-        this.vGenderName = obj.genderName
+      this.vGenderName = obj.genderName
       //   this.vRefDocName = obj.refDocName
       //   this.vRoomName = obj.roomName
       //   this.vBedName = obj.bedName
@@ -226,25 +233,24 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
-onChangeTime(event: any) {
-  let time = event.target.value;
-  if (time && time.length >= 5) {
-    time = time.substring(0, 5);
+  onChangeTime(event: any) {
+    let time = event.target.value;
+    if (time && time.length >= 5) {
+      time = time.substring(0, 5);
+    }
+    console.log("Time changed:", time); // "11:51"
+    this.requestForm.get('otRequestTime')?.setValue(time, { emitEvent: false });
   }
-  console.log("Time changed:", time); // "11:51"
-  this.requestForm.get('otbookingTime')?.setValue(time, { emitEvent: false });
-}
   onSubmit() {
-    if (this.requestForm.get('opIpType').value == 'IP') { this.requestForm.get('opIpType').setValue(1) }
-    else { this.requestForm.get('opIpType').setValue(0) }
     this.requestForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
-    this.requestForm.get('otbookingTime').setValue(this.dateTimeObj?.time);
     this.requestForm.get('opIpId').setValue(this.opIpId);
     this.requestForm.get('otbookingId')?.setValue(this.vbookingId || 0);
     this.requestForm.get('otRequestDate').setValue(this.datePipe.transform(this.requestForm.get('otRequestDate').value, 'yyyy-MM-dd'));
-
-      console.log(this.requestForm.value)
+    this.requestForm.get('categoryId').setValue(this.requestForm.get('doctorTypeId').value);
     if (!this.requestForm.invalid) {
+      if (this.requestForm.get('opIpType').value == 'IP') { this.requestForm.get('opIpType').setValue(1) }
+      else { this.requestForm.get('opIpType').setValue(0) }
+      this.requestForm.removeControl('doctorTypeId')
       console.log(this.requestForm.value)
       this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
         this.onClear(true);
@@ -264,7 +270,6 @@ onChangeTime(event: any) {
           );
         });
       }
-
     }
   }
   selectChangedoctorType(obj: any) {
@@ -276,15 +281,17 @@ onChangeTime(event: any) {
     } else {
       this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
         this.surgeonList.options = data;
-        console.log(data)
-        this.surgeonList.bindGridAutoComplete();
+        // this.surgeonList.bindGridAutoComplete();
         const incomingDoctorId = obj.surgeonId;
-        if (incomingDoctorId) {
-          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-          if (matchedDoctor) {
-            this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
+        setTimeout(() => {
+          this.surgeonList.bindGridAutoComplete();
+          if (incomingDoctorId) {
+            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+            if (matchedDoctor) {
+              this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
+            }
           }
-        }
+        }, 100);
       });
     }
   }

@@ -134,7 +134,7 @@ export class GRNReturnComponent implements OnInit {
 
   allColumns = [
     { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-          template:this.ColorCode, width: 50 },
+          template:this.ColorCode},
     { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA',width: 150},

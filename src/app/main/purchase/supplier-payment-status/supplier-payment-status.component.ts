@@ -12,6 +12,8 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { ToastrService } from 'ngx-toastr';
 import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-payment-list.component';
 import { SupplierPaymentStatusService } from './supplier-payment-status.service';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -50,14 +52,15 @@ export class SupplierPaymentStatusComponent implements OnInit {
   vPaidAmount: any = 0;
   vBalanceAmount: any = 0;
   CurrentDate = new Date()
+  GrnSupplierPayForm: FormGroup
 
   dsSupplierpayList = new MatTableDataSource<SupplierPayStatusList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  
+
   storeId = this.accountService.currentUserValue.user.storeId;
-  supplierid="0";
-  status="0";
+  supplierid = "0";
+  status = "0";
 
   constructor(
     public _SupplierPaymentStatusService: SupplierPaymentStatusService,
@@ -67,31 +70,66 @@ export class SupplierPaymentStatusComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    public _formbuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
     this.getSupplierPayStatusList();
 
-     this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId')?.valueChanges.subscribe(value => {
-    this.supplierid = value.value || "0";
-    this.getSupplierPayStatusList();
-  });
-
+    this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId')?.valueChanges.subscribe(value => {
+      this.supplierid = value.value || "0";
+      this.getSupplierPayStatusList();
+    });
+    this.GrnSupplierPayForm = this.CreateGrnSupplierPayInsertForm();
+    this.grnArray.push(this.createGrnInsert());
+    this.grnSupPayDetArray.push(this.createGrnSupPayDetInsert());
   }
+
+  CreateGrnSupplierPayInsertForm() {
+    return this._formbuilder.group({
+      grnsupPayment: '',
+      grn: this._formbuilder.array([]),
+      supPayDet: this._formbuilder.array([]),
+    })
+  }
+
+  get grnArray(): FormArray {
+    return this.GrnSupplierPayForm.get('grn') as FormArray;
+  }
+
+  createGrnInsert(element: any = {}): FormGroup {
+    return this._formbuilder.group({
+      grnid: [element.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paidAmount: [this.vBalanceAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balAmount: [this.vPaidAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+  get grnSupPayDetArray(): FormArray {
+    return this.GrnSupplierPayForm.get('supPayDet') as FormArray;
+  }
+
+  createGrnSupPayDetInsert(element: any = {}): FormGroup {
+    return this._formbuilder.group({
+      supPayId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      supGrnId: [element.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
-    selectChangeSupplier(obj: any) {
-  console.log(obj);
-  if (!obj || obj.value === null || obj.value === undefined || obj.value === 0 || obj.value === '') {
-    this.supplierid = "0";
-  } else {
-    this.supplierid = obj.value;
+  selectChangeSupplier(obj: any) {
+    console.log(obj);
+    if (!obj || obj.value === null || obj.value === undefined || obj.value === 0 || obj.value === '') {
+      this.supplierid = "0";
+    } else {
+      this.supplierid = obj.value;
+    }
+    this.getSupplierPayStatusList();
   }
-  this.getSupplierPayStatusList();
-}
-
 
   getSupplierPayStatusList() {
     // debugger
@@ -99,7 +137,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     let toDate = this._SupplierPaymentStatusService.SearchFormGroup.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    var vdata ={
+    var vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "Supplier_Id",
@@ -145,12 +183,12 @@ export class SupplierPaymentStatusComponent implements OnInit {
   }
 
   parseToDate(dateStr: string): Date | null {
-  if (!dateStr) return null;
-  const [datePart] = dateStr.split(' ');
-  const [day, month, year] = datePart.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return isNaN(date.getTime()) ? null : date;
-}
+    if (!dateStr) return null;
+    const [datePart] = dateStr.split(' ');
+    const [day, month, year] = datePart.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return isNaN(date.getTime()) ? null : date;
+  }
 
   tableElementChecked(event, element) {
     // debugger
@@ -172,92 +210,186 @@ export class SupplierPaymentStatusComponent implements OnInit {
     console.log(this.SelectedList)
   }
 
+  // OnSave() {
+  //   if (!this.dsSupplierpayList.data.length) {
+  //     this.toastr.warning('Please add Supplier list in table', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+
+  //   if ((this.vBalanceAmount < 0)) {
+  //     this.toastr.warning('Please select Check Box', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+
+  //   let grnHeaderPayStatus = [];
+  //   this.SelectedList.forEach((element) => {
+  //     let grnHeaderPayStatusObj = {};
+  //     grnHeaderPayStatusObj['grnid'] = element.grnid || 0;
+  //     grnHeaderPayStatusObj['paidAmount'] = this.vBalanceAmount || 0;
+  //     grnHeaderPayStatusObj['balAmount'] = this.vPaidAmount || 0;
+  //     grnHeaderPayStatus.push(grnHeaderPayStatusObj);
+  //   });
+
+  //   let SupPayDetPayStatus = [];
+  //   this.SelectedList.forEach((element) => {
+  //     let SupPayDetPayStatusObj = {};
+  //     SupPayDetPayStatusObj['supPayId'] = 0
+  //     SupPayDetPayStatusObj['supGrnId'] = element.grnid || 0;
+  //     SupPayDetPayStatus.push(SupPayDetPayStatusObj);
+  //   });
+
+  //   let PatientHeaderObj = {};
+  //   PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
+  //   PatientHeaderObj['GRNID'] = this.GRNID;
+  //   PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
+
+
+  //   const dialogRef = this._matDialog.open(OpPaymentComponent,
+  //     {
+  //       maxWidth: "80vw",
+  //       height: '650px',
+  //       width: '80%',
+  //       data: {
+  //         vPatientHeaderObj: PatientHeaderObj,
+  //         FromName: "Phar-SupplierPay",
+  //         advanceObj: PatientHeaderObj,
+  //       }
+  //     });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     debugger
+  //     console.log("payment:", result)
+
+  //     let submitData = {
+  //       'grnsupPayment': result.submitDataPay.ipPaymentInsert,
+  //       'grn': grnHeaderPayStatus,
+  //       'supPayDet': SupPayDetPayStatus
+  //     }
+  //     console.log(submitData)
+  //     this._SupplierPaymentStatusService.InsertSupplierPay(submitData).subscribe((response) => {
+  //       if (response) {
+  //         this.toastr.success('Supplier payment Successfuly', 'Saved', {
+  //           toastClass: 'tostr-tost custom-toast-warning',
+  //         });
+  //         this.getSupplierPayStatusList();
+  //         this.OnReset();
+  //       }
+  //       else {
+  //         this.toastr.warning('Supplier payment Not Saved', 'Error', {
+  //           toastClass: 'tostr-tost custom-toast-warning',
+  //         });
+  //         this.getSupplierPayStatusList();
+  //         this.OnReset();
+  //       }
+  //     },
+  //       error => {
+  //         this.toastr.warning('Please Check Api Error', 'Error', {
+  //           toastClass: 'tostr-tost custom-toast-warning',
+  //         });
+  //         this.getSupplierPayStatusList();
+  //         this.OnReset();
+  //       }        
+  //     );
+  //   });
+  // }
+
   OnSave() {
-    if (!this.dsSupplierpayList.data.length) {
-      this.toastr.warning('Please add Supplier list in table', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if ((this.vBalanceAmount < 0)) {
-      this.toastr.warning('Please select Check Box', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    let grnHeaderPayStatus = [];
-    this.SelectedList.forEach((element) => {
-      let grnHeaderPayStatusObj = {};
-      grnHeaderPayStatusObj['grnid'] = element.grnid || 0;
-      grnHeaderPayStatusObj['paidAmount'] = this.vBalanceAmount || 0;
-      grnHeaderPayStatusObj['balAmount'] = this.vPaidAmount || 0;
-      grnHeaderPayStatus.push(grnHeaderPayStatusObj);
-    });
-
-    let SupPayDetPayStatus = [];
-    this.SelectedList.forEach((element) => {
-      let SupPayDetPayStatusObj = {};
-      SupPayDetPayStatusObj['supPayId'] = 0
-      SupPayDetPayStatusObj['supGrnId'] = element.grnid || 0;
-      SupPayDetPayStatus.push(SupPayDetPayStatusObj);
-    });
-
-    let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
-    PatientHeaderObj['GRNID'] = this.GRNID;
-    PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
-
-
-    const dialogRef = this._matDialog.open(OpPaymentComponent,
-      {
-        maxWidth: "80vw",
-        height: '650px',
-        width: '80%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "Phar-SupplierPay",
-          advanceObj: PatientHeaderObj,
-        }
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      debugger
-      console.log("payment:", result)
-
-      let submitData = {
-        'grnsupPayment': result.submitDataPay.ipPaymentInsert,
-        'grn': grnHeaderPayStatus,
-        'supPayDet': SupPayDetPayStatus
+    if (!this.GrnSupplierPayForm.invalid) {
+      if (!this.dsSupplierpayList.data.length) {
+        this.toastr.warning('Please add Supplier list in table', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
       }
-      console.log(submitData)
-      this._SupplierPaymentStatusService.InsertSupplierPay(submitData).subscribe((response) => {
-        if (response) {
-          this.toastr.success('Supplier payment Successfuly', 'Saved', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.getSupplierPayStatusList();
-          this.OnReset();
+
+      if ((this.vBalanceAmount == 0 && this.vNetAmount == 0)) {
+        this.toastr.warning('Please select Check Box', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+
+      this.grnArray.clear();
+      this.SelectedList.forEach(item => {
+        this.grnArray.push(this.createGrnInsert(item));
+      });
+
+      this.grnSupPayDetArray.clear();
+      this.SelectedList.forEach(item => {
+        this.grnSupPayDetArray.push(this.createGrnSupPayDetInsert(item));
+      });
+
+      let PatientHeaderObj = {};
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
+      PatientHeaderObj['GRNID'] = this.GRNID;
+      PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
+
+
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '650px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "Phar-SupplierPay",
+            advanceObj: PatientHeaderObj,
+          }
+        });
+
+      dialogRef.afterClosed().subscribe(result => {
+        debugger
+        console.log("payment:", result)
+        this.GrnSupplierPayForm.get('grnsupPayment').setValue(result.submitDataPay.ipPaymentInsert)
+
+        console.log(this.GrnSupplierPayForm.value)
+        this._SupplierPaymentStatusService.InsertSupplierPay(this.GrnSupplierPayForm.value).subscribe((response) => {
+          if (response) {
+            this.getSupplierPayStatusList();
+            this.OnReset();
+          }
         }
-        else {
-          this.toastr.warning('Supplier payment Not Saved', 'Error', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.getSupplierPayStatusList();
-          this.OnReset();
+        );
+      });
+    } else {
+      let invalidFields: string[] = [];
+
+      if (this.GrnSupplierPayForm.invalid) {
+        // Loop through top-level controls
+        for (const controlName in this.GrnSupplierPayForm.controls) {
+          const control = this.GrnSupplierPayForm.controls[controlName];
+
+          if (control instanceof FormArray) {
+            // Handle FormArray (in your case 'grn')
+            control.controls.forEach((group: any, index: number) => {
+              Object.keys(group.controls).forEach(key => {
+                if (group.get(key)?.invalid) {
+                  invalidFields.push(`GRN[${index + 1}] -> ${key}`);
+                }
+              });
+            });
+          } else {
+            // Handle normal controls
+            if (control.invalid) {
+              invalidFields.push(`Form: ${controlName}`);
+            }
+          }
         }
-      },
-        error => {
-          this.toastr.warning('Please Check Api Error', 'Error', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          this.getSupplierPayStatusList();
-          this.OnReset();
-        }        
-      );
-    });
+      }
+
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+        });
+      }
+    }
+
   }
+
   onClear() {
 
   }
@@ -268,6 +400,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.vBalanceAmount = 0;
     this.SelectedList = [];
     this.selection.clear();
+    this.GrnSupplierPayForm.reset();
   }
   getSupplierPaymentList() {
     this.dsSupplierpayList.data = [];
@@ -345,7 +478,6 @@ export class SupplierPaymentStatusComponent implements OnInit {
     return this.selection.selected.length > 0;
   }
 
-
   OnSelectSUpplier(event, element) {
     this.GRNID = element.grnid;
     if (event.checked) {
@@ -401,7 +533,7 @@ export class SupplierPayStatusList {
   paidAmount: any;
   balAmount: any;
   invDate: any;
-  grnid:any
+  grnid: any
 
 
   constructor(SupplierPayStatusList) {

@@ -71,15 +71,6 @@
                         </airmid-dropdown>
 
                         <div fxFlex fxLayout="row">
-                            <!-- <mat-radio-group name="Status" fxLayout="row" value="1" [formGroup]="_GRNReturnService.GRNReturnSearchFrom"
-                             formControlName="Status" (change)="onChangeFirst()"
-                                style="padding: 6px;" class="gap-4">
-                                <mat-label>Status:</mat-label>
-                                <div fxLayout="row">
-                                    <mat-radio-button value='1'>Close</mat-radio-button>
-                                    <mat-radio-button value='0'>Pending</mat-radio-button>
-                                </div>
-                            </mat-radio-group> -->
                             <span style="font-weight: bold;">Status :</span>
                             <mat-slide-toggle name="Status" (change)="onChangeFirst()" formControlName="Status">
                                 Verify / Pending
