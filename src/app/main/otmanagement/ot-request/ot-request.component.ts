@@ -177,7 +177,7 @@ export class OTRequestComponent implements OnInit {
       if (result.isConfirmed) {
         let submitData = {
           otbookingId: data.otBookingId,
-          // cancelReason: result.value
+           reason: result.value
         };
         console.log(submitData);
         this._OtRequestService.OnCancel(submitData).subscribe((res) => {

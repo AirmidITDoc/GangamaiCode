@@ -41,48 +41,53 @@ export class OtrequestlistComponent implements OnInit {
     this.getfilterdata()
   }
 
-   allcolumns = [
-          { heading: "Status", key: "otbookingId", sort: true, align: 'left', emptySign: 'NA', type: 6, width:100 },
-          { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-          { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-          { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-          { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-          { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', },
-          { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', },
-          { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-                  { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-  
-      ];
+    allcolumns = [
+    { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+
+    { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+  ];
  allFilters = [
-            { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
-      ]
-      gridConfig: gridModel = {
-          apiUrl: "OTBooking/OTBookingRequestEmergencyList",
-          columnsList: this.allcolumns,
-          sortField: "OTRequestId",
-          sortOrder: 0,
-          filters: this.allFilters
-      }
-   getfilterdata() {
- 
-     const fromDate = this.datePipe.transform(this._otreservationService.myformSearch.get('start').value, "yyyy-MM-dd")
-    const toDate = this.datePipe.transform(this._otreservationService.myformSearch.get('end').value, "yyyy-MM-dd")
-          this.gridConfig = {
-              apiUrl: "OTBooking/OTBookingRequestEmergencyList",
-              columnsList: this.allcolumns,
-              sortField: "OTRequestId",
-              sortOrder: 0,
-              filters: [
-                  { fieldName: "FromDate", fieldValue: fromDate, opType: OperatorComparer.StartsWith },
-                  { fieldName: "ToDate", fieldValue: toDate, opType: OperatorComparer.StartsWith },
-              ],
-              row: 25
-          }
-          this.grid.gridConfig = this.gridConfig;
-          this.grid.bindGridData();
-      }
+    { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+  ]
+  gridConfig: gridModel = {
+    apiUrl: "OTBooking/OtbookingRequestList",
+    columnsList: this.allcolumns,
+    sortField: "DoctorId",
+    sortOrder: 0,
+    filters: this.allFilters
+  }
+    getfilterdata() {
+    this.gridConfig = {
+      apiUrl: "OTBooking/OtbookingRequestList",
+      columnsList: this.allcolumns,
+      sortField: "DoctorId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+      ],
+      row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
   onSelectRequest(row: any): void {
     this._dialogRef.close(row); // send selected row to parent (OtReservationComponent)
   }

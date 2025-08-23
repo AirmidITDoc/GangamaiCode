@@ -57,10 +57,10 @@ vInstruction: any;
   //vRoomName: any;
   //vBedName: any;
   vAge: any;
-  //vGenderName: any;
+  vGenderName: any;
   //vAdmissionTime: any;
-  //vAgeMonth: any;
-  //vAgeDay: any;
+  vAgeMonth: any;
+  vAgeDay: any;
   vDepartment: any;
   vMobNo: any;
   //vPatientType: any;
@@ -131,9 +131,13 @@ vInstruction: any;
     this.vCompanyName = '';
     // this.vRoomName = '';
     // this.vBedName = '';
-    // this.vGenderName = '';
+    this.vGenderName = '';
     this.vAge = '';
+    this.vAgeDay = '';
+    this.vAgeMonth = '';
     this.vDepartment = '';
+    this.vMobNo = '';
+
    // this.vDOA = ''
   }
  dateTimeObj: any;
@@ -162,20 +166,22 @@ vInstruction: any;
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
     //   this.vAdmissionDate = obj.admissionDate
-    //   this.vAdmissionTime = obj.admissionTime
+      //   this.vAdmissionTime = obj.admissionTime
       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
-    //   this.vRefDocName = obj.refDocName
-    //   this.vRoomName = obj.roomName
-    //   this.vBedName = obj.bedName
-    //   this.vPatientType = obj.patientType
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+      this.vGenderName = obj.genderName
+      //   this.vRefDocName = obj.refDocName
+      //   this.vRoomName = obj.roomName
+      //   this.vBedName = obj.bedName
+      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-    //   this.vDOA = obj.admissionDate
+      //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
+      this.vMobNo = obj.mobileNo;
+
     }
   }
   getSelectedObjOP(obj) {
@@ -189,9 +195,9 @@ vInstruction: any;
     //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
-    //   this.vAgeMonth = obj.ageMonth
-    //   this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+      this.vGenderName = obj.genderName
     //   this.vRefDocName = obj.refDocName
     //   this.vRoomName = obj.roomName
     //   this.vBedName = obj.bedName
@@ -202,6 +208,8 @@ vInstruction: any;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
+      this.vMobNo = obj.mobileNo;
+
     }
   }
  onSubmit() {
@@ -289,7 +297,7 @@ vInstruction: any;
                { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }
            ],
-           Anathesiadoctor1: [
+           anestheticsDr: [
                { name: "required", Message: "Anathesia doctor 1 Name is required" },
                { name: "maxlength", Message: "Anathesia doctor 1 Name should not be greater than 50 char." },
                { name: "pattern", Message: "Special char not allowed." }

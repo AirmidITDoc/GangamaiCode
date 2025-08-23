@@ -122,7 +122,7 @@ export class NewRequestComponent implements OnInit {
     this.vPatientName = '';
     // this.vAdmissionDate = '';
     // this.vAdmissionTime = '';
-    // this.vIPDNo = '';
+     this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
     this.vCompanyName = '';

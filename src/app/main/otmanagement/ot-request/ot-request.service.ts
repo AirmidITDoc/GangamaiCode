@@ -75,7 +75,7 @@ export class OtRequestService {
     public requestSave(Param: any) {
         if (Param.otbookingId) {
             return this._httpClient.PutData("OTBooking/Edit/" + Param.otbookingId, Param);
-        } else return this._httpClient.PostData("OTBooking/InsertEDMX", Param);
+        } else return this._httpClient.PostData("OTBooking/Insert", Param);
     }
 
     // public deactivateTheStatus(m_data) {

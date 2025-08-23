@@ -38,6 +38,8 @@ export class OtReservationService {
             surgeonId1: [0],
             anestheticsDr: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anestheticsDr1: [0],
+            anestheticsDrID:[0],
+            anestheticsDrID1:[0],
             surgeryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anesthTypeId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             instruction: [""],

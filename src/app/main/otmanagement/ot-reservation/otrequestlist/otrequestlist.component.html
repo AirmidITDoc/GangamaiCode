@@ -1,24 +1,4 @@
-<!-- <div class="dialog-content" style="padding: 20px; min-width: 600px;">
-  <form [formGroup]="myFilterForm">
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <div>
-        <label>From Date</label><br />
-        <input type="date" formControlName="fromDate" />
-      </div>
 
-      <div>
-        <label>To Date</label><br />
-        <input type="date" formControlName="toDate" />
-      </div>
-
-      <button type="button" (click)="getOTRequests()">Search</button>
-    </div>
-  </form>
- <airmid-table [gridConfig]="gridConfig" class="content" >
-
- </airmid-table>
- 
-</div> -->
 <div class="dialog-content-wrapper modal-wrapper grid-container">
 <div class="modal-header accent">
         <div class="modal-header-content">
@@ -37,6 +17,8 @@
             </div>
         </div>
     </div>
+     <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
 <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
   <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid" class="p-12">
 
@@ -67,4 +49,5 @@
  (onSelectRow)="GetRecord($event)">
 
 </airmid-table>
-</div>
+        </div>
+     </div>
