@@ -41,8 +41,9 @@ export class PrescriptionReturnComponent implements OnInit {
      { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
             { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
             { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+           
             { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+             { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
           
             { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

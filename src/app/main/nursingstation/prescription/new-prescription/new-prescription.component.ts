@@ -372,6 +372,7 @@ debugger
         this.toastr.warning('No data in the item list!', 'Warning');
         return;
       }
+      
       this.dsItemList.data.forEach(item => {
         this.prescriptionArray.push(this.createPrescriptionFormInsert(item));
       });

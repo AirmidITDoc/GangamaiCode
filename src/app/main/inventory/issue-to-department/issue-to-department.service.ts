@@ -53,7 +53,7 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ToStoreId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      AgainstIndent:['1']
+      AgainstIndent:[false]
     });
   }
   createIndentFrom() {

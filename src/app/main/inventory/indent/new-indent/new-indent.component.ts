@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -73,7 +73,7 @@ export class NewIndentComponent implements OnInit {
     this.IndentForm = this._IndentService.createnewindentfrom();
     this.StoreFrom.markAllAsTouched();
     this.IndentForm.markAllAsTouched();
-
+    this.IndentdetailArray.push(this.createdetailInsert());
 
     if (this.data) {
       this.registerObj = this.data.Obj;
@@ -86,12 +86,14 @@ export class NewIndentComponent implements OnInit {
     }
 
   }
-
+  get IndentdetailArray(): FormArray {
+    return this.StoreFrom.get('tIndentDetails') as FormArray;
+  }
 
   CreateStoreFrom() {
     return this._formBuilder.group({
-    
-      IsUrgent: ['0'],
+
+      // IsUrgent: ['0'],
       indentId: this.IndentId,
       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
@@ -101,10 +103,24 @@ export class NewIndentComponent implements OnInit {
       isverify: false,
       isclosed: false,
       comments: "",
-      tIndentDetails: ""
+        priority: [true],
+      tIndentDetails: this._formBuilder.array([]),
+    });
+  }
+
+  createdetailInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formBuilder.group({
+      indentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isclosed: [false],
+      indQty: [element.Qty | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issQty: [0]    
 
     });
   }
+
 
 
   onAdd() {
@@ -122,7 +138,7 @@ export class NewIndentComponent implements OnInit {
       });
       return;
     }
-const selectedItem = this.IndentForm.get('ItemName').value;
+    const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
@@ -230,30 +246,41 @@ const selectedItem = this.IndentForm.get('ItemName').value;
     }
 
 
-    let InsertIndentDetObj = [];
-    this.dsIndentNameList.data.forEach((element) => {
-      console.log(element)
-      let IndentDetInsertObj = {};
-      IndentDetInsertObj['indentId'] = this.IndentId;
-      IndentDetInsertObj['itemId'] = element.ItemID;
-      IndentDetInsertObj['qty'] = element.Qty;
-      IndentDetInsertObj['isclosed'] = false;
-      IndentDetInsertObj['indQty'] = element.Qty;
-      IndentDetInsertObj['issQty'] = 0;
-      InsertIndentDetObj.push(IndentDetInsertObj);
+    // let InsertIndentDetObj = [];
+    // this.dsIndentNameList.data.forEach((element) => {
+    //   console.log(element)
+    //   let IndentDetInsertObj = {};
+    //   IndentDetInsertObj['indentId'] = this.IndentId;
+    //   IndentDetInsertObj['itemId'] = element.ItemID;
+    //   IndentDetInsertObj['qty'] = element.Qty;
+    //   IndentDetInsertObj['isclosed'] = false;
+    //   IndentDetInsertObj['indQty'] = element.Qty;
+    //   IndentDetInsertObj['issQty'] = 0;
+    //    IndentDetInsertObj['priority'] = this.StoreFrom.get("IsUrgent").value
+    //   InsertIndentDetObj.push(IndentDetInsertObj);
+    // });
+
+
+    this.IndentdetailArray.clear();
+    if (this.dsIndentNameList.data.length === 0) {
+      this.toastr.warning('No data in the item list!', 'Warning');
+      return;
+    }
+
+    this.dsIndentNameList.data.forEach(item => {
+      this.IndentdetailArray.push(this.createdetailInsert(item));
     });
 
+
+    console.log(this.StoreFrom.value)
     if (!this.StoreFrom.invalid) {
       this.StoreFrom.get("indentId").setValue(this.IndentId)
-      this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
-    
+      // this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
+
       this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
-        this.toastr.success(response.message);
-        console.log(response)
-        if (response) {
-          this.viewgetIndentReportPdf(response)
-          this._matDialog.closeAll();
-        }
+        this.viewgetIndentReportPdf(response)
+        this._matDialog.closeAll();
+
 
       });
     } else {
@@ -320,15 +347,15 @@ const selectedItem = this.IndentForm.get('ItemName').value;
     };
   }
 
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 
   OnReset() {
     this.IndentForm.reset();

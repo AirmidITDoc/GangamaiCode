@@ -39,7 +39,7 @@ export class IndentComponent implements OnInit {
     Status="0"
     FromStore:any = String(this.accountService.currentUserValue.user.storeId);
     Tostore:any="0"
-    fromDate = "2024-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   
@@ -61,8 +61,8 @@ export class IndentComponent implements OnInit {
 
     allcolumns = [
 
-        { heading: "Verify", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width:20 },
-        { heading: "IsUrgent", key: "isUrgent", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 20 },
+        { heading: "-", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA'},
+        { heading: "-", key: "isUrgent", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA' },
         { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6, width: 150 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
@@ -101,6 +101,7 @@ export class IndentComponent implements OnInit {
                 { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Issue QTY", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Pending QTY", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
+                
                ],
             sortField: "IndentId",
             sortOrder: 0,

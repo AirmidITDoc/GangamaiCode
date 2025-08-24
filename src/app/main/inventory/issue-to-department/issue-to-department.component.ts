@@ -54,9 +54,12 @@ export class IssueToDepartmentComponent implements OnInit {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
-        this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
 
     }
+
+
+    gridConfig1: gridModel = new gridModel();
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
@@ -64,15 +67,17 @@ export class IssueToDepartmentComponent implements OnInit {
     allcolumns = [
 
         { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+         { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+        { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        //  { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         // { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
@@ -83,6 +88,8 @@ export class IssueToDepartmentComponent implements OnInit {
 
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
+
+
     gridConfig: gridModel = {
         apiUrl: "IssueToDepartment/IssueToDeptList",
         columnsList: this.allcolumns,
@@ -97,14 +104,14 @@ export class IssueToDepartmentComponent implements OnInit {
         ]
     }
 
-    gridConfig1: gridModel = new gridModel();
+
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
+        debugger
         let IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
@@ -116,13 +123,17 @@ export class IssueToDepartmentComponent implements OnInit {
             sortField: "IssueId",
             sortOrder: 0,
             filters: [
-                { fieldName: "IssueId", fieldValue: String(IssueId), opType: OperatorComparer.Equals },
+                { fieldName: "IssueId", fieldValue: String(IssueId), opType: OperatorComparer.Equals }
 
             ]
-        }
+        };
         this.isShowDetailTable = true;
+        setTimeout(() => {
         this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+            this.grid1.bindGridData();
+
+
+        }, 500);
     }
 
 

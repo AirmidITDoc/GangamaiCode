@@ -43,9 +43,9 @@ export class CanteenRequestComponent implements OnInit {
         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IPD NO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+       
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-
+        { heading: "IPD NO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "WardName | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },

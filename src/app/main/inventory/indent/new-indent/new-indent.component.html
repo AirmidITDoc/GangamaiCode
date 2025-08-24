@@ -46,7 +46,7 @@
 
                                     <mat-radio-group name="IsUrgent" value="0" formControlName="IsUrgent"
                                         style="padding: 15px 0px 0px 30px;">
-                                        <mat-label class="example-margin"> Is Urgent:</mat-label>&nbsp;&nbsp;
+                                        <mat-label class="example-margin" style="font-weight:bold;font-size:large"> Is Urgent:</mat-label>&nbsp;&nbsp;
                                         <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
                                         <mat-radio-button value="0" class="mr-sm-12">No</mat-radio-button>
                                     </mat-radio-group>
@@ -82,16 +82,11 @@
 
                                     <mat-divider vertical></mat-divider>&nbsp;&nbsp;&nbsp;
 
-                                    <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
+                                    <!-- <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
                                         formControlName="ItemNameKit" placeholderText="Item Name (enter 2 char)"
                                         fxFlex="27%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
-
-
-                                    <!-- <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qtykit"
-                                        [formGroup]="IndentForm" placeholder="Qtykit" [(ngModel)]="vQtykit"
-                                        type="number"></airmid-textbox> -->
 
                                     <airmid-textbox fxFlex="15%" label="Qty" formControlName="Qtykit"
                                         (keypress)="keyPressAlphanumeric($event)" [formGroup]="IndentForm"
@@ -102,7 +97,7 @@
                                         <button class="btn btn-primary">
                                             <mat-icon>add</mat-icon>
                                         </button>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                             </form>

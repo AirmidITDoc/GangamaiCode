@@ -82,9 +82,10 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
     let frdate=this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
      let todate=this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
+     let status =this.IndentFrom.get("Status").value
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 20,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [
@@ -102,19 +103,19 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
         },
         {
           "fieldName": "From_Dt",
-          "fieldValue": "2024-01-01",
+          "fieldValue": frdate,
           "opType": "Equals"
 
         },
         {
           "fieldName": "To_Dt",
-          "fieldValue": "2025-08-21",
+          "fieldValue": todate,
           "opType": "Equals"
 
         },
         {
           "fieldName": "Status",
-          "fieldValue": "0",
+          "fieldValue": status,
           "opType": "Equals"
 
         }
@@ -131,8 +132,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data.data as IndentList[];
-
-      console.log(data);
+    console.log(data);
       this.dsIndentList.sort = this.sort;
       this.dsIndentList.paginator = this.paginator;
       this.sIsLoading = '';

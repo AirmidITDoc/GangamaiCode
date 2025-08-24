@@ -8,8 +8,6 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'OP-billing'"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 
                         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
                             <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8"
@@ -17,6 +15,9 @@
                                 <span>Indent List</span>
                             </button>
                         </div>
+                        <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
                         <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                                 matTooltip="Close">
@@ -27,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="content" fusePerfectScrollbar>
+        <div class="content">
             <div class="center p-10 pb-56" fxFlexAlign="start center">
 
                 <div class="content-card" style="border-radius:4px; ">
@@ -48,8 +49,8 @@
                                             (selectionChange)="selectChangeStore1($event)">
                                         </airmid-dropdown>
                                         <div style="padding-top: 10px;">
-                                            <mat-checkbox fxFlex="25%" [(ngModel)]="vAgainstIndet" [checked]
-                                                formControlName="AgainstIndent"
+                                            <mat-checkbox fxFlex [(ngModel)]="vAgainstIndet"
+                                                formControlName="AgainstIndent" [formGroup]="StoreFrom"
                                                 (change)="getAgainstIndet($event)">Against Indent
                                             </mat-checkbox>
                                         </div>
@@ -60,42 +61,42 @@
                                     <form [formGroup]="NewIssueGroup">
                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
 
-                                            <airmid-textbox fxFlex="10%" label="Barcode" formControlName="Barcode"
+                                            <airmid-textbox fxFlex="5%" label="Barcode" formControlName="Barcode"
                                                 [formGroup]="NewIssueGroup" placeholder="Barcode"
                                                 [(ngModel)]="vBarcode"></airmid-textbox>
 
                                             <airmid-autocomplete label="Item Name (enter 2 char)"
                                                 [formGroup]="NewIssueGroup" formControlName="ItemName"
-                                                placeholderText="Item Name (enter 2 char)" fxFlex="20%"
+                                                placeholderText="Item Name (enter 2 char)" fxFlex="25%"
                                                 ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                                 (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                                 ValueField="itemId"
                                                 (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
 
-                                            <airmid-textbox fxFlex="10%" label="BatchNO" formControlName="BatchNO"
+                                            <airmid-textbox fxFlex="8%" label="BatchNO" formControlName="BatchNO"
                                                 [formGroup]="NewIssueGroup" placeholder="BatchNO"
                                                 [(ngModel)]="vBatchNo"></airmid-textbox>
 
 
-                                            <airmid-textbox fxFlex="10%" label="BalanceQty" formControlName="BalanceQty"
+                                            <airmid-textbox fxFlex="8%" label="BalanceQty" formControlName="BalanceQty"
                                                 [formGroup]="NewIssueGroup" type="number" placeholder="BalanceQty"
                                                 [(ngModel)]="vBalanceQty"></airmid-textbox>
 
 
-                                            <airmid-textbox fxFlex="10%" label="Qty" formControlName="Qty"
+                                            <airmid-textbox fxFlex="8%" label="Qty" formControlName="Qty"
                                                 [(ngModel)]="vQty" (keypress)="keyPressAlphanumeric($event)"
                                                 [formGroup]="NewIssueGroup" (valueChange)="CalculateTotalAmt()"
                                                 [maxLength]="10">
                                             </airmid-textbox>
 
-                                            <airmid-textbox fxFlex="10%" label="UnitRate" formControlName="UnitRate"
+                                            <airmid-textbox fxFlex="8%" label="UnitRate" formControlName="UnitRate"
                                                 type="number" [formGroup]="NewIssueGroup" placeholder="UnitRate"
                                                 (valueChange)="CalculateTotalAmt()"
                                                 [(ngModel)]="vLandedRate"></airmid-textbox>
 
 
-                                            <airmid-textbox fxFlex="10%" label="TotalAmount" [readonly]="true"
+                                            <airmid-textbox fxFlex="12%" label="TotalAmount" [readonly]="true"
                                                 formControlName="TotalAmount" [formGroup]="NewIssueGroup"
                                                 placeholder="TotalAmount" [(ngModel)]="vTotalAmount"></airmid-textbox>
 
@@ -116,13 +117,11 @@
                             </div>
 
                         </div>
+                        <div class="center p-24 pb-56" fusePerfectScrollbar>
 
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                            <div fxFlex.gt-sm="100%" fxFlex>
-
-                                <div fxlayout="row">
-                                    <div fxFlex.gt-sm="74%" class="airmid-table-container">
-
+                            <div class="content-card">
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
+                                    <div fxFlex="80%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
                                         <mat-table #table class="airmid-table" matSort [dataSource]="dsNewIssueList3"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -168,7 +167,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                          
+
                                             <ng-container matColumnDef="Qty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                     class="w-100">Qty</mat-header-cell>
@@ -310,10 +309,10 @@
 
                                     </div>
                                 </div>
-                                <!-- </div> -->
-                            </div>
-                        </div>
 
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 

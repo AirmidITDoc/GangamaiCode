@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { IssueToDeparmentAgainstIndentComponent } from '../issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
 import { IssueToDepartmentService } from '../issue-to-department.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-issu-todept',
@@ -28,6 +29,12 @@ export class IssuTodeptComponent {
   NewIssueGroup: FormGroup;
   IssueFinalForm: FormGroup;
   StoreFrom: FormGroup;
+  FinalIssueForm: FormGroup;
+  IssueMainForm: FormGroup;
+  FinalIssueaginstForm: FormGroup;
+  dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
+  vsaveflag: boolean = true;
+
   displayedNewIssuesList1: string[] = [
     'ItemName',
     'Qty',
@@ -56,7 +63,7 @@ export class IssuTodeptComponent {
   isLoading = true;
 
   Charglist: any = [];
-  vIndentId: any=0;
+  vIndentId: any = 0;
   vIndtDetId: any;
   vFinalTotalAmount: any;
   vFinalNetAmount: any;
@@ -116,7 +123,8 @@ export class IssuTodeptComponent {
     , private commonService: PrintserviceService,
     public _dialogRef: MatDialogRef<IssuTodeptComponent>,
     private accountService: AuthenticationService,
-    private _loggedService: AuthenticationService,
+    private _formBuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
@@ -128,6 +136,16 @@ export class IssuTodeptComponent {
     this.IssueFinalForm.markAllAsTouched();
     this.StoreFrom.markAllAsTouched();
 
+    this.FinalIssueForm = this.IssueFrom()
+    this.FinalIssueaginstForm = this.IssueaganistFrom()
+    // this.IssueMainForm = this.createIssueForm();
+    this.deptArray.push(this.Depatdetailform());
+    this.stockArray.push(this.currentstockform());
+
+    this.deptArray1.push(this.Depatdetailform());
+    this.stockArray1.push(this.currentstockform());
+    this.indentdetailArray.push(this.indentdetailform());
+
     if (this.data) {
       console.log(this.data)
       this.dsNewIssueList1.data = this.data
@@ -135,9 +153,120 @@ export class IssuTodeptComponent {
 
   }
 
+  get deptArray(): FormArray {
+    return this.FinalIssueForm.get('issue.tIssueToDepartmentDetails') as FormArray;
+  }
 
-  dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
-  vsaveflag: boolean = true;
+  get stockArray(): FormArray {
+    return this.FinalIssueForm.get('tCurrentStock') as FormArray;
+  }
+
+    get deptArray1(): FormArray {
+    return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
+  }
+
+  get stockArray1(): FormArray {
+    return this.FinalIssueaginstForm.get('tCurStockModel') as FormArray;
+  }
+
+   get indentdetailArray(): FormArray {
+    return this.FinalIssueaginstForm.get('tIndentDetails') as FormArray;
+  }
+  IssueFrom() {
+    return this._formBuilder.group({
+      "issue": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "issueDate": [(new Date()).toISOString().split('T')[0]],
+        "issueTime": [(new Date()).toISOString()],
+        "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "isVerified": [false],
+        "isClosed": [false],
+        "tIssueToDepartmentDetails": this._formBuilder.array([]),
+      }),
+      tCurrentStock: this._formBuilder.array([]),
+    });
+  }
+
+  Depatdetailform(element: any = {}): FormGroup {
+    debugger
+    console.log(element)
+    return this._formBuilder.group({
+      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      batchNo: [element.BatchNo],
+      batchExpDate: [(new Date()).toISOString().split('T')[0]],
+      issueQty: "1",
+      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+  }
+  currentstockform(element: any = {}): FormGroup {
+    debugger
+    console.log(element)
+    return this._formBuilder.group({
+      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+    indentdetailform(element: any = {}): FormGroup {
+    debugger
+    console.log(element)
+    return this._formBuilder.group({
+      indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isClosed: [true],
+      indQty: [element.IndQty, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+
+  IssueaganistFrom() {
+    return this._formBuilder.group({
+      "updateIndent": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "issueDate": [(new Date()).toISOString().split('T')[0]],
+        "issueTime": [(new Date()).toISOString()],
+        "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "isVerified": [false],
+        "isClosed": [false],
+        "tIssueToDepartmentDetails": this._formBuilder.array([]),
+      }),
+      tCurStockModel: this._formBuilder.array([]),
+      "indentHeader": this._formBuilder.group({
+        "indentId": 0,
+        "isClosed": true
+      }),
+      tIndentDetails: this._formBuilder.array([]),
+    });
+  }
+  ItemSamelist: any = [];
+  BatchSamelist: any = [];
+  MRPSamelist: any = [];
   onAdd($event) {
 
     // if (this.vBarcode == 0) {
@@ -155,16 +284,24 @@ export class IssuTodeptComponent {
       });
       return;
     }
+    debugger
 
-    // this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId)
-    // if (this.ItemSamelist) {
-    //     if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
-    //         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    // }
+    // this.dsNewIssueList3.data.forEach((element) => {
+
+    //   if (element.ItemId == this.NewIssueGroup.get('ItemID').value.ItemId) {
+    //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //   }});
+    this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemName').value.itemId)
+    if (this.ItemSamelist) {
+      if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
+        this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
     // this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
     // if (this.BatchSamelist) {
     //     if (this.BatchSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
@@ -366,8 +503,8 @@ export class IssuTodeptComponent {
 
 
   OnSave() {
-console.log(this.vIndentId)
-     if ((!this.dsNewIssueList3.data.length)) {
+    console.log(this.vIndentId)
+    if ((!this.dsNewIssueList3.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -379,10 +516,10 @@ console.log(this.vIndentId)
       });
       return;
     }
-    
+
     if (!this.IssueFinalForm.invalid) {
       console.log(this.vIndentId)
-debugger
+      debugger
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
@@ -409,7 +546,7 @@ debugger
   }
   Isclosedchk: any;
   savebtn: boolean = false;
-  OnNewSave() {
+  OnNewSave1() {
 
     const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
 
@@ -442,23 +579,23 @@ debugger
         updateitemdetail['itemId'] = element.ItemId;
         updateitemdetail['issueQty'] = element.Qty;
         updateitemdetail['stkId'] = element.StockId;
-        updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+        updateitemdetail['storeID'] = this.accountService.currentUserValue.userId;
         updateissuetoDepartmentStock.push(updateitemdetail);
       });
 
       console.log(this.IssueFinalForm.value)
-          let submitData = {
+      let submitData = {
         issue: {
           "issueId": 0,
           "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-          "issueTime": this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-          "fromStoreId": this._loggedService.currentUserValue.user.storeId,
+          "issueTime": this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.time),
+          "fromStoreId": this.accountService.currentUserValue.userId,
           "toStoreId": this.StoreFrom.get('ToStoreId').value || 0,
           "totalAmount": this.IssueFinalForm.get('FinalTotalAmount').value || 0,
           "totalVatAmount": this.IssueFinalForm.get('GSTAmount').value || 0,
           "netAmount": this.IssueFinalForm.get('FinalNetAmount').value || 0,
           "remark": this.IssueFinalForm.get('Remark').value || '',
-          "addedby": this._loggedService.currentUserValue.user.id || 0,
+          "addedby": this.accountService.currentUserValue.userId || 0,
           "isVerified": false,
           "isClosed": false,
           "indentId": 0,
@@ -473,37 +610,82 @@ debugger
       this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
         this.toastr.success(response.message);
         console.log(response)
-      this.viewgetIssuetodeptReportPdf(response)
-          this._matDialog.closeAll();
-            });
+        this.viewgetIssuetodeptReportPdf(response)
+        this._matDialog.closeAll();
+      });
     }
   }
-  OnSaveAgaintIndent() {
+
+
+  OnNewSave() {
+
+    const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+
+    if (isChecked) {
+
+      this.deptArray.clear();
+      if (this.dsNewIssueList3.data.length === 0) {
+        this.toastr.warning('No data in the item list!', 'Warning');
+        return;
+      }
+
+      this.dsNewIssueList3.data.forEach(item => {
+        this.deptArray.push(this.Depatdetailform(item));
+      });
+
+      this.stockArray.clear();
+      this.dsNewIssueList3.data.forEach(item => {
+        this.stockArray.push(this.currentstockform(item));
+      });
+      debugger
+
+      this.FinalIssueForm.get("issue.issueId").setValue(0)
+      this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
+      this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+      this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+      this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+      this.FinalIssueForm.get("issue.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+      this.FinalIssueForm.get("issue.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+      this.FinalIssueForm.get("issue.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+      this.FinalIssueForm.get("issue.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+      this.FinalIssueForm.get("issue.isVerified").setValue(false)
+      this.FinalIssueForm.get("issue.isClosed").setValue(false)
+      this.FinalIssueForm.get("issue.indentId").setValue(0)
+
+      console.log(this.FinalIssueForm.value)
+      this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
+        this.viewgetIssuetodeptReportPdf(response)
+        this._matDialog.closeAll();
+      });
+    }
+  }
+
+  OnSaveAgaintIndent1() {
     debugger
     this.vsaveflag = true;
-      let isertItemdetailsObj = [];
-   
+    let isertItemdetailsObj = [];
+
     const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
       // this.savebtn = true;
       let insertheaderObj = {};
       insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-        insertheaderObj['issueTime'] = this.datePipe.transform(this.dateTimeObj.date, 'shortTime'),
-        insertheaderObj['fromStoreId'] = this._loggedService.currentUserValue.user.storeId
+        insertheaderObj['issueTime'] = this.datePipe.transform(this.dateTimeObj.time, 'shortTime'),
+        insertheaderObj['fromStoreId'] = this.accountService.currentUserValue.userId
       insertheaderObj['toStoreId'] = Number(this.vstoreId1) || 0; //changed by raksha
-      // insertheaderObj['toStoreId'] = this.NewIssueGroup.get('ToStoreId').value || 0;
       insertheaderObj['totalAmount'] = Number(this.IssueFinalForm.get('FinalTotalAmount').value) || 0;
       insertheaderObj['totalVatAmount'] = Number(this.IssueFinalForm.get('GSTAmount').value) || 0;
-      insertheaderObj['netAmount'] = Number(this.IssueFinalForm.get('FinalNetAmount').value)|| 0;
+      insertheaderObj['netAmount'] = Number(this.IssueFinalForm.get('FinalNetAmount').value) || 0;
       insertheaderObj['remark'] = this.IssueFinalForm.get('Remark').value || '';
-      insertheaderObj['addedby'] = this._loggedService.currentUserValue.user.id || 0;
+      insertheaderObj['addedby'] = this.accountService.currentUserValue.userId || 0;
       insertheaderObj['isVerified'] = false;
       insertheaderObj['isclosed'] = false;
       insertheaderObj['indentId'] = this.vIndentId;
       insertheaderObj['issueId'] = 0;
       insertheaderObj['tIssueToDepartmentDetails'] = isertItemdetailsObj;
 
-      // let isertItemdetailsObj = [];
+
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
 
@@ -532,7 +714,7 @@ debugger
         updateitemdetail['itemId'] = element.ItemId;
         updateitemdetail['issueQty'] = element.Qty;
         updateitemdetail['stkId'] = element.StockId;
-        updateitemdetail['storeID'] = this._loggedService.currentUserValue.user.storeId;
+        updateitemdetail['storeID'] = this.accountService.currentUserValue.userId
         updateissuetoDepartmentStock.push(updateitemdetail);
       });
 
@@ -560,23 +742,101 @@ debugger
       });
 
       let submitData = {
-        updateIndent:insertheaderObj,
+        updateIndent: insertheaderObj,
         // tIssueToDepartmentDetails: isertItemdetailsObj,
         tCurStockModel: updateissuetoDepartmentStock,
         indentHeader: update_IndentHeader_StatusObj,
-        tIndentDetails:updateIndentStatusIndentDetails
+        tIndentDetails: updateIndentStatusIndentDetails
       };
 
       console.log(submitData);
 
       this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-      this.viewgetIssuetodeptReportPdf(response)
-          this._matDialog.closeAll();
-            });
+        this.viewgetIssuetodeptReportPdf(response)
+        this._matDialog.closeAll();
+      });
     }
   }
-   viewgetIssuetodeptReportPdf(issueId) {
+
+  OnSaveAgaintIndent() {
+    debugger
+    this.vsaveflag = true;
+    let isertItemdetailsObj = [];
+
+    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+    if (isChecked) {
+    
+      this.deptArray1.clear();
+      if (this.dsNewIssueList3.data.length === 0) {
+        this.toastr.warning('No data in the item list!', 'Warning');
+        return;
+      }
+
+      this.dsNewIssueList3.data.forEach(item => {
+        this.deptArray1.push(this.Depatdetailform(item));
+      });
+
+      this.stockArray1.clear();
+      this.dsNewIssueList3.data.forEach(item => {
+        this.stockArray1.push(this.currentstockform(item));
+      });
+      debugger
+
+      this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
+      this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
+      this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+      this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+      this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+      this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
+      this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
+      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(0)
+
+
+
+      // let update_IndentHeader_StatusObj = {};
+      // update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
+      // update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
+
+       this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(0)
+      this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(false)
+
+      // let updateIndentStatusIndentDetails = [];
+      // this.dsNewIssueList3.data.forEach(element => {
+      //   debugger
+
+      //   let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+      //   if (balQty == 0) {
+      //     this.Isclosedchk = false;
+      //   } else {
+      //     this.Isclosedchk = true;
+      //   }
+      //   let updateIndentStatusIndentDetailsObj = {};
+      //   updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
+      //   updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
+      //   updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
+      //   updateIndentStatusIndentDetailsObj['indQty'] = balQty;
+      //   updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
+      // });
+
+        this.indentdetailArray.clear();
+      this.dsNewIssueList3.data.forEach(item => {
+        this.indentdetailArray.push(this.indentdetailform(item));
+      });
+
+      console.log(this.FinalIssueaginstForm.value)
+     
+      this._IssueToDep.IssuetodepAgaintIndetSave(this.FinalIssueaginstForm.value).subscribe(response => {
+        this.viewgetIssuetodeptReportPdf(response)
+        this._matDialog.closeAll();
+      });
+    }
+  }
+  viewgetIssuetodeptReportPdf(issueId) {
     this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
   }
 
@@ -658,9 +918,13 @@ debugger
       console.log('The dialog was closed - Insert Action', result);
       this.dsNewIssueList1.data = result;
       console.log(result)
-      if(result)
-      this.vIndentId = result[0].indentId;
-console.log(this.vIndentId)
+      if (result)
+        this.vIndentId = result[0].indentId;
+      console.log(this.vIndentId)
+      this.vAgainstIndet = true;
+debugger
+      // this.StoreFrom.get("AgainstIndent").setValue('1')
+      this.StoreFrom.get("AgainstIndent").setValue(true)
       // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
       // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
       // console.log(this.vIndentId)
@@ -680,7 +944,7 @@ console.log(this.vIndentId)
 
 
   AddIndentItem(contact) {
-    // debugger
+    debugger
     console.log(contact)
     this.vIndentId = contact.indentId;
     // this.Indentid = contact.indentId;
@@ -709,7 +973,7 @@ console.log(this.vIndentId)
 
       var m_data = {
         "ItemId": contact.itemId,
-        "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+        "StoreId": this.accountService.currentUserValue.userId || 0
       }
       this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
         console.log(draftdata)

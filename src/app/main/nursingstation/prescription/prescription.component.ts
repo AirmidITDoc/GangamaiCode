@@ -59,12 +59,13 @@ export class PrescriptionComponent implements OnInit {
     allColumns1 = [
 
         { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 190 },
-        { heading: "Admission Date", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 200 },//cant apply any date type
+        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 200 },//cant apply any date type
 
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-         { heading: "IPD NO", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-          { heading: "Doctor Name", key: "DoctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+         { heading: "IPD NO", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 }, 
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         
         { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -151,7 +152,8 @@ export class PrescriptionComponent implements OnInit {
     GetDetails1(data: any): void {
 
         console.log("detailList:", data)
-        let ipMedID = data.ipMedID;
+        let ipMedID = data.ippreId
+;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
