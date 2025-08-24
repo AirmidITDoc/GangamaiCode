@@ -11,6 +11,7 @@ import { DatePipe } from "@angular/common";
 import { FormGroup } from "@angular/forms";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
 import Swal from "sweetalert2";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
   selector: 'app-ot-request',
@@ -106,6 +107,7 @@ export class OTRequestComponent implements OnInit {
     public toastr: ToastrService, public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
+    private _loggedService: AuthenticationService,
   ) { }
 
   ngOnInit(): void { }
@@ -176,8 +178,9 @@ export class OTRequestComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
-          otbookingId: data.otBookingId,
-           reason: result.value
+            otbookingId: data.otBookingId,
+            reason: result.value,
+            isCancelledBy:this._loggedService.currentUserValue.userId
         };
         console.log(submitData);
         this._OtRequestService.OnCancel(submitData).subscribe((res) => {

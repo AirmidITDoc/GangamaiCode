@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemNameList } from '../grn-return-withoutgrn.component';
 import { GRNReturnWithoutGRNService } from '../grnreturn-without-grn.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
@@ -107,8 +107,8 @@ export class NewGRNReturnComponent implements OnInit {
         "grnid": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
-        "storeId": Number(this._loggedService.currentUserValue.user.storeId) || Number(this.vstoreId),
-        "supplierId": [Number(this.VsupplierId)],
+        "storeId":[Number(this._loggedService.currentUserValue.user.storeId),[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "supplierId": [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "totalAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
         "grnReturnAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
         "totalDiscAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -384,6 +384,13 @@ export class NewGRNReturnComponent implements OnInit {
   Savebtn: boolean = false;
   OnSave() {
     debugger
+      this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
+      this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
+      this.GrnReturnForm.get('grnReturn.grnReturnAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
+      this.GrnReturnForm.get('grnReturn.totalVatAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value)
+      this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
+      this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
+      this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
     if (!this.GrnReturnForm.invalid) {
       if ((!this.dsItemList.data.length)) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -419,13 +426,6 @@ export class NewGRNReturnComponent implements OnInit {
       this.dsItemList.data.forEach(item => {
         this.grnReturnQtyArray.push(this.createGrnReturnQtyInsert(item));
       });
-      this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
-      this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
-      this.GrnReturnForm.get('grnReturn.grnReturnAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
-      this.GrnReturnForm.get('grnReturn.totalVatAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value)
-      this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
-      this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
-      this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
 
       console.log(this.GrnReturnForm.value)
       this._GRNReturnService.GRNReturnSave(this.GrnReturnForm.value).subscribe(response => {
