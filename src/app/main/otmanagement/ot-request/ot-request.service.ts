@@ -31,7 +31,8 @@ export class OtRequestService {
             siteDescId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             otRequestDate: [new Date()],
-            otRequestTime: ['',Validators.required],
+            otRequestTime: ['',[Validators.required]],
+                // Validators.pattern(/^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i)
             opIpType: ["OP"],
             surgeryTypeId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

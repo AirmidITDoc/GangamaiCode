@@ -168,6 +168,12 @@
                     icon</mat-icon>
             </div>
         </ng-template>
+         <ng-template #actionsTemplate4 let-element>
+            <div>
+                <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.isConvertRequestForIp==true">
+                redo</mat-icon>
+            </div>
+        </ng-template>
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">

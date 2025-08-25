@@ -10,6 +10,7 @@ import { EmergencyList } from '../emergency.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-emergency-history',
@@ -29,8 +30,30 @@ export class EmergencyHistoryComponent {
   addExaminlist: any = [];
   languages: LanguageOption[] = [];
   selectedLang = 'en-US';
-  emergencyId:any;
-  retriveList:any=[];
+  emergencyId: any;
+  retriveList: any = [];
+  vTemp: any;
+  vSpO2: any;
+  vPulse: any;
+  vBMI: any;
+  vBP: any;
+  vBSL:any;
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '10rem',
+    minHeight: '10rem',
+    translate: 'yes',
+    placeholder: 'Enter text here...',
+    enableToolbar: true,
+    showToolbar: true,
+  };
+
+  onBlur(e: any) {
+    // this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
+  }
 
   constructor(
     public _EmergencyService: EmergencyService,
@@ -42,7 +65,7 @@ export class EmergencyHistoryComponent {
     private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public _frombuilder: UntypedFormBuilder,
-    public speechService: SpeechRecognitionService,  
+    public speechService: SpeechRecognitionService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -53,7 +76,7 @@ export class EmergencyHistoryComponent {
     this.historyForm.markAllAsTouched()
     if (this.data) {
       this.registerObj = this.data
-      this.emergencyId=this.registerObj.emgId
+      this.emergencyId = this.registerObj.emgId
       console.log("Data:", this.registerObj)
     }
     this.gethistory(this.registerObj);
@@ -65,28 +88,62 @@ export class EmergencyHistoryComponent {
 
   CreateMyForm() {
     return this._frombuilder.group({
-      emgHistoryId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      emgId:[0, [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      emgHistoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      emgId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
       height: ['', [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator()]],
       pweight: ['', [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bmi: ['', [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      bmi: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       bsl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       spO2: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       bp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
-      chiefComplaint:['',this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
-      diagnosis:['',this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
-      examination:['',this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
+      chiefComplaint: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
+      diagnosis: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
+      examination: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
       // mAssignChiefComplaint: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       // mAssignDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       // mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      advice:['']
+      advice: ['']
     })
   }
 
+    // showing color for vitals
+   getVitalColorClass(vital: string, value: any): string {
+    const num = parseFloat(value);
+    switch (vital) {
+      case 'BMI':
+        if (num < 18.5) return 'orange'; // Yellow
+        if (num <= 24.9) return 'green'; // Green
+        return 'red'; // Red
+  
+      case 'SpO2':
+        return num < 95 ? 'orange' : 'green';
+  
+      case 'Pulse':
+        if (num < 60) return 'orange';
+        if (num <= 100) return 'green';
+        return 'red';
+  
+      case 'BP':
+        if (!value || typeof value !== 'string' || !value.includes('/')) return '';
+        const [sys, dia] = value.split('/').map(Number);
+        if (sys < 90 || dia < 60) return 'orange';
+        if (sys > 120 || dia > 80) return 'red';
+        return 'green';
+  
+      case 'Temp':
+        if (num < 97) return 'orange';
+        if (num <= 99) return 'green';
+        return 'red';
+  
+      default:
+        return '';
+    }
+  }
+  
   gethistory(obj) {
     var m_data2 = {
       "first": 0,
@@ -113,16 +170,19 @@ export class EmergencyHistoryComponent {
           pweight: this.registerObj1.pweight,
           bmi: this.registerObj1.bmi,
           bsl: this.registerObj1.bsl,
-          spo2: this.registerObj1.spo2,
+          spO2: this.registerObj1.spO2,
           pulse: this.registerObj1.pulse,
           bp: this.registerObj1.bp,
-          temp: this.registerObj1.temp
+          temp: this.registerObj1.temp,
+          chiefComplaint: this.registerObj1.chiefComplaint,
+          diagnosis: this.registerObj1.diagnosis,
+          examination: this.registerObj1.examination
         });
       }
       console.log("History 0th record:", this.registerObj1);
     });
   }
-    
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -159,17 +219,17 @@ export class EmergencyHistoryComponent {
 
   onSave() {
     console.log(this.historyForm.value)
-    if(!this.historyForm.invalid){
+    if (!this.historyForm.invalid) {
       this.historyForm.get('emgHistoryId').setValue(this.registerObj1.emgHistoryId || 0)
       this.historyForm.get('emgId').setValue(this.emergencyId)
       this.historyForm.get('bmi').setValue(String(this.historyForm.get('bmi').value))
       console.log(this.historyForm.value)
-      this._EmergencyService.EmgHistorySave(this.historyForm.value).subscribe((res)=>{
+      this._EmergencyService.EmgHistorySave(this.historyForm.value).subscribe((res) => {
         this.OnViewReportPdf(res)
         this.onClose()
       })
 
-    }else {
+    } else {
       let invalidFields: string[] = [];
       if (this.historyForm.invalid) {
         for (const controlName in this.historyForm.controls) {
@@ -197,7 +257,7 @@ export class EmergencyHistoryComponent {
   }
 
   /////////////////////////////// advice part ///////////////////////////////
-   onLangChange() {
+  onLangChange() {
     if (this.speechService.isListening) {
       this.speechService.stopRecognition();
     }

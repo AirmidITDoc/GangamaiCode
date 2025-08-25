@@ -38,6 +38,7 @@ export class NewEmergencyComponent {
   autocompleteModeDepartment: string = "Department";
   autocompleteModeClass: string = "Class";
   autocompleteModetariff: string = "Tariff";
+  autocompleteModeRefDoctor: string = "RefDoctor";
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -184,6 +185,11 @@ export class NewEmergencyComponent {
       this.myForm.get('emgDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
       this.myForm.get('emgTime').setValue(this.dateTimeObj.time);
       this.myForm.get("DateOfBirth").setValue(this.datePipe.transform(this.myForm.get("DateOfBirth").value, "yyyy-MM-dd"));
+      if(this.registerObj?.emgId > 0){
+        this.myForm.removeControl('createdBy')
+      }else{
+        this.myForm.removeControl('modifiedBy')
+      }
       console.log(this.myForm.value)
       this._EmergencyService.EmgSaveUpdate(this.myForm.value).subscribe((res) => {
         this.OnViewReportPdf(res)
@@ -225,4 +231,84 @@ export class NewEmergencyComponent {
       return false;
     }
   }
+
+    prevResults: any[] = [];
+  filteredOptions: any[] = [];
+  resetFilteredOptions() {
+    this.filteredOptions = [];
+    this.prevResults = [];
+  }
+
+  debounceTimers: { [key: string]: any } = {};
+     handleInputChange(changedField: string): void {
+        // Get all current field values
+        const firstName = this.myForm.get('firstName').value?.trim() || '';
+        const lastName = this.myForm.get('lastName').value?.trim() || '';
+        const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
+
+        // If all fields are empty, clear everything
+        if (!firstName && !lastName && !mobileNo) {
+            this.resetFilteredOptions();
+            return;
+        }
+
+        // Count how many fields are filled
+        const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+        // If only one field is filled, and it's firstName or mobileNo, call API
+        if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
+            const keyword = firstName || mobileNo;
+            this._EmergencyService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                this.prevResults = results || [];
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            });
+            return;
+        }
+
+        // If only one field is filled, and it's lastName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'lastName') {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            return;
+        }
+
+        // If more than one field is filled, filter from prevResults
+        if (this.prevResults.length > 0) {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+        } else if (changedField === 'firstName' || changedField === 'mobileNo') {
+            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+            const keyword = this.myForm.get(changedField).value?.trim();
+            if (keyword) {
+                this._EmergencyService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+                    this.prevResults = results || [];
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                });
+            }
+        } else {
+            // If changedField is lastName and prevResults is empty, do nothing
+            this.filteredOptions = [];
+        }
+    }
+    // Helper function to filter results by all non-empty fields
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+        const { firstName, lastName, mobileNo } = fields;
+        return results.filter(item => {
+            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+        });
+    }
+    handleInputChangeDebounced(changedField: string): void {
+        // Clear any existing timer for this field
+        if (this.debounceTimers[changedField]) {
+            clearTimeout(this.debounceTimers[changedField]);
+        }
+        // Set a new timer
+        this.debounceTimers[changedField] = setTimeout(() => {
+            this.handleInputChange(changedField);
+        }, 300); // 300ms debounce
+    }
+    onSelectPatient(row: any) {
+        this.getSelectedObj(row);
+        this.resetFilteredOptions();
+    }
 }

@@ -172,7 +172,10 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>summaryLabel
                             </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill" floatLabel="never">
+                                <mat-checkbox [checked]="element.SummaryLabel!=''"
+                                    (change)="element.SummaryLabel = $event.checked ? '1' : ''">
+                                </mat-checkbox>
+                                <mat-form-field appearance="fill" floatLabel="never" *ngIf="element.SummaryLabel">
                                     <input matInput [maxLength]="50" [(ngModel)]="element.SummaryLabel" type="text">
                                 </mat-form-field>
                             </mat-cell>

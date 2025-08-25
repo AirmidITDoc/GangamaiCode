@@ -77,11 +77,13 @@ export class OtrequestlistComponent implements OnInit {
       sortField: "DoctorId",
       sortOrder: 0,
       filters: [
-        { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
         { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
         { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
         { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+
+        { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+
       ],
       row: 25
     }

@@ -6,11 +6,12 @@ import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
 
-import { FormGroup } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { NewReservationComponent } from "./new-reservation/new-reservation.component";
 import { OtReservationService } from "./ot-reservation.service";
 import { DatePipe } from "@angular/common";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Component({
     selector: 'app-ot-reservation',
@@ -23,6 +24,7 @@ export class OTReservationComponent implements OnInit {
     myFilterform: FormGroup
     msg: any;
     RequestName: any = "";
+tOtbookingRequestsForm:FormGroup;
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -30,7 +32,8 @@ export class OTReservationComponent implements OnInit {
     regNo: any = "0"
     LastName: any = ""
 
-
+votbookingId: any = ""
+registerobj: any;
     //   VBillcount = 0;
     // VOPtoIPcount = 0;
     // vIsDischarg = 0;
@@ -101,10 +104,32 @@ export class OTReservationComponent implements OnInit {
         public _OtReservationService: OtReservationService,
         public toastr: ToastrService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
+         private _FormvalidationserviceService: FormvalidationserviceService,
+                private _formBuilder: FormBuilder,
         public datePipe: DatePipe
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+
+        
+        this.myFilterform=this._OtReservationService.createReservationForm();
+        this.myFilterform.markAllAsTouched();
+
+        this.votbookingId = this.registerobj.otbookingId
+        
+        this.tOtbookingRequestsForm=this._OtReservationService.tOtbookingRequestsForm();
+       
+        this.requestArray.push(this.createRequestsForm());
+     }
+    createRequestsForm(item:any={}): FormGroup {
+  return this._formBuilder.group({
+    otbookingId: [this.votbookingId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    otrequestId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]]  // fixed as 1
+  });
+}
+     get requestArray(): FormArray {
+            return this.myFilterform.get('tOtbookingRequests') as FormArray;
+        }
 
     onChangeStartDate(value) {
         this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")

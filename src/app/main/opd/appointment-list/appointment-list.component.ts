@@ -106,27 +106,27 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        
-        debugger
+
+        // debugger
         this.GetAppointdetail()
-         if (this._ActRoute.url == '/opd/appointment') {
+        if (this._ActRoute.url == '/opd/appointment') {
             this.id = this.route.snapshot.queryParamMap.get('Id');
             this.mode = this.route.snapshot.queryParamMap.get('Mode');
-            if (this.mode == "Bill" && Number(this.id)>0) {
+            if (this.mode == "Bill" && Number(this.id) > 0) {
                 this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
             }
             this.IsShowGrid = true;
-         }
-          this.id = this.route.snapshot.queryParamMap.get('Id');
-          this.mode = this.route.snapshot.queryParamMap.get('Mode');
-          if (this.mode == "Bill" && Number(this.id)>0) {
-                this.gridConfig.filters.find(x => x.fieldName == "visitId").fieldValue = this.id;
-          }
-          this.IsShowGrid = true;
+        }
+        this.id = this.route.snapshot.queryParamMap.get('Id');
+        this.mode = this.route.snapshot.queryParamMap.get('Mode');
+        if (this.mode == "Bill" && Number(this.id) > 0) {
+            this.gridConfig.filters.find(x => x.fieldName == "visitId").fieldValue = this.id;
+        }
+        this.IsShowGrid = true;
     }
 
     handleNotificationEvent(data) {
-        if (this.mode == "Bill" && Number(this.id)>0) {
+        if (this.mode == "Bill" && Number(this.id) > 0) {
             this.OnBillPayment(data[0]);
         }
     }
@@ -148,6 +148,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate1;
         this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
+        this.gridConfig.columnsList.find(col => col.key === 'isConvertRequestForIp')!.template = this.actionsTemplate4;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -155,6 +156,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
+    @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -163,6 +165,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -331,8 +334,8 @@ export class AppointmentListComponent implements OnInit {
 
             });
         dialogRef.afterClosed().subscribe(result => {
-           that.grid.bindGridData();
-             this.GetAppointdetail()
+            that.grid.bindGridData();
+            this.GetAppointdetail()
         });
     }
 
@@ -358,6 +361,9 @@ export class AppointmentListComponent implements OnInit {
         }
         if (action === 'Update Consultant Doctor') {
             return element.mPbillNo !== '0';
+        }
+        if (action === 'Request For IP') {
+            return element.isConvertRequestForIp == true;
         }
         return false; // show all other menu items
     }
@@ -430,10 +436,13 @@ export class AppointmentListComponent implements OnInit {
                 confirmButtonText: "Yes"
             }).then((flag) => {
                 if (flag.isConfirmed) {
-                    // this._PhoneAppointListService.phoneMasterCancle(data.phoneAppId).subscribe((response: any) => {
-                    //     this.toastr.success(response.message);
-                    //     this.grid.bindGridData();
-                    // });
+                    let Convert = {
+                        "visitId": element.visitId,
+                        "isConvertRequestForIp": true
+                    }
+                    this._AppointmentlistService.converOPtoIP(Convert).subscribe((response: any) => {
+                        this.grid.bindGridData();
+                    });
                 }
             });
         }
@@ -458,7 +467,7 @@ export class AppointmentListComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-               this.GetAppointdetail()
+            this.GetAppointdetail()
         });
     }
     //  OnBill(row,m) {
@@ -495,8 +504,8 @@ export class AppointmentListComponent implements OnInit {
                 data: element
             });
         dialogRef.afterClosed().subscribe(result => {
-          that.grid.bindGridData();
-             this.GetAppointdetail()
+            that.grid.bindGridData();
+            this.GetAppointdetail()
         });
     }
 
@@ -702,14 +711,14 @@ export class AppointmentListComponent implements OnInit {
 
     GetAppointdetail() {
 
-  this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.Vtotalcount = 0;
         this.VNewcount = 0;
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-    //    debugger
+        //    debugger
         let data =
         {
             "first": 0,
@@ -782,8 +791,8 @@ export class AppointmentListComponent implements OnInit {
                 });
                 console.log(this.dataSource.data)
             }
-            });
-}
+        });
+    }
 
 
 }
@@ -813,8 +822,8 @@ export class VisitMaster1 {
     addedBy: any;
     updatedBy: any;
     doctorID: any;
-    crossConsulFlag:any;
-    mPbillNo:any;
+    crossConsulFlag: any;
+    mPbillNo: any;
     /**
      * Constructor
      *
@@ -843,10 +852,10 @@ export class VisitMaster1 {
             this.addedBy = VisitMaster1.addedBy || 0
             this.updatedBy = VisitMaster1.updatedBy || 0;
             this.doctorID = VisitMaster1.doctorID || 0;
-            this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0; 
-this.mPbillNo = VisitMaster1.mPbillNo || 0; 
-            
-            
+            this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
+            this.mPbillNo = VisitMaster1.mPbillNo || 0;
+
+
         }
     }
 

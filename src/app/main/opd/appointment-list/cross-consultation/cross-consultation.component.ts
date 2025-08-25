@@ -61,7 +61,6 @@ export class CrossConsultationComponent implements OnInit {
 
   createCrossConForm() {
     return this.formBuilder.group({
-      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       visitDate: "",
       visitTime: " ",
@@ -86,6 +85,7 @@ export class CrossConsultationComponent implements OnInit {
       phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       campId:0,
       crossConsultantDrId:0,
+      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 

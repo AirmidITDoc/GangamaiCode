@@ -182,8 +182,7 @@
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>OT request Time</mat-label>
-                                    <input matInput type="time" [formGroup]="requestForm"
-                                        formControlName="otRequestTime"
+                                    <input matInput type="time" formControlName="otRequestTime"
                                         (change)="onChangeTime($event)">
                                 </mat-form-field>
                             </div>

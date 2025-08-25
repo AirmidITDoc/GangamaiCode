@@ -19,6 +19,7 @@ import { EmergencyBillComponent } from './emergency-bill/emergency-bill.componen
 import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
 import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { MLCInformationComponent } from 'app/main/ipd/Admission/admission/mlcinformation/mlcinformation.component';
 
 @Component({
   selector: 'app-emergency',
@@ -36,16 +37,25 @@ export class EmergencyComponent implements OnInit {
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('oldNewTemplate') oldNewTemplate!: TemplateRef<any>;
   @ViewChild('after24Hr') after24Hr!: TemplateRef<any>;
+  @ViewChild('isConverted') isConverted!: TemplateRef<any>;
+  @ViewChild('ismlc') ismlc!: TemplateRef<any>;
   f_name: any = ""
   l_name: any = ""
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+  VEmgcount: any;
+  VOPcount: any;
+  VIPcount: any;
+  VBillcount: any;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'regId')!.template = this.oldNewTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isAfter24Hrs')!.template = this.after24Hr;
+    this.gridConfig.columnsList.find(col => col.key === 'isConverted')!.template = this.isConverted;
+    this.gridConfig.columnsList.find(col => col.key === 'isMlc')!.template = this.ismlc;
   }
 
   constructor(
@@ -62,20 +72,24 @@ export class EmergencyComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
-    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,width:30 },
-    { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA',width:40  },
-    { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6},
-    { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7},
-    { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' ,width:300},
+    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "isConverted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "IsMLC", key: "isMlc", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+    { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+    { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+    { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA',width:150 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA',width:200},
+    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "AttendingDocName", key: "attendingDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
@@ -249,16 +263,16 @@ export class EmergencyComponent implements OnInit {
   //   });
   // }
 
-getConvert(row) {
+  getConvert(row) {
     const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
     const showIPD = row.isAfter24Hrs == 1;
     Swal.fire({
       title: showIPD
-      ?`Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
-      :`Convert ${patientName} to IPD or OPD?`,
-        text: showIPD 
-      ? 'Only IPD conversion is available after 24 hours.' 
-      : 'Please choose the type you want to convert this patient to:',
+        ? `Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
+        : `Convert ${patientName} to IPD or OPD?`,
+      text: showIPD
+        ? 'Only IPD conversion is available after 24 hours.'
+        : 'Please choose the type you want to convert this patient to:',
       icon: 'question',
       showDenyButton: !showIPD,
       showCancelButton: true,
@@ -270,7 +284,7 @@ getConvert(row) {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        const dialogRef = this._matDialog.open(NewAdmissionComponent, {          
+        const dialogRef = this._matDialog.open(NewAdmissionComponent, {
           maxWidth: '95vw',
           width: '100%',
           height: '98vh',
@@ -307,7 +321,7 @@ getConvert(row) {
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag) => {
       if (flag.isConfirmed) {
-        let submitData = { "emgId": data.emgId }
+        let submitData = { "emgId": data.emgId, "isCancelledBy": this._loggedService.currentUserValue.userId }
         console.log(submitData);
         this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
           this.grid.bindGridData();
@@ -322,6 +336,23 @@ getConvert(row) {
 
   OnViewReportHistPdf(element: any) {
     this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrescription");
+  }
+
+  NewMLc(contact) {
+    const dialogRef = this._matDialog.open(MLCInformationComponent,
+      {
+        maxWidth: '85vw',
+        height: 'auto', width: '100%',
+        data: contact
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
+
+  getMLCdetailview(element) {
+    // this.commonService.Onprint("AdmissionID", element.admissionId, "IpMLCCasePaperPrint");
   }
 }
 
@@ -359,27 +390,30 @@ export class EmergencyList {
   classId: any;
   tariffid: any;
   classid: any;
-  tariffName:any;
-  genderName:any;
-  ageYear:any;
-  ageMonth:any;
-  ageDay:any;
-  patientName:any;
-  doctorName:any;
-  departmentName:any;
-  chiefComplaint:any;
-  diagnosis:any;
-  examination:any;
-  height:any;
-  pweight:any;
-  bmi:any;
-  bsl:any;
-  spo2:any;
-  pulse:any;
-  bp:any;
-  temp:any;
-  advice:any;
-  emgHistoryId:any;
+  tariffName: any;
+  genderName: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  patientName: any;
+  doctorName: any;
+  departmentName: any;
+  chiefComplaint: any;
+  diagnosis: any;
+  examination: any;
+  height: any;
+  pweight: any;
+  bmi: any;
+  bsl: any;
+  spo2: any;
+  pulse: any;
+  bp: any;
+  temp: any;
+  advice: any;
+  emgHistoryId: any;
+  attendingDoctorId: any;
+  refDoctorId: any;
+  spO2:any;
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;
@@ -434,6 +468,9 @@ export class EmergencyList {
       this.temp = EmergencyList.temp || ''
       this.advice = EmergencyList.advice || ''
       this.emgHistoryId = EmergencyList.emgHistoryId || 0
+      this.attendingDoctorId = EmergencyList.attendingDoctorId || 0
+      this.refDoctorId = EmergencyList.refDoctorId || 0
+      this.spO2 = EmergencyList.spO2 || 0
     }
   }
 }
