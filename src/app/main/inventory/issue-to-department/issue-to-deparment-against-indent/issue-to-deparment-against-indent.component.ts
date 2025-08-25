@@ -69,6 +69,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
   ngOnInit(): void {
     this.IndentFrom = this._IssueToDep.createIndentFrom()
+    this.getIndentList()
   }
 
   toggleSidebar(name): void {
@@ -79,7 +80,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   }
   getIndentList() {
     this.sIsLoading = 'loading-data';
-
+debugger
     let frdate=this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
      let todate=this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
      let status =this.IndentFrom.get("Status").value

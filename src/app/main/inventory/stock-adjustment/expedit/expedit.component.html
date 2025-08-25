@@ -1,0 +1,72 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Expiry Date Adjustment
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56">
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="Expform">
+                            <div fxLayout="row" style="font-size: large;font-weight: bold;">
+                                <label style="margin-bottom: 15px;">ItemName :</label>
+                                <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
+                            </div>
+
+
+                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Old Exp Date</mat-label>
+                                    <input name="OldexpDate" formControlName="OldexpDate" matInput required
+                                        [(ngModel)]="oldExpdate">
+                                </mat-form-field>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>New Exp Date</mat-label>
+                                    <input name="NewexpDate" formControlName="NewexpDate" matInput required>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex="40%">
+                                    <input matInput [matDatepicker]="validFromPicker" formControllName="NewexpDate"
+                                        placeholder="New Exp Date">
+                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #validFromPicker></mat-datepicker>
+                                </mat-form-field>
+
+
+
+                            </div>
+
+
+                        </form>
+
+                        <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
+                             <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

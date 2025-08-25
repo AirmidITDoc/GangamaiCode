@@ -23,6 +23,8 @@ export class StockAdjustmentService {
     this.userFormGroup = this.createUserForm();
     this.MRPAdjform = this.createMRPAdjForm();
     this.GSTAdjustment = this.createGSTForm();
+ this.MRPAdjform.markAllAsTouched();
+
   }
   CreateStoreFrom(){
     return this._formBuilder.group({
@@ -34,36 +36,43 @@ export class StockAdjustmentService {
   }
   createUserForm() {
     return this._formBuilder.group({
-      ItemID: [''],
+      ItemID:  [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       BatchEdit:[''],
       ExpDateEdit:['']
     });
   }
   createMRPAdjForm() {
     return this._formBuilder.group({
-      OldMRP:[''],
-      LandedRate:[''],
-      PurchaseRate:[''],
-      ConversionFactor:[''],
-      NewMRP:[''],
-      newLandedRate:[''],
-      NewPurchaseRate:[''],
+      OldMRP: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      LandedRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      PurchaseRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewMRP: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      newLandedRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewPurchaseRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
      // AddedDate:[new Date()],
     });
   }
   createGSTForm() {
     return this._formBuilder.group({
-      CGSTPer:[''],
-      SGSTPer:[''],
-      IGSTPer:[''],
-      NewCGSTPer:[''],
-      NewSGSTPer:[''],
-      NewIGSTPer:[''],
-      TotalGSTPer:[''],
-      OldTotalGSTPer:['']
+      CGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      SGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      IGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewCGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewSGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewIGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      TotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldTotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
    
+    createExpForm() {
+    return this._formBuilder.group({
+       NewexpDate:[new Date().toISOString()],
+       OldexpDate:[''],
+    });
+  }
+
   public getStockList(Param){//Retrieve_BatchNoForMrpAdj
     return this._httpClient1.PostData("StockAdjustment/ItemWiseStockList",Param);
   }

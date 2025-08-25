@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -34,7 +34,17 @@ export class IssuTodeptComponent {
   FinalIssueaginstForm: FormGroup;
   dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
   vsaveflag: boolean = true;
+  Isclosedchk: any;
+  savebtn: boolean = false;
 
+
+   Indentid: any;
+  indentdetid: any;
+  IsClosed: any;
+  IndQty: any;
+  RQty: any = 0;
+    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+  
   displayedNewIssuesList1: string[] = [
     'ItemName',
     'Qty',
@@ -161,7 +171,7 @@ export class IssuTodeptComponent {
     return this.FinalIssueForm.get('tCurrentStock') as FormArray;
   }
 
-    get deptArray1(): FormArray {
+  get deptArray1(): FormArray {
     return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
   }
 
@@ -169,7 +179,7 @@ export class IssuTodeptComponent {
     return this.FinalIssueaginstForm.get('tCurStockModel') as FormArray;
   }
 
-   get indentdetailArray(): FormArray {
+  get indentdetailArray(): FormArray {
     return this.FinalIssueaginstForm.get('tIndentDetails') as FormArray;
   }
   IssueFrom() {
@@ -226,7 +236,7 @@ export class IssuTodeptComponent {
     });
   }
 
-    indentdetailform(element: any = {}): FormGroup {
+  indentdetailform(element: any = {}): FormGroup {
     debugger
     console.log(element)
     return this._formBuilder.group({
@@ -390,6 +400,7 @@ export class IssuTodeptComponent {
     if (!(this.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
       this.vsaveflag = false;
     }
+
   }
 
   getBatch() {
@@ -432,6 +443,22 @@ export class IssuTodeptComponent {
       this.vUnitMRP = result.unitMRP;
       // this.vTotalAmount=  this.vQty * this.vLandedRate;
     });
+
+     setTimeout(() => {
+      const nativeElement = this.qtyTextboxRef?.nativeElement;
+      if (nativeElement) {
+        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+        if (inputEl) {
+          inputEl.focus();
+        }
+      }
+    }, 100);
+
+    // const itemNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    // if (itemNameElement) {
+    //   itemNameElement.focus();
+    // }
+
   }
 
 
@@ -499,6 +526,7 @@ export class IssuTodeptComponent {
     // if (this.BalanceQty > 0) {
     this.getBatch();
     // }
+    
   }
 
 
@@ -544,8 +572,7 @@ export class IssuTodeptComponent {
 
     }
   }
-  Isclosedchk: any;
-  savebtn: boolean = false;
+
   OnNewSave1() {
 
     const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
@@ -661,6 +688,64 @@ export class IssuTodeptComponent {
     }
   }
 
+
+
+  OnSaveAgaintIndent() {
+
+    this.vsaveflag = true;
+    let isertItemdetailsObj = [];
+
+    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+    if (isChecked) {
+
+      this.deptArray1.clear();
+      if (this.dsNewIssueList3.data.length === 0) {
+        this.toastr.warning('No data in the item list!', 'Warning');
+        return;
+      }
+
+      this.dsNewIssueList3.data.forEach(item => {
+        this.deptArray1.push(this.Depatdetailform(item));
+      });
+
+      this.stockArray1.clear();
+      this.dsNewIssueList3.data.forEach(item => {
+        this.stockArray1.push(this.currentstockform(item));
+      });
+      debugger
+
+      this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
+      this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
+      this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+      this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+      this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+      this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+      this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
+      this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
+      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(0)
+
+      this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(0)
+      this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(false)
+
+      this.indentdetailArray.clear();
+      this.dsNewIssueList3.data.forEach(item => {
+        this.indentdetailArray.push(this.indentdetailform(item));
+      });
+
+      console.log(this.FinalIssueaginstForm.value)
+
+      this._IssueToDep.IssuetodepAgaintIndetSave(this.FinalIssueaginstForm.value).subscribe(response => {
+        this.viewgetIssuetodeptReportPdf(response)
+        this._matDialog.closeAll();
+      });
+    }
+  }
+
+
   OnSaveAgaintIndent1() {
     debugger
     this.vsaveflag = true;
@@ -757,85 +842,6 @@ export class IssuTodeptComponent {
       });
     }
   }
-
-  OnSaveAgaintIndent() {
-    debugger
-    this.vsaveflag = true;
-    let isertItemdetailsObj = [];
-
-    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-    if (isChecked) {
-    
-      this.deptArray1.clear();
-      if (this.dsNewIssueList3.data.length === 0) {
-        this.toastr.warning('No data in the item list!', 'Warning');
-        return;
-      }
-
-      this.dsNewIssueList3.data.forEach(item => {
-        this.deptArray1.push(this.Depatdetailform(item));
-      });
-
-      this.stockArray1.clear();
-      this.dsNewIssueList3.data.forEach(item => {
-        this.stockArray1.push(this.currentstockform(item));
-      });
-      debugger
-
-      this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
-      this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
-      this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
-      this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
-      this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
-      this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
-      this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
-      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(0)
-
-
-
-      // let update_IndentHeader_StatusObj = {};
-      // update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
-      // update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
-
-       this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(0)
-      this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(false)
-
-      // let updateIndentStatusIndentDetails = [];
-      // this.dsNewIssueList3.data.forEach(element => {
-      //   debugger
-
-      //   let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
-      //   if (balQty == 0) {
-      //     this.Isclosedchk = false;
-      //   } else {
-      //     this.Isclosedchk = true;
-      //   }
-      //   let updateIndentStatusIndentDetailsObj = {};
-      //   updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
-      //   updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
-      //   updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
-      //   updateIndentStatusIndentDetailsObj['indQty'] = balQty;
-      //   updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
-      // });
-
-        this.indentdetailArray.clear();
-      this.dsNewIssueList3.data.forEach(item => {
-        this.indentdetailArray.push(this.indentdetailform(item));
-      });
-
-      console.log(this.FinalIssueaginstForm.value)
-     
-      this._IssueToDep.IssuetodepAgaintIndetSave(this.FinalIssueaginstForm.value).subscribe(response => {
-        this.viewgetIssuetodeptReportPdf(response)
-        this._matDialog.closeAll();
-      });
-    }
-  }
   viewgetIssuetodeptReportPdf(issueId) {
     this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
   }
@@ -921,10 +927,15 @@ export class IssuTodeptComponent {
       if (result)
         this.vIndentId = result[0].indentId;
       console.log(this.vIndentId)
+
+
       this.vAgainstIndet = true;
-debugger
+      debugger
       // this.StoreFrom.get("AgainstIndent").setValue('1')
       this.StoreFrom.get("AgainstIndent").setValue(true)
+
+
+
       // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
       // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
       // console.log(this.vIndentId)
@@ -1004,7 +1015,6 @@ debugger
               }
               else if (IndQty > element.balanceQty) {
                 this.QtyBalchk = 1;
-                //Swal.fire("For Item :" + element.ItemId + " adding the Balance Qty: ", element.BalanceQty)
                 this.getFinalCalculation(element, element.balanceQty);
                 ItemID = element.itemId;
               }
@@ -1014,17 +1024,20 @@ debugger
             } else {
               bal_qnt += element.balanceQty;
             }
+
+            const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+            if (QtyElement) {
+              QtyElement.focus();
+            }
+
+
           });
           Swal.fire("Balance Qty is :", String(bal_qnt))
         }
       });
     }
   }
-  Indentid: any;
-  indentdetid: any;
-  IsClosed: any;
-  IndQty: any;
-  RQty: any = 0;
+ 
   getFinalCalculation(contact, DraftQty) {
 
     console.log(contact)

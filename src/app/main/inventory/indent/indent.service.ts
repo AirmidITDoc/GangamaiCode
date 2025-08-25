@@ -37,7 +37,7 @@ export class IndentService {
   
   
   public InsertIndentSave(Param){
-   
+   debugger
     if (Param.indentId) {
       return this._httpClient1.PutData("Indent/Edit/" + Param.indentId, Param)
       } else return this._httpClient1.PostData("Indent/Insert", Param);

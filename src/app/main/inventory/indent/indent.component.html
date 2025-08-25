@@ -24,33 +24,35 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-              <ng-template #actionsTemplate2 let-element>
+            <ng-template #actionsTemplate2 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="!element.priority=='1'" matTooltip="Not Urgent" class="pill green-600 s-16">circle
-                    </mat-icon>
-                    <mat-icon *ngIf="element.priority=='1'" matTooltip="Is Urgent"
-                        class="pill red-600 s-16">circle
-                    </mat-icon>
-                </div>
 
+                    <mat-icon *ngIf="element.priority=='1'" matTooltip="Urgent" class="pill red-600 s-16">
+                    </mat-icon>
+
+                    <!-- <mat-icon *ngIf="element.priority=='true'" matTooltip="Urgent" class="pill red-600 s-16">
+                    </mat-icon> -->
+
+                </div>
             </ng-template>
 
             <ng-template #actionsTemplate1 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isverify=='1'" matTooltip="Verified" class="pill green-600 s-16">circle
+                    <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify" class="pill green-600 s-16">
                     </mat-icon>
-                    <mat-icon *ngIf="!element.isverify=='1'" matTooltip="NotVerified"
-                        class="pill red-600 s-16">circle
-                    </mat-icon>
-                </div>
 
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verified" class="pill red-600 s-16">
+                    </mat-icon>
+                    <!-- <ng-template #noMLC>
+                        <span>--</span>
+                    </ng-template> -->
+
+                </div>
             </ng-template>
 
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
-                        <mat-icon> print</mat-icon>
-                    </button>
+               
 
                     <button mat-icon-button matTooltip="Edit Indent" (click)="OnEdit(element)"
                         *ngIf="!element.isInchargeVerify">
@@ -59,6 +61,10 @@
 
                     <button *ngIf="!element.isInchargeVerify" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" title="verify Menu">verified_user</mat-icon>
+                    </button>
+
+                         <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
+                        <mat-icon> print</mat-icon>
                     </button>
 
                     <!-- <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="OnWhatsPoSend(element)">
@@ -95,7 +101,7 @@
                                 <div fxLayout="row" class="gap-4 ">
                                     <span style="font-weight: bold;">Status :</span>
                                     <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
-                                        formControlName="Status">
+                                        formControlName="Status" [formGroup]="IndentSearchGroup">
                                         Pending / Close
                                     </mat-slide-toggle>
                                 </div>

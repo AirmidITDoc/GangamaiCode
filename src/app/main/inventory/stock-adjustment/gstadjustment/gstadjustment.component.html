@@ -11,9 +11,12 @@
                 GST Adjustment
             </span>
         </div>
-        <button mat-icon-button (click)="onClose()" aria-label="Close dialog" style="margin-left: 510px;color: white;">
-            <mat-icon>close</mat-icon>
-        </button>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
     </mat-toolbar>
 
     <div class="content">
@@ -22,80 +25,115 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <form [formGroup]="_StockAdjustment.GSTAdjustment">
-                            <div fxLayout="row">
+                        <form [formGroup]="GSTAdjustment">
+                            <div fxLayout="row" style="font-size: large;font-weight: bold;">
                                 <label style="margin-bottom: 15px;">ItemName :</label>
                                 <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
                             </div>
 
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>CGSTPer</mat-label>
                                     <input name="CGSTPer" formControlName="CGSTPer" matInput required readonly
                                         (keyup.enter)="focusNext('SGSTPer')" [(ngModel)]="vCGSTPer" type="text"
                                         OnlyNUmber>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <airmid-textbox label="CGSTPer" formControlName="oldCgstper" [formGroup]="GSTAdjustment"
+                                    [validations]="getValidationMessages().CGSTPer" [value]="vCGSTPer"
+                                    [readonly]="true">
+                                </airmid-textbox>
+
+
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>SGSTPer</mat-label>
                                     <input name="SGSTPer" formControlName="SGSTPer" matInput required type="text"
                                         OnlyNUmber (keyup.enter)="focusNext('IGSTPer')" id="SGSTPer"
                                         [(ngModel)]="vSGSTPer" readonly>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <airmid-textbox label="SGSTPer" formControlName="oldSgstper" [formGroup]="GSTAdjustment"
+                                    [validations]="getValidationMessages().SGSTPer" [value]="vSGSTPer"
+                                    [readonly]="true">
+                                </airmid-textbox>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>IGSTPer</mat-label>
                                     <input name="IGSTPer" formControlName="IGSTPer" matInput required type="text"
                                         OnlyNUmber (keyup.enter)="focusNext('NewCGSTPer')" id="IGSTPer"
                                         [(ngModel)]="vIGSTPer" readonly>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <airmid-textbox label="IGSTPer" formControlName="oldIgstper" [formGroup]="GSTAdjustment"
+                                    [validations]="getValidationMessages().IGSTPer" [value]="vIGSTPer"
+                                    [readonly]="true">
+                                </airmid-textbox>
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New CGSTPer</mat-label>
                                     <input name="NewCGSTPer" formControlName="NewCGSTPer" type="text" OnlyNUmber
                                         matInput required (keyup.enter)="focusNext('NewSGSTPer')" id="NewCGSTPer"
                                         [(ngModel)]="vNewCGSTPer" (keyup)="calculationAmt()"
                                         (keypress)="keyPressCharater($event)">
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <airmid-textbox label="New CGSTPer" formControlName="cgstper"
+                                    [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
+                                    [value]="vNewCGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                </airmid-textbox>
+
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New SGSTPer</mat-label>
                                     <input name="NewSGSTPer" formControlName="NewSGSTPer" matInput required type="text"
                                         OnlyNUmber id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" (keyup)="calculationAmt()"
                                         (keyup.enter)="focusNext('NewIGSTPer')" (keypress)="keyPressCharater($event)">
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <airmid-textbox label="New SGSTPer" formControlName="sgstper"
+                                    [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
+                                    [value]="vNewSGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                </airmid-textbox>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New IGSTPer</mat-label>
                                     <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text"
                                         OnlyNUmber [(ngModel)]="vNewIGSTPer" id="NewIGSTPer" (keyup)="calculationAmt()"
                                         (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
-                                </mat-form-field>
+                                </mat-form-field> -->
+                                <airmid-textbox label="New IGSTPer" formControlName="igstper"
+                                    [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
+                                    [value]="vNewIGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                </airmid-textbox>
 
                             </div>
 
                             <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Old GSTPer</mat-label>
                                     <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required
                                         type="text" OnlyNUmber [(ngModel)]="vOldTotalGSTPer" id="OldTotalGSTPer">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
+                                </mat-form-field> -->
+                                <airmid-textbox label="Old GSTPer" formControlName="OldTotalGSTPer" [formGroup]="GSTAdjustment"
+                                    [validations]="getValidationMessages().OldTotalGSTPer" [value]="vOldTotalGSTPer" >
+                                </airmid-textbox>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New GSTPer</mat-label>
                                     <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required
                                         type="text" OnlyNUmber [(ngModel)]="vTotalGSTPer" id="TotalGSTPer">
-                                </mat-form-field>
-
+                                </mat-form-field> -->
+                                <airmid-textbox label="New GSTPer" formControlName="TotalGSTPer" [formGroup]="GSTAdjustment"
+                                    [validations]="getValidationMessages().TotalGSTPer" [value]="vTotalGSTPer" [readonly]="true">
+                                </airmid-textbox>
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
                                     fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
-                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+
                                     <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                 </div>
 
                             </div>

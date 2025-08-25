@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 import { StockAdjustmentService } from './stock-adjustment.service';
+import { ExpeditComponent } from './expedit/expedit.component';
 
 @Component({
     selector: 'app-stock-adjustment',
@@ -107,7 +108,7 @@ export class StockAdjustmentComponent implements OnInit {
             "filters": [
                 {
                     "fieldName": "StoreId",
-                    "fieldValue": "2",
+                    "fieldValue": String(this.accountService.currentUserValue.user.storeId),
                     "opType": "Equals"
                 },
                 {
@@ -179,9 +180,10 @@ OneditDate(contact) {
         this.vBatchEdit = contact.batchNo
         this.vExpDateEdit = contact.batchExpDate;
         this.vStockId = contact.stockId;
-        this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
+        this.vExpDateEdit=true
+        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-warning',
+        // });
     }
     OneditBatch(contact) {
         
@@ -195,51 +197,7 @@ OneditDate(contact) {
             toastClass: 'tostr-tost custom-toast-warning',
         });
     }
-    // onsaveStockAdj() {
-    //     let isCheckQty: any;
-    //     if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty != '')) {
-    //         this.OnSaveStockAdjustment();
-    //     }
-    //     else if (isCheckQty = this.dsStockAdjList.data.some(item => item.DeduQty < this.vBalQty || item.AddQty == '')) {
-    //         this.OnSaveStockAdjustment();
-    //     }
-    //     else {
-    //         this.toastr.warning('Please enter a Qty', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //     }
-    // }
-
-    // OnSaveStockAdjustment() {
-
-    //     if ((!this.dsStockAdjList.data.length)) {
-    //         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-
-    //     let submitData = {
-
-    //         "storeId": this.accountService.currentUserValue.storeId || 0,
-    //         "stkId": this.vStockId || 0,
-    //         "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
-    //         "batchNo": this.vBatchNo || '',
-    //         "adDdType": this.AddType,
-    //         "adDdQty": this.vQty || 0,
-    //         "preBalQty": this.vBalQty || 0,
-    //         "afterBalQty": this.vUpdatedQty || 0,
-    //         "addedBy": this.accountService.currentUserValue.userId || 0,
-    //         "stockAdgId": 0
-    //     }
-
-    //     console.log(submitData);
-    //     this._StockAdjustmentService.StockAdjSave(submitData).subscribe(response => {
-    //         this.toastr.success(response.message);
-    //         this._matDialog.closeAll();
-
-    //     });
-    // }
+  
     resetFormItem() {
 
     }
@@ -279,15 +237,15 @@ debugger
         this.vBatchEdit = contact.batchEdit;
         this.vExpDateEdit = contact.expDateEdit;
         this.vStockId = contact.stockId;
-        this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
+        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-warning',
+        // });
     }
 
 
       calculateLastDay(event) {
             const inputDate =event.expDateEdit
-          
+           this.OneditDate(event)
                 const numericPattern = /^[0-9]+$/; 
                 const CurrentDate = new Date(); 
                 const Currentmonths = new Date(); 
@@ -354,6 +312,7 @@ debugger
         
         }
     OnSaveBatchAdj(){
+        debugger
     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
     if(!chkExpDate){
       if(this.vExpDateEdit){
@@ -370,18 +329,18 @@ debugger
     }
   }
     Lastbatch: string = '';
-    OnSaveBatch() {
-        const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
-        if (this.vBatchEdit) {
-            this.OnSaveBatchAdjustment();
-        }
-        else {
-            this.toastr.warning('Please enter BatchNo', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-        }
+    // OnSaveBatch() {
+    //     const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
+    //     if (this.vBatchEdit) {
+    //         this.OnSaveBatchAdjustment();
+    //     }
+    //     else {
+    //         this.toastr.warning('Please enter BatchNo', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //     }
 
-    }
+    // }
 
     OnSaveBatchAdjustment() {
         debugger
@@ -416,7 +375,6 @@ debugger
             }
             console.log(submitData);
             this._StockAdjustmentService.BatchAdjSave(submitData).subscribe(response => {
-                // this.toastr.success(response.message);
                 this._matDialog.closeAll();
                 this.dsStockAdjList.data=[];
             });
@@ -427,7 +385,7 @@ debugger
         const dialogRef = this._matDialog.open(MRPAdjustmentComponent,
             {
                 maxWidth: "100%",
-                height: '45%',
+                height: '50%',
                 width: '50%',
                 data: {
                     Obj: contact,
@@ -441,6 +399,23 @@ debugger
     EditGST(contact) {
         console.log(contact)
         const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
+            {
+                maxWidth: "100%",
+                height: '55%',
+                width: '50%',
+                data: {
+                    Obj: contact,
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.getStockList();
+        });
+    }
+
+     EditExpDate(contact) {
+        console.log(contact)
+        const dialogRef = this._matDialog.open(ExpeditComponent,
             {
                 maxWidth: "100%",
                 height: '50%',
@@ -509,6 +484,9 @@ debugger
         this.StoreFrom.get('batchEdit').setValue('')
         this.getStockList();
     }
+
+
+  
 
 }
 

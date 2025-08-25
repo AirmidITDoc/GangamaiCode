@@ -72,11 +72,11 @@ export class IssueToDepartmentComponent implements OnInit {
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
-        { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
-        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
-        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+        { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+        { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         //  { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         // { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -246,7 +246,6 @@ export class IssueToDepartmentComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
-
         });
     }
 

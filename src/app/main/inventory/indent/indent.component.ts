@@ -47,27 +47,29 @@ export class IndentComponent implements OnInit {
      @ViewChild('grid1') grid1: AirmidTableComponent;
    
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
 
 
     ngAfterViewInit() {
         
         this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.actionsTemplate1;
-          this.gridConfig.columnsList.find(col => col.key === 'isUrgent')!.template = this.actionsTemplate1;
+          this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
       
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
        
       }
 
     allcolumns = [
-
-        { heading: "-", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA'},
-        { heading: "-", key: "isUrgent", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA' },
-        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+         { heading: "status", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+         
+     
+        { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA',type:6, width: 150 },
-        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 20 },
+        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
              heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
              template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -97,7 +99,7 @@ export class IndentComponent implements OnInit {
             apiUrl: "Indent/IndentDetailsList",
             columnsList:[
                 { heading: "Item", key: "itemId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width:200 },
                 { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Issue QTY", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Pending QTY", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
@@ -234,12 +236,9 @@ debugger
 
     };
    this._IndentService.getVerifyIndent(submitData).subscribe(response => {
-      this.toastr.success(response);
-      if (response) {
-        this.commonService.Onprint("IndentId", row.indentId, "IndentwiseReport");
+     this.commonService.Onprint("IndentId", row.indentId, "IndentwiseReport");
         this.onChangeFirst(event);
-       }
- 
+        
      });
   }
     viewgetIndentReportPdf(contact) {

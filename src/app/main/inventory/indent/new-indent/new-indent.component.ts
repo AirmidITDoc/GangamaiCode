@@ -31,7 +31,7 @@ export class NewIndentComponent implements OnInit {
   ];
 
   vsaveflag: boolean = true;
-  Status: boolean = false;
+  // Status: boolean = false;
   showAutocomplete = false;
   vprintflag: boolean = false;
   vItemId: any;
@@ -46,7 +46,7 @@ export class NewIndentComponent implements OnInit {
   registerObj: any;
   ItemID = 0;
   dateTimeObj: any;
-
+  status: any;
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -82,6 +82,13 @@ export class NewIndentComponent implements OnInit {
       console.log(this.registerObj);
       this.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.StoreFrom.get("comments").setValue(this.registerObj.remarks)
+
+      if (this.registerObj.priority)
+        this.status = "1"
+      else
+        this.status = "0"
+      debugger
+      this.StoreFrom.get('priority').setValue(this.status)
       this.getupdateIndentList(this.registerObj.indentId);
     }
 
@@ -103,20 +110,20 @@ export class NewIndentComponent implements OnInit {
       isverify: false,
       isclosed: false,
       comments: "",
-        priority: [true],
+      priority: ['0'],
       tIndentDetails: this._formBuilder.array([]),
     });
   }
 
   createdetailInsert(element: any = {}): FormGroup {
-    debugger
+
     return this._formBuilder.group({
       indentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isclosed: [false],
       indQty: [element.Qty | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issQty: [0]    
+      issQty: [0]
 
     });
   }
@@ -164,6 +171,11 @@ export class NewIndentComponent implements OnInit {
 
     this.IndentForm.get('ItemName').reset('');
     this.IndentForm.get('Qty').reset('');
+  }
+
+  setpriority(event){
+    console.log(event)
+    this.status=event.value
   }
 
   deleteTableRow(element) {
@@ -220,7 +232,7 @@ export class NewIndentComponent implements OnInit {
 
       this.dsIndentNameList.data = data.data as IndentNameList[];
       this.chargeslist = data.data as IndentNameList[];
-      debugger
+
       this.dsIndentNameList.data.forEach(element => {
         console.log(element)
         element.indentId = element.indentId,
@@ -237,7 +249,7 @@ export class NewIndentComponent implements OnInit {
     console.log(this.dsIndentNameList)
   }
   OnSave() {
-    debugger
+
     if ((!this.dsIndentNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -271,12 +283,16 @@ export class NewIndentComponent implements OnInit {
       this.IndentdetailArray.push(this.createdetailInsert(item));
     });
 
+    debugger
+    if (this.status=="1")
+      this.StoreFrom.get('priority').setValue(true)
+    else
+      this.StoreFrom.get('priority').setValue(false)
 
-    console.log(this.StoreFrom.value)
     if (!this.StoreFrom.invalid) {
       this.StoreFrom.get("indentId").setValue(this.IndentId)
-      // this.StoreFrom.get("tIndentDetails").setValue(InsertIndentDetObj)
-
+      console.log(this.StoreFrom.value)
+      
       this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
         this.viewgetIndentReportPdf(response)
         this._matDialog.closeAll();
