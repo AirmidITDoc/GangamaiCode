@@ -123,8 +123,8 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Weight</mat-label>
-                                            <input matInput formControlName="pweight" placeholder="Weight in Kg" required
-                                                [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
+                                            <input matInput formControlName="pweight" placeholder="Weight in Kg"
+                                                required [maxLength]="20" OnlyNumber (keyup)="getBMIcalculation()"
                                                 (keypress)="keyPressCharater($event)">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">kg</span>
@@ -132,25 +132,28 @@
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BMI</mat-label>
-                                            <input matInput formControlName="bmi" placeholder="BMI" readonly>
+                                            <input matInput formControlName="bmi" placeholder="BMI" readonly [(ngModel)]="vBMI"
+                                            [style.color]="getVitalColorClass('BMI', vBMI)" [style.fontWeight]="'500'">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BSL</mat-label>
                                             <input matInput formControlName="bsl" placeholder="BSL" [maxLength]="20"
-                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                                OnlyNumber (keypress)="keyPressCharater($event)" [(ngModel)]="vBSL">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>SpO2</mat-label>
                                             <input matInput formControlName="spO2" placeholder="SpO2" [maxLength]="20"
-                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                                OnlyNumber (keypress)="keyPressCharater($event)" [style.color]="getVitalColorClass('SpO2', vSpO2)"
+                                                [style.fontWeight]="'500'" [(ngModel)]="vSpO2">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Pulse</mat-label>
                                             <input matInput formControlName="pulse" placeholder="Pulse" [maxLength]="10"
-                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                                OnlyNumber (keypress)="keyPressCharater($event)" [style.color]="getVitalColorClass('Pulse', vPulse)"
+                                                [style.fontWeight]="'500'" [(ngModel)]="vPulse">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">bpm</span>
                                         </mat-form-field>
@@ -158,7 +161,8 @@
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>BP</mat-label>
                                             <input matInput formControlName="bp" placeholder="BP" [maxLength]="10"
-                                                OnlyNumber (keypress)="keyPressOk($event)">
+                                                OnlyNumber (keypress)="keyPressOk($event)" [style.color]="getVitalColorClass('BP', vBP)"
+                                                [style.fontWeight]="'500'" placeholder="Enter as 120/80" [(ngModel)]="vBP">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">mmHg</span>
                                         </mat-form-field>
@@ -166,7 +170,8 @@
                                         <mat-form-field appearance="outline" fxFlex="11%">
                                             <mat-label>Temp</mat-label>
                                             <input matInput formControlName="temp" placeholder="Temp" [maxLength]="10"
-                                                OnlyNumber (keypress)="keyPressCharater($event)">
+                                                OnlyNumber (keypress)="keyPressCharater($event)" [style.color]="getVitalColorClass('Temp', vTemp)"
+                                                [style.fontWeight]="'500'" [(ngModel)]="vTemp">
                                             <span matSuffix style="font-size: x-large;">|</span>
                                             <span matSuffix style="margin-right: 10px; font-size: x-large;">F</span>
                                         </mat-form-field>
@@ -178,8 +183,15 @@
                                                 Chief Complaints
                                             </span>
                                             <hr>
-                                            <airmid-textbox label="Chief Complaints" formControlName="chiefComplaint" [value]="registerObj1?.chiefComplaint" [formGroup]="historyForm">
-                                            </airmid-textbox>
+                                            <!-- <airmid-textbox label="Chief Complaints" formControlName="chiefComplaint" [value]="registerObj1?.chiefComplaint" [formGroup]="historyForm">
+                                            </airmid-textbox> -->
+                                            <!-- <airmid-editor label="Chief Complaints"
+                                                formControlName="chiefComplaint"
+                                                [formGroup]="historyForm">
+                                            </airmid-editor> -->
+                                            <angular-editor [config]="editorConfig" formControlName="chiefComplaint"
+                                                (blur)="onBlur($event)">
+                                            </angular-editor>
                                         </div>
 
                                         <div style="margin-bottom: 16px;" fxLayout="column">
@@ -187,8 +199,12 @@
                                                 Diagnosis
                                             </span>
                                             <hr>
-                                            <airmid-textbox label="Diagnosis" formControlName="diagnosis" [value]="registerObj1?.diagnosis" [formGroup]="historyForm">
-                                            </airmid-textbox>
+                                            <!-- <airmid-textbox label="Diagnosis" formControlName="diagnosis"
+                                                [value]="registerObj1?.diagnosis" [formGroup]="historyForm">
+                                            </airmid-textbox> -->                                            
+                                            <angular-editor [config]="editorConfig" formControlName="diagnosis"
+                                                (blur)="onBlur($event)" >
+                                            </angular-editor>
                                         </div>
 
                                         <div style="margin-bottom: 16px;" fxLayout="column">
@@ -196,8 +212,12 @@
                                                 Examination
                                             </span>
                                             <hr>
-                                            <airmid-textbox label="Examination" formControlName="examination" [value]="registerObj1?.examination" [formGroup]="historyForm">
-                                            </airmid-textbox>
+                                            <!-- <airmid-textbox label="Examination" formControlName="examination"
+                                                [value]="registerObj1?.examination" [formGroup]="historyForm">
+                                            </airmid-textbox> -->
+                                            <angular-editor [config]="editorConfig" formControlName="examination"
+                                                (blur)="onBlur($event)" >
+                                            </angular-editor>
                                         </div>
 
                                     </div>
@@ -261,13 +281,14 @@
                                 <form [formGroup]="historyForm" fxFlex>
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Advice</mat-label>
-                                        <textarea rows="1" formControlName="advice" placeholder="Advice"
-                                            matInput [value]="registerObj1.advice"></textarea>
+                                        <textarea rows="1" formControlName="advice" placeholder="Advice" matInput
+                                            [value]="registerObj1.advice"></textarea>
 
                                         <!-- 🎤 Mic button -->
                                         <button mat-icon-button matSuffix (click)="onMicToggle()"
                                             [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                                            <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                                            <i
+                                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
                                         </button>
                                     </mat-form-field>
                                 </form>

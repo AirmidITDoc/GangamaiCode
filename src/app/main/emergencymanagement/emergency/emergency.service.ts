@@ -6,6 +6,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { first } from 'lodash';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -56,10 +57,11 @@ export class EmergencyService {
       emgId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       classId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // extra fields
-      // PinNo: ['',[Validators.maxLength(6)]],
-      // PhoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      // dateofBirth: [new Date()],
+      refDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      attendingDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      IsMlc: [false],
+      createdBy:this.accountService.currentUserValue.userId,
+      modifiedBy:this.accountService.currentUserValue.userId,
     })
   }
 
@@ -152,4 +154,8 @@ export class EmergencyService {
   } 
     return this._httpClient.PostData("IPBill/IPBilllCreditInsert",employee)
   }
+
+   public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+          return this._httpClient.GetData(apiUrl + inputValue);
+      }
 }

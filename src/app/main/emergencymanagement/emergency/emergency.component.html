@@ -16,6 +16,35 @@
         </div>
     </div>
 
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
+        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                <!-- New Admissions -->
+                <div class="dashboard-card emg">
+                    <div class="card-label">New Emergency</div>
+                    <div class="card-value">{{VEmgcount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+                <!-- Admissions New/Follow-up -->
+                <div class="dashboard-card emg-split">
+                    <div class="card-label">Total Emergency</div>
+                    <div class="card-value">
+                        <div>OP {{VOPcount}}</div>
+                        <div>IP {{VIPcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                <!-- Bills -->
+                <div class="dashboard-card bills">
+                    <div class="card-label">Total BillGenerated</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-icon-button matTooltip="Edit Emergency" (click)="newEmergency(element)"
@@ -79,6 +108,26 @@
             <mat-icon style="border-radius:100% ;" *ngIf="element.isAfter24Hrs==1" matTooltip="24hrs Completed">
                 <img width="20px" height="20px" src="assets/images/logos/alarm.png">  
             </mat-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #isConverted let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isConverted==1" matTooltip="Patient Converted">
+                redo  
+            </mat-icon>
+        </div>
+    </ng-template>
+
+     <ng-template #ismlc let-element>
+        <div>
+            <button mat-icon-button *ngIf="element.isMlc==true; " matTooltip="IsMLC" (click)="NewMLc(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="element.isMlc==true;" matTooltip="Print MLC paper"
+                (click)="getMLCdetailview(element)">
+                <mat-icon>print</mat-icon>
+            </button>
         </div>
     </ng-template>
 

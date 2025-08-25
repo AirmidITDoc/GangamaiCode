@@ -26,201 +26,294 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container detail-wrapper">
-            <div fxLayout="column" fxLayoutGap="8px">
-                <!-- Search section -->
-                <div class="detail-container input-error-hidden">
-                    <form [formGroup]="myForm">
-                        <mat-card>
-                            <mat-card-content>
+            <mat-drawer-container class="main-container h-100-p">
+                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)">
+                    <div fxLayout="column" fxLayoutGap="8px">
+                        <!-- Search section -->
+                        <div class="detail-container input-error-hidden">
+                            <form [formGroup]="myForm">
+                                <mat-card>
+                                    <mat-card-content>
 
-                                <div fxLayout="row" fxLayout.sm="column" class="gap-16"
-                                    fxLayoutAlign="start center center">
+                                        <div fxLayout="row" fxLayout.sm="column" class="gap-16"
+                                            fxLayoutAlign="start center center">
 
-                                    <div class="input-container gap-8" fxFlex="40%">
+                                            <div class="input-container gap-8" fxFlex="40%">
 
-                                        <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-                                            [formGroup]="myForm" formControlName="regId"
-                                            placeholderText="RegNo/Patient Name/Mobile No"
-                                            ApiUrl="OutPatient/auto-complete?Keyword="
-                                            (selectionChange)="getSelectedObj($event)">
-                                        </airmid-autocomplete>
+                                                <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
+                                                    [formGroup]="myForm" formControlName="regId"
+                                                    placeholderText="RegNo/Patient Name/Mobile No"
+                                                    ApiUrl="OutPatient/auto-complete?Keyword="
+                                                    (selectionChange)="getSelectedObj($event)">
+                                                </airmid-autocomplete>
 
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </form>
-                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </form>
+                        </div>
 
-                <div class="detail-container">
-                    <form [formGroup]="myForm">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="detail-header">
-                                    Personal Details
-                                </div>
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div class="detail-container">
+                            <form [formGroup]="myForm">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <div class="detail-header">
+                                            Personal Details
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Prefix" formControlName="prefixId"
-                                            [formGroup]="myForm" ValueField="prefixId" TextField="prefixName" [value]="registerObj?.prefixId" 
-                                            (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
-                                         </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Prefix" formControlName="prefixId"
+                                                    [formGroup]="myForm" ValueField="prefixId" TextField="prefixName"
+                                                    [value]="registerObj?.prefixId"
+                                                    (selectionChange)="onChangePrefix($event)"
+                                                    ApiUrl="Prefix/get-prefixs">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="First Name" formControlName="firstName"
-                                            [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.firstName">
-                                        </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="First Name" formControlName="firstName"
+                                                    [formGroup]="myForm" [maxLength]="50"
+                                                    [value]="registerObj?.firstName"
+                                                    (valueChange)="handleInputChangeDebounced('firstName')">
+                                                </airmid-textbox>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Middle Name" formControlName="middleName"
-                                            [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.middleName" >
-                                        </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Middle Name" formControlName="middleName"
+                                                    [formGroup]="myForm" [maxLength]="50"
+                                                    [value]="registerObj?.middleName">
+                                                </airmid-textbox>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Last Name" formControlName="lastName"
-                                            [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.lastName">
-                                        </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Last Name" formControlName="lastName"
+                                                    [formGroup]="myForm" [maxLength]="50"
+                                                    [value]="registerObj?.lastName"
+                                                    (valueChange)="handleInputChangeDebounced('lastName')">
+                                                </airmid-textbox>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                         <airmid-dropdown label="Gender" formControlName="genderId"
-                                            [formGroup]="myForm" [value]="registerObj?.genderId"
-                                             #ddlGender [readonly]="true" [mode]="autocompleteModegender">
-                                         </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Gender" formControlName="genderId"
+                                                    [formGroup]="myForm" [value]="registerObj?.genderId" #ddlGender
+                                                    [readonly]="true" [mode]="autocompleteModegender">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="myForm"
-                                            formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
-                                            (dateChange)="chkChange()"></app-airmid-dateofbirth>
-                                    </div>
+                                            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="67%">
+                                                <app-airmid-dateofbirth [formGroup]="myForm"
+                                                    formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"
+                                                    dateStyle="Year"
+                                                    (dateChange)="chkChange()"></app-airmid-dateofbirth>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Address" formControlName="address" [formGroup]="myForm" [value]="registerObj?.address">
-                                         </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Address" formControlName="address"
+                                                    [formGroup]="myForm" [value]="registerObj?.address">
+                                                </airmid-textbox>
+                                            </div>
 
-                                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="PinNo" formControlName="PinNo" (keypress)="keyPressAlphanumeric($event)"
                                             [formGroup]="myForm" [maxLength]="6" [value]="registerObj?.pinNo">
                                          </airmid-textbox>
                                     </div> -->
 
-                                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="City" formControlName="cityId" [formGroup]="myForm" 
-                                            ValueField="cityId" TextField="cityName" [value]="registerObj?.cityId"
-                                             (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="City" formControlName="cityId"
+                                                    [formGroup]="myForm" ValueField="cityId" TextField="cityName"
+                                                    [value]="registerObj?.cityId"
+                                                    (selectionChange)="onChangecity($event)"
+                                                    ApiUrl="CityMaster/get-cities">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">                                                                                
-                                        <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="myForm"
-                                        ValueField="stateId" TextField="stateName" #ddlState [value]="registerObj?.stateId"
-                                          ApiUrl="StateMaster/get-state" [readonly]="true">
-                                       </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="StateId" formControlName="StateId"
+                                                    [formGroup]="myForm" ValueField="stateId" TextField="stateName"
+                                                    #ddlState [value]="registerObj?.stateId"
+                                                    ApiUrl="StateMaster/get-state" [readonly]="true">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Country" formControlName="CountryId"
-                                            [formGroup]="myForm"  [value]="registerObj?.countryId"
-                                            [disabled]="true" #ddlCountry [mode]="autocompleteModecountry" [readonly]="true"> 
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Country" formControlName="CountryId"
+                                                    [formGroup]="myForm" [value]="registerObj?.countryId"
+                                                    [disabled]="true" #ddlCountry [mode]="autocompleteModecountry"
+                                                    [readonly]="true">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="MobileNo" formControlName="mobileNo" (keypress)="keyPressAlphanumeric($event)"
-                                            [formGroup]="myForm" [maxLength]="10" [value]="registerObj?.mobileNo">
-                                        </airmid-textbox>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                                    (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
+                                                    [maxLength]="10" [value]="registerObj?.mobileNo"
+                                                    (valueChange)="handleInputChangeDebounced('mobileNo')">
+                                                </airmid-textbox>
+                                            </div>
 
-                                    <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-textbox label="PhoneNo" formControlName="PhoneNo" (keypress)="keyPressAlphanumeric($event)"
                                             [formGroup]="myForm" [maxLength]="10" [value]="registerObj?.phoneNo"> 
                                         </airmid-textbox>
                                     </div> -->
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </form>
-                </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </form>
+                        </div>
 
-                <div class="detail-container">
-                    <form [formGroup]="myForm">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="detail-header">
-                                    Hospital Details
-                                </div>
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div class="detail-container">
+                            <form [formGroup]="myForm">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <div class="detail-header">
+                                            Hospital Details
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Tariff Name" formControlName="tariffId"
-                                            [value]="registerObj?.tariffid" [formGroup]="myForm"
-                                            [mode]="autocompleteModetariff">
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Tariff Name" formControlName="tariffId"
+                                                    [value]="registerObj?.tariffid" [formGroup]="myForm"
+                                                    [mode]="autocompleteModetariff">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Class Name" formControlName="classId"
-                                            [value]="registerObj?.classid" [formGroup]="myForm"
-                                            [mode]="autocompleteModeClass">
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Class Name" formControlName="classId"
+                                                    [value]="registerObj?.classid" [formGroup]="myForm"
+                                                    [mode]="autocompleteModeClass">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Department Name" formControlName="departmentId"
-                                            [formGroup]="myForm" [mode]="autocompleteModeDepartment"
-                                            (selectionChange)="selectChangedepartment($event)" [value]="registerObj?.departmentId">
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                                    [formGroup]="myForm" [mode]="autocompleteModeDepartment"
+                                                    (selectionChange)="selectChangedepartment($event)"
+                                                    [value]="registerObj?.departmentId">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"
-                                           [formGroup]="myForm" #ddlDoctor [value]="registerObj?.doctorId">
-                                        </airmid-dropdown>
-                                    </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                                    [formGroup]="myForm" #ddlDoctor [value]="registerObj?.doctorId">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </form>
-                </div>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Ref.Doctor Name" formControlName="refDoctorId"
+                                                    [value]="registerObj?.refDoctorId ?? 0" [formGroup]="myForm"
+                                                    [mode]="autocompleteModeRefDoctor">
+                                                </airmid-dropdown>
+                                            </div>
 
-                <div class="detail-container">
-                    <form [formGroup]="myForm">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="detail-header">
-                                    Comment Details
-                                </div>
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Attending Doctor Name"
+                                                    formControlName="attendingDoctorId"
+                                                    [value]="registerObj?.attendingDoctorId ?? 0" [formGroup]="myForm"
+                                                    [mode]="autocompleteModeRefDoctor">
+                                                </airmid-dropdown>
+                                            </div>
 
-                                       <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Comment" formControlName="comment"
-                                            [formGroup]="myForm" [maxLength]="200">
-                                        </airmid-textbox>
-                                    </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </form>
+                        </div>
 
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </form>
-                </div> 
-       
-            </div>
+                        <div class="detail-container">
+                            <form [formGroup]="myForm">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <div class="detail-header">
+                                            Comment Details
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Comment" formControlName="comment"
+                                                    [formGroup]="myForm" [maxLength]="200">
+                                                </airmid-textbox>
+                                            </div>
+
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </form>
+                        </div>
+
+                    </div>
+                </mat-drawer-content>
+                <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
+                    class="service-drawer" style="min-width: 430px;">
+                    <mat-card class="sidebar h-100-p">
+                        <div class="airmid-table-container overflow-hidden">
+                            <mat-table class="airmid-table" [dataSource]="filteredOptions">
+                                <!-- Reg No Column -->
+                                <ng-container matColumnDef="regNo">
+                                    <mat-header-cell *matHeaderCellDef class="w-120">Reg No</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.regNo
+                                            }}</span></mat-cell>
+                                </ng-container>
+
+                                <!-- Patient Name Column -->
+                                <ng-container matColumnDef="patientName">
+                                    <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"><span>{{ element.patientName
+                                            }}</span></mat-cell>
+                                </ng-container>
+
+                                <!-- Mobile No Column -->
+                                <ng-container matColumnDef="mobileNo">
+                                    <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
+                                            }}</span></mat-cell>
+                                </ng-container>
+
+                                <!-- No Data Row -->
+                                <ng-container matColumnDef="NoData">
+                                    <mat-footer-cell *matFooterCellDef>
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="['regNo', 'patientName', 'mobileNo']; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: ['regNo', 'patientName', 'mobileNo']"
+                                    (click)="onSelectPatient(row)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['NoData']"
+                                    [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </mat-card>
+                </mat-drawer>
+            </mat-drawer-container>
         </div>
     </div>
 
     <div class="modal-footer">
         <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
+            <form [formGroup]="myForm">
+
+                <div class="modal-footer-container">
+                    <div class="checkbox-container">
+                        <mat-checkbox aria-label="Remember Me" formControlName="IsMlc">
+                            ISMLC
+                        </mat-checkbox>
+                    </div>
+                    <div class="modal-footer-buttons">
+
+                        <button class="btn btn-primary" (click)="onNewSave()">Save </button>
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </form>
+            <!-- <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="onNewSave()">Save</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

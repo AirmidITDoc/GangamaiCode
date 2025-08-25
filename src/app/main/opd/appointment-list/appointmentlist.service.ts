@@ -119,7 +119,6 @@ export class AppointmentlistService {
     createVisitdetailForm() {
         return this._formBuilder.group({
 
-            visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             visitTime: [(new Date()).toISOString()],
@@ -145,6 +144,7 @@ export class AppointmentlistService {
             crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
+            visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 
@@ -315,6 +315,9 @@ export class AppointmentlistService {
     }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
+    }
+     public converOPtoIP(param) {
+        return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
     }
 
     // OPD Certificate apis

@@ -602,12 +602,12 @@ export class NewAdmissionComponent implements OnInit {
       else {
         console.log(submitData);
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
-          this.getAdmittedPatientCasepaperview(response);
           console.log(response)
           if (this.EmgId > 0) {
             this.AddChargesFromEmg(response);
             return
           }
+          this.getAdmittedPatientCasepaperview(response);
           this.onClear();
           this._matDialog.closeAll();
         });
@@ -633,7 +633,7 @@ export class NewAdmissionComponent implements OnInit {
 
   AddChargesFromEmg(admissionId) {
     Swal.fire({
-      title: 'Do You want to add all changes in IPD?',
+      title: 'Do You want to add all Charges in IPD?',
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
@@ -650,8 +650,12 @@ export class NewAdmissionComponent implements OnInit {
         console.log(submitData);
         this._AdmissionService.UpdateAddChargesFromEmg(submitData).subscribe((res) => {
           // this.grid.bindGridData();
+          this.getAdmittedPatientCasepaperview(admissionId);
+          this._matDialog.closeAll();
         })
-      }
+      } else {
+      this._matDialog.closeAll();
+    }
     })
   }
 

@@ -95,42 +95,36 @@ export class NewRequestComponent implements OnInit {
       this.vDoctorName = this.registerObj.doctorName
       this.vTariffName = this.registerObj.tariffName
       this.vCompanyName = this.registerObj.companyName
-      if (this.registerObj.opIpType == 0) {
-        this.vSelectedOption = "OP"
-        if (this.registerObj?.otRequestTime) {
-          const date = new Date(this.registerObj.otRequestTime);
 
-          let hours = date.getHours();
+      // if (this.registerObj?.otRequestTime) {
+      //   const date = new Date(this.registerObj.otRequestTime);
+
+      //   // Format to HH:mm (24-hour)
+      //   const hours = date.getHours().toString().padStart(2, '0');
+      //   const minutes = date.getMinutes().toString().padStart(2, '0');
+
+      //   const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+      //   this.requestForm.get('otRequestTime')?.setValue(formattedTime);
+      // }
+
+      if (this.registerObj?.otRequestTime) {
+        const date = new Date(this.registerObj.otRequestTime);
+
+        if (!isNaN(date.getTime())) {
+          const hours = date.getHours().toString().padStart(2, '0');
           const minutes = date.getMinutes().toString().padStart(2, '0');
-          const ampm = hours >= 12 ? 'PM' : 'AM';
 
-          hours = hours % 12 || 12; // convert 0 -> 12
-          const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
-          console.log(formattedTime); // "01:01 PM"
-          // but note: <input type="time"> only accepts "HH:mm" (24-hr), not "AM/PM"
-          this.requestForm.get('otRequestTime').setValue(formattedTime, { emitEvent: false })
-          // this.requestForm.patchValue({ otRequestTime: `${hours.toString().padStart(2, '0')}:${minutes}` });
+          setTimeout(() => {
+            this.requestForm.get('otRequestTime')?.setValue(formattedTime);
+          });
+
+          console.log("Raw from backend:", this.registerObj.otRequestTime);
+          console.log("Formatted:", formattedTime);
+          console.log("Control value after patch:", this.requestForm.get('otRequestTime')?.value);
         }
-      }
-      else {
-        this.vSelectedOption = "IP"
-        if (this.registerObj?.otRequestTime) {
-          const date = new Date(this.registerObj.otRequestTime);
-
-          let hours = date.getHours();
-          const minutes = date.getMinutes().toString().padStart(2, '0');
-          const ampm = hours >= 12 ? 'PM' : 'AM';
-
-          hours = hours % 12 || 12; // convert 0 -> 12
-          const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
-
-          console.log(formattedTime); // "01:01 PM"
-          // but note: <input type="time"> only accepts "HH:mm" (24-hr), not "AM/PM"
-          this.requestForm.get('otRequestTime').setValue(formattedTime, { emitEvent: false })
-          // this.requestForm.patchValue({ otRequestTime: `${hours.toString().padStart(2, '0')}:${minutes}` });
-        }
-
       }
 
       console.log(this.registerObj)
