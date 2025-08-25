@@ -23,14 +23,15 @@
   <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid" class="p-12">
 
     <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
-      <!-- <airmid-datepicker [formGroup]="_otreservationService.myformSearch" [isRangePicker]="true" formStartControlName="start"
-        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
-        [(toValue)]="gridConfig.filters[1].fieldValue">
-      </airmid-datepicker> -->
-      <airmid-datepicker [formGroup]="_otreservationService.myformSearch"
+      <airmid-datepicker [formGroup]="_otreservationService.myformSearch" [isRangePicker]="true" formStartControlName="start"
+        formEndControlName="end" [(fromValue)]="gridConfig.filters[3].fieldValue"
+        [(toValue)]="gridConfig.filters[4].fieldValue"
+        (dateChange)="getfilterdata()">
+      </airmid-datepicker>
+      <!-- <airmid-datepicker [formGroup]="_otreservationService.myformSearch"
             [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
             (dateChange)="getfilterdata()">
-        </airmid-datepicker>
+        </airmid-datepicker> -->
     </div>
 
     <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
