@@ -448,23 +448,25 @@ export class IssuTodeptComponent {
       this.vPurchaseRate = result.purchaseRate;
       this.vUnitMRP = result.unitMRP;
       // this.vTotalAmount=  this.vQty * this.vLandedRate;
+
+      this.NewIssueGroup.get("Qty").setValue(0);
+          const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+          if (serviceNameElement) {
+            serviceNameElement.focus();
+          }
     });
 
-    setTimeout(() => {
-      const nativeElement = this.qtyTextboxRef?.nativeElement;
-      if (nativeElement) {
-        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
-        if (inputEl) {
-          inputEl.focus();
-        }
-      }
-    }, 100);
+    // setTimeout(() => {
+    //   const nativeElement = this.qtyTextboxRef?.nativeElement;
+    //   if (nativeElement) {
+    //     const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+    //     if (inputEl) {
+    //       inputEl.focus();
+    //     }
+    //   }
+    // }, 100);
 
-    // const itemNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-    // if (itemNameElement) {
-    //   itemNameElement.focus();
-    // }
-
+    
   }
 
 
@@ -532,7 +534,11 @@ export class IssuTodeptComponent {
     // if (this.BalanceQty > 0) {
     this.getBatch();
     // }
-
+// this.NewIssueGroup.get("Qty").setValue(1);
+//           const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+//           if (serviceNameElement) {
+//             serviceNameElement.focus();
+//           }
   }
 
 
