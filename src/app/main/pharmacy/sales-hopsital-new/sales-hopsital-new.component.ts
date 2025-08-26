@@ -178,6 +178,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     this.PharmaSalesForm = this.CreatePharmasalesform();
     this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform();
+    this.ItemSubform.markAllAsTouched(); 
     this._salesService.ItemSearchGroup.markAllAsTouched(); 
     this.ItemAddForm = this.createItemAddTable()
     if (this.vPharExtOpt == true) {
@@ -378,7 +379,7 @@ export class SalesHospitalNewComponent implements OnInit {
         dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
         time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opIpId: [2, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator]],
         totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1285,6 +1286,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm')) 
     this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue.opIpType)
+     this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.OP_IP_Id)
     this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
     this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
     this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number(Math.round(formValue.discAmount)))
@@ -1619,7 +1621,7 @@ vExpDate:any;
     };
     this._salesService.getBillSummaryQuery(vdata).subscribe((response) => {
       console.log(response.data);
-      this.TotalCreditAmt = response?.data[0]?.creditAmount;
+      this.TotalCreditAmt = response?.data[0]?.creditAmount || 0;
     });
 //Total advance and advance bal Amount
     var m_data = {

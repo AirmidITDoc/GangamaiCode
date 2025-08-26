@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { SalesService } from '../sales.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-sale-popup',
   templateUrl: './sale-popup.component.html',
@@ -83,7 +84,16 @@ export class SalePopupComponent implements OnInit {
       });
     }
   }
-  selectNewRow(index:number){
+  selectNewRow(row,index:number){
+    if (row.daysFlag == '1') {
+      Swal.fire({
+        icon: "warning",
+        title: "Selected Batch is already Expired",
+        showConfirmButton: false,
+        timer: 2000
+      });
+      return
+    }
     this.selectedRowIndex = index;
     this.selectCurrentRow();
   }
