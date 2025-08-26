@@ -199,13 +199,15 @@
             Sales:
             <b>{{ StoreName }}</b>
           </span>
-        </div>
-        <div class="modal-header-right">
+        </div> 
+
+        <div class="modal-header-right" fxLayout="row" fxLayoutGap="10px">
+                  <button mat-raised-button (click)="getPRESCRIPTION()"  >GET PRESCRIPTION</button> 
           <div class="comman-date-container">
             <app-common-date [screenFrom]="screenFromString"
               (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
-        </div>
+        </div> 
       </div>
     </div>
 
@@ -236,7 +238,7 @@
                               <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform" formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
-                                  ApiUrl="VisitDetail/search-patient?Keyword="
+                                ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
                                 TextField="formattedText"></airmid-autocomplete>
                             </div>
@@ -256,12 +258,12 @@
                                 [formGroup]="ItemSubform" [validations]="getValidationMessages().mobileNo"
                                 [type]="'number'" [maxLength]="10"></airmid-textbox> -->
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                  <mat-label>MobileNo</mat-label>
-                                  <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."  
-                                   autocomplete="off" maxlength="10" minlength="10"
-                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);" > 
-                                </mat-form-field>
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>MobileNo</mat-label>
+                                <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."
+                                  autocomplete="off" maxlength="10" minlength="10"
+                                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
+                              </mat-form-field>
                             </div>
 
                             <!-- Patient Name autocomplete pending -->
@@ -272,9 +274,9 @@
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)" TextField="formattedText"
                                 ></airmid-autocomplete> -->
-                                  <airmid-textbox label="Patient Name" [(ngModel)]="PatientName" formControlName="externalPatientName"
-                                placeholder="extAddress" [formGroup]="ItemSubform"  [type]="'text'"   [validations]="getValidationMessages().PatientName"
-                                ></airmid-textbox>
+                              <airmid-textbox label="Patient Name" [(ngModel)]="PatientName"
+                                formControlName="externalPatientName" placeholder="extAddress" [formGroup]="ItemSubform"
+                                [type]="'text'" [validations]="getValidationMessages().PatientName"></airmid-textbox>
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
@@ -283,9 +285,9 @@
                                 ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
                                 (selectionChange)="onPatientChange($event)"
                                 TextField="formattedText"></airmid-autocomplete> -->
-                                  <airmid-textbox label="Patient Name" [(ngModel)]="DoctorName" formControlName="doctorName"
+                              <airmid-textbox label="Doctor Name" [(ngModel)]="DoctorName" formControlName="doctorName"
                                 placeholder="DoctorName" [formGroup]="ItemSubform"
-                                [validations]="getValidationMessages().doctorName" [type]="'text'" ></airmid-textbox>
+                                [validations]="getValidationMessages().doctorName" [type]="'text'"></airmid-textbox>
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
@@ -475,7 +477,7 @@
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
-                            min="0" name="tableQty" OnlyNumber/>
+                            min="0" name="tableQty" OnlyNumber />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -514,7 +516,7 @@
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.DiscPer" type="text"
-                            (keyup)="updateCellDiscount(contact)" min="0" OnlyNumber/>
+                            (keyup)="updateCellDiscount(contact)" min="0" OnlyNumber />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -613,9 +615,9 @@
                                 </div>
                               </div>
                               <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
-                                <div class="draft-btn">
+                                <!-- <div class="draft-btn">
                                   <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
-                                </div>
+                                </div> -->
                                 <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
@@ -660,8 +662,8 @@
                                 </mat-radio-group>
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
-                                  <button mat-raised-button (click)="getPRESCRIPTION()"
-                                    class="btn btn-primary-outline">GET PRESCRIPTION</button>
+
+                                  <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
 
                                   <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button>
                                   <button class="btn btn-danger-outline" (click)="onClose()"
@@ -726,7 +728,7 @@
                 </mat-card>
                 <!-- Darft bill list Table -->
                 <mat-table class="airmid-table patient-table" matSort [dataSource]="dsDraftList"
-                  [@animateStagger]="{ value: '50' }">
+                  [@animateStagger]="{ value: '50' }" style="height: 300px;">
 
                   <ng-container matColumnDef="Action" stickyEnd>
                     <mat-header-cell *matHeaderCellDef class="w-80"> </mat-header-cell>
@@ -737,7 +739,7 @@
                         </span>
                       </ng-container>
                     </mat-cell>
-                  </ng-container> 
+                  </ng-container>
 
                   <ng-container matColumnDef="DraftClose" stickyEnd>
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-50"></mat-header-cell>
@@ -753,10 +755,8 @@
                   </ng-container>
 
                   <ng-container matColumnDef="PatientName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header  >Patient Name</mat-header-cell>
-                    <mat-cell *matCellDef="let row" 
-                    matTooltip="{{row.patientName }}"
-                    >{{ row.patientName }}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Patient Name</mat-header-cell>
+                    <mat-cell *matCellDef="let row" matTooltip="{{row.patientName }}">{{ row.patientName }}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="NetAmt">
@@ -815,7 +815,7 @@
                       <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
                       <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
                     </mat-footer-cell>
-                  </ng-container> 
+                  </ng-container>
                   <mat-header-row class="accent"
                     *matHeaderRowDef="DraftAvbStkListDisplayedCol; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let contact; columns: DraftAvbStkListDisplayedCol"

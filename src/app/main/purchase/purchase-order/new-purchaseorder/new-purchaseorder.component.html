@@ -517,15 +517,16 @@
                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalGST(dsItemNameList.data)
                                     | currency:'INR'}}</span>&nbsp;&nbsp;&nbsp;
 
-                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:10px;">Net
-                                    Amt:</span>&nbsp;
+                                <span class="net-amt-mat-label" style="font-weight:bold;margin-left:10px;
+                                  background-color: rgb(171, 248, 245);">Net Amt:</span>&nbsp;
                                 <span class="net-amt-value"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalNet(dsItemNameList.data)
+                                    style="margin-left:10px;font-weight:bolder;color: blue;
+                                    background-color: rgb(171, 248, 245);">{{getTotalNet(dsItemNameList.data)
                                     | currency:'INR'}}</span>
 
-                                <span style="margin-left: 10px;margin-right: 10px;font-weight: bold;font-size: large;color:rgb(3, 67, 85); display: inline-block;
+                                <!-- <span style="margin-left: 10px;margin-right: 10px;font-weight: bold;font-size: large;color:rgb(3, 67, 85); display: inline-block;
   border: 2px solid rgb(4, 29, 33); background-color: rgb(171, 248, 245);border-style: outset; ">Net Amount :
-                                    {{FinalNetAmount}}</span>
+                                    {{FinalNetAmount}}</span> -->
                             </mat-expansion-panel-header>
 
                             <div fxLayout="column" fxLayout.gt-xs="row" class="gap-2">
