@@ -38,13 +38,13 @@ export class IssuTodeptComponent {
   savebtn: boolean = false;
 
 
-   Indentid: any;
+  Indentid: any;
   indentdetid: any;
   IsClosed: any;
   IndQty: any;
   RQty: any = 0;
-    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
-  
+  @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+
   displayedNewIssuesList1: string[] = [
     'ItemName',
     'Qty',
@@ -309,6 +309,12 @@ export class IssuTodeptComponent {
         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
+          this.NewIssueGroup.reset()
+          this.NewIssueGroup.get("Qty").setValue(1);
+          const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+          if (serviceNameElement) {
+            serviceNameElement.focus();
+          }
         return;
       }
     }
@@ -444,7 +450,7 @@ export class IssuTodeptComponent {
       // this.vTotalAmount=  this.vQty * this.vLandedRate;
     });
 
-     setTimeout(() => {
+    setTimeout(() => {
       const nativeElement = this.qtyTextboxRef?.nativeElement;
       if (nativeElement) {
         const inputEl: HTMLInputElement = nativeElement.querySelector('input');
@@ -526,7 +532,7 @@ export class IssuTodeptComponent {
     // if (this.BalanceQty > 0) {
     this.getBatch();
     // }
-    
+
   }
 
 
@@ -963,7 +969,7 @@ export class IssuTodeptComponent {
     this.IsClosed = contact.isClosed;
     this.IndQty = contact.qty;
     let DuplicateItem = 0;
-
+    debugger
     if (this.dsNewIssueList3.data.length > 0) {
       this.dsNewIssueList3.data.forEach((element) => {
         if (element.ItemId == contact.itemId) {
@@ -971,9 +977,18 @@ export class IssuTodeptComponent {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           DuplicateItem = 1
+
+          // this.NewIssueGroup.reset()
+          // this.NewIssueGroup.get("Qty").setValue(1);
+          // const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+          // if (serviceNameElement) {
+          //   serviceNameElement.focus();
+          // }
+
+          return;
         }
-        this.Itemchargeslist1.forEach((element) => {
-        })
+        // this.Itemchargeslist1.forEach((element) => {
+        // })
       });
     }
     //   else  {
@@ -1037,7 +1052,7 @@ export class IssuTodeptComponent {
       });
     }
   }
- 
+
   getFinalCalculation(contact, DraftQty) {
 
     console.log(contact)
@@ -1140,6 +1155,23 @@ export class IssuTodeptComponent {
     }
   }
 
+
+  resetForm(): void {
+    this.NewIssueGroup.reset({
+      ItemName: "a",
+      ItemID: 0,
+      BatchNO: 0,
+      BalanceQty: 0,
+      Qty: 0,
+      UnitRate: 0,
+      TotalAmount: 0,
+      Remark: 0,
+      GSTAmount: '',
+      FinalTotalAmount: '',
+      FinalNetAmount: ''
+    });
+    // this.doctorName = '';
+  }
 }
 export class IndentList {
   IndentNo: any;
