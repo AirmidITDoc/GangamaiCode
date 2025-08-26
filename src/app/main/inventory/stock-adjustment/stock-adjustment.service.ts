@@ -43,9 +43,9 @@ export class StockAdjustmentService {
   }
   createMRPAdjForm() {
     return this._formBuilder.group({
-      OldMRP: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      PurchaseRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldMRP: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      LandedRate: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      PurchaseRate: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       NewMRP: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       newLandedRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],

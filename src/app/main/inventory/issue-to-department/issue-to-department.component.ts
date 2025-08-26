@@ -240,7 +240,7 @@ export class IssueToDepartmentComponent implements OnInit {
         const dialogRef = this._matDialog.open(IssuTodeptComponent,
             {
                 maxWidth: "97vw",
-                height: '90%',
+                height: '95%',
                 width: '95%',
                 data: row
             });

@@ -74,9 +74,9 @@ export class MRPAdjustmentComponent implements OnInit {
 
   createMRPAdjForm() {
     return this._formBuilder.group({
-      OldMRP: [0, [   Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedRate: [0, [   Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      PurchaseRate: [0, [   Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldMRP: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      LandedRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      PurchaseRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       NewMRP: [0, [   Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       newLandedRate: [0, [Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -286,7 +286,15 @@ debugger
 
     }
   }
-
+ keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   OnReset() {
     this.MRPAdjform.reset();

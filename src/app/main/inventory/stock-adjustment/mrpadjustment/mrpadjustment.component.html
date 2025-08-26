@@ -81,7 +81,7 @@
                                 <airmid-textbox label="New MRP" formControlName="NewMRP"
                                     [formGroup]="MRPAdjform"  [value]="vNewMRP"
                                     [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()"
-                                     (keypress)="keyPressCharater($event)"  [type]="'number'">
+                                     (keypress)="keyPressCharater($event)"   (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New LandedRate</mat-label>
@@ -91,7 +91,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New LandedRate" formControlName="newLandedRate"
                                     [formGroup]="MRPAdjform" [value]="vNewLandedRate" 
-                                    [validations]="getValidationMessages().newLandedRate"  [type]="'number'"
+                                    [validations]="getValidationMessages().newLandedRate"  (keypress)="keyPressAlphanumeric($event)"
                                      (keyup)="calculationAmt()">
                                 </airmid-textbox>
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -102,7 +102,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New PurchaseRate" formControlName="NewPurchaseRate"
                                     [formGroup]="MRPAdjform" [value]="vNewPurchaseRate"  (input)="calculationAmt()"
-                                    [validations]="getValidationMessages().NewPurchaseRate"  [type]="'number'">
+                                    [validations]="getValidationMessages().NewPurchaseRate"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
                             </div>
                         </form>

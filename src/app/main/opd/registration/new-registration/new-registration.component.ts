@@ -100,7 +100,6 @@ export class NewRegistrationComponent implements OnInit {
                 });
             }, 500);
         }
-// this.getarealist()
 
     this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
       startWith(''),
@@ -110,10 +109,6 @@ export class NewRegistrationComponent implements OnInit {
     }
 
 
-// private _filter(value: string): string[] {
-//     const filterValue = value.toLowerCase();
-//     return this.areaList.filter(option => option.toLowerCase().includes(filterValue));
-//   }
   AreaList: any = [];
    private _filter(value: any): string[] {
     if (value) {

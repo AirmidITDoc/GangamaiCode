@@ -83,7 +83,7 @@
 
 
                                 <airmid-textbox fxFlex="8%" label="Qty" formControlName="Qty" [(ngModel)]="vQty"
-                                    (keypress)="keyPressAlphanumeric($event)" [formGroup]="NewIssueGroup" #qtyTextboxRef
+                                    (keypress)="keyPressAlphanumeric($event)" [formGroup]="NewIssueGroup" 
                                     (valueChange)="CalculateTotalAmt()" [maxLength]="10">
                                 </airmid-textbox>
 
