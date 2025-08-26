@@ -171,7 +171,7 @@
 
                                 <div fxLayout="row" fxLayoutGap="12px">
                                                                     
-                                    <mat-checkbox  name="IsDocEditable" (change)="onChange($event)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
+                                    <mat-checkbox  name="IsDocEditable" (change)="onChange($event.checked)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
                                         Is Doc Editable For Service
                                     </mat-checkbox>
                                     
@@ -200,7 +200,7 @@
                                 <div fxLayout="row" fxLayoutGap="12px">
                                 
                                     <div fxLayoutGap="8px">
-                                        <mat-checkbox name="IsRadiology" formControlName="isRadiology" value="false"
+                                        <mat-checkbox name="IsRadiology" formControlName="isRadiology" value="false" (change)="onChange2($event.checked)"
                                          >IsRadiology</mat-checkbox>
                                 
                                         <mat-checkbox name="isRadOutSource" formControlName="isRadOutSource"
@@ -208,7 +208,7 @@
                                     </div>
                                 
                                     <div fxLayoutGap="8px">
-                                        <mat-checkbox name="IsPathology" formControlName="isPathology" value="false"
+                                        <mat-checkbox name="IsPathology" formControlName="isPathology" value="false" (change)="onChange3($event.checked)"
                                          >IsPathology</mat-checkbox>
                                             
                                         <mat-checkbox name="isPathOutSource" formControlName="isPathOutSource"

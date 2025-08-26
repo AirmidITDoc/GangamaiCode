@@ -116,6 +116,7 @@ export class NUserComponent implements OnInit {
       this.visBedStatus = this.regobj.isBedStatus
       this.visCurrentStk = this.regobj.isCurrentStk
       this.vaddChargeIsDelete = this.regobj.addChargeIsDelete
+      this.myuserApprovalform.get("userName").setValue(this.regobj.userLoginName)
       this.myuserApprovalform.get("doctorId").setValue(this.regobj.doctorID)
       if (this.regobj.isDoctorType == true)
         this.docflag = true

@@ -34,6 +34,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     'BalQty',
     "PerRate",
     'UnitMRP',
+    'LandedRate',
     'GST',
     'buttons',
   ];
@@ -99,7 +100,6 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   createOpeningBalInsert(element: any = {}): FormGroup {
-    debugger
     return this._formbuilder.group({
       storeId: [this.StoreId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       openingDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',
@@ -201,7 +201,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     console.log(currentMonth)
     const currentYear = CurrentDate.getFullYear();
     console.log(currentYear)
-    debugger
+    // debugger
     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
       const month = +inputDate.substring(0, 2);
       const year = +inputDate.substring(2, 6);
@@ -290,6 +290,7 @@ export class NewOpeningBalanceComponent implements OnInit {
           PerRate: this.OPeningtemForm.get('RatePerUnit').value || 0,
           UnitMRP: this.OPeningtemForm.get('MRP').value || 0,
           GST: this.OPeningtemForm.get('GST').value || 0,
+          LandedRate: this.OPeningtemForm.get('LandedRate').value || 0,
         });
       this.dsItemNameList.data = this.chargeslist
       this.ItemFromReset();
@@ -315,7 +316,8 @@ export class NewOpeningBalanceComponent implements OnInit {
       BalanceQty: 0,
       GST: "",
       MRP: "",
-      RatePerUnit: ""
+      RatePerUnit: "",
+      LandedRate:""
     });
 
   }
@@ -493,6 +495,52 @@ export class NewOpeningBalanceComponent implements OnInit {
   onClose() {
     this._matDialog.closeAll();
   }
+
+// calculateTotalamt() {
+//     const mrp = this.OPeningtemForm.get('MRP')?.value;
+//     const rate = this.OPeningtemForm.get('RatePerUnit')?.value;
+
+//     if (mrp != null && rate != null && rate > mrp) {
+//       this.OPeningtemForm.get('RatePerUnit')?.setValue(null); // reset value
+//       this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateGreaterThanMRP: true });
+
+//       this.toastr.warning('Rate Per Unit cannot be greater than MRP');
+//       return { rateGreaterThanMRP: true };
+//     }
+//     return null;
+//   }
+
+calculateTotalamt() {
+  const mrp = Number(this.OPeningtemForm.get('MRP')?.value);
+  const rate = Number(this.OPeningtemForm.get('RatePerUnit')?.value);
+  const landed = Number(this.OPeningtemForm.get('LandedRate')?.value);
+
+  // Rule 1: LandedRate must be less than RatePerUnit
+  if (landed && rate && rate <= landed) {
+    this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
+    this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+    this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateLessThanLanded: true });
+    return;
+  }
+
+  // Rule 2: RatePerUnit must not exceed MRP
+  if (mrp && rate && rate > mrp) {
+    this.toastr.warning('Rate Per Unit cannot be greater than MRP');
+    this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+    this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateGreaterThanMRP: true });
+    return;
+  }
+
+  // Rule 3: MRP must be greater than LandedRate
+  if (mrp && landed && mrp <= landed) {
+    this.toastr.warning('MRP must be greater than Landed Rate');
+    this.OPeningtemForm.get('MRP')?.setValue(null);
+    this.OPeningtemForm.get('MRP')?.setErrors({ mrpLessThanLanded: true });
+    return;
+  }
+}
+
+
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

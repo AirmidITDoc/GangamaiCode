@@ -477,18 +477,30 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onChange(isChecked: boolean) {
-
-        console.log(isChecked);
-
         if (isChecked == true) {
-            this.butDisabled = true;
-            console.log(this.butDisabled);
+            // this.butDisabled = true;
+            // console.log(this.butDisabled);
+            this.iscreditedtoDoctor = true;
         }
         else {
-            this.butDisabled = false;
-            console.log(this.butDisabled);
+            // this.butDisabled = false;
+            // console.log(this.butDisabled);
+            this.iscreditedtoDoctor = false;
         }
+    }
 
+     onChange2(isChecked: boolean) {
+        if (isChecked == true) 
+            this.showRadOut = true;
+        else 
+            this.showRadOut = false;
+    }
+
+     onChange3(isChecked: boolean) {
+        if (isChecked == true) 
+            this.showPathOut = true;
+        else 
+            this.showPathOut = false;
     }
 
     // new api

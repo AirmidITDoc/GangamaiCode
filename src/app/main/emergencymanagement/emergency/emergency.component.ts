@@ -414,6 +414,7 @@ export class EmergencyList {
   attendingDoctorId: any;
   refDoctorId: any;
   spO2:any;
+  isMlc:any
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;
@@ -471,6 +472,7 @@ export class EmergencyList {
       this.attendingDoctorId = EmergencyList.attendingDoctorId || 0
       this.refDoctorId = EmergencyList.refDoctorId || 0
       this.spO2 = EmergencyList.spO2 || 0
+      this.isMlc = EmergencyList.isMlc || false
     }
   }
 }

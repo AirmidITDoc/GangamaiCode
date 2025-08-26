@@ -102,12 +102,26 @@
     </ng-template>
 
     <ng-template #actionsTemplate2 let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon title="OPTOIPConvert" *ngIf="element.isOpToIpconv==1" [disabled]="element.disabled"
+        <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+            <!-- <mat-icon matTooltip="Normal" *ngIf="element.admissionType==0" [disabled]="element.disabled"
+                class="disabled-icon">person
+            </mat-icon> -->
+            <span *ngIf="element.admissionType==0" class="ml-1 font-bold" matTooltip="Normal">N</span>
+
+            <span *ngIf="element.admissionType==1" class="ml-1 font-bold" matTooltip="OPTOIPConvert">O</span>
+            <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.admissionType==1" [disabled]="element.disabled"
                 class="disabled-icon">
-                redo</mat-icon>
+                redo
+            </mat-icon>
+
+            <span *ngIf="element.admissionType==2" class="ml-1 font-bold" matTooltip="EmgToIPConvert">E</span>
+            <mat-icon matTooltip="EmgToIPConvert" *ngIf="element.admissionType==2" [disabled]="element.disabled"
+                class="disabled-icon">
+                redo
+            </mat-icon>
         </div>
     </ng-template>
+
 
 
     <ng-template #actionsTemplate1 let-element>

@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'OP-billing'"
+                        <app-common-date [screenFrom]="'Common-form'"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                         <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
@@ -51,18 +51,18 @@
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="OPeningtemForm" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="35%"
-                                            [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + (StoreId || '2') + '&ItemName='"               
+                                            placeholderText="Item Name (enter 2 char)" fxFlex="20%"
+                                            [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + (StoreId || '2') + '&ItemName='"
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
 
-                                        <airmid-textbox fxFlex="10%" label="BatchNo" formControlName="BatchNo"
+                                        <airmid-textbox fxFlex="9%" label="BatchNo" formControlName="BatchNo"
                                             [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
                                             placeholder="BatchNo"></airmid-textbox>
 
-                                        <mat-form-field appearance="outline" fxFlex="10%">
+                                        <mat-form-field appearance="outline" fxFlex="9%">
                                             <mat-label>ExpDate</mat-label>
                                             <input matInput #inputField (keyup.enter)="calculateLastDay()"
                                                 (keypress)="keyPressAlphanumeric($event)" formControlName="ExpDate"
@@ -70,21 +70,27 @@
                                                 placeholder="MMYYYY" required>
                                         </mat-form-field>
 
-                                        <airmid-textbox fxFlex="10%" label="Bal Qty" formControlName="BalanceQty"
+                                        <airmid-textbox fxFlex="9%" label="Bal Qty" formControlName="BalanceQty"
                                             [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="BalanceQty"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="10%" label="GST %" formControlName="GST"
+                                        <airmid-textbox fxFlex="9%" label="GST %" formControlName="GST"
                                             [(ngModel)]="vGST" type="number" [formGroup]="OPeningtemForm"
                                             placeholder="GST %"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="10%" label="MRP" formControlName="MRP"
+                                        <airmid-textbox fxFlex="9%" label="MRP" formControlName="MRP"
                                             [(ngModel)]="vMRP" type="number" [formGroup]="OPeningtemForm"
-                                            placeholder="MRP"></airmid-textbox>
+                                            placeholder="MRP" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="10%" label="Rate PerUnit" formControlName="RatePerUnit"
+                                        <airmid-textbox fxFlex="9%" label="Rate PerUnit" formControlName="RatePerUnit"
                                             [(ngModel)]="vRatePerUnit" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="Rate PerUnit" (keyup)="CheckValidation()"
+                                            (valueChange)="calculateTotalamt()"
+                                            (keypress)="keyPressCharater($event)"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="9%" label="LandedRate" formControlName="LandedRate"
+                                            [formGroup]="OPeningtemForm" type="number"
+                                            placeholder="Landed Rate" (valueChange)="calculateTotalamt()"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <div style="margin-left: 20px;"
@@ -170,6 +176,14 @@
                                     GST%</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                     {{contact.GST}}
+                                </mat-cell>
+                            </ng-container>
+
+                             <ng-container matColumnDef="LandedRate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    LandedRate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.LandedRate}}
                                 </mat-cell>
                             </ng-container>
 

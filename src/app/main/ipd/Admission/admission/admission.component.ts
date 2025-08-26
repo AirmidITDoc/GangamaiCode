@@ -140,7 +140,7 @@ export class AdmissionComponent implements OnInit {
     // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'patientTypeID')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.actionsTemplate1;
-    this.gridConfig.columnsList.find(col => col.key === 'isOpToIpconv')!.template = this.actionsTemplate2;
+    this.gridConfig.columnsList.find(col => col.key === 'admissionType')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
 
@@ -148,9 +148,9 @@ export class AdmissionComponent implements OnInit {
 
   allcolumns = [
     { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "-", key: "isOpToIpconv", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
    
-    { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+    { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
    
    
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },

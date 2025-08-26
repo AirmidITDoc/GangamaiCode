@@ -12,6 +12,7 @@ import { FormGroup } from "@angular/forms";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
 import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 
 @Component({
   selector: 'app-ot-request',
@@ -153,7 +154,39 @@ export class OTRequestComponent implements OnInit {
     });
   }
   OnPrint(Param) {
-    this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
+    const param = {
+      searchFields: [
+         {
+          fieldName: "OTBookingId",
+          fieldValue: String(Param.otBookingId),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OP_IP_Type",
+          fieldValue: String(Param.opIpType),
+          opType: "Equals"
+        }
+      ],
+      mode: "OTRequest"
+    };
+
+    console.log(param);
+
+    this._OtRequestService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pathology Test Report With Header Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
   }
   //  OnCancel(Param) {
   //         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
@@ -178,9 +211,9 @@ export class OTRequestComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
-            otbookingId: data.otBookingId,
-            reason: result.value,
-            isCancelledBy:this._loggedService.currentUserValue.userId
+          otbookingId: data.otBookingId,
+          reason: result.value,
+          isCancelledBy: this._loggedService.currentUserValue.userId
         };
         console.log(submitData);
         this._OtRequestService.OnCancel(submitData).subscribe((res) => {
