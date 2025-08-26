@@ -83,7 +83,7 @@
 
                                 <airmid-textbox label="New CGSTPer" formControlName="cgstper"
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
-                                    [value]="vNewCGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                    [value]="vNewCGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -94,7 +94,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New SGSTPer" formControlName="sgstper"
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
-                                    [value]="vNewSGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                    [value]="vNewSGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -105,7 +105,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New IGSTPer" formControlName="igstper"
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
-                                    [value]="vNewIGSTPer" (input)="calculationAmt()"  [type]="'number'">
+                                    [value]="vNewIGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                             </div>
