@@ -9,7 +9,7 @@
 
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
                     style="color: white;">
-                    Interim Of Bill
+                    Supplementary Bill
                 </span>
             </div>
             <div class="modal-header-right">
@@ -17,7 +17,7 @@
                     <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                         matTooltip="Close">
                         <mat-icon>close</mat-icon>
-                    </button> 
+                    </button>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                         <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
                             class="airmid-table table max-h-350">
                             <ng-container matColumnDef="ChargesDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-130">ChargeDate
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-130">Date
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" class="w-130">
                                     {{contact.chargesDate}}
@@ -100,19 +100,26 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ServiceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-300 border-right">Service Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300 border-right">
+                                    <span>{{ contact.serviceName }}</span>
+                                </mat-cell>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="ServiceName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">Service
                                     Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.serviceName}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="Price">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.price}}
+                                    {{contact.price | currency : 'INR'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -125,15 +132,15 @@
                             </ng-container>
 
                             <ng-container matColumnDef="TotalAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.totalAmt}}
+                                    {{contact.totalAmt | currency : 'INR'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="DiscPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscPer
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc%
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.concessionPercentage || '-'}}
@@ -141,14 +148,14 @@
                             </ng-container>
 
                             <ng-container matColumnDef="DiscAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.concessionAmount || '-'}}
+                                    {{contact.concessionAmount | currency : 'INR'}}
                                 </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="NetAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetAmount
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amount
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{contact.netAmount | currency:'INR' }}
@@ -157,7 +164,7 @@
 
                             <ng-container matColumnDef="ChargeDoctorName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                    DoctorName
+                                    Doctor Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.doctorName || '-'}}
@@ -165,7 +172,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ClassName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ClassName
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">Class Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                     {{contact.className || '-'}}
@@ -193,10 +200,10 @@
                             <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
                             </mat-footer-row>
-                        </mat-table> 
+                        </mat-table>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
     <div class="modal-footer" fxLayout="column">
