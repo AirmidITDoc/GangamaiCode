@@ -315,6 +315,10 @@ export class AdmissionService {
      public getVisitById(Id) {
         return this._httpClient1.GetData("VisitDetail/" + Id);
     }
+
+    public getadmissionlist(employee){
+            return this._httpClient1.PostData("Admission/AdmissionList", employee)
+    }
 }
 
 
