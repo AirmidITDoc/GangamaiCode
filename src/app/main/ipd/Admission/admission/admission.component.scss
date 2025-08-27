@@ -54,3 +54,14 @@
   }
 
 }
+
+.optoip-action {
+  display: flex;
+  align-items: center;
+}
+
+.optoip-action span {
+  font-size: 14px;     /* adjust to match icon */
+  margin-left: 4px;    /* space between icon & O */
+  font-weight: bold;   /* make it visible */
+}

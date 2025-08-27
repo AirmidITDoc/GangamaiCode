@@ -295,6 +295,12 @@
                             <span>:</span>
                             <span class="patient-col-value">{{ selectedAdvanceObj?.doctorname }}</span>
                           </div>
+
+                            <div class="patient-col">
+                            <span class="patient-col-key font-weight-600">Tariff</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.tariffName  }}</span>
+                          </div>
                         </div>
 
                         <!-- <div fxFlex.gt-sm="25%" fxFlex>
@@ -602,7 +608,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="DoctorName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">ChargeDoctorName</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">Doctor Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                             <span>{{ contact.doctorName}}</span>
                             <ng-container *ngIf="!contact.EditDoctor; else showInput">
@@ -930,14 +936,16 @@
                     </div>
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
+                      <!-- Draft Bill :  -->
                       <mat-radio-group aria-label="Select an option" formControlName="BillType" name="BillType">
-                        <mat-radio-button value="1">Class Wise DraftBill</mat-radio-button>
-                        <mat-radio-button value="2">Service Wise DraftBill</mat-radio-button>
+                        Provisional Bill  
+                        <mat-radio-button value="1">Class Wise</mat-radio-button>
+                        <mat-radio-button value="2">Service Wise</mat-radio-button>
                       </mat-radio-group>
 
                       <div class="button-row-group">
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                        <button class="btn btn-primary-outline" (click)="getInterimData()">Interim</button>
+                        <button class="btn btn-primary-outline" (click)="getInterimData()">Supplementary Bill</button>
                         <button class="btn btn-primary" (click)="onSave()">Save</button>
                       </div>
                     </div>

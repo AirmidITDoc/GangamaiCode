@@ -223,10 +223,9 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm = this.CreateIPBillForm();
         this.draftSaveform = this.createDraftSaveForm();
         this.IpbillFooterform.markAllAsTouched();
-        debugger
         if (this.data) {
             this.selectedAdvanceObj = this.data.Obj;
-            console.log(this.selectedAdvanceObj)
+            //console.log(this.selectedAdvanceObj)
             this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
             this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
             this.getdata(this.selectedAdvanceObj.admissionId)
@@ -426,7 +425,11 @@ export class IPBillingComponent implements OnInit {
             isPackage: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [item?.PackageServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+            //chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+            //const formattedTime = this.datePipe.transform(this.Serviceform.get('chargesTime')?.value, 'HH:mm:ss') || '00:00:00';
+            chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
+
+
         });
     }
     // Getters 
@@ -659,7 +662,7 @@ export class IPBillingComponent implements OnInit {
                 return;
             }
             if (formValue.doctorId)
-                doctorid = this.Serviceform.get("doctorId").value;
+                doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
         this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
         this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
@@ -667,9 +670,22 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
         this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)
         this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName)
-        this.Serviceform.get("doctorId").setValue(doctorid)
+        this.Serviceform.get("doctorId")?.enable();
+        this.Serviceform.get("doctorId").setValue(doctorid ?? 0)
         this.Serviceform.get("tariffId").setValue(this.TariffId)
 
+        const date = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd HH:mm:ss");
+        const chargeTime = new Date()
+        const formattedDate = this.datePipe.transform(date, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(chargeTime, "HH:mm:ss");
+        this.Serviceform.get('chargesDate').setValue(formattedDate);
+        this.Serviceform.get('chargesTime').setValue(formattedDate +' '+ formattedTime);
+
+        console.log(this.Serviceform.get('doctorId'));
+        console.log(this.Serviceform.get('doctorId')?.enabled);
+        // this.Serviceform.get("chargesDate").setValue(this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd 00:00:00.000") );
+
+        console.log('valida service form', this.Serviceform.value)
         if (this.Serviceform.valid) {
             if (formValue.serviceName?.isPackage == 1) {
                 this.PackageDetArray.clear();
@@ -847,7 +863,7 @@ export class IPBillingComponent implements OnInit {
         this.dataSource.data = [];
         var vdata = {
             "first": 0,
-            "rows": 100,
+            "rows": 200,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [
@@ -858,7 +874,6 @@ export class IPBillingComponent implements OnInit {
         }
         this._IpSearchListService.getchargesList(vdata).subscribe(response => {
             this.chargeslist = response.data
-            console.log(this.chargeslist)
             this.dataSource.data = this.chargeslist;
             this.copiedData = structuredClone(this.chargeslist);
             this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
@@ -1536,27 +1551,26 @@ export class IPBillingComponent implements OnInit {
         this.getChargesList()
     }
     OnDateChange() {
-        debugger;
 
-    // Get values as strings in dd/MM/yyyy format
-const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
-const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
+        // Get values as strings in dd/MM/yyyy format
+        const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
+        const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
 
-// Check that both dates are available
-if (serviceDateStr && admissionDateStr) {
-  // Convert to Date objects
-  const [sDay, sMonth, sYear] = serviceDateStr.split('/').map(Number);
-  const [aDay, aMonth, aYear] = admissionDateStr.split('/').map(Number);
+        // Check that both dates are available
+        if (serviceDateStr && admissionDateStr) {
+            // Convert to Date objects
+            const [sDay, sMonth, sYear] = serviceDateStr.split('/').map(Number);
+            const [aDay, aMonth, aYear] = admissionDateStr.split('/').map(Number);
 
-  const serviceDate = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
-  const admissionDate = new Date(aYear, aMonth - 1, aDay);
+            const serviceDate = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+            const admissionDate = new Date(aYear, aMonth - 1, aDay);
 
-  // Check if service date is earlier than admission date
-  if (serviceDate < admissionDate) {
-    Swal.fire('The Charge Date should not be less than the Admission Date.');
-    this.Serviceform.get('chargesDate').setValue(new Date())
-  } 
-}
+            // Check if service date is earlier than admission date
+            if (serviceDate < admissionDate) {
+                Swal.fire('The Charge Date should not be less than the Admission Date.');
+                this.Serviceform.get('chargesDate').setValue(new Date())
+            }
+        }
 
 
     }
@@ -1610,6 +1624,12 @@ if (serviceDateStr && admissionDateStr) {
     }
     EditDoctor: boolean = false;
     DocenableEditing(row: ChargesList) {
+        if (row.CreditedtoDoctor == 1) {
+            this.toastr.warning('Doctor option unavailable for the selected service!', 'warning', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return
+        }
         row.EditDoctor = true;
         row.doctorName = '';
     }

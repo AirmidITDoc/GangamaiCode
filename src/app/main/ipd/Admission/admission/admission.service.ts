@@ -180,7 +180,7 @@ export class AdmissionService {
             ]],
             RelationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AddedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            IsMlc: [false],
+            // IsMlc: [false],
             MotherName: "",
             AdmittedDoctor1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AdmittedDoctor2: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -300,16 +300,20 @@ export class AdmissionService {
         return this._httpClient1.PostData("VisitDetail/DeptDoctorList", param)
     }
 
-     public getVisitlist(employee) {
-        return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+    //  public getVisitlist(employee) {
+    //     return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
+    // }
+
+      public getOPDToIpConvertList(employee) {
+        return this._httpClient1.PostData("Admission/RequestForIPList", employee)
     }
 
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
 
-    public getadmissionlist(employee) {
-        return this._httpClient1.PostData("Admission/AdmissionList", employee)
+     public getVisitById(Id) {
+        return this._httpClient1.GetData("VisitDetail/" + Id);
     }
 }
 

@@ -64,6 +64,7 @@ export class NewEmergencyComponent {
           this.registerObj = response;
           this.selectChangedepartment(this.registerObj)
           // this.onChangecity(this.registerObj)
+          this.myForm.get('IsMlc').setValue(this.registerObj.isMlc)
           console.log(this.registerObj)
       });
     }

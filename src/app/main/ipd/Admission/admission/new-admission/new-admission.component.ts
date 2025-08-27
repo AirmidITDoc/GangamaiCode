@@ -149,22 +149,8 @@ export class NewAdmissionComponent implements OnInit {
         });
         this.selectChangedepartment(this.registerObj1)
       });
-      this.dsOpList = new MatTableDataSource(this.opdList);
+      // this.dsOpList = new MatTableDataSource(this.opdList);
     }
-
-    //  if ((this.data?.emgId) > 0) {
-    //   this._AdmissionService.getEmergencyById(this.data.emgId).subscribe((response) => {
-    //     this.registerObj = response;
-    //     this.RegId=this.registerObj.regId;
-    //     console.log("Emg Data:", this.registerObj)
-    //      const selectedRadioValue = this.RegId > 0 ? 'registrered' : 'registration';
-
-    //     this.searchFormGroup.get('regRadio')?.setValue(selectedRadioValue);
-
-    //     this.onChangeReg({ value: selectedRadioValue }, this.registerObj);
-    //   });
-    // }
-
   }
 
   createSearchForm() {
@@ -178,7 +164,7 @@ export class NewAdmissionComponent implements OnInit {
   getSelectedObj(obj) {
     console.log(obj)
     debugger
-  
+
     this.RegId = obj.value;
     if ((obj.value ?? 0) > 0) {
 
@@ -188,8 +174,8 @@ export class NewAdmissionComponent implements OnInit {
         this.onChangeReg({ value: 'registrered' });
         this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
-              this.value=response.dateofBirth
-            this.onChangeDateofBirth(response.dateofBirth)
+          this.value = response.dateofBirth
+          this.onChangeDateofBirth(response.dateofBirth)
           console.log(this.registerObj)
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
@@ -219,14 +205,12 @@ export class NewAdmissionComponent implements OnInit {
 
       }, 500);
     }
-
   }
 
-
-    getSelectedObj1(obj) {
+  getSelectedObj1(obj) {
     console.log(obj)
     debugger
-  
+
     this.RegId = obj;
     if ((obj ?? 0) > 0) {
 
@@ -234,8 +218,8 @@ export class NewAdmissionComponent implements OnInit {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
-              this.value=response.dateofBirth
-            this.onChangeDateofBirth(response.dateofBirth)
+          this.value = response.dateofBirth
+          this.onChangeDateofBirth(response.dateofBirth)
           console.log(this.registerObj)
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
@@ -555,6 +539,14 @@ export class NewAdmissionComponent implements OnInit {
 
   OnSaveAdmission() {
 
+    if (this.EmgId > 0) {
+      this.admissionFormGroup.get('convertId').setValue(this.EmgId)
+      this.admissionFormGroup.get('AdmissionType').setValue(2)
+    }
+    if (this.VvisitId > 0) {
+      this.admissionFormGroup.get('convertId').setValue(this.VvisitId)
+      this.admissionFormGroup.get('AdmissionType').setValue(1)
+    }
     this.personalFormGroup.get('Age').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
     this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
@@ -565,7 +557,6 @@ export class NewAdmissionComponent implements OnInit {
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-    this.admissionFormGroup.get('convertId').setValue(this.EmgId ?? 0)
     this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
     this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
     this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
@@ -654,8 +645,8 @@ export class NewAdmissionComponent implements OnInit {
           this._matDialog.closeAll();
         })
       } else {
-      this._matDialog.closeAll();
-    }
+        this._matDialog.closeAll();
+      }
     })
   }
 
@@ -896,43 +887,43 @@ export class NewAdmissionComponent implements OnInit {
   }
 
 
-    minDate = new Date();
-    value=new Date()
-       onChangeDateofBirth(DateOfBirth: Date) {
-        if (DateOfBirth > this.minDate) {
-            this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-            return;
-        }
-        if (DateOfBirth) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-          
-            this.ageYear = todayDate.getFullYear() - dob.getFullYear();
-            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-            this.ageDay = (todayDate.getDate() - dob.getDate());
-
-            if (this.ageDay < 0) {
-                this.ageMonth--;
-                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay += previousMonth.getDate(); // Days in previous month
-                // this.ageDay =this.ageDay +1;
-            }
-
-            if (this.ageMonth < 0) {
-                this.ageYear--;
-                this.ageMonth += 12;
-            }
-            this.value = DateOfBirth;
-            this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
-            if (this.ageYear > 110)
-                this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-        }
+  minDate = new Date();
+  value = new Date()
+  onChangeDateofBirth(DateOfBirth: Date) {
+    if (DateOfBirth > this.minDate) {
+      this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      return;
     }
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+
+      this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
+
+      if (this.ageDay < 0) {
+        this.ageMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
+        // this.ageDay =this.ageDay +1;
+      }
+
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+      this.value = DateOfBirth;
+      this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
+      if (this.ageYear > 110)
+        this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+  }
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -944,247 +935,140 @@ export class NewAdmissionComponent implements OnInit {
     }
   }
 
-  // op to ip convert code
+  //////////////////////// op to ip convert code ////////////////////////
   @ViewChild('opTable') opTable!: TemplateRef<any>;
-  public dsOpList = new MatTableDataSource<OpList>();
-  public displayedOpdColumns = ['RegNo','PatientName','DepartmentName','DoctorName'];
-
-  openOPTable(): void {
-    const dialogRef = this._matDialog.open(this.opTable, {
-      width: '40%',
+  public dsIPConvertPatientList = new MatTableDataSource<VisitMaster1>();
+  @ViewChild('IPConvertTable') IPConvertTable!: TemplateRef<any>;
+  ListdialogRef: any
+  VvisitId: any;
+  dataSource = new MatTableDataSource<VisitMaster1>();
+  openPatientTable() {
+    this.ListdialogRef = this._matDialog.open(this.IPConvertTable, {
+      width: '80%',
       height: '60%',
     });
-     dialogRef.afterClosed().subscribe((selectedRow) => {
-      console.log(selectedRow)
-    // if (selectedRow) {
-    //   this.searchFormGroup.patchValue(selectedRow
-    //     // RegNo: selectedRow.RegNo
-    //   );
-    // }
-    this.getPatientobj(selectedRow)
-  });
-    // let Data = {
-    //   "first": 0,
-    //   "rows": 100,
-    //   "sortField": "RequestTranId",
-    //   "sortOrder": 0,
-    //   "filters": [
-    //     {
-    //       "fieldName": "VisitId",
-    //       "fieldValue": String(this.vOPIPId),//"364435",
-    //       "opType": "Equals"
-    //     }
-    //   ],
-    //   "exportType": "JSON",
-    //   "columns": [
-    //     {
-    //       "data": "string",
-    //       "name": "string"
-    //     }
-    //   ]
-    // }
-    // debugger
-    // this._AdmissionService.getOPDEmrId(Data).subscribe((response) => {
-    //   this.dsOpList.data = response.data;
-    //   console.log(this.dsOpList.data)
-    // });
+    this.ListdialogRef.afterClosed().subscribe((selectedRow) => {
+      if (selectedRow) {
+        this.VvisitId = selectedRow.visitId
+        if ((this.VvisitId) > 0) { //140267
+          this._AdmissionService.getRegistraionById(selectedRow.visitId).subscribe((response) => {
+            this.registerObj = response;
+            console.log("Visit Data:", this.registerObj)
+            if (this.registerObj.regId?.valueOf() > 0) {
+              this.searchFormGroup.get('regRadio')?.setValue('registrered');
+              this.Regflag = true;
+            } else {
+              this.searchFormGroup.get('regRadio')?.setValue('registration');
+              this.Regflag = false;
+            }
+            // this.selectChangedepartment(this.registerObj1)
+          });
+        }
+      }
+    });
 
+    let Data = {
+      "first": 0,
+      "rows": 100,
+      "sortField": "IsConvertRequestForIP",
+      "sortOrder": 0,
+      "filters": [],
+      "exportType": "JSON",
+      "columns": []
+    }
+
+    this._AdmissionService.getOPDToIpConvertList(Data).subscribe((response) => {
+      this.dataSource.data = response.data;
+    });
   }
 
-   public dsIPConvertPatientList = new MatTableDataSource<VisitMaster1>();
-    @ViewChild('IPConvertTable') IPConvertTable!: TemplateRef<any>;
-    pconverListCount = 0
-    openPatientTable() {
+  public displayedColumns =
+    ['opdNo', 'vistDateTime', 'patientName', 'doctorName'];
 
-        this._matDialog.open(this.IPConvertTable, {
-            width: '80%',
-            height: '60%',
+  onRowClick(contact) {
+    this.ListdialogRef.close(contact);
+    // this.getSelectedObj(contact)
+  }
+  //////////////////////// op to ip convert code end ////////////////////////
 
-        })
-        this.GetAppointdetail();
-        // let Data = {
-        //   "first": 0,
-        //   "rows": 100,
-        //   "sortField": "RequestTranId",
-        //   "sortOrder": 0,
-        //   "filters": [
-        //     {
-        //       "fieldName": "VisitId",
-        //       "fieldValue":"0",//"364435",
-        //       "opType": "Equals"
-        //     }
-        //   ],
-        //   "exportType": "JSON",
-        //   "columns": [
-        //     {
-        //       "data": "string",
-        //       "name": "string"
-        //     }
-        //   ]
-        // }
-        // debugger
-        // this._AppointmentlistService.getOPDToIpConvertList(Data).subscribe((response) => {
-        //   this.dsIPConvertPatientList.data = response.data;
-        //   if(response.data)
-        //     this.pconverListCount=this.dsIPConvertPatientList.data.length
-        //   console.log(this.dsIPConvertPatientList.data)
-        // });
+  debounceTimers: { [key: string]: any } = {};
+  handleInputChange(changedField: string): void {
+    // Get all current field values
+    const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
+    const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
+    const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
+
+    // If all fields are empty, clear everything
+    if (!firstName && !lastName && !mobileNo) {
+      this.resetFilteredOptions();
+      return;
     }
 
-    public displayedColumns =
-        ['opdNo', 'vistDateTime', 'patientName', 'address', 'mobileNo', 'departmentName'];
+    // Count how many fields are filled
+    const filledFields = [firstName, mobileNo].filter(Boolean).length;
 
-    getPatientobj(contact) {
-      
-          // this.getSelectedObj1(contact.regId)
-          this.getSelectedObj(contact)
-     }
+    // If only one field is filled, and it's FirstName or MobileNo, call API
+    if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
+      const keyword = firstName || mobileNo;
+      this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+        this.prevResults = results || [];
+        this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      });
+      return;
+    }
 
-    dataSource = new MatTableDataSource<VisitMaster1>();
-    GetAppointdetail() {
+    // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+    if (filledFields === 1 && changedField === 'LastName') {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      return;
+    }
 
-      let data =
-        {
-            "first": 0,
-            "rows": 20,
-            "sortField": "VisitId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "F_Name",
-                    "fieldValue": "%",
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "L_Name",
-                    "fieldValue": "%",
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "Reg_No",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Doctor_Id",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "From_Dt",
-                    "fieldValue": "2025-08-01",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "To_Dt",
-                    "fieldValue": "2025-08-17",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "IsMark",
-                    "fieldValue": "2",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
-        }
-        console.log(data)
-        this._AdmissionService.getVisitlist(data).subscribe((response) => {
-            this.dataSource.data = response.data;
-            console.log(this.dataSource.data)
-            if (this.dataSource.data.length > 0){
-                this.showOPtoIPFlag = true
-                this.searchFormGroup.get("regRadio").setValue("registrered")
-                this.admissionFormGroup.get("IsOpToIpconv").setValue(true)
-
-            }
+    // If more than one field is filled, filter from prevResults
+    if (this.prevResults.length > 0) {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+    } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
+      // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+      const keyword = this.personalFormGroup.get(changedField).value?.trim();
+      if (keyword) {
+        this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+          this.prevResults = results || [];
+          this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
         });
+      }
+    } else {
+      // If changedField is LastName and prevResults is empty, do nothing
+      this.filteredOptions = [];
     }
-    
-    debounceTimers: { [key: string]: any } = {};
-     handleInputChange(changedField: string): void {
-        // Get all current field values
-        const firstName = this.personalFormGroup.get('FirstName').value?.trim() || '';
-        const lastName = this.personalFormGroup.get('LastName').value?.trim() || '';
-        const mobileNo = this.personalFormGroup.get('MobileNo').value?.trim() || '';
-
-        // If all fields are empty, clear everything
-        if (!firstName && !lastName && !mobileNo) {
-            this.resetFilteredOptions();
-            return;
-        }
-
-        // Count how many fields are filled
-        const filledFields = [firstName, mobileNo].filter(Boolean).length;
-
-        // If only one field is filled, and it's FirstName or MobileNo, call API
-        if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
-            const keyword = firstName || mobileNo;
-            this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-                this.prevResults = results || [];
-                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-            });
-            return;
-        }
-
-        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
-        if (filledFields === 1 && changedField === 'LastName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-            return;
-        }
-
-        // If more than one field is filled, filter from prevResults
-        if (this.prevResults.length > 0) {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-        } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
-            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
-            const keyword = this.personalFormGroup.get(changedField).value?.trim();
-            if (keyword) {
-                this._AdmissionService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-                    this.prevResults = results || [];
-                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-                });
-            }
-        } else {
-            // If changedField is LastName and prevResults is empty, do nothing
-            this.filteredOptions = [];
-        }
+  }
+  // Helper function to filter results by all non-empty fields
+  filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+    const { firstName, lastName, mobileNo } = fields;
+    return results.filter(item => {
+      return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+        && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+        && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+    });
+  }
+  handleInputChangeDebounced(changedField: string): void {
+    // Clear any existing timer for this field
+    if (this.debounceTimers[changedField]) {
+      clearTimeout(this.debounceTimers[changedField]);
     }
-    // Helper function to filter results by all non-empty fields
-    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
-        const { firstName, lastName, mobileNo } = fields;
-        return results.filter(item => {
-            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
-                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
-                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
-        });
-    }
-    handleInputChangeDebounced(changedField: string): void {
-        // Clear any existing timer for this field
-        if (this.debounceTimers[changedField]) {
-            clearTimeout(this.debounceTimers[changedField]);
-        }
-        // Set a new timer
-        this.debounceTimers[changedField] = setTimeout(() => {
-            this.handleInputChange(changedField);
-        }, 300); // 300ms debounce
-    }
-    onSelectPatient(row: any) {
-        this.getSelectedObj(row);
-        this.resetFilteredOptions();
-    }
+    // Set a new timer
+    this.debounceTimers[changedField] = setTimeout(() => {
+      this.handleInputChange(changedField);
+    }, 300); // 300ms debounce
+  }
+  onSelectPatient(row: any) {
+    this.getSelectedObj(row);
+    this.resetFilteredOptions();
+  }
 }
 
 export class OpList {
   DoctorId: number;
-  departmentId:number;
-  patientName:string;
+  departmentId: number;
+  patientName: string;
   ChargeDoctorName: String;
   ClassId: number;
   ClassName: string;
@@ -1192,9 +1076,9 @@ export class OpList {
   OpdIpdId: any;
   doctorName: any;
   doctorId: any;
-  userName:any;
-  regNo:number;
-  regId:number;
+  userName: any;
+  regNo: number;
+  regId: number;
   constructor(OpList) {
     this.DoctorId = OpList.DoctorId || 0;
     this.DoctorName = OpList.DoctorName || '';

@@ -27,12 +27,12 @@ export class OtRequestService {
             opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            categoryId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //doctortype value passing here
+            categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //doctortype value passing here
             siteDescId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             otRequestDate: [new Date()],
-            otRequestTime: ['',[Validators.required]],
-                // Validators.pattern(/^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i)
+            otRequestTime: ['', [Validators.required]],
+            // Validators.pattern(/^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i)
             opIpType: ["OP"],
             surgeryTypeId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -42,7 +42,7 @@ export class OtRequestService {
             isCancelled: [false],
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator()]],
-            
+
             doctorTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
@@ -82,4 +82,7 @@ export class OtRequestService {
     // public deactivateTheStatus(m_data) {
     //     return this._httpClient.DeleteData("CityMaster?Id=" + m_data.toString());
     // }
+    public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 }

@@ -182,7 +182,6 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Add Charges');
 
         }
-        debugger;
         this.id = this.route.snapshot.queryParamMap.get('Id');
         this.mode = this.route.snapshot.queryParamMap.get('Mode');
         if (this.mode == "Bill" && Number(this.id)>0) {
@@ -370,19 +369,20 @@ export class IPSearchListComponent implements OnInit {
                     that.grid.bindGridData();
                 }
             });
-        } else if (m = "Add Charges") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
+        } 
+        // else if (m = "Add Charges") {
+        //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        //     buttonElement.blur(); // Remove focus from the button
 
-            this.advanceDataStored.storage = new AdvanceDetailObj(element);
-            const dialogRef = this._matDialog.open(IPBillingComponent,
-                {
-                    maxWidth: "100%",
-                    width: '95%',
-                    height: '95%',
-                      data: element
-                });
-        }
+        //     this.advanceDataStored.storage = new AdvanceDetailObj(element);
+        //     const dialogRef = this._matDialog.open(IPBillingComponent,
+        //         {
+        //             maxWidth: "100%",
+        //             width: '95%',
+        //             height: '95%',
+        //               data: element
+        //         });
+        // }
         else if (m == "Advance") {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
@@ -823,6 +823,7 @@ export class ChargesList {
     concessionPercentage: any;
     concessionAmount: any;
     netAmount: any;
+    CreditedtoDoctor:any;
 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
@@ -860,6 +861,7 @@ export class ChargesList {
         this.doctorId = ChargesList.doctorId || 0;
         this.isPathology = ChargesList.isPathology || 0;
         this.isRadiology = ChargesList.isRadiology || 0;
+        this.CreditedtoDoctor = ChargesList.CreditedtoDoctor;
     }
 }
 export class AdvanceHeader {

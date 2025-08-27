@@ -19,22 +19,23 @@
             <div class="airmid-table">
                 <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
                     <ng-container matColumnDef="opdNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-160">
                             OPDNO
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
+                        <mat-cell *matCellDef="let contact" class="w-160">
                             <span> {{contact.opdNo}}</span>
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="vistDateTime">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            vistDateTime
+                            VistDateTime
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
-                            <span> {{contact.vistDateTime }}</span>
+                            <span>{{ contact.visitTime}}</span>
                         </mat-cell>
                     </ng-container>
+
                     <ng-container matColumnDef="patientName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                             Patient Name
@@ -43,28 +44,12 @@
                             <span> {{contact.patientName}}</span>
                         </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="address">
+                    <ng-container matColumnDef="doctorName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            Address
+                            DoctorName
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
-                            <span> {{contact.address}}</span>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="mobileNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            MobileNo
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <span> {{contact.mobileNo}}</span>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="departmentName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            DepartmentName
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <span> {{contact.departmentName}}</span>
+                            <span> {{contact.doctorName}}</span>
                         </mat-cell>
                     </ng-container>
 
@@ -79,8 +64,8 @@
 
                     <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
             (click)="getPatientobj(contact)"></mat-row> -->
-                    <mat-row *matRowDef="let contact; columns: displayedOpdColumns;"
-                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="dialogRef.close(contact)"></mat-row>
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="onRowClick(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['NoData']"
                         [ngClass]="{'hide':dataSource.data.length > 0}"></mat-footer-row>
                 </mat-table>
@@ -926,10 +911,10 @@
                         <mat-checkbox aria-label="Remember Me" formControlName="IsMLC">
                             ISMLC
                         </mat-checkbox>
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsOpToIpconv"
+                        <!-- <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsOpToIpconv"
                             style="margin-left:30px;">
                             OP TO IP Convert
-                        </mat-checkbox>
+                        </mat-checkbox> -->
                         <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity"
                             style="margin-left:30px;">
                             IsCharity

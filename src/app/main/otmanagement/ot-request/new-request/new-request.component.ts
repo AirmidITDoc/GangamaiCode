@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { OtRequestService } from '../ot-request.service';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-request',
@@ -71,6 +72,7 @@ export class NewRequestComponent implements OnInit {
   constructor(public _OtRequestService: OtRequestService,
     public dialogRef: MatDialogRef<NewRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public _matDialog: MatDialog,
     private ref: MatDialogRef<NewRequestComponent>,
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
@@ -247,6 +249,7 @@ export class NewRequestComponent implements OnInit {
       this.requestForm.removeControl('doctorTypeId')
       console.log(this.requestForm.value)
       this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
+        this.OnPrint(response)
         this.onClear(true);
       });
     } {
@@ -266,6 +269,7 @@ export class NewRequestComponent implements OnInit {
       }
     }
   }
+
   selectChangedoctorType(obj: any) {
     if (obj.value) {
       this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
@@ -288,6 +292,42 @@ export class NewRequestComponent implements OnInit {
         }, 100);
       });
     }
+  }
+
+  OnPrint(Param) {
+    const param = {
+      searchFields: [
+        {
+          fieldName: "OTBookingId",
+          fieldValue: String(Param.otbookingId),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OP_IP_Type",
+          fieldValue: String(Param.opIpType),
+          opType: "Equals"
+        }
+      ],
+      mode: "OTRequest"
+    };
+
+    console.log(param);
+
+    this._OtRequestService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Pathology Test Report With Header Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
   }
 
   getValidationMessages() {
