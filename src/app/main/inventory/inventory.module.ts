@@ -34,8 +34,7 @@ const appRoutes: Routes = [
   },
   {
       path: "returnfromdepartment",
-      loadChildren: () =>
-      import("./return-from-department/return-from-department.module").then((m) => m.ReturnFromDepartmentModule),
+      loadChildren : () =>import("../pharmacy/material-received-from-department/material-received-from-department.module").then((m)=>m.MaterialReceivedFromDepartmentModule),
   },
   {
       path: "patientmaterialconsumptionreturn",

@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { GRNFormModel, ToastType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class GSTAdjustmentComponent implements OnInit {
   vNewCGSTPer: any = 0;
   vNewSGSTPer: any = 0;
   vNewIGSTPer: any = 0;
-  vTotalGSTPer: any=0;
+  vTotalGSTPer: any = 0;
   registerObj: any;
   itemname: any;
   vOldTotalGSTPer: any;
@@ -72,14 +73,14 @@ export class GSTAdjustmentComponent implements OnInit {
       oldCgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       oldSgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: ['', [Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstper: ['', [Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       igstper: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
- keyPressAlphanumeric(event) {
+  keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
@@ -87,6 +88,58 @@ export class GSTAdjustmentComponent implements OnInit {
       event.preventDefault();
       return false;
     }
+  }
+  gstflag = false
+  getchangegstper(Id,rate, GSTTYP): void {
+    
+    console.log(Id)
+    const formValues = this.GSTAdjustment.getRawValue() as GRNFormModel;
+    const gstValues = [
+      { value: 2.5 },
+      { value: 6 },
+      { value: 9 },
+      { value: 14 }
+    ];
+    debugger
+    const numericRate = parseFloat(rate);
+    if (!isNaN(numericRate) && numericRate >= 2.5) {
+      // const exists = gstValues.some(item => item.value === rate);
+
+      gstValues.forEach(element => {
+        console.log(element)
+        if (element.value == rate)
+          this.gstflag = true
+        return;
+        // else
+        //    this.gstflag = false
+      });
+console.log( this.gstflag)
+
+      if (!this.gstflag) {
+        this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+        this.gstflag = true
+        
+        // if(formValues.CGST)
+        //   this.GSTAdjustment.get('cgstper').setValue(0)
+        // else  if(formValues.SGST)
+        //   this.GSTAdjustment.get('sgstper').setValue(0)
+        // else
+        //    if(formValues.IGST)
+        //   this.GSTAdjustment.get('igstper').setValue(0)
+        return;
+      } else if (this.gstflag) {
+        const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+        this.GSTAdjustment.patchValue({
+          GST: GSTPer
+        });
+        this.calculationAmt();
+      }
+    }
+    else {
+      this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+      return;
+    }
+
   }
   calculationAmt() {
     debugger
@@ -105,6 +158,11 @@ export class GSTAdjustmentComponent implements OnInit {
   onSubmit() {
 
     if (!this.GSTAdjustment.invalid) {
+      debugger
+      if (this.gstflag = false)
+        this.toastr.warning('Enter Proper GST Value ', 'Warning')
+      return;
+
       // this.Savebtn = true;
 
       // let submitData = {
@@ -122,8 +180,6 @@ export class GSTAdjustmentComponent implements OnInit {
       // };
       // console.log(submitData);
       console.log(this.GSTAdjustment.value)
-
-
       this.GSTAdjustment.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
       this.GSTAdjustment.get('stkId').setValue(this.registerObj.stockId || 0)
       this.GSTAdjustment.get('itemId').setValue(this.registerObj.itemId || 0)

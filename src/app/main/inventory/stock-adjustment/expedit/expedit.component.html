@@ -45,13 +45,17 @@
                                     <input name="NewexpDate" formControlName="NewexpDate" matInput required>
                                 </mat-form-field> -->
 
-                                <mat-form-field appearance="outline" fxFlex="40%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="40%">
                                     <input matInput [matDatepicker]="validFromPicker" formControllName="NewexpDate"
                                         placeholder="New Exp Date">
                                     <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
                                     <mat-datepicker #validFromPicker></mat-datepicker>
+                                </mat-form-field> -->
+                                <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-label>ExpDate</mat-label>
+                                    <input matInput #inputField (keyup.enter)="calculateLastDay()"
+                                        formControlName="NewexpDate" autocomplete="off" placeholder="mmyyyy" required>
                                 </mat-form-field>
-
 
 
                             </div>
@@ -60,9 +64,9 @@
                         </form>
 
                         <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
-                             <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+                            <button class="btn btn-primary " (click)="onSubmit()">Save</button>
                             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                           
+
                         </div>
                     </div>
                 </div>

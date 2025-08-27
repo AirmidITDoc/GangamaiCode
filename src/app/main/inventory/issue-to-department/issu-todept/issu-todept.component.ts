@@ -43,6 +43,11 @@ export class IssuTodeptComponent {
   IsClosed: any;
   IndQty: any;
   RQty: any = 0;
+
+  Itemchargeslist1: any = [];
+  QtyBalchk: any = 0;
+  Itemflag: boolean = false;
+  tostoreId = 0
   @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
   displayedNewIssuesList1: string[] = [
@@ -186,7 +191,7 @@ export class IssuTodeptComponent {
     return this._formBuilder.group({
       "issue": this._formBuilder.group({
         "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "indentId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [this.vIndentId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "issueDate": [(new Date()).toISOString().split('T')[0]],
         "issueTime": [(new Date()).toISOString()],
         "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -205,7 +210,7 @@ export class IssuTodeptComponent {
   }
 
   Depatdetailform(element: any = {}): FormGroup {
-    debugger
+
     console.log(element)
     return this._formBuilder.group({
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -213,7 +218,7 @@ export class IssuTodeptComponent {
       itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.BatchNo],
       batchExpDate: [(new Date()).toISOString().split('T')[0]],
-      issueQty: "1",
+      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
       perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
       LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -226,18 +231,18 @@ export class IssuTodeptComponent {
     });
   }
   currentstockform(element: any = {}): FormGroup {
-    debugger
+
     console.log(element)
     return this._formBuilder.group({
       itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
       stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
   indentdetailform(element: any = {}): FormGroup {
-    debugger
+
     console.log(element)
     return this._formBuilder.group({
       indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -252,7 +257,7 @@ export class IssuTodeptComponent {
     return this._formBuilder.group({
       "updateIndent": this._formBuilder.group({
         "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "indentId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [this.vIndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "issueDate": [(new Date()).toISOString().split('T')[0]],
         "issueTime": [(new Date()).toISOString()],
         "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -268,7 +273,7 @@ export class IssuTodeptComponent {
       }),
       tCurStockModel: this._formBuilder.array([]),
       "indentHeader": this._formBuilder.group({
-        "indentId": 0,
+        "indentId": this.vIndentId,
         "isClosed": true
       }),
       tIndentDetails: this._formBuilder.array([]),
@@ -294,7 +299,7 @@ export class IssuTodeptComponent {
       });
       return;
     }
-    debugger
+
 
     // this.dsNewIssueList3.data.forEach((element) => {
 
@@ -309,12 +314,12 @@ export class IssuTodeptComponent {
         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
-          this.NewIssueGroup.reset()
-          this.NewIssueGroup.get("Qty").setValue(1);
-          const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
-          if (serviceNameElement) {
-            serviceNameElement.focus();
-          }
+        this.NewIssueGroup.reset()
+        this.NewIssueGroup.get("Qty").setValue(1);
+        const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (serviceNameElement) {
+          serviceNameElement.focus();
+        }
         return;
       }
     }
@@ -342,7 +347,7 @@ export class IssuTodeptComponent {
     // if (!isDuplicate) {
     let gstper = 0
     gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-
+debugger
     this.chargeslist = this.dsTempItemNameList.data;
     // if (this.dsNewIssueList3.data.length > 0) {
     //   this.chargeslist = this.dsNewIssueList3.data;
@@ -357,7 +362,7 @@ export class IssuTodeptComponent {
     // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
 
-    debugger
+
     this.chargeslist.push(
       {
         ItemId: this.NewIssueGroup.get('ItemName').value.itemId || 0,
@@ -400,8 +405,15 @@ export class IssuTodeptComponent {
 
     this.resetFormItem();
     // this.itemid.nativeElement.focus();
-    this.NewIssueGroup.get('ItemName').setValue('');
+    // this.NewIssueGroup.get('ItemName').setValue('');
+
+     const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+      if (serviceNameElement) {
+        serviceNameElement.focus();
+      }
+
     this.Addflag = false;
+
 
     if (!(this.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
       this.vsaveflag = false;
@@ -450,23 +462,12 @@ export class IssuTodeptComponent {
       // this.vTotalAmount=  this.vQty * this.vLandedRate;
 
       this.NewIssueGroup.get("Qty").setValue(0);
-          const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-          if (serviceNameElement) {
-            serviceNameElement.focus();
-          }
+      const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+      if (serviceNameElement) {
+        serviceNameElement.focus();
+      }
     });
 
-    // setTimeout(() => {
-    //   const nativeElement = this.qtyTextboxRef?.nativeElement;
-    //   if (nativeElement) {
-    //     const inputEl: HTMLInputElement = nativeElement.querySelector('input');
-    //     if (inputEl) {
-    //       inputEl.focus();
-    //     }
-    //   }
-    // }, 100);
-
-    
   }
 
 
@@ -488,7 +489,7 @@ export class IssuTodeptComponent {
 
 
   CalculateTotalAmt() {
-    debugger
+
 
     if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
       this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
@@ -534,11 +535,11 @@ export class IssuTodeptComponent {
     // if (this.BalanceQty > 0) {
     this.getBatch();
     // }
-// this.NewIssueGroup.get("Qty").setValue(1);
-//           const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-//           if (serviceNameElement) {
-//             serviceNameElement.focus();
-//           }
+    // this.NewIssueGroup.get("Qty").setValue(1);
+    //           const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    //           if (serviceNameElement) {
+    //             serviceNameElement.focus();
+    //           }
   }
 
 
@@ -559,7 +560,7 @@ export class IssuTodeptComponent {
 
     if (!this.IssueFinalForm.invalid) {
       console.log(this.vIndentId)
-      debugger
+
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
@@ -676,8 +677,7 @@ export class IssuTodeptComponent {
       this.dsNewIssueList3.data.forEach(item => {
         this.stockArray.push(this.currentstockform(item));
       });
-      debugger
-
+debugger
       this.FinalIssueForm.get("issue.issueId").setValue(0)
       this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
       this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
@@ -724,7 +724,7 @@ export class IssuTodeptComponent {
       this.dsNewIssueList3.data.forEach(item => {
         this.stockArray1.push(this.currentstockform(item));
       });
-      debugger
+
 
       this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
       this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
@@ -738,9 +738,9 @@ export class IssuTodeptComponent {
       this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
       this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
       this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
-      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(0)
+      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(this.vIndentId)
 
-      this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(0)
+      this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(this.vIndentId)
       this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(false)
 
       this.indentdetailArray.clear();
@@ -759,7 +759,7 @@ export class IssuTodeptComponent {
 
 
   OnSaveAgaintIndent1() {
-    debugger
+
     this.vsaveflag = true;
     let isertItemdetailsObj = [];
 
@@ -823,7 +823,7 @@ export class IssuTodeptComponent {
 
       let updateIndentStatusIndentDetails = [];
       this.dsNewIssueList3.data.forEach(element => {
-        debugger
+
         let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
         if (balQty == 0) {
           this.Isclosedchk = false;
@@ -920,9 +920,6 @@ export class IssuTodeptComponent {
       // ],
     };
   }
-  Itemchargeslist1: any = [];
-  QtyBalchk: any = 0;
-  Itemflag: boolean = false;
 
   OnIndent() {
     this.OnReset();
@@ -936,21 +933,17 @@ export class IssuTodeptComponent {
       console.log('The dialog was closed - Insert Action', result);
       this.dsNewIssueList1.data = result;
       console.log(result)
-      if (result)
+      if (result) {
         this.vIndentId = result[0].indentId;
-      console.log(this.vIndentId)
+        console.log(this.vIndentId)
+        this.vAgainstIndet = true;
+        this.StoreFrom.get("AgainstIndent").setValue(true)
+        debugger
+        this.tostoreId = result[0].toStoreId
+        console.log( this.tostoreId)
+        this.StoreFrom.get('ToStoreId').setValue(this.tostoreId);
 
-
-      this.vAgainstIndet = true;
-      debugger
-      // this.StoreFrom.get("AgainstIndent").setValue('1')
-      this.StoreFrom.get("AgainstIndent").setValue(true)
-
-
-
-      // const toSelectToStoreId = this.ToStoreList1.find(c => c.StoreId == result[0].FromStoreId);
-      // this._IssueToDep.NewIssueGroup.get('ToStoreId').setValue(toSelectToStoreId);
-      // console.log(this.vIndentId)
+      }
     });
   }
 
@@ -967,7 +960,7 @@ export class IssuTodeptComponent {
 
 
   AddIndentItem(contact) {
-    debugger
+
     console.log(contact)
     this.vIndentId = contact.indentId;
     // this.Indentid = contact.indentId;
@@ -975,7 +968,7 @@ export class IssuTodeptComponent {
     this.IsClosed = contact.isClosed;
     this.IndQty = contact.qty;
     let DuplicateItem = 0;
-    debugger
+
     if (this.dsNewIssueList3.data.length > 0) {
       this.dsNewIssueList3.data.forEach((element) => {
         if (element.ItemId == contact.itemId) {
@@ -998,14 +991,14 @@ export class IssuTodeptComponent {
       });
     }
     //   else  {
-    // debugger
+    // 
     if (!DuplicateItem) {
       this.Itemchargeslist1 = [];
       this.QtyBalchk = 0;
 
       var m_data = {
         "ItemId": contact.itemId,
-        "StoreId": this.accountService.currentUserValue.userId || 0
+        "StoreId": this.accountService.currentUserValue.user.storeId || 0
       }
       this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
         console.log(draftdata)
@@ -1062,7 +1055,7 @@ export class IssuTodeptComponent {
   getFinalCalculation(contact, DraftQty) {
 
     console.log(contact)
-    debugger
+
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.unitMRP) {
       let TotalMRP = (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2);
@@ -1137,7 +1130,7 @@ export class IssuTodeptComponent {
   getCellCalculation(contact, Qty) {
 
     /// this.Indbalqty = parseInt(contact.TotalIndQty) - parseInt(contact.Qty);
-    debugger
+
     if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
       this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

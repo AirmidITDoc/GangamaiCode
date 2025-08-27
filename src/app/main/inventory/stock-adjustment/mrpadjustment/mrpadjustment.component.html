@@ -81,7 +81,7 @@
                                 <airmid-textbox label="New MRP" formControlName="NewMRP"
                                     [formGroup]="MRPAdjform"  [value]="vNewMRP"
                                     [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()"
-                                     (keypress)="keyPressCharater($event)"   (keypress)="keyPressAlphanumeric($event)">
+                               (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New LandedRate</mat-label>

@@ -42,7 +42,7 @@
                                 [formGroup]="StoreFrom" [mode]="autocompletestore" [readonly]="true"
                                 (selectionChange)="selectChangeStore($event)">
                             </airmid-dropdown>
-                            <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="StoreFrom"
+                            <airmid-dropdown label="Store Name" formControlName="ToStoreId" [formGroup]="StoreFrom" [(ngModel)]="tostoreId"
                                 fxFlex="30%" [mode]="autocompletestore" (selectionChange)="selectChangeStore1($event)">
                             </airmid-dropdown>
                             <div style="padding-top: 10px;">

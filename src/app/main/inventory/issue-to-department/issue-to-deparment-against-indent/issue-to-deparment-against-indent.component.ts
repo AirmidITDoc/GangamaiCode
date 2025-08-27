@@ -25,6 +25,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
   displayedColumns: string[] = [
     // 'CheckBox',
+    'Priority',
     'IndentNo',
     'IndentDate',
     'FromStoreName',
@@ -80,7 +81,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   }
   getIndentList() {
     this.sIsLoading = 'loading-data';
-debugger
+
     let frdate=this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
      let todate=this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
      let status =this.IndentFrom.get("Status").value
@@ -142,8 +143,12 @@ debugger
         this.sIsLoading = '';
       });
   }
+
+  toStoreId=0
   getIndentItemDetList(Param) {
     console.log(Param)
+    this.toStoreId=Param.toStoreId
+
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
@@ -165,6 +170,7 @@ debugger
         }
       ]
     }
+    debugger
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data.data as IndentItemDetList[];
       console.log(data.data)
@@ -172,12 +178,15 @@ debugger
       // this.dsIndentItemDetList.sort = this.sort;
       // this.dsIndentItemDetList.paginator = this.paginator;
       console.log(this.Charglist)
+  this.Charglist[0]['toStoreId']=this.toStoreId
+   console.log(this.Charglist)
       this.sIsLoading = '';
     });
-    this.GetIndentGainstlist(Param);
+    // this.GetIndentGainstlist(Param);
   }
 
   GetIndentGainstlist(param) {
+    debugger
     var vdata = {
       'IndentId': param.indentId
     }
@@ -186,14 +195,16 @@ debugger
       this.dstempdata.data = data as IndentItemDetList[];
       this.Charglist = this.dstempdata.data;
       console.log(this.Charglist);
+      // this.Charglist[0]['toStoreId']=this.toStoreId
       console.log(this.dstempdata.data);
+           console.log(this.Charglist);
     });
   }
 
   vstoreId: any = 0;
   selectChangeStore(obj: any) {
     this.vstoreId = obj.value
-
+    this.getIndentList()
   }
 
   OnIndentList() {
@@ -203,6 +214,14 @@ debugger
       });
       return;
     }
+debugger
+        if ((!this.IndentFrom.get('ToStoreId').value)) {
+      this.toastr.warning('Select Store Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
     console.log(this.Charglist)
     this._dialogRef.close(this.Charglist);
     const dialogRef = this._matDialog.open(IssuTodeptComponent,
@@ -210,7 +229,8 @@ debugger
         maxWidth: "97vw",
         height: '90%',
         width: '95%',
-        data: this.Charglist
+        data: this.Charglist,
+        
       });
     dialogRef.afterClosed().subscribe(result => {
 
@@ -231,6 +251,7 @@ export class IndentList {
   ToStoreName: string;
   Addedby: any;
   IndentId: any;
+  Priority:any;
   constructor(IndentList) {
     {
       this.IndentNo = IndentList.IndentNo || 0;
@@ -239,6 +260,7 @@ export class IndentList {
       this.ToStoreName = IndentList.ToStoreName || '';
       this.Addedby = IndentList.Addedby || 0;
       this.IndentId = IndentList.IndentId || 0;
+       this.Priority = IndentList.Priority || 0;
     }
   }
 }

@@ -81,9 +81,9 @@
                                         (keypress)="keyPressCharater($event)">
                                 </mat-form-field> -->
 
-                                <airmid-textbox label="New CGSTPer" formControlName="cgstper"
+                                <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
-                                    [value]="vNewCGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewCGSTPer" (valueChange)="getchangegstper(1,$event,CGST)"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -92,9 +92,9 @@
                                         OnlyNUmber id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" (keyup)="calculationAmt()"
                                         (keyup.enter)="focusNext('NewIGSTPer')" (keypress)="keyPressCharater($event)">
                                 </mat-form-field> -->
-                                <airmid-textbox label="New SGSTPer" formControlName="sgstper"
+                                <airmid-textbox label="New SGSTPer" formControlName="sgstper" #SGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
-                                    [value]="vNewSGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewSGSTPer" (valueChange)="getchangegstper(2,$event,SGST)"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -103,9 +103,9 @@
                                         OnlyNUmber [(ngModel)]="vNewIGSTPer" id="NewIGSTPer" (keyup)="calculationAmt()"
                                         (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
                                 </mat-form-field> -->
-                                <airmid-textbox label="New IGSTPer" formControlName="igstper"
+                                <airmid-textbox label="New IGSTPer" formControlName="igstper" #IGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
-                                    [value]="vNewIGSTPer" (input)="calculationAmt()"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewIGSTPer" (valueChange)="getchangegstper(3,$event,IGST)"  (keypress)="keyPressAlphanumeric($event)">
                                 </airmid-textbox>
 
                             </div>

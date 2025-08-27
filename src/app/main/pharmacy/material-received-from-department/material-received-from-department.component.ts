@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,11 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { ToastrService } from 'ngx-toastr';
 import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
 import { MaterialReceivedFromDepartmentService } from './material-received-from-department.service';
+import { FormGroup } from '@angular/forms';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-material-received-from-department',
@@ -22,200 +27,243 @@ import { MaterialReceivedFromDepartmentService } from './material-received-from-
  
 export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
+  hasSelectedContacts: boolean;
+     IssueSearchGroup: FormGroup;
+    
+     tempDatasource = new MatTableDataSource<IssueItemList>();
+
+     tempdata: any = [];
+     ItemSamelist: any = [];
+     BatchSamelist: any = [];
+     DraftQty: any = 0;
+     Tostore = "0"
+     FromStore: any = String(this.accountService.currentUserValue.user.storeId);
+     Status = "0"
+     autocompletestore: string = "Store";
+     autocompleteitem: string = "ItemType"; //Item
+     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+     AgainstInd: boolean = true;
+     Addflag: boolean = false;
  
-  isLoadingStr: string = '';
-  isLoading: String = '';
-  sIsLoading: string = "";
-  Store1List: any = [];
-  screenFromString = 'admission-form';
-  SpinLoading: boolean = false;
-  labelPosition: 'before' | 'after' = 'after';
-
-   autocompletestore: string = "Store";
-  DsIssuetodept = new MatTableDataSource<Issuetodept>();
-
-  dsItemList = new MatTableDataSource<ItemList>();
-
-  displayedColumns = [
-    'IsAccepted',
-    'IssueNo',
-    'IssueDate',
-    'FromStoreName',
-    'ToStoreName',
-    'NetAmount',
-    'Remark',
-    // 'Receivedby',
-    'AcceptedBy',
-    'AcceptedDatetime',
-    'action',
-  ];
-
-  displayedColumns1: string[] = [
-    'Status',
-    'ItemName',
-    'BatchNo',
-    'BatchExpDate',
-    'Qty',
-    'VatPercentage',
-    'PerUnitLandedRate',
-    'LandedTotalAmount',
-]
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  dsIssueItemList = new MatTableDataSource<IssueItemList>();
-
-
-  constructor(
-    public _materialAcceptanceService: MaterialReceivedFromDepartmentService,
-    public _matDialog: MatDialog,
-    private _loggedService: AuthenticationService,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService,
-
-  ) { }
-  editbutton:boolean=true;
-  ngOnInit(): void {
-    this.getIndentStoreList();
-    this.getIssueTodept();
-  }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
+     constructor(
+         public _MaterialReceivedFromDepartmentService: MaterialReceivedFromDepartmentService,
+         public toastr: ToastrService, private commonService: PrintserviceService,
+         public _matDialog: MatDialog, private accountService: AuthenticationService,
+         public datePipe: DatePipe
+     ) { }
  
-  
-
-  getIssueTodept() {
-    this.sIsLoading = '';
-    var Param = {
-      "ToStoreId ": this._loggedService.currentUserValue.storeId,
-      "From_Dt": this.datePipe.transform(this._materialAcceptanceService.MaterialReturnFrDept.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "To_Dt": this.datePipe.transform(this._materialAcceptanceService.MaterialReturnFrDept.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "IsVerify ": parseInt(this._materialAcceptanceService.MaterialReturnFrDept.get('Status').value) || 0
-    }
-    console.log(Param)
-    this._materialAcceptanceService.getIssuetodeptlist(Param).subscribe(data => {
-      this.DsIssuetodept.data = data as Issuetodept[];
-      console.log(this.DsIssuetodept.data)
-      this.DsIssuetodept.sort = this.sort;
-      this.DsIssuetodept.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
-  // getItemList(Params) {
-  //   var Param = {
-  //     "IssueId": Params.IssueId
-  //   }
-  //   this._materialAcceptanceService.getItemdetailList(Param).subscribe(data => {
-  //     this.dsItemList.data = data as ItemList[];
-  //     console.log( this.dsItemList.data )
-  //     this.dsItemList.sort = this.sort;
-  //     this.dsItemList.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-  getIssueItemwiseList(Param) {
-    var vdata = {
-        "IssueId": Param.IssueId
-    }
-    console.log(vdata)
-    this._materialAcceptanceService.getItemDetList(vdata).subscribe(data => {
-        this.dsIssueItemList.data = data as IssueItemList[];
-        console.log(this.dsIssueItemList.data)
-        this.dsIssueItemList.sort = this.sort;
-        this.dsIssueItemList.paginator = this.paginator;
-    });
-}
-
-  onEdit(contact) {
-    if(contact.PendingByDepartment > 0){
-      console.log(contact);
-      const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
-        {
-          maxWidth: "75vw",
-          height: '650px',
-          width: '100%',
-          data: {
-            Obj: contact,
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.getIssueTodept();
-      });
-    }else{
-      this.toastr.warning('Already material accepted.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
-   
-  }
-
-
-  onclickrow(contact) {
-    // Swal.fire("Row selected :" + contact)
-  }
-  getIndentStoreList() {
-    var vdata = {
-      Id: this._loggedService.currentUserValue.storeId
-    }
-    this._materialAcceptanceService.getLoggedStoreList(vdata).subscribe(data => {
-      this.Store1List = data;
-      this._materialAcceptanceService.MaterialReturnFrDept.get('ToStoreId').setValue(this.Store1List[0]);
-    });
-
-  }
-
-
-  viewgetMaterialrecfrdeptReportPdf(contact) {
-    this.sIsLoading == 'loading-data'
-
-    setTimeout(() => {
-        this.SpinLoading = true;
-        //  this.AdList=true;
-        this._materialAcceptanceService.getMaterialreceivedfrDeptview(contact.IssueId).subscribe(res => {
-            const dialogRef = this._matDialog.open(PdfviewerComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '850px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Material Received From Dept Reprt Viewer"
-                    }
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                this.sIsLoading = '';
-            });
-        });
-    }, 1000);
-}
-vstoreId=0
-  selectChangeStore(obj: any) {
-    console.log(obj)
-    this.vstoreId = obj.value
-  }
-
-
-  onClear() {
-
-  }
+     ngOnInit(): void {
+         this.IssueSearchGroup = this._MaterialReceivedFromDepartmentService.MaterialSearchFrom();
+     }
+     ngAfterViewInit() {
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
+        //  this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+ 
+     }
+ 
+ 
+     gridConfig1: gridModel = new gridModel();
+ 
+     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+     allcolumns = [
+ 
+         { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+ 
+         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "Accepted Date", key: "acceptedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      
+      
+          { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+         { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+         { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+         { heading: "acceptedByDepartment", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+ 
+         { heading: "rejetcedByDepartment", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+         { heading: "pendingByDepartment", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+       
+         { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+         {
+             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+             template: this.actionButtonTemplate  // Assign ng-template to the column
+         }
+     ];
+ 
+     @ViewChild('grid') grid: AirmidTableComponent;
+     @ViewChild('grid1') grid1: AirmidTableComponent;
+ 
+ 
+     gridConfig: gridModel = {
+         apiUrl: "IssueToDepartment/MaterialRecvedByDeptList",
+         columnsList: this.allcolumns,
+         sortField: "IssueId",
+         sortOrder: 0,
+         filters: [
+            { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+             { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+         ]
+     }
+ 
+ 
+     isShowDetailTable: boolean = false;
+     GetDetails1(data) {
+         
+         let IssueId = data.issueId
+         this.gridConfig1 = {
+             apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
+             columnsList: [
+                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
+                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+                 { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+                 { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                 { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+                 { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+                 { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 }
+             ],
+             sortField: "IssueId",
+             sortOrder: 0,
+             filters: [
+                 { fieldName: "IssueId", fieldValue: String(IssueId), opType: OperatorComparer.Equals }
+ 
+             ]
+         };
+         this.isShowDetailTable = true;
+         setTimeout(() => {
+         this.grid1.gridConfig = this.gridConfig1;
+             this.grid1.bindGridData();
+ 
+ 
+         }, 500);
+     }
+ 
+ 
+     getAgainstIndet(event) {
+         if (event.checked == true) {
+             this.AgainstInd = false;
+         } else {
+             this.AgainstInd = true;
+         }
+ 
+     }
+ 
+ 
+     barcodeItemfetch() {
+         this.Addflag = true;
+         var d = {
+             // "StockId": this._IssueToDep.NewIssueGroup.get("Barcode").value || 0,
+             // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+         }
+        //  this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
+        //      this.tempDatasource.data = data as any;
+ 
+        //      if (this.tempDatasource.data.length >= 1) {
+        //          this.tempDatasource.data.forEach((element) => {
+        //              this.DraftQty = 1;
+        //              this.onAddBarcodeItemList(element, this.DraftQty);
+        //          });
+        //      }
+        //      else if (this.tempDatasource.data.length == 0) {
+        //          this.toastr.error('Item Not Found !', 'Error !', {
+        //              toastClass: 'tostr-tost custom-toast-error',
+        //          });
+        //      }
+        //  });
+         // this.vBarcode = '';
+         this.Addflag = false
+     }
+ 
+     onAddBarcodeItemList(contact, DraftQty) {
+ 
+     }
+     selectChangeStore(obj: any) {
+         console.log(obj)
+     }
+ 
+     ListView(value) {
+         if (value.value !== 0)
+             this.FromStore = value.value
+         else
+             this.FromStore = "0"
+         this.onChangeFirst(value);
+     }
+ 
+     ListView1(value) {
+         if (value.value !== 0)
+             this.Tostore = value.value
+         else
+             this.Tostore = "0"
+         this.onChangeFirst(value);
+     }
+ 
+     onChangeFirst(value) {
+         
+         let IsVerify = "0"
+         if (this.IssueSearchGroup.get("IsVerify").value)
+             IsVerify = "1"
+         else
+             IsVerify = "0"
+         this.isShowDetailTable = false;
+         this.fromDate = this.datePipe.transform(this.IssueSearchGroup.get('startdate').value, "yyyy-MM-dd")
+         this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
+        //  this.FromStore = this.IssueSearchGroup.get("FromStoreId").value || this.FromStore
+         this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
+         this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
+ 
+             this.getfilterdata();
+     }
+ 
+     getfilterdata() {
+         
+         this.gridConfig = {
+             apiUrl: "IssueToDepartment/MaterialRecvedByDeptList",
+             columnsList: this.allcolumns,
+             sortField: "IssueId",
+             sortOrder: 0,
+             filters: [
+                //  { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+                 { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                 { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+             ],
+             row: 25
+         }
+ 
+         this.grid.gridConfig = this.gridConfig;
+         this.grid.bindGridData();
+ 
+     }
+ 
+ 
+     onSave(row: any = null) {
+         let that = this;
+        //  const dialogRef = this._matDialog.open(IssuTodeptComponent,
+        //      {
+        //          maxWidth: "97vw",
+        //          height: '99%',
+        //          width: '95%',
+        //          data: row
+        //      });
+        //  dialogRef.afterClosed().subscribe(result => {
+        //      that.grid.bindGridData();
+        //  });
+     }
+ 
+     viewgetIssuetodeptReportPdf(element) {
+         console.log(element)
+         this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");
+     }
+ 
 }
 
 export class ItemList {

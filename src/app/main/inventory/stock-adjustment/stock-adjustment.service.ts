@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ToastType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class StockAdjustmentService {
 
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
-    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService
+    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,private toastr: ToastrService
+    
   ) { 
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
@@ -38,7 +41,7 @@ export class StockAdjustmentService {
     return this._formBuilder.group({
       ItemID:  [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       BatchEdit:[''],
-      ExpDateEdit:['']
+       ExpDate: ['',[Validators.required]],
     });
   }
   createMRPAdjForm() {
@@ -68,7 +71,7 @@ export class StockAdjustmentService {
    
     createExpForm() {
     return this._formBuilder.group({
-       NewexpDate:[new Date().toISOString()],
+       NewexpDate: ['',[Validators.required]],
        OldexpDate:[''],
     });
   }
@@ -99,4 +102,24 @@ export class StockAdjustmentService {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("BedMaster", m_data);
   }
+
+   showToast(message: string, type: ToastType = ToastType.SUCCESS) {
+          if (type === ToastType.SUCCESS) {
+              this.toastr.success(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+              });
+          }
+  
+          if (type === ToastType.WARNING) {
+              this.toastr.warning(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+              });
+          }
+          if (type === ToastType.ERROR) {
+              this.toastr.error(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+              });
+          }
+  
+      }
 }

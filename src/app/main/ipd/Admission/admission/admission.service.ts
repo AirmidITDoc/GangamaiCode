@@ -307,6 +307,10 @@ export class AdmissionService {
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
+
+    public getadmissionlist(employee) {
+        return this._httpClient1.PostData("Admission/AdmissionList", employee)
+    }
 }
 
 

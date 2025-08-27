@@ -27,6 +27,7 @@ import { EditAdmissionComponent } from './edit-admission/edit-admission.componen
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -116,7 +117,7 @@ export class AdmissionComponent implements OnInit {
 
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
-   
+    this.GetAdmissiondetail()
    // menu Button List
    this.menuActions.push("Bill");
    this.menuActions.push("Bed Transfer");
@@ -126,7 +127,7 @@ export class AdmissionComponent implements OnInit {
    this.menuActions.push("Discharge SummarY");
    this.menuActions.push("Refund Of Bill");
    this.menuActions.push("Refund Of Advance");
-   
+    
   }
 
 
@@ -432,7 +433,7 @@ export class AdmissionComponent implements OnInit {
     console.log(this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-
+ this.GetAdmissiondetail()
   }
 
   Clearfilter(event) {
@@ -567,6 +568,7 @@ export class AdmissionComponent implements OnInit {
     this.onChangeFirst() 
     console.log(this.gridConfig)
     this.grid.bindGridData();
+     this.GetAdmissiondetail()
   }
   getEditAdmission(row) {
 
@@ -725,6 +727,109 @@ export class AdmissionComponent implements OnInit {
     });
    
   }
+
+  //
+   dataSource = new MatTableDataSource<AdmissionPersonlModel>();
+    GetAdmissiondetail() {
+debugger
+console.log(this.myFilterform.value)
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.Vtotalcount = 0;
+        this.VNewcount = 0;
+        this.VFollowupcount = 0;
+        this.VBillcount = 0;
+        // this.VCrossConscount = 0;
+        //    debugger
+        let data =
+        {
+            "first": 0,
+            "rows": 150,
+            "sortField": "AdmissionId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": String(this.f_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": String(this.l_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.regNo),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Doctor_Id",
+                    "fieldValue": String(this.DoctorId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": this.fromDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": this.toDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Admtd_Dschrgd_All",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "M_Name",
+                    "fieldValue":  String(this.m_name),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IPNo",
+                    "fieldValue": String(this.IPDNo),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+        console.log(data)
+        this._AdmissionService.getadmissionlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(response)
+            if (this.dataSource.data.length > 0) {
+                this.VAdmissioncount = this.dataSource.data.length
+                this.dataSource.data.forEach(element => {
+                  console.log(element)
+                    // if (element.patientOldNew == 1) {
+                    //     this.VNewcount = this.VNewcount + 1;
+                    // }
+                    // else 
+                      
+                      if (element.isOpToIpconv == 1) {
+                        this.VOPtoIPcount = this.VOPtoIPcount + 1;
+                    }
+                    if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
+                        this.VBillcount = this.VBillcount + 1;
+                    }
+                    if (element.isDischarged == 1) {
+                        this.vIsDischarg = this.vIsDischarg + 1;
+                    }
+                });
+                console.log(this.dataSource.data)
+            }
+        });
+    }
+
 }
 
 export class Bed {
@@ -946,6 +1051,10 @@ export class AdmissionPersonlModel {
   HospitalID:any;
   hospitalID:any;
   emgId:any;
+isOpToIpconv:any;
+isDischarged:any;
+isBillGenerated:any;
+
   /**
 * Constructor
 *
@@ -1153,6 +1262,9 @@ export class AdmissionPersonlModel {
       this.doctorId = AdmissionPersonl.doctorId || 0
       this.tariffid = AdmissionPersonl.tariffid || 0
       this.emgId = AdmissionPersonl.emgId || 0
+       this.isBillGenerated = AdmissionPersonl.isBillGenerated || 0
+      this.isDischarged = AdmissionPersonl.isDischarged || 0
+      this.isOpToIpconv = AdmissionPersonl.isOpToIpconv || 0
     }
   }
 }

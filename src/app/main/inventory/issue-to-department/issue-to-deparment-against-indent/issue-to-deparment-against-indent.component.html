@@ -44,16 +44,17 @@
                                 </airmid-dropdown>
 
                                 <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
-                                    style="padding: 12px;" fxLayout="row"  (change)="getIndentList()">
-                                    <mat-label style="font-size: large;font-weight: bold;">Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    style="padding: 12px;" fxLayout="row" (change)="getIndentList()">
+                                    <mat-label
+                                        style="font-size: large;font-weight: bold;">Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <mat-radio-button value="1" class="mr-sm-12">Close
                                     </mat-radio-button>
-                                    <mat-radio-button value="0" class="mr-sm-12" >Pending
+                                    <mat-radio-button value="0" class="mr-sm-12">Pending
                                     </mat-radio-button>
                                 </mat-radio-group>
 
                                 <button mat-raised-button class="clearbutton" matTooltip="close">
-                                    <mat-icon class="cleariconbutton"  style="padding-top: 5px;">close</mat-icon>
+                                    <mat-icon class="cleariconbutton" style="padding-top: 5px;">close</mat-icon>
                                 </button>&nbsp;
 
                                 <button mat-raised-button class="searchButton" (click)="getIndentList()"
@@ -69,22 +70,24 @@
 
             </div>
             <div class="modal-card-container h-100-p">
-                 <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
+                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
                     <mat-table matSort [dataSource]="dsIndentList" [@animateStagger]="{value:'50'}"
                         style="overflow: auto;height:250px;">
 
-                        <!-- <ng-container matColumnDef="CheckBox" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                                <span class="material-icons" >
-                                                    cached
-                                                </span>
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" required>
-                                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
-                                                </mat-checkbox>
-                                            </mat-cell>
-                                              
-                                        </ng-container> -->
+
+                        <ng-container matColumnDef="Priority">
+                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Is
+                                Urgent</mat-header-cell>
+                            <mat-cell *matCellDef="let contact">
+                                <mat-icon
+                                   *ngIf="!contact.Priority" matTooltip="Not Urgent"
+                                    class=" green-600 s-16">circle</mat-icon>
+                                <mat-icon
+                                   *ngIf="contact.Priority" matTooltip="Urgent"
+                                    class=" red-600 s-16">circle</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+
 
                         <ng-container matColumnDef="IndentNo">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
@@ -156,7 +159,7 @@
                     </mat-paginator> -->
 
                 </div>
-                 <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
+                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
                     <mat-table #table class="table2" matSort [dataSource]="dsIndentItemDetList"
                         [@animateStagger]="{value:'50'}" style="overflow: auto;height:200px;">
                         <!-- <ng-container matColumnDef="Status">
@@ -181,7 +184,7 @@
 
                         <ng-container matColumnDef="IndTotalQty">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                IndTotalQty</mat-header-cell>
+                                TotalQty</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.qty}}
                             </mat-cell>
@@ -197,7 +200,7 @@
 
                         <ng-container matColumnDef="IndBalQty">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                IndBalQty</mat-header-cell>
+                                BalQty</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.bal}}
                             </mat-cell>
@@ -236,9 +239,9 @@
     <div class="modal-footer" fxLayout="column">
 
         <div class="modal-footer-buttons">
-              <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>
+            <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>
             <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-          
+
         </div>
     </div>
 </div>

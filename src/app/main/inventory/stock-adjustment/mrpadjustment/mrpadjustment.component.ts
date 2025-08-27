@@ -68,7 +68,7 @@ export class MRPAdjustmentComponent implements OnInit {
     this.MRPAdjform.get('OldMRP').setValue(this.registerObj.unitMRP)
     this.MRPAdjform.get('LandedRate').setValue(this.registerObj.landedRate)
     this.MRPAdjform.get('PurchaseRate').setValue(this.registerObj.purUnitRateWF)
-   
+
   }
 
 
@@ -78,9 +78,9 @@ export class MRPAdjustmentComponent implements OnInit {
       LandedRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       PurchaseRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewMRP: [0, [   Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      newLandedRate: [0, [Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewPurchaseRate: [0, [Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewMRP: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      newLandedRate: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      NewPurchaseRate: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       // AddedDate:[new Date()],
     });
   }
@@ -139,6 +139,13 @@ export class MRPAdjustmentComponent implements OnInit {
   // }
 
   calculationAmt() {
+    debugger
+
+    this.vNewLandedRate = this.MRPAdjform.get('newLandedRate').value
+    this.vNewMRP = this.MRPAdjform.get('NewMRP').value
+    this.vNewPurchaseRate = this.MRPAdjform.get('NewPurchaseRate').value
+
+
     if (parseFloat(this.vNewLandedRate) > parseFloat(this.vNewMRP)) {
       this.vNewLandedRate = 0;
       this.toastr.warning('enter landed rate lessthan MRP', 'Warning !', {
@@ -232,10 +239,10 @@ export class MRPAdjustmentComponent implements OnInit {
 
   onSubmit() {
     console.log(this.MRPAdjform.value)
-debugger
+    debugger
     // this.Savebtn = true;
     if (!this.MRPAdjform.invalid) {
-      
+
       this.mrpform.get('mrpAdjustmentMod.storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
       this.mrpform.get('mrpAdjustmentMod.itemId').setValue(this.registerObj.itemId || 0)
       this.mrpform.get('mrpAdjustmentMod.batchNo').setValue(this.registerObj.batchNo || '')
@@ -286,7 +293,7 @@ debugger
 
     }
   }
- keyPressAlphanumeric(event) {
+  keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;

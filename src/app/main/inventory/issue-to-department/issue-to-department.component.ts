@@ -23,9 +23,9 @@ import { IssueToDepartmentService } from './issue-to-department.service';
 export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
-    dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
-    dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
-    dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
+    // dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
+    // dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
+    // dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
     tempDatasource = new MatTableDataSource<IssueItemList>();
     tempdata: any = [];
     ItemSamelist: any = [];
@@ -107,7 +107,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        debugger
+        
         let IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
@@ -196,7 +196,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     onChangeFirst(value) {
-        debugger
+        
         let IsVerify = "0"
         if (this.IssueSearchGroup.get("IsVerify").value)
             IsVerify = "1"
@@ -213,7 +213,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        
         this.gridConfig = {
             apiUrl: "IssueToDepartment/IssueToDeptList",
             columnsList: this.allcolumns,
@@ -240,7 +240,7 @@ export class IssueToDepartmentComponent implements OnInit {
         const dialogRef = this._matDialog.open(IssuTodeptComponent,
             {
                 maxWidth: "97vw",
-                height: '95%',
+                height: '99%',
                 width: '95%',
                 data: row
             });
