@@ -73,6 +73,7 @@ export class ReportGenerationComponent implements OnInit {
     UId: any = 0;
     UserName: any;
     ReportName: any;
+    ReportSummary: any;
     reportsData: any = [];
     reportDetail: any;
     sIsLoading = '';
@@ -166,7 +167,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.getAllReporConfig(param).subscribe(
             (response) => {
                 this.reportsData = response.data;
-                console.log("Daaaaaaa:", this.reportsData)
+                console.log("List:", this.reportsData)
                 let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
                 mainData.forEach(element => {
                     element.children = this.reportsData.filter(x => (x.parentid == element.id)).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
@@ -187,6 +188,7 @@ export class ReportGenerationComponent implements OnInit {
         this.selectedNode = node;
         this.reportDetail = this.reportsData?.find(x => (x.reportId == node?.id));
         this.ReportName = this.reportDetail?.reportName;
+        this.ReportSummary = this.reportDetail?.reportSummary;
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");
         if (controllerPermission.filter(x => x == "Doctor")?.length > 0)
             this.flagDoctorSelected = true;
