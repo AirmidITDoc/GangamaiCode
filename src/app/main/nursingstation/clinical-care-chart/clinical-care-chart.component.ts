@@ -194,8 +194,12 @@ export class ClinicalCareChartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getwardList();
     this.getPatientListwardWise();
+
+    // only for calling
+    this.getpainAssesmentList();
+    this.getpainAssesmentWeightList();
+
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -229,65 +233,177 @@ export class ClinicalCareChartComponent implements OnInit {
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
-  getwardList() {
-    this._ClinicalcareService.getWardList().subscribe((data) => {
-      this.WardList = data;
-      console.log(this.WardList)
-      this.wardListfilteredOptions = this._ClinicalcareService.MyForm.get('WardName').valueChanges.pipe(
-        startWith(''),
-        map(value => value ? this._filterWardname(value) : this.WardList.slice()),
-      );
+
+
+  ///////////////////// main patient list ///////////////////////
+  @ViewChild('grid5') grid5: AirmidTableComponent;
+  gridConfig5: gridModel = new gridModel();
+  pname = "%"
+  wardid = '0'
+  doctorid = '0'
+  getPatientListwardWise() {
+    this.gridConfig5 = {
+      apiUrl: "ClinicalCare/AdmisionListNursingList",
+      columnsList: [
+        { heading: "Bed", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+      ],
+      sortField: "RegNo",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "PatientName", fieldValue: this.pname, opType: OperatorComparer.Equals },
+        { fieldName: "WardId", fieldValue: this.wardid, opType: OperatorComparer.Equals },
+        { fieldName: "DoctorId", fieldValue: this.doctorid, opType: OperatorComparer.Equals }
+      ]
+    }
+    setTimeout(() => {
+      this.grid5.gridConfig = this.gridConfig5;
+      this.grid5.bindGridData();
     });
   }
-  private _filterWardname(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.WardName ? value.WardName.toLowerCase() : value.toLowerCase();
-      return this.WardList.filter(option => option.WardName.toLowerCase().includes(filterValue));
+
+  onChangeFirst() {
+    this.pname = this._ClinicalcareService.MyForm.get('PatientName').value + '%'
+    if (!this.wardid) {
+      this.wardid = "0";
     }
-  }
-  getOptionTextWardName(option) {
-    if (!option) return '';
-    return option.WardName;
-  }
-  getSelectedObjward(obj) {
-    this.vWardId = obj.WardId
     this.getPatientListwardWise();
   }
-  getwardWisePatList() {
-    this._ClinicalcareService.MyForm.get('WardName').setValue('');
-    this.vWardId = '';
-    this.getPatientListwardWise();
+
+  getSelectedObjward(value) {
+    if (value.value !== 0)
+      this.wardid = value.value
+    else
+      this.wardid = "0"
+    this.onChangeFirst();
   }
-  getPatientListwardWise() {
-    this.sIsLoading = ''
-    var vdata = {
-      'WardId': this.vWardId || 0,
-      'DoctorId': 0
-    }
-    console.log(vdata)
-    this._ClinicalcareService.getPatientList(vdata).subscribe((data) => {
-      this.dsClinicalcarePatient.data = data as PatientList[];
-      this.dsClinicalcarePatient.sort = this.sort;
-      this.dsClinicalcarePatient.paginator = this.wardpaginator;
-      console.log(this.dsClinicalcarePatient.data);
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+
+  Clearfilter(event) {
+    if (event == 'PatientName')
+      this._ClinicalcareService.MyForm.get('PatientName').setValue("")
+    this.onChangeFirst();
   }
+
+  //   getPatientListwardWise() {
+  //     var vdata = 	{
+  // 	  "first": 0,
+  // 	  "rows": 10,
+  // 	  "sortField": "RegNo",
+  // 	  "sortOrder": 0,
+  // 	  "filters": [
+  // 	    {
+  // 	      "fieldName": "PatientName",
+  // 	      "fieldValue": "%",
+  // 	      "opType": "Contains"
+  // 	    },
+  // 	  {
+  // 	      "fieldName": "WardId",
+  // 	      "fieldValue": "0",
+  // 	      "opType": "Contains"
+  // 	    },
+  // 	  {
+  // 	      "fieldName": "DoctorId",
+  // 	      "fieldValue": "0",
+  // 	      "opType": "Contains"
+  // 	    }
+  // 	  ],
+  // 	  "exportType": "JSON",
+  // 	  "columns": []
+  // }
+  //     console.log(vdata)
+  //     this._ClinicalcareService.getPatientList(vdata).subscribe((data) => {
+  //       this.dsClinicalcarePatient.data = data as PatientList[];
+  //       this.dsClinicalcarePatient.sort = this.sort;
+  //       this.dsClinicalcarePatient.paginator = this.wardpaginator;
+  //       console.log(this.dsClinicalcarePatient.data);
+  //     });
+  //   }
   registerObj: any;
+  vAdmission: any;
   getpatientDet(obj) {
     console.log(obj)
     this.registerObj = obj;
-    this.vpatientName = obj.PatientName;
-    this.vDoctorname = obj.DoctorName;
-    this.vAgeYear = obj.AgeYear;
-    this.vDepartmentName = obj.DepartmentName
-    this.vAgeMonth = obj.AgeMonth;
-    this.vAgeDay = obj.AgeDay;
-    this.vRegNo = obj.RegNo;
+    this.vpatientName = obj.patientName;
+    this.vDoctorname = obj.doctorName;
+    this.vAgeYear = obj.ageYear;
+    this.vDepartmentName = obj.departmentName
+    this.vAgeMonth = obj.ageMonth;
+    this.vAgeDay = obj.ageDay;
+    this.vRegNo = obj.regNo;
+    this.vAdmission = this.registerObj.admissionID
+
+    // this.gettestList();
+    // this.getPrescriptionList();
+    // this.getRequesttList();
+    this.getpainAssesmentList();
+    this.getpainAssesmentWeightList();
+    // this.getRtrvVitallist();
+    // this.getRtrvSugarlevellist();
+    // this.getRtrvOxygenlist();
   }
+  //////////////////////////////////////// main patient list end ////////////////////////////////////////
+
+  //////////////////////////////////////// Pain Asissgment list ////////////////////////////////////////
+  @ViewChild('grid6') grid6: AirmidTableComponent;
+  gridConfig6: gridModel = new gridModel();
+  columns6 = [
+    { heading: "PainAssessmentDate", key: "bedName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Pain Assessment", key: "painAss", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Action", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+  ]
+
+  getpainAssesmentList() {
+    const admid = this.vAdmission ?? 0
+    this.gridConfig6 = {
+      apiUrl: "ClinicalCare/NursingPainAssessmentList",
+      columnsList: this.columns6,
+      sortField: "AdmissionId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmissionId", fieldValue: String(admid), opType: OperatorComparer.Equals }
+      ]
+    }
+    setTimeout(() => {
+     this.grid6.gridConfig = this.gridConfig6;
+    this.grid6.bindGridData(); 
+    });
+  }
+
+  //////////////////////////////////////// Pain Asissgment list end////////////////////////////////////////
+
+  //////////////////////////////////////// Pain Asissgment weight list ////////////////////////////////////////
   PainList: any = [];
+
+  getpainAssesmentWeightList() {
+    const admid = this.vAdmission ?? 0
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(admid),
+          "opType": "Contains"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    console.log(vdata);
+    this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
+      if (data) {
+        this.dsPainsAssessment2.data = data as PainAssesList[];
+        this.checkDailyWeight = true;
+        console.log(this.dsPainsAssessment2.data);
+      } else {
+        this.checkDailyWeight = false;
+      }
+    })
+  }
+
   OnAdd() {
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -295,6 +411,13 @@ export class ClinicalCareChartComponent implements OnInit {
       })
       return;
     }
+    this.vDailyWeight=this._ClinicalcareService.PainAssessForm.get('DailyWeight').value
+    if (this.vDailyWeight == 0 || this.vDailyWeight == '' || this.vDailyWeight == null || this.vDailyWeight == undefined) {
+      this.toastr.warning('Please enter weight', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      })
+      return;
+    } 
     this.checkDailyWeight = true;
     this.PainList.push(
       {
@@ -306,6 +429,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.dsPainsAssessment2.data = this.PainList;
     this.vDailyWeight = '';
   }
+
   deleteTableRow(element) {
     let index = this.PainList.indexOf(element);
     if (index >= 0) {
@@ -317,6 +441,19 @@ export class ClinicalCareChartComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
+
+   keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
+  //////////////////////////////////////// Pain Asissgment weight list end ////////////////////////////////////////
+
   getDoctornote() {
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -553,7 +690,7 @@ export class ClinicalCareChartComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFilters2
   }
-  
+
   getSelectedRow(row: any): void {
 
     console.log("Selected row : ", row);

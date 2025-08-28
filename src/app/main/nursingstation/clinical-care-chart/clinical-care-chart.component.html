@@ -90,7 +90,11 @@
                                 </div>
                               </div>
                             </div>
-                            <mat-table class="airmid-table" matSort [dataSource]="dsPainsAssessment"
+
+                            <airmid-table [gridConfig]="gridConfig6" class="content" #grid6 [ShowFilter]="false"
+                              [ShowButtons]="false">
+                            </airmid-table>
+                            <!-- <mat-table class="airmid-table" matSort [dataSource]="dsPainsAssessment"
                               [@animateStagger]="{ value: '50' }">
                               <ng-container matColumnDef="givendate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Given
@@ -145,38 +149,50 @@
                                 [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                               <mat-footer-row *matFooterRowDef="['noData']"
                                 [ngClass]="{ hide: !(dsPainsAssessment != null && dsPainsAssessment.data.length == 0) }"></mat-footer-row>
-                            </mat-table>
+                            </mat-table> -->
                           </mat-card>
                         </div>
                         <div fxFlex.gt-sm="30%" fxLayout="column">
-                          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px"
-                            class="input-error-hidden">
-                            <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>Daily Weight</mat-label>
-                              <input matInput placeholder="Weight in KG" name="Mobile" formControlName="DailyWeight"
-                                [(ngModel)]="vDailyWeight" />
-                            </mat-form-field>
-                            &nbsp;&nbsp;
-                            <div>
-                              <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="vDailyWeight > 0"
-                                (click)="OnAdd()">
-                                <span class="btn-icon">
-                                  <mat-icon>add</mat-icon>
-                                </span>
-                                <span>Add</span>
-                              </button>
+                          <form [formGroup]="_ClinicalcareService.PainAssessForm" fxFlex.gt-sm="30%" fxLayout="column">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px"
+                              class="input-error-hidden">
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Daily Weight</mat-label>
+                                <input matInput placeholder="Weight in KG" name="Mobile" formControlName="DailyWeight"
+                                  [(ngModel)]="vDailyWeight" (keypress)="keyPressAlphanumeric($event)" />
+                              </mat-form-field>
+                              &nbsp;&nbsp;
+                              <div>
+                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="OnAdd()">
+                                  <span class="btn-icon">
+                                    <mat-icon>add</mat-icon>
+                                  </span>
+                                  <span>Add</span>
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          </form>
+
+                          <!-- Assessment 2nd table -->
                           <div *ngIf="checkDailyWeight">
-                            <mat-card style="padding: 5px; height: 170px; overflow: auto">
+                            <mat-card style="padding: 5px; height: 200px;">
                               <mat-table class="table2" matSort [dataSource]="dsPainsAssessment2"
                                 [@animateStagger]="{ value: '50' }"
-                                style="height: 40px; overflow: auto; margin-bottom: 10px">
+                                style="margin-bottom: 10px">
+
                                 <ng-container matColumnDef="givendate">
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                    class="w-90">Date</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">{{
+                                    class="w-150">Date</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">{{
                                     element.givendate }}-{{ element.giventime }}</mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Employeename">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Patient
+                                    Name</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
+                                    {{ element.Employeename }}
+                                  </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PainAssess">
@@ -187,22 +203,14 @@
                                   </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Employeename">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Patient
-                                    Name</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.Employeename }}
-                                  </mat-cell>
-                                </ng-container>
-
                                 <ng-container matColumnDef="Action" stickyEnd>
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                     class="w-60">Action</mat-header-cell>
-                                  <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
-                                                                                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                                                      <mat-icon>delete_outline</mat-icon>
-                                                                                  </button>
-                                                                              </mat-cell> -->
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
+                                    <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                      <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                  </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="loading">
@@ -226,12 +234,15 @@
                         </div>
                       </div>
 
+                      <!-- smile part -->
                       <mat-card class="h-150px" fxFlex>
                         <mat-card-content>
                           <div fxFlex.gt-sm="100%">
                             <div fxLayout="column" fxLayoutAling="center">
                               <h1 style="text-align: center">Pain Measurement Scale</h1>
                               <div fxFlex="2px" style="background-color: black; margin-right: 46px"></div>
+
+                              <!-- smile icons measure -->
                               <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 30px">
                                 <div fxLayout="column">
                                   <span class="vertical-line"></span>
@@ -278,6 +289,8 @@
                                   <span style="margin-right: 5px">10</span>
                                 </div>
                               </div>
+
+                              <!-- smile icons -->
                               <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 10px">
                                 <div fxLayout="column">
                                   <span style="margin-right: 5px; margin-left: 0px">No Pain</span>
@@ -1779,19 +1792,27 @@
         <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p">
           <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
 
-            <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="_ClinicalcareService.MyForm"
-              [mode]="autocompleteward">
-            </airmid-dropdown>
+            <div fxFlex fxLayout="row" class="gap-8">
+              <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="_ClinicalcareService.MyForm"
+                [mode]="autocompleteward" [(ngModel)]="gridConfig5.filters[1].fieldValue" fxFlex
+                (selectionChange)="getSelectedObjward($event)">
+              </airmid-dropdown>
+              <div>
+                <button class="btn btn-primary btn-with-icon btn-xs" (click)="getSelectedObjward($event)">
+                  <span class="btn-icon">
+                    <mat-icon>search</mat-icon>
+                  </span>
+                </button>
+              </div>
+            </div>
 
             <mat-form-field appearance="outline">
-              <input type="text" name="RegID" formControlName="RegID" placeholder="Search First Name / Last Name "
-                matInput />
-              <span matSuffix style="display: flex">
-                <mat-icon class="mat-icon-close"
-                  (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false">close</mat-icon>
-                <mat-icon class="mat-icon-close"
-                  (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false">search</mat-icon>
-              </span>
+              <mat-label>Patient Name</mat-label>
+              <input type="text" name="PatientName" formControlName="PatientName"
+                placeholder="Search First Name / Last Name " matInput (input)="onChangeFirst()" />
+              <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('PatientName')">
+                <mat-icon>close</mat-icon>
+              </button>
             </mat-form-field>
 
             <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3">
@@ -1799,7 +1820,8 @@
                 style="height: 50%; width: 250px">
                 <div class="spinner-border text-danger"></div>
               </div>
-              <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient" [@animateStagger]="{ value: '50' }"
+
+              <!-- <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient" [@animateStagger]="{ value: '50' }"
                 fxFlex>
                 <ng-container matColumnDef="patientId">
                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Bed
@@ -1832,8 +1854,13 @@
                 <mat-footer-row *matFooterRowDef="['noData']"
                   [ngClass]="{ hide: !(dsClinicalcarePatient != null && dsClinicalcarePatient.data.length == 0) }"></mat-footer-row>
               </mat-table>
+
               <mat-paginator #wardpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                showFirstLastButtons></mat-paginator>
+                showFirstLastButtons></mat-paginator> -->
+
+              <airmid-table [gridConfig]="gridConfig5" class="content" #grid5 [ShowFilter]="false" [ShowButtons]="false"
+                (onSelectRow)="getpatientDet($event)">
+              </airmid-table>
             </mat-card>
           </div>
         </form>

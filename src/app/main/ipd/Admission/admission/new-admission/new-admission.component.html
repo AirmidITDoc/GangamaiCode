@@ -64,7 +64,7 @@
 
                     <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
             (click)="getPatientobj(contact)"></mat-row> -->
-                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="hover-row"
                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="onRowClick(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['NoData']"
                         [ngClass]="{'hide':dataSource.data.length > 0}"></mat-footer-row>

@@ -26,13 +26,15 @@ export class ClinicalCareChartService {
      this.SugarForm = this.createSugarForm(),
      this.OxygenForm = this.CreateOxygenForm(),
      this.ApacheScoreForm = this.CreateApachescoreForm(),
-     this.InPutOutputForm = this.CreateInputoutForm()
+     this.InPutOutputForm = this.CreateInputoutForm(),
+     this.PainAssessForm = this.createPainAssesForm()
    }
 
    createMyForm(){
       return this._formbuilder.group({ 
         WardName:[''],
-        RegID:['']
+        RegID:[''],
+        PatientName:['']
        // FromDate:[new Date()],
        // ToDate:[new Date()],
       })
@@ -155,12 +157,17 @@ export class ClinicalCareChartService {
 
       })
     }
+     createPainAssesForm() {
+    return this._formbuilder.group({
+      DailyWeight: ['']
+    })
+  }
 
     public getWardList(){
       return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_WardMasterListForCombo",{});
     }
-    public getPatientList(param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_AdmisionList_NursingList",param);
+    public getpainAssesmentWeightList(param){
+      return this._httpClient1.PostData("ClinicalCare/NursingWeightList",param);
     }
 
      public getReportView(Param) {

@@ -954,6 +954,11 @@ export class NewAdmissionComponent implements OnInit {
           this._AdmissionService.getRegistraionById(selectedRow.regID).subscribe((response) => {
             this.registerObj = response;
             console.log("Visit Data:", this.registerObj)
+            this.personalFormGroup.patchValue({
+              FirstName: this.registerObj.firstName.trim(),
+              LastName: this.registerObj.lastName.trim(),
+              MobileNo: this.registerObj.mobileNo.trim()
+            });
             if (this.registerObj.regId?.valueOf() > 0) {
               this.searchFormGroup.get('regRadio')?.setValue('registrered');
               this.Regflag = true;
