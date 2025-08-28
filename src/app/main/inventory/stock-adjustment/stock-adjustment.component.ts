@@ -193,9 +193,9 @@ OneditDate(contact) {
         this.vBatchEdit = contact.batchEdit;
         this.vExpDateEdit = contact.batchExpDate;
         this.vStockId = contact.stockId;
-        this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-        });
+        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-warning',
+        // });
     }
   
     resetFormItem() {
@@ -327,20 +327,21 @@ debugger
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
+      this.getStockList();
   }
     Lastbatch: string = '';
-    // OnSaveBatch() {
-    //     const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
-    //     if (this.vBatchEdit) {
-    //         this.OnSaveBatchAdjustment();
-    //     }
-    //     else {
-    //         this.toastr.warning('Please enter BatchNo', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //     }
-
-    // }
+    OnSaveBatch() {
+        const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
+        if (this.vBatchEdit) {
+            this.OnSaveBatchAdjustment();
+        }
+        else {
+            this.toastr.warning('Please enter BatchNo', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
+  this.getStockList();
+    }
 
     OnSaveBatchAdjustment() {
         debugger
