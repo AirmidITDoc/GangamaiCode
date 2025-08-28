@@ -136,6 +136,8 @@ export class NewreportConfigComponent {
 
       isActive: [true, [Validators.required]],
 
+      reportSummary:[''],
+
       menuId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
 
       mReportConfigDetails: this.formBuilder.array([]),
@@ -155,9 +157,10 @@ export class NewreportConfigComponent {
       reportColumnAligment: [item.ReportColumnAligment ?? ''],
       reportTotalField: [String(item.ReportTotalField) ?? '0'],
       reportGroupByLabel: [String(item.ReportGroupByLabel) ?? '0'],
+      reportGroupBySequenceNo:[item.ReportGroupBySequenceNo ?? 0],
       summaryLabel: [item.SummaryLabel ?? '', [Validators.maxLength(50)]],
+      summarySequenceNo:[item.SummarySequenceNo ?? 0],
       sequenceNo: [index + 1],
-      // sequenceNo: [item.SequenceNo ?? index + 1],
       procedureName: [item.procedureName ?? '']
     });
   }

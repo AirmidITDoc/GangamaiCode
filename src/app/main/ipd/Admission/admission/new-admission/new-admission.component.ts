@@ -951,7 +951,7 @@ export class NewAdmissionComponent implements OnInit {
       if (selectedRow) {
         this.VvisitId = selectedRow.visitId
         if ((this.VvisitId) > 0) { //140267
-          this._AdmissionService.getRegistraionById(selectedRow.visitId).subscribe((response) => {
+          this._AdmissionService.getRegistraionById(selectedRow.regID).subscribe((response) => {
             this.registerObj = response;
             console.log("Visit Data:", this.registerObj)
             if (this.registerObj.regId?.valueOf() > 0) {
