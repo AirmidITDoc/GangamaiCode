@@ -3,6 +3,11 @@
         <div fxLayout="row" fxLayoutAlign="start center"> <span class="logo-text h1"
                 [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;"> Doctor Note </span>
         </div>
+
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close"
+            (click)="closeDialog()" *ngIf="openedFromClinical">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -28,7 +33,7 @@
                 <form [formGroup]="myform">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
 
-                         <mat-card style="padding: 5px;">
+                        <mat-card style="padding: 5px;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
@@ -130,16 +135,16 @@
                             </div>
                         </mat-card>
 
-                        <div fxFlex.gt-sm="100%" fxFlex> 
+                        <div fxFlex.gt-sm="100%" fxFlex>
                             <mat-tab-group>
-                                 <mat-tab label="Doctor Note">
+                                <mat-tab label="Doctor Note">
                                     <div class="content" style="overflow: auto;">
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
                                                     <div fxLayout="row" fxLayoutGap="10px">
                                                         <div fxFlex.gt-sm="40%" fxFlex>
-                                                             <mat-card style="padding: 5px;">
+                                                            <mat-card style="padding: 5px;">
                                                                 <div id="contacts"
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                                                                     <airmid-table [gridConfig]="gridConfig" #docNote
@@ -147,20 +152,27 @@
                                                                     </airmid-table>
                                                                 </div>
                                                             </mat-card>
-                                                         </div>
+                                                        </div>
                                                         <div fxFlex.gt-sm="60%" fxFlex>
                                                             <form [formGroup]="myNoteform">
-                                                                 <input type="hidden" formControlName="doctNoteId">
+                                                                <input type="hidden" formControlName="doctNoteId">
                                                                 <div fxLayout="column" fxLayoutGap="2px">
                                                                     <form [formGroup]="myform">
                                                                         <div fxLayout="row" fxLayoutGap="10px">
-                                                                            <airmid-dropdown label="Template Name" *ngIf="showDropdown" formControlName="TemplateId" [formGroup]="myform"
-                                                                                fxFlex="70%" ValueField="docNoteTempId" TextField="docsTempName"
-                                                                                (selectionChange)="onChangetemplate($event)" ApiUrl="Pathology/get-DoctorNotesTemplateMaster">
+                                                                            <airmid-dropdown label="Template Name"
+                                                                                *ngIf="showDropdown"
+                                                                                formControlName="TemplateId"
+                                                                                [formGroup]="myform" fxFlex="70%"
+                                                                                ValueField="docNoteTempId"
+                                                                                TextField="docsTempName"
+                                                                                (selectionChange)="onChangetemplate($event)"
+                                                                                ApiUrl="Pathology/get-DoctorNotesTemplateMaster">
                                                                             </airmid-dropdown>
                                                                             <div class="input-add-button">
                                                                                 <div>
-                                                                                    <button #addbutton class="btn btn-primary btn-with-icon" (click)="OnAdd()" id="btnAdd"
+                                                                                    <button #addbutton
+                                                                                        class="btn btn-primary btn-with-icon"
+                                                                                        (click)="OnAdd()" id="btnAdd"
                                                                                         [disabled]="IsAddFlag">
                                                                                         <span class="btn-icon">
                                                                                             <mat-icon> add </mat-icon>
@@ -172,23 +184,27 @@
                                                                         </div>
                                                                     </form>
                                                                     <mat-card style="padding: 5px;overflow: auto;">
-                                                                        <div> 
+                                                                        <div>
                                                                             <airmid-editor label="Template Details"
                                                                                 style="height: 100px;"
                                                                                 formControlName="doctorsNotes"
                                                                                 [(value)]="vDescription"
                                                                                 [formGroup]="myNoteform">
                                                                             </airmid-editor>
-                                                                         </div>
+                                                                        </div>
                                                                     </mat-card>
-                                                                    <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
-                                                                        <button class="btn btn-primary-outline" (click)="NewTemplate()">
+                                                                    <div fxLayout="row" fxLayoutAlign="end"
+                                                                        fxLayoutGap="6px">
+                                                                        <button class="btn btn-primary-outline"
+                                                                            (click)="NewTemplate()">
                                                                             New Template
                                                                         </button>
-                                                                        <button class="btn btn-danger-outline" (click)="onClear()">
+                                                                        <button class="btn btn-danger-outline"
+                                                                            (click)="onClear()">
                                                                             Reset
                                                                         </button>
-                                                                        <button class="btn btn-primary" (click)="onSubmit()">
+                                                                        <button class="btn btn-primary"
+                                                                            (click)="onSubmit()">
                                                                             Save
                                                                         </button>
                                                                     </div>
@@ -201,103 +217,120 @@
                                         </div>
                                     </div>
                                 </mat-tab>
-                                
-                                 <mat-tab label="Patien Handover Note">
+
+                                <mat-tab label="Patien Handover Note">
                                     <div class="content" style="overflow: auto;">
                                         <div class="center p-12 pb-56" style="border-radius: 4px;">
                                             <form [formGroup]="myform">
-                                            <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                               <form [formGroup]="myHandOverform">
-                                                 <input name="docHandId" formControlName="docHandId" type="hidden">
+                                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                                                    <form [formGroup]="myHandOverform">
+                                                        <input name="docHandId" formControlName="docHandId"
+                                                            type="hidden">
 
-                                                <div fxLayout="row" fxLayoutGap="20px">
+                                                        <div fxLayout="row" fxLayoutGap="20px">
 
-                                                    <!-- staffName -->
-                                                    <span style="font-size:40px;padding: 10px 10px 0 0;">I</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="patHandI" formControlName="patHandI" 
-                                                        [(ngModel)]="vStaffNursName" [maxLength]="500"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- staffName -->
+                                                            <span
+                                                                style="font-size:40px;padding: 10px 10px 0 0;">I</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandI"
+                                                                    formControlName="patHandI"
+                                                                    [(ngModel)]="vStaffNursName"
+                                                                    [maxLength]="500"></textarea>
+                                                            </mat-form-field>
 
-                                                    <!-- SYMPTOMS -->
-                                                    <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="patHandB" formControlName="patHandB" 
-                                                        [(ngModel)]="vSYMPTOMS" [maxLength]="500"></textarea> 
-                                                    </mat-form-field>
+                                                            <!-- SYMPTOMS -->
+                                                            <span style="font-size:40px;padding: 10px 0px 0 0;">B</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandB"
+                                                                    formControlName="patHandB" [(ngModel)]="vSYMPTOMS"
+                                                                    [maxLength]="500"></textarea>
+                                                            </mat-form-field>
 
-                                                    <!-- Instruction -->
-                                                    <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
-                                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                                        <textarea rows="4" matInput  name="patHandR" formControlName="patHandR" 
-                                                        [(ngModel)]="vInstruction" [maxLength]="500"></textarea> 
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxLayout="row" fxLayoutGap="20px">
-
-                                                    <!-- Stable -->
-                                                    <span style="font-size:40px;padding-top: 10px;">S</span>
-                                                    <mat-form-field appearance="outline" fxFlex="29.5%">
-                                                        <textarea rows="4" matInput  name="patHandS" formControlName="patHandS" 
-                                                        [(ngModel)]="VStable" [maxLength]="500"></textarea> 
-                                                    </mat-form-field>
-
-                                                    <!-- Assessment -->
-                                                    <span style="font-size:40px;padding-top: 10px;">A</span>
-                                                    <mat-form-field appearance="outline" fxFlex="29%">
-                                                        <textarea rows="4" matInput   name="patHandA" formControlName="patHandA" 
-                                                        [(ngModel)]="VAssessment" [maxLength]="500"></textarea> 
-                                                    </mat-form-field>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px"
-                                                        style="padding: 10px 10px 0 60px;">
-                                                        <mat-radio-group name="shiftInfo"
-                                                            formControlName="shiftInfo" fxLayout="column" [(ngModel)]="vHandOverType">
-                                                            <mat-radio-button value="morning">Morning</mat-radio-button>
-                                                            <mat-radio-button value="Evening"> Evening</mat-radio-button>
-                                                            <mat-radio-button value="Night">Night</mat-radio-button>
-                                                        </mat-radio-group>
-                                                    </div> &nbsp;&nbsp;
-
-                                                    <div style="height: 50px;" fxLayout="row" fxLayoutGap="10px">
-                                                        <button class="btn btn-danger-outline" type="button" (click)="onClose()">Reset</button>
-                                                        <button class="btn btn-primary btn-with-icon" #addbutton id="btnAdd" type="button" (click)="onSubmitHandOver()">
-                                                            Save
-                                                        </button>
-                                                    </div>
-                                                    
-
-                                                </div>
-                                               </form>
-
-                                                <div fxFlex.gt-sm="100%" fxFlex>
-                                                    <mat-card style="padding: 5px;">
-
-                                                        <div id="contacts"
-                                                            class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                            <airmid-table [gridConfig]="gridConfig1" #Handover
-                                                                :ShowFilter="false" :ShowButtons="false">
-                                                                <ng-container filters>
-
-                                                                </ng-container>
-                                                            </airmid-table>
+                                                            <!-- Instruction -->
+                                                            <span style="font-size:40px;padding: 10px 0px 0 0;">R</span>
+                                                            <mat-form-field appearance="outline" fxFlex="30%">
+                                                                <textarea rows="4" matInput name="patHandR"
+                                                                    formControlName="patHandR"
+                                                                    [(ngModel)]="vInstruction"
+                                                                    [maxLength]="500"></textarea>
+                                                            </mat-form-field>
                                                         </div>
 
+                                                        <div fxLayout="row" fxLayoutGap="20px">
 
-                                                    </mat-card>
-                                                </div>
-                                                <!-- <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
+                                                            <!-- Stable -->
+                                                            <span style="font-size:40px;padding-top: 10px;">S</span>
+                                                            <mat-form-field appearance="outline" fxFlex="29.5%">
+                                                                <textarea rows="4" matInput name="patHandS"
+                                                                    formControlName="patHandS" [(ngModel)]="VStable"
+                                                                    [maxLength]="500"></textarea>
+                                                            </mat-form-field>
+
+                                                            <!-- Assessment -->
+                                                            <span style="font-size:40px;padding-top: 10px;">A</span>
+                                                            <mat-form-field appearance="outline" fxFlex="29%">
+                                                                <textarea rows="4" matInput name="patHandA"
+                                                                    formControlName="patHandA" [(ngModel)]="VAssessment"
+                                                                    [maxLength]="500"></textarea>
+                                                            </mat-form-field>
+
+                                                            <div fxLayout="column" fxLayoutGap="6px"
+                                                                style="padding: 10px 10px 0 60px;">
+                                                                <mat-radio-group name="shiftInfo"
+                                                                    formControlName="shiftInfo" fxLayout="column"
+                                                                    [(ngModel)]="vHandOverType">
+                                                                    <mat-radio-button
+                                                                        value="morning">Morning</mat-radio-button>
+                                                                    <mat-radio-button value="Evening">
+                                                                        Evening</mat-radio-button>
+                                                                    <mat-radio-button
+                                                                        value="Night">Night</mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </div> &nbsp;&nbsp;
+
+                                                            <div style="height: 50px;" fxLayout="row"
+                                                                fxLayoutGap="10px">
+                                                                <button class="btn btn-danger-outline" type="button"
+                                                                    (click)="onClose()">Reset</button>
+                                                                <button class="btn btn-primary btn-with-icon" #addbutton
+                                                                    id="btnAdd" type="button"
+                                                                    (click)="onSubmitHandOver()">
+                                                                    Save
+                                                                </button>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </form>
+
+                                                    <div fxFlex.gt-sm="100%" fxFlex>
+                                                        <mat-card style="padding: 5px;">
+
+                                                            <div id="contacts"
+                                                                class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                                                <airmid-table [gridConfig]="gridConfig1" #Handover
+                                                                    :ShowFilter="false" :ShowButtons="false">
+                                                                    <ng-container filters>
+
+                                                                    </ng-container>
+                                                                </airmid-table>
+                                                            </div>
+
+
+                                                        </mat-card>
+                                                    </div>
+                                                    <!-- <div fxLayout="row" fxLayoutGap="6px" fxLayoutAlign="end">
                                                     <button class="btn btn-danger-outline">Reset</button>
                                                     <button class="btn btn-primary ">Save</button>
                                                 </div> -->
-                                            </div>
-                                        </form>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </mat-tab>
                             </mat-tab-group>
-                         </div>
+                        </div>
                     </div>
                 </form>
             </div>

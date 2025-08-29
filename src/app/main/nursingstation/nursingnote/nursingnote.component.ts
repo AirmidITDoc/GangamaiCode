@@ -101,6 +101,7 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+openedFromClinical = false;
   ngAfterViewInit() {
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
@@ -557,6 +558,12 @@ deleteTableRow(event, element) {
     this.myHandOverForm.get('shiftInfo').setValue('Morning')
     this.myHandOverForm.get('comments').setValue('')
     this.dsHandOverNoteList.data = [];
+  }
+
+  closeDialog() {
+    if (this._matDialog) {
+      this._matDialog.closeAll();
+    }
   }
 }
 

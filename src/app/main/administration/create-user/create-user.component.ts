@@ -27,13 +27,18 @@ export class CreateUserComponent implements OnInit {
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'doctorID')!.template = this.docIcon;
   }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('docIcon') docIcon!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "LoginName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "RoleName", key: "roleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "-", key: "doctorID", sort: true, align: 'left', type:gridColumnTypes.template, width: 50 },
+    { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "UserName", key: "userLoginName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "LoginName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "RoleName", key: "webRoleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },

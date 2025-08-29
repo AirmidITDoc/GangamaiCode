@@ -107,8 +107,8 @@ export class DischargeSummaryComponent implements OnInit {
       this.registerObj = this.data;
       this.vAdmissionId = this.data.admissionId;
       this.DischargesumInsertForm.get("dischargModel.admissionId")?.setValue(this.data.admissionId)
-      this.getDischargeSummaryData(this.data.admissionId)
-      this.getPrescription(this.data.admissionId)
+      this.getDischargeSummaryData(this.data.admissionId ?? this.data.admissionID)
+      this.getPrescription(this.data.admissionId ?? this.data.admissionID)
     }
 
     if ((this.data?.regId ?? 0) > 0) {

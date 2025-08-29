@@ -80,7 +80,7 @@ export class DoctornoteComponent implements OnInit {
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
   vHandOverType = 'morning';
-
+openedFromClinical = false;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -461,6 +461,12 @@ debugger
     this.vDOA='';
 
     this.myform.get('RegID').setValue('')
+  }
+
+   closeDialog() {
+    if (this._matDialog) {
+      this._matDialog.closeAll();
+    }
   }
 }
 export class DocNote {

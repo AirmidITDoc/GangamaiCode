@@ -1,4 +1,4 @@
- <div fusePerfectScrollbar
+<div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -29,19 +29,28 @@
             </div>
         </ng-template>
 
-        <airmid-table [gridConfig]="gridConfig"  class="content">
+        <ng-template #docIcon let-element>
+            <div>
+                <mat-icon *ngIf="element.doctorID > 0" matTooltip="Doctor">
+                    <img width="20px" height="20px" src="assets/images/logos/doctor.png">
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-               
-                <form [formGroup]="myuserform">  
+
+                <form [formGroup]="myuserform">
                     <mat-form-field appearance="outline">
                         <mat-label>User Name</mat-label>
-                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform" formControlName="UserName" (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="UserName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    </form>
-              
+                </form>
+
             </ng-container>
         </airmid-table>
     </div>

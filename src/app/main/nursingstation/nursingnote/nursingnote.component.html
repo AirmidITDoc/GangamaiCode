@@ -5,6 +5,10 @@
                 Nursing Note
             </span>
         </div>
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close"
+            (click)="closeDialog()" *ngIf="openedFromClinical">
+            <mat-icon>close</mat-icon>
+        </button>
     </mat-toolbar>
     <div class="content">
         <div class="center p-12 pb-56" style="border-radius: 4px;">
@@ -352,7 +356,9 @@
                                                                             </mat-header-cell>
                                                                             <mat-cell *matCellDef="let contact">
                                                                                 <ng-container class="actions">
-                                                                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
+                                                                                    <mat-icon
+                                                                                        (click)="deleteTableRow($event ,contact)"
+                                                                                        color="warn">
                                                                                         delete
                                                                                     </mat-icon>
                                                                                 </ng-container>
