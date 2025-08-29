@@ -12,6 +12,7 @@ import { OtReservationService } from "./ot-reservation.service";
 import { DatePipe } from "@angular/common";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 
 @Component({
     selector: 'app-ot-reservation',
@@ -110,32 +111,15 @@ registerobj: any;
     ) { }
 
     ngOnInit(): void {
-
         
-        this.myFilterform=this._OtReservationService.createReservationForm();
-        this.myFilterform.markAllAsTouched();
-
-        this.votbookingId = this.registerobj.otbookingId
-        
-        this.tOtbookingRequestsForm=this._OtReservationService.tOtbookingRequestsForm();
-       
-        this.requestArray.push(this.createRequestsForm());
-     }
-    createRequestsForm(item:any={}): FormGroup {
-  return this._formBuilder.group({
-    otbookingId: [this.votbookingId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    otrequestId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]]  // fixed as 1
-  });
-}
-     get requestArray(): FormArray {
-            return this.myFilterform.get('tOtbookingRequests') as FormArray;
-        }
+    }
+   
 
     onChangeStartDate(value) {
-        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+        this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
     onChangeEndDate(value) {
-        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+        this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
     onNewotrequest(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -179,9 +163,41 @@ registerobj: any;
             this.grid.bindGridData();
         });
     }
-    OnPrint(Param) {
-        this.commonService.Onprint("otreservationId", Param.otreservationId, "RequestName");
-    }
+   OnPrint(Param) {
+       const param = {
+         searchFields: [
+            {
+             fieldName: "OTReservationId",
+             fieldValue: String(Param.OTReservationId),
+             opType: "Equals"
+           },
+           {
+             fieldName: "OPIPType",
+             fieldValue: String(Param.opIpType),
+             opType: "Equals"
+           }
+         ],
+         mode: "OTReservationReport"
+       };
+   
+       console.log(param);
+   
+       this._OtReservationService.getReportView(param).subscribe(res => {
+         const matDialog = this._matDialog.open(PdfviewerComponent, {
+           maxWidth: "85vw",
+           height: '750px',
+           width: '100%',
+           data: {
+             base64: res["base64"] as string,
+             title: "Pathology Test Report With Header Viewer"
+           }
+         });
+   
+         matDialog.afterClosed().subscribe(result => {
+   
+         });
+       });
+     }
 
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

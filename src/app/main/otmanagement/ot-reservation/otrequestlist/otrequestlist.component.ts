@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { OtRequestService } from '../../ot-request/ot-request.service';
@@ -7,12 +7,14 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { OtReservationService } from '../ot-reservation.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-otrequestlist',
   templateUrl: './otrequestlist.component.html',
   styleUrls: ['./otrequestlist.component.scss'],
-  providers: [DatePipe]
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class OtrequestlistComponent implements OnInit {
 
@@ -20,28 +22,28 @@ export class OtrequestlistComponent implements OnInit {
   myFilterForm: FormGroup;
   isLoading: boolean = false;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-    FromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  FromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-    FirstName: any = ""
-    regNo: any = "0"
-    LastName: any = ""
- 
+  FirstName: any = "%"
+  regNo: any = "0"
+  LastName: any = "%"
+
 
   constructor(
     public _otreservationService: OtReservationService,
     public _fb: FormBuilder,
     public _dialogRef: MatDialogRef<OtrequestlistComponent>,
-     public datePipe: DatePipe,
-  ) {}
+    public datePipe: DatePipe,
+  ) { }
 
   ngOnInit() {
     this.getfilterdata()
   }
 
-    allcolumns = [
+  allcolumns = [
     { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
 
@@ -56,7 +58,7 @@ export class OtrequestlistComponent implements OnInit {
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
   ];
- allFilters = [
+  allFilters = [
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -70,7 +72,9 @@ export class OtrequestlistComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFilters
   }
-    getfilterdata() {
+  getfilterdata() {
+    this.FromDate = this.datePipe.transform(this._otreservationService.myformSearch.get('start').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this._otreservationService.myformSearch.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
       apiUrl: "OTBooking/OtbookingRequestList",
       columnsList: this.allcolumns,
@@ -87,23 +91,24 @@ export class OtrequestlistComponent implements OnInit {
       ],
       row: 25
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    setTimeout(() => {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    });
   }
   onSelectRequest(row: any): void {
     this._dialogRef.close(row); // send selected row to parent (OtReservationComponent)
   }
-    onChangeFirst() {
-        this.FromDate = this.datePipe.transform(this._otreservationService.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-        this.ToDate = this.datePipe.transform(this._otreservationService.myformSearch.get('enddate').value, "yyyy-MM-dd")
-        this.getfilterdata();
-    }
+  // onChangeFirst() {
+
+  //   this.getfilterdata();
+  // }
 
   onClose(): void {
     this._dialogRef.close(); // allow close without selection
   }
 
-  GetRecord(row){
+  GetRecord(row) {
     this._dialogRef.close(row);
   }
 }

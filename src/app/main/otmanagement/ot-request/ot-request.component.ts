@@ -111,14 +111,10 @@ export class OTRequestComponent implements OnInit {
     private _loggedService: AuthenticationService,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.myFilterform=this._OtRequestService.createSearchForm();
+   }
 
-  //   onChangeStartDate(value) {
-  //     this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  // }
-  // onChangeEndDate(value) {
-  //     this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  // }
   onNewotrequest(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
@@ -226,8 +222,6 @@ export class OTRequestComponent implements OnInit {
 
 
   onChangeFirst() {
-    this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.FirstName = this.myFilterform.get('FirstName').value + "%"
     this.LastName = this.myFilterform.get('LastName').value + "%"
     this.RegNo = this.myFilterform.get('RegNo').value || "0"
@@ -237,6 +231,8 @@ export class OTRequestComponent implements OnInit {
 
 
   getfilterdata() {
+        this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
     this.gridConfig = {
       apiUrl: "OTBooking/OtbookingRequestList",
       columnsList: this.allcolumns,

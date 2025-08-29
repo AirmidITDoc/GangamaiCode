@@ -74,7 +74,9 @@ export class OtReservationService {
          this.createReservationForm();
      }
  
-    
+     public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 
  
      public reservationSave(Param: any) {
