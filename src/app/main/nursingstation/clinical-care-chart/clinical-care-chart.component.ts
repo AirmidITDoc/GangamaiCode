@@ -41,16 +41,15 @@ export class ClinicalCareChartComponent implements OnInit {
     'patientId',
     'PatientName'
   ]
-  // displayedPainAsse: string[] = [
-  //   'givendate',
-  //   'giventime',
-  //   'PainAssess',
-  //   'Employeename',
-  //   'Action'
-  // ]
+  displayedPainAsse: string[] = [
+    'givendate',
+    // 'giventime',
+    'PainAssess',
+    'Employeename',
+    'Action'
+  ]
   displayedPainAsse2: string[] = [
     'givendate',
-    'Employeename',
     'PainAssess',
     'Action'
   ]
@@ -92,15 +91,24 @@ export class ClinicalCareChartComponent implements OnInit {
 
   displayedVitals: string[] = [
     'date',
-    'time',
     'Temperature',
     'Pulse',
     'Respiration',
     'BP',
-    'MewaScore',
-    'AVPU',
-    'TakenBy',
+    'ArterialBP',
+    'Peep',
+    'Brady',
     'CVP',
+    'PAPressureReading',
+    'Apnea',
+    'AbdominalGrith',
+    'Desaturation',
+    'SaturationWithO2',
+    'SaturationWithoutO2',
+    'PO2',
+    'FIO2',
+    'PFRation',
+    'AddedBy',
     'Action'
   ]
   displayedInOutput: string[] = [
@@ -119,25 +127,34 @@ export class ClinicalCareChartComponent implements OnInit {
   ]
   displayedOxygen: string[] = [
     'Date',
-    'Time',
-    'IV',
-    'Infusions',
-    'Boluses',
-    'Peroral',
-    'Perrt',
-    'Perjt',
-    'IntakeOther',
-    'Urine',
-    'Drange',
+    'TidolV',
+    'SetRange',
+    'IPAP',
+    'MinuteV',
+    'RateTotal',
+    'EPAP',
+    'Peep',
+    'PC',
+    'MVPercentage',
+    'PrSup',
+    'FIO2',
+    'IE',
+    'OxygenRate',
+    'SaturationWithO2',
+    'FlowTrigger',
+    'CreatedBy',
     'Action'
   ]
   displayedSugar: string[] = [
     'Date',
-    'Time',
-    'IV',
-    'Infusions',
-    'Boluses',
-    'Peroral',
+    'BSL',
+    'UrineSugar',
+    'ETTpressure',
+    'UrineKetone',
+    'Bodies',
+    'IntakeMode',
+    'ReportedToRMO',
+    'AddedBy',
     'Action'
   ]
   isLoading: String = '';
@@ -177,12 +194,13 @@ export class ClinicalCareChartComponent implements OnInit {
   // dsLabRequestDetail = new MatTableDataSource<PainAssesList>();
   dsvitalsList = new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
-  dsOxygenTable = new MatTableDataSource<INputOutputList>();
+  dsOxygenTable = new MatTableDataSource<OxygenVentilatorlist>();
   dsSugarTable = new MatTableDataSource<SugarlevelList>();
   PainAssessForm: FormGroup;
+  PainAssessWeightForm: FormGroup;
   VitalsForm: FormGroup;
   SugarForm: FormGroup;
-  // OxygenForm: FormGroup;
+  OxygenForm: FormGroup;
   // ApacheScoreForm: FormGroup;
   // InPutOutputForm: FormGroup;
 
@@ -211,13 +229,19 @@ export class ClinicalCareChartComponent implements OnInit {
     this.getLabRequesttList();
     this.getRtrvVitallist();
     this.getRtrvSugarlevellist();
+    this.getRtrvOxygenlist();
+
     this.PainAssessForm = this._ClinicalcareService.createPainAssesForm()
+
+    this.PainAssessWeightForm = this._ClinicalcareService.createPainAssesweightForm()
 
     this.VitalsForm = this._ClinicalcareService.createVitalsForm()
     this.VitalsForm.markAllAsTouched();
 
     this.SugarForm = this._ClinicalcareService.createSugarForm();
     this.SugarForm.markAllAsTouched();
+
+    this.OxygenForm = this._ClinicalcareService.CreateOxygenForm();
   }
 
   getDateTime(dateTimeObj) {
@@ -234,21 +258,6 @@ export class ClinicalCareChartComponent implements OnInit {
     console.log(this.selectedPainLevel);
   }
   getEmoji(painLevel: number): string {
-    // Map pain levels to corresponding emojis
-    // const emojiMap = {
-    //   0: '&#x1F600;', // Neutral face
-    //   1: '&#x1F600;', // Slightly frowning face
-    //   2: '&#x1F60A;',
-    //   3: '&#x1F60A;',
-    //   4: '&#x1F641;',
-    //   5: '&#x1F641;',
-    //   6: '&#x1F612;',
-    //   7: '&#x1F612;',
-    //   8: '&#x1F620;',
-    //   9: '&#x1F620;',
-    //   10: '&#x1F629;' // Loudly crying face
-    // };
-
     const emojiMap = {
       0: '&#x1F600;', // 😀 Grinning face (no pain / happy)
       1: '&#x1F642;', // 🙂 Slightly smiling (very mild discomfort)
@@ -325,8 +334,13 @@ export class ClinicalCareChartComponent implements OnInit {
   registerObj: any;
   vAdmission: any;
   vipdNo: any;
+  isShowPrintButtons: boolean = false;
   getpatientDet(obj) {
     console.log(obj)
+
+    this.isShowPrintButtons = true
+    this.painLevel = 0
+
     this.registerObj = obj;
     this.vpatientName = obj.patientName;
     this.vDoctorname = obj.doctorName;
@@ -347,7 +361,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.getpainAssesmentWeightList();
     this.getRtrvVitallist();
     this.getRtrvSugarlevellist();
-    // this.getRtrvOxygenlist();
+    this.getRtrvOxygenlist();
   }
   //////////////////////////////////////// main patient list end ////////////////////////////////////////
 
@@ -355,38 +369,8 @@ export class ClinicalCareChartComponent implements OnInit {
   @ViewChild('grid6') grid6: AirmidTableComponent;
   gridConfig6: gridModel = new gridModel();
   PainsAssessmentlist: any = [];
-  columns6 = [
-    { heading: "PainAssessmentDate", key: "painAssessmentTime", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Pain Assessment", key: "painAssessementValue", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "AddedBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
-    {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        {
-          action: gridActions.delete, callback: (data: any) => {
-            this.PaindeleteTableRow(data);
-          }
-        }]
-    }
-  ]
 
-  getpainAssesmentList() {
-    const admid = this.vAdmission ?? 19000101
-    this.gridConfig6 = {
-      apiUrl: "ClinicalCare/NursingPainAssessmentList",
-      columnsList: this.columns6,
-      sortField: "AdmissionId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "AdmissionId", fieldValue: String(admid), opType: OperatorComparer.Equals }
-      ]
-    }
-    setTimeout(() => {
-      this.grid6.gridConfig = this.gridConfig6;
-      this.grid6.bindGridData();
-    });
-  }
-
-  getpainAssesmentListDemo() { //required from deleting
+  getpainAssesmentList() { //required from deleting
     const admid = this.vAdmission ?? 19000101
     var vdata = {
       "first": 0,
@@ -404,21 +388,41 @@ export class ClinicalCareChartComponent implements OnInit {
       "columns": []
     }
     this._ClinicalcareService.getpainAssesmentList(vdata).subscribe(data => {
-      this.dsPainsAssessment.data = data as PainAssesList[];
-      this.PainsAssessmentlist = data as PainAssesList[];
+      this.dsPainsAssessment.data = data.data as PainAssesList[];
+      this.PainsAssessmentlist = data.data as PainAssesList[];
       console.log(this.dsPainsAssessment.data);
     })
   }
 
-  PaindeleteTableRow(element) {
-    let index = this.PainsAssessmentlist.indexOf(element);
-    if (index >= 0) {
-      this.PainsAssessmentlist.splice(index, 1);
-      this.dsPainsAssessment.data = [];
-      this.dsPainsAssessment.data = this.PainsAssessmentlist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
+  PaindeleteTableRow(data) {
+    Swal.fire({
+      title: 'Do you want to delete  Pain Assessment?',
+      text: "Please provide a reason for delete ",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter delete  reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          painAssessmentId: data.painAssessmentId,
+          isActive: true,
+          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
+        };
+        console.log(submitData);
+        this._ClinicalcareService.OnDeleteAssessment(submitData).subscribe((res) => {
+          this.getpainAssesmentList;
+        });
+      }
     });
   }
 
@@ -437,7 +441,6 @@ export class ClinicalCareChartComponent implements OnInit {
     this.PainAssessForm.get('painAssessementValue').setValue(this.selectedPainLevel)
     this.PainAssessForm.get('painAssessmentDate').setValue(formattedDate)
     if (!this.PainAssessForm.invalid) {
-      this.PainAssessForm.removeControl('DailyWeight')
       console.log(this.PainAssessForm.value)
       this._ClinicalcareService.SavePainAssesment(this.PainAssessForm.value).subscribe((response) => {
         this.getpainAssesmentList();
@@ -457,7 +460,6 @@ export class ClinicalCareChartComponent implements OnInit {
           );
         });
       }
-
     }
   }
 
@@ -467,7 +469,7 @@ export class ClinicalCareChartComponent implements OnInit {
   PainList: any = [];
 
   getpainAssesmentWeightList() {
-    const admid = this.vAdmission ?? 0
+    const admid = this.vAdmission ?? 19001010
     var vdata = {
       "first": 0,
       "rows": 10,
@@ -483,10 +485,9 @@ export class ClinicalCareChartComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    console.log(vdata);
     this._ClinicalcareService.getpainAssesmentWeightList(vdata).subscribe(data => {
       if (data) {
-        this.dsPainsAssessment2.data = data as PainAssesList[];
+        this.dsPainsAssessment2.data = data.data as PainAssesList[];
         this.checkDailyWeight = true;
         console.log(this.dsPainsAssessment2.data);
       } else {
@@ -495,14 +496,18 @@ export class ClinicalCareChartComponent implements OnInit {
     })
   }
 
-  OnAdd() {
+  OnAddSave() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       })
       return;
     }
-    this.vDailyWeight = this.PainAssessForm.get('DailyWeight').value
+    this.vDailyWeight = this.PainAssessWeightForm.get('patWeightValue').value
     if (this.vDailyWeight == 0 || this.vDailyWeight == '' || this.vDailyWeight == null || this.vDailyWeight == undefined) {
       this.toastr.warning('Please enter weight', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -518,28 +523,62 @@ export class ClinicalCareChartComponent implements OnInit {
     }
 
     this.checkDailyWeight = true;
-    this.PainList.push(
-      {
-        givendate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-        giventime: this.datePipe.transform(this.currentDate, 'shortTime'),
-        Employeename: this.vpatientName,
-        PainAssess: this.vDailyWeight
+    this.PainAssessWeightForm.get('admissionId').setValue(this.vAdmission)
+    this.PainAssessWeightForm.get('patWeightDate').setValue(formattedDate)
+    if (!this.PainAssessWeightForm.invalid) {
+      console.log(this.PainAssessWeightForm.value)
+      this._ClinicalcareService.SavePainAssesmentWeight(this.PainAssessWeightForm.value).subscribe((response) => {
+        this.getpainAssesmentWeightList();
+        this.vDailyWeight = '';
       });
-    this.dsPainsAssessment2.data = this.PainList;
-    this.vDailyWeight = '';
+    } else {
+      let invalidFields = [];
+      if (this.PainAssessWeightForm.invalid) {
+        for (const controlName in this.PainAssessWeightForm.controls) {
+          if (this.PainAssessWeightForm.controls[controlName].invalid) {
+            invalidFields.push(`PainAssessmentWeight Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
 
-    this.getpainAssesmentList();
   }
 
   deleteTableRow(element) {
-    let index = this.PainList.indexOf(element);
-    if (index >= 0) {
-      this.PainList.splice(index, 1);
-      this.dsPainsAssessment2.data = [];
-      this.dsPainsAssessment2.data = this.PainList;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
+    Swal.fire({
+      title: 'Do you want to delete  Pain Assessment Weight?',
+      text: "Please provide a reason for delete ",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter delete  reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          painAspatWeightIdsessmentId: element.patWeightId,
+          isActive: true,
+          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
+        };
+        console.log(submitData);
+        this._ClinicalcareService.OnDeleteAssessmentWeight(submitData).subscribe((res) => {
+          this.getpainAssesmentList;
+        });
+      }
     });
   }
 
@@ -564,9 +603,9 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   columns7 = [
-    { heading: "Date&Time", key: "time", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date&Time", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+    { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsCompleted", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
   ]
   getReporttestList() {
@@ -966,7 +1005,7 @@ export class ClinicalCareChartComponent implements OnInit {
   vitallist: any;
   vsuctionType: any = "0";
   getRtrvVitallist() {
-    const admid = this.vAdmission ?? 0
+    const admid = this.vAdmission ?? 19001010
     var vdata = {
       "first": 0,
       "rows": 10,
@@ -984,8 +1023,8 @@ export class ClinicalCareChartComponent implements OnInit {
     }
     console.log(vdata)
     this._ClinicalcareService.getRtrvVitallist(vdata).subscribe((data) => {
-      this.dsvitalsList.data = data as VitalsList[];
-      this.vitallist = data as VitalsList[];
+      this.dsvitalsList.data = data.data as VitalsList[];
+      this.vitallist = data.data as VitalsList[];
       console.log(this.dsvitalsList.data);
     });
   }
@@ -1046,39 +1085,22 @@ export class ClinicalCareChartComponent implements OnInit {
     this.VitalsForm.get('suctionType').setValue('0')
   }
   vVitalId: any;
-  onEditVital(row) {
-    console.log(row)
-    this.vVitalId = row.vitalId
-    var m_data = {
-      VitalId: row.VitalId,
-      temperature: row.temperature,
-      pulse: row.pulse,
-      respiration: row.respiration,
-      bloodPresure: row.bloodPresure,
-      cvp: row.cvp,
-      peep: row.peep,
-      arterialBloodPressure: row.arterialBloodPressure,
-      papressureReading: row.papressureReading,
-      brady: row.brady,
-      apnea: row.apnea,
-      abdominalGrith: row.abdominalGrith,
-      desaturation: row.desaturation,
-      saturationWithO2: row.saturationWithO2,
-      saturationWithoutO2: row.saturationWithoutO2,
-      po2: row.po2,
-      fio2: row.fio2,
-      pfration: row.pfration,
-      suctionType: JSON.stringify(row.suctionType)
+  onEditVital(row: any) {
+    console.log('Row:', row, typeof row.suctionType);
+    const updated = {
+      ...row,
+      suctionType: String(row.suctionType)
     };
-    // this._ClinicalcareService.VitalpopulateForm(m_data);
+    this.VitalsForm.patchValue(updated);
   }
+
 
   //////////////////////////////////////// vital info list end ////////////////////////////////////////
 
   //////////////////////////////////////// Sugar Level list code ////////////////////////////////////////
   Sugarlevellist: any;
   getRtrvSugarlevellist() {
-    const admid = this.vAdmission ?? 0
+    const admid = this.vAdmission ?? 19001010
     var vdata = {
       "first": 0,
       "rows": 10,
@@ -1096,8 +1118,8 @@ export class ClinicalCareChartComponent implements OnInit {
     }
     console.log(vdata)
     this._ClinicalcareService.getRtrvSugarlevellist(vdata).subscribe((data) => {
-      this.dsSugarTable.data = data as SugarlevelList[];
-      this.Sugarlevellist = data as SugarlevelList[];
+      this.dsSugarTable.data = data.data as SugarlevelList[];
+      this.Sugarlevellist = data.data as SugarlevelList[];
       console.log(this.dsSugarTable.data);
     });
   }
@@ -1160,24 +1182,107 @@ export class ClinicalCareChartComponent implements OnInit {
   OnCloseSugar() {
     this.SugarForm.reset();
   }
+
   vid: any;
   onEditSuugarlevel(row) {
     console.log(row)
     this.vid = row.id
-    var m_data = {
-      // SugarlevelId:row.Id,
-      bsl: row.bsl,
-      urineSugar: row.urineSugar,
-      ettpressure: row.ettpressure,
-      urineKetone: row.urineKetone,
-      bodies: row.bodies,
-      intakeMode: row.intakeMode,
-      reportedToRmo: row.reportedToRmo,
-    };
-    // this._ClinicalcareService.SugarlevelpopulateForm(m_data);
+    var m_data = row
+    this.SugarForm.patchValue(m_data);
   }
 
   //////////////////////////////////////// Sugar Level list code end ////////////////////////////////////////
+
+  //////////////////////////////////////// Oxygen/Venti code end ////////////////////////////////////////
+  OxygenventiList: any;
+  getRtrvOxygenlist() {
+    const admid = this.vAdmission ?? 19001010
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(admid),
+          "opType": "Contains"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    console.log(vdata)
+    this._ClinicalcareService.getRtrvOxygenlist(vdata).subscribe((data) => {
+      this.dsOxygenTable.data = data.data as OxygenVentilatorlist[];
+      this.OxygenventiList = data.data as OxygenVentilatorlist[];
+      console.log(this.dsOxygenTable.data);
+    });
+  }
+
+  OnsaveOxygenVenti() {
+    const currentDate = new Date();
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      })
+      return;
+    }
+    this.OxygenForm.get('id').setValue(this.vOxyid ?? 0)
+    this.OxygenForm.get('admissionId').setValue(this.vAdmission)
+    this.OxygenForm.get('entryDate').setValue(formattedDate)
+    if (!this.OxygenForm.invalid) {
+      console.log(this.OxygenForm.value)
+      this._ClinicalcareService.SaveOxygenVentilator(this.OxygenForm.value).subscribe((response) => {
+        this.getRtrvOxygenlist();
+        this.OnCloseOxygen()
+      });
+    } else {
+      let invalidFields = [];
+      if (this.OxygenForm.invalid) {
+        for (const controlName in this.OxygenForm.controls) {
+          if (this.OxygenForm.controls[controlName].invalid) {
+            invalidFields.push(`Oxygen Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
+  }
+
+  OnCloseOxygen() {
+    this.OxygenForm.reset();
+  }
+
+  deleteOxygenTableRow(element) {
+    let index = this.OxygenventiList.indexOf(element);
+    if (index >= 0) {
+      this.OxygenventiList.splice(index, 1);
+      this.dsOxygenTable.data = [];
+      this.dsOxygenTable.data = this.OxygenventiList;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  vOxyid: any;
+  onEditOxygen(row) {
+    console.log(row)
+    this.vOxyid = row.id
+    var m_data = row
+    this.OxygenForm.patchValue(m_data);
+  }
+  //////////////////////////////////////// Oxygen/Venti code end ////////////////////////////////////////
 
   getPhlebitis() {
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
@@ -1321,40 +1426,42 @@ export class OxygenVentilatorlist {
   Date: any;
   Mode: any;
   TidolV: any;
-  SetRange: any;
-  IPAP: any;
+  setRange: any;
+  ipap: any;
   MinuteV: any;
-  RateTotal: any;
-  EPAP: any;
-  Peep: any;
-  PC: any;
-  MVPercentage: any;
-  PrSup: any;
-  FIO2: any;
-  IE: any;
-  OxygenRate: any;
-  SaturationWithO2: any;
-  FlowTrigger: any;
+  rateTotal: any;
+  epap: any;
+  peep: any;
+  pc: any;
+  mvpercentage: any;
+  prSup: any;
+  fio2: any;
+  ie: any;
+  oxygenRate: any;
+  saturationWithO2: any;
+  flowTrigger: any;
   CreatedBy: any;
+  tidolV: any;
   constructor(OxygenVentilatorlist) {
     {
       this.Date = OxygenVentilatorlist.Date || 0;
       this.Mode = OxygenVentilatorlist.Mode || 0;
       this.TidolV = OxygenVentilatorlist.TidolV || 0;
-      this.SetRange = OxygenVentilatorlist.SetRange || 0;
-      this.IPAP = OxygenVentilatorlist.IPAP || 0;
+      this.tidolV = OxygenVentilatorlist.tidolV || 0
+      this.setRange = OxygenVentilatorlist.setRange || 0;
+      this.ipap = OxygenVentilatorlist.ipap || 0;
       this.MinuteV = OxygenVentilatorlist.MinuteV || 0;
-      this.RateTotal = OxygenVentilatorlist.RateTotal || 0;
-      this.EPAP = OxygenVentilatorlist.EPAP || 0;
-      this.PC = OxygenVentilatorlist.PC || 0;
-      this.Peep = OxygenVentilatorlist.Peep || 0;
-      this.MVPercentage = OxygenVentilatorlist.MVPercentage || 0;
-      this.PrSup = OxygenVentilatorlist.PrSup || 0;
-      this.FIO2 = OxygenVentilatorlist.FIO2 || 0;
-      this.IE = OxygenVentilatorlist.IE || 0;
-      this.OxygenRate = OxygenVentilatorlist.OxygenRate || 0;
-      this.SaturationWithO2 = OxygenVentilatorlist.SaturationWithO2 || 0;
-      this.FlowTrigger = OxygenVentilatorlist.FlowTrigger || 0;
+      this.rateTotal = OxygenVentilatorlist.rateTotal || 0;
+      this.epap = OxygenVentilatorlist.epap || 0;
+      this.pc = OxygenVentilatorlist.pc || 0;
+      this.peep = OxygenVentilatorlist.peep || 0;
+      this.mvpercentage = OxygenVentilatorlist.mvpercentage || 0;
+      this.prSup = OxygenVentilatorlist.prSup || 0;
+      this.fio2 = OxygenVentilatorlist.fio2 || 0;
+      this.ie = OxygenVentilatorlist.ie || 0;
+      this.oxygenRate = OxygenVentilatorlist.oxygenRate || 0;
+      this.saturationWithO2 = OxygenVentilatorlist.saturationWithO2 || 0;
+      this.flowTrigger = OxygenVentilatorlist.flowTrigger || 0;
       this.CreatedBy = OxygenVentilatorlist.CreatedBy || 0;
     }
   }

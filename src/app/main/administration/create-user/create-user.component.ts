@@ -19,6 +19,8 @@ import { NUserComponent } from './nuser/nuser.component';
 })
 export class CreateUserComponent implements OnInit {
   myuserform: FormGroup;
+  autocompleteModeStoreName: String = "Store";
+  autocompleteModeWebRoleName: String = "WebRole";
 
   constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog, public toastr: ToastrService) { }
@@ -33,14 +35,14 @@ export class CreateUserComponent implements OnInit {
   @ViewChild('docIcon') docIcon!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "-", key: "doctorID", sort: true, align: 'left', type:gridColumnTypes.template, width: 50 },
-    { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "UserName", key: "userLoginName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "LoginName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "RoleName", key: "webRoleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "-", key: "doctorID", sort: true, align: 'left', type: gridColumnTypes.template },
+    { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "User Name", key: "userLoginName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Web RoleName", key: "webRoleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 60 },
     {
@@ -64,7 +66,11 @@ export class CreateUserComponent implements OnInit {
   }
   filterForm(): FormGroup {
     return this._formBuilder.group({
-      UserName: []
+      UserName: [],
+      FirstName: [''],
+      LastName: [''],
+      storeId: [],
+      roleId: []
     });
   }
 
@@ -72,13 +78,41 @@ export class CreateUserComponent implements OnInit {
     console.log(event)
     if (event == 'UserName')
       this.myuserform.get('UserName').setValue("")
+    if (event == 'FirstName')
+      this.myuserform.get('FirstName').setValue("")
+    if (event == 'LastName')
+      this.myuserform.get('LastName').setValue("")
 
     this.onChangeFirst();
   }
   UserName: any
+  fName: any;
+  lName: any;
+  StoreId = "0";
+  RoleId = "0";
   onChangeFirst() {
     this.UserName = this.myuserform.get('UserName').value + '%'
+    // this.fName = this.myuserform.get('FirstName').value + '%'
+    // this.lName = this.myuserform.get('LastName').value + '%'
     this.getfilterdata();
+  }
+
+  storeChange(value) {
+    if (value.value !== 0)
+      this.StoreId = value.value
+    else
+      this.StoreId = "0"
+
+    // this.onChangeFirst();
+  }
+
+  roleChange(value) {
+    if (value.value !== 0)
+      this.RoleId = value.value
+    else
+      this.RoleId = "0"
+
+    // this.onChangeFirst();
   }
 
   getfilterdata() {
@@ -102,7 +136,7 @@ export class CreateUserComponent implements OnInit {
     let that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
-         maxWidth: "95vw",
+        maxWidth: "95vw",
         maxHeight: '95vh',
         height: '95%',
         width: '90%',
@@ -121,7 +155,7 @@ export class CreateUserComponent implements OnInit {
     let that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
-         maxWidth: "95vw",
+        maxWidth: "95vw",
         maxHeight: '95vh',
         height: '95%',
         width: '90%',
@@ -161,9 +195,9 @@ export class CreateUserComponent implements OnInit {
         this._CreateUserService.PasswordUpdate(submitData).subscribe(
           (response) => {
             this.toastr.success(response.message);
-            this.grid.bindGridData();            
-            }); 
-          }    
+            this.grid.bindGridData();
+          });
+      }
     });
   }
 }
