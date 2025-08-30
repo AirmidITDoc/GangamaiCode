@@ -185,6 +185,16 @@ vMobile: any;
                 this.userFormGroup.get('PaymentType').setValue('false')
             }
 
+            //   if (this.registerObj.grntype){
+            //     this.userFormGroup.patchValue({GRNType:true}) 
+            //   }else{
+            //       this.userFormGroup.patchValue({GRNType:false}) 
+            //   } 
+            //     if (this.registerObj.Cash_CreditType){
+            //     this.userFormGroup.patchValue({PaymentType:true}) 
+            //   }else{
+            //       this.userFormGroup.patchValue({PaymentType:false}) 
+            //   } 
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -228,24 +238,24 @@ vMobile: any;
             const dvalue = gstValues.find(item => item.value == parseFloat(rate))
             if (!dvalue) {
                 this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-                // if (GSTTYP.formControlName == 'CGST') {
-                //     this.userFormGroup.get('CGST').setValue('')
-                // } else if (GSTTYP.formControlName == 'SGST') {
-                //     this.userFormGroup.get('SGST').setValue('')
-                // } else if (GSTTYP.formControlName == 'IGST') {
-                //     this.userFormGroup.get('IGST').setValue('')
-                // }
+                if (GSTTYP.formControlName == 'CGST') {
+                    this.userFormGroup.get('CGST').setValue('')
+                } else if (GSTTYP.formControlName == 'SGST') {
+                    this.userFormGroup.get('SGST').setValue('')
+                } else if (GSTTYP.formControlName == 'IGST') {
+                    this.userFormGroup.get('IGST').setValue('')
+                }
                 return
             }
         } else {
             this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-            // if (GSTTYP.formControlName == 'CGST') {
-            //     this.userFormGroup.get('CGST').setValue('')
-            // } else if (GSTTYP.formControlName == 'SGST') {
-            //     this.userFormGroup.get('SGST').setValue('')
-            // } else if (GSTTYP.formControlName == 'IGST') {
-            //     this.userFormGroup.get('IGST').setValue('')
-            // }
+            if (GSTTYP.formControlName == 'CGST') {
+                this.userFormGroup.get('CGST').setValue('')
+            } else if (GSTTYP.formControlName == 'SGST') {
+                this.userFormGroup.get('SGST').setValue('')
+            } else if (GSTTYP.formControlName == 'IGST') {
+                this.userFormGroup.get('IGST').setValue('')
+            }
         }
         const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
         this.userFormGroup.patchValue({
@@ -1216,8 +1226,106 @@ if (paymentType === true) {
         this.resetForm();
     }
     //Po 
-       purchaseOrderList(): void {
-        // Get purchase order list
+    FinalTotalQty1: any = 0;
+    FinalLandedrate1: any = 0;
+    FinalpurUnitRate1: any = 0;
+    FinalpurUnitrateWF1: any = 0;
+    FinalUnitMRP1: any = 0;
+    vPurchaseOrderSupplierId: any;
+    PurchaseOrderList() {
+        const _dialogRef = this._matDialog.open(PurchaseorderComponent,
+            {
+                maxWidth: "100%",
+                height: '95%',
+                width: '95%',
+            });
+
+        _dialogRef.afterClosed().subscribe(result => {
+
+            console.log(result)
+            this.vPurchaseId = result[0].PurchaseID;
+            this.vpoBalQty = result[0].ReceiveQty;
+            this.vPurchaseOrderSupplierId = result[0].SupplierName
+            let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
+            this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
+            this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
+
+           // this.getSupplierSearchCombo();
+
+            //   
+            // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
+            //   const toSelectSUpplierId = this.SupplierList.data.find(item => item.SupplierId === result[0].SupplierID);
+            //   console.log(toSelectSUpplierId)
+            //   this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+            //   this.vMobile = toSelectSUpplierId.Mobile;
+            //   this.vContact = toSelectSUpplierId.ContactPerson;
+            //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.SupplierList[0]);
+
+
+            //  const toSelectSUpplierId = this.filteredOptionssupplier.find(c => c.SupplierId == result[0].SupplierID);
+            //  this._GRNList.userFormGroup.get('SupplierId').setValue(toSelectSUpplierId);
+            //   this.vMobile = toSelectSUpplierId.Mobile;
+            //   this.vContact = toSelectSUpplierId.ContactPerson;
+            //   this.vSupplierId =toSelectSUpplierId.SupplierName;
+            //   this._GRNList.userFormGroup.get('SupplierId').setValue(this.filteredOptionssupplier[0]);
+
+
+
+            this.dsItemNameList1.data = result;
+            this.dsItemNameList1.data.forEach((element) => {
+                let Qty = element.Qty;
+                let freeqty = element.FreeQty || 0;
+                this.FinalTotalQty1 = (((element.Qty) + (freeqty)) * (element.ConversionFactor));
+                this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1);
+                this.FinalpurUnitRate1 = (((element.ItemTotalAmount) / (element.Qty)) * (element.ConversionFactor))
+                this.FinalpurUnitrateWF1 = (((element.ItemTotalAmount) / (this.FinalTotalQty1)) * (element.ConversionFactor))
+                this.FinalUnitMRP1 = (element.MRP) / (element.ConversionFactor)
+
+                this.chargeslist.push(
+                    {
+                        ItemId: element.ItemId || 0,
+                        ItemName: element.ItemName || '',
+                        ConversionFactor: element.ConversionFactor || 0,
+                        UOMId: element.UOMID,
+                        HSNcode: element.HSNcode,
+                        BatchNo: element.BatchNo,
+                        BatchExpDate: element.BatchExpDate,
+                        ReceiveQty: element.Qty || 0,
+                        FreeQty: element.FreeQty || 0,
+                        TotalQty: this.FinalTotalQty1 || 0,
+                        MRP: element.MRP || 0,
+                        Rate: element.Rate || 0,
+                        TotalAmount: element.ItemTotalAmount || 0,
+                        DiscPercentage: element.DiscPer || 0,
+                        DiscAmount: element.ItemDiscAmount || 0,
+                        DiscPer2: element.DiscPer2 || 0,
+                        DiscAmt2: element.DiscAmt2 || 0,
+                        VatPercentage: element.VatPer || 0,
+                        VatAmount: element.VatAmount || 0,
+                        CGSTPer: element.CGSTPer || 0,
+                        CGSTAmt: element.CGSTAmt || 0,
+                        SGSTPer: element.SGSTPer || 0,
+                        SGSTAmt: element.SGSTAmt || 0,
+                        IGSTPer: element.IGSTPer || 0,
+                        IGSTAmt: element.IGSTAmt || 0,
+                        NetAmount: element.GrandTotalAmount || 0,
+                        PurchaseId: element.PurchaseNo || 0,
+                        PurDetId: element.PurDetId || 0,
+                        POBalQty: element.POBalQty || 0,
+                        POQty: element.POQty || 0,
+                        // IsClosed: element.IsClosed,
+                        LandedRate: element.LandedRate || 0,
+                        PurUnitRate: this.FinalpurUnitRate1 || 0,
+                        PurUnitRateWF: this.FinalpurUnitrateWF1 || 0,
+                        IsVerifiedUserId: 0,//element.IsVerifiedId || 0,
+                        IsVerified: false,//true,
+                        IsVerifiedDatetime: "01/01/1900",// element.VerifiedDateTime || 0,
+                        StkID: 0,
+                        UnitMRP: this.FinalUnitMRP1
+                    });
+                this.dsItemNameList.data = this.chargeslist
+            });
+        });
     }
     getGRNrtrvItemlist() {
         var vdata = {

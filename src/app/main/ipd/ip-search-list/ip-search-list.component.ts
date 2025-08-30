@@ -456,24 +456,15 @@ export class IPSearchListComponent implements OnInit {
     apiUrl: any;
     IsDischarge: boolean = false
     onChangeFirst(event) {
-        // debugger
-        console.log(event)
-        // if(this.myFilterform.get('fromDate').value==null || this.myFilterform.get('fromDate').value== ''){
-        // this.fromDate = "1900-01-01"
-        // this.toDate =  "1900-01-01"
-        // }else{
-        // this.fromDate =  this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-        // this.toDate =  this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-        // }
+         debugger
+        console.log(event) 
         if (this.myFilterform.get('IsDischarge').value == false) {
-            // this.myFilterform.get('fromDate').setValue('')
-            // this.myFilterform.get('enddate').setValue('')
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.myFilterform.get('fromDate').setValue('')
+            this.myFilterform.get('enddate').setValue('')
+            this.fromDate = "1900-01-01"
+            this.toDate =   "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
-            this.status = '0'
-            // this.fromDate = "1900-01-01"
-            // this.toDate = "1900-01-01"
+            this.status = '0' 
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
@@ -491,6 +482,20 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
 
+    getchangeDate(){
+          if (this.myFilterform.get('IsDischarge').value != false) {  
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
+        }
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+        this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.m_name = this.myFilterform.get('MiddleName').value + "%"
+        this.IPDNo = this.myFilterform.get('IPDNo').value || "0" 
+        this.getfilterdata();
+    }
     getfilterdata() {
         // debugger
         this.gridConfig = {

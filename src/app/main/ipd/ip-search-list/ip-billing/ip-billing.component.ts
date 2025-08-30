@@ -43,6 +43,7 @@ export class IPBillingComponent implements OnInit {
         'checkbox',
         'IsCheck',
         'ChargesDate',
+        'ServiceCode',
         'ServiceName',
         'Price',
         'Qty',
@@ -53,6 +54,7 @@ export class IPBillingComponent implements OnInit {
         'DoctorName',
         'ClassName',
         'ChargesAddedName',
+        'Exclucion',
         'buttons',
     ];
     NurReqColumns = [
@@ -353,6 +355,7 @@ export class IPBillingComponent implements OnInit {
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId:  [this.selectedAdvanceObj?.hospitalID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -360,6 +363,7 @@ export class IPBillingComponent implements OnInit {
             concessionPercentage: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.onlyNumberValidator()]],
             concessionAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             hospitalAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -391,16 +395,18 @@ export class IPBillingComponent implements OnInit {
             chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isBillableCharity: [false],
             salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+            serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isInclusionExclusion: [false],
             isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packcagecharges: this.formBuilder.array([])
         });
     }
     // Create pacakge form
     createPacakgeForm(item: any): FormGroup {
         return this.formBuilder.group({
-            chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            //chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [this.opD_IPD_Id, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -425,11 +431,10 @@ export class IPBillingComponent implements OnInit {
             isPackage: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [item?.PackageServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             //chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
             //const formattedTime = this.datePipe.transform(this.Serviceform.get('chargesTime')?.value, 'HH:mm:ss') || '00:00:00';
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
-
-
         });
     }
     // Getters 
@@ -620,7 +625,7 @@ export class IPBillingComponent implements OnInit {
         return this.draftSaveform.get('tdrBillDet') as FormArray;
     }
     //service selected data
-    getselectObj(obj) {
+    getselectObj(obj) { 
         this.Serviceform.patchValue({
             price: obj.classRate
         })
@@ -665,11 +670,14 @@ export class IPBillingComponent implements OnInit {
                 doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
         this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
+        this.Serviceform.get("unitId").setValue(this.selectedAdvanceObj?.hospitalID || 0)
         this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
         this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
         this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
         this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)
         this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName)
+        this.Serviceform.get("serviceCode").setValue(formValue.serviceName?.companyCode ?? '') 
+        this.Serviceform.get("isInclusionExclusion").setValue(formValue.serviceName?.isInclusionOrExclusion ?? false)
         this.Serviceform.get("doctorId")?.enable();
         this.Serviceform.get("doctorId").setValue(doctorid ?? 0)
         this.Serviceform.get("tariffId").setValue(this.TariffId)
@@ -679,7 +687,7 @@ export class IPBillingComponent implements OnInit {
         const formattedDate = this.datePipe.transform(date, "yyyy-MM-dd");
         const formattedTime = this.datePipe.transform(chargeTime, "HH:mm:ss");
         this.Serviceform.get('chargesDate').setValue(formattedDate);
-        this.Serviceform.get('chargesTime').setValue(formattedDate +' '+ formattedTime);
+        this.Serviceform.get('chargesTime').setValue(formattedDate + ' ' + formattedTime);
 
         console.log(this.Serviceform.get('doctorId'));
         console.log(this.Serviceform.get('doctorId')?.enabled);
@@ -692,7 +700,7 @@ export class IPBillingComponent implements OnInit {
                 this.PackageDatasource.data.forEach(item => {
                     this.PackageDetArray.push(this.createPacakgeForm(item));
                 });
-            } 
+            }
             console.log('valida service form', this.Serviceform.value)
             this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
                 this.getChargesList();
@@ -716,7 +724,7 @@ export class IPBillingComponent implements OnInit {
         this.interimArray = [];
         this.isDoctor = false;
         this.onClearServiceAddList();
-         this.PackageDetArray.clear();
+        this.PackageDetArray.clear();
         const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
         if (serviceIdElement) {
             serviceIdElement.focus();
@@ -732,7 +740,7 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get('doctorId').reset();
         this.Serviceform.get('concessionPercentage').reset();
         this.Serviceform.get('concessionAmount').reset();
-        this.Serviceform.get('netAmount').reset(); 
+        this.Serviceform.get('netAmount').reset();
     }
     deletecharges(contact) {
         if (contact.isPathTestCompleted == 1) {
@@ -889,6 +897,8 @@ export class IPBillingComponent implements OnInit {
     TotalShowAmt: any = 0;
     DiscShowAmt: any = 0;
     FinalNetAmt: any = 0;
+    ExclusionAmt: any = 0;
+    InclusionAmt: any = 0;
     getNetAmtSum() {
         this.FinalNetAmt = this.chargeslist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
         this.TotalShowAmt = this.chargeslist.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
@@ -909,6 +919,11 @@ export class IPBillingComponent implements OnInit {
             this.CalFinalDiscper()
         }
         this.CalculateAdminCharge()
+
+        const Exclusionlist = this.chargeslist.filter(i => i.isInclusionExclusion === true)
+        const Inclusionlist = this.chargeslist.filter(i => i.isInclusionExclusion !== true)
+        this.ExclusionAmt = Exclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+        this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);  
     }
     //Admin Charge Check Box On 
     isAdminDisabled: boolean = false;
@@ -1178,9 +1193,9 @@ export class IPBillingComponent implements OnInit {
                 this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
                 const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
                     {
-                        maxWidth: "75vw",
-                        height: '650px',
-                        width: '100%',
+                        maxWidth: "80vw",
+                        height: '750px',
+                        width: '80%',
                         data: {
                             vPatientHeaderObj: PatientHeaderObj,
                             FromName: "IP-Bill",
@@ -1231,9 +1246,9 @@ export class IPBillingComponent implements OnInit {
             }
         } else {
             let invalidFields = [];
-            if (this.IpbillFooterform.invalid) {
-                for (const controlName in this.IpbillFooterform.controls) {
-                    if (this.IpbillFooterform.controls[controlName].invalid) {
+            if (this.IPBillMyForm.invalid) {
+                for (const controlName in this.IPBillMyForm.controls) {
+                    if (this.IPBillMyForm.controls[controlName].invalid) {
                         invalidFields.push(`${controlName}`);
                     }
                 }
@@ -1787,6 +1802,17 @@ export class IPBillingComponent implements OnInit {
                 })
             }
         })
+    }
+
+    ExclusionChecked(event, element) {
+        // if (event.checked) {
+        //     this.interimArray.push(element);
+        // } else if (this.interimArray.length > 0) {
+        //     let index = this.interimArray.indexOf(element);
+        //     if (index !== -1) {
+        //         this.interimArray.splice(index, 1);
+        //     }
+        // }
     }
 }
 

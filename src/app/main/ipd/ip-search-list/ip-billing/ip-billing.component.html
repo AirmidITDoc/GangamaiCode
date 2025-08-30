@@ -548,6 +548,13 @@
                           </mat-cell>
                         </ng-container>
 
+                         <ng-container matColumnDef="ServiceCode">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">Service Code</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" class="w-150">
+                            <span>{{ contact.serviceCode || '-' }}</span>
+                          </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="ServiceName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 border-right">Service Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
@@ -589,7 +596,7 @@
                         <ng-container matColumnDef="DiscPer">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.concessiondiscPer }}</span>
+                            <span>{{ contact.concessiondiscPer || '-' }}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -611,12 +618,13 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">Doctor Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                             <span>{{ contact.doctorName}}</span>
+                            <div *ngIf="contact.creditedtoDoctor == true">
                             <ng-container *ngIf="!contact.EditDoctor; else showInput">
                               <button mat-icon-button (click)="DocenableEditing(contact)"
                                   class="clear-button">
                                   <mat-icon>edit</mat-icon></button>
-                          </ng-container>
-                          <ng-template #showInput>
+                            </ng-container>
+                            <ng-template #showInput>
                               <form [formGroup]="IpbillFooterform" fxLayout="row" fxLayoutGap="2px">
                                   <airmid-dropdown formControlName="EditDoctor" class="w-180" appearance="fill"
                                       [formGroup]="IpbillFooterform" [mode]="autocompleteModedeptdoc"
@@ -625,7 +633,8 @@
                               </form>
                               <mat-icon matTooltip="Close"
                               (click)="DoctorisableEditing(contact)">cancel</mat-icon>
-                          </ng-template>
+                            </ng-template>
+                            </div> 
                           </mat-cell>
                         </ng-container>
  
@@ -644,8 +653,16 @@
                           </mat-cell>
                         </ng-container>
 
+                         <ng-container matColumnDef="Exclucion" stickyEnd>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">Exclusion</mat-header-cell> 
+                          <mat-cell *matCellDef="let contact" class="w-90">
+                            <mat-checkbox aria-label="Checked" (change)="ExclusionChecked($event, contact)"
+                             [(ngModel)]="contact.isInclusionExclusion"></mat-checkbox>
+                          </mat-cell> 
+                        </ng-container>
+
                         <ng-container matColumnDef="buttons" stickyEnd>
-                          <mat-header-cell *matHeaderCellDef class="table-actions" class="w-70">Action</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef class="table-actions" class="w-80">Action</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-80">
                             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                               <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save" [disabled]="!contact.EditDoctor && !contact.isUpdated">
@@ -669,10 +686,10 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1750" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-header-row class="accent min-width-1950" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                         <mat-row
                           *matRowDef="let contact; columns: displayedColumns"
-                          class="min-width-1750"
+                          class="min-width-1950"
                           [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
                           [@animate]="{ value: '*', params: { y: '100%' } }"
                         ></mat-row>
@@ -830,6 +847,17 @@
                       <span class="net-amt-label">No of Items :</span>
                       <span class="net-amt-value">{{ chargeslist.length }}</span>
                     </div>
+
+                     <div class="net-amt-box">
+                      <span class="net-amt-label">Exclusion Amt :</span>
+                      <span class="net-amt-value">{{ ExclusionAmt | currency : 'INR' }}</span>
+                    </div>
+
+                     <div class="net-amt-box">
+                      <span class="net-amt-label">Inclusion Amt :</span>
+                      <span class="net-amt-value">{{ InclusionAmt | currency : 'INR' }}</span>
+                    </div>
+                    
                     <div class="net-amt-box">
                       <span class="net-amt-label">Total Amt :</span>
                       <span class="net-amt-value">{{ TotalShowAmt | currency : 'INR' }}</span>
@@ -837,7 +865,7 @@
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
                       <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency : 'INR' }}</span>
-                    </div>
+                    </div> 
 
                     <div class="net-amt-box">
                       <span class="net-amt-label">Net Amt :</span>
@@ -932,7 +960,8 @@
                       <mat-checkbox formControlName="Admincheck" (checked)="(true)" (change)="AdminStatus($event)">Admin</mat-checkbox>
 
                       <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
-                      <mat-checkbox formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
+                      <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
+                      formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
                     </div>
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">

@@ -162,7 +162,7 @@ export class ServeToCompanyComponent {
         }
 
         this.getsubtpaList()
-        this.getServiceListMain()
+        //this.getServiceListMain()
         this.selectdiscservicelist()
     }
 
