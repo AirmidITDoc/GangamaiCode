@@ -26,6 +26,10 @@
                 <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
+
+                <button mat-icon-button matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </ng-template>
 
@@ -49,6 +53,42 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search FirstName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search LastName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="Store Name" formControlName="storeId" [formGroup]="myuserform"
+                        (selectionChange)="storeChange($event)" [mode]="autocompleteModeStoreName">
+                    </airmid-dropdown>
+                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
+
+                    <airmid-dropdown label="Role Name" formControlName="roleId" [formGroup]="myuserform"
+                        (selectionChange)="roleChange($event)" [mode]="autocompleteModeWebRoleName">
+                    </airmid-dropdown>
+                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
+
+                    <mat-radio-group value=""
+                        fxLayoutAlign="center center">
+                        <mat-radio-button value="">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                    <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
                 </form>
 
             </ng-container>

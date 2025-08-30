@@ -40,6 +40,25 @@ export class ClinicalCareChartService {
       // ToDate:[new Date()],
     })
   }
+  createPainAssesForm() {
+    return this._formbuilder.group({
+      // DailyWeight: [''],
+      painAssessmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      painAssessmentDate: [new Date()],
+      painAssessmentTime: [new Date()],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      painAssessementValue: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    })
+  }
+  createPainAssesweightForm() {
+    return this._formbuilder.group({
+      patWeightId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      patWeightDate: [new Date()],
+      patWeightTime: [new Date()],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      patWeightValue: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    })
+  }
   createVitalsForm() {
     return this._formbuilder.group({
       vitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -68,23 +87,9 @@ export class ClinicalCareChartService {
   }
   createSugarForm() {
     return this._formbuilder.group({
-      // BSL: [''],
-      // UnirSugar: [''],
-      // ETTPressure: [''],
-      // UrineKeotne: [''],
-      // Bodies: [''],
-      // Intakemode: [''],
-      // RepotetoRMO: [''],
-      InformedTo: [''],
-      InformedBy: [''],
-      Injection: [''],
-      InjectionDose: [''],
-      Tablet: [''],
-      TabletDose: [''],
-
       id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       entryDate: [new Date()],
-      entryTime:[new Date()],
+      entryTime: [new Date()],
       admissionId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
       bsl: ['', [Validators.maxLength(10)]],
       urineSugar: ['', [Validators.maxLength(10)]],
@@ -93,25 +98,54 @@ export class ClinicalCareChartService {
       bodies: ['', [Validators.maxLength(10)]],
       intakeMode: 0,
       reportedToRmo: ['', [Validators.maxLength(10)]],
+
+      // extra fields
+      InformedTo: [''],
+      InformedBy: [''],
+      Injection: [''],
+      InjectionDose: [''],
+      Tablet: [''],
+      TabletDose: [''],
     })
   }
   CreateOxygenForm() {
     return this._formbuilder.group({
-      Tidol: [''],
-      SetRange: [''],
-      IPAP: [''],
-      minuteV: [''],
-      RateTotal: [''],
-      EPAP: [''],
-      Peep: [''],
-      PC: [''],
-      MV: [''],
-      Sup: [''],
-      FiO2: [''],
-      IE: [''],
-      OxygenRate: [''],
-      SaturationWitho2: [''],
-      FlowTrigger: ['']
+      // Tidol: [''],
+      // SetRange: [''],
+      // IPAP: [''],
+      // minuteV: [''],
+      // RateTotal: [''],
+      // EPAP: [''],
+      // Peep: [''],
+      // PC: [''],
+      // MV: [''],
+      // Sup: [''],
+      // FiO2: [''],
+      // IE: [''],
+      // OxygenRate: [''],
+      // SaturationWitho2: [''],
+      FlowTrigger: [''],
+
+      id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      entryDate: [new Date()],
+      entryTime: [new Date()],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mode: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tidolV: ['', [Validators.maxLength(10)]],
+      setRange: ['', [Validators.maxLength(10)]],
+      ipap: ['', [Validators.maxLength(10)]],
+      minuteV: ['', [Validators.maxLength(10)]],
+      rateTotal: ['', [Validators.maxLength(10)]],
+      epap: ['', [Validators.maxLength(10)]],
+      peep: ['', [Validators.maxLength(10)]],
+      pc: ['', [Validators.maxLength(10)]],
+      mvpercentage: ['', [Validators.maxLength(10)]],
+      prSup: ['', [Validators.maxLength(10)]],
+      fio2: ['', [Validators.maxLength(10)]],
+      ie: ['', [Validators.maxLength(10)]],
+      oxygenRate: ['', [Validators.maxLength(10)]],
+      saturationWithO2: ['', [Validators.maxLength(10)]],
+      flowTrigger: ['', [Validators.maxLength(10)]],
     })
   }
   CreateApachescoreForm() {
@@ -173,16 +207,6 @@ export class ClinicalCareChartService {
 
     })
   }
-  createPainAssesForm() {
-    return this._formbuilder.group({
-      DailyWeight: [''],
-      painAssessmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      painAssessmentDate: [new Date()],
-      painAssessmentTime: [new Date()],
-      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      painAssessementValue: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    })
-  }
 
   public getWardList() {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_WardMasterListForCombo", {});
@@ -200,8 +224,14 @@ export class ClinicalCareChartService {
 
   public SavePainAssesment(Param: any) {
     if (Param.painAssessmentId) {
-      return this._httpClient1.PutData("ClinicalCare/NursingPainAssessmentInsert/" + Param.painAssessmentId, Param);
+      return this._httpClient1.PutData("ClinicalCare/NursingPainAssessmentUpdate/" + Param.painAssessmentId, Param);
     } else return this._httpClient1.PostData("ClinicalCare/NursingPainAssessmentInsert", Param);
+  }
+
+  public SavePainAssesmentWeight(Param: any) {
+    if (Param.patWeightId) {
+      return this._httpClient1.PutData("ClinicalCare/NursingWeightUpdate/" + Param.patWeightId, Param);
+    } else return this._httpClient1.PostData("ClinicalCare/NursingWeightInsert", Param);
   }
 
   public getRtrvVitallist(param) {
@@ -210,6 +240,10 @@ export class ClinicalCareChartService {
 
   public getRtrvSugarlevellist(param) {
     return this._httpClient1.PostData("ClinicalCare/NursingSugarlevelList", param)
+  }
+
+  public getRtrvOxygenlist(param) {
+    return this._httpClient1.PostData("ClinicalCare/NursingOxygenVentilatorList", param)
   }
 
   public SaveVitalInfo(Param: any) {
@@ -222,5 +256,19 @@ export class ClinicalCareChartService {
     if (Param.id) {
       return this._httpClient1.PutData("ClinicalCare/NursingSugarLevelUpdate/" + Param.id, Param);
     } else return this._httpClient1.PostData("ClinicalCare/TNursingSugarLevelInsert", Param);
+  }
+
+  public SaveOxygenVentilator(Param: any) {
+    if (Param.id) {
+      return this._httpClient1.PutData("ClinicalCare/NursingOrygenVentilatorUpdate/" + Param.id, Param);
+    } else return this._httpClient1.PostData("ClinicalCare/NursingOrygenVentilatorInsert", Param);
+  }
+
+  public OnDeleteAssessment(param) {
+    return this._httpClient1.PostData('ClinicalCare/TNursingPainAssessmentCancel', param)
+  }
+
+  public OnDeleteAssessmentWeight(param) {
+    return this._httpClient1.PostData('ClinicalCare/TNursingWeightCancel', param)
   }
 }

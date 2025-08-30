@@ -80,7 +80,7 @@ export class DoctornoteComponent implements OnInit {
   VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
   VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
   vHandOverType = 'morning';
-openedFromClinical = false;
+  openedFromClinical = false;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -91,8 +91,8 @@ openedFromClinical = false;
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
-       private commonService: PrintserviceService,
-  ) {}
+    private commonService: PrintserviceService,
+  ) { }
 
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
@@ -108,10 +108,10 @@ openedFromClinical = false;
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-        console.log(result)
-        this.grid.bindGridData();
-        this.showDropdown = false;
-        setTimeout(() => this.showDropdown = true, 100);
+      console.log(result)
+      this.grid.bindGridData();
+      this.showDropdown = false;
+      setTimeout(() => this.showDropdown = true, 100);
     });
   }
 
@@ -128,7 +128,9 @@ openedFromClinical = false;
           }
         },
         {
-          action: gridActions.print, callback: (data: any) => { }
+          action: gridActions.print, callback: (data: any) => {
+            this.ViewDoctorNote(data.admId)
+          }
         }]
     }
   ]
@@ -153,10 +155,6 @@ openedFromClinical = false;
         {
           action: gridActions.edit, callback: (data: any) => {
             this.OnHandOverEdit(data);
-          }
-        },
-        {
-          action: gridActions.print, callback: (data: any) => {
           }
         }]
     } //Action 1-view, 2-Edit,3-delete
@@ -262,8 +260,8 @@ openedFromClinical = false;
       });
       return;
     }
-  console.log(this.myNoteform.value)
-debugger
+    console.log(this.myNoteform.value)
+    debugger
     if (!this.myNoteform.invalid) {
       this.myNoteform.get('admId').setValue(this.OP_IP_Id);
       this.myNoteform.get('tdate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
@@ -274,9 +272,9 @@ debugger
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
-      console.log(this.OP_IP_Id)
+        this.grid.bindGridData();
         this.ViewDoctorNote(this.OP_IP_Id);
-          this.onClear();
+        this.onClear();
       });
     } else {
       let invalidFields = [];
@@ -297,9 +295,9 @@ debugger
     }
   }
 
-     ViewDoctorNote(element) {
-        this.commonService.Onprint("AdmId", element, "DoctorNotesReceipt");
-    }
+  ViewDoctorNote(element) {
+    this.commonService.Onprint("AdmId", element, "DoctorNotesReceipt");
+  }
   onSubmitHandOver() {
     debugger
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
@@ -317,11 +315,11 @@ debugger
         data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
         data.docHandId = this.vdocHandId || 0
       this._NursingStationService.HandOverInsert(data).subscribe(response => {
-         console.log(response)
         this.getHandOverNotelist()
-        this.onClear();
+        this.grid1.bindGridData();
+        this.onClose()
       });
-    }else {
+    } else {
       let invalidFields = [];
 
       if (this.myHandOverform.invalid) {
@@ -393,36 +391,18 @@ debugger
     this.dateTimeObj = dateTimeObj;
   }
 
+  // plz dont change here anything (ask me before Raksha)
   onClear() {
     this.myNoteform.reset();
     this.myform.get('TemplateId').setValue('');
+    this.myform.get('templateDesc').setValue('');
     this.IsAddFlag = true
     this.vDoctNoteId = 0;
     this.vDescription = 0;
     // this.onClearPatientInfo()
-     this.myform.get('RegID').setValue('');
-
-         this.vRegNo = '';
-    this.vPatientName = '';
-    this.vWardName = '';
-    this.vBedName = '';
-    this.vGender = '';
-    this.vIPDNo = '';
-    this.vDepartment = '';
-    this.vDoctorName = '';
-    this.vAgeyear = '';
-    this.vAgeMonth = '';
-    this.vAgeDay = '';
-     this.vAge = '';
-    this.vGenderName = '';
-    this.vAdmissionDate = '';
-    this.vRefDocName = '';
-    this.vPatientType = '';
-    this.vTariffName = '';
-    this.vCompanyName = '';
-    this.vDOA='';
-  this.myNoteform = this._NursingStationService.createDoctorNoteForm();
-    this.myNoteform.markAllAsTouched()
+    // this.myform.get('RegID').setValue('');
+    // this.myNoteform = this._NursingStationService.createDoctorNoteForm();
+    // this.myNoteform.markAllAsTouched()
   }
 
   onClose() {
@@ -451,19 +431,19 @@ debugger
     this.vAgeyear = '';
     this.vAgeMonth = '';
     this.vAgeDay = '';
-     this.vAge = '';
+    this.vAge = '';
     this.vGenderName = '';
     this.vAdmissionDate = '';
     this.vRefDocName = '';
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
-    this.vDOA='';
+    this.vDOA = '';
 
     this.myform.get('RegID').setValue('')
   }
 
-   closeDialog() {
+  closeDialog() {
     if (this._matDialog) {
       this._matDialog.closeAll();
     }
