@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IssuTodeptComponent } from '../issu-todept/issu-todept.component';
 import { IssueToDepartmentService } from '../issue-to-department.service';
+import { element } from 'protractor';
+import Swal from 'sweetalert2';
+import { NewIssueTodeptComponent } from '../new-issue-todept/new-issue-todept.component';
 
 @Component({
   selector: 'app-issue-to-deparment-against-indent',
@@ -22,12 +25,21 @@ import { IssueToDepartmentService } from '../issue-to-department.service';
 })
 export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   IndentFrom: FormGroup;
-
+  autocompletestore: string = "Store";
+  dateTimeObj: any;
+  sIsLoading: string = '';
+  isLoading = true;
+  FromStoreList: any = [];
+  hasSelectedContacts: boolean = false;
+  Charglist: any = [];
+  Charglist1: any = [];
+  filteredOptionsStore: Observable<string[]>;
+  isStoreSelected: boolean = false;
   displayedColumns: string[] = [
     // 'CheckBox',
     'Priority',
     'IndentNo',
-    'IndentDate',
+    'IndentTime',
     'FromStoreName',
     'ToStoreName',
     'Addedby',
@@ -36,19 +48,10 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     // 'Status',
     'ItemName',
     'IndTotalQty',
-    'IssueQty',
-    'IndBalQty'
+     'IssueQty',
+     'IndBalQty',
   ]
-  autocompletestore: string = "Store";
-  dateTimeObj: any;
-  sIsLoading: string = '';
-  isLoading = true;
-  FromStoreList: any = [];
-  hasSelectedContacts: boolean = false;
-  Charglist: any = [];
-  ToStoreList1: any = [];
-  filteredOptionsStore: Observable<string[]>;
-  isStoreSelected: boolean = false;
+
 
 
   dsIndentList = new MatTableDataSource<IndentList>();
@@ -73,15 +76,10 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     this.getIndentList()
   }
 
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+  
   getIndentList() {
     this.sIsLoading = 'loading-data';
-
+debugger
     let frdate=this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
      let todate=this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
      let status =this.IndentFrom.get("Status").value
@@ -93,13 +91,13 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
       "filters": [
         {
           "fieldName": "FromStoreId",
-          "fieldValue": String(this.accountService.currentUserValue.user.storeId),
+          "fieldValue": String(this.vstoreId),
           "opType": "Equals"
 
         },
         {
           "fieldName": "ToStoreId",
-          "fieldValue": String(this.vstoreId),
+          "fieldValue":String(this.accountService.currentUserValue.user.storeId),// String(this.vstoreId),
           "opType": "Equals"
 
         },
@@ -177,9 +175,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
       this.Charglist = this.dsIndentItemDetList.data;
       // this.dsIndentItemDetList.sort = this.sort;
       // this.dsIndentItemDetList.paginator = this.paginator;
-      console.log(this.Charglist)
-  this.Charglist[0]['toStoreId']=this.toStoreId
-   console.log(this.Charglist)
+    
       this.sIsLoading = '';
     });
     // this.GetIndentGainstlist(Param);
@@ -214,27 +210,37 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
       });
       return;
     }
-debugger
-        if ((!this.IndentFrom.get('ToStoreId').value)) {
-      this.toastr.warning('Select Store Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+this.Charglist.forEach(element => {
+      if(element.balanceQty > 0)
+      this.Charglist1.push(element)
+    })
 
-    console.log(this.Charglist)
-    this._dialogRef.close(this.Charglist);
-    const dialogRef = this._matDialog.open(IssuTodeptComponent,
+    if(this.Charglist1.length > 0)
+    this._dialogRef.close(this.Charglist1);
+  else{
+    Swal.fire("Indent Balance Qty 0..No Item to Add")
+    this._dialogRef.close(this.Charglist1);}
+
+    console.log(this.Charglist1)
+
+    const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
       {
         maxWidth: "97vw",
         height: '90%',
         width: '95%',
-        data: this.Charglist,
+        data: this.Charglist1,
         
       });
     dialogRef.afterClosed().subscribe(result => {
 
     });
+  }
+
+  toggleSidebar(name): void {
+    this._fuseSidebarService.getSidebar(name).toggleOpen();
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
   }
   onClose() {
     this._matDialog.closeAll();
@@ -271,6 +277,8 @@ export class IndentItemDetList {
   ToStoreName: string;
   Addedby: any;
   IndentId: any;
+  FromStoreId: any;
+  ToStoreId: any;
   constructor(IndentItemDetList) {
     {
       this.IndentNo = IndentItemDetList.IndentNo || 0;
@@ -279,6 +287,8 @@ export class IndentItemDetList {
       this.ToStoreName = IndentItemDetList.ToStoreName || '';
       this.Addedby = IndentItemDetList.Addedby || 0;
       this.IndentId = IndentItemDetList.IndentId || 0;
+        this.FromStoreId = IndentItemDetList.FromStoreId || 0;
+      this.ToStoreId = IndentItemDetList.ToStoreId || 0;
     }
   }
 }

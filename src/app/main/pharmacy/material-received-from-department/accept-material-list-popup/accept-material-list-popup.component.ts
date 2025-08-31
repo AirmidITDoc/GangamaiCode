@@ -8,6 +8,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { element } from 'protractor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MaterialReceivedFromDepartmentService } from '../material-received-from-department.service';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-accept-material-list-popup',
@@ -20,7 +23,15 @@ import { MaterialReceivedFromDepartmentService } from '../material-received-from
 export class AcceptMaterialListPopupComponent implements OnInit {
 
   tempItemlist: any = [];
+  MaterialForm:FormGroup;
+  selected: boolean = false;
   
+  SelectedRowData:any=[];
+  Acceptedchk:any; 
+    sIsLoading: string = '';
+  registerObj:any;
+    checklist: any[] = [];  
+  masterSelected:any=false;
   displayedColumns = [
     'Action',
     'Status',
@@ -33,8 +44,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     'VatPercentage'
   ];
 
-  sIsLoading: string = '';
-  registerObj:any;
+
   dsItemList = new MatTableDataSource<ItemList>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,29 +54,80 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<AcceptMaterialListPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
+      private accountService: AuthenticationService,
+        private _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
     public _materialAcceptanceService: MaterialReceivedFromDepartmentService,
     public _loggedService : AuthenticationService
   ) { }
 
   ngOnInit(): void {
     console.log(this.data.Obj.IssueId);
+    this.MaterialForm=this.creatematerial()
+  this.itemdetailarray.push(this.itemdetailform());
+
     if (this.data) {
       this.registerObj =this.data.Obj
       console.log(this.registerObj)
-      this.getItemList(this.registerObj.IssueId);
+    this.getItemList(this.registerObj.issueId)
+
     }
    
   }
-  onClose() {
-    this.dialogRef.close();
-  }
-  getItemList(Params) {
-   // 
-    var Param = {
-      "IssueId": Params
+
+    get itemdetailarray(): FormArray {
+      return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
     }
-    this._materialAcceptanceService.getItemdetailList(Param).subscribe(data => {
-      this.dsItemList.data = data as ItemList[];
+    
+    
+creatematerial(){
+    return this._formBuilder.group({
+      "materialAcceptIssueHeader": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "acceptedBy": [this.accountService.currentUserValue.user.userId  || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "IsAccepted":  [true, [this._FormvalidationserviceService.onlyNumberValidator()]],
+       }),
+        "materialAcceptIssueDetails": this._formBuilder.array([]),
+        "materialAcceptStockUpdate": this._formBuilder.group({
+        "issueId": 0
+             })
+    });
+}
+
+
+itemdetailform(element: any = {}): FormGroup {
+return this._formBuilder.group({
+      issueId: [element.issueId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueDetId: [element.issueDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      status:0
+    });
+  }
+
+  getItemList(IssueId) {
+   
+   var vdata = {
+  "first": 0,
+  "rows": 10,
+  "sortField": "IssueId",
+  "sortOrder": 0,
+  "filters": [
+    {
+      "fieldName": "IssueId",
+      "fieldValue": String(IssueId),
+      "opType": "Equals"
+    }
+  ],
+  "exportType": "JSON",
+  "columns": [
+    {
+      "data": "string",
+      "name": "string"
+    }
+  ]
+}
+
+  this._materialAcceptanceService.getAccItemdetailList(vdata).subscribe(data => {
+      this.dsItemList.data = data.data as ItemList[];
       console.log(this.dsItemList.data);
       this.dsItemList.sort = this.sort;
       this.dsItemList.paginator = this.paginator;
@@ -76,23 +137,12 @@ export class AcceptMaterialListPopupComponent implements OnInit {
         this.sIsLoading = '';
       });
 
-     // this.SelectedRowData=this.dsItemList;
-  }
-  //masterCheckbox: boolean = false;
-  selected: boolean = false;
-  
-  // checkUncheckAll(contact) {
-  //   this.dsItemList.data.forEach(contact => contact.selected = this.masterCheckbox);
-
-  //     this.SelectedRowData.push(contact);
-  //     console.log(this.SelectedRowData);
-    
    
-  // }
-
-  SelectedRowData:any=[];
-  Acceptedchk:any; 
+  }
+  
+  
   tableElementChecked(event ,contact){
+    debugger
     if(contact.selected){
       this.tempItemlist.push(contact);
       console.log(this.tempItemlist);
@@ -110,10 +160,8 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       this.masterSelected = false;
     }  
   } 
-  checklist: any[] = [];  
-  // Assuming this array contains the data for the checkboxes
-  masterSelected:any;
-  // Function to handle the top header checkbox change event
+
+  
   checkUncheckAll() {
     if(this.masterSelected == true){
       this.dsItemList.data.forEach(contact => {
@@ -121,9 +169,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       });
       this.checklist = this.dsItemList.data;
       this.tempItemlist = this.checklist;
-      console.log(this.checklist)
-      console.log(this.tempItemlist)
-    }else{
+     }else{
       this.dsItemList.data.forEach(contact => {
         contact.selected = false;
         this.checklist = [];
@@ -133,8 +179,53 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     }
   
   }
+
+   onSubmit() {
+    if ((!this.dsItemList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  if(this.dsItemList.data.length){
+    if(this.dsItemList.data.length == this.tempItemlist.length){
+      this.Acceptedchk = true;  
+    }else{
+      this.Acceptedchk = false;
+    }
+ 
+    this.MaterialForm.get('materialAcceptIssueHeader.issueId').setValue(this.registerObj.issueId)
+      this.MaterialForm.get('materialAcceptIssueHeader.acceptedBy').setValue(this._loggedService.currentUserValue.userId)
+        this.MaterialForm.get('materialAcceptIssueHeader.IsAccepted').setValue(this.Acceptedchk)
+     
+      this.itemdetailarray.clear();
+      this.tempItemlist.forEach(element => {
+    let selectedchk="0";
+      if (element.selected == 1) {
+        selectedchk = "1";
+      } else if (element.selected != 1) {
+        element = "0";
+      }
+
+        element.status=element
+        this.itemdetailarray.push(this.itemdetailform(element));
+      });
+   
+    this.MaterialForm.get('materialAcceptStockUpdate.issueId').setValue(this.registerObj.issueId)
+  
+    console.log(this.MaterialForm.value);
+    this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
+     this.viewgetIssuetodeptReportPdf(response)
+    });
+  }
+  }
+
+    viewgetIssuetodeptReportPdf(element) {
+         console.log(element)
+         this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");
+     }
   savebtn:boolean=false;
-  onSubmit() {
+  onSubmit1() {
     if ((!this.dsItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -200,6 +291,10 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     });
   }
 
+    
+  onClose() {
+    this.dialogRef.close();
+  }
 }
 export class ItemList {
   ItemName: string;

@@ -12,6 +12,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
+import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -23,19 +24,17 @@ import { IssueToDepartmentService } from './issue-to-department.service';
 export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
-    // dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
-    // dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
-    // dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
-    tempDatasource = new MatTableDataSource<IssueItemList>();
-    tempdata: any = [];
-    ItemSamelist: any = [];
-    BatchSamelist: any = [];
+  
+    // tempDatasource = new MatTableDataSource<IssueItemList>();
+    // tempdata: any = [];
+    // ItemSamelist: any = [];
+    // BatchSamelist: any = [];
     DraftQty: any = 0;
     Tostore = "0"
     FromStore: any = String(this.accountService.currentUserValue.user.storeId);
     Status = "0"
     autocompletestore: string = "Store";
-    autocompleteitem: string = "ItemType"; //Item
+    autocompleteitem: string = "ItemType"; 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     AgainstInd: boolean = true;
@@ -54,7 +53,7 @@ export class IssueToDepartmentComponent implements OnInit {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
-        this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+        // this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
 
     }
 
@@ -77,12 +76,10 @@ export class IssueToDepartmentComponent implements OnInit {
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        //  { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        // { heading: "Recevied Bonus", key: "receviedBonus", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+      
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
+            template: this.actionButtonTemplate 
         }
     ];
 
@@ -147,38 +144,35 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
 
-    barcodeItemfetch() {
-        this.Addflag = true;
-        var d = {
-            // "StockId": this._IssueToDep.NewIssueGroup.get("Barcode").value || 0,
-            // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
-        }
-        this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
-            this.tempDatasource.data = data as any;
+    // barcodeItemfetch() {
+    //     this.Addflag = true;
+    //     var d = {
+    //         "StockId": this._IssueToDep.NewIssueGroup.get("Barcode").value || 0,
+    //         "StoreId": this._loggedService.currentUserValue.user.storeId || 0
+    //     }
+    //     this._IssueToDep.getCurrentStockItem(d).subscribe(data => {
+    //         this.tempDatasource.data = data as any;
 
-            if (this.tempDatasource.data.length >= 1) {
-                this.tempDatasource.data.forEach((element) => {
-                    this.DraftQty = 1;
-                    this.onAddBarcodeItemList(element, this.DraftQty);
-                });
-            }
-            else if (this.tempDatasource.data.length == 0) {
-                this.toastr.error('Item Not Found !', 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                });
-            }
-        });
-        // this.vBarcode = '';
-        this.Addflag = false
-    }
+    //         if (this.tempDatasource.data.length >= 1) {
+    //             this.tempDatasource.data.forEach((element) => {
+    //                 this.DraftQty = 1;
+    //                 this.onAddBarcodeItemList(element, this.DraftQty);
+    //             });
+    //         }
+    //         else if (this.tempDatasource.data.length == 0) {
+    //             this.toastr.error('Item Not Found !', 'Error !', {
+    //                 toastClass: 'tostr-tost custom-toast-error',
+    //             });
+    //         }
+    //     });
+    //     this.vBarcode = '';
+    //     this.Addflag = false
+    // }
 
-    onAddBarcodeItemList(contact, DraftQty) {
+    // onAddBarcodeItemList(contact, DraftQty) {
 
-    }
-    selectChangeStore(obj: any) {
-        console.log(obj)
-    }
-
+    // }
+  
     ListView(value) {
         if (value.value !== 0)
             this.FromStore = value.value
@@ -237,7 +231,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(IssuTodeptComponent,
+        const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
             {
                 maxWidth: "97vw",
                 height: '99%',
@@ -303,6 +297,10 @@ export class NewIssueList3 {
     IndentDetailsId: any;
     IndQty: any;
     IsClosed: any;
+IssueQty: any;
+    IssueBalQty: any;
+    Status: any;
+
     constructor(NewIssueList3) {
         this.ItemId = NewIssueList3.ItemId || 0;
         this.ItemName = NewIssueList3.ItemName || '';
@@ -343,6 +341,9 @@ export class NewIssueList3 {
         this.PurchaseRate = NewIssueList3.PurchaseRate || 0;
         this.LandedRateandedTotal = NewIssueList3.LandedRateandedTotal || 0;
         this.PurTotAmt = NewIssueList3.PurTotAmt || 0;
+         this.IssueQty = NewIssueList3.IssueQty || 0;
+        this.IssueBalQty = NewIssueList3.IssueBalQty || 0;
+        this.Status = NewIssueList3.Status || false;
 
     }
 }
@@ -363,6 +364,7 @@ export class IssueItemList {
     IndentId: any;
     IndentDetailsId: any;
     IsClosed: any;
+    BalanceQty:any;
 
     constructor(IssueItemList) {
         {
@@ -379,6 +381,7 @@ export class IssueItemList {
             this.IndentId = IssueItemList.IndentId || 0;
             this.IndentDetailsId = IssueItemList.IndentDetailsId || 0;
             this.IsClosed = IssueItemList.IsClosed || 0;
+             this.BalanceQty = IssueItemList.BalanceQty || 0;
         }
     }
 }

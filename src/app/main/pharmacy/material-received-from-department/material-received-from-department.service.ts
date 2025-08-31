@@ -43,11 +43,12 @@ export class MaterialReceivedFromDepartmentService {
   }
  
   public getIssuetodeptlist(Param){//m_Rtrv_ReceiveIssueToDep_list_by_Name 
-    return this._httpClient1.PostData ("Generic/GetByProc?procName=m_Rtrv_ReceiveIssueToDep_list_by_Name",Param);
+    return this._httpClient1.PostData ("IssueToDepartment/AcceptIssueItemDetList",Param);
   }
 
-  public getItemdetailList(Param){ 
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_AcceptIssueItemDetList",Param);
+  public getAccItemdetailList(Param){ 
+    return this._httpClient1.PostData("IssueToDepartment/AcceptIssueItemDetList",Param);
+    
   }
   public getItemDetList(Param){ 
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);

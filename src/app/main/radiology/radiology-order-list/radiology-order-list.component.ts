@@ -36,8 +36,7 @@ export class RadiologyOrderListComponent implements OnInit {
     @ViewChild('actionsCompleted') actionsCompleted!: TemplateRef<any>;
     @ViewChild('actionsType') actionsType!: TemplateRef<any>;
 
-    // fromDate = this.myformSearch.get("start").value || "";
-    // toDate = this.myformSearch.get("end").value || "";
+  
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
@@ -90,7 +89,7 @@ export class RadiologyOrderListComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
     ]
 
@@ -116,12 +115,12 @@ export class RadiologyOrderListComponent implements OnInit {
     }
 
     searchRecords(data) {
-
-        let regno = this.myformSearch.get("RegNoSearch").value || "";
-        let fromDatee = this.myformSearch.get("start").value || "";
-        let toDatee = this.myformSearch.get("end").value || "";
-        fromDatee = fromDatee ? this.datePipe.transform(fromDatee, "yyyy-MM-dd") : "";
-        toDatee = toDatee ? this.datePipe.transform(toDatee, "yyyy-MM-dd") : "";
+debugger
+        let regno = this.myformSearch.get("RegNoSearch").value || "0";
+        // let fromDatee = this.myformSearch.get("start").value || "";
+        // let toDatee = this.myformSearch.get("end").value || "";
+      let  fromDatee =this.datePipe.transform(this.myformSearch.get("start").value, "yyyy-MM-dd");
+       let toDatee =  this.datePipe.transform(this.myformSearch.get("end").value, "yyyy-MM-dd");
         let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
         let status = this.myformSearch.get("StatusSearch").value || "1";
         // Update the filters dynamically
@@ -133,7 +132,7 @@ export class RadiologyOrderListComponent implements OnInit {
             filters: [
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-                { fieldName: "Reg_No", fieldValue: String(regno), opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: fromDatee, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: toDatee, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
@@ -146,14 +145,14 @@ export class RadiologyOrderListComponent implements OnInit {
     }
 
     onChangeFirst() {
-
+debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
         this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
         this.status = this.myformSearch.get('StatusSearch').value
         this.opipType = this.myformSearch.get('PatientTypeSearch').value
-        this.regNo = this.myformSearch.get('RegNoSearch').value || ""
+        this.regNo = this.myformSearch.get('RegNoSearch').value || 0
         this.getfilterdata();
     }
 
@@ -167,11 +166,11 @@ export class RadiologyOrderListComponent implements OnInit {
             filters: [
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Reg_No", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue:String (this.opipType), opType: OperatorComparer.Equals },
                 { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
             ]
 

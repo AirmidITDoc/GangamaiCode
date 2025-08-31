@@ -90,10 +90,7 @@ export class NewRequestforlabComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _loggedService: AuthenticationService) {
     this.date = new Date();
-    // if (this.advanceDataStored.storage) {
-    //   this.selectedAdvanceObj = this.advanceDataStored.storage;
-    //   console.log(this.selectedAdvanceObj)
-    // }
+   
   }
 
   ngOnInit(): void {
@@ -109,8 +106,6 @@ export class NewRequestforlabComponent implements OnInit {
     this.labeRequestArray.push(this.createlabRequestFormArray());
   }
  
-
-
   createMyForm(): FormGroup {
     return this._FormBuilder.group({
       IsPathRad: ['3'],
@@ -160,8 +155,7 @@ export class NewRequestforlabComponent implements OnInit {
     }
     
       getServiceList() {
-    // debugger
-    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
+let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
     if (this.vRegNo) {
       var param ={
@@ -310,12 +304,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.getServiceList();
   }
 
-  onEdit(row) {
-    console.log(row);
-    this.registerObj = row;
-  }
-
-  onChangeReg(event) {
+onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.myFormGroup.get('RegID').disable();

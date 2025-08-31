@@ -31,8 +31,6 @@ export class ItemMovemnentComponent implements OnInit {
     FromstoreId = this.accountService.currentUserValue.user.storeId;
     itemId = "0"; //"77617"
 
-
-    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
      @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
     allColumns = [

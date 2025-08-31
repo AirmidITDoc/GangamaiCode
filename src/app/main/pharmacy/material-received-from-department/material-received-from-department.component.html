@@ -10,15 +10,9 @@
             </span>
         </div>
 
-        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Order
-            </button>
-        </div> -->
-
     </mat-toolbar>
 
-    <!-- <mat-tab-group> -->
-    <!-- <mat-tab label="Indent List"> -->
+    
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
@@ -28,6 +22,9 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button matTooltip="Print IssueToDept" (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
+                    </button>
+                     <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+                        <mat-icon> edit</mat-icon>
                     </button>
                 </div>
             </ng-template>
@@ -87,6 +84,5 @@
             </airmid-table>
         </div>
     </div>
-    <!-- </mat-tab> -->
-    <!-- </mat-tab-group> -->
+   
 </div>

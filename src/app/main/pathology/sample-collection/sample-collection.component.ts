@@ -35,7 +35,7 @@ export class SampleCollectionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
         // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+          this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -56,17 +56,18 @@ export class SampleCollectionComponent implements OnInit {
          { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
         // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
+       
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+         {
+            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
-        } 
+        }
                 
     ];
     gridConfig: gridModel = {

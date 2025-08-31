@@ -61,15 +61,15 @@ export class IssueToDepartmentService {
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       FromStoreId:[''],
-      ToStoreId:['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId:['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['0']
      
     });
   }
-
+// IndentListbyVerified
  
   public getIndentList(Param){
-    return this._httpClient1.PostData("Indent/IndentList",Param);
+    return this._httpClient1.PostData("Indent/IndentListbyVerified",Param);
   }
   public getIndentItemDetList(Param){
     return this._httpClient1.PostData("Indent/IndentDetailsList",Param);
@@ -100,7 +100,7 @@ export class IssueToDepartmentService {
     return this._httpClient1.PostData("IssueToDepartment/InsertSP",Param);
   }
   public IssuetodepAgaintIndetSave(Param){
-    return this._httpClient1.PostData("IssueToDeptIndent/UpdateIndentStatusAganist",Param);
+    return this._httpClient1.PostData("IssueToDepartment/UpdateIndentStatusAganist",Param);
   }
 
   public updateStockToMainStock(Param){

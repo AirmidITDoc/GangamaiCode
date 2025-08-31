@@ -1,5 +1,5 @@
 <div class="modal-wrapper grid-container">
-    <!-- Modal Header -->
+ 
     <div class="modal-header accent">
         <mat-toolbar class="accent" style="height:50px; justify-content: space-between; width: 100%;">
             <div fxLayout="row" fxLayoutAlign="start center">
@@ -15,12 +15,11 @@
         </mat-toolbar>  
     </div>
 
-    <!-- Modal Body -->
+
     <div class="modal-body" fusePerfectScrollbar>
         <div fxLayout="column" class="gap-10 p-10">
 
-            <!-- IP Radio & Autocomplete -->
-            <mat-card style="padding: 10px;">
+          <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">
                     <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
                         <mat-radio-group formControlName="radioIp">
@@ -37,7 +36,7 @@
                 </form>
             </mat-card>
 
-            <!-- Patient Info -->
+         
             <mat-card style="padding: 10px;">
                 <div fxLayout="row wrap" fxLayoutGap="32px">
                     <div fxFlex="30%">
@@ -61,7 +60,6 @@
                 </div>
             </mat-card>
 
-            <!-- Service Selection -->
             <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">
                     <div fxLayout="column" fxLayoutGap="10px">
@@ -89,9 +87,9 @@
                     </div>
                 </form>
 
-                <!-- Service Tables -->
+              
                 <div fxLayout="row wrap" fxLayoutGap="16px">
-                    <!-- Left Table -->
+               
                     <div fxFlex.gt-sm="40%">
                         <mat-card>
                             <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
@@ -111,7 +109,7 @@
                         </mat-card>
                     </div>
 
-                    <!-- Right Table -->
+                   
                     <div fxFlex.gt-sm="58%">
                         <mat-card>
                             <mat-table #table matSort [dataSource]="dstable1" class="h-280" [@animateStagger]="{value:'50'}">
@@ -141,7 +139,7 @@
         </div>
     </div>
 
-    <!-- Modal Footer -->
+  
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">

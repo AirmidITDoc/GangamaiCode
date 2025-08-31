@@ -20,16 +20,16 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
     animations: fuseAnimations
 })
 export class RequestforlabtestComponent implements OnInit {
+
+     hasSelectedContacts: boolean;
+    fname = "%"
+    lname = "%"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
     @ViewChild('isOnFileTestIcon') isOnFileTestIcon!: TemplateRef<any>;
-    hasSelectedContacts: boolean;
-    fname = "%"
-    lname = "%"
-
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     
 
     ngAfterViewInit() {
@@ -59,19 +59,9 @@ export class RequestforlabtestComponent implements OnInit {
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        // {
-        //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        //         {
-        //             action: gridActions.print, callback: (data: any) => {
-        //                 this.viewLabRequestPdf(data);
-        //                 this.grid.bindGridData();
-        //             }
-        //         }]
-        // }
-
         {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
+            template: this.actionButtonTemplate 
         }
     ]
     allFilters = [
@@ -195,7 +185,7 @@ export class RequestforlabtestComponent implements OnInit {
                         opType: "Equals"
                     }
                 ],
-                mode: mode  // dynamic
+                mode: mode 
             };
             console.log(param)
             this._RequestforlabtestService.getReportView(param).subscribe(res => {

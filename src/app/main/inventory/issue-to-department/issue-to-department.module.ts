@@ -38,6 +38,7 @@ import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 import { IssueToDeparmentAgainstIndentComponent } from './issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 import { IssueToDepartmentComponent } from './issue-to-department.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
+import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
 
 const routes: Routes = [
   { 
@@ -48,7 +49,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        IssueToDepartmentComponent, IssueToDeparmentAgainstIndentComponent, IssuTodeptComponent,
+        IssueToDepartmentComponent, IssueToDeparmentAgainstIndentComponent, IssuTodeptComponent, NewIssueTodeptComponent,
     ],
     imports: [
         CommonModule,

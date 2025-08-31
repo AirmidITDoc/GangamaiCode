@@ -42,11 +42,11 @@ const appRoutes: Routes = [
           import("./patient-material-consumption-return/patient-material-consumption-return.module").then((m) => m.PatientMaterialConsumptionReturnModule),
   },
 
-  {
-      path: "mrpadjustment",
-      loadChildren: () =>
-          import("./mrp-adjustment/mrp-adjustment.module").then((m) => m.MRPAdjustmentModule),
-  },
+//   {
+//       path: "mrpadjustment",
+//       loadChildren: () =>
+//           import("./mrp-adjustment/mrp-adjustment.module").then((m) => m.MRPAdjustmentModule),
+//   },
   {
       path: "materialconsumption",
       loadChildren: () =>
@@ -63,11 +63,11 @@ const appRoutes: Routes = [
   //     loadChildren: () =>
   //         import("./issueto-department/issueto-department.module").then((m) => m.IssuetoDepartmentModule),
   // },
-  {
-      path: "gstadjustment",
-      loadChildren: () =>
-          import("./gst-adjustment/gst-adjustment.module").then((m) => m.GSTAdjustmentModule),
-  },
+//   {
+//       path: "gstadjustment",
+//       loadChildren: () =>
+//           import("./gst-adjustment/gst-adjustment.module").then((m) => m.GSTAdjustmentModule),
+//   },
 ];
 
 @NgModule({

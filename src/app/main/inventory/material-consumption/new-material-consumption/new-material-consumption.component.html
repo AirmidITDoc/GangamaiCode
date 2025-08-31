@@ -82,8 +82,6 @@
                                 ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                 (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                 ValueField="itemId" (onClearSelection)="ItemReset()"></airmid-autocomplete>
-
-
                         </div>
 
                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -110,14 +108,6 @@
                             formStartControlName="start" formEndControlName="end" [(fromValue)]="fromDate"
                             [(toValue)]="todate"></airmid-datepicker>
 
-                        <!-- <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-datepicker [formGroup]="userFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[1].fieldValue"
-                                    [(toValue)]="gridConfig.filters[2].fieldValue">
-                                </airmid-datepicker>
-                            </div> -->
-                        <!-- [disabled]="!add" -->
                         <div class="input-add-button">
                             <button class="btn btn-primary" (click)="onAdd()" addbutton> Add
                             </button>

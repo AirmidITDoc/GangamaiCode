@@ -9,8 +9,8 @@
                 <div class="comman-date-container">
 
                     <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-                        <button mat-raised-button (click)="OnIndent()" fxLayoutAlign="center center" class="py-8"
-                            [disabled]="AgainstInd">
+                        <button mat-raised-button (click)="OnIndentAgainst()" fxLayoutAlign="center center" class="py-8"
+                           [disabled]="AgainstInd">
                             <span>Indent List</span>
                         </button>
                     </div>
@@ -48,16 +48,16 @@
                                 [(ngModel)]="fromstoreId" fxFlex="30%" [mode]="autocompletestore1"
                                 (selectionChange)="selectChangeStore1($event)">
                             </airmid-dropdown>
-                         
+                         <!--  -->
                             <div style="padding-top: 10px;">
-                             <mat-checkbox (change)="getAgainstIndet($event)" formControlName="AgainstIndent"
+                             <mat-checkbox  formControlName="AgainstIndent" (change)="getAgainstIndet($event)"
                                     [(ngModel)]="vAgainstIndet"></mat-checkbox>
 
                             </div>
                             <!--  *ngIf="showIndentFlag" -->
                             <div style="margin-left: 30px;">
                                 <strong style="color: rgb(3, 45, 77);font-size: 18px;">Indent
-                                    Against Issue : {{vIndentId}}</strong>
+                                    Against Issue/Store: {{vIndentId}}/{{fromstore}}</strong>
                             </div>
                         </form>
 
@@ -105,7 +105,7 @@
 
                                 <div>
                                   
-                                    <button (click)="onAdd($event)" class="btn btn-primary btn-with-icon py-8"
+                                    <button (click)="onAddFormItem($event)" class="btn btn-primary btn-with-icon py-8"
                                         #addbutton>
                                         <span class="btn-icon">
                                             <mat-icon> add </mat-icon>
@@ -121,9 +121,8 @@
             <div class="modal-card-container h-100-p">
                 <div style="width: 100%;" fxLayoutGap="10px">
 
-                    <!-- <div fxFlex="70%" fusePerfectScrollbar> -->
                     <div class="airmid-table-container py-12" fxFlex="70%">
-                        <mat-table #table class="airmid-table table3 max-h-300" matSort [dataSource]="dsNewIssueList3"
+                        <mat-table #table class="airmid-table table3 max-h-300" matSort [dataSource]="dsNewIssueItemList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="ItemId">
@@ -167,65 +166,18 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="Qty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    Qty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.Qty}}
-                                </mat-cell>
-                            </ng-container> -->
                             <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
-                                            [id]="'Qty_' + index" (input)="getCellCalculation(contact)" [min]="0" />
+                                            [id]="'Qty_' + index" (input)="getCellCalculation(contact,contact.Qty)" [min]="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="IssueQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-100">IssueQty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.IssueQty" type="number" OnlyNumber
-                                            [id]="'IssueQty' + index" (input)="getCellCalculation(contact,contact.IssueQty)" [min]="0" />
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="IssueBalQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Issue Bal
-                                    Qty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.IssueBalQty" />
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="IssueBalQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    Issue Bal Qty</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.Qty}}
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <!-- <ng-container matColumnDef="Status">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-100">Status</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.Status" type="number" OnlyNumber />
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container> -->
-
-
-                            <ng-container matColumnDef="UnitRate">
+                                                     <ng-container matColumnDef="UnitRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     Rate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
@@ -286,12 +238,12 @@
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsNewIssueList3!=null && dsNewIssueList3.data.length==0)}">
+                                [ngClass]="{'hide':!(dsNewIssueItemList!=null && dsNewIssueItemList.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
                     </div>
                     <div class="airmid-table-container py-12" fxFlex="30%">
-                        <mat-table class="airmid-table table3 max-h-300" matSort [dataSource]="dsNewIssueList1"
+                        <mat-table class="airmid-table table3 max-h-300" matSort [dataSource]="dsSelectedIndentItemList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="ItemName">
@@ -312,7 +264,7 @@
                                 <mat-header-cell *matHeaderCellDef style="color: white;">
                                     Action</mat-header-cell>
                                 <mat-cell *matCellDef="let element">
-                                    <button mat-icon-button (click)="AddIndentItem(element)" color="warn">
+                                    <button mat-icon-button (click)="AddIndentSelectedItem(element)" color="warn">
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </mat-cell>
@@ -337,7 +289,7 @@
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsNewIssueList1!=null)}">
+                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsSelectedIndentItemList!=null)}">
                             </mat-footer-row>
                         </mat-table>
                         <mat-paginator #SecondPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
@@ -360,11 +312,11 @@
                             [(ngModel)]="vremark" required>
                     </mat-form-field>
 
-                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
+                    <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>GST Amount</mat-label>
                         <input type="text" name="GST Amount" formControlName="GSTAmount" matInput #GSTAmount
                             [(ngModel)]="vFinalGSTAmount">
-                    </mat-form-field> -->
+                    </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>Total Amount</mat-label>
@@ -382,7 +334,7 @@
 
                         <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
                             Total Amount :</span>&nbsp;<span class="net-amt-value"
-                            style="margin-right: 10px;font-weight: bold;width: 100px;">{{getTotalamt(dsNewIssueList3.data)
+                            style="margin-right: 10px;font-weight: bold;width: 100px;">{{getTotalamt(dsNewIssueItemList.data)
                             | currency:'INR' }}</span>
 
                     </div>

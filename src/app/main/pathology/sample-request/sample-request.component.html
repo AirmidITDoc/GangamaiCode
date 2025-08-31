@@ -20,35 +20,28 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-            <div style="padding: 10px; height: 40px; margin-bottom: 10px;">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                   
-                    <!-- <form [formGroup]="myformSearch">
-                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad">
-                        <mat-radio-button (click)="toggle(0)" [checked]="true"
-                            value="0">All</mat-radio-button>
-                        <mat-radio-button mat-fab value="1"
-                            (click)="toggle(1)">IsPathology</mat-radio-button>
-                        <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
-                      </mat-radio-group>
-                    </form> -->
+           <ng-template #isTestCompletedmasterIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready">remove_red_eye
+                </mat-icon>
 
-                    <!-- <div class="table-header-right">
-                        <div class="export-buttons">
-                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                </button>
-        
-                                <button mat-icon-button (click)="exportSamplerequstReportExcel()"
-                                    [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                </button>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
+                <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
+                    class="active-icon red-500 s-16">
+                    hourglass_empty
+                </mat-icon>
             </div>
+        </ng-template>
+        <ng-template #isOnFileTestIcon let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.isOnFileTest =='false'" matTooltip="Is File ON">flip_to_front
+                </mat-icon>
+
+                <mat-icon *ngIf="element.isOnFileTest !== 'false'" matTooltip="Is File Off">markunread_mailbox
+                </mat-icon>
+
+            </div>
+        </ng-template>
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
                 (onSelectRow)="getSelectedRow($event)">
@@ -82,8 +75,9 @@
                             </div> -->
                             <!-- [(ngModel)]="gridConfig.filters[3].fieldValue" -->
 
-                            <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad" (change)="onChangeFirst()">
-                                <mat-radio-button (click)="toggle(0)"  value="3">All</mat-radio-button>
+                            <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
+                                (change)="onChangeFirst()">
+                                <mat-radio-button (click)="toggle(0)" value="3">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1" (click)="toggle(1)">IsPathology</mat-radio-button>
                                 <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
                             </mat-radio-group>
@@ -106,40 +100,37 @@
         </div>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+<!-- 
+   <ng-template #isTestCompletedIcon let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready"
+                        (click)="getPrint(element)">
+                        remove_red_eye
+                    </mat-icon>
 
-            <!-- <div style="padding: 10px; height: 50px;">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center"> -->
-            <!-- <div class="table-header-title" style="padding: 10px;">
-                        <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
-                    </div> -->
+                    <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
+                        class="active-icon red-500 s-16">
+                        hourglass_empty
+                    </mat-icon>
+                </div>
+            </ng-template> -->
 
-            <!-- <form [formGroup]="myformSearch">
-                        <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
-                        (change)="onFilterChange()">
-                        <mat-radio-button (click)="toggle(0)" [checked]="true"
-                            value="3">All</mat-radio-button>
-                        <mat-radio-button mat-fab value="1"
-                            (click)="toggle(1)">IsPathology</mat-radio-button>
-                        <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
-                      </mat-radio-group>
-                    </form> -->
+<!-- 
+            <ng-template #isRadiologyicon let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="contact.isRadiology != 1" matTooltip="IsRadiology">
+                        <img width="15px" height="8px" src="assets/images/logos/radiology.png" />
+                    </mat-icon>
+                </div>
+            </ng-template> -->
 
-            <!-- <div class="table-header-right">
-                        <div class="export-buttons">
-                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                </button>
-        
-                                <button mat-icon-button (click)="exportSamplerequstReportExcel()"
-                                    [disabled]="! (dataSource.data.length > 0)">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                </button>
-                            </div>
-                        </div>
-                    </div> -->
-            <!-- </div>
-            </div> -->
+            <ng-template #isPathologyicon let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="contact.isPathology==1" matTooltip="IsPatholgy">
+                        <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
+                    </mat-icon>
+                </div>
+            </ng-template>
 
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
             </airmid-table>
@@ -164,405 +155,3 @@
         </div>
     </div>
 </div>
-
-
-
-<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
-    
-    <div class="top-header">
-        <div class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle" fxHide.gt-sm (click)="toggleSidebar('app-main')">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                <span>Sample Request List </span>
-            </div>
-        </div>
-    </div>
-
-    <app-main class="accent-600" *ngIf="hasSelectedContacts" [@slideInTop]></app-main>
-
-    <div class="content">
-
-        <fuse-sidebar name="app-main" position="left" lockedOpen="gt-sm" class="fuse-search-sidebar">
-            <div class="sidebar-content">
-                <div class="sidebar-header accent">
-                    <span class="search-title">Search Information</span>
-                </div>
-                <div class="sidebar-body">
-                    <div class="sidebar-form">
-                        <form [formGroup]="myformSearch" fusePerfectScrollbar>
-                            <div fxLayout="column" fxLayoutAlign="start none">
-                              
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="onShow($event)">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>RegNo</mat-label>
-                                    <input name="Reg_No" formControlName="Reg_No" matInput placeholder="RegNo" (keyup)="onShow($event)" (keypress)="keyPressAlphanumeric($event)">
-                                </mat-form-field>
-
-                                <div class="radio-container">
-                                    <div fxLayout="column" fxLayoutAlign="start start" class="gap-4">
-                                        <div class="radio-content" fxLayout="row" class="gap-4">
-                                            <mat-label fxFlex>Type : </mat-label>
-                                            <mat-radio-group name="Istype" formControlName="Istype" value='1' (change)="onShow($event)">
-                                                <mat-radio-button value='1'>IP</mat-radio-button>
-                                                <mat-radio-button value='0'>OP</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                        <div class="radio-content" fxLayout="row" class="gap-4">
-                                            <mat-label> Status : </mat-label>
-                                            <mat-radio-group name="StatusSearch" formControlName="StatusSearch" value='0' (change)="onShow($event)">
-                                                <mat-radio-button value='0'>Pending</mat-radio-button>
-                                                <mat-radio-button value='1'>Completed</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                    </div>
-                                </div>
-
-                        
-                                <div class="action-buttons" style="margin-top: 10px;">
-                                    <button mat-raised-button (click)="onClear()" matTooltip="close">
-                                        <mat-icon class="cleariconbutton">close</mat-icon>
-                                    </button>
-                                    <button mat-raised-button (click)="onShow($event)" matTooltip="search" [disabled]="click">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </fuse-sidebar>
-
-        <div class="center p-12 pb-56">
-            <div class="content-card">
-                <div fxLayout="column" class="gap-12">
-                    <div class="layout-card-container">
-                        <mat-card>
-                            <div fxLayout="column" class="gap-8">
-                                <div class="table-header">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Lab Or Rad Details</span>
-                                        </div>
-                                        <div class="table-header-right">
-                                            <div class="export-buttons">
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button mat-icon-button (click)="exportReportPdf()" [disabled]="! (dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button mat-icon-button (click)="exportSamplerequstReportExcel()" [disabled]="! (dataSource.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-wrapper">
-
-                                    <mat-table class="h-260" #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                                        <ng-container matColumnDef="RegNo" sticky>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>RegNo
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.RegNo}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="PatientName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                PatientName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm [matTooltip]="contact.PatientName">
-                                                <span> {{contact.PatientName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="AdmDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                AdmDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.AdmDate | date:'shortDate'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ReqDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                ReqDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.ReqDate | date:'shortDate'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="WardName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                WardName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md [matTooltip]="contact.WardName">
-                                                <span> {{contact.WardName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="BedName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                BedName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.BedName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsOnFileTest">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsOnFileTest
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsOnFileTest" class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsOnFileTest" class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsTestCompted">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsTestCompted
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsTestCompted" class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsTestCompted" class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-1000" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1000" [@animate]="{value:'*',params:{y:'100%'}}" (click)="onEdit($event,contact)">
-                                        </mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
-                                    </mat-paginator>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
-                    <div class="layout-card-container">
-                        <mat-card>
-                            <div fxLayout="column" class="gap-8">
-                                <div class="table-header">
-                                    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                                        <div class="table-header-title">
-                                            <span class="h3 font-weight-600">Nursing Pathology Radiology Details</span>
-                                        </div>
-                                        <form [formGroup]="myformSearch">
-                                            <mat-radio-group name="IsPathOrRad" formControlName="IsPathOrRad"
-                                            (change)="onFilterChange()">
-                                            <mat-radio-button (click)="toggle(0)" [checked]="true"
-                                                value="3">All</mat-radio-button>
-                                            <mat-radio-button mat-fab value="1"
-                                                (click)="toggle(1)">IsPathology</mat-radio-button>
-                                            <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
-                                          </mat-radio-group>
-                                        </form>
-                                        <div class="table-header-right">
-                                            <div class="export-buttons">
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                                    <button mat-icon-button (click)="exportdetailReportPdf()" [disabled]="! (dataSource1.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                                    </button>
-
-                                                    <button mat-icon-button (click)="exportSamplerequstdetailReportExcel()" [disabled]="! (dataSource1.data.length > 0)">
-                                                        <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                              
-                                <div class="table-wrapper">
-                                   
-
-                                    <mat-table class="h-260" #table matSort [dataSource]="dataSource1" [@animateStagger]="{value:'50'}">
-                                        <ng-container matColumnDef="ReqDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                ReqDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.ReqDate}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ReqTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReqTime
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.ReqTime}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="ServiceName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ServiceName
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.ServiceName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="AddedByName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedBy
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.AddedByName}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="BillingUser">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>BillingUser
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.BillingUser}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="AddedByDate">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>AddedByDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span> {{contact.AddedByDate}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsStatus">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsStatus
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsStatus" class="active-icon green-600 s-16">
-                                                    check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsStatus" class="active-icon red-500 s-16">
-                                                    close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="PBillNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PBillNo
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                <span>{{contact.PBillNo}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsPathology">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsPathology
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsPathology" class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsPathology" class="active-icon red-500 s-16">
-                                                    close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsRadiology">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsRadiology
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsRadiology" class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsRadiology" class="active-icon red-500 s-16">
-                                                    close
-                                                </mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="IsTestCompted">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                IsTestCompted
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <mat-icon *ngIf="contact.IsTestCompted" class="active-icon green-600 s-16">check_circle</mat-icon>
-                                                <mat-icon *ngIf="!contact.IsTestCompted" class="active-icon red-500 s-16">close</mat-icon>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                loading data...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                <mat-spinner *ngIf="isLoading == 'list-loading'" class="spinner" [diameter]="35" [color]="blue"></mat-spinner>
-                                                <div class="spinner-border text-danger" *ngIf="isLoading == 'list-loading'" class="backgroundBlur">
-                                                </div>
-                                                <span *ngIf="isLoading == 'list-loaded'">No Data Found</span>
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row class="min-width-1400" *matRowDef="let contact; columns: displayedColumns1;" [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource1!=null}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                        </mat-footer-row>
-
-                                    </mat-table>
-
-                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
-                                    </mat-paginator>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
-                    <div class="layout-card-container">
-                        <mat-card>
-                            <div fxLayout="row wrap" fxLayoutAlign="start start" class="gap-8">
-                                <span class="font-weight-600"> Help : </span>
-                                <span fxLayout="row" fxLayoutGap="4px">
-                                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                                    <span>IsPathology / ISRadiology / IsTestompleted</span>
-                                </span>
-                                <span fxLayout="row" fxLayoutGap="4px">
-                                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                                    <span>
-                                        IsNotPathology / ISNotRadiology / IsNotTestompleted
-                                    </span>
-                                </span>
-                            </div>
-                        </mat-card>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->

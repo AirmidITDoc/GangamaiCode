@@ -1,5 +1,5 @@
 <div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+   
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -7,10 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <!-- <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div> -->
+                   
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -225,18 +222,14 @@
                         
                         <div class="modal-card-container table-container">
                             <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                                <!-- Table 1 -->
+                             
                                 <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                                     <mat-card>
 
                                         <div fusePerfectScrollbar
                                             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                             dynamicTableHeight>
-                                            <!-- <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-                                            <ng-container filters>
-
-                                            </ng-container>
-                                        </airmid-table> -->
+                                          
                                         </div>
                                         <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
                                             [@animateStagger]="{value:'50'}">
@@ -287,18 +280,14 @@
                                     </mat-card>
 
                                 </div>
-                                <!-- Table 2 -->
+                               
                                 <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                                     <mat-card>
 
                                         <div fusePerfectScrollbar
                                             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                             dynamicTableHeight>
-                                            <!-- <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false">
-                                            <ng-container filters>
-
-                                            </ng-container>
-                                        </airmid-table> -->
+                                           
                                         </div>
                                         <mat-table class="mat-table-2 h-250" matSort [dataSource]="dsCanteenDateList"
                                             [@animateStagger]="{value:'50'}">

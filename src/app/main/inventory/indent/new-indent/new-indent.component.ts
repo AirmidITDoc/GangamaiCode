@@ -122,7 +122,7 @@ export class NewIndentComponent implements OnInit {
       itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isclosed: [false],
-      indQty: [element.Qty | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      indQty: [0 | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issQty: [0]
 
     });
@@ -226,7 +226,7 @@ export class NewIndentComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-    // console.log(Param)
+   
     this._IndentService.getIndentList(Param).subscribe(data => {
       console.log(data.data)
 
@@ -256,22 +256,6 @@ export class NewIndentComponent implements OnInit {
       });
       return;
     }
-
-
-    // let InsertIndentDetObj = [];
-    // this.dsIndentNameList.data.forEach((element) => {
-    //   console.log(element)
-    //   let IndentDetInsertObj = {};
-    //   IndentDetInsertObj['indentId'] = this.IndentId;
-    //   IndentDetInsertObj['itemId'] = element.ItemID;
-    //   IndentDetInsertObj['qty'] = element.Qty;
-    //   IndentDetInsertObj['isclosed'] = false;
-    //   IndentDetInsertObj['indQty'] = element.Qty;
-    //   IndentDetInsertObj['issQty'] = 0;
-    //    IndentDetInsertObj['priority'] = this.StoreFrom.get("IsUrgent").value
-    //   InsertIndentDetObj.push(IndentDetInsertObj);
-    // });
-
 
     this.IndentdetailArray.clear();
     if (this.dsIndentNameList.data.length === 0) {
@@ -349,16 +333,12 @@ export class NewIndentComponent implements OnInit {
       Qty: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Qty is required" },
-        { name: "minLength", Message: "10 digit required." },
-        { name: "maxLength", Message: "More than 10 digits not allowed." }
-
+      
       ],
       Qtykit: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Qty is required" },
-        { name: "minLength", Message: "10 digit required." },
-        { name: "maxLength", Message: "More than 10 digits not allowed." }
-
+     
       ],
     };
   }
@@ -392,10 +372,7 @@ export class NewIndentComponent implements OnInit {
     this.commonService.Onprint("IndentId", Id, "IndentWiseReport");
   }
 
-  // isValidForm(): boolean {
-  //   console.log(this.dsIndentNameList.data)
-  //   return this.dsIndentNameList.data.every((i) => i.Qty > 0);
-  // }
+
 }
 export class IndentNameList {
   Action: any;

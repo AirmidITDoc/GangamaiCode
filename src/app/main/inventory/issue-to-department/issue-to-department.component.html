@@ -17,8 +17,6 @@
 
     </mat-toolbar>
 
-    <!-- <mat-tab-group> -->
-    <!-- <mat-tab label="Indent List"> -->
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
@@ -63,7 +61,7 @@
                             [mode]="autocompletestore">
                         </airmid-dropdown>
 
- <!-- [(ngModel)]="Status" -->
+ 
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
                             Accepted
                         </mat-slide-toggle>
@@ -86,6 +84,5 @@
             </airmid-table>
         </div>
     </div>
-    <!-- </mat-tab> -->
-    <!-- </mat-tab-group> -->
+   
 </div>

@@ -29,6 +29,18 @@
                                         [(fromValue)]="gridConfig.filters[3].fieldValue"
                                         [(toValue)]="gridConfig.filters[4].fieldValue">
                                     </airmid-datepicker>
+
+                                    <!-- <mat-form-field appearance="outline" fxFlex.sm="35%">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="start" placeholder="Start date">
+                                            <input matEndDate formControlName="end" placeholder="End date"
+                                                (dateChange)="onChangeFirst()">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field> -->
+
                                 </div>
 
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
@@ -37,7 +49,7 @@
                                         <input matInput placeholder="Search UHID" autocomplete="off"
                                             formControlName="RegNoSearch" (input)="onChangeFirst()" />
                                         <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="Clearfilter('RegNoSearch')">
+                                            (click)="Clearfilter('RegNoSearch')">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
@@ -45,8 +57,7 @@
 
                                 <div fxFlex="16%" fxLayout="row">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                        fxLayout="column" value="2" class="gap-4" (change)="onChangeFirst()"
-                                        [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                        fxLayout="column"  class="gap-4" (change)="onChangeFirst()">
                                         <mat-label><b>Patient Type:</b></mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='2'>All</mat-radio-button>
@@ -58,8 +69,7 @@
 
                                 <div fxFlex="20%" fxLayout="row">
                                     <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
-                                        fxLayout="column" value="0" class="gap-4" (change)="onChangeFirst()"
-                                        [(ngModel)]="gridConfig.filters[5].fieldValue">
+                                        fxLayout="column"  class="gap-4" (change)="onChangeFirst()">
                                         <mat-label><b>Status:</b></mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -97,7 +107,8 @@
                                             <mat-icon title="Edit">edit</mat-icon>
                                         </button>
 
-                                        <button mat-icon-button matTooltip="Print" (click)="viewgetRadioloyTemplateReportPdf(element)">
+                                        <button mat-icon-button matTooltip="Print"
+                                            (click)="viewgetRadioloyTemplateReportPdf(element)">
                                             <mat-icon title="Print">print</mat-icon>
                                         </button>
 
@@ -111,16 +122,16 @@
 
                                     </div>
                                 </ng-template>
-                                    
-                                    <ng-template #actionsIPOP let-element>
-                                        <div fxLayout="row" fxLayoutAlign="center center">
-    
-                                            <mat-icon *ngIf="element.opdipdtype==1" matTooltip="IP"
-                                                    class="pill green-600 s-16">circle</mat-icon>
-                                                <mat-icon *ngIf="element.opdipdtype==0" matTooltip="OP"
-                                                    class="pill orange s-16">circle</mat-icon>
-                                        </div>
-                                    </ng-template>
+
+                                <ng-template #actionsIPOP let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.opdipdtype==1" matTooltip="IP"
+                                            class="pill green-600 s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.opdipdtype==0" matTooltip="OP"
+                                            class="pill orange s-16">circle</mat-icon>
+                                    </div>
+                                </ng-template>
 
                                 <ng-template #actionsCompleted let-element>
                                     <div fxLayout="row" fxLayoutAlign="center center">

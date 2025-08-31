@@ -25,10 +25,6 @@ export class MaterialConsumptionComponent implements OnInit {
     autocompletestore: string = "Store";
 
     StoreId = this.accountService.currentUserValue.user.storeId
-
-
-    // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    // @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('Status') Status!: TemplateRef<any>;
 
@@ -48,7 +44,7 @@ export class MaterialConsumptionComponent implements OnInit {
         { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
+            template: this.actionButtonTemplate 
         }
     ]
     @ViewChild('grid') grid: AirmidTableComponent;
@@ -89,7 +85,7 @@ export class MaterialConsumptionComponent implements OnInit {
     getSelectedRow(row: any): void {
 
         console.log("selectedRow:", row)
-        let materialConsumptionId = row.materialConsumptionId//row.materialConsumptionId;
+        let materialConsumptionId = row.materialConsumptionId
 
         this.gridConfig1 = {
             apiUrl: "MaterialConsumption/MaterialConsumptionDetailsList",
@@ -170,31 +166,8 @@ export class MaterialConsumptionComponent implements OnInit {
     getValidationMessages() {
         return {
             ToStoreId: [
-                //   { name: "required", Message: "Store Name is required" }
+                  { name: "required", Message: "Store Name is required" }
             ]
         };
     }
 }
-// export class MaterialConList {
-//     ConsumptionNo: any;
-//     Date: Number;
-//     FromStoreName: string;
-//     PurchaseTotalAmount: number;
-//     TotalVatAmount: any;
-//     Addedby: number;
-//     Remark: any;
-
-//     constructor(MaterialConList) {
-//         {
-//             this.ConsumptionNo = MaterialConList.ConsumptionNo || 0;
-//             this.Date = MaterialConList.Date || 0;
-//             this.PurchaseTotalAmount = MaterialConList.PurchaseTotalAmount || 0;
-//             this.FromStoreName = MaterialConList.FromStoreName || "";
-//             this.TotalVatAmount = MaterialConList.TotalVatAmount || 0;
-//             this.Addedby = MaterialConList.Addedby || 0;
-//             this.Remark = MaterialConList.Remark || "";
-
-//         }
-//     }
-// }
-

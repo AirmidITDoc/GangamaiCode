@@ -190,6 +190,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
      }
  
      ListView(value) {
+        this.isShowDetailTable=false
          if (value.value !== 0)
              this.FromStore = value.value
          else
@@ -198,6 +199,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
      }
  
      ListView1(value) {
+          this.isShowDetailTable=false
          if (value.value !== 0)
              this.Tostore = value.value
          else
@@ -206,7 +208,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
      }
  
      onChangeFirst(value) {
-         
+         debugger
          let IsVerify = "0"
          if (this.IssueSearchGroup.get("IsVerify").value)
              IsVerify = "1"
@@ -245,20 +247,29 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
      }
  
  
-     onSave(row: any = null) {
-         let that = this;
-        //  const dialogRef = this._matDialog.open(IssuTodeptComponent,
-        //      {
-        //          maxWidth: "97vw",
-        //          height: '99%',
-        //          width: '95%',
-        //          data: row
-        //      });
-        //  dialogRef.afterClosed().subscribe(result => {
-        //      that.grid.bindGridData();
-        //  });
-     }
- 
+      onEdit(contact) {
+    // if(contact.pendingByDepartment > 0){
+      console.log(contact);
+      const dialogRef = this._matDialog.open(AcceptMaterialListPopupComponent,
+        {
+          maxWidth: "75vw",
+          height: '650px',
+          width: '100%',
+          data: {
+            Obj: contact,
+          }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        // this.gridConfig.bind();
+      });
+    // }else{
+    //   this.toastr.warning('Already material accepted.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    // }
+   
+  }
      viewgetIssuetodeptReportPdf(element) {
          console.log(element)
          this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");

@@ -64,7 +64,6 @@ export class CurrentStockComponent implements OnInit {
     isLoadingStr: string = '';
     isLoading: String = '';
     sIsLoading: string = "";
-    // isLoading = true;
     Store1List: any = [];
     screenFromString = 'admission-form';
     FromDate: any;
@@ -76,7 +75,6 @@ export class CurrentStockComponent implements OnInit {
     storeDayWise = this.accountService.currentUserValue.user.storeId;
     storeSales = this.accountService.currentUserValue.user.storeId;
     storeItem = this.accountService.currentUserValue.user.storeId;
-    // itemId = "0";
     itemName = "%";
     DaywiseitemName = "0";
     SaleitemName = "0";
@@ -134,21 +132,17 @@ export class CurrentStockComponent implements OnInit {
     }
 
     allcurrentColumn = [
-        {
-            heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
+        {heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
             type: gridColumnTypes.template, template: this.eyeIcon1
         },
-        {
-            heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon2
         },
-        {
-            heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon3
         },
         { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        {
-            heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon4
         },
     ]
@@ -243,7 +237,7 @@ export class CurrentStockComponent implements OnInit {
 
     alldayWiseColumn = [
         { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Unit MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -251,7 +245,7 @@ export class CurrentStockComponent implements OnInit {
         { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     ]
     alldayWiseFilter = [
         {
@@ -321,10 +315,10 @@ export class CurrentStockComponent implements OnInit {
     // item wise sales summery
 
     allSalesColumn = [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allSalesFilter = [
@@ -389,10 +383,10 @@ export class CurrentStockComponent implements OnInit {
 
     // Issue wise item summery
     allItemColumn = [
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Received Qty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Received Qty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allItemFilter = [
@@ -554,41 +548,6 @@ export class CurrentStockComponent implements OnInit {
 
 
     _loaderShow: boolean = true;
-    // exportItemReportExcel() {
-    //     this.sIsLoading == 'loading-data'
-    //     let exportHeaders = ['ItemName', 'ConversionFactor', 'Current_BalQty', 'Received_Qty', 'Sales_Qty'];
-    //     this.reportDownloadService.getExportJsonData(this.dsItemwiseStock.data, exportHeaders, 'ItemWise Report');
-
-    //     this.dsItemwiseStock.data = [];
-    //     this.sIsLoading = '';
-    // }
-
-
-    // exportDayReportExcel() {
-    //     this.sIsLoading == 'loading-data'
-    //     let exportHeaders = ['LedgerDate', 'ItemName', 'BatchNo', 'BalanceQty', 'ReceivedQty', 'IssueQty', 'UnitMRP', 'PurUnitRate', 'LandedRate', 'VatPercentage'];
-    //     this.reportDownloadService.getExportJsonData(this.dsDaywiseStock.data, exportHeaders, 'Day Wise Report');
-    //     this.dsDaywiseStock.data = [];
-    //     this.sIsLoading = '';
-    // }
-
-    // exportCurrentStockReportExcel() {
-    //     this.sIsLoading == 'loading-data'
-    //     let exportHeaders = ['ItemName', 'ReceivedQty', 'IssueQty', 'BalanceQty', 'ReturnQty'];
-    //     this.reportDownloadService.getExportJsonData(this.dsCurrentStock.data, exportHeaders, 'CurrentStock');
-    //     console.log(this.dsCurrentStock.data)
-    //     this.dsCurrentStock.data = [];
-    //     this.sIsLoading = '';
-    // }
-
-
-    // exportIssuewiseItemReportExcel() {
-    //     this.sIsLoading == 'loading-data'
-    //     let exportHeaders = ['StoreName', 'ItemName', 'Received_Qty', 'Sales_Qty', 'Current_BalQty'];
-    //     this.reportDownloadService.getExportJsonData(this.dsIssuewissueItemStock.data, exportHeaders, 'Issuw Wise Item Stock');
-    //     this.dsCurrentStock.data = [];
-    //     this.sIsLoading = '';
-    // }
 
     viewgetDaywisestockReportPdf() {
         this.sIsLoading == 'loading-data'

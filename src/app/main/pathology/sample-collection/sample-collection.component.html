@@ -69,105 +69,111 @@
             <ng-template #iconisSampleCollection let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isSampleCollection !== 'True'" matTooltip="Sample Not Collected">highlight_off
+                    <mat-icon *ngIf="element.isSampleCollection !== 'True'"
+                        matTooltip="Sample Not Collected">highlight_off
                     </mat-icon>
-                    
+
                     <mat-icon *ngIf="element.isSampleCollection === 'True'" matTooltip="Sample Collected">done_outline
                     </mat-icon>
-                    
+
                 </div>
             </ng-template>
 
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted"
-                    class="active-icon green-500 s-16">check_circle
+                        class="active-icon green-500 s-16">check_circle
                     </mat-icon>
-                    
+
                     <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed"
-                    class="active-icon red-500 s-16">hourglass_empty
+                        class="active-icon red-500 s-16">hourglass_empty
                     </mat-icon>
-                    
+
                 </div>
             </ng-template>
 
             <ng-template #actionButtonTemplate let-element>
 
-                    <div fxLayout="row" fxLayoutAlign="center center">                        
-                        <mat-icon *ngIf="element.isSampleCollection?.toString().trim() === 'False'" (click)="onSave(element)"
-                        matTooltip="Edit">
-                            edit
-                        </mat-icon>                        
-                    </div>
-                    <!-- <p>{{ element.isSampleCollection }}</p> -->
-
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isSampleCollection?.toString().trim() === 'False'"
+                        (click)="onSave(element)" matTooltip="Edit">
+                        edit
+                    </mat-icon>
+                </div>
+             
             </ng-template>
 
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
+                (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                        formStartControlName="start" formEndControlName="end"
-                        [(fromValue)]="gridConfig.filters[3].fieldValue" [(toValue)]="gridConfig.filters[4].fieldValue">
-                    </airmid-datepicker>
-                  
-                    <mat-form-field appearance="outline">
-                        <mat-label>UHID</mat-label>
-                        <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[3].fieldValue"
+                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                        </airmid-datepicker>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-                  
-                    <div fxLayout="column" fxLayoutAlign="start start">
-                        <div fxFlex fxLayout="row">
-                            <mat-radio-group name="Istype" fxLayout="row" value="2" [formGroup]="myformSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
-                                style="padding: 6px;" class="gap-4" >
-                                <mat-label>Type:</mat-label>
-                                <div fxLayout="row">
-                                    <mat-radio-button value='2'>All</mat-radio-button>
-                                    <mat-radio-button value='1'>IP</mat-radio-button>
-                                    <mat-radio-button value='0'>OP</mat-radio-button>
-                                </div>
-                            </mat-radio-group>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="Istype" fxLayout="row" value="2" [formGroup]="myformSearch"
+                                    formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Type:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='2'>All</mat-radio-button>
+                                        <mat-radio-button value='1'>IP</mat-radio-button>
+                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="StatusSearch" fxLayout="row" value="0" [formGroup]="myformSearch"
+                                    formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Status:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='0'>Pending</mat-radio-button>
+                                        <mat-radio-button value='1'>Completed</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
                         </div>
-
-                        <div fxFlex fxLayout="row">
-                            <mat-radio-group name="StatusSearch" fxLayout="row" value="0" [formGroup]="myformSearch" formControlName="StatusSearch"
-                             (change)="onChangeFirst()"
-                                style="padding: 6px;" class="gap-4">
-                                <mat-label>Status:</mat-label>
-                                <div fxLayout="row">
-                                    <mat-radio-button value='0'>Pending</mat-radio-button>
-                                    <mat-radio-button value='1'>Completed</mat-radio-button>
-                                </div>
-                            </mat-radio-group>
-                        </div>
-                    </div>
                     </form>
 
                 </ng-container>
             </airmid-table>
         </div>
 
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-        *ngIf="isShowDetailTable">
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
             <!-- <div style="padding: 10px; height: 30px; margin-bottom: 10px;">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div class="table-header-title" style="padding: 10px;">
