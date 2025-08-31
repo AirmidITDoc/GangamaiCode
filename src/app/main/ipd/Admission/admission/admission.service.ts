@@ -305,7 +305,7 @@ export class AdmissionService {
     // }
 
       public getOPDToIpConvertList(employee) {
-        return this._httpClient1.PostData("Admission/RequestForIPList", employee)
+        return this._httpClient1.PostData("Admission/OPRequestListForIPAdmission", employee)
     }
 
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {

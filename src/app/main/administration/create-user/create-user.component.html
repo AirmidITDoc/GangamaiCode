@@ -1,4 +1,4 @@
- <div fusePerfectScrollbar
+<div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -26,22 +26,71 @@
                 <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
+
+                <button mat-icon-button matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </ng-template>
 
-        <airmid-table [gridConfig]="gridConfig"  class="content">
+        <ng-template #docIcon let-element>
+            <div>
+                <mat-icon *ngIf="element.doctorID > 0" matTooltip="Doctor">
+                    <img width="20px" height="20px" src="assets/images/logos/doctor.png">
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-               
-                <form [formGroup]="myuserform">  
+
+                <form [formGroup]="myuserform">
                     <mat-form-field appearance="outline">
                         <mat-label>User Name</mat-label>
-                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform" formControlName="UserName" (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="UserName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    </form>
-              
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search FirstName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search LastName" autocomplete="off" [formGroup]="myuserform"
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="Store Name" formControlName="storeId" [formGroup]="myuserform"
+                        (selectionChange)="storeChange($event)" [mode]="autocompleteModeStoreName">
+                    </airmid-dropdown>
+                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
+
+                    <airmid-dropdown label="Role Name" formControlName="roleId" [formGroup]="myuserform"
+                        (selectionChange)="roleChange($event)" [mode]="autocompleteModeWebRoleName">
+                    </airmid-dropdown>
+                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
+
+                    <mat-radio-group value=""
+                        fxLayoutAlign="center center">
+                        <mat-radio-button value="">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
+                    </mat-radio-group>
+                    <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
+                </form>
+
             </ng-container>
         </airmid-table>
     </div>

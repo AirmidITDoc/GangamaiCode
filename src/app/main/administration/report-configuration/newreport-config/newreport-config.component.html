@@ -83,8 +83,8 @@
 
                 <!-- add table -->
 
-                <div class="modal-card-container airmid-table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 10px;"
-                cdkScrollable>
+                <div class="modal-card-container airmid-table-container"
+                    style="max-height: 400px; overflow-y: auto; margin-bottom: 10px;" cdkScrollable>
                     <mat-table #table matSort [dataSource]="dsReportList" class="airmid-table"
                         [@animateStagger]="{ value: '50' }" cdkDropList (cdkDropListDropped)="drop($event)">
 
@@ -101,7 +101,8 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                 fxShow.gt-sm>IsDisplay</mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <mat-checkbox [(ngModel)]="element.IsDisplayColumn"  (change)="onDisplayColumnChange($event, element)">
+                                <mat-checkbox [(ngModel)]="element.IsDisplayColumn"
+                                    (change)="onDisplayColumnChange($event, element)">
                                 </mat-checkbox>
                             </mat-cell>
                         </ng-container>
@@ -162,9 +163,21 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ReportgroupByLabel
                             </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <!-- <mat-checkbox [checked]="element.ReportGroupByLabel!=''"
+                                    (change)="element.ReportGroupByLabel = $event.checked ? 1 : 0">
+                                </mat-checkbox>
+                                <mat-form-field appearance="fill" floatLabel="never" *ngIf="element.ReportGroupByLabel">
+                                    <input matInput [maxLength]="50" [(ngModel)]="element.ReportGroupByLabel" type="text">
+                                </mat-form-field> -->
                                 <mat-checkbox [checked]="element.ReportGroupByLabel == 1"
                                     (change)="element.ReportGroupByLabel = $event.checked ? 1 : 0">
                                 </mat-checkbox>
+
+                                <mat-form-field appearance="fill" floatLabel="never" *ngIf="element.ReportGroupByLabel == 1">
+                                    <input matInput [maxLength]="50" [(ngModel)]="element.ReportGroupBySequenceNo"
+                                        type="text">
+                                </mat-form-field>
+
                             </mat-cell>
                         </ng-container>
 
@@ -176,7 +189,7 @@
                                     (change)="element.SummaryLabel = $event.checked ? '1' : ''">
                                 </mat-checkbox>
                                 <mat-form-field appearance="fill" floatLabel="never" *ngIf="element.SummaryLabel">
-                                    <input matInput [maxLength]="50" [(ngModel)]="element.SummaryLabel" type="text">
+                                    <input matInput [maxLength]="50" [(ngModel)]="element.SummarySequenceNo" type="text">
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
@@ -199,8 +212,9 @@
 
                         <mat-header-row class="accent" *matHeaderRowDef="displayedColumn;"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumn" class="element"
-                            [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag (cdkDragMoved)="onDragMoved($event)"></mat-row>
-                            <!-- (cdkDragMoved)="onDragMoved($event)" -->
+                            [@animate]="{ value: '*', params: { y: '100%' } }" cdkDrag
+                            (cdkDragMoved)="onDragMoved($event)"></mat-row>
+                        <!-- (cdkDragMoved)="onDragMoved($event)" -->
                         <mat-footer-row *matFooterRowDef="['loading']"
                             [ngClass]="{ hide: dsReportList != null }"></mat-footer-row>
                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -288,6 +302,14 @@
                                         i}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                        <div fxFlex fxFlex.xs="100%">
+                            <airmid-textbox label="ReportSummary" formControlName="reportSummary"
+                                [value]="data?.reportSummary" [formGroup]="myform">
+                            </airmid-textbox>
                         </div>
                     </div>
                 </form>

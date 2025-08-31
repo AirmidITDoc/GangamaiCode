@@ -1,10 +1,12 @@
+
+<!-- OP Request Patient List For Admission -->
 <ng-template #IPConvertTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">OP To IP Request list</span>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> OP Request List for IP Admission</span>
         </div>
         <div class="close-icon">
             <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
@@ -18,40 +20,85 @@
         <div class="table-body">
             <div class="airmid-table">
                 <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                    <ng-container matColumnDef="opdNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-160">
-                            OPDNO
+
+                    <ng-container matColumnDef="vistDateTime">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                            Vist Date Time
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact" class="w-160">
-                            <span> {{contact.opdNo}}</span>
+                        <mat-cell *matCellDef="let contact" class="w-200">
+                            <span>{{ contact.visitDate}}</span>
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="vistDateTime">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            VistDateTime
+                     <ng-container matColumnDef="UHID">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-160">
+                            UHID
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
-                            <span>{{ contact.visitTime}}</span>
+                        <mat-cell *matCellDef="let contact" class="w-160">
+                            <span> {{contact.regNo}}</span>
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="patientName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-260">
                             Patient Name
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let contact">
+                        <mat-cell *matCellDef="let contact" class="w-260">
                             <span> {{contact.patientName}}</span>
                         </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="doctorName">
+
+                    <ng-container matColumnDef="PatientType">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                            DoctorName
+                            Patient Type
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
+                            <span> {{contact.patientType}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="opdNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >
+                            OPD No
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.opdNo}}</span>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="doctorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-260">
+                            DoctorName
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-260">
                             <span> {{contact.doctorName}}</span>
                         </mat-cell>
                     </ng-container>
+
+                      <ng-container matColumnDef="RefDoctorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-260">
+                            Ref Doctor Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-260">
+                            <span> {{contact.refDoctorName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ConvertId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Converted
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span>{{ contact.convertId }}</span>
+                            <!-- Show icon if convertId > 0 -->
+                            <mat-icon *ngIf="contact.convertId > 0" color="primary">
+                                check_circle
+                            </mat-icon>
+                            <mat-icon *ngIf="contact.convertId == 0" color="accent">
+                                hourglass_empty
+                            </mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
 
                     <ng-container matColumnDef="NoData">
                         <mat-footer-cell *matFooterCellDef>
@@ -64,7 +111,7 @@
 
                     <!-- <mat-row *matRowDef="let contact; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
             (click)="getPatientobj(contact)"></mat-row> -->
-                    <mat-row *matRowDef="let contact; columns: displayedColumns;"
+                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="hover-row"
                         [@animate]="{value:'*',params:{y:'100%'}}" (click)="onRowClick(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['NoData']"
                         [ngClass]="{'hide':dataSource.data.length > 0}"></mat-footer-row>
@@ -134,7 +181,8 @@
                                                 <!-- *ngIf="showOPtoIPFlag" -->
                                                 <div>
                                                     <button mat-icon-button (click)="openPatientTable()"
-                                                        style="padding: 0px;">
+                                                        style="padding: 0px;"
+                                                        matTooltip="View OP Patient notifications">
                                                         <mat-icon style="font-size: 24px;">notifications_none</mat-icon>
                                                     </button>
                                                 </div>

@@ -45,32 +45,41 @@
 
           <!-- icon part -->
           <mat-card>
-            <mat-card-content fxLayout="row" fxLayoutGap="10px">
-              <div>
-                <img width="25px" height="10px" src="assets/images/logos/Bed_Transfer.png" style="padding-top: 5px"
-                  (click)="getbedTransfer()" matTooltip="Bed Transfer" />
+            <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="row" fxLayoutGap="10px">
+                <div>
+                  <img width="25px" height="10px" src="assets/images/logos/Bed_Transfer.png" style="padding-top: 5px"
+                    (click)="getbedTransfer()" matTooltip="Bed Transfer" />
+                </div>
+                <div>
+                  <img width="25px" height="10px" src="assets/images/logos/LabRequest.png" style="padding-top: 5px"
+                    (click)="getLabRequest()" matTooltip="Lab Request" />
+                </div>
+                <div>
+                  <img width="25px" height="10px" src="assets/images/logos/dischargesummary.jpeg"
+                    style="padding-top: 5px" (click)="getDischargeSummary()" matTooltip="Discharge Summary" />
+                </div>
+                <div>
+                  <img width="25px" height="10px" src="assets/images/logos/discharge.jpeg" style="padding-top: 5px"
+                    (click)="getPriscription()" matTooltip="IP Prescription" />
+                </div>
+                <div>
+                  <img width="25" height="10px" src="assets/images/logos/DoctorNote.png" (click)="getDoctornote()"
+                    style="padding-top: 5px" matTooltip="Doctor Note" />
+                </div>
+                <div>
+                  <img width="25" height="10px" src="assets/images/logos/NursingNote.png" (click)="getNursingnote()"
+                    style="padding-top: 5px" matTooltip="Nuesing Note" />
+                </div>
               </div>
-              <div>
-                <img width="25px" height="10px" src="assets/images/logos/LabRequest.png" style="padding-top: 5px"
-                  (click)="getLabRequest()" matTooltip="Lab Request" />
-              </div>
-              <div>
-                <img width="25px" height="10px" src="assets/images/logos/dischargesummary.jpeg" style="padding-top: 5px"
-                  (click)="getDischargeSummary()" matTooltip="Discharge Summary" />
-              </div>
-              <div>
-                <img width="25px" height="10px" src="assets/images/logos/discharge.jpeg" style="padding-top: 5px"
-                  (click)="getPriscription()" matTooltip="IP Prescription" />
-              </div>
-              <div>
-                <img width="25" height="10px" src="assets/images/logos/DoctorNote.png" (click)="getDoctornote()"
-                  style="padding-top: 5px" matTooltip="Doctor Note" />
-              </div>
-              <div>
-                <img width="25" height="10px" src="assets/images/logos/NursingNote.png" (click)="getNursingnote()"
-                  style="padding-top: 5px" matTooltip="Nuesing Note" />
+
+              <div *ngIf="isShowPrintButtons">
+                <button class="btn btn-primary">Clinical Print</button>
+                <button class="btn btn-primary" style="margin-left: 5px;">NursingNote Print</button>
               </div>
             </mat-card-content>
+
+
           </mat-card>
 
           <mat-card class="p-12 overflow-auto" fxFlex>
@@ -78,7 +87,7 @@
               <mat-tab-group class="dynamic-table-wrapper">
                 <!-- 1st tab -->
                 <mat-tab label="Pain Assessment">
-                  <form [formGroup]="_ClinicalcareService.PainAssessForm" fusePerfectScrollbar class="h-100-p">
+                  <form [formGroup]="PainAssessForm" fusePerfectScrollbar class="h-100-p">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="6px">
                       <div fxLayout="row" fxLayoutGap="10px" fxFlex>
                         <div fxFlex.gt-sm="70%" fxLayout="column" fxFlex>
@@ -90,119 +99,120 @@
                                 </div>
                               </div>
                             </div>
-                            <mat-table class="airmid-table" matSort [dataSource]="dsPainsAssessment"
-                              [@animateStagger]="{ value: '50' }">
-                              <ng-container matColumnDef="givendate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Given
-                                  Date</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                  {{ element.PatientName }}
-                                </mat-cell>
-                              </ng-container>
+                            <mat-table class="table2" matSort [dataSource]="dsPainsAssessment"
+                              [@animateStagger]="{value:'50'}" style="overflow:auto;height:80px;">
 
-                              <ng-container matColumnDef="giventime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Given
-                                  TIme</mat-header-cell>
+                              <ng-container matColumnDef="givendate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                  PainAssessmentDate</mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                  {{ element.PatientName }}
-                                </mat-cell>
+                                  {{element.painAssessmentDate |
+                                  date:'dd/MM/YYYY'}}-{{element.painAssessmentTime | date:'HH:mm'}}</mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="PainAssess">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Pain
-                                  Assessment</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                  Pain Assessment </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                  {{ element.PatientName }}
+                                  {{element.painAssessementValue}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="Employeename">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Employee
-                                  name</mat-header-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                  AddedBy</mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                  {{ element.PatientName }}
-                                </mat-cell>
+                                  {{element.createdBy}} </mat-cell>
                               </ng-container>
+
                               <ng-container matColumnDef="Action">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                  fxShow.gt-sm>Action</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                  {{ element.Action }}
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-60">
+                                  Action </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
+                                  <ng-container class="actions">
+                                    <mat-icon (click)="PaindeleteTableRow($event ,contact)" color="warn">
+                                      delete
+                                    </mat-icon>
+                                  </ng-container>
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none"></mat-header-cell>
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                  no data found...
+                                </mat-footer-cell>
                               </ng-container>
 
-                              <mat-header-row class="accent"
-                                *matHeaderRowDef="displayedPainAsse; sticky: true"></mat-header-row>
-                              <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
-                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                              <mat-header-row class="accent" *matHeaderRowDef="displayedPainAsse; sticky: true">
+                              </mat-header-row>
+                              <mat-row *matRowDef="let element; columns: displayedPainAsse;" class="element"
+                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                               <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{ hide: !(dsPainsAssessment != null && dsPainsAssessment.data.length == 0) }"></mat-footer-row>
+                                [ngClass]="{'hide':!(dsPainsAssessment!=null && dsPainsAssessment.data.length==0)}">
+                              </mat-footer-row>
                             </mat-table>
+
                           </mat-card>
                         </div>
+
                         <div fxFlex.gt-sm="30%" fxLayout="column">
-                          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px"
-                            class="input-error-hidden">
-                            <mat-form-field appearance="outline" fxFlex>
-                              <mat-label>Daily Weight</mat-label>
-                              <input matInput placeholder="Weight in KG" name="Mobile" formControlName="DailyWeight"
-                                [(ngModel)]="vDailyWeight" />
-                            </mat-form-field>
-                            &nbsp;&nbsp;
-                            <div>
-                              <button #addbutton class="btn btn-primary btn-with-icon" [disabled]="vDailyWeight > 0"
-                                (click)="OnAdd()">
-                                <span class="btn-icon">
-                                  <mat-icon>add</mat-icon>
-                                </span>
-                                <span>Add</span>
-                              </button>
+                          <form [formGroup]="PainAssessWeightForm" fxFlex.gt-sm="30%" fxLayout="column"
+                            style="margin-top: 5px;">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px"
+                              style="height: 60px;" class="input-error-hidden">
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Daily Weight</mat-label>
+                                <input matInput placeholder="Weight in KG" name="Mobile"
+                                  formControlName="patWeightValue" [(ngModel)]="vDailyWeight"
+                                  (keypress)="keyPressAlphanumeric($event)" />
+                              </mat-form-field>
+                              &nbsp;&nbsp;
+                              <div>
+                                <button #addbutton class="btn btn-primary btn-with-icon" (click)="OnAddSave()">
+                                  <span class="btn-icon">
+                                    <mat-icon>add</mat-icon>
+                                  </span>
+                                  <span>Add</span>
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          </form>
+
+                          <!-- Assessment 2nd table -->
                           <div *ngIf="checkDailyWeight">
-                            <mat-card style="padding: 5px; height: 170px; overflow: auto">
+                            <mat-card style="padding: 5px; height: 200px;">
                               <mat-table class="table2" matSort [dataSource]="dsPainsAssessment2"
-                                [@animateStagger]="{ value: '50' }"
-                                style="height: 40px; overflow: auto; margin-bottom: 10px">
+                                [@animateStagger]="{ value: '50' }" style="margin-bottom: 10px">
+
                                 <ng-container matColumnDef="givendate">
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
-                                    class="w-90">Date</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90">{{
-                                    element.givendate }}-{{ element.giventime }}</mat-cell>
+                                    class="w-150">Date</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">{{
+                                    element.patWeightDate | date:'dd/MM/YYYY' }}-{{ element.patWeightTime |
+                                    date:'HH:mm'}}</mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="PainAssess">
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                     fxShow.gt-sm>Weight</mat-header-cell>
                                   <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.PainAssess }}
-                                  </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Employeename">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Patient
-                                    Name</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.Employeename }}
+                                    {{ element.patWeightValue }}
                                   </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="Action" stickyEnd>
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
                                     class="w-60">Action</mat-header-cell>
-                                  <!-- <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
-                                                                                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                                                      <mat-icon>delete_outline</mat-icon>
-                                                                                  </button>
-                                                                              </mat-cell> -->
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
+                                    <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                      <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                  </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="loading">
@@ -226,12 +236,15 @@
                         </div>
                       </div>
 
+                      <!-- smile part -->
                       <mat-card class="h-150px" fxFlex>
                         <mat-card-content>
                           <div fxFlex.gt-sm="100%">
                             <div fxLayout="column" fxLayoutAling="center">
                               <h1 style="text-align: center">Pain Measurement Scale</h1>
                               <div fxFlex="2px" style="background-color: black; margin-right: 46px"></div>
+
+                              <!-- smile icons measure -->
                               <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 30px">
                                 <div fxLayout="column">
                                   <span class="vertical-line"></span>
@@ -278,6 +291,8 @@
                                   <span style="margin-right: 5px">10</span>
                                 </div>
                               </div>
+
+                              <!-- smile icons -->
                               <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 10px">
                                 <div fxLayout="column">
                                   <span style="margin-right: 5px; margin-left: 0px">No Pain</span>
@@ -312,26 +327,30 @@
                               </div>
 
                               <div style="margin-right: 30px">
-                                <mat-slider class="custom-slider" thumbLabel min="0" max="10" step="1"
-                                  [(ngModel)]="painLevel" (change)="onSliderChange($event)" fxFlex
-                                  tickInterval="1"></mat-slider>
+                                <mat-slider class="custom-slider" min="0" max="10" step="1" tickInterval="1"
+                                  style="width: 100%;">
+                                  <input matSliderThumb [(ngModel)]="painLevel" (valueChange)="onSliderChange($event)">
+                                </mat-slider>
                               </div>
-                              <div style="padding: 5px">
+
+                              <div style="padding: 5px; font-size: 25px;">
                                 Selected Pain Level: {{ selectedPainLevel }}
                                 <span [innerHTML]="getEmoji(selectedPainLevel)"></span>
                               </div>
+
                             </div>
                           </div>
                         </mat-card-content>
                       </mat-card>
                       <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="end" style="padding: 5">
-                        <button class="btn btn-secondary" style="color: white" (click)="getMedicationReport()"
+                        <!-- <button class="btn btn-secondary" style="color: white" (click)="getMedicationReport()"
                           type="button" value="Input">Report Medication Error</button>
                         <button class="btn btn-warning" style="color: white" (click)="getPhlebitis()" type="button"
                           value="Input">Phlebitis</button>
                         <button class="btn btn-danger" style="color: white" type="button" value="Input">Initial Nursing
-                          Assessment</button>
-                        <button class="btn btn-primary" type="submit" value="submit">Save</button>
+                          Assessment</button> -->
+                        <button class="btn btn-primary" type="submit" value="submit"
+                          (click)="OnSavePainAsses()">Save</button>
                       </div>
                     </div>
                   </form>
@@ -350,55 +369,25 @@
                                   <span class="h3 font-weight-600">Lab Test Result List</span>
                                 </div>
                               </div>
-                              <mat-table class="airmid-table" matSort [dataSource]="dsLabReport"
-                                [@animateStagger]="{ value: '50' }">
-                                <ng-container matColumnDef="Date&Time">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-sm>Date&Time</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>{{ element.Date }} {{
-                                    element.Time }}</mat-cell>
-                                </ng-container>
 
-                                <ng-container matColumnDef="TestName">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-sm>TestName</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.TestName }}
-                                  </mat-cell>
-                                </ng-container>
+                              <ng-template #isTestCompletedIcon let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                  <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready"
+                                    (click)="getPrint(element)">
+                                    remove_red_eye
+                                  </mat-icon>
 
-                                <ng-container matColumnDef="PBillNo">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>PBill
-                                    No</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.PBillNo }}
-                                  </mat-cell>
-                                </ng-container>
+                                  <mat-icon *ngIf="element.isTestCompted == false"
+                                    matTooltip="Result Entry Not Completed" class="active-icon red-500 s-16">
+                                    hourglass_empty
+                                  </mat-icon>
+                                </div>
+                              </ng-template>
 
-                                <ng-container matColumnDef="IsCompleted">
-                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                    fxShow.gt-sm>IsCompleted</mat-header-cell>
-                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    {{ element.IsCompleted }}
-                                  </mat-cell>
-                                </ng-container>
+                              <airmid-table [gridConfig]="gridConfig7" class="content" #grid7 [ShowFilter]="false"
+                                [ShowButtons]="false">
+                              </airmid-table>
 
-                                <ng-container matColumnDef="loading">
-                                  <mat-header-cell *matFooterCellDef colspan="6"
-                                    style="display: none"></mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                  <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent"
-                                  *matHeaderRowDef="displayedLabReport; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedLabReport" class="element"
-                                  [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                  [ngClass]="{ hide: !(dsLabReport != null && dsLabReport.data.length == 0) }"></mat-footer-row>
-                              </mat-table>
                             </div>
                           </mat-card>
                         </div>
@@ -478,245 +467,285 @@
 
                 <!-- 5th tab -->
                 <mat-tab label="Vitals">
-                  <form [formGroup]="_ClinicalcareService.VitalsForm">
-                    <div class="tab-container tab-grid">
-                      <div class="tab-body">
-                        <div class="tab-box">
-                          <div class="tab-content" fxFlex>
-                            <mat-card fxFlex>
-                              <div class="airmid-table-container table-column">
-                                <mat-table class="airmid-table" matSort [dataSource]="dsvitalsList"
-                                  [@animateStagger]="{ value: '50' }">
-                                  <ng-container matColumnDef="date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Date</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                  <div class="tab-container tab-grid">
+                    <div class="tab-body">
+                      <div class="tab-box">
+                        <div class="tab-content">
+                          <mat-card>
+                            <div class="table-container">
+                              <mat-table class="table2" matSort [dataSource]="dsvitalsList"
+                                [@animateStagger]="{ value: '50' }">
 
-                                  <ng-container matColumnDef="time">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Time</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="date">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>VitalDateTime</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.vitalDate | date:'dd/MM/YYYY' }} - {{ element.vitalTime | date:'HH:mm'}}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="Temperature">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Temperature</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Temperature">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Temperature</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.temperature }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="Pulse">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Pulse</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Pulse">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Pulse</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.pulse }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="Respiration">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Respiration</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Respiration }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Respiration">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Respiration</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.respiration }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="BP">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>BP</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="BP">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>BP</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.bp }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="MewaScore">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>MewaScore</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Respiration }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="ArterialBP">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>ArterialBP</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.arterialBloodPressure }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="AVPU">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>AVPU</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Peep">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Peep</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.peep }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="TakenBy">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>TakenBy</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Respiration }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Brady">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Brady</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.brady }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="CVP">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>cvp</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="CVP">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>CVP</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.cvp }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="Action">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Action</mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Action }}
-                                    </mat-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="PAPressureReading">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>PAPressureReading</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.papressureReading }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6"
-                                      style="display: none"></mat-header-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="Apnea">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Apnea</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.apnea }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                                  </ng-container>
+                                <ng-container matColumnDef="AbdominalGrith">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>AbdominalGrith</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.abdominalGrith }}
+                                  </mat-cell>
+                                </ng-container>
 
-                                  <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedVitals; sticky: true"></mat-header-row>
-                                  <mat-row *matRowDef="let row; columns: displayedVitals" class="element"
-                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                                  <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{ hide: !(dsvitalsList != null && dsvitalsList.data.length == 0) }"></mat-footer-row>
-                                </mat-table>
-                              </div>
-                            </mat-card>
-                          </div>
+                                <ng-container matColumnDef="Desaturation">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>Desaturation</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.desaturation }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SaturationWithO2">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>SaturationWithO2</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.saturationWithO2 }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SaturationWithoutO2">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>SaturationWithoutO2</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.saturationWithoutO2 }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PO2">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>PO2</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.po2 }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="FIO2">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>FIO2</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.fio2 }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PFRation">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>PFRation</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.pfration }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AddedBy">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                    fxShow.gt-sm>AddedBy</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    {{ element.createdBy }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Action" stickyEnd>
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    Action </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <button mat-icon-button (click)="onEditVital(element)" matTooltip="Edit">
+                                      <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="deleteVitalTableRow(element)" color="warn">
+                                      <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                  <mat-header-cell *matFooterCellDef colspan="6"
+                                    style="display: none"></mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                  <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent min-width-2800"
+                                  *matHeaderRowDef="displayedVitals; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedVitals" class="element min-width-2800"
+                                  [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                  [ngClass]="{ hide: !(dsvitalsList != null && dsvitalsList.data.length == 0) }"></mat-footer-row>
+                              </mat-table>
+                            </div>
+                          </mat-card>
+                        </div>
+
+                        <form [formGroup]="VitalsForm">
                           <div class="tab-content">
                             <mat-card fxFlex>
                               <div fxLayout="column" fxLayoutGap="4px">
                                 <div fxLayout="row" fxLayoutGap="4px">
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Temperature</mat-label>
-                                    <input matInput name="Temperature" required formControlName="Temperature"
-                                      type="text" OnlyNumber id="Temperature" autocomplete="off" #Temperature />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Pulse</mat-label>
-                                    <input matInput name="Pulse" required formControlName="Pulse" type="text" OnlyNumber
-                                      id="Pulse" autocomplete="off" #Pulse />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Temperature" formControlName="temperature" fxFlex="25%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Respiraiton</mat-label>
-                                    <input matInput name="Respiraiton" required formControlName="Respiraiton"
-                                      type="text" OnlyNumber id="Respiraiton" autocomplete="off" #Respiraiton />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Pulse" formControlName="pulse" fxFlex="25%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Blood Pressure</mat-label>
-                                    <input matInput name="BloodPressure" required formControlName="BloodPressure"
-                                      type="text" OnlyNumber id="BloodPressure" autocomplete="off" #BloodPressure />
-                                  </mat-form-field>
-                                </div>
-                                <div fxLayout="row" fxLayoutAlign="start center">
-                                  <mat-radio-group name="TypeRadio" formControlName="TypeRadio">
-                                    <mat-radio-button value="0" style="padding: 6px">Alter</mat-radio-button>
-                                    <mat-radio-button value="1" style="padding: 6px">Responsive to
-                                      Voice</mat-radio-button>
-                                    <mat-radio-button value="2" style="padding: 6px">Pain</mat-radio-button>
-                                    <mat-radio-button value="3" style="padding: 6px">UnResponsive</mat-radio-button>
-                                  </mat-radio-group>
+                                  <airmid-textbox label="Respiraiton" formControlName="respiration" fxFlex="25%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Blood Pressure" formControlName="bloodPresure" fxFlex="25%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
                                 </div>
 
                                 <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>CVP</mat-label>
-                                    <input matInput name="CVP" required formControlName="CVP" type="text" OnlyNumber
-                                      id="CVP" autocomplete="off" #CVP />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Peep</mat-label>
-                                    <input matInput name="Peep" required formControlName="Peep" type="text" OnlyNumber
-                                      id="Peep" autocomplete="off" #Peep />
-                                  </mat-form-field>
+                                  <airmid-textbox label="CVP" formControlName="cvp" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>ArterialBloodPressure</mat-label>
-                                    <input matInput name="ArterialBloodPressure" required
-                                      formControlName="ArterialBloodPressure" type="text" OnlyNumber
-                                      id="ArterialBloodPressure" autocomplete="off" #ArterialBloodPressure />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Peep" formControlName="peep" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>PA Pressure Reading</mat-label>
-                                    <input matInput name="PressureReading" required formControlName="PressureReading"
-                                      type="text" OnlyNumber id="PressureReading" autocomplete="off" #PressureReading />
-                                  </mat-form-field>
+                                  <airmid-textbox label="ArterialBloodPressure" formControlName="arterialBloodPressure"
+                                    fxFlex="20%" [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Brady</mat-label>
-                                    <input matInput name="Brady" required formControlName="Brady" type="text" OnlyNumber
-                                      id="Brady" autocomplete="off" #Brady />
-                                  </mat-form-field>
+                                  <airmid-textbox label="PA Pressure Reading" formControlName="papressureReading"
+                                    fxFlex="20%" [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Brady" formControlName="brady" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
                                 </div>
 
                                 <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Apnea</mat-label>
-                                    <input matInput name="Apnea" required formControlName="Apnea" type="text" OnlyNumber
-                                      id="Apnea" autocomplete="off" #Apnea />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Abdominal Grith</mat-label>
-                                    <input matInput name="AbdominalGrith" required formControlName="AbdominalGrith"
-                                      type="text" OnlyNumber id="AbdominalGrith" autocomplete="off" #AbdominalGrith />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Apnea" formControlName="apnea" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Desaturation</mat-label>
-                                    <input matInput name="Desaturation" required formControlName="Desaturation"
-                                      type="text" OnlyNumber id="Desaturation" autocomplete="off" #Desaturation />
-                                  </mat-form-field>
+                                  <airmid-textbox label="AbdominalGrith" formControlName="abdominalGrith" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Saturation With o2</mat-label>
-                                    <input matInput name="SaturationWitho2" required formControlName="SaturationWitho2"
-                                      type="text" OnlyNumber id="SaturationWitho2" autocomplete="off"
-                                      #SaturationWitho2 />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Desaturation" formControlName="desaturation" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Saturation without o2</mat-label>
-                                    <input matInput name="SaturationWithOuto2" required
-                                      formControlName="SaturationWithOuto2" type="text" OnlyNumber
-                                      id="SaturationWithOuto2" autocomplete="off" #SaturationWithOuto2 />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Saturation With o2" formControlName="saturationWithO2"
+                                    fxFlex="20%" [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Saturation without o2" formControlName="saturationWithoutO2"
+                                    fxFlex="20%" [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
                                 </div>
 
                                 <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="start center">
-                                  <mat-form-field appearance="outline" fxFlex="20%">
-                                    <mat-label>PO2</mat-label>
-                                    <input matInput name="PO2" required formControlName="PO2" type="text" OnlyNumber
-                                      id="PO2" autocomplete="off" #PO2 />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex="19.5%">
-                                    <mat-label>Fio2</mat-label>
-                                    <input matInput name="Fio2" required formControlName="Fio2" type="text" OnlyNumber
-                                      id="Fio2" autocomplete="off" #Fio2 />
-                                  </mat-form-field>
+                                  <airmid-textbox label="PO2" formControlName="po2" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="19.5%">
-                                    <mat-label>P.F Ratio</mat-label>
-                                    <input matInput name="PFRation" required formControlName="PFRation" type="text"
-                                      OnlyNumber id="PFRation" autocomplete="off" #PFRation />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Fio2" formControlName="fio2" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="P.F Ratio" formControlName="pfration" fxFlex="20%"
+                                    [formGroup]="VitalsForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
                                 </div>
 
                                 <div fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
@@ -727,33 +756,38 @@
                               </div>
                             </mat-card>
                           </div>
-                        </div>
+                        </form>
+
                       </div>
-                      <div class="tab-footer">
-                        <div class="tab-footer-action between">
-                          <mat-radio-group name="SuctionType" formControlName="SuctionType"
-                            fxLayoutAlign="space-between center">
+                    </div>
+
+                    <div class="tab-footer">
+                      <div class="tab-footer-action between">
+                        <form [formGroup]="VitalsForm">
+                          <mat-radio-group name="SuctionType" formControlName="suctionType"
+                            fxLayoutAlign="space-between center" [(ngModel)]="vsuctionType">
                             <mat-label style="margin-right: 10px">SuctionType :</mat-label>
                             <mat-radio-button value="0">Oral</mat-radio-button>
                             <mat-radio-button value="1">ETT</mat-radio-button>
                             <mat-radio-button value="2">Tracheostomy</mat-radio-button>
                             <mat-radio-button value="3">Nasal</mat-radio-button>
                           </mat-radio-group>
-                          <div class="tab-footer-buttons">
-                            <button class="btn btn-primary-outline" type="button">Print P.F Ration</button>
-                            <button type="button" class="btn btn-primary-outline">Care And Position</button>
-                            <button class="btn btn-danger-outline" type="button">Reset</button>
-                            <button class="btn btn-primary" type="submit">Save</button>
-                          </div>
+                        </form>
+
+                        <div class="tab-footer-buttons">
+                          <!-- <button class="btn btn-primary-outline" type="button">Print P.F Ration</button>
+                          <button type="button" class="btn btn-primary-outline">Care And Position</button> -->
+                          <button class="btn btn-danger-outline" type="button" (click)="OnClosevital()">Reset</button>
+                          <button class="btn btn-primary" type="submit" (click)="OnSaveVital()">Save</button>
                         </div>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </mat-tab>
 
                 <!-- 6th tab -->
                 <mat-tab label="Sugar Level">
-                  <form [formGroup]="_ClinicalcareService.SugarForm">
+                  <form [formGroup]="SugarForm">
                     <div class="tab-container tab-grid">
                       <div class="tab-body">
                         <div class="tab-box">
@@ -764,57 +798,87 @@
                                   [@animateStagger]="{ value: '50' }">
                                   <ng-container matColumnDef="Date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Date</mat-header-cell>
+                                      fxShow.gt-sm>DateTime</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Date }}
+                                      {{ element.entryDate | date:'dd/MM/YYYY' }} - {{ element.entryTime |
+                                      date:'HH:mm'}}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Time">
+                                  <ng-container matColumnDef="BSL">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Time</mat-header-cell>
+                                      fxShow.gt-sm>BSL</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Time }}
+                                      {{ element.bsl }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="IV">
+                                  <ng-container matColumnDef="UrineSugar">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>IV</mat-header-cell>
+                                      fxShow.gt-sm>UrineSugar</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.IV }}
+                                      {{ element.urineSugar }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Infusions">
+                                  <ng-container matColumnDef="ETTpressure">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Infusions</mat-header-cell>
+                                      fxShow.gt-sm>ETTpressure</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Infusions }}
+                                      {{ element.ettpressure }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Boluses">
+                                  <ng-container matColumnDef="UrineKetone">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Boluses</mat-header-cell>
+                                      fxShow.gt-sm>UrineKetone</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Boluses }}
+                                      {{ element.urineKetone }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Peroral">
+                                  <ng-container matColumnDef="Bodies">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Peroral</mat-header-cell>
+                                      fxShow.gt-sm>Bodies</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Peroral }}
+                                      {{ element.bodies }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Action">
+                                  <ng-container matColumnDef="IntakeMode">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Action</mat-header-cell>
+                                      fxShow.gt-sm>IntakeMode</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Action }}
+                                      {{ element.intakeMode }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="ReportedToRMO">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>ReportedToRMO</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.reportedToRmo }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="AddedBy">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>AddedBy</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.createdBy }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="Action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                      Action </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      <button mat-icon-button (click)="onEditSuugarlevel(element)" matTooltip="Edit">
+                                        <mat-icon>edit</mat-icon>
+                                      </button>
+                                      <button mat-icon-button (click)="deleteSugarTableRow(element)" color="warn">
+                                        <mat-icon>delete_outline</mat-icon>
+                                      </button>
                                     </mat-cell>
                                   </ng-container>
 
@@ -837,44 +901,36 @@
                               </div>
                             </mat-card>
                           </div>
+
                           <div class="tab-content">
                             <mat-card fxFlex>
                               <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
                                 <div fxLayout="row wrap" fxLayoutGap="4px grid">
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>BSL</mat-label>
-                                    <input matInput name="BSL" required formControlName="BSL" type="text" OnlyNumber
-                                      id="BSL" autocomplete="off" #BSL />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Urine SUgar</mat-label>
-                                    <input matInput name="UnirSugar" required formControlName="UnirSugar" type="text"
-                                      OnlyNumber id="UnirSugar" autocomplete="off" #UnirSugar />
-                                  </mat-form-field>
+                                  <airmid-textbox label="BSL" formControlName="bsl" fxFlex="33%" [formGroup]="SugarForm"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>ETT Pressure</mat-label>
-                                    <input matInput name="ETTPressure" required formControlName="ETTPressure"
-                                      type="text" OnlyNumber id="ETTPressure" autocomplete="off" #ETTPressure />
-                                  </mat-form-field>
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Urine Ketone</mat-label>
-                                    <input matInput name="UrineKeotne" required formControlName="UrineKeotne"
-                                      type="text" OnlyNumber id="UrineKeotne" autocomplete="off" #UrineKeotne />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Urine Sugar" formControlName="urineSugar" fxFlex="33%"
+                                    [formGroup]="SugarForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Bodies</mat-label>
-                                    <input matInput name="Bodies" required formControlName="Bodies" type="text"
-                                      OnlyNumber id="Bodies" autocomplete="off" #Bodies />
-                                  </mat-form-field>
+                                  <airmid-textbox label="ETT Pressure" formControlName="ettpressure" fxFlex="33%"
+                                    [formGroup]="SugarForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Reported To RMO</mat-label>
-                                    <input matInput name="RepotetoRMO" required formControlName="RepotetoRMO"
-                                      type="text" OnlyNumber id="RepotetoRMO" autocomplete="off" #RepotetoRMO />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Urine Ketone" formControlName="urineKetone" fxFlex="33%"
+                                    [formGroup]="SugarForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Bodies" formControlName="bodies" fxFlex="33%"
+                                    [formGroup]="SugarForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Reported To RMO" formControlName="reportedToRmo" fxFlex="33%"
+                                    [formGroup]="SugarForm" (keypress)="keyPressAlphanumeric($event)">
+                                  </airmid-textbox>
+
                                 </div>
                                 <h3>To Be Filled By RMO :</h3>
                                 <mat-divider></mat-divider>
@@ -885,20 +941,19 @@
                                   </div>
                                   <div fxLayout="column" fxFlex="80">
                                     <div fxLayout="row" fxLayoutGap="4px">
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>InformedTo</mat-label>
-                                        <input matInput name="InformedTo" required formControlName="InformedTo"
-                                          type="text" OnlyNumber id="InformedTo" autocomplete="off" #InformedTo />
-                                      </mat-form-field>
 
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>InformedBy</mat-label>
-                                        <input matInput name="InformedBy" required formControlName="InformedBy"
-                                          type="text" OnlyNumber id="InformedBy" autocomplete="off" #InformedBy />
-                                      </mat-form-field>
+                                      <airmid-textbox label="InformedTo" formControlName="InformedTo" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
+
+                                      <airmid-textbox label="InformedBy" formControlName="InformedBy" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
+
                                     </div>
                                   </div>
                                 </div>
+
                                 <mat-divider></mat-divider>
 
                                 <div fxLayout="row wrap" fxLayoutGap="4px grid">
@@ -908,30 +963,23 @@
 
                                   <div fxLayout="column" fxFlex="80">
                                     <div fxLayout="row" fxLayoutGap="4px">
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>Injection</mat-label>
-                                        <input matInput name="Injection" required formControlName="Injection"
-                                          type="text" OnlyNumber id="Injection" autocomplete="off" #Injection />
-                                      </mat-form-field>
+                                      <airmid-textbox label="Injection" formControlName="Injection" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
 
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>InjectionDose</mat-label>
-                                        <input matInput name="InjectionDose" required formControlName="InjectionDose"
-                                          type="text" OnlyNumber id="InjectionDose" autocomplete="off" #InjectionDose />
-                                      </mat-form-field>
+                                      <airmid-textbox label="InjectionDose" formControlName="InjectionDose" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
                                     </div>
-                                    <div fxLayout="row" fxLayoutGap="4px">
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>Tablet</mat-label>
-                                        <input matInput name="Tablet" required formControlName="Tablet" type="text"
-                                          OnlyNumber id="Tablet" autocomplete="off" #Tablet />
-                                      </mat-form-field>
 
-                                      <mat-form-field appearance="outline" fxFlex="100%">
-                                        <mat-label>TabletDose</mat-label>
-                                        <input matInput name="TabletDose" required formControlName="TabletDose"
-                                          type="text" OnlyNumber id="TabletDose" autocomplete="off" #TabletDose />
-                                      </mat-form-field>
+                                    <div fxLayout="row" fxLayoutGap="4px">
+                                      <airmid-textbox label="Tablet" formControlName="Tablet" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
+
+                                      <airmid-textbox label="TabletDose" formControlName="TabletDose" fxFlex="50%"
+                                        [formGroup]="SugarForm">
+                                      </airmid-textbox>
                                     </div>
                                   </div>
                                 </div>
@@ -945,8 +993,8 @@
                       <div class="tab-footer">
                         <div class="tab-footer-action">
                           <div class="tab-footer-buttons">
-                            <button class="btn btn-danger-outline">Reset</button>
-                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-danger-outline" (click)="OnCloseSugar()">Reset</button>
+                            <button class="btn btn-primary" (click)="OnsaveSugarlevel()">Save</button>
                           </div>
                         </div>
                       </div>
@@ -956,12 +1004,12 @@
 
                 <!-- 7th tab -->
                 <mat-tab label="Oxygen/ventilation">
-                  <form [formGroup]="_ClinicalcareService.OxygenForm">
+                  <form [formGroup]="OxygenForm">
                     <div class="tab-container tab-grid">
                       <div class="tab-body">
                         <div class="tab-box">
-                          <div class="tab-content" fxFlex>
-                            <mat-card fxFlex>
+                          <div class="tab-content">
+                            <mat-card>
                               <div class="airmid-table-container table-column">
                                 <mat-table class="airmid-table" class="h-250" matSort [dataSource]="dsOxygenTable"
                                   [@animateStagger]="{ value: '50' }" style="overflow: auto">
@@ -969,95 +1017,149 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                       fxShow.gt-sm>Date</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Date }}
+                                      {{ element.entryDate | date:'dd/MM/YYYY' }} - {{ element.entryTime |
+                                      date:'HH:mm'}}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Time">
+                                  <ng-container matColumnDef="TidolV">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Time</mat-header-cell>
+                                      fxShow.gt-sm>TidolV</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Time }}
+                                      {{ element.tidolV }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="IV">
+                                  <ng-container matColumnDef="SetRange">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>IV</mat-header-cell>
+                                      fxShow.gt-sm>SetRange</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.IV }}
+                                      {{ element.setRange }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Infusions">
+                                  <ng-container matColumnDef="IPAP">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Infusions</mat-header-cell>
+                                      fxShow.gt-sm>IPAP</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Infusions }}
+                                      {{ element.ipap }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Boluses">
+                                  <ng-container matColumnDef="MinuteV">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Boluses</mat-header-cell>
+                                      fxShow.gt-sm>MinuteV</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Boluses }}
+                                      {{ element.minuteV }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Peroral">
+                                  <ng-container matColumnDef="RateTotal">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Peroral</mat-header-cell>
+                                      fxShow.gt-sm>RateTotal</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Peroral }}
+                                      {{ element.rateTotal }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Perrt">
+                                  <ng-container matColumnDef="EPAP">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Perrt</mat-header-cell>
+                                      fxShow.gt-sm>EPAP</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Perrt }}
+                                      {{ element.epap }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Perjt">
+                                  <ng-container matColumnDef="Peep">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Perjt</mat-header-cell>
+                                      fxShow.gt-sm>Peep</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Perjt }}
+                                      {{ element.peep }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="IntakeOther">
+                                  <ng-container matColumnDef="PC">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>IntakeOther</mat-header-cell>
+                                      fxShow.gt-sm>PC</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.IntakeOther }}
+                                      {{ element.pc }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Urine">
+                                  <ng-container matColumnDef="MVPercentage">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>patientId</mat-header-cell>
+                                      fxShow.gt-sm>MVPercentage</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.patientId }}
+                                      {{ element.mvpercentage }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Drange">
+                                   <ng-container matColumnDef="PrSup">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>PatientName</mat-header-cell>
+                                      fxShow.gt-sm>PrSup</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.PatientName }}
+                                      {{ element.prSup }}
                                     </mat-cell>
                                   </ng-container>
 
-                                  <ng-container matColumnDef="Action">
+                                  <ng-container matColumnDef="FIO2">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                      fxShow.gt-sm>Action</mat-header-cell>
+                                      fxShow.gt-sm>FIO2</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                      {{ element.Action }}
+                                      {{ element.fio2 }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                   <ng-container matColumnDef="IE">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>IE</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.ie }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="OxygenRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>OxygenRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.oxygenRate }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="SaturationWithO2">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>SaturationWithO2</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.saturationWithO2 }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                   <ng-container matColumnDef="FlowTrigger">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>FlowTrigger</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.flowTrigger }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="CreatedBy">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                      fxShow.gt-sm>CreatedBy</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      {{ element.createdBy }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="Action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                      Action </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      <button mat-icon-button (click)="onEditOxygen(element)" matTooltip="Edit">
+                                        <mat-icon>edit</mat-icon>
+                                      </button>
+                                      <button mat-icon-button (click)="deleteOxygenTableRow(element)" color="warn">
+                                        <mat-icon>delete_outline</mat-icon>
+                                      </button>
                                     </mat-cell>
                                   </ng-container>
 
@@ -1070,9 +1172,9 @@
                                     <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
                                   </ng-container>
 
-                                  <mat-header-row class="accent"
+                                  <mat-header-row class="accent min-width-2500"
                                     *matHeaderRowDef="displayedOxygen; sticky: true"></mat-header-row>
-                                  <mat-row *matRowDef="let row; columns: displayedOxygen" class="element"
+                                  <mat-row *matRowDef="let row; columns: displayedOxygen" class="element min-width-2500"
                                     [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                   <mat-footer-row *matFooterRowDef="['noData']"
                                     [ngClass]="{ hide: !(dsOxygenTable != null && dsOxygenTable.data.length == 0) }"></mat-footer-row>
@@ -1084,92 +1186,65 @@
                             <mat-card fxFlex>
                               <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
                                 <div fxLayout="row wrap" fxLayoutGap="4px grid">
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Tidol V (ml)</mat-label>
-                                    <input matInput name="Tidol" required formControlName="Tidol" type="text" OnlyNumber
-                                      id="Tidol" autocomplete="off" #Tidol />
-                                  </mat-form-field>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>SetRange(Per Min)</mat-label>
-                                    <input matInput name="SetRange" required formControlName="SetRange" type="text"
-                                      OnlyNumber id="SetRange" autocomplete="off" #SetRange />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Tidol V (ml)" formControlName="tidolV" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>IPAP</mat-label>
-                                    <input matInput name="IPAP" required formControlName="IPAP" type="text" OnlyNumber
-                                      id="IPAP" autocomplete="off" #IPAP />
-                                  </mat-form-field>
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Minute V (lit./min)</mat-label>
-                                    <input matInput name="minuteV" required formControlName="minuteV" type="text"
-                                      OnlyNumber id="minuteV" autocomplete="off" #minuteV />
-                                  </mat-form-field>
+                                  <airmid-textbox label="SetRange(Per Min)" formControlName="setRange" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Rate Total</mat-label>
-                                    <input matInput name="RateTotal" required formControlName="RateTotal" type="text"
-                                      OnlyNumber id="RateTotal" autocomplete="off" #RateTotal />
-                                  </mat-form-field>
+                                  <airmid-textbox label="IPAP" formControlName="ipap" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>EPAP</mat-label>
-                                    <input matInput name="EPAP" required formControlName="EPAP" type="text" OnlyNumber
-                                      id="EPAP" autocomplete="off" #EPAP />
-                                  </mat-form-field>
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Peep(cm)</mat-label>
-                                    <input matInput name="Peep" required formControlName="Peep" type="text" OnlyNumber
-                                      id="Peep" autocomplete="off" #Peep />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Minute V (lit./min)" formControlName="minuteV" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>PC</mat-label>
-                                    <input matInput name="PC" required formControlName="PC" type="text" OnlyNumber
-                                      id="PC" autocomplete="off" #PC />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Rate Total" formControlName="rateTotal" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>% MV</mat-label>
-                                    <input matInput name="MV" required formControlName="MV" type="text" OnlyNumber
-                                      id="MV" autocomplete="off" #MV />
-                                  </mat-form-field>
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Pr.Sup (cm)</mat-label>
-                                    <input matInput name="Sup" required formControlName="Sup" type="text" OnlyNumber
-                                      id="Sup" autocomplete="off" #Sup />
-                                  </mat-form-field>
+                                  <airmid-textbox label="EPAP" formControlName="epap" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>FiO2</mat-label>
-                                    <input matInput name="FiO2" required formControlName="FiO2" type="text" OnlyNumber
-                                      id="FiO2" autocomplete="off" #FiO2 />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Peep(cm)" formControlName="peep" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>I:E</mat-label>
-                                    <input matInput name="IE" required formControlName="IE" type="text" OnlyNumber
-                                      id="IE" autocomplete="off" #IE />
-                                  </mat-form-field>
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Oxygen Rate Per Min</mat-label>
-                                    <input matInput name="OxygenRate" required formControlName="OxygenRate" type="text"
-                                      OnlyNumber id="OxygenRate" autocomplete="off" #OxygenRate />
-                                  </mat-form-field>
+                                  <airmid-textbox label="PC" formControlName="pc" fxFlex="33%" [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>Saturation With o2</mat-label>
-                                    <input matInput name="SaturationWitho2" required formControlName="SaturationWitho2"
-                                      type="text" OnlyNumber id="SaturationWitho2" autocomplete="off"
-                                      #SaturationWitho2 />
-                                  </mat-form-field>
+                                  <airmid-textbox label="MV" formControlName="mvpercentage" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
 
-                                  <mat-form-field appearance="outline" fxFlex="33">
-                                    <mat-label>FLow Trigger</mat-label>
-                                    <input matInput name="FlowTrigger" required formControlName="FlowTrigger"
-                                      type="text" OnlyNumber id="FlowTrigger" autocomplete="off" #FlowTrigger />
-                                  </mat-form-field>
+                                  <airmid-textbox label="Pr.Sup (cm)" formControlName="prSup" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="FiO2" formControlName="fio2" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="I:E" formControlName="ie" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Oxygen Rate Per Min" formControlName="oxygenRate" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="Saturation With o2" formControlName="saturationWithO2"
+                                    fxFlex="33%" [formGroup]="OxygenForm">
+                                  </airmid-textbox>
+
+                                  <airmid-textbox label="FLow Trigger" formControlName="flowTrigger" fxFlex="33%"
+                                    [formGroup]="OxygenForm">
+                                  </airmid-textbox>
                                 </div>
                               </div>
                             </mat-card>
@@ -1179,8 +1254,8 @@
                       <div class="tab-footer">
                         <div class="tab-footer-action">
                           <div class="tab-footer-buttons">
-                            <button class="btn btn-danger-outline">Reset</button>
-                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-danger-outline" (click)="OnCloseOxygen()">Reset</button>
+                            <button class="btn btn-primary" (click)="OnsaveOxygenVenti()">Save</button>
                           </div>
                         </div>
                       </div>
@@ -1779,27 +1854,36 @@
         <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p">
           <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
 
-            <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="_ClinicalcareService.MyForm"
-              [mode]="autocompleteward">
-            </airmid-dropdown>
+            <div fxFlex fxLayout="row" class="gap-8">
+              <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="_ClinicalcareService.MyForm"
+                [mode]="autocompleteward" [(ngModel)]="gridConfig5.filters[1].fieldValue" fxFlex
+                (selectionChange)="getSelectedObjward($event)">
+              </airmid-dropdown>
+              <div>
+                <button class="btn btn-primary btn-with-icon btn-xs" (click)="getSelectedObjward($event)">
+                  <span class="btn-icon">
+                    <mat-icon>search</mat-icon>
+                  </span>
+                </button>
+              </div>
+            </div>
 
             <mat-form-field appearance="outline">
-              <input type="text" name="RegID" formControlName="RegID" placeholder="Search First Name / Last Name "
-                matInput />
-              <span matSuffix style="display: flex">
-                <mat-icon class="mat-icon-close"
-                  (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false">close</mat-icon>
-                <mat-icon class="mat-icon-close"
-                  (click)="_ClinicalcareService.MyForm.get('RegID').setValue(''); isRegIdSelected = false">search</mat-icon>
-              </span>
+              <mat-label>Patient Name</mat-label>
+              <input type="text" name="PatientName" formControlName="PatientName"
+                placeholder="Search First Name / Last Name " matInput (input)="onChangeFirst()" />
+              <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('PatientName')">
+                <mat-icon>close</mat-icon>
+              </button>
             </mat-form-field>
 
-            <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3">
+            <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="column" class="pb-3" dynamicTableHeight>
               <div matColumnDef="loading" [ngClass]="{ hide: !(sIsLoading == 'loading-data') }" class="backgroundBlur"
                 style="height: 50%; width: 250px">
                 <div class="spinner-border text-danger"></div>
               </div>
-              <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient" [@animateStagger]="{ value: '50' }"
+
+              <!-- <mat-table class="table2" matSort [dataSource]="dsClinicalcarePatient" [@animateStagger]="{ value: '50' }"
                 fxFlex>
                 <ng-container matColumnDef="patientId">
                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Bed
@@ -1832,8 +1916,13 @@
                 <mat-footer-row *matFooterRowDef="['noData']"
                   [ngClass]="{ hide: !(dsClinicalcarePatient != null && dsClinicalcarePatient.data.length == 0) }"></mat-footer-row>
               </mat-table>
+
               <mat-paginator #wardpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                showFirstLastButtons></mat-paginator>
+                showFirstLastButtons></mat-paginator> -->
+
+              <airmid-table [gridConfig]="gridConfig5" class="content" #grid5 [ShowFilter]="false" [ShowButtons]="false"
+                (onSelectRow)="getpatientDet($event)">
+              </airmid-table>
             </mat-card>
           </div>
         </form>

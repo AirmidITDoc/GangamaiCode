@@ -101,6 +101,7 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+openedFromClinical = false;
   ngAfterViewInit() {
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
@@ -119,6 +120,7 @@ export class NursingnoteComponent implements OnInit {
         },
         {
           action: gridActions.print, callback: (data: any) => {
+            this.ViewNusrsingNote(data.admID)
           }
         }]
     }
@@ -203,10 +205,6 @@ export class NursingnoteComponent implements OnInit {
         {
           action: gridActions.edit, callback: (data: any) => {
             this.OnHandOverEdit(data);
-          }
-        },
-        {
-          action: gridActions.print, callback: (data: any) => {
           }
         }]
     }
@@ -425,9 +423,8 @@ deleteTableRow(event, element) {
       console.log(this.myNursingForm.value)
 
       this._NursingStationService.NursingNoteInsert(this.myNursingForm.value).subscribe(response => {
-       console.log(response)
         this.onClear();
-         console.log(this.OP_IP_Id)
+        this.grid.bindGridData();
         this.ViewNusrsingNote(this.OP_IP_Id)
       });
     } else {
@@ -459,25 +456,6 @@ deleteTableRow(event, element) {
     this.IsAddFlag = true
     this.vDescription = null;
     // this.onClearPatientInfo()
-    this.myform.get('RegID').setValue('')
-     this.vRegNo = '';
-    this.vPatientName = '';
-    this.vWardName = '';
-    this.vBedName = '';
-    this.vGender = '';
-    this.vIPDNo = '';
-    this.vDepartment = '';
-    this.vDoctorName = '';
-    this.vAgeyear = '';
-    this.vAgeMonth = '';
-    this.vAgeDay = '';
-     this.vAge = '';
-    this.vGenderName = '';
-    this.vRefDocName = '';
-    this.vPatientType = '';
-    this.vTariffName = '';
-    this.vCompanyName = '';
-    this.vDOA='';
   }
   // patient hand over
   onSubmitHandOver() {
@@ -496,7 +474,8 @@ deleteTableRow(event, element) {
 
       this._NursingStationService.HandOverInsert(this.myHandOverForm.value).subscribe(response => {
         this.getHandOverNotelist()
-        this.onClear();
+            this.grid1.bindGridData();
+        this.onClose();
       });
     }else {
       let invalidFields = [];
@@ -557,6 +536,12 @@ deleteTableRow(event, element) {
     this.myHandOverForm.get('shiftInfo').setValue('Morning')
     this.myHandOverForm.get('comments').setValue('')
     this.dsHandOverNoteList.data = [];
+  }
+
+  closeDialog() {
+    if (this._matDialog) {
+      this._matDialog.closeAll();
+    }
   }
 }
 

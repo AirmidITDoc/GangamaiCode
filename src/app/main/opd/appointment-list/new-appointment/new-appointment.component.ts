@@ -414,9 +414,11 @@ export class NewAppointmentComponent implements OnInit {
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
-                            FirstName: this.registerObj.firstName,
-                            LastName: this.registerObj.lastName,
-                            MobileNo: this.registerObj.mobileNo,
+                            FirstName: this.registerObj.firstName.trim(),
+                            middleName: this.registerObj.middleName.trim(),
+                            LastName: this.registerObj.lastName.trim(),
+                            MobileNo: this.registerObj.mobileNo.trim(),
+                            address: this.registerObj.address.trim(),
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -458,8 +460,10 @@ export class NewAppointmentComponent implements OnInit {
                         this.getLastDepartmetnNameList(this.registerObj)
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
+                            middleName: this.registerObj.middleName.trim(),
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
+                            address: this.registerObj.address.trim(),
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -520,7 +524,7 @@ export class NewAppointmentComponent implements OnInit {
             const name = obj.text?.split('|')[0]?.trim();
             Swal.fire({
                 icon: 'warning',
-                title: 'Appointment Already Done',
+                title: 'Appointment already completed',
                 text: `This ${name} already has an appointment.`,
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#3085d6'

@@ -49,7 +49,7 @@
                 </div>
                 <!-- op to ip convert -->
                 <div class="dashboard-card opipconvert">
-                    <div class="card-label">OPTOIPConvert</div>
+                    <div class="card-label">OP To IP Convert</div>
                     <div class="card-value">{{VOPtoIPcount}}</div>
                     <mat-icon class="card-icon">assignment_turned_in</mat-icon>
                 </div>
@@ -108,13 +108,13 @@
             </mat-icon> -->
             <span *ngIf="element.admissionType==0" class="ml-1 font-bold" matTooltip="Normal">N</span>
 
-            <span *ngIf="element.admissionType==1" class="ml-1 font-bold" matTooltip="OPTOIPConvert">O</span>
+            <span *ngIf="element.admissionType==1" class="ml-1 font-bold" matTooltip="OP to IP Converted">O</span>
             <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.admissionType==1" [disabled]="element.disabled"
                 class="disabled-icon">
                 redo
             </mat-icon>
 
-            <span *ngIf="element.admissionType==2" class="ml-1 font-bold" matTooltip="EmgToIPConvert">E</span>
+            <span *ngIf="element.admissionType==2" class="ml-1 font-bold" matTooltip="Emergency To IP Converted">E</span>
             <mat-icon matTooltip="EmgToIPConvert" *ngIf="element.admissionType==2" [disabled]="element.disabled"
                 class="disabled-icon">
                 redo

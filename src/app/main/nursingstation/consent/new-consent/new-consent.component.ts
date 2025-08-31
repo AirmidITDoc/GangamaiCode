@@ -97,6 +97,7 @@ export class NewConsentComponent {
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if ((this.data?.consentId ?? 0) > 0) {
       this.vConsentText = this.data.consentText
+      this.ConsentinsertForm.get('ConsentText').setValue(this.vConsentText)
       this.OP_IP_Id = this.data.opipid
       this.OP_IPType = this.data.opipType
       this.vSelectedOption = this.data.opipType === 1 ? 'IP' : 'OP';

@@ -18,7 +18,7 @@ export class OtRequestService {
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.requestform = this.createRequestForm();
-        // this.myformSearch = this.createSearchForm();
+        this.myformSearch = this.createSearchForm();
     }
 
     createRequestForm(): FormGroup {
@@ -46,12 +46,12 @@ export class OtRequestService {
             doctorTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
-    // createSearchForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         CityNameSearch: [""],
-    //         IsDeletedSearch: [""],
-    //     });
-    // }
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
+        });
+    }
 
     // getOtRequestList(fromDate: string, toDate: string) {
     //     return this._httpClient.PostData('OTBooking/OTBookingRequestEmergencyList', {

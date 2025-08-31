@@ -333,8 +333,8 @@ export class NUserComponent implements OnInit {
       tLoginStoreDetails: this._formBuilder.array([]),
 
       // extra fields
-      multipleUnitId: [[]],
-      multipleStoreId: [[]],
+      multipleUnitId: [[],[Validators.required]],
+      multipleStoreId: [[],[Validators.required]],
       IsPharmacyBalClearnace:false
 
     });
