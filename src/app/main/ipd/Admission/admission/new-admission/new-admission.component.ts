@@ -180,8 +180,10 @@ export class NewAdmissionComponent implements OnInit {
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
             FirstName: this.registerObj.firstName.trim(),
+            middleName: this.registerObj.middleName.trim(),
             LastName: this.registerObj.lastName.trim(),
             MobileNo: this.registerObj.mobileNo.trim(),
+            address: this.registerObj.address.trim(),
             // MaritalStatusId: this.registerObj.maritalStatusId,
             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -988,11 +990,22 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   public displayedColumns =
-    ['opdNo', 'vistDateTime', 'patientName', 'doctorName'];
+    ['UHID','vistDateTime', 'patientName', 'PatientType','opdNo','doctorName','RefDoctorName','ConvertId'];
 
   onRowClick(contact) {
-    this.ListdialogRef.close(contact);
-    // this.getSelectedObj(contact)
+   
+      if (contact.convertId !== "0") {
+                const name = contact.patientName?.trim();
+                Swal.fire({
+                    icon: 'warning',
+                    title: `Admission for the selected patient ${name} has already been completed.`,
+                    text: `This patient ${name} already admitted.`,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+     this.ListdialogRef.close(contact);
   }
   //////////////////////// op to ip convert code end ////////////////////////
 

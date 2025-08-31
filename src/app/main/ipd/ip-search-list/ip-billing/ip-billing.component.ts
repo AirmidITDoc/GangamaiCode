@@ -1580,10 +1580,21 @@ export class IPBillingComponent implements OnInit {
             const serviceDate = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
             const admissionDate = new Date(aYear, aMonth - 1, aDay);
 
+            // // Check if service date is earlier than admission date
+            // if (serviceDate < admissionDate) {
+            //     Swal.fire('The Charge Date should not be less than the Admission Date.');
+            //     this.Serviceform.get('chargesDate').setValue(new Date())
+            // }
             // Check if service date is earlier than admission date
             if (serviceDate < admissionDate) {
-                Swal.fire('The Charge Date should not be less than the Admission Date.');
-                this.Serviceform.get('chargesDate').setValue(new Date())
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Charge Date',
+                    text: 'The charge date cannot be earlier than the admission date.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    this.Serviceform.get('chargesDate')?.setValue(new Date());
+                });
             }
         }
 
@@ -1629,7 +1640,9 @@ export class IPBillingComponent implements OnInit {
             "concessionPercentage": element.concessionPercentage || 0,
             "concessionAmount": element.concessionAmount || 0,
             "netAmount": element.netAmount || 0,
-            "doctorId": DoctorId || 0
+            "doctorId": DoctorId || 0,
+            "isInclusionExclusion": element.isInclusionExclusion,
+            "ModifiedBy": this.accountService.currentUserValue.userId
         }
         this._IpSearchListService.UpdateChargesDetails(addCharge, element.chargesId).subscribe(response => {
             if (response) {
