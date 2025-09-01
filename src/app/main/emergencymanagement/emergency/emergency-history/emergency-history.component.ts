@@ -90,23 +90,23 @@ export class EmergencyHistoryComponent {
     return this._frombuilder.group({
       emgHistoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       emgId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      height: ['', [Validators.required, Validators.maxLength(20),
+      height: ["", [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      pweight: ['', [Validators.required, Validators.maxLength(20),
+      pweight: ["", [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bmi: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
-      bsl: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
-      spO2: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
-      pulse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
-      bp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
-      temp: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
-      chiefComplaint: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
-      diagnosis: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
-      examination: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
+      bmi: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
+      bsl: ["", [ Validators.maxLength(20)]],
+      spO2: ["", [ Validators.maxLength(20)]],
+      pulse: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      bp: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      temp: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
+      chiefComplaint: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly],
+      diagnosis: [""],
+      examination: [""],
       // mAssignChiefComplaint: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       // mAssignDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
       // mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
-      advice: ['']
+      advice: [""]
     })
   }
 
@@ -204,7 +204,7 @@ export class EmergencyHistoryComponent {
 
   selectChangeChiefComplaint(selectedChips: string[]) {
     this.addCheiflist = selectedChips;
-    this.historyForm.get('mAssignChiefComplaint')?.setValue(this.addCheiflist);
+    this.historyForm.get('chiefComplaint')?.setValue(this.addCheiflist);
   }
 
   selectChangeDiagnosis(selectedChips: string[]) {
@@ -216,13 +216,21 @@ export class EmergencyHistoryComponent {
     this.addExaminlist = selectedChips;
     this.historyForm.get('mAssignExamination')?.setValue(this.addExaminlist);
   }
+vDescription:any;
 
   onSave() {
-    console.log(this.historyForm.value)
+    console.log('DirectData:',this.historyForm.get('chiefComplaint').value)
+    console.log('DirectData1:',this.vDescription)
     if (!this.historyForm.invalid) {
       this.historyForm.get('emgHistoryId').setValue(this.registerObj1.emgHistoryId || 0)
       this.historyForm.get('emgId').setValue(this.emergencyId)
+      this.historyForm.get('advice').setValue(this.registerObj1.advice || this.historyForm.get('advice').value)
       this.historyForm.get('bmi').setValue(String(this.historyForm.get('bmi').value))
+      this.historyForm.get('bp').setValue(String(this.historyForm.get('bp').value) ?? '')
+      this.historyForm.get('bsl').setValue(String(this.historyForm.get('bsl').value) ?? '')
+      this.historyForm.get('spO2').setValue(String(this.historyForm.get('spO2').value) ?? '')
+      this.historyForm.get('pulse').setValue(String(this.historyForm.get('pulse').value) ?? '')
+      this.historyForm.get('temp').setValue(String(this.historyForm.get('temp').value) ?? '')
       console.log(this.historyForm.value)
       this._EmergencyService.EmgHistorySave(this.historyForm.value).subscribe((res) => {
         this.OnViewReportPdf(res)

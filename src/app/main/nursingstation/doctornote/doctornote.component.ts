@@ -17,6 +17,7 @@ import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import { LanguageOption, SpeechRecognitionService } from "app/main/shared/services/speech-recognition.service";
 
 @Component({
   selector: 'app-doctornote',
@@ -92,10 +93,14 @@ export class DoctornoteComponent implements OnInit {
     public toastr: ToastrService,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
+    public speechService: SpeechRecognitionService,
   ) { }
 
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
+
+  languages: LanguageOption[] = [];
+  selectedLang = 'en-US';
 
   showDropdown = true;
 
@@ -170,6 +175,8 @@ export class DoctornoteComponent implements OnInit {
     this.myHandOverform.markAllAsTouched()
     this.myNoteform = this._NursingStationService.createDoctorNoteForm();
     this.myNoteform.markAllAsTouched()
+
+    this.languages = this.speechService.supportedLanguages;
   }
 
   gridConfig: gridModel = {
@@ -447,6 +454,28 @@ export class DoctornoteComponent implements OnInit {
     if (this._matDialog) {
       this._matDialog.closeAll();
     }
+  }
+
+ onEditorValueChange(content: string) {
+  console.log("Got from editor:", content);
+  this.myNoteform.get('doctorsNotes')?.setValue(content);
+}
+
+  //////////////// mic code /////////////////
+  onLangChange() {
+    debugger
+    if (this.speechService.isListening) {
+      this.speechService.stopRecognition();
+    }
+  }
+
+  onMicToggle() {
+    const lang = this.selectedLang || 'en-US';
+    this.speechService.toggleRecognition(lang, (text: string) => {
+      const currentText = this.myNoteform.get('doctorsNotes')?.value || '';
+      const updated = currentText ? `${currentText} ${text}` : text;
+      this.myNoteform.get('doctorsNotes')?.setValue(updated);
+    });
   }
 }
 export class DocNote {

@@ -41,6 +41,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DoctornoteComponent } from './doctornote.component';
 import { DoctornoteService } from './doctornote.service';
 import { NewTemplateComponent } from './new-template/new-template.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const routes: Routes = [
   {
@@ -92,7 +93,8 @@ const routes: Routes = [
         MatTooltipModule,
         ScrollingModule,
         MatButtonToggleModule,
-        AngularEditorModule
+        AngularEditorModule,
+        MatBadgeModule
     ],
     providers: [
         DatePipe,

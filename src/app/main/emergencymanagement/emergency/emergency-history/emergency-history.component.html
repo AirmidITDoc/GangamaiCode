@@ -179,45 +179,13 @@
 
                                     <div fxLayout="column">
                                         <div style="margin-bottom: 16px;" fxLayout="column">
-                                            <span style="font-weight: 700;">
-                                                Chief Complaints
-                                            </span>
-                                            <hr>
-                                            <!-- <airmid-textbox label="Chief Complaints" formControlName="chiefComplaint" [value]="registerObj1?.chiefComplaint" [formGroup]="historyForm">
-                                            </airmid-textbox> -->
-                                            <!-- <airmid-editor label="Chief Complaints"
-                                                formControlName="chiefComplaint"
+                                            <airmid-editor label="Patient Assessment"
+                                                formControlName="chiefComplaint" [(value)]="vDescription"
                                                 [formGroup]="historyForm">
-                                            </airmid-editor> -->
-                                            <angular-editor [config]="editorConfig" formControlName="chiefComplaint"
+                                            </airmid-editor>
+                                            <!-- <angular-editor [config]="editorConfig" formControlName="chiefComplaint"
                                                 (blur)="onBlur($event)">
-                                            </angular-editor>
-                                        </div>
-
-                                        <div style="margin-bottom: 16px;" fxLayout="column">
-                                            <span style="font-weight: 700;">
-                                                Diagnosis
-                                            </span>
-                                            <hr>
-                                            <!-- <airmid-textbox label="Diagnosis" formControlName="diagnosis"
-                                                [value]="registerObj1?.diagnosis" [formGroup]="historyForm">
-                                            </airmid-textbox> -->                                            
-                                            <angular-editor [config]="editorConfig" formControlName="diagnosis"
-                                                (blur)="onBlur($event)" >
-                                            </angular-editor>
-                                        </div>
-
-                                        <div style="margin-bottom: 16px;" fxLayout="column">
-                                            <span style="font-weight: 700;">
-                                                Examination
-                                            </span>
-                                            <hr>
-                                            <!-- <airmid-textbox label="Examination" formControlName="examination"
-                                                [value]="registerObj1?.examination" [formGroup]="historyForm">
-                                            </airmid-textbox> -->
-                                            <angular-editor [config]="editorConfig" formControlName="examination"
-                                                (blur)="onBlur($event)" >
-                                            </angular-editor>
+                                            </angular-editor> -->
                                         </div>
 
                                     </div>
