@@ -271,4 +271,16 @@ export class ClinicalCareChartService {
   public OnDeleteAssessmentWeight(param) {
     return this._httpClient1.PostData('ClinicalCare/TNursingWeightCancel', param)
   }
+
+  public OnDeleteVital(param) {
+    return this._httpClient1.PostData('ClinicalCare/TNursingVitalCancel', param)
+  }
+
+  public OnDeleteSugar(param) {
+    return this._httpClient1.PostData('ClinicalCare/TNursingSugarLevelCancel', param)
+  }
+
+   public OnDeleteOxygenVen(param) {
+    return this._httpClient1.PostData('ClinicalCare/TNursingOrygenVentilatorCancel', param)
+  }
 }

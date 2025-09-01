@@ -606,7 +606,7 @@
                         <ng-container matColumnDef="Exclucion" stickyEnd>
                           <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90">Exclusion</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-90">
-                            <mat-checkbox aria-label="Checked" (change)="ExclusionChecked($event, contact)"
+                            <mat-checkbox aria-label="Checked" (change)="gettablecalculation(contact)"
                               [(ngModel)]="contact.isInclusionExclusion"></mat-checkbox>
                           </mat-cell>
                         </ng-container>
@@ -803,11 +803,11 @@
                   <div class="net-amt gap-12" style="margin-left: 40%;">
 
                     <div class="net-amt-box">
-                      <div class="net-amt-label">Exclusion Amt :</div>
+                      <div class="net-amt-label">Company Amt :</div>
                       <div class="net-amt-value">{{ ExclusionAmt | currency : 'INR':'symbol':'1.2-2' }}</div>
                     </div>
                     <div class="net-amt-box">
-                      <span class="net-amt-label">Inclusion Amt :</span>
+                      <span class="net-amt-label">Patient Amt :</span>
                       <span class="net-amt-value">{{ InclusionAmt | currency : 'INR' }}</span>
                     </div>
 

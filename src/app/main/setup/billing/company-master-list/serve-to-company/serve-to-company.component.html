@@ -21,331 +21,212 @@
 
   <div class="modal-body">
     <div class="modal-body-container">
-      <div class="main-content h-100-p overflow-auto ml-8">
-        <div>
+      <div class="main-content h-100-p ml-8" style="overflow-y: auto; overflow-x: hidden;">
 
-          <div class="personal-panel">
+        <div class="personal-panel">
 
-            <div (click)="$event.stopPropagation()">
-              <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
-                (selectedTabChange)="onTabChange($event)">
-                <mat-tab label="Service To Company Detail"></mat-tab>
-                <mat-tab label="Discount Details"></mat-tab>
-                <mat-tab label="Sub Tpa List"></mat-tab>
-              </mat-tab-group>
-            </div>
+          <div (click)="$event.stopPropagation()">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-in-header"
+              (selectedTabChange)="onTabChange($event)">
+              <mat-tab label="Service To Company Detail"></mat-tab>
+              <mat-tab label="Discount Details"></mat-tab>
+              <mat-tab label="Sub Tpa List"></mat-tab>
+            </mat-tab-group>
+          </div>
 
-            <ng-container [ngSwitch]="selectedTabIndex">
-              <div *ngSwitchCase="0">
-                <form [formGroup]="companyForm">
+          <ng-container [ngSwitch]="selectedTabIndex">
+            <div *ngSwitchCase="0">
+              <form [formGroup]="companyForm">
 
-                  <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding-top: 10px;">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding-top: 10px;">
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                      <airmid-textbox label="CompanyName" formControlName="companyName" [formGroup]="companyForm"
-                        [validations]="getValidationMessages().companyName" [maxLength]="50" [readonly]="true"
-                        [value]="compobj?.companyName">
-                      </airmid-textbox>
-                    </div>
-                  
+                  <div fxFlex="23%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-textbox label="CompanyName" formControlName="companyName" [formGroup]="companyForm"
+                      [validations]="getValidationMessages().companyName" [maxLength]="50" [readonly]="true"
+                      [value]="compobj?.companyName">
+                    </airmid-textbox>
                   </div>
 
+                  <div fxFlex="23%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                  <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                      <!-- <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
+                    <!-- <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="companyForm"
                         (selectionChange)="selectChangemainclass($event)" [validations]="getValidationMessages().compTypeId"
                         [mode]="autocompleteModetypeName">
                       </airmid-dropdown> -->
 
-                      <airmid-autocomplete label="Enter Service Name" [formGroup]="companyForm"
-                        formControlName="ServiceName" placeholderText="Enter Service Name" fxFlex ApiUrl="{{ApiURL}}"
-                        (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
-                        ValueField="serviceId"></airmid-autocomplete>
-
-
-                    </div>
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                      <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
-                        (selectionChange)="selectChangemainclass($event)"
-                       [mode]="autocompleteModeclass2">
-                      </airmid-dropdown>
-                    </div>
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                      <airmid-dropdown label="TariffName" formControlName="TariffId1" [formGroup]="companyForm"
-                        [value]="compobj?.traiffId" [readonly]="true"
-                        [mode]="autocompleteModetariff1">
-                      </airmid-dropdown>
-                    </div>
-
+                    <airmid-autocomplete label="Enter Service Name" [formGroup]="companyForm"
+                      formControlName="ServiceName" placeholderText="Enter Service Name" fxFlex ApiUrl="{{ApiURL}}"
+                      (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                      ValueField="serviceId"></airmid-autocomplete>
                   </div>
-                </form>
-                <!-- fusePerfectScrollbar -->
-                <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                  <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 300px;">
-                    <div
-                      class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                      dynamicTableHeight>
 
-                      <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
-                        [@animateStagger]="{ value: '50' }">
+                  <div fxFlex="23%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="ClassName" formControlName="ClassId2" [formGroup]="companyForm"
+                      (selectionChange)="selectChangemainclass($event)" [mode]="autocompleteModeclass2">
+                    </airmid-dropdown>
+                  </div>
 
-                        <ng-container matColumnDef="ServiceName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ServiceName}}</mat-cell>
-                        </ng-container>
+                  <div fxFlex="23%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="TariffName" formControlName="TariffId1" [formGroup]="companyForm"
+                      [value]="compobj?.traiffId" [readonly]="true" [mode]="autocompleteModetariff1">
+                    </airmid-dropdown>
+                  </div>
 
-                        
-                            <ng-container matColumnDef="ClassName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.ClassName}}</mat-cell>
-                            </ng-container>
+                  <div>
+                    <button class="btn btn-primary btn-with-icon btn-xs" (click)="searchButtonClick()">
+                      <span class="btn-icon">
+                        <mat-icon>search</mat-icon>
+                      </span>
+                    </button>
+                  </div>
 
-                    
-                        <ng-container matColumnDef="classRate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                            <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                                (keyup)="gettableclassrate(element, $event.value)"
-                                (keypress)="keyPressCharater($event)" />
-                            </mat-form-field>
-                          </mat-cell>
-                        </ng-container>
+                </div>
+              </form>
+              <!-- fusePerfectScrollbar -->
+              <!-- <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row"> -->
+              <!-- <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%"> -->
+              <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
 
+                <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
+                  [@animateStagger]="{ value: '50' }">
 
-                        <ng-container matColumnDef="DiscountAmount">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                            <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
-                                (keypress)="keyPressCharater($event)" />
-                            </mat-form-field>
-                          </mat-cell>
-                        </ng-container>
+                  <ng-container matColumnDef="ServiceName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.serviceName}}</mat-cell>
+                  </ng-container>
 
+                  <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className}}</mat-cell>
+                  </ng-container>
 
-                        <ng-container matColumnDef="DiscountPercentage">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
-                          <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                            <mat-form-field appearance="fill">
-                              <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
-                                (keyup)="gettableclassrate(element, $event.value)"
-                                (keypress)="keyPressCharater($event)" />
-                            </mat-form-field>
-                          </mat-cell>
-                        </ng-container>
+                  <ng-container matColumnDef="classRate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="fill">
+                        <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                          (keypress)="keyPressCharater($event)" />
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+                  <!-- (keyup)="gettableclassrate(element, $event.value)" -->
+
+                  <ng-container matColumnDef="DiscountAmount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="fill">
+                        <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
+                          (keypress)="keyPressCharater($event)" />
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="DiscountPercentage">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      <mat-form-field appearance="fill">
+                        <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
+                          (keypress)="keyPressCharater($event)" />
+                      </mat-form-field>
+                    </mat-cell>
+                  </ng-container>
+                  <!--  (keyup)="gettableclassrate(element, $event.value)" -->
 
                   <ng-container matColumnDef="noData">
-                          <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                        </ng-container>
+                    <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                  </ng-container>
 
 
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2;"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
-                          [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
-                       <mat-footer-row *matFooterRowDef="['noData']"
-                          [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+                  <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2;"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
+                    [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
 
 
-                      </mat-table>
-                    </div>
-                  </div>
-                </div>
-
+                </mat-table>
               </div>
+              <mat-paginator [length]="totalRecords" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                showFirstLastButtons (page)="getServiceListMain($event)">
+              </mat-paginator>
+              <!-- </div> -->
+              <!-- </div> -->
 
-              <div *ngSwitchCase="1">
-                <ng-container [ngSwitch]="selectedTabIndex">
-                  <form [formGroup]="searchFormGroup">
-                    <!-- <mat-card> -->
-                    <mat-card-content class="py-8">
+            </div>
 
-                      <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center"
-                        class="input-error-hidden">
-                        <div class="radio-container">
-                          <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
-                            (change)="onChangeRadio($event)">
-                            <!-- <mat-radio-button value="Service">Service Discount</mat-radio-button> -->
-                            <mat-radio-button value="Group">Group Discount</mat-radio-button>
-                            <mat-radio-button value="SubGroup">Sub Group Discount</mat-radio-button>
-                          </mat-radio-group>
-                        </div>
+            <div *ngSwitchCase="1">
+              <ng-container [ngSwitch]="selectedTabIndex">
+                <form [formGroup]="searchFormGroup">
+                  <!-- <mat-card> -->
+                  <mat-card-content class="py-8">
 
+                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center"
+                      class="input-error-hidden">
+                      <div class="radio-container">
+                        <mat-radio-group aria-label="Select an option" formControlName="regRadio" name="regRadio"
+                          (change)="onChangeRadio($event)">
+                          <!-- <mat-radio-button value="Service">Service Discount</mat-radio-button> -->
+                          <mat-radio-button value="Group">Group Discount</mat-radio-button>
+                          <mat-radio-button value="SubGroup">Sub Group Discount</mat-radio-button>
+                        </mat-radio-group>
                       </div>
-                    </mat-card-content>
-                    <!-- </mat-card> -->
-                  </form>
-             
-                  <div *ngIf="Regflag==1">
 
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                      <!-- fusePerfectScrollbar -->
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
-                        <div
-                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                          dynamicTableHeight>
-
-                          <mat-table matSort [dataSource]="discgroupList" class="airmid-table"
-                            [@animateStagger]="{ value: '50' }">
-
-                            <ng-container matColumnDef="GroupName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                element.GroupName}}</mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="TariffName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                element.TariffName}}</mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="DiscountAmount">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
-                                    (keyup)="gettableclassrate(element, $event.value)"
-                                    (keypress)="keyPressCharater($event)" />
-                                </mat-form-field>
-                              </mat-cell>
-                            </ng-container>
-
-                             <ng-container matColumnDef="DiscountPercentage">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
-                                    (keyup)="gettableclassrate(element, $event.value)"
-                                    (keypress)="keyPressCharater($event)" />
-                                </mat-form-field>
-                              </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="loading">
-                              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent"
-                              *matHeaderRowDef="displayedColumnsgrp; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumnsgrp" class="element"
-                              [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']"
-                              [ngClass]="{ hide: discgroupList != null }"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                              [ngClass]="{ hide: !(discgroupList != null && discgroupList.data.length == 0) }"></mat-footer-row>
-
-                          </mat-table>
-                        </div>
-                      </div>
                     </div>
-                  </div>
+                  </mat-card-content>
+                  <!-- </mat-card> -->
+                </form>
 
-                  <div *ngIf="Regflag==2">
+                <div *ngIf="Regflag==1">
 
-                    <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-                      <!-- fusePerfectScrollbar -->
-                      <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
-                        <div
-                          class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                          dynamicTableHeight>
-
-                          <mat-table matSort [dataSource]="discsubgroupList" [@animateStagger]="{ value: '50' }"
-                            class="airmid-table">
-
-                            <ng-container matColumnDef="GroupName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                element.GroupName}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="SubGroupName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>SubGroup Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                element.SubGroupName}}</mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="TariffName">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
-                                element.TariffName}}</mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="DiscountAmount">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
-                                    (keyup)="gettableclassrate(element, $event.value)"
-                                    (keypress)="keyPressCharater($event)" />
-                                </mat-form-field>
-                              </mat-cell>
-                            </ng-container>
-
-                            
-                            <ng-container matColumnDef="DiscountPercentage">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
-                              <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                <mat-form-field appearance="fill">
-                                  <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
-                                    (keyup)="gettableclassrate(element, $event.value)"
-                                    (keypress)="keyPressCharater($event)" />
-                                </mat-form-field>
-                              </mat-cell>
-                            </ng-container>
-
-                          <ng-container matColumnDef="noData">
-                              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                            </ng-container>
-
-
-                            <mat-header-row class="accent min-width-1100"
-                              *matHeaderRowDef="displayedColumnssubgrp; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumnssubgrp"
-                              class="element min-width-1100" [@animate]="{ value: '*', params: { y: '100%' } }"
-                              style="height: 40px;"></mat-row>
-                           <mat-footer-row *matFooterRowDef="['noData']"
-                              [ngClass]="{ hide: !(discsubgroupList != null && discsubgroupList.data.length == 0) }"></mat-footer-row>
-                          </mat-table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                </ng-container>
-              </div>
-              <div *ngSwitchCase="2">
-                <ng-container [ngSwitch]="selectedTabIndex">
-                  <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row" style="padding: 10px;">
+                  <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
                     <!-- fusePerfectScrollbar -->
                     <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
                       <div
                         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                         dynamicTableHeight>
 
-                        <mat-table matSort [dataSource]="subtpaList" class="airmid-table"
+                        <mat-table matSort [dataSource]="discgroupList" class="airmid-table"
                           [@animateStagger]="{ value: '50' }">
 
-                          <ng-container matColumnDef="TypeName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Service
-                              Name</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-500">{{
-                              element.TypeName}}</mat-cell>
+                          <ng-container matColumnDef="GroupName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                              element.GroupName}}</mat-cell>
                           </ng-container>
 
-                          <ng-container matColumnDef="CompanyName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Company
-                              Name</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxShow.gt-sm
-                              class="w-500">{{element.CompanyName}}</mat-cell>
+                          <ng-container matColumnDef="TariffName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                              element.TariffName}}</mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="DiscountAmount">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                              <mat-form-field appearance="fill">
+                                <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
+                                  (keyup)="gettableclassrate(element, $event.value)"
+                                  (keypress)="keyPressCharater($event)" />
+                              </mat-form-field>
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="DiscountPercentage">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount
+                              %</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                              <mat-form-field appearance="fill">
+                                <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
+                                  (keyup)="gettableclassrate(element, $event.value)"
+                                  (keypress)="keyPressCharater($event)" />
+                              </mat-form-field>
+                            </mat-cell>
+                          </ng-container>
+
+
+                          <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="noData">
@@ -353,20 +234,138 @@
                           </ng-container>
 
                           <mat-header-row class="accent"
-                            *matHeaderRowDef="displayedColumnsubtpa; sticky: true"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumnsubtpa" class="element"
-                            [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 40px;"></mat-row>
-                         <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{ hide: !(subtpaList != null && subtpaList.data.length == 0) }"></mat-footer-row>
+                            *matHeaderRowDef="displayedColumnsgrp; sticky: true"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumnsgrp" class="element"
+                            [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
+                          <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{ hide: discgroupList != null }"></mat-footer-row>
+                          <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{ hide: !(discgroupList != null && discgroupList.data.length == 0) }"></mat-footer-row>
+
                         </mat-table>
                       </div>
                     </div>
                   </div>
-                </ng-container>
-              </div>
-            </ng-container>
+                </div>
 
-          </div>
+                <div *ngIf="Regflag==2">
+
+                  <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+                    <!-- fusePerfectScrollbar -->
+                    <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
+                      <div
+                        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                        dynamicTableHeight>
+
+                        <mat-table matSort [dataSource]="discsubgroupList" [@animateStagger]="{ value: '50' }"
+                          class="airmid-table">
+
+                          <ng-container matColumnDef="GroupName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Group Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                              element.GroupName}}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="SubGroupName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>SubGroup Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                              element.SubGroupName}}</mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="TariffName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Tariff Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>{{
+                              element.TariffName}}</mat-cell>
+                          </ng-container>
+
+
+                          <ng-container matColumnDef="DiscountAmount">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                              <mat-form-field appearance="fill">
+                                <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
+                                  (keyup)="gettableclassrate(element, $event.value)"
+                                  (keypress)="keyPressCharater($event)" />
+                              </mat-form-field>
+                            </mat-cell>
+                          </ng-container>
+
+
+                          <ng-container matColumnDef="DiscountPercentage">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount
+                              %</mat-header-cell>
+                            <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                              <mat-form-field appearance="fill">
+                                <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
+                                  (keyup)="gettableclassrate(element, $event.value)"
+                                  (keypress)="keyPressCharater($event)" />
+                              </mat-form-field>
+                            </mat-cell>
+                          </ng-container>
+
+                          <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                          </ng-container>
+
+
+                          <mat-header-row class="accent min-width-1100"
+                            *matHeaderRowDef="displayedColumnssubgrp; sticky: true"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumnssubgrp" class="element min-width-1100"
+                            [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 40px;"></mat-row>
+                          <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{ hide: !(discsubgroupList != null && discsubgroupList.data.length == 0) }"></mat-footer-row>
+                        </mat-table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </ng-container>
+            </div>
+            <div *ngSwitchCase="2">
+              <ng-container [ngSwitch]="selectedTabIndex">
+                <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row" style="padding: 10px;">
+                  <!-- fusePerfectScrollbar -->
+                  <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%" style="height: 400px;">
+                    <div
+                      class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                      dynamicTableHeight>
+
+                      <mat-table matSort [dataSource]="subtpaList" class="airmid-table"
+                        [@animateStagger]="{ value: '50' }">
+
+                        <ng-container matColumnDef="TypeName">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Service
+                            Name</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-500">{{
+                            element.TypeName}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="CompanyName">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-500">Company
+                            Name</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxShow.gt-sm
+                            class="w-500">{{element.CompanyName}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                          <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent"
+                          *matHeaderRowDef="displayedColumnsubtpa; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsubtpa" class="element"
+                          [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 40px;"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                          [ngClass]="{ hide: !(subtpaList != null && subtpaList.data.length == 0) }"></mat-footer-row>
+                      </mat-table>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+
         </div>
 
       </div>

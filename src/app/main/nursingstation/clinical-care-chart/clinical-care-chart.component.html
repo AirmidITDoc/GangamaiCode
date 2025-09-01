@@ -125,12 +125,23 @@
                                   {{element.createdBy}} </mat-cell>
                               </ng-container>
 
+                              <ng-container matColumnDef="IsActive">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                  IsActive
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                  <mat-icon class="active-icon green-600 s-16"
+                                    *ngIf="!element.isActive">check_circle</mat-icon>
+                                  <mat-icon class="active-icon red-500 s-16" *ngIf="element.isActive">close</mat-icon>
+                                </mat-cell>
+                              </ng-container>
+
                               <ng-container matColumnDef="Action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-60">
                                   Action </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-60">
                                   <ng-container class="actions">
-                                    <mat-icon (click)="PaindeleteTableRow($event ,contact)" color="warn">
+                                    <mat-icon (click)="PaindeleteTableRow(element)" color="warn">
                                       delete
                                     </mat-icon>
                                   </ng-container>
@@ -202,6 +213,17 @@
                                     fxShow.gt-sm>Weight</mat-header-cell>
                                   <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     {{ element.patWeightValue }}
+                                  </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsActive">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    IsActive
+                                  </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-icon class="active-icon green-600 s-16"
+                                      *ngIf="!element.isActive">check_circle</mat-icon>
+                                    <mat-icon class="active-icon red-500 s-16" *ngIf="element.isActive">close</mat-icon>
                                   </mat-cell>
                                 </ng-container>
 
@@ -628,6 +650,17 @@
                                   </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="IsActive">
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                    IsActive
+                                  </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <mat-icon class="active-icon green-600 s-16"
+                                      *ngIf="!element.isActive">check_circle</mat-icon>
+                                    <mat-icon class="active-icon red-500 s-16" *ngIf="element.isActive">close</mat-icon>
+                                  </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="Action" stickyEnd>
                                   <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     Action </mat-header-cell>
@@ -869,6 +902,18 @@
                                     </mat-cell>
                                   </ng-container>
 
+                                  <ng-container matColumnDef="IsActive">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                      IsActive
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      <mat-icon class="active-icon green-600 s-16"
+                                        *ngIf="!element.isActive">check_circle</mat-icon>
+                                      <mat-icon class="active-icon red-500 s-16"
+                                        *ngIf="element.isActive">close</mat-icon>
+                                    </mat-cell>
+                                  </ng-container>
+
                                   <ng-container matColumnDef="Action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                       Action </mat-header-cell>
@@ -1094,7 +1139,7 @@
                                     </mat-cell>
                                   </ng-container>
 
-                                   <ng-container matColumnDef="PrSup">
+                                  <ng-container matColumnDef="PrSup">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                       fxShow.gt-sm>PrSup</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -1110,7 +1155,7 @@
                                     </mat-cell>
                                   </ng-container>
 
-                                   <ng-container matColumnDef="IE">
+                                  <ng-container matColumnDef="IE">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                       fxShow.gt-sm>IE</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -1134,7 +1179,7 @@
                                     </mat-cell>
                                   </ng-container>
 
-                                   <ng-container matColumnDef="FlowTrigger">
+                                  <ng-container matColumnDef="FlowTrigger">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                       fxShow.gt-sm>FlowTrigger</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
@@ -1147,6 +1192,18 @@
                                       fxShow.gt-sm>CreatedBy</mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                       {{ element.createdBy }}
+                                    </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="IsActive">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                      IsActive
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                      <mat-icon class="active-icon green-600 s-16"
+                                        *ngIf="!element.isActive">check_circle</mat-icon>
+                                      <mat-icon class="active-icon red-500 s-16"
+                                        *ngIf="element.isActive">close</mat-icon>
                                     </mat-cell>
                                   </ng-container>
 

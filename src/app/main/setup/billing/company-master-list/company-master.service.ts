@@ -153,7 +153,11 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
     }
 
     public getservicMasterListRetrive(data) {
-        return this._httpClient.PostData("Common", data);
+        return this._httpClient.PostData("CompanyMaster/ServiceTariffWiseList", data);
+    }
+
+    public getservicCodeList(data) {
+        return this._httpClient.PostData("CompanyMaster/ServiceCompanyTariffWiseList ", data);
     }
 
     public getsubtpaListRetrive(data) {

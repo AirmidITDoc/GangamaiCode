@@ -25,7 +25,7 @@ import { PackageDetailsComponent } from './package-details/package-details.compo
 })
 export class AppointmentBillingComponent implements OnInit, OnDestroy {
   public displayedChargeColumns: string[] =
-    ['Status', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName', 'Action'];
+    ['Status','ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName', 'ClassName', 'ChargesAddedName','Exclucion','Action'];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
   public displayedPrescriptionColumns =
@@ -105,7 +105,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   ) { };
 
   @ViewChild('regIdfocus') regIdfocus: ElementRef;
-  ngOnInit() {
+  ngOnInit() { 
     this.isModal = !!this.dialogRef;
     this.searchForm = this.createSearchForm();
     this.chargeForm = this.createChargeForm();
@@ -113,14 +113,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
     if (this.data) {
-      this.patientDetail = this.advanceDataStored.storage;
-
+      this.patientDetail = this.advanceDataStored.storage; 
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
-      console.log("Data", this.patientDetail)
-      
-      this.patientDetail.formattedText = this.patientDetail.patientName
-      this.patientDetail.doctorName = this.patientDetail.doctorname
+      console.log("Data", this.patientDetail) 
       this.PatientName = this.patientDetail.patientName
+      this.patientDetail.doctorName = this.patientDetail.doctorname 
       this.DepartmentName = this.patientDetail.departmentName
       this.AgeYear = this.patientDetail.ageYear
       this.Doctorname = this.patientDetail.doctorname
@@ -148,33 +145,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.OPFooterForm);
     this.handleChange('concessionAmt', () => this.updateTotalDiscountPer(), this.OPFooterForm);
   }
-  openServiceTable(): void {
-
+  openServiceTable(): void { 
     this._matDialog.open(this.serviceTable, {
       width: '40%',
-      height: '60%',
-
-    })
-
+      height: '60%', 
+    }) 
     let Data = {
       "first": 0,
       "rows": 100,
       "sortField": "RequestTranId",
       "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "VisitId",
-          "fieldValue": String(this.vOPIPId),//"364435",
-          "opType": "Equals"
-        }
-      ],
+      "filters": [ {  "fieldName": "VisitId", "fieldValue": String(this.vOPIPId),  "opType": "Equals" } ],
       "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
+      "columns": [  { "data": "string", "name": "string" } ]
     }
     debugger
     this._AppointmentlistService.getOPDEmrId(Data).subscribe((response) => {
@@ -344,15 +327,30 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       //bill header  
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdid: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      regNo: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      patientName:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      ipdno: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      ageYear: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      ageMonth: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      ageDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      patientType: [false],
+      companyName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      paidAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       opdipdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy: [this.accountService.currentUserValue.userId],
-      totalAdvanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAdvanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSettled: true,
@@ -360,7 +358,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       isFree: true,
       companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitId: [this.vhospitalId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       companyRefNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -378,12 +376,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       packcagecharges: this.formBuilder.array([]),
 
       //Payment form
-      Payments: this.formBuilder.group({
+      payments: this.formBuilder.group({
         paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         receiptNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        paymentDate: [''],
+        paymentTime: [''],
         cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -423,15 +421,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorName: [item?.DoctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isGenerated: [false],
+      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isComServ: [false],
+      isPrintCompSer: [false], 
+      isGenerated: [true],
       addedBy: [this.accountService.currentUserValue.userId],
       isCancelled: [false],
       isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -439,6 +442,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       isPathology: [item?.IsPathology ? true : false],
       isRadiology: [item?.IsRadiology ? true : false],
       isPackage: [Number(item?.IsPackage ?? 0) === 1],
+      wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceCode: [item?.serviceCode || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isInclusionExclusion:[item?.isInclusionExclusion ?? false,],
+      isHospMrk:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrCompanyService: [false],
       packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -533,6 +543,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           IsPathology: this.IsPathology,
           IsRadiology: this.IsRadiology,
           IsPackage: this.vIsPackage,
+          serviceCode:formValue.serviceName.companyCode, 
+          isInclusionExclusion:formValue.serviceName.isInclusionOrExclusion
         };
         if (!this.isDiscountApplied && discountAmount > 0) {
           this.isDiscountApplied = true;
@@ -635,6 +647,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   EditedPackageService: any = [];
   OriginalPackageService: any = [];
   TotalPrice: any = 0;
+  ExclusionAmt: any = 0;
+  InclusionAmt: any = 0;
   PacakgeList: any = [];
   getPacakgeDetail(contact) {
     const dialogRef = this._matDialog.open(PackageDetailsComponent,
@@ -747,6 +761,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       concessionAmt: Math.round(totalDiscount),
       netPayableAmt: Math.round(totalNet)
     }, { emitEvent: false });
+     
+       const Exclusionlist = this.chargeList.filter(i => i.isInclusionExclusion === true)
+       const Inclusionlist = this.chargeList.filter(i => i.isInclusionExclusion !== true)
+        this.ExclusionAmt = Exclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+        this.InclusionAmt = Inclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);  
+
   }
   onPriceOrQtyChange(row: ChargesList = null): void {
     if (!row) return;
@@ -920,8 +940,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
   getSelectedObj(obj) {
     console.log(obj)
-    this.patientDetail = obj
-    this.PatientName = this.patientDetail.formattedText
+    this.patientDetail = obj 
     this.DepartmentName = this.patientDetail.departmentName
     this.AgeYear = this.patientDetail.ageYear
     this.Doctorname = this.patientDetail.doctorName
@@ -950,8 +969,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       }
     }
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
-    this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
-    this.OpBillForm.get('unitId')?.setValue(this.vhospitalId)
+    this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
+    this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regId) 
+    this.OpBillForm.get('patientName')?.setValue(this.patientDetail?.firstName+' '+this.patientDetail?.lastName)
+    this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
+    this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
+    this.OpBillForm.get('ageMonth')?.setValue(Number(this.patientDetail?.ageMonth) || 0)
+    this.OpBillForm.get('ageDays')?.setValue(Number(this.patientDetail?.ageDays) || 0)
+    this.OpBillForm.get('doctorId')?.setValue(this.patientDetail?.doctorId || 0)
+    this.OpBillForm.get('doctorName')?.setValue(this.patientDetail?.doctorname || '')
+    this.OpBillForm.get('patientType')?.setValue(this.patientDetail?.companyId ? true : false)
+    this.OpBillForm.get('companyName')?.setValue(this.patientDetail?.companyName || '')
+    this.OpBillForm.get('companyAmt')?.setValue(this.ExclusionAmt)
+    this.OpBillForm.get('patientAmt')?.setValue(this.InclusionAmt) 
     this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
     this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value)
     this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
@@ -1007,7 +1037,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           if (result && result.IsSubmitFlag == true) {
             console.log(this.OpBillForm.value)
             console.log(result.submitDataPay.ipPaymentInsert)
-            this.OpBillForm.get('Payments').setValue(result.submitDataPay.ipPaymentInsert)
+            this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.OpBillForm.value)
             this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
               this.viewgetOPBillReportPdf(response)
@@ -1021,9 +1051,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
         this.OpBillForm.get('balanceAmt').setValue(0)
         this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-        this.OpBillForm.get('Payments.cashPayAmount')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-        this.OpBillForm.get('Payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-        this.OpBillForm.get('Payments.paymentTime')?.setValue(this.dateTimeObj.time)
+        this.OpBillForm.get('payments.cashPayAmount')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+        this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
         console.log(this.OpBillForm.value)
         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
           this.viewgetOPBillReportPdf(response)
@@ -1035,7 +1065,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
         this.OpBillForm.get('paidAmt').setValue(0)
         this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-        this.OpBillForm.removeControl('Payments')
+        this.OpBillForm.removeControl('payments')
         console.log(this.OpBillForm.value)
         this._AppointmentlistService.InsertOPBillingCredit(this.OpBillForm.value).subscribe(response => {
           this.viewgetCreditOPBillReportPdf(response)
@@ -1159,6 +1189,8 @@ export class ChargesList {
   ServiceName: String;
   Price: any;
   Qty: any;
+  isInclusionExclusion: any;
+  serviceCode: any; 
   TotalAmt: number;
   DiscPer: number;
   DiscAmt: number;
@@ -1222,7 +1254,9 @@ export class ChargesList {
     this.price = ChargesList.price || 0;
     this.packageId = ChargesList.packageId || '';
     this.doctorName = ChargesList.doctorName || 0;
-    this.doctorId = ChargesList.doctorId || 0;
+    this.doctorId = ChargesList.doctorId || 0; 
+    this.serviceCode = ChargesList.serviceCode || 0;
+    this.isInclusionExclusion = ChargesList.isInclusionExclusion || ''; 
     this.isPathology = ChargesList.isPathology || 0;
     this.isRadiology = ChargesList.isRadiology || 0;
     this.userName = ChargesList.userName || '';

@@ -95,4 +95,11 @@ export class AirmidEditorComponent {
         const editorData = event.editor.getData();
         this.valueChange.emit(editorData);
     }
+
+    // added by raksha 1/9/25
+    onEditorChange({ editor }: any): void {
+        const editorData = editor.getData();
+        console.log("Editor content: ", editorData);
+        this.valueChange.emit(editorData);
+    }
 }

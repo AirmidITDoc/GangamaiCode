@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CompanyMasterService } from '../company-master.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -8,11 +8,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyMaster } from '../company-master-list.component';
+import { fuseAnimations } from '@fuse/animations';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-update-serv-code-print',
   templateUrl: './update-serv-code-print.component.html',
-  styleUrls: ['./update-serv-code-print.component.scss']
+  styleUrls: ['./update-serv-code-print.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class UpdateServCodePrintComponent {
   compwiseserForm: FormGroup;
@@ -70,21 +75,17 @@ export class UpdateServCodePrintComponent {
     return this._formBuilder.group({
       userId: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       serviceWise: this._formBuilder.array([])
-
     });
   }
 
   createserviceDetails(item: any = {}): FormGroup {
     console.log(item)
     return this._formBuilder.group({
-      serviceId: [item.ServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
+      serviceId: [item.serviceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      companyCode: [item.companyCode || "", [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      companyServicePrint: [item.companyServicePrint || "", [Validators.maxLength(50),this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      companyCode: [item.companyCode || "", [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      companyServicePrint: [item.companyServicePrint || "", [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isInclusionOrExclusion: [item.isInclusionOrExclusion || false],
-
-
     });
   }
 
@@ -92,36 +93,55 @@ export class UpdateServCodePrintComponent {
     return this.serviceInsertForm.get('serviceWise') as FormArray;
   }
 
-
-  getServicecompwiseList() {
-    debugger
-    var param =
-    {
-      "searchFields": [
-        {
-          "fieldName": "ServiceName",
-          "fieldValue": String(this.serviceName),
-          "opType": "Equals"
-        },
+  totalRecords = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+  getServicecompwiseList(event?: any) {
+    // debugger
+    if (event) {
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+    }
+    var param = {
+      // "first": 0,
+      // "rows": 10,
+      "first": this.pageIndex * this.pageSize,
+      "rows": this.pageSize,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [
         {
           "fieldName": "TariffId",
           "fieldValue": String(this.tariffId),
           "opType": "Equals"
+        },
+        {
+          "fieldName": "ServiceName",
+          "fieldValue": String(this.serviceName),
+          "opType": "StartsWith"
         }
       ],
-      "mode": "CompanyWiseServiceList"
+      "exportType": "JSON",
+      "columns": []
     }
-
-    console.log(param)
-    this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-      this.DSComwiseServiceList.data = data as Servicedetail[];
+    this._CompanyMasterService.getservicCodeList(param).subscribe(data => {
+      // debugger
+      this.DSComwiseServiceList.data = data.data as Servicedetail[];
+      this.totalRecords = data.recordsTotal;
       console.log(this.DSComwiseServiceList.data)
     });
-
   }
 
   selectService(event) {
-    this.serviceName = event.text
+    if (event.text){
+      this.serviceName = event.text
+    }
+    else{
+      this.serviceName = "%"
+    }
+     this.pageIndex = 0;
     this.getServicecompwiseList()
   }
 
@@ -133,7 +153,7 @@ export class UpdateServCodePrintComponent {
 
 
   onSubmit() {
-
+    debugger
     if (this.DSComwiseServiceList.data.length > 0) {
 
       this.servicearray.clear();

@@ -23,69 +23,75 @@
       <form [formGroup]="compwiseserForm">
         <div fxLayout="row wrap" fxLayoutGap="12px grid" class="p-4">
           <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown
-              label="ServiceName"
-              formControlName="ServiceName"
-              [formGroup]="compwiseserForm"
-              (selectionChange)="selectService($event)"
-              [mode]="autocompleteModetypeName">
+            <airmid-dropdown label="ServiceName" formControlName="ServiceName" [formGroup]="compwiseserForm"
+              (selectionChange)="selectService($event)" [mode]="autocompleteModetypeName">
             </airmid-dropdown>
+          </div>
+          <div>
+            <button class="btn btn-primary btn-with-icon btn-xs" (click)="selectService($event)">
+              <span class="btn-icon">
+                <mat-icon>search</mat-icon>
+              </span>
+            </button>
           </div>
         </div>
       </form>
 
       <!-- Table Section -->
-      <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
-        <div class="table-right" fxFlex="100%" style="height: 400px;">
-          <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-            dynamicTableHeight>
+      <!-- <div class="table-row gap-12" fxLayout="column" fxLayout.gt-sm="row">
+        <div class="table-right" fxFlex="100%"> -->
+      <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-            <mat-table matSort [dataSource]="DSComwiseServiceList" class="airmid-table" [@animateStagger]="{ value: '50' }">
+        <mat-table matSort [dataSource]="DSComwiseServiceList" class="airmid-table" [@animateStagger]="{ value: '50' }">
 
-              <!-- Code Column -->
-              <ng-container matColumnDef="ServiceId">
-                <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-180">Code</mat-header-cell>
-                <mat-cell *matCellDef="let element"  class="w-180">{{ element.ServiceId }}</mat-cell>
-              </ng-container>
+          <!-- Code Column -->
+          <ng-container matColumnDef="ServiceId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.serviceId }}</mat-cell>
+          </ng-container>
 
-              <!-- Service Name Column -->
-              <ng-container matColumnDef="ServiceName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-350">Service Name</mat-header-cell>
-                <mat-cell *matCellDef="let element"  class="w-350">{{ element.ServiceName }}</mat-cell>
-              </ng-container>
-<!-- [(ngModel)]="element.ServiceName" -->
-                <ng-container matColumnDef="Company Code" >
-                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">Company Code</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="w-280">
-                  <mat-form-field appearance="fill" style="width: 100%;">
-                    <input matInput (keyup)="gettableServName(element, $event.target.value)" [(ngModel)]="element.companyCode" />
-                  </mat-form-field>
-                </mat-cell>
-              </ng-container>
+          <!-- Service Name Column -->
+          <ng-container matColumnDef="ServiceName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.serviceName }}</mat-cell>
+          </ng-container>
+          <!-- [(ngModel)]="element.ServiceName" -->
+          <ng-container matColumnDef="Company Code">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Company Code</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <mat-form-field appearance="fill" style="width: 100%;">
+                <input matInput (keyup)="gettableServName(element, $event.target.value)"
+                  [(ngModel)]="element.companyCode" />
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
 
 
-              <!-- Editable Print Name Column -->
-              <ng-container matColumnDef="PrintName">
-                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">Service Print Name</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="w-350">
-                  <mat-form-field appearance="fill" style="width: 100%;">
-                    <input matInput (keyup)="gettableServName(element, $event.target.value)"  [(ngModel)]="element.companyServicePrint" />
-                  </mat-form-field>
-                </mat-cell>
-              </ng-container>
+          <!-- Editable Print Name Column -->
+          <ng-container matColumnDef="PrintName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Service Print Name</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <mat-form-field appearance="fill" style="width: 100%;">
+                <input matInput (keyup)="gettableServName(element, $event.target.value)"
+                  [(ngModel)]="element.companyServicePrint" />
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
 
-              <!-- Checkbox Column -->
-              <ng-container matColumnDef="checkbox" sticky>
-                <mat-header-cell *matHeaderCellDef class="w-60">
-                  Exclude <mat-icon (click)="getChargesList()" style="cursor: pointer;">cached</mat-icon>
-                </mat-header-cell>
-                <mat-cell *matCellDef="let element" class="w-60">
-                  <mat-checkbox (change)="tableElementChecked($event, element)"  [(ngModel)]="element.isInclusionOrExclusion"></mat-checkbox>
-                </mat-cell>
-              </ng-container>
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="checkbox" sticky>
+            <mat-header-cell *matHeaderCellDef>
+              Exclude <mat-icon (click)="getChargesList()" style="cursor: pointer;">cached</mat-icon>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <mat-checkbox (change)="tableElementChecked($event, element)"
+                [(ngModel)]="element.isInclusionOrExclusion"></mat-checkbox>
+            </mat-cell>
+          </ng-container>
 
-              <!-- Action Column -->
-              <!-- <ng-container matColumnDef="Action" stickyEnd>
+          <!-- Action Column -->
+          <!-- <ng-container matColumnDef="Action" stickyEnd>
                 <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
                 <mat-cell *matCellDef="let element" class="w-80">
                   <button mat-icon-button color="warn" (click)="onSaveEntry(element)">
@@ -94,20 +100,26 @@
                 </mat-cell>
               </ng-container> -->
 
-              <!-- No Data Message -->
-              <ng-container matColumnDef="noData">
-                <mat-footer-cell *matFooterCellDef colspan="6">No data found...</mat-footer-cell>
-              </ng-container>
+          <!-- No Data Message -->
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">No data found...</mat-footer-cell>
+          </ng-container>
 
-              <!-- Table Rows -->
-              <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true" class="accent"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns1" class="element" [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 50px;"></mat-row>
-              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: DSComwiseServiceList?.data?.length }"></mat-footer-row>
+          <!-- Table Rows -->
+          <mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true" class="accent"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns1" class="element"
+            [@animate]="{ value: '*', params: { y: '100%' } }" style="height: 50px;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['noData']"
+            [ngClass]="{ hide: DSComwiseServiceList?.data?.length }"></mat-footer-row>
 
-            </mat-table>
-          </div>
-        </div>
+        </mat-table>
       </div>
+      <mat-paginator [length]="totalRecords" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
+        (page)="getServicecompwiseList($event)">
+      </mat-paginator>
+
+      <!-- </div>
+      </div> -->
     </div>
   </div>
 
