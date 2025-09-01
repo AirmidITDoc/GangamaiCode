@@ -17,7 +17,8 @@
                 <h2 class="fw-600 border-bottom">{{label}}</h2>
             </div>
             <div class="editor-area">
-                <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value" [formControlName]="formControlName"></ckeditor>
+                <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value" [formControlName]="formControlName"
+                (change)="onEditorChange($event)"></ckeditor>
             </div>
         </mat-card-content>
     </mat-card>

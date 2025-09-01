@@ -43,51 +43,17 @@ export class ClinicalCareChartComponent implements OnInit {
   ]
   displayedPainAsse: string[] = [
     'givendate',
-    // 'giventime',
     'PainAssess',
     'Employeename',
+    'IsActive',
     'Action'
   ]
   displayedPainAsse2: string[] = [
     'givendate',
     'PainAssess',
+    'IsActive',
     'Action'
   ]
-  // displayedLabReport: string[] = [
-  //   'Date&Time',
-  //   'TestName',
-  //   'PBillNo',
-  //   'IsCompleted'
-  // ]
-  // displayedIpPrescription: string[] = [
-  //   'AdmDate', 
-  //   'PresDate',
-  //   'StoreName',
-  //   'CompanyName',
-  //   'Action'
-  // ]
-  // displayedIpPrescriptionDetail: string[] = [
-  //   'Status', 
-  //   'ItemName',
-  //   'Qty'
-  // ]
-
-  // displayedLabRequest: string[] = [
-  //   'ReqDate',
-  //   'ReqTime',
-  //   'WardName',
-  //   'RequestType',
-  //   'IsonFileTest'
-  // ]
-  // displayedLabRequestDetail: string[] = [
-  //   'isBillingStatus',
-  //   'isTestStatus',
-  //   'ServiceName',
-  //   'AddedBy',
-  //   'AddBillUser',
-  //   'BillDateTime',
-  //   'PBillNo'
-  // ]
 
   displayedVitals: string[] = [
     'date',
@@ -109,6 +75,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'FIO2',
     'PFRation',
     'AddedBy',
+    'IsActive',
     'Action'
   ]
   displayedInOutput: string[] = [
@@ -143,6 +110,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'SaturationWithO2',
     'FlowTrigger',
     'CreatedBy',
+    'IsActive',
     'Action'
   ]
   displayedSugar: string[] = [
@@ -155,6 +123,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'IntakeMode',
     'ReportedToRMO',
     'AddedBy',
+    'IsActive',
     'Action'
   ]
   isLoading: String = '';
@@ -187,11 +156,6 @@ export class ClinicalCareChartComponent implements OnInit {
   dsClinicalcarePatient = new MatTableDataSource<PatientList>();
   dsPainsAssessment = new MatTableDataSource<PainAssesList>();
   dsPainsAssessment2 = new MatTableDataSource<PainAssesList>();
-  // dsLabReport = new MatTableDataSource<PainAssesList>();
-  // dsIpPrescription=new MatTableDataSource<PainAssesList>();
-  // dsIpPrescriptionDetail=new MatTableDataSource<PainAssesList>();
-  // dsLabRequest = new MatTableDataSource<PainAssesList>();
-  // dsLabRequestDetail = new MatTableDataSource<PainAssesList>();
   dsvitalsList = new MatTableDataSource<VitalsList>();
   dsInputOutTable = new MatTableDataSource<INputOutputList>();
   dsOxygenTable = new MatTableDataSource<OxygenVentilatorlist>();
@@ -420,7 +384,7 @@ export class ClinicalCareChartComponent implements OnInit {
         };
         console.log(submitData);
         this._ClinicalcareService.OnDeleteAssessment(submitData).subscribe((res) => {
-          this.getpainAssesmentList;
+          this.getpainAssesmentList();
         });
       }
     });
@@ -570,13 +534,13 @@ export class ClinicalCareChartComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
-          painAspatWeightIdsessmentId: element.patWeightId,
+          patWeightId: element.patWeightId,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
         };
         console.log(submitData);
         this._ClinicalcareService.OnDeleteAssessmentWeight(submitData).subscribe((res) => {
-          this.getpainAssesmentList;
+          this.getpainAssesmentWeightList();
         });
       }
     });
@@ -1030,14 +994,34 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   deleteVitalTableRow(element) {
-    let index = this.vitallist.indexOf(element);
-    if (index >= 0) {
-      this.vitallist.splice(index, 1);
-      this.dsvitalsList.data = [];
-      this.dsvitalsList.data = this.vitallist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
+    Swal.fire({
+      title: 'Do you want to delete  Vitals?',
+      text: "Please provide a reason for delete ",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter delete  reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          vitalId: element.vitalId,
+          isActive: true,
+          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
+        };
+        console.log(submitData);
+        this._ClinicalcareService.OnDeleteVital(submitData).subscribe((res) => {
+          this.getRtrvVitallist();
+        });
+      }
     });
   }
 
@@ -1125,14 +1109,34 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   deleteSugarTableRow(element) {
-    let index = this.Sugarlevellist.indexOf(element);
-    if (index >= 0) {
-      this.Sugarlevellist.splice(index, 1);
-      this.dsSugarTable.data = [];
-      this.dsSugarTable.data = this.Sugarlevellist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
+    Swal.fire({
+      title: 'Do you want to delete  Sugar Level?',
+      text: "Please provide a reason for delete ",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter delete  reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          id: element.id,
+          isActive: true,
+          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
+        };
+        console.log(submitData);
+        this._ClinicalcareService.OnDeleteSugar(submitData).subscribe((res) => {
+          this.getRtrvSugarlevellist();
+        });
+      }
     });
   }
 
@@ -1264,14 +1268,34 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   deleteOxygenTableRow(element) {
-    let index = this.OxygenventiList.indexOf(element);
-    if (index >= 0) {
-      this.OxygenventiList.splice(index, 1);
-      this.dsOxygenTable.data = [];
-      this.dsOxygenTable.data = this.OxygenventiList;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
+    Swal.fire({
+      title: 'Do you want to delete oxygen/ventilation?',
+      text: "Please provide a reason for delete ",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter delete  reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          id: element.id,
+          isActive: true,
+          reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
+        };
+        console.log(submitData);
+        this._ClinicalcareService.OnDeleteOxygenVen(submitData).subscribe((res) => {
+          this.getRtrvOxygenlist();
+        });
+      }
     });
   }
 
