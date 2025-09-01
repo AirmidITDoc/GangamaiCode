@@ -9,6 +9,7 @@ export class User {
     expires: string;
     storeId: number;
     user: any;
+  unitId: any;
 }
 
 export class LoginUser {

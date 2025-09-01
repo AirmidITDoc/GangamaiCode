@@ -1674,7 +1674,7 @@ export class IPBillingComponent implements OnInit {
     gettablecalculation(element) {
         // Checking if old value is same as new value
         const oldElement = this.copiedData.find(i => i.chargesId === element.chargesId);
-        element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty;
+        element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty || oldElement.isInclusionExclusion != element.isInclusionExclusion;
 
         if (element.price > 0 && element.qty > 0) {
             element.totalAmt = element.qty * element.price || 0;
