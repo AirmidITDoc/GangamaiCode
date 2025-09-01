@@ -125,9 +125,13 @@ searchform:FormGroup
         let that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
-                maxWidth: "98vw",
-                width: '100%',
-                maxHeight: "95vh",
+                // maxWidth: "98vw",
+                // width: '100%',
+                // maxHeight: "95vh",
+                maxWidth: "95vw",
+                maxHeight: '90vh',
+                height:'90%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -165,8 +169,9 @@ searchform:FormGroup
             {
 
                 maxWidth: "95vw",
-                width: '100%',
                 maxHeight: "90vh",
+                height:'90%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

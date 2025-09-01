@@ -46,7 +46,7 @@ export class ServeToCompanyComponent {
     compobj = new CompanyMaster({});
     Regflag = 1;
     CompanyId = 0
- ApiURL: any='';
+    ApiURL: any = '';
 
     displayedColumns1: string[] = [
         'Code',
@@ -141,13 +141,13 @@ export class ServeToCompanyComponent {
         this.companyForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
         this.servFormGroup = this._CompanyMasterService.createservSearchForm();
-      
+
         this.compwiseserForm = this._CompanyMasterService.createcompwiseservForm();
         this.serviceForm = this.createServicemasterForm();
         this.serviceDetailsArray.push(this.createserviceDetails());
         this.groupFormGroup = this.creategroupSearchForm();
         this.groupDetailsArray.push(this.creategroupDetails());
-         this.subgroupDetailsArray.push(this.createsubgroupDetails());
+        this.subgroupDetailsArray.push(this.createsubgroupDetails());
         // this.serviceForm.markAllAsTouched();
         if (this.data) {
             this.compobj = this.data
@@ -158,7 +158,7 @@ export class ServeToCompanyComponent {
             this.classId = this.compobj.classId
             this.companyForm.get("TariffId1").setValue(this.compobj.traiffId)
             this.companyForm.get("companyName").setValue(this.compobj.companyName)
-            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" +this.compobj.traiffId + "&ClassId=" + 0 + "&ServiceName="
+            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.compobj.traiffId + "&ClassId=" + 0 + "&ServiceName="
         }
 
         this.getsubtpaList()
@@ -166,14 +166,14 @@ export class ServeToCompanyComponent {
         this.selectdiscservicelist()
     }
 
-    
-  creategroupSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      userId: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      companyWiseService: this._formBuilder.array([])
 
-    });
-  }
+    creategroupSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            userId: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            companyWiseService: this._formBuilder.array([])
+
+        });
+    }
     createServicemasterForm(): FormGroup {
         const now = new Date();
         const defaultTime = now.toTimeString().slice(0, 5);
@@ -213,7 +213,7 @@ export class ServeToCompanyComponent {
         console.log(item)
         return this._formBuilder.group({
             // serviceDetailId: [item.serviceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [item.ServiceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.serviceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.tariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [this.classId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -260,7 +260,7 @@ export class ServeToCompanyComponent {
     get subgroupDetailsArray(): FormArray {
         return this.groupFormGroup.get('companyWiseService') as FormArray;
     }
-    
+
 
     createSearchForm() {
         return this.formBuilder.group({
@@ -270,7 +270,7 @@ export class ServeToCompanyComponent {
     }
 
     onChangeRadio(event) {
-      
+
         if (event.value === 'Group') {
             this.Regflag = 1
             this.selectdiscservicelist()
@@ -282,25 +282,42 @@ export class ServeToCompanyComponent {
     }
 
     selectChangemainclass(event) {
-        this.classId=event.value
+        this.classId = event.value
+        this.pageIndex = 0;
         this.getServiceListMain()
     }
 
+    searchButtonClick() {
+        // reset your filters based on form
+        this.serviceName = this.companyForm.get('ServiceName')?.value || '%';
+        this.classId = this.companyForm.get('ClassId2')?.value || '%';
+        this.tariffId = this.companyForm.get('TariffId1')?.value || '%';
 
-    getServiceListMain() {
-        debugger
-        // let tariffId = this.companyForm.get("TariffId1").value || 1
+        this.pageIndex = 0; // always reset to first page
+        this.getServiceListMain();
+    }
+
+    totalRecords = 0;
+    pageSize = 10;
+    pageIndex = 0;
+    getServiceListMain(event?: any) {
+        if (event) {
+            this.pageIndex = event.pageIndex;
+            this.pageSize = event.pageSize;
+        } else {
+            this.pageIndex = 0;
+            this.pageSize = 10; 
+        }
+        
         let classId = this.companyForm.get("ClassId2").value || 0
-        // let serviceName = this.companyForm.get("ServiceName").value || "%"
-
-        var param =
-        {
-            "searchFields": [
-                {
-                    "fieldName": "ServiceName",
-                    "fieldValue": String(this.serviceName),
-                    "opType": "Equals"
-                },
+        var param = {
+            // "first": 0,
+            // "rows": 10,
+            "first": this.pageIndex * this.pageSize,
+            "rows": this.pageSize,
+            "sortField": "ServiceId",
+            "sortOrder": 0,
+            "filters": [
                 {
                     "fieldName": "TariffId",
                     "fieldValue": String(this.compobj.traiffId),
@@ -312,17 +329,22 @@ export class ServeToCompanyComponent {
                     "opType": "Equals"
                 },
                 {
+                    "fieldName": "ServiceName",
+                    "fieldValue": String(this.serviceName),
+                    "opType": "StartsWith"
+                },
+                {
                     "fieldName": "type",
                     "fieldValue": "1",
                     "opType": "Equals"
                 }
             ],
-            "mode": "CompanyWiseTraiffList"
+            "exportType": "JSON",
+            "columns": []
         }
-
-        console.log(param)
         this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
-            this.DSServicedetailMainList.data = data as Servicedetail[];
+            this.DSServicedetailMainList.data = data.data as Servicedetail[];
+            this.totalRecords = data.recordsTotal;
             console.log(this.DSServicedetailMainList.data)
         });
 
@@ -438,13 +460,13 @@ export class ServeToCompanyComponent {
 
 
     selectdiscservicelist() {
-        debugger
+        // debugger
         {
             let classId;
             let serviceName
             let type = 1
 
-         if (this.Regflag == 1) {
+            if (this.Regflag == 1) {
                 classId = 0,
                     serviceName = "%"
                 type = 2
@@ -455,12 +477,11 @@ export class ServeToCompanyComponent {
             }
 
             var param = {
-                "searchFields": [
-                    {
-                        "fieldName": "ServiceName",
-                        "fieldValue": String(serviceName),
-                        "opType": "Equals"
-                    },
+                "first": 0,
+                "rows": 10,
+                "sortField": "ServiceId",
+                "sortOrder": 0,
+                "filters": [
                     {
                         "fieldName": "TariffId",
                         "fieldValue": String(this.tariffId),
@@ -472,20 +493,25 @@ export class ServeToCompanyComponent {
                         "opType": "Equals"
                     },
                     {
+                        "fieldName": "ServiceName",
+                        "fieldValue": String(this.serviceName),
+                        "opType": "StartsWith"
+                    },
+                    {
                         "fieldName": "type",
-                        "fieldValue": String(type),
+                        "fieldValue": "1",
                         "opType": "Equals"
                     }
                 ],
-                "mode": "CompanyWiseTraiffList"
+                "exportType": "JSON",
+                "columns": []
             }
-            console.log(param)
             this._CompanyMasterService.getservicMasterListRetrive(param).subscribe(data => {
                 console.log(data)
-              if (this.Regflag == 1)
-                    this.discgroupList.data = data as Servicedetail[];
+                if (this.Regflag == 1)
+                    this.discgroupList.data = data.data as Servicedetail[];
                 if (this.Regflag == 2)
-                    this.discsubgroupList.data = data as Servicedetail[];
+                    this.discsubgroupList.data = data.data as Servicedetail[];
                 console.log(this.discsubgroupList.data)
             });
 
@@ -496,7 +522,7 @@ export class ServeToCompanyComponent {
     onSaveEntry(row) {
         this.dstable1.data = [];
         this.addChargList(row);
-      
+
     }
 
     addChargList(row) {
@@ -526,29 +552,27 @@ export class ServeToCompanyComponent {
         console.log(this.DSServicedetailMainList.data);
     }
 
-    getSelectedserviceObj(obj){
+    getSelectedserviceObj(obj) {
         this.serviceName = obj.serviceName
+        this.pageIndex = 0;
         this.getServiceListMain()
     }
 
     onSubmit() {
-        
         if (this.selectedTabIndex == 0)
             this.onservocompSubmit()
         else
             this.ondisccompSubmit()
     }
 
-
-
     onservocompSubmit() {
-       
+
         if (!this.companyForm.get("ClassId2").value) {
-        this.toastr.warning('Please select Class.', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
+            this.toastr.warning('Please select Class.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
         if (this.DSServicedetailMainList.data.length > 0) {
 
@@ -571,7 +595,7 @@ export class ServeToCompanyComponent {
     }
 
     ondisccompSubmit() {
-debugger
+        debugger
         if (this.Regflag == 1) {
             if (this.discgroupList.data.length > 0) {
 
@@ -580,8 +604,6 @@ debugger
                     console.log(item)
                     this.groupDetailsArray.push(this.creategroupDetails(item));
                 });
-
-
                 console.log("FormValue", this.groupFormGroup.value)
                 this._CompanyMasterService.Servdiscupdate(this.groupFormGroup.value).subscribe((response) => {
                     this.onClose();
@@ -608,7 +630,7 @@ debugger
         }
 
     }
- 
+
     onTabChange(event: MatTabChangeEvent) {
         this.selectedTabIndex = event.index;
         console.log(this.selectedTabIndex)
