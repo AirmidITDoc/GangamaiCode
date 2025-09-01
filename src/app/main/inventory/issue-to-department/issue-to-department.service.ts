@@ -29,22 +29,22 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       Barcode:[''],
       ItemName:['', [Validators.required]],
-      ItemID:[''],
+      ItemID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       BatchNO:['', [Validators.required]],
-      BalanceQty:['', [Validators.required]],
-      Qty:['', [Validators.required]],
-      UnitRate:['', [Validators.required]],
-      TotalAmount:['', [Validators.required]],
+      BalanceQty:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      Qty:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      UnitRate:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      TotalAmount:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
       Remark:[''],
-      GSTAmount:[''],
-      FinalTotalAmount:[''],
-      FinalNetAmount:['']  
+      GSTAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      FinalTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      FinalNetAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
     });
   }
   createfinal(){
     return this._formBuilder.group({
       Remark:[''],
-      GSTAmount:[''],
+      GSTAmount: [0],
       FinalTotalAmount:['', [Validators.required]],
       FinalNetAmount:['', [Validators.required]],
   }); 
@@ -60,7 +60,7 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      FromStoreId:[''],
+      FromStoreId:['',[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ToStoreId:['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Status:['0']
      
@@ -84,15 +84,15 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);
   }
   
-  public getToStoreSearchList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
-  }
-  public getLoggedStoreList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  }
-  public getItemlist(Param){//RetrieveItemMasterForCombo
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
-  }
+  // public getToStoreSearchList(){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
+  // }
+  // public getLoggedStoreList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  // }
+  // public getItemlist(Param){//RetrieveItemMasterForCombo
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
+  // }
  public getBatchList(Param){ 
     return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId); 
   }
@@ -117,14 +117,14 @@ export class IssueToDepartmentService {
   
 
 
-  public getIssueToDeptsummaryview(FromDate,Todate,FromStoreId,ToStoreId){
-    return this._httpClient.get("InventoryTransaction/view-IssuetoDeptSummary?FromDate=" + FromDate + "&Todate ="+Todate  + "&FromStoreId="+FromStoreId  +"&ToStoreId="+ToStoreId);
-  }
-  public getIndentItemBatch(emp){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
-  }
+  // public getIssueToDeptsummaryview(FromDate,Todate,FromStoreId,ToStoreId){
+  //   return this._httpClient.get("InventoryTransaction/view-IssuetoDeptSummary?FromDate=" + FromDate + "&Todate ="+Todate  + "&FromStoreId="+FromStoreId  +"&ToStoreId="+ToStoreId);
+  // }
+  // public getIndentItemBatch(emp){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BatchPOP_BalanceQty",emp);
+  // }
 
-  // NewApi
+ 
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("BedMaster", m_data);
 }

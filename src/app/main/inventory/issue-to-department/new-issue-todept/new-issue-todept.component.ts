@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
 import { MatPaginator } from '@angular/material/paginator';
@@ -34,7 +34,7 @@ export class NewIssueTodeptComponent {
   IssueMainForm: FormGroup;
   FinalIssueaginstForm: FormGroup;
 
-  
+
 
   Indentid: any;
   indentdetid: any;
@@ -52,7 +52,7 @@ export class NewIssueTodeptComponent {
   Charglist: any = [];
   vIndentId: any = 0;
   vIndtDetId: any;
-  vFinalTotalAmount: any = 0.0;
+  vFinalTotalAmount: any;
   vFinalNetAmount: any;
   vFinalGSTAmount: any;
   vTotalAmount: any;
@@ -92,8 +92,10 @@ export class NewIssueTodeptComponent {
   showIndentFlag: boolean = false;
   Addflag: boolean = false;
   vAgainstIndet: boolean = false;
-  
   Isclosedchk: boolean = false;
+  AgainstInd: boolean = true;
+    ItemID = 0;
+   fromstore: any;
 
   autocompletestore: string = "Store";
   autocompletestore1: string = "Store";
@@ -201,6 +203,7 @@ export class NewIssueTodeptComponent {
         "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isVerified": [false],
         "isClosed": [false],
+        "unitId":[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "tIssueToDepartmentDetails": this._formBuilder.array([]),
       }),
       tCurrentStock: this._formBuilder.array([]),
@@ -238,7 +241,7 @@ export class NewIssueTodeptComponent {
       storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
-  
+
   indentdetailform(element: any = {}): FormGroup {
 
     console.log(element)
@@ -310,7 +313,10 @@ export class NewIssueTodeptComponent {
         return;
       }
     }
-
+    let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
+    let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
+    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
+    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
     let gstper = 0
 
     this.chargeslist.push(
@@ -318,28 +324,28 @@ export class NewIssueTodeptComponent {
         ItemId: this.NewIssueGroup.get('ItemName').value.itemId || 0,
         ItemName: this.NewIssueGroup.get('ItemName').value.formattedText || '',
         BatchNo: this.NewIssueGroup.get('BatchNO').value || "",
-        BatchExpDate: this.datePipe.transform(this.batchresult.batchExpDate, "yyyy-MM-dd") || '1900-01-01',
+        BatchExpDate: this.vBatchExpDate || '1900-01-01',
         BalanceQty: this.NewIssueGroup.get('BalanceQty').value || "",
         Qty: this.NewIssueGroup.get('Qty').value || 0,
         LandedRate: this.NewIssueGroup.get("UnitRate").value,
         UnitMRP: this.NewIssueGroup.get("UnitRate").value || 0,
-        VatPer: ((this.batchresult.cgstPer) + (this.batchresult.sgstPer) + (this.batchresult.igstPer)) || 0,// gstper || 0,
+        VatPer: gstper || 0,
         VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
         TotalAmount: this.vTotalAmount || 0,
-        StockId: this.batchresult.stockId,
-        TotalMRP: this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value,// TotalMRP,
+        StockId: this.vStockId,
+        TotalMRP: TotalMRP,
         DiscPer: 0,
         DiscAmt: 0,
-        NetAmt: this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value,//LandedRateandedTotal,
-        RoundNetAmt: Math.round(this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value),
-        mrpTotalAmount: this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value,//TotalMRP,
-        LandedRateandedTotal: this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value,// LandedRateandedTotal,
-        CgstPer: this.batchresult.cgstPer,
-        SgstPer: this.batchresult.sgstPer,
-        IgstPer: this.batchresult.igstPer,
-        PurchaseRate: this.batchresult.purchaseRate,
-        PurTotAmt: this.batchresult.purchaseRate * this.NewIssueGroup.get("Qty").value,// PurTotAmt,
-        purTotalAmount: this.batchresult.purchaseRate * this.NewIssueGroup.get("Qty").value,// PurTotAmt,
+        NetAmt: LandedRateandedTotal,
+        RoundNetAmt: Math.round(LandedRateandedTotal),
+        mrpTotalAmount: TotalMRP,
+        LandedRateandedTotal: LandedRateandedTotal,
+        CgstPer: this.vCgstPer,
+        SgstPer: this.vSgstPer,
+        IgstPer: this.vIgstPer,
+        PurchaseRate: this.vPurchaseRate,
+        PurTotAmt: PurTotAmt,
+        purTotalAmount: PurTotAmt,
         SalesDraftId: 1
       });
     console.log(this.chargeslist);
@@ -349,10 +355,7 @@ export class NewIssueTodeptComponent {
     if (serviceNameElement) {
       serviceNameElement.focus();
     }
-  if (!(this.NewIssueGroup.invalid) && this.dsNewIssueItemList.data.length > 0) {
   
-    }
-
   }
 
   getBatch() {
@@ -389,7 +392,7 @@ export class NewIssueTodeptComponent {
       this.vSgstPer = result.sgstPer;
       this.vIgstPer = result.igstPer;
       this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
-      this.vStockId = result.stockId
+        this.vStockId = result.stockId
       this.vStoreId = result.storeId;
       this.vLandedRate = result.landedRate;
       this.vPurchaseRate = result.purchaseRate;
@@ -416,12 +419,13 @@ export class NewIssueTodeptComponent {
     }
   }
   getTotalamt(element) {
+
     this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
-    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0));
+    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
     return this.vFinalTotalAmount;
   }
-  AgainstInd: boolean = true;
+
   getAgainstIndet(event) {
     if (event.checked == true) {
       this.AgainstInd = false;
@@ -430,7 +434,7 @@ export class NewIssueTodeptComponent {
     }
 
   }
-  ItemID = 0;
+
   getSelectedItem(item: GRNItemResponseType): void {
     this.ItemID = item.itemId
 
@@ -448,11 +452,9 @@ export class NewIssueTodeptComponent {
     this.getBatch();
 
   }
-
-
-fromstore:any;
+ 
   OnIndentAgainst() {
-    
+
     const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
       {
         maxWidth: "100%",
@@ -462,33 +464,28 @@ fromstore:any;
     dialogRef.afterClosed().subscribe(result => {
       this.dsSelectedIndentItemList.data = result;
       console.log(this.dsSelectedIndentItemList.data)
-      if (result) {
-        //balchk
-debugger
-        this.vIndentId = result[0].indentId;
-        this.vAgainstIndet = true;
-        this.fromstoreId=result[0].fromStoreId
-        this.fromstore=result[0].fromStoreName
-        // this.StoreFrom.get("AgainstIndent").setValue(true)
-        this.StoreFrom.get('ToStoreId').setValue(result[0].fromStoreId);
-        // this.showIndentFlag = true
-      }
+      if (result) this.updatestatus()
+           
     });
-
-   
   }
 
-  
+updatestatus(){
+  debugger
+        this.vIndentId = this.dsSelectedIndentItemList.data[0]['indentId'];
+        this.vAgainstIndet = true;
+        this.fromstoreId = this.dsSelectedIndentItemList.data[0]['fromStoreId']
+        this.fromstore = this.dsSelectedIndentItemList.data[0]['fromStoreName']
+        this.StoreFrom.get('ToStoreId').setValue( this.fromstoreId);
+        this.showIndentFlag = true
+}
   AddIndentSelectedItem(contact) {
-  console.log(contact)
+    console.log(contact)
     this.vIndentId = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
     this.IsClosed = contact.isClosed;
     this.IndQty = contact.qty;
-    debugger
     this.Indbalqty = contact.balanceQty
     this.issueqty = contact.issQty
-
     let DuplicateItem = 0;
 
     if (this.dsNewIssueItemList.data.length > 0) {
@@ -501,58 +498,58 @@ debugger
         return;
       }
     }
-   
-      this.Itemchargeslist1 = [];
-      this.QtyBalchk = 0;
 
-      var m_data = {
-        "ItemId": contact.itemId,
-        "StoreId": this.accountService.currentUserValue.user.storeId || 0
-      }
-      this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-        this.Itemchargeslist1 = draftdata as any;
-        if (this.Itemchargeslist1.length == 0) {
-          Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
-        }
-        else if (this.Itemchargeslist1.length > 0) {
-          let ItemID = contact.itemId;
+    this.Itemchargeslist1 = [];
+    this.QtyBalchk = 0;
 
-          let remaing_qty = contact.balanceQty;
-          let bal_qnt = 0;
-          this.Itemchargeslist1.forEach((element) => {
-
-            let IndQty = remaing_qty;
-            if (IndQty > 0) {
-              if (contact.itemId != element.itemId) {
-                this.QtyBalchk = 0;
-              } else if (IndQty <= element.balanceQty) {
-                this.QtyBalchk = 1;
-                this.getFinalCalculation(element, IndQty);
-                contact.itemId = element.ItemId;
-                bal_qnt += element.balanceQty - IndQty;
-              } else if (IndQty > element.balanceQty) {
-                this.QtyBalchk = 1;
-                this.getFinalCalculation(element, element.balanceQty);
-                contact.itemId = element.itemId;
-              }
-
-              remaing_qty = IndQty - element.balanceQty;
-            } else {
-              bal_qnt += element.balanceQty;
-            }
-
-            const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-            if (QtyElement) {
-              QtyElement.focus();
-            }
-
-
-          });
-          Swal.fire("Balance Qty is :", String(bal_qnt))
-        }
-      });
+    var m_data = {
+      "ItemId": contact.itemId,
+      "StoreId": this.accountService.currentUserValue.user.storeId || 0
     }
-  
+    this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
+      this.Itemchargeslist1 = draftdata as any;
+      if (this.Itemchargeslist1.length == 0) {
+        Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
+      }
+      else if (this.Itemchargeslist1.length > 0) {
+        let ItemID = contact.itemId;
+
+        let remaing_qty = contact.balanceQty;
+        let bal_qnt = 0;
+        this.Itemchargeslist1.forEach((element) => {
+
+          let IndQty = remaing_qty;
+          if (IndQty > 0) {
+            if (contact.itemId != element.itemId) {
+              this.QtyBalchk = 0;
+            } else if (IndQty <= element.balanceQty) {
+              this.QtyBalchk = 1;
+              this.getFinalCalculation(element, IndQty);
+              contact.itemId = element.ItemId;
+              bal_qnt += element.balanceQty - IndQty;
+            } else if (IndQty > element.balanceQty) {
+              this.QtyBalchk = 1;
+              this.getFinalCalculation(element, element.balanceQty);
+              contact.itemId = element.itemId;
+            }
+
+            remaing_qty = IndQty - element.balanceQty;
+          } else {
+            bal_qnt += element.balanceQty;
+          }
+
+          const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+          if (QtyElement) {
+            QtyElement.focus();
+          }
+
+
+        });
+        Swal.fire("Balance Qty is :", String(bal_qnt))
+      }
+    });
+  }
+
 
   getFinalCalculation(contact, DraftQty) {
 
@@ -607,12 +604,12 @@ debugger
 
   getCellCalculation(contact, Qty) {
     debugger
-    console.log(this.Indbalqty)
-    console.log(this.issueqty)
+    // console.log(this.Indbalqty)
+    // console.log(this.issueqty)
 
-    console.log(contact)
-    console.log(Qty)
-   
+    // console.log(contact)
+    // console.log(Qty)
+
     if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
       this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -626,9 +623,8 @@ debugger
       if (contact.Qty > 0) {
         contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
         contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
-        debugger
-         this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
-          contact.IssueBalQty = (this.Indbalqty)
+        this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
+        contact.IssueBalQty = (this.Indbalqty)
 
         if (contact.IssueBalQty == 0)
           contact.IsClosed = true
@@ -659,7 +655,7 @@ debugger
       });
       return;
     }
-
+    debugger
     if (!this.IssueFinalForm.invalid) {
       console.log(this.vIndentId)
 
@@ -691,7 +687,7 @@ debugger
   OnNewSave() {
 
     this.deptArray.clear();
-   this.dsNewIssueItemList.data.forEach(item => {
+    this.dsNewIssueItemList.data.forEach(item => {
       this.deptArray.push(this.Depatdetailform(item));
     });
 
@@ -699,7 +695,7 @@ debugger
     this.dsNewIssueItemList.data.forEach(item => {
       this.stockArray.push(this.currentstockform(item));
     });
-    debugger
+    
     this.FinalIssueForm.get("issue.issueId").setValue(0)
     this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
@@ -722,8 +718,7 @@ debugger
   }
 
   OnSaveAgaintIndent() {
-    debugger
-   
+    
     this.deptArray1.clear();
     this.dsNewIssueItemList.data.forEach(item => {
       this.deptArray1.push(this.Depatdetailform(item));
@@ -731,10 +726,10 @@ debugger
 
     this.stockArray1.clear();
     this.dsNewIssueItemList.data.forEach(item => {
-      if(item.IsClosed)
-        this.Isclosedchk=true
+      if (item.IsClosed)
+        this.Isclosedchk = true
       else
-         this.Isclosedchk=false
+        this.Isclosedchk = false
       this.stockArray1.push(this.currentstockform(item));
     });
 
@@ -758,7 +753,7 @@ debugger
 
     this.indentdetailArray.clear();
     this.dsNewIssueItemList.data.forEach(item => {
-    this.indentdetailArray.push(this.indentdetailform(item));
+      this.indentdetailArray.push(this.indentdetailform(item));
     });
 
     console.log(this.FinalIssueaginstForm.value)

@@ -52,7 +52,7 @@ export class IndentComponent implements OnInit {
 
     ngAfterViewInit() {
         
-        this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
           this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
       
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -60,7 +60,7 @@ export class IndentComponent implements OnInit {
       }
 
     allcolumns = [
-         { heading: "status", key: "isverify", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
+         { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
          
      

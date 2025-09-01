@@ -9,8 +9,8 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'OP-billing'"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <!-- <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
                         <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                                 matTooltip="Close">
@@ -28,31 +28,39 @@
 
                     <div class="nav material2">
                         <div fxLayout="column" fxLayoutAlign="start none" fxLayoutGap="10px">
-                            <from [formGroup]="StoreFrom">
-                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
+                            <from [formGroup]="IndentSaveFrom">
+                                <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
-                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().FromStoreId"
+                                        [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().FromStoreId"
                                         [readonly]="true" [value]="data?.FromStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="To Store Name" formControlName="ToStoreId" fxFlex="30%"
-                                        [formGroup]="StoreFrom" [validations]="getValidationMessages().ToStoreId"
+                                        [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().ToStoreId"
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
 
-                                    <mat-radio-group name="IsUrgent"  formControlName="priority"
+                                    <!-- <mat-radio-group name="IsUrgent" formControlName="priority"
                                         style="padding: 15px 0px 0px 30px;" (change)="setpriority($event)">
-                                        <mat-label class="example-margin" style="font-weight:bold;font-size:large"> Is Urgent:</mat-label>&nbsp;&nbsp;
+                                        <mat-label class="example-margin" style="font-weight:bold;font-size:large"> Is
+                                            Urgent:</mat-label>&nbsp;&nbsp;
                                         <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
                                         <mat-radio-button value="0" class="mr-sm-12">No</mat-radio-button>
-                                    </mat-radio-group>
+                                    </mat-radio-group> -->
+
+
+                                    <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
+                                        formControlName="priority" [(ngModel)]="status" style="font-weight: bolder;padding: 10px;">
+                                        Urgent
+                                    </mat-slide-toggle>
+
 
 
                                 </div>
                             </from>
                             <form [formGroup]="IndentForm">
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
-                                 <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
+                                    <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
                                         fxFlex="27%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
@@ -157,7 +165,7 @@
 
         </div>
         <div style="margin-top: 10px;">
-            <form [formGroup]="StoreFrom">
+            <form [formGroup]="IndentSaveFrom">
                 <div fxLayout="row" fxLayoutAlign="space-between">
 
                     <mat-form-field appearance="outline" fxFlex="50%" style="margin-left: 20px;">
@@ -168,9 +176,9 @@
 
                     <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
                         fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
-                         <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                        <button class="btn btn-primary" (click)="OnSave()">Save</button>
                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
-                       
+
                     </div>
 
                 </div>

@@ -45,8 +45,6 @@
                                     [readonly]="true">
                                 </airmid-textbox>
 
-
-
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>SGSTPer</mat-label>
                                     <input name="SGSTPer" formControlName="SGSTPer" matInput required type="text"
@@ -109,7 +107,8 @@
                                 </airmid-textbox>
 
                             </div>
-
+                        </form>
+                          <form [formGroup]="GSTAdjfinal">
                             <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -117,18 +116,24 @@
                                     <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required
                                         type="text" OnlyNUmber [(ngModel)]="vOldTotalGSTPer" id="OldTotalGSTPer">
                                 </mat-form-field> -->
-                                <airmid-textbox label="Old GSTPer" formControlName="OldTotalGSTPer" [formGroup]="GSTAdjustment"
-                                    [validations]="getValidationMessages().OldTotalGSTPer" [value]="vOldTotalGSTPer" >
+                               
+                                 <airmid-textbox label="OldTotalGSTPer" formControlName="OldTotalGSTPer"
+                                    [formGroup]="GSTAdjfinal" 
+                                    [value]="vOldTotalGSTPer" [readonly]="true">
                                 </airmid-textbox>
+
+
+                                      <airmid-textbox label="New GSTPer" formControlName="TotalGSTPer"
+                                    [formGroup]="GSTAdjfinal" 
+                                    [value]="vTotalGSTPer" [readonly]="true">
+                                </airmid-textbox>
+
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New GSTPer</mat-label>
                                     <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required
                                         type="text" OnlyNUmber [(ngModel)]="vTotalGSTPer" id="TotalGSTPer">
                                 </mat-form-field> -->
-                                <airmid-textbox label="New GSTPer" formControlName="TotalGSTPer" [formGroup]="GSTAdjustment"
-                                    [validations]="getValidationMessages().TotalGSTPer" [value]="vTotalGSTPer" [readonly]="true">
-                                </airmid-textbox>
-
+                              
                                 <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
                                     fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
 

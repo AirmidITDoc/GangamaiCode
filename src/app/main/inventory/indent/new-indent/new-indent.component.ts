@@ -21,7 +21,7 @@ import { IndentService } from '../indent.service';
   animations: fuseAnimations,
 })
 export class NewIndentComponent implements OnInit {
-  StoreFrom: FormGroup;
+  IndentSaveFrom: FormGroup;
   IndentForm: FormGroup;
   displayedColumns2 = [
     'ItemID',
@@ -69,9 +69,9 @@ export class NewIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.StoreFrom = this.CreateStoreFrom();
+    this.IndentSaveFrom = this.CreateIndentSaveFrom();
     this.IndentForm = this._IndentService.createnewindentfrom();
-    this.StoreFrom.markAllAsTouched();
+    this.IndentSaveFrom.markAllAsTouched();
     this.IndentForm.markAllAsTouched();
     this.IndentdetailArray.push(this.createdetailInsert());
 
@@ -80,27 +80,26 @@ export class NewIndentComponent implements OnInit {
       this.IndentId = this.data.Obj.indentId
       this.vRemark = this.data.Obj.comments
       console.log(this.registerObj);
-      this.StoreFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
-      this.StoreFrom.get("comments").setValue(this.registerObj.remarks)
+      this.IndentSaveFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
+      this.IndentSaveFrom.get("comments").setValue(this.registerObj.remarks)
 
       if (this.registerObj.priority)
         this.status = "1"
       else
         this.status = "0"
-      debugger
-      this.StoreFrom.get('priority').setValue(this.status)
+      
+      this.IndentSaveFrom.get('priority').setValue(this.status)
       this.getupdateIndentList(this.registerObj.indentId);
     }
 
   }
   get IndentdetailArray(): FormArray {
-    return this.StoreFrom.get('tIndentDetails') as FormArray;
+    return this.IndentSaveFrom.get('tIndentDetails') as FormArray;
   }
 
-  CreateStoreFrom() {
+  CreateIndentSaveFrom() {
     return this._formBuilder.group({
-
-      // IsUrgent: ['0'],
+      unitId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       indentId: this.IndentId,
       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
@@ -116,7 +115,6 @@ export class NewIndentComponent implements OnInit {
   }
 
   createdetailInsert(element: any = {}): FormGroup {
-
     return this._formBuilder.group({
       indentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -127,8 +125,6 @@ export class NewIndentComponent implements OnInit {
 
     });
   }
-
-
 
   onAdd() {
 
@@ -175,7 +171,9 @@ export class NewIndentComponent implements OnInit {
 
   setpriority(event){
     console.log(event)
-    this.status=event.value
+    debugger
+    this.status=event.checked
+
   }
 
   deleteTableRow(element) {
@@ -235,7 +233,7 @@ export class NewIndentComponent implements OnInit {
 
       this.dsIndentNameList.data.forEach(element => {
         console.log(element)
-        element.indentId = element.indentId,
+          element.indentId = element.indentId,
           element.ItemName = element.itemName,
           element.ItemID = element.itemId,
           element.Qty = element.qty,
@@ -269,15 +267,15 @@ export class NewIndentComponent implements OnInit {
 
     debugger
     if (this.status=="1")
-      this.StoreFrom.get('priority').setValue(true)
+      this.IndentSaveFrom.get('priority').setValue(true)
     else
-      this.StoreFrom.get('priority').setValue(false)
+      this.IndentSaveFrom.get('priority').setValue(false)
 
-    if (!this.StoreFrom.invalid) {
-      this.StoreFrom.get("indentId").setValue(this.IndentId)
-      console.log(this.StoreFrom.value)
+    if (!this.IndentSaveFrom.invalid) {
+      this.IndentSaveFrom.get("indentId").setValue(this.IndentId)
+      console.log(this.IndentSaveFrom.value)
       
-      this._IndentService.InsertIndentSave(this.StoreFrom.value).subscribe(response => {
+      this._IndentService.InsertIndentSave(this.IndentSaveFrom.value).subscribe(response => {
         this.viewgetIndentReportPdf(response)
         this._matDialog.closeAll();
 
@@ -285,9 +283,9 @@ export class NewIndentComponent implements OnInit {
       });
     } else {
       let invalidFields = [];
-      if (this.StoreFrom.invalid) {
-        for (const controlName in this.StoreFrom.controls) {
-          if (this.StoreFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
+      if (this.IndentSaveFrom.invalid) {
+        for (const controlName in this.IndentSaveFrom.controls) {
+          if (this.IndentSaveFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
         }
       }
       if (invalidFields.length > 0) {

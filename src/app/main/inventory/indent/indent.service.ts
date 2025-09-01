@@ -26,12 +26,12 @@ export class IndentService {
   }
   createnewindentfrom() {
     return this._formBuilder.group({
-      IndentId:[''],
+      IndentId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ItemName: ['', [Validators.required]],
-      Qty:   ['', [Validators.required, Validators.maxLength(10)]],
+      Qty:   ['', [Validators.required, Validators.maxLength(10), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Remark:['',Validators.maxLength(500)],
       ItemNameKit:[''],
-      Qtykit:['']
+      Qtykit: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
     });
   }
   

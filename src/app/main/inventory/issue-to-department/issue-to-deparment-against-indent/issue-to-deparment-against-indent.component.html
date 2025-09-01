@@ -3,7 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Indent List </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Verified Indent List </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -80,29 +80,29 @@
                                 Urgent</mat-header-cell>
                             <mat-cell *matCellDef="let contact">
                                 <mat-icon
-                                   *ngIf="!contact.Priority" matTooltip="Not Urgent"
+                                   *ngIf="!contact.priority" matTooltip="Not Urgent"
                                     class=" green-600 s-16">circle</mat-icon>
                                 <mat-icon
-                                   *ngIf="contact.Priority" matTooltip="Urgent"
+                                   *ngIf="contact.priority" matTooltip="Urgent"
                                     class=" red-600 s-16">circle</mat-icon>
                             </mat-cell>
                         </ng-container>
 
 
                         <ng-container matColumnDef="IndentNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                 Indent No
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                 {{contact.indentNo}}
                             </mat-cell>
                         </ng-container>
-
+ <!-- | date: 'dd/MM/yyyy' -->
                         <ng-container matColumnDef="IndentTime">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                 Indent Date </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                {{contact.IndentTime | date: 'dd/MM/yyyy'}}
+                                {{contact.indentTime}}
                             </mat-cell>
                         </ng-container>
 
@@ -123,9 +123,9 @@
                         </ng-container>
 
                         <ng-container matColumnDef="Addedby">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                Addedby </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                AddedBy </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                 {{contact.addedby}}
                             </mat-cell>
                         </ng-container>
@@ -174,34 +174,34 @@
                                     </ng-container> -->
 
                         <ng-container matColumnDef="ItemName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                ItemName
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-500">
+                                Item Name
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
                                 {{contact.itemName}}
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="IndTotalQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                TotalQty</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                Total Qty</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                 {{contact.qty}}
                             </mat-cell>
                         </ng-container>
 
                          <ng-container matColumnDef="IssueQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            IssueQty    </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                            Issue Qty    </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                 {{contact.issQty}}
                             </mat-cell>
                         </ng-container>
 
                             <ng-container matColumnDef="IndBalQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                               BalQty </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                               Balance Qty </mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                 {{contact.balanceQty}}
                             </mat-cell>
                         </ng-container>

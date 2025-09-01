@@ -34,10 +34,10 @@
 
             <ng-template #actionsTemplate1 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify" class="pill green-600 s-16">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed" class="pill green-600 s-16">
                     </mat-icon>
 
-                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verified" class="pill red-600 s-16">
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending" class="pill red-600 s-16">
                     </mat-icon>
                 </div>
             </ng-template>

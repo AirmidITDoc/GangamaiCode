@@ -29,8 +29,9 @@ export class GSTAdjustmentComponent implements OnInit {
   vTotalGSTPer: any = 0;
   registerObj: any;
   itemname: any;
-  vOldTotalGSTPer: any;
+  vOldTotalGSTPer: any = 0.0;
   GSTAdjustment: FormGroup;
+  GSTAdjfinal: FormGroup;
   constructor(
     public _StockAdjustment: StockAdjustmentService,
     private accountService: AuthenticationService,
@@ -51,21 +52,24 @@ export class GSTAdjustmentComponent implements OnInit {
       this.vSGSTPer = this.registerObj.sgstper;
       this.vIGSTPer = this.registerObj.igstper;
       this.itemname = this.registerObj.itemName;
-      this.calculationOldGst(this.registerObj)
+
       // this.vConversionFactor = this.registerObj.LandedRate
 
       this.GSTAdjustment = this.createGSTForm();
       this.GSTAdjustment.markAllAsTouched();
+      this.GSTAdjfinal = this.createGSTfinalForm();
+
       this.GSTAdjustment.get('oldCgstper').setValue(this.registerObj.cgstper)
       this.GSTAdjustment.get('oldSgstper').setValue(this.registerObj.sgstper)
       this.GSTAdjustment.get('oldIgstper').setValue(this.registerObj.igstper)
+      this.calculationOldGst(this.registerObj)
     }
   }
 
-
-
   createGSTForm() {
+
     return this._formBuilder.group({
+
       storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       stkId: [this.registerObj.stockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [this.registerObj.itemId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -80,6 +84,14 @@ export class GSTAdjustmentComponent implements OnInit {
     });
   }
 
+  createGSTfinalForm() {
+    return this._formBuilder.group({
+      OldTotalGSTPer: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      TotalGSTPer: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+
+    })
+  }
+
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -90,8 +102,8 @@ export class GSTAdjustmentComponent implements OnInit {
     }
   }
   gstflag = false
-  getchangegstper(Id,rate, GSTTYP): void {
-    
+  getchangegstper(Id, rate, GSTTYP): void {
+
     console.log(Id)
     const formValues = this.GSTAdjustment.getRawValue() as GRNFormModel;
     const gstValues = [
@@ -100,36 +112,39 @@ export class GSTAdjustmentComponent implements OnInit {
       { value: 9 },
       { value: 14 }
     ];
-    debugger
+    
     const numericRate = parseFloat(rate);
     if (!isNaN(numericRate) && numericRate >= 2.5) {
       // const exists = gstValues.some(item => item.value === rate);
 
       gstValues.forEach(element => {
         console.log(element)
+        debugger
         if (element.value == rate)
           this.gstflag = true
-        return;
-        // else
-        //    this.gstflag = false
+        // else {
+        //   this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+        //   this.gstflag = false
+        //   return;
+        // }
       });
-console.log( this.gstflag)
-
+      console.log(this.gstflag)
+      
       if (!this.gstflag) {
+        debugger
         this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-        this.gstflag = true
-        
-        // if(formValues.CGST)
-        //   this.GSTAdjustment.get('cgstper').setValue(0)
-        // else  if(formValues.SGST)
-        //   this.GSTAdjustment.get('sgstper').setValue(0)
-        // else
-        //    if(formValues.IGST)
-        //   this.GSTAdjustment.get('igstper').setValue(0)
+        this.gstflag = false
+
+        if (Id == 1)
+          this.GSTAdjustment.get('cgstper').setValue(0);
+        else if (Id == 2)
+          this.GSTAdjustment.get('sgstper').setValue(0);
+        else
+          this.GSTAdjustment.get('igstper').setValue(0)
         return;
-      } else if (this.gstflag) {
+      } else {
         const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
-        this.GSTAdjustment.patchValue({
+        this.GSTAdjfinal.patchValue({
           GST: GSTPer
         });
         this.calculationAmt();
@@ -142,74 +157,52 @@ console.log( this.gstflag)
 
   }
   calculationAmt() {
-    debugger
-    let CGSTPer = (this.vNewCGSTPer) || 0;
-    let SGSTPer = (this.vNewSGSTPer) || 0;
-    let IGSTPer = (this.vNewIGSTPer) || 0;
-
-
     this.vTotalGSTPer = (parseFloat(this.GSTAdjustment.get('cgstper').value) + parseFloat(this.GSTAdjustment.get('sgstper').value) + parseFloat(this.GSTAdjustment.get('igstper').value)).toFixed(2);
+    this.GSTAdjfinal.get('TotalGSTPer').setValue(this.vTotalGSTPer)
   }
   calculationOldGst(obj) {
     this.vOldTotalGSTPer = (parseFloat(obj.cgstper) + parseFloat(obj.sgstper) + parseFloat(obj.sgstper)).toFixed(2);
+    this.GSTAdjfinal.get('OldTotalGSTPer').setValue(this.vOldTotalGSTPer)
   }
 
   Savebtn: boolean = false;
   onSubmit() {
+    debugger
+    // if (this.gstflag == false)
+    //   this.toastr.warning('Enter Proper GST Value ', 'Warning')
+    // return;
 
-    if (!this.GSTAdjustment.invalid) {
-      debugger
-      if (this.gstflag = false)
-        this.toastr.warning('Enter Proper GST Value ', 'Warning')
-      return;
+    console.log(this.GSTAdjustment.value)
+    this.GSTAdjustment.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
+    this.GSTAdjustment.get('stkId').setValue(this.registerObj.stockId || 0)
+    this.GSTAdjustment.get('itemId').setValue(this.registerObj.itemId || 0)
+    this.GSTAdjustment.get('batchNo').setValue(this.registerObj.batchNo || '')
 
-      // this.Savebtn = true;
-
-      // let submitData = {
-      //   "storeId": this.accountService.currentUserValue.user.storeId || 0,
-      //   "stkId": this.registerObj.stockId || 0,
-      //   "itemId": this.registerObj.itemId || 0,
-      //   "batchNo": this.registerObj.batchNo || '',
-      //   "oldCgstper": this._StockAdjustment.GSTAdjustment.get('CGSTPer').value || 0,
-      //   "oldSgstper": this._StockAdjustment.GSTAdjustment.get('SGSTPer').value || 0,
-      //   "oldIgstper": this._StockAdjustment.GSTAdjustment.get('IGSTPer').value || 0,
-      //   "cgstper": this._StockAdjustment.GSTAdjustment.get('NewCGSTPer').value || 0,
-      //   "sgstper": this._StockAdjustment.GSTAdjustment.get('NewSGSTPer').value || 0,
-      //   "igstper": this._StockAdjustment.GSTAdjustment.get('NewIGSTPer').value || 0,
-      //   "addedBy": this.accountService.currentUserValue.user.storeId  || 0
-      // };
-      // console.log(submitData);
-      console.log(this.GSTAdjustment.value)
-      this.GSTAdjustment.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
-      this.GSTAdjustment.get('stkId').setValue(this.registerObj.stockId || 0)
-      this.GSTAdjustment.get('itemId').setValue(this.registerObj.itemId || 0)
-      this.GSTAdjustment.get('batchNo').setValue(this.registerObj.batchNo || '')
-
-      this.GSTAdjustment.get('addedBy').setValue(this.accountService.currentUserValue.userId || 0)
-      console.log(this.GSTAdjustment.value)
-
+    this.GSTAdjustment.get('addedBy').setValue(this.accountService.currentUserValue.userId || 0)
+    console.log(this.GSTAdjustment.value)
+    // if (!this.GSTAdjustment.invalid) {
       this._StockAdjustment.GSTAdjSave(this.GSTAdjustment.value).subscribe(response => {
         this._matDialog.closeAll();
 
       });
-    } else {
-      let invalidFields = [];
+    // } else {
+    //   let invalidFields = [];
 
-      if (this.GSTAdjustment.invalid) {
-        for (const controlName in this.GSTAdjustment.controls) {
-          if (this.GSTAdjustment.controls[controlName].invalid) {
-            invalidFields.push(`GSt Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+    //   if (this.GSTAdjustment.invalid) {
+    //     for (const controlName in this.GSTAdjustment.controls) {
+    //       if (this.GSTAdjustment.controls[controlName].invalid) {
+    //         invalidFields.push(`GSt Form: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //   }
 
-    }
+    // }
   }
 
 
@@ -220,12 +213,9 @@ console.log( this.gstflag)
       ],
       SGSTPer: [
         { name: "pattern", Message: "only Number allowed." },
-        { name: "min", Message: "Enter valid price." }
       ],
       IGSTPer: [
-        // { name: "required", Message: "Qty required!", },
         { name: "pattern", Message: "only Number allowed.", },
-        { name: "min", Message: "Enter valid qty.", }
       ],
       NewCGSTPer: [
         {

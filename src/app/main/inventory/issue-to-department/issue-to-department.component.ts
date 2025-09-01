@@ -25,10 +25,6 @@ export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
   
-    // tempDatasource = new MatTableDataSource<IssueItemList>();
-    // tempdata: any = [];
-    // ItemSamelist: any = [];
-    // BatchSamelist: any = [];
     DraftQty: any = 0;
     Tostore = "0"
     FromStore: any = String(this.accountService.currentUserValue.user.storeId);
@@ -67,9 +63,9 @@ export class IssueToDepartmentComponent implements OnInit {
 
         { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
 
-        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-        { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },

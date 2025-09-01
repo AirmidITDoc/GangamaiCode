@@ -10,7 +10,7 @@
 
                     <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
                         <button mat-raised-button (click)="OnIndentAgainst()" fxLayoutAlign="center center" class="py-8"
-                           [disabled]="AgainstInd">
+                            [disabled]="AgainstInd">
                             <span>Indent List</span>
                         </button>
                     </div>
@@ -38,26 +38,26 @@
 
                     <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                         <form [formGroup]="StoreFrom" class="gap-2">
-                         
+
                             <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
                                 [formGroup]="StoreFrom" [mode]="autocompletestore" [readonly]="true"
                                 (selectionChange)="selectChangeStore($event)">
                             </airmid-dropdown>
-                         
+
                             <airmid-dropdown label="To Store Name" formControlName="ToStoreId" [formGroup]="StoreFrom"
                                 [(ngModel)]="fromstoreId" fxFlex="30%" [mode]="autocompletestore1"
                                 (selectionChange)="selectChangeStore1($event)">
                             </airmid-dropdown>
-                         <!--  -->
+                            <!--  -->
                             <div style="padding-top: 10px;">
-                             <mat-checkbox  formControlName="AgainstIndent" (change)="getAgainstIndet($event)"
+                                <mat-checkbox formControlName="AgainstIndent" (change)="getAgainstIndet($event)"
                                     [(ngModel)]="vAgainstIndet"></mat-checkbox>
 
                             </div>
-                            <!--  *ngIf="showIndentFlag" -->
-                            <div style="margin-left: 30px;">
-                                <strong style="color: rgb(3, 45, 77);font-size: 18px;">Indent
-                                    Against Issue/Store: {{vIndentId}}/{{fromstore}}</strong>
+                            <!--   -->
+                            <div style="margin-left: 30px;" *ngIf="showIndentFlag">
+                                <strong style="color: rgb(3, 45, 77);font-size: 18px;">
+                                     Issue Against Indent:<span style="color: rgb(35, 35, 245);">{{vIndentId}}</span> /Store:<span style="color: rgb(35, 35, 245);">{{fromstore}}</span></strong>
                             </div>
                         </form>
 
@@ -104,7 +104,7 @@
                                     [(ngModel)]="vTotalAmount"></airmid-textbox>
 
                                 <div>
-                                  
+
                                     <button (click)="onAddFormItem($event)" class="btn btn-primary btn-with-icon py-8"
                                         #addbutton>
                                         <span class="btn-icon">
@@ -122,8 +122,8 @@
                 <div style="width: 100%;" fxLayoutGap="10px">
 
                     <div class="airmid-table-container py-12" fxFlex="70%">
-                        <mat-table #table class="airmid-table table3 max-h-300" matSort [dataSource]="dsNewIssueItemList"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+                        <mat-table #table class="airmid-table table3 max-h-300" matSort
+                            [dataSource]="dsNewIssueItemList" [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="ItemId">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
@@ -172,12 +172,13 @@
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
-                                            [id]="'Qty_' + index" (input)="getCellCalculation(contact,contact.Qty)" [min]="0" />
+                                            [id]="'Qty_' + index" (input)="getCellCalculation(contact,contact.Qty)"
+                                            [min]="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
-                                                     <ng-container matColumnDef="UnitRate">
+                            <ng-container matColumnDef="UnitRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     Rate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
@@ -289,7 +290,8 @@
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
                             </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dsSelectedIndentItemList!=null)}">
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsSelectedIndentItemList!=null)}">
                             </mat-footer-row>
                         </mat-table>
                         <mat-paginator #SecondPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"
@@ -306,30 +308,44 @@
 
                 <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;margin-left: 20px;">
 
-                    <mat-form-field appearance="outline" fxFlex="30%">
+                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
                         <mat-label>Remark</mat-label>
                         <input type="text" name="Remark" formControlName="Remark" matInput #remark [maxLength]="500"
                             [(ngModel)]="vremark" required>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
+                    <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="IssueFinalForm" #remark
+                        [value]="vremark" required fxFlex="0%">
+                    </airmid-textbox>
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>GST Amount</mat-label>
                         <input type="text" name="GST Amount" formControlName="GSTAmount" matInput #GSTAmount
                             [(ngModel)]="vFinalGSTAmount">
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
+                    <airmid-textbox label="GST Amount" formControlName="GSTAmount" [value]="vFinalGSTAmount" #GSTAmount
+                        [formGroup]="IssueFinalForm">
+                    </airmid-textbox>
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>Total Amount</mat-label>
                         <input type="text" name="Total Amount" formControlName="FinalTotalAmount" #FinalTotalAmount
                             matInput [(ngModel)]="vFinalTotalAmount" readonly>
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <airmid-textbox label="Total Amount" formControlName="FinalTotalAmount" [value]="vFinalTotalAmount"  #FinalTotalAmount
+                        [formGroup]="IssueFinalForm">
+                    </airmid-textbox>
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
+                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
                         <mat-label>Net Amount</mat-label>
                         <input type="text" name="NetAmount" formControlName="FinalNetAmount" #FinalTotalAmount matInput
                             [(ngModel)]="vFinalNetAmount" readonly>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
+                    <airmid-textbox label="Net Amount" formControlName="FinalNetAmount" [value]="vFinalNetAmount" #FinalTotalAmount 
+                        [formGroup]="IssueFinalForm">
+                    </airmid-textbox>
                     <div style="padding: 10px;">
 
                         <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
