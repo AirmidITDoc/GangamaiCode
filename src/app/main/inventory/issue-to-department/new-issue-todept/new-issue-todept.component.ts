@@ -512,13 +512,13 @@ export class NewIssueTodeptComponent {
 
 
     this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-      // setTimeout(() => {
-        this.Itemchargeslist1 = draftdata as any;
+     this.Itemchargeslist1 = draftdata as any;
         console.log(draftdata)
-      // }, 1000);
-      
+        console.log(this.Itemchargeslist1)
+         console.log(this.Itemchargeslist1.length)
+debugger
       if (this.Itemchargeslist1.length == 0) {
-        Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
+     Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
       else if (this.Itemchargeslist1.length > 0) {
         let ItemID = contact.itemId;
