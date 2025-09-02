@@ -46,26 +46,26 @@ export class StockAdjustmentService {
   }
   createMRPAdjForm() {
     return this._formBuilder.group({
-      OldMRP: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedRate: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      PurchaseRate: ['', [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewMRP: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      newLandedRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewPurchaseRate: ['', [ Validators.required,Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldMRP: ['', [Validators.min(0)]],
+      LandedRate: ['', [Validators.min(0)]],
+      PurchaseRate: ['', [Validators.min(0)]],
+      ConversionFactor: [0, [Validators.min(0)]],
+      NewMRP: ['', [ Validators.required,Validators.min(0)]],
+      newLandedRate: ['', [ Validators.required,Validators.min(0)]],
+      NewPurchaseRate: ['', [ Validators.required,Validators.min(0)]],
      // AddedDate:[new Date()],
     });
   }
   createGSTForm() {
     return this._formBuilder.group({
-      CGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      SGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      IGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewCGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewSGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewIGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      CGSTPer: [0, [Validators.min(0)]],
+      SGSTPer: [0, [Validators.min(0)]],
+      IGSTPer: [0, [Validators.min(0)]],
+      NewCGSTPer: [0, [Validators.min(0)]],
+      NewSGSTPer: [0, [Validators.min(0)]],
+      NewIGSTPer: [0, [Validators.min(0)]],
       TotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      OldTotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldTotalGSTPer: [0, [Validators.min(0)]],
     });
   }
    

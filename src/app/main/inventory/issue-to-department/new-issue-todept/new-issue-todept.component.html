@@ -165,16 +165,17 @@
                                     {{contact.BalanceQty}}
                                 </mat-cell>
                             </ng-container>
-
+ <!-- [id]="'Qty_' + index" -->
+                                            <!-- [min]="0" -->
                             <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
-                                            [id]="'Qty_' + index" (input)="getCellCalculation(contact,contact.Qty)"
-                                            [min]="0" />
+                                         (ngModelChange)="getCellCalculation(contact,contact.Qty)"/>
                                     </mat-form-field>
+
                                 </mat-cell>
                             </ng-container>
 

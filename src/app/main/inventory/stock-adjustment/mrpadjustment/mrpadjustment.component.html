@@ -79,9 +79,8 @@
                                         [(ngModel)]="vNewMRP">
                                 </mat-form-field> -->
                                 <airmid-textbox label="New MRP" formControlName="NewMRP"
-                                    [formGroup]="MRPAdjform"  [value]="vNewMRP"
-                                    [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()"
-                               (keypress)="keyPressAlphanumeric($event)">
+                                    [formGroup]="MRPAdjform"  [value]="vNewMRP"   [type]="'number'" 
+                                    [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()">
                                 </airmid-textbox>
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>New LandedRate</mat-label>
@@ -90,8 +89,9 @@
                                         (keyup)="calculationAmt()" (keyup.enter)="focusNext('NewPurchaseRate')">
                                 </mat-form-field> -->
                                 <airmid-textbox label="New LandedRate" formControlName="newLandedRate"
-                                    [formGroup]="MRPAdjform" [value]="vNewLandedRate" 
-                                    [validations]="getValidationMessages().newLandedRate"  (keypress)="keyPressAlphanumeric($event)"
+                                    [formGroup]="MRPAdjform" [value]="vNewLandedRate"   [type]="'number'" 
+                                    [validations]="getValidationMessages().newLandedRate" 
+                                    
                                      (keyup)="calculationAmt()">
                                 </airmid-textbox>
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -101,8 +101,8 @@
                                         (keyup)="calculationAmt()">
                                 </mat-form-field> -->
                                 <airmid-textbox label="New PurchaseRate" formControlName="NewPurchaseRate"
-                                    [formGroup]="MRPAdjform" [value]="vNewPurchaseRate"  (input)="calculationAmt()"
-                                    [validations]="getValidationMessages().NewPurchaseRate"  (keypress)="keyPressAlphanumeric($event)">
+                                    [formGroup]="MRPAdjform" [value]="vNewPurchaseRate"  (input)="calculationAmt()" 
+                                    [validations]="getValidationMessages().NewPurchaseRate"  [type]="'number'" >
                                 </airmid-textbox>
                             </div>
                         </form>

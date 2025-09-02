@@ -94,8 +94,8 @@ export class NewIssueTodeptComponent {
   vAgainstIndet: boolean = false;
   Isclosedchk: boolean = false;
   AgainstInd: boolean = true;
-    ItemID = 0;
-   fromstore: any;
+  ItemID = 0;
+  fromstore: any;
 
   autocompletestore: string = "Store";
   autocompletestore1: string = "Store";
@@ -200,10 +200,11 @@ export class NewIssueTodeptComponent {
         "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "addedby": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "createdBy": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isVerified": [false],
         "isClosed": [false],
-        "unitId":[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "unitId": [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "tIssueToDepartmentDetails": this._formBuilder.array([]),
       }),
       tCurrentStock: this._formBuilder.array([]),
@@ -266,7 +267,8 @@ export class NewIssueTodeptComponent {
         "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "addedby": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "modifiedBy": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isVerified": [false],
         "isClosed": [false],
         "tIssueToDepartmentDetails": this._formBuilder.array([]),
@@ -274,7 +276,7 @@ export class NewIssueTodeptComponent {
       tCurStockModel: this._formBuilder.array([]),
       "indentHeader": this._formBuilder.group({
         "indentId": this.vIndentId,
-        "isClosed": true
+        "isClosed": false
       }),
       tIndentDetails: this._formBuilder.array([]),
     });
@@ -355,7 +357,7 @@ export class NewIssueTodeptComponent {
     if (serviceNameElement) {
       serviceNameElement.focus();
     }
-  
+
   }
 
   getBatch() {
@@ -452,7 +454,7 @@ export class NewIssueTodeptComponent {
     this.getBatch();
 
   }
- 
+
   OnIndentAgainst() {
 
     const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
@@ -465,19 +467,20 @@ export class NewIssueTodeptComponent {
       this.dsSelectedIndentItemList.data = result;
       console.log(this.dsSelectedIndentItemList.data)
       if (result) this.updatestatus()
-           
+
     });
   }
 
-updatestatus(){
-  debugger
-        this.vIndentId = this.dsSelectedIndentItemList.data[0]['indentId'];
-        this.vAgainstIndet = true;
-        this.fromstoreId = this.dsSelectedIndentItemList.data[0]['fromStoreId']
-        this.fromstore = this.dsSelectedIndentItemList.data[0]['fromStoreName']
-        this.StoreFrom.get('ToStoreId').setValue( this.fromstoreId);
-        this.showIndentFlag = true
-}
+  updatestatus() {
+    debugger
+    this.AgainstInd = true
+    this.vIndentId = this.dsSelectedIndentItemList.data[0]['indentId'];
+    this.vAgainstIndet = true;
+    this.fromstoreId = this.dsSelectedIndentItemList.data[0]['fromStoreId']
+    this.fromstore = this.dsSelectedIndentItemList.data[0]['fromStoreName']
+    this.StoreFrom.get('ToStoreId').setValue(this.fromstoreId);
+    this.showIndentFlag = true
+  }
   AddIndentSelectedItem(contact) {
     console.log(contact)
     this.vIndentId = contact.indentId;
@@ -506,26 +509,33 @@ updatestatus(){
       "ItemId": contact.itemId,
       "StoreId": this.accountService.currentUserValue.user.storeId || 0
     }
+
+
     this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-      this.Itemchargeslist1 = draftdata as any;
+      setTimeout(() => {
+        this.Itemchargeslist1 = draftdata as any;
+        console.log(draftdata)
+      }, 1000);
+      
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
       else if (this.Itemchargeslist1.length > 0) {
         let ItemID = contact.itemId;
-
+        debugger
         let remaing_qty = contact.balanceQty;
         let bal_qnt = 0;
         this.Itemchargeslist1.forEach((element) => {
 
           let IndQty = remaing_qty;
           if (IndQty > 0) {
+            debugger
             if (contact.itemId != element.itemId) {
               this.QtyBalchk = 0;
             } else if (IndQty <= element.balanceQty) {
               this.QtyBalchk = 1;
               this.getFinalCalculation(element, IndQty);
-              contact.itemId = element.ItemId;
+              contact.itemId = element.itemId;
               bal_qnt += element.balanceQty - IndQty;
             } else if (IndQty > element.balanceQty) {
               this.QtyBalchk = 1;
@@ -552,7 +562,7 @@ updatestatus(){
 
 
   getFinalCalculation(contact, DraftQty) {
-
+    debugger
     console.log(contact)
 
     this.RQty = parseInt(DraftQty);
@@ -601,7 +611,7 @@ updatestatus(){
     }
   }
 
-
+  CellCalculation = 0
   getCellCalculation(contact, Qty) {
     debugger
     // console.log(this.Indbalqty)
@@ -610,6 +620,7 @@ updatestatus(){
     // console.log(contact)
     // console.log(Qty)
 
+    this.CellCalculation = 1
     if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
       this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -625,7 +636,7 @@ updatestatus(){
         contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
         this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
         contact.IssueBalQty = (this.Indbalqty)
-
+        debugger
         if (contact.IssueBalQty == 0)
           contact.IsClosed = true
         else
@@ -642,6 +653,8 @@ updatestatus(){
 
   }
   OnSave() {
+
+
     console.log(this.vIndentId)
     if ((!this.dsNewIssueItemList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -695,7 +708,7 @@ updatestatus(){
     this.dsNewIssueItemList.data.forEach(item => {
       this.stockArray.push(this.currentstockform(item));
     });
-    
+
     this.FinalIssueForm.get("issue.issueId").setValue(0)
     this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
@@ -718,10 +731,26 @@ updatestatus(){
   }
 
   OnSaveAgaintIndent() {
-    
+
     this.deptArray1.clear();
     this.dsNewIssueItemList.data.forEach(item => {
       this.deptArray1.push(this.Depatdetailform(item));
+    });
+
+
+    this.indentdetailArray.clear();
+    this.dsNewIssueItemList.data.forEach(element => {
+      console.log(element)
+      if (this.CellCalculation == 0)
+        console.log(element)
+      debugger
+      let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+      if (balQty == 0)
+        element.IsClosed = true;
+      else
+        element.IsClosed = false;
+
+      this.indentdetailArray.push(this.indentdetailform(element));
     });
 
     this.stockArray1.clear();
@@ -743,18 +772,15 @@ updatestatus(){
     this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
     this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
     this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+    this.FinalIssueaginstForm.get("updateIndent.modifiedBy").setValue(this.accountService.currentUserValue.user.userId || 0)
+
     this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
-    this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
+    this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(this.Isclosedchk)
     this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(this.vIndentId)
 
     this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(this.vIndentId)
     this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(this.Isclosedchk)
 
-
-    this.indentdetailArray.clear();
-    this.dsNewIssueItemList.data.forEach(item => {
-      this.indentdetailArray.push(this.indentdetailform(item));
-    });
 
     console.log(this.FinalIssueaginstForm.value)
 

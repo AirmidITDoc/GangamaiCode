@@ -17,7 +17,6 @@ import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
-import { LanguageOption, SpeechRecognitionService } from "app/main/shared/services/speech-recognition.service";
 
 @Component({
   selector: 'app-doctornote',
@@ -93,14 +92,10 @@ export class DoctornoteComponent implements OnInit {
     public toastr: ToastrService,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
-    public speechService: SpeechRecognitionService,
   ) { }
 
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
-
-  languages: LanguageOption[] = [];
-  selectedLang = 'en-US';
 
   showDropdown = true;
 
@@ -175,8 +170,6 @@ export class DoctornoteComponent implements OnInit {
     this.myHandOverform.markAllAsTouched()
     this.myNoteform = this._NursingStationService.createDoctorNoteForm();
     this.myNoteform.markAllAsTouched()
-
-    this.languages = this.speechService.supportedLanguages;
   }
 
   gridConfig: gridModel = {
@@ -279,9 +272,9 @@ export class DoctornoteComponent implements OnInit {
       console.log(this.myNoteform.value)
 
       this._NursingStationService.DoctorNoteInsert(this.myNoteform.value).subscribe(response => {
+        this.onClear();
         this.grid.bindGridData();
         this.ViewDoctorNote(this.OP_IP_Id);
-        this.onClear();
       });
     } else {
       let invalidFields = [];
@@ -400,16 +393,11 @@ export class DoctornoteComponent implements OnInit {
 
   // plz dont change here anything (ask me before Raksha)
   onClear() {
-    this.myNoteform.reset();
-    this.myform.get('TemplateId').setValue('');
-    this.myform.get('templateDesc').setValue('');
+    // this.myNoteform.reset();
+    this.myNoteform.get('doctorsNotes')?.setValue('');
+    this.vDescription = '';
     this.IsAddFlag = true
     this.vDoctNoteId = 0;
-    this.vDescription = 0;
-    // this.onClearPatientInfo()
-    // this.myform.get('RegID').setValue('');
-    // this.myNoteform = this._NursingStationService.createDoctorNoteForm();
-    // this.myNoteform.markAllAsTouched()
   }
 
   onClose() {
@@ -456,26 +444,9 @@ export class DoctornoteComponent implements OnInit {
     }
   }
 
- onEditorValueChange(content: string) {
-  console.log("Got from editor:", content);
-  this.myNoteform.get('doctorsNotes')?.setValue(content);
-}
-
-  //////////////// mic code /////////////////
-  onLangChange() {
-    debugger
-    if (this.speechService.isListening) {
-      this.speechService.stopRecognition();
-    }
-  }
-
-  onMicToggle() {
-    const lang = this.selectedLang || 'en-US';
-    this.speechService.toggleRecognition(lang, (text: string) => {
-      const currentText = this.myNoteform.get('doctorsNotes')?.value || '';
-      const updated = currentText ? `${currentText} ${text}` : text;
-      this.myNoteform.get('doctorsNotes')?.setValue(updated);
-    });
+  onEditorValueChange(content: string) {
+    console.log("Got from editor:", content);
+    this.myNoteform.get('doctorsNotes')?.setValue(content);
   }
 }
 export class DocNote {

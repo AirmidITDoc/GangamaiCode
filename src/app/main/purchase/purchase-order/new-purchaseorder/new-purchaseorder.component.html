@@ -35,7 +35,7 @@
                                     </div>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                          
+
                             <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
                                 <form [formGroup]="userFormGroup" class="pt-4" style="overflow: auto">
                                     <div fxLayout="row" class="gap-4">
@@ -519,8 +519,7 @@
 
                                 <span class="net-amt-mat-label" style="font-weight:bold;margin-left:10px;
                                   background-color: rgb(171, 248, 245);">Net Amt:</span>&nbsp;
-                                <span class="net-amt-value"
-                                    style="margin-left:10px;font-weight:bolder;color: blue;
+                                <span class="net-amt-value" style="margin-left:10px;font-weight:bolder;color: blue;
                                     background-color: rgb(171, 248, 245);">{{getTotalNet(dsItemNameList.data)
                                     | currency:'INR'}}</span>
 
@@ -672,20 +671,19 @@
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>
-                <div class="modal-footer" style="padding-top: 10px;">
-                    <div class="footer-navigation-container">
-                        <div class="modal-footer-buttons">
-                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                            <button type="button" class="btn btn-primary" [disabled]="false"
-                                (click)="OnSave()">Save</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </div>
         <!-- Modal footer -->
 
+        <div class="modal-footer" style="padding-top: 10px;">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                    <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

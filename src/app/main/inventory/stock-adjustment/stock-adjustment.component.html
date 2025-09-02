@@ -122,34 +122,6 @@
                                 </mat-cell>
                             </ng-container>
 
-
-                            <!-- <ng-container matColumnDef="expDateEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-200">
-                                    <ng-container *ngIf="!contact.Expeditable; else showInput">
-                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)" matTooltip="Edit Exp Date">
-                                            <mat-icon>edit</mat-icon></button>
-                                    </ng-container>
-                                    <ng-template #showInput>
-<form [formGroup]="StoreFrom">
-                                            <mat-form-field appearance="outline" fxFlex="40%">
-                                                <mat-label>ExpDate</mat-label>
-                                                <input matInput #inputField (input)="CellcalculateLastDay(contact)" formControlName="expDateEdit" [formGroup]="StoreFrom"
-                                                    [(ngModel)]="contact.expDateEdit" autocomplete="off" (blur)="ExpDatedisableEditing(contact)"
-                                                    placeholder="mmyyyy" [id]="'expDateEdit' + index " >
-                                            </mat-form-field>
-                                             <button (click)="OnSaveBatchAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Record"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </button>
-                                        </form>
-                                       
-                                    </ng-template>
-
-                                </mat-cell>
-                            </ng-container> -->
-
                                 <ng-container matColumnDef="expDateEdit">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="15%">
                                     ExpDateEdit
@@ -161,37 +133,12 @@
                                     </ng-container>
                                 </mat-cell>
                             </ng-container>
-<!-- 
-                            <ng-container matColumnDef="expDateEdit">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-100">
-                                    <ng-container>
-                                        <button mat-icon-button (click)="ExpDateenableEditing(contact)"
-                                            matTooltip="Edit Batch Exp Date">
-                                            <mat-icon>edit</mat-icon></button>
-                                    </ng-container>
-                                    <ng-template #showInput>
-
-                                        <mat-form-field appearance="fill">
-                                            <input matInput [(ngModel)]="contact.Expeditable" [id]="'expDateEdit' + index"
-                                                (input)="OneditDate(contact)"   placeholder="mmyyyy"/>
-                                        </mat-form-field>
-                                        <button (click)="OnSaveBatch()" matTooltip="Save">
-                                            <mat-icon title="Save Record"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </button>
-                                    </ng-template>
-
-                                </mat-cell>
-                            </ng-container> -->
-
 
                             <ng-container matColumnDef="landedRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     LandedRate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.landedRate}}
+                                    {{contact.landedRate | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -212,7 +159,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Purchase Rate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.purUnitRateWF}}
+                                    {{contact.purUnitRateWF | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -224,51 +171,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="Addition">
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
-                                    Addition</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <ng-container *ngIf="!contact.Addeditable; else showInput">
-                                        <button mat-icon-button (click)="enableEditing(contact)">
-                                            <mat-icon>edit</mat-icon></button>
-                                    </ng-container>
-                                    <ng-template #showInput>
-                                        <mat-form-field appearance="legacy" class="w-60">
-                                            <input matInput [(ngModel)]="contact.AddQty" type="text" OnlyNumber
-                                                (blur)="disableEditing(contact)" autocomplete="off"
-                                                (keyup)="AddQty(contact,contact.AddQty)">
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <buttom mati-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </buttom>
-                                    </ng-template>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Deduction">
-                                <mat-header-cell *matHeaderCellDef style="color: white;">
-                                    Deduction</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <ng-container *ngIf="!contact.Dedueditable; else showInput">
-                                        <button mat-icon-button (click)="deduenableEditing(contact)">
-                                            <mat-icon>edit</mat-icon></button>
-                                    </ng-container>
-                                    <ng-template #showInput>
-                                        <mat-form-field appearance="legacy" class="w-60">
-                                            <input matInput [(ngModel)]="contact.DeduQty" type="text" OnlyNumber
-                                                (keyup)="DeduQty(contact,contact.DeduQty)" autocomplete="off"
-                                                (blur)="dedudisableEditing(contact)">
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <buttom mati-icon-button (click)="onsaveStockAdj()" matTooltip="Save">
-                                            <mat-icon title="Save Reocrd"
-                                                class="active-icon green-600 s-16">check</mat-icon>
-                                        </buttom>
-                                    </ng-template>
-                                </mat-cell>
-                            </ng-container> -->
-
-                            <ng-container matColumnDef="conversionFactor">
+                                                  <ng-container matColumnDef="conversionFactor">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Packing</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -320,50 +223,3 @@
     </div>
 </div>
 
-<!-- 
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-    dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Stock Adjustment
-            </span>
-        </div>
-    </mat-toolbar>
-    
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                               
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Store Name </mat-label>
-                                <input matInput placeholder="Search StoreName " autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Item Name</mat-label>
-                                <input matInput placeholder="Search ItemName" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
- 
-</div> -->

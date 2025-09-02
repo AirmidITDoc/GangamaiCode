@@ -181,50 +181,11 @@
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <div>
-                                                                                <button mat-icon-button matSuffix
-                                                                                    (click)="onMicToggle()"
-                                                                                    [color]="speechService.isListening ? 'warn' : 'primary'"
-                                                                                    type="button">
-                                                                                    <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                                                                                </button>
-
-                                                                                <!-- <mat-form-field appearance="outline"
-                                                                                    style="min-width: 180px;">
-                                                                                    <mat-label>Language</mat-label>
-                                                                                    <mat-select
-                                                                                        [(ngModel)]="selectedLang"
-                                                                                        (selectionChange)="onLangChange()"
-                                                                                        name="languageSelect">
-                                                                                        <mat-option
-                                                                                            *ngFor="let lang of languages"
-                                                                                            [value]="lang.code">
-                                                                                            {{ lang.label }}
-                                                                                        </mat-option>
-                                                                                    </mat-select>
-                                                                                </mat-form-field> -->
-                                                                                <mat-form-field appearance="outline"
-                                                                                    style="min-width: 180px;">
-                                                                                    <mat-label>Language</mat-label>
-                                                                                    <mat-select
-                                                                                        [(ngModel)]="selectedLang"
-                                                                                        [ngModelOptions]="{standalone: true}">
-                                                                                        <mat-option
-                                                                                            *ngFor="let lang of languages"
-                                                                                            [value]="lang.code">
-                                                                                            {{ lang.label }}
-                                                                                        </mat-option>
-                                                                                    </mat-select>
-                                                                                </mat-form-field>
-
-                                                                            </div>
                                                                         </div>
                                                                     </form>
                                                                     <mat-card style="padding: 5px;overflow: auto;">
                                                                         <div>
                                                                             <airmid-editor label="Template Details"
-                                                                                style="height: 100px;"
                                                                                 formControlName="doctorsNotes"
                                                                                 [(value)]="vDescription"
                                                                                 [formGroup]="myNoteform" (valueChange)="onEditorValueChange($event)">

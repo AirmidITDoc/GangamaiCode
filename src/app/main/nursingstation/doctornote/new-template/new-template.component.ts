@@ -54,6 +54,11 @@ export class NewTemplateComponent implements OnInit {
         }
     }
 
+    onEditorValueChange(content: string) {
+        console.log("Got from editor:", content);
+        this.Templateform.get('templateDesc')?.setValue(content);
+    }
+
     onSubmit() {
 
         if (!this.Templateform.invalid) {
@@ -83,25 +88,25 @@ export class NewTemplateComponent implements OnInit {
             }
         }
     }
-        getValidationMessages() {
-            return {
-                docsTempName: [
-                    { name: "required", Message: "Template Name is required" },
-                    { name: "maxlength", Message: "Template name should not be greater than 50 char." },
-                    { name: "pattern", Message: "Special char not allowed." }
-                ]
-            }
-        }
-
-        onClose() {
-            this.myform.reset();
-            this.Templateform.reset();
-            this.dialogRef.close();
-        }
-
-        onClear(val: boolean) {
-            this.Templateform.reset();
-            this.myform.reset();
-            this.dialogRef.close(val);
+    getValidationMessages() {
+        return {
+            docsTempName: [
+                { name: "required", Message: "Template Name is required" },
+                { name: "maxlength", Message: "Template name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
         }
     }
+
+    onClose() {
+        this.myform.reset();
+        this.Templateform.reset();
+        this.dialogRef.close();
+    }
+
+    onClear(val: boolean) {
+        this.Templateform.reset();
+        this.myform.reset();
+        this.dialogRef.close(val);
+    }
+}

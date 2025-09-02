@@ -139,12 +139,8 @@
                 <!-- Template Description Editor -->
                 <mat-card class="mt-16" style="padding: 10px;">
                     <form [formGroup]="ConsentinsertForm">
-                        <!-- <mat-label>Template Details</mat-label>
-                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" [(ngModel)]="vConsentText"
-                            formControlName="ConsentText" required>
-                        </angular-editor> -->
-                        <airmid-editor label="Template Details" style="height: 100px;" formControlName="ConsentText"
-                            [(value)]="vConsentText" [formGroup]="ConsentinsertForm">
+                        <airmid-editor label="Template Details" formControlName="ConsentText"
+                            [(value)]="vConsentText" [formGroup]="ConsentinsertForm" (valueChange)="onEditorValueChange($event)">
                         </airmid-editor>
                     </form>
                 </mat-card>

@@ -396,15 +396,6 @@ debugger
         }
       }
 
-      // this.prescriptionArray.controls.forEach((control, index) => {
-      //   if (control instanceof FormGroup) {
-      //     for (const key in control.controls) {
-      //       if (control.get(key)?.invalid) {
-      //         invalidFields.push(`Prescription Row ${index + 1}: ${key}`);
-      //       }
-      //     }
-      //   }
-      // });
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',

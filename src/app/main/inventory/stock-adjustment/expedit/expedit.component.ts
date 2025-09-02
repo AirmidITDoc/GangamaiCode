@@ -4,9 +4,10 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-expedit',
@@ -20,11 +21,14 @@ export class ExpeditComponent {
   oldExpdate: any;
   newExpdate: any;
   Expform: FormGroup;
+  Expform1: FormGroup;
   registerObj: any;
   vBatchNo:any;
   constructor(
     public _StockAdjustment: StockAdjustmentService,
     private accountService: AuthenticationService,
+   private _FormvalidationserviceService: FormvalidationserviceService,
+     private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     public dialogRef: MatDialogRef<ExpeditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -42,37 +46,63 @@ export class ExpeditComponent {
       // this.itemname = this.registerObj.itemName;
       // this.vBatchNo= this.registerObj.batchNo
       // this.itemname = this.registerObj.itemName;
-      this.Expform = this._StockAdjustment.createExpForm()
+    
+      this.Expform1 = this.createExpForm()
+       this.Expform = this._StockAdjustment.createExpForm()
     }
+    
   }
 
 
+  createExpForm(){
+  return this._formBuilder.group({
+    batchAdjId:0,
+      storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [this.registerObj.stockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [this.registerObj.itemId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      oldBatchNo: [''],
+      oldExpDate: [this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd')],
+      newBatchNo: [ this.registerObj.batchNo || ''],
+      newExpDate: [this.Expform.get('NewexpDate').value],
+     addedBy: [this.accountService.currentUserValue.userId | 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+    });
+    }
+  
   onSubmit() {
 
-    let submitData = {
-      "batchAdjId": 0,
-      "storeId": this.accountService.currentUserValue.user.storeId || 0,
-      "itemId": this.registerObj.itemId|| 0,
-      "oldBatchNo":  this.registerObj.batchNo || '',
-      "oldExpDate": this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd'),
-      "newBatchNo":  this.registerObj.batchNo || '',
-      "newExpDate": this.Expform.get('NewexpDate').value,
-      "addedBy": this.accountService.currentUserValue.userId || 0,
-      "stkId": this.registerObj.stockId || 0
-    }
-    console.log(submitData);
-    this._StockAdjustment.BatchAdjSave(submitData).subscribe(response => {
+if(this.expflag){
+    // let submitData = {
+    //   "batchAdjId": 0,
+    //   "storeId": this.accountService.currentUserValue.user.storeId || 0,
+    //   "itemId": this.registerObj.itemId|| 0,
+    //   "oldBatchNo":  this.registerObj.batchNo || '',
+    //   "oldExpDate": this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd'),
+    //   "newBatchNo":  this.registerObj.batchNo || '',
+    //   "newExpDate": this.Expform.get('NewexpDate').value,
+    //   "addedBy": this.accountService.currentUserValue.userId || 0,
+    //   "stkId": this.registerObj.stockId || 0
+    // }
+
+
+    console.log(this.Expform1.value);
+    this.Expform1.get('oldExpDate').setValue(this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd'))
+
+    this.Expform1.get('newExpDate').setValue(this.Expform.get('NewexpDate').value)
+ console.log(this.Expform1.value);
+    this._StockAdjustment.BatchAdjSave(this.Expform1.value).subscribe(response => {
       this._matDialog.closeAll();
       
     });
-     
+  }else Swal.fire("Enter Exp Date:")
 }
 
 
 vlastDay: string = '';
 lastDay2: string = '';
 vExpDate: string = '';
+expflag=0
 calculateLastDay() {
+  this.expflag=1
   const inputDate = this.Expform.get("NewexpDate").value;
 
   const numericPattern = /^[0-9]+$/;

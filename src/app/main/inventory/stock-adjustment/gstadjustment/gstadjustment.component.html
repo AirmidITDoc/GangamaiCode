@@ -81,7 +81,7 @@
 
                                 <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
-                                    [value]="vNewCGSTPer" (valueChange)="getchangegstper(1,$event,CGST)"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewCGSTPer" (valueChange)="getchangegstper(1,$event,CGST)"  [type]="'number'" >
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -92,7 +92,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New SGSTPer" formControlName="sgstper" #SGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
-                                    [value]="vNewSGSTPer" (valueChange)="getchangegstper(2,$event,SGST)"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewSGSTPer" (valueChange)="getchangegstper(2,$event,SGST)"   [type]="'number'" >
                                 </airmid-textbox>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
@@ -103,7 +103,7 @@
                                 </mat-form-field> -->
                                 <airmid-textbox label="New IGSTPer" formControlName="igstper" #IGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
-                                    [value]="vNewIGSTPer" (valueChange)="getchangegstper(3,$event,IGST)"  (keypress)="keyPressAlphanumeric($event)">
+                                    [value]="vNewIGSTPer" (valueChange)="getchangegstper(3,$event,IGST)"  [type]="'number'" >
                                 </airmid-textbox>
 
                             </div>
