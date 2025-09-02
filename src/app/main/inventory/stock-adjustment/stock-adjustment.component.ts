@@ -98,7 +98,11 @@ export class StockAdjustmentComponent implements OnInit {
         this.getStockList();
     }
 
-    onClear() { }
+    onClear() { 
+        this.StoreFrom.get('ItemID').reset('');
+        
+        this.dsStockAdjList.data=[]
+    }
     getStockList() {
         var Param = {
             "first": 0,

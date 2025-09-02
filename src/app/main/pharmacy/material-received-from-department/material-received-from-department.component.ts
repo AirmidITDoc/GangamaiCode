@@ -80,11 +80,11 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
       
       
           { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
          { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
          { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
          { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-         { heading: "AddedBy", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+         { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
          { heading: "acceptedByDepartment", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
  
          { heading: "rejetcedByDepartment", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -125,10 +125,10 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
                  { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
                  { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                  { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-                 { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                 { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                  { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
                  { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-                 { heading: "GST%", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 }
+                 { heading: "GST(%)", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 }
              ],
              sortField: "IssueId",
              sortOrder: 0,

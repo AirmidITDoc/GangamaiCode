@@ -473,6 +473,7 @@ export class NewIssueTodeptComponent {
 
   updatestatus() {
     debugger
+    this.AgainstInd = true
     this.vIndentId = this.dsSelectedIndentItemList.data[0]['indentId'];
     this.vAgainstIndet = true;
     this.fromstoreId = this.dsSelectedIndentItemList.data[0]['fromStoreId']
@@ -508,16 +509,20 @@ export class NewIssueTodeptComponent {
       "ItemId": contact.itemId,
       "StoreId": this.accountService.currentUserValue.user.storeId || 0
     }
-    this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-      this.Itemchargeslist1 = draftdata as any;
-      console.log(draftdata)
 
+
+    this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
+      setTimeout(() => {
+        this.Itemchargeslist1 = draftdata as any;
+        console.log(draftdata)
+      }, 1000);
+      
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
       else if (this.Itemchargeslist1.length > 0) {
         let ItemID = contact.itemId;
-
+        debugger
         let remaing_qty = contact.balanceQty;
         let bal_qnt = 0;
         this.Itemchargeslist1.forEach((element) => {
@@ -557,7 +562,7 @@ export class NewIssueTodeptComponent {
 
 
   getFinalCalculation(contact, DraftQty) {
-debugger
+    debugger
     console.log(contact)
 
     this.RQty = parseInt(DraftQty);

@@ -207,33 +207,33 @@ export class CurrentStockComponent implements OnInit {
 
     // Day wise current stock
 
-    onChangeDateofBirth(selectedDate: any) {
-        debugger
-        if (!selectedDate) return;
+    // onChangeDateofBirth(selectedDate: any) {
+    //     debugger
+    //     if (!selectedDate) return;
 
-        const date = new Date(selectedDate);
-        const now = new Date(); // current time
+    //     const date = new Date(selectedDate);
+    //     const now = new Date(); // current time
 
-        // Set selected date's time to current time
-        date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+    //     // Set selected date's time to current time
+    //     date.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+    //     const year = date.getFullYear();
+    //     const month = String(date.getMonth() + 1).padStart(2, '0');
+    //     const day = String(date.getDate()).padStart(2, '0');
+    //     const hours = String(date.getHours()).padStart(2, '0');
+    //     const minutes = String(date.getMinutes()).padStart(2, '0');
+    //     const seconds = String(date.getSeconds()).padStart(2, '0');
+    //     const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
 
-        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+    //     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
 
-        this.formattedDate = formattedDate;
+    //     this.formattedDate = formattedDate;
 
-        this.alldayWiseFilter[0].fieldValue = formattedDate;
+    //     this.alldayWiseFilter[0].fieldValue = formattedDate;
 
-        console.log('Formatted date with current time:', formattedDate);
-        this.getfilterdayWise()
-    }
+    //     console.log('Formatted date with current time:', formattedDate);
+    //     this.getfilterdayWise()
+    // }
 
     alldayWiseColumn = [
         { heading: "LedgerDate", key: "ledgerDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },

@@ -74,13 +74,13 @@ export class MRPAdjustmentComponent implements OnInit {
 
   createMRPAdjForm() {
     return this._formBuilder.group({
-      OldMRP: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      PurchaseRate: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      ConversionFactor: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewMRP: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      newLandedRate: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      NewPurchaseRate: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      OldMRP: [0, [Validators.min(0)]],
+      LandedRate: [0, [Validators.min(0)]],
+      PurchaseRate: [0, [Validators.min(0)]],
+      ConversionFactor: [0, [Validators.min(0)]],
+      NewMRP: [0, [Validators.required, Validators.min(0)]],
+      newLandedRate: [0, [Validators.required, Validators.min(0)]],
+      NewPurchaseRate: [0, [Validators.required, Validators.min(0)]],
       // AddedDate:[new Date()],
     });
   }
@@ -92,13 +92,13 @@ export class MRPAdjustmentComponent implements OnInit {
         "storeId": [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "itemId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "batchNo": [''],
-        "oldMrp": [this.vOldMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "oldPurRate": [this.vPurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "oldLandedRate": [this.vLandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "oldMrp": [this.vOldMRP],
+        "oldPurRate": [this.vPurchaseRate],
+        "oldLandedRate": [this.vLandedRate],
         "qty": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "mrp": [this.vNewMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "landedRate": [this.vNewLandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "purRate": [this.vNewPurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "mrp": [this.vNewMRP],
+        "landedRate": [this.vNewLandedRate],
+        "purRate": [this.vNewPurchaseRate],
         "addedBy": [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "addedDateTim": [(new Date()).toISOString().split('T')[0]],
 
@@ -108,20 +108,20 @@ export class MRPAdjustmentComponent implements OnInit {
         "stockId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "itemId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "batchNo": [''],
-        "unitMrp": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "purchaserate": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "landedRate": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "oldUnitMrp": [this.vOldMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "oldUnitPur": [this.vPurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "oldUnitLanded": [this.vLandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "unitMrp": [0],
+        "purchaserate": [0],
+        "landedRate": [0],
+        "oldUnitMrp": [this.vOldMRP],
+        "oldUnitPur": [this.vPurchaseRate],
+        "oldUnitLanded": [this.vLandedRate]
 
-      }),
+      })
     });
   }
 
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
+    if (/^\d*\?\d*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -295,7 +295,7 @@ export class MRPAdjustmentComponent implements OnInit {
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+    if (/[a-zA-Z0-9.]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
