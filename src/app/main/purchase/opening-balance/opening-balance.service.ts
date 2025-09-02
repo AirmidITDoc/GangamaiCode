@@ -41,7 +41,7 @@ export class OpeningBalanceService {
       MRP: [0, [Validators.required]],
       RatePerUnit: [0, [Validators.required]],
       Remark: '',
-      LandedRate: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      LandedRate: [0, [Validators.required]],
     })
   }
 

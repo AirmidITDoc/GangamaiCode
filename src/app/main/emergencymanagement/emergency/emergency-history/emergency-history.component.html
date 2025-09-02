@@ -181,7 +181,7 @@
                                         <div style="margin-bottom: 16px;" fxLayout="column">
                                             <airmid-editor label="Patient Assessment"
                                                 formControlName="chiefComplaint" [(value)]="vDescription"
-                                                [formGroup]="historyForm">
+                                                [formGroup]="historyForm" (valueChange)="onEditorValueChange($event)">
                                             </airmid-editor>
                                             <!-- <angular-editor [config]="editorConfig" formControlName="chiefComplaint"
                                                 (blur)="onBlur($event)">

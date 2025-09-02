@@ -106,15 +106,29 @@ export class InterimBillComponent implements OnInit {
       ipBillling: this.formBuilder.group({    
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdid: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        regNo: [this.selectedAdvanceObj?.regNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientName: [this.selectedAdvanceObj?.patientName, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ipdno: [this.selectedAdvanceObj?.ipdno, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ageYear: [Number(this.selectedAdvanceObj?.ageYear || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageMonth: [Number(this.selectedAdvanceObj?.ageMonth || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageDays: [Number(this.selectedAdvanceObj?.ageDay || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId: [this.selectedAdvanceObj?.docNameId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorName: [this.selectedAdvanceObj?.doctorname || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        wardId: [this.selectedAdvanceObj?.wardId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        bedId: [this.selectedAdvanceObj?.bedId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientType: [this.selectedAdvanceObj?.companyId ? true : false],
+        companyName: [this.selectedAdvanceObj?.companyName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],  
+        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        paidAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
         opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this.accountService.currentUserValue.userId],
-        totalAdvanceAmount: [this.selectedAdvanceObj?.AdvTotalAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAdvanceAmount: [this.selectedAdvanceObj?.AdvTotalAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         concessionReasonId: [this.concessionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isSettled: false,
@@ -122,7 +136,7 @@ export class InterimBillComponent implements OnInit {
         isFree: true,
         companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         interimOrFinal: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -174,13 +188,11 @@ export class InterimBillComponent implements OnInit {
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       });
-    } 
- 
+    }  
     // Getters 
     get BillDetailsArray(): FormArray { 
       return this.IPInterimBillForm.get('billingDetails') as FormArray;
     }   
-
   getNetAmtSum() { 
     this.FinalNetAmt =  this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0); 
     let totalAmt =  this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
@@ -273,7 +285,7 @@ export class InterimBillComponent implements OnInit {
         });
         return;
       }
-    }
+    } 
     this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(this.InterimFooterForm.get('TotalAmt')?.value)
     this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(this.InterimFooterForm.get('concessionAmt')?.value)
     this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
@@ -351,9 +363,9 @@ export class InterimBillComponent implements OnInit {
       }
     } else {
       let invalidFields = [];
-      if (this.InterimFooterForm.invalid) {
-        for (const controlName in this.InterimFooterForm.controls) {
-          const control = this.InterimFooterForm.get(controlName);
+      if (this.IPInterimBillForm.invalid) {
+        for (const controlName in this.IPInterimBillForm.controls) {
+          const control = this.IPInterimBillForm.get(controlName);
 
           if (control instanceof FormGroup || control instanceof FormArray) {
             for (const nestedKey in control.controls) {

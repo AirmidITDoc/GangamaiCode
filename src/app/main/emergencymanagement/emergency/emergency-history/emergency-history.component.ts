@@ -37,7 +37,7 @@ export class EmergencyHistoryComponent {
   vPulse: any;
   vBMI: any;
   vBP: any;
-  vBSL:any;
+  vBSL: any;
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -77,7 +77,6 @@ export class EmergencyHistoryComponent {
     if (this.data) {
       this.registerObj = this.data
       this.emergencyId = this.registerObj.emgId
-      console.log("Data:", this.registerObj)
     }
     this.gethistory(this.registerObj);
     // this._EmergencyService.getEmergencyById(this.data.emgId).subscribe((res) => {
@@ -95,8 +94,8 @@ export class EmergencyHistoryComponent {
       pweight: ["", [Validators.required, Validators.maxLength(20),
       this._FormvalidationserviceService.allowEmptyStringValidator()]],
       bmi: ["", [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
-      bsl: ["", [ Validators.maxLength(20)]],
-      spO2: ["", [ Validators.maxLength(20)]],
+      bsl: ["", [Validators.maxLength(20)]],
+      spO2: ["", [Validators.maxLength(20)]],
       pulse: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       bp: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
       temp: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(10)]],
@@ -110,40 +109,40 @@ export class EmergencyHistoryComponent {
     })
   }
 
-    // showing color for vitals
-   getVitalColorClass(vital: string, value: any): string {
+  // showing color for vitals
+  getVitalColorClass(vital: string, value: any): string {
     const num = parseFloat(value);
     switch (vital) {
       case 'BMI':
         if (num < 18.5) return 'orange'; // Yellow
         if (num <= 24.9) return 'green'; // Green
         return 'red'; // Red
-  
+
       case 'SpO2':
         return num < 95 ? 'orange' : 'green';
-  
+
       case 'Pulse':
         if (num < 60) return 'orange';
         if (num <= 100) return 'green';
         return 'red';
-  
+
       case 'BP':
         if (!value || typeof value !== 'string' || !value.includes('/')) return '';
         const [sys, dia] = value.split('/').map(Number);
         if (sys < 90 || dia < 60) return 'orange';
         if (sys > 120 || dia > 80) return 'red';
         return 'green';
-  
+
       case 'Temp':
         if (num < 97) return 'orange';
         if (num <= 99) return 'green';
         return 'red';
-  
+
       default:
         return '';
     }
   }
-  
+
   gethistory(obj) {
     var m_data2 = {
       "first": 0,
@@ -165,6 +164,7 @@ export class EmergencyHistoryComponent {
 
       if (data && data.length > 0) {
         this.registerObj1 = data[0];
+        this.vDescription = this.registerObj1.chiefComplaint
         this.historyForm.patchValue({
           height: this.registerObj1.height,
           pweight: this.registerObj1.pweight,
@@ -174,7 +174,7 @@ export class EmergencyHistoryComponent {
           pulse: this.registerObj1.pulse,
           bp: this.registerObj1.bp,
           temp: this.registerObj1.temp,
-          chiefComplaint: this.registerObj1.chiefComplaint,
+          // chiefComplaint: this.registerObj1.chiefComplaint,
           diagnosis: this.registerObj1.diagnosis,
           examination: this.registerObj1.examination
         });
@@ -216,11 +216,14 @@ export class EmergencyHistoryComponent {
     this.addExaminlist = selectedChips;
     this.historyForm.get('mAssignExamination')?.setValue(this.addExaminlist);
   }
-vDescription:any;
-
+  vDescription: any;
+  onEditorValueChange(content: string) {
+    console.log("Got from editor:", content);
+    this.historyForm.get('chiefComplaint')?.setValue(content);
+  }
   onSave() {
-    console.log('DirectData:',this.historyForm.get('chiefComplaint').value)
-    console.log('DirectData1:',this.vDescription)
+    console.log('DirectData:', this.historyForm.get('chiefComplaint').value)
+    console.log('DirectData1:', this.vDescription)
     if (!this.historyForm.invalid) {
       this.historyForm.get('emgHistoryId').setValue(this.registerObj1.emgHistoryId || 0)
       this.historyForm.get('emgId').setValue(this.emergencyId)

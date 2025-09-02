@@ -45,6 +45,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   vBalQty: any;
   vGST: any;
   vRatePerUnit: any;
+  vLandedRate:any;
   vMRP: any;
   vBatchNo: any;
   vExpDate: any;
@@ -510,36 +511,82 @@ export class NewOpeningBalanceComponent implements OnInit {
 //     return null;
 //   }
 
-calculateTotalamt() {
-  const mrp = Number(this.OPeningtemForm.get('MRP')?.value);
-  const rate = Number(this.OPeningtemForm.get('RatePerUnit')?.value);
-  const landed = Number(this.OPeningtemForm.get('LandedRate')?.value);
+// calculateTotalamt() {
+//   const mrp = Number(this.OPeningtemForm.get('MRP')?.value);
+//   const rate = Number(this.OPeningtemForm.get('RatePerUnit')?.value);
+//   const landed = Number(this.OPeningtemForm.get('LandedRate')?.value);
 
-  // Rule 1: LandedRate must be less than RatePerUnit
-  if (landed && rate && rate <= landed) {
+//   // Rule 1: LandedRate must be less than RatePerUnit
+//   if (landed && rate && rate <= landed) {
+//     this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
+//     this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+//     this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateLessThanLanded: true });
+//     return;
+//   }
+
+//   // Rule 2: RatePerUnit must not exceed MRP
+//   if (mrp && rate && rate > mrp) {
+//     this.toastr.warning('Rate Per Unit cannot be greater than MRP');
+//     this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+//     this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateGreaterThanMRP: true });
+//     return;
+//   }
+
+//   // Rule 3: MRP must be greater than LandedRate
+//   if (mrp && landed && mrp <= landed) {
+//     this.toastr.warning('MRP must be greater than Landed Rate');
+//     this.OPeningtemForm.get('MRP')?.setValue(null);
+//     this.OPeningtemForm.get('MRP')?.setErrors({ mrpLessThanLanded: true });
+//     return;
+//   }
+// }
+
+onRatePerUnitInput(event: any) {
+  const rate = +event.target.value;
+  const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
+  const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
+
+  // Rule 1: Rate must be greater than LandedRate
+  if (landed && rate <= landed) {
     this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
     this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-    this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateLessThanLanded: true });
+    event.target.value = '';
     return;
   }
 
-  // Rule 2: RatePerUnit must not exceed MRP
-  if (mrp && rate && rate > mrp) {
+  // Rule 2: Rate must not exceed MRP
+  if (mrp && rate > mrp) {
     this.toastr.warning('Rate Per Unit cannot be greater than MRP');
     this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-    this.OPeningtemForm.get('RatePerUnit')?.setErrors({ rateGreaterThanMRP: true });
-    return;
-  }
-
-  // Rule 3: MRP must be greater than LandedRate
-  if (mrp && landed && mrp <= landed) {
-    this.toastr.warning('MRP must be greater than Landed Rate');
-    this.OPeningtemForm.get('MRP')?.setValue(null);
-    this.OPeningtemForm.get('MRP')?.setErrors({ mrpLessThanLanded: true });
+    event.target.value = '';
     return;
   }
 }
 
+onMRPInput(event: any) {
+  const mrp = +event.target.value;
+  const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
+
+  if (landed && mrp <= landed) {
+    this.toastr.warning('MRP must be greater than Landed Rate');
+    this.OPeningtemForm.get('MRP')?.setValue(null);
+    event.target.value = '';
+    return;
+  }
+}
+
+onLandedRateInput(event: any) {
+  const landed = +event.target.value;
+  const rate = +this.OPeningtemForm.get('RatePerUnit')?.value || 0;
+  const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
+
+  if ((rate && landed >= rate) || (mrp && landed >= mrp)) {
+    this.toastr.warning('Landed Rate must be less than Rate Per Unit and MRP');
+    this.OPeningtemForm.get('LandedRate')?.setValue(null);
+    event.target.value = '';
+    return;
+  }
+}
 
 
   keyPressAlphanumeric(event) {

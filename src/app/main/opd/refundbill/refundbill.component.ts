@@ -275,9 +275,9 @@ export class RefundbillComponent implements OnInit {
       };
       console.log(PatientHeaderObj)
       const dialogRef = this._matDialog.open(OpPaymentComponent, {
-        maxWidth: "90vw",
-        height: '650px',
-        width: '80%',
+          maxWidth: "80vw",
+           height: '750px',
+           width: '80%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
           FromName: "OP-RefundOfBill",

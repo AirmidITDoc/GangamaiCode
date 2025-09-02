@@ -411,8 +411,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       })
     });
   }
-  CreateAddchargeform(item: any): FormGroup {
-    debugger
+  CreateAddchargeform(item: any): FormGroup { 
     return this.formBuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -447,7 +446,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       serviceCode: [item?.serviceCode || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      isInclusionExclusion:[item?.isInclusionExclusion ?? false,],
+      isInclusionExclusion:[item?.isInclusionExclusion || false,],
       isHospMrk:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrCompanyService: [false],
@@ -473,14 +472,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [item?.doctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorName: [item?.doctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isComServ: [false],
+      isPrintCompSer: [false], 
+      salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isGenerated: [false],
       addedBy: [this.accountService.currentUserValue.userId],
       isCancelled: [false],
@@ -489,9 +494,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       isPathology: [item?.IsPathology ? true : false],
       isRadiology: [item?.IsRadiology ? true : false],
       isPackage: [true],
+      wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      serviceName: [item?.serviceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isInclusionExclusion:[false],
+      isHospMrk:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrCompanyService: [false],
       packageId: [item?.PackageServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
+      classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
@@ -971,7 +986,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
     this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regId) 
-    this.OpBillForm.get('patientName')?.setValue(this.patientDetail?.firstName+' '+this.patientDetail?.lastName)
+    this.OpBillForm.get('patientName')?.setValue(this.patientDetail?.patientName)
     this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
     this.OpBillForm.get('ageMonth')?.setValue(Number(this.patientDetail?.ageMonth) || 0)
@@ -1024,9 +1039,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
-            maxWidth: "90vw",
-            height: '650px',
-            width: '80%',
+           maxWidth: "80vw",
+           height: '750px',
+           width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
               FromName: "OP-Bill",
