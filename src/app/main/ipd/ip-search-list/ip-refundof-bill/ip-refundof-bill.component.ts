@@ -303,8 +303,8 @@ calculateTotalAmount(): void {
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "80vw",
-          height: '650px',
-          width: '80%',
+           height: '750px',
+           width: '80%',
           data: {
             vPatientHeaderObj: PatientHeaderObj,
             FromName: "IP-RefundOfBill",

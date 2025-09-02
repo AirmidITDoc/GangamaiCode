@@ -77,7 +77,7 @@ export class CompanysettlementComponent implements OnInit {
         ],
         row: 25
     }
-        allOPpaymentfilters = [
+    allOPpaymentfilters = [
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -87,14 +87,14 @@ export class CompanysettlementComponent implements OnInit {
         { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains }
 
     ];
-      gridConfig1: gridModel = {
+    gridConfig1: gridModel = {
         apiUrl: "OPBill/BrowseOPPaymentList",
         columnsList: this.AllColumns,
         sortField: "RegNo",
         sortOrder: 0,
         filters: this.allOPpaymentfilters
     }
-    
+
     constructor(
         public _CompanysettlementService: CompanysettlementService,
         private commonService: PrintserviceService,
@@ -133,7 +133,6 @@ export class CompanysettlementComponent implements OnInit {
     OpSettlementForm: FormGroup
     CreateOPSettlementForm() {
         return this.formBuilder.group({
-            //Payment form
             opCreditPayment: this.formBuilder.group({
                 paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -193,7 +192,8 @@ export class CompanysettlementComponent implements OnInit {
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
                 maxWidth: "80vw",
-                width: '70%',
+                height: '750px',
+                width: '80%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "OP-SETTLEMENT"
@@ -217,7 +217,6 @@ export class CompanysettlementComponent implements OnInit {
                     if (this.OpSettlementForm.invalid) {
                         for (const controlName in this.OpSettlementForm.controls) {
                             const control = this.OpSettlementForm.get(controlName);
-
                             if (control instanceof FormGroup || control instanceof FormArray) {
                                 for (const nestedKey in control.controls) {
                                     if (control.get(nestedKey)?.invalid) {
@@ -260,8 +259,6 @@ export class CompanysettlementComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
-
-
     onChangeOPBill() {
         this.fromDate = this.datePipe.transform(this.OPMultipleSettlForm.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.OPMultipleSettlForm.get('enddate').value, "yyyy-MM-dd")
@@ -271,8 +268,7 @@ export class CompanysettlementComponent implements OnInit {
         this.PBillNo = this.OPMultipleSettlForm.get('PBillNo').value || "%"
         this.getfilterdataOpBill();
     }
-
-    getfilterdataOpBill() { 
+    getfilterdataOpBill() {
         this.gridConfig = {
             apiUrl: "OPBill/BrowseOPDBillPagiList",
             columnsList: this.AllColumns,
@@ -290,7 +286,6 @@ export class CompanysettlementComponent implements OnInit {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
-
     ClearfilterOPbill(event) {
         console.log(event)
         if (event == 'FirstName')
@@ -305,7 +300,6 @@ export class CompanysettlementComponent implements OnInit {
 
         this.onChangeOPBill();
     }
-
     ListView(value) {
         console.log(value)
         if (value.value !== 0)
@@ -315,7 +309,7 @@ export class CompanysettlementComponent implements OnInit {
 
         this.onChangeOPBill();
     }
-           keyPressAlphanumeric(event) {
+    keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;

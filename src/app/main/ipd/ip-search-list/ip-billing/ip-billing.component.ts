@@ -185,6 +185,8 @@ export class IPBillingComponent implements OnInit {
     AdvanceBalAmt: any = 0;
     ApiURL: any;
     TariffId: any;
+    WardId:any;
+    BedId:any;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
@@ -236,6 +238,8 @@ export class IPBillingComponent implements OnInit {
             this.draftSaveform = this.createDraftSaveForm();
             this.IPBillMyForm = this.CreateIPBillForm();
             this.TariffId = this.selectedAdvanceObj.tariffId
+            this.WardId = this.selectedAdvanceObj.wardId;
+            this.BedId = this.selectedAdvanceObj.bedId;
         }
         this.getChargesList();
         this.getLabRequestChargelist();
@@ -355,7 +359,7 @@ export class IPBillingComponent implements OnInit {
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId:  [this.selectedAdvanceObj?.hospitalID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId:  [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -379,6 +383,8 @@ export class IPBillingComponent implements OnInit {
             isPackage: [0],
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            wardId:[0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            bedId:[0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -431,9 +437,12 @@ export class IPBillingComponent implements OnInit {
             isPackage: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [item?.PackageServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isInclusionExclusion: [false],
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            //chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-            //const formattedTime = this.datePipe.transform(this.Serviceform.get('chargesTime')?.value, 'HH:mm:ss') || '00:00:00';
+            wardId:[this.WardId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            bedId:[this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
         });
     }
@@ -511,6 +520,20 @@ export class IPBillingComponent implements OnInit {
             bill: this.formBuilder.group({
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 opdipdid: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+         regNo: [this.selectedAdvanceObj?.regNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientName: [this.selectedAdvanceObj?.patientName, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ipdno: [this.selectedAdvanceObj?.ipdno, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ageYear: [Number(this.selectedAdvanceObj?.ageYear || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageMonth: [Number(this.selectedAdvanceObj?.ageMonth || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageDays: [Number(this.selectedAdvanceObj?.ageDay || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId: [this.selectedAdvanceObj?.docNameId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorName: [this.selectedAdvanceObj?.doctorname || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        wardId: [this.selectedAdvanceObj?.wardId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        bedId: [this.selectedAdvanceObj?.bedId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientType: [this.selectedAdvanceObj?.companyId ? true : false],
+        companyName: [this.selectedAdvanceObj?.companyName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],  
                 totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
                 concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -527,7 +550,7 @@ export class IPBillingComponent implements OnInit {
                 isFree: true,
                 companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-                unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
                 interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -669,9 +692,10 @@ export class IPBillingComponent implements OnInit {
             if (formValue.doctorId)
                 doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
-        this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id || 0)
-        this.Serviceform.get("unitId").setValue(this.selectedAdvanceObj?.hospitalID || 0)
-        this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
+ 
+        this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id) 
+        this.Serviceform.get("wardId").setValue(this.WardId) 
+        this.Serviceform.get("bedId").setValue(this.BedId)
         this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
         this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
         this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)

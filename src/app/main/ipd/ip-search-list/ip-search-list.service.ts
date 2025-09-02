@@ -679,7 +679,7 @@ public getPaymentPrint (paymentid){
   } 
   public BillDiscountAfter(employee)
   {    
-    return this._httpClient.post("InPatient/BillDiscountAfter",employee);
+    return this._httpClient1.PostData("IPBill/BillDiscountAfter",employee);
   }
   public getClassList(employee){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional",employee)

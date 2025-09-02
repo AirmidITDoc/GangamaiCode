@@ -28,8 +28,7 @@
                         ApiUrl="Admission/search-patient?Keyword="
                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                         TextField="formattedText">
-                        </airmid-autocomplete> -->
-
+                        </airmid-autocomplete> --> 
                 
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container" *ngIf="PatientName">
@@ -82,14 +81,19 @@
         </ng-template> 
 
         <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center"> 
-                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
-                    *ngIf="element.balanceAmt!='0'">
+            <div fxLayout="row" fxLayoutAlign="center center">
+            
+                <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 " matTooltip="Final Discount"
+                    (click)="getFinalDisc(element)">
+                    <mat-icon> money </mat-icon>
+                </button>
+            
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement" *ngIf="element.balanceAmt!='0'">
                     <mat-icon title="Settlement">payment</mat-icon>
-                </button> 
+                </button>
                 <!-- <button mat-icon-button matTooltip="Print" (click)="viewgetOPPayemntPdf(element)">
-                    <mat-icon>print</mat-icon>
-                </button> --> 
+                                <mat-icon>print</mat-icon>
+                            </button> -->
             </div>
         </ng-template>
 
