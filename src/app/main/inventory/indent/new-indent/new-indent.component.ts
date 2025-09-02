@@ -135,7 +135,7 @@ export class NewIndentComponent implements OnInit {
       return;
     }
 
-    if (!this.IndentForm.get('Qty')?.value) {
+    if (this.IndentForm.get('Qty')?.value == "0" ||  this.IndentForm.get('Qty')?.value == " " ) {
       this.toastr.warning('Please select Qty', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -143,6 +143,7 @@ export class NewIndentComponent implements OnInit {
     }
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
+  debugger
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
@@ -354,7 +355,7 @@ export class NewIndentComponent implements OnInit {
   OnReset() {
     this.IndentForm.reset();
     this.dsIndentNameList.data = [];
-    this.chargeslist.data = [];
+    this.chargeslist = [];
     this.dsTempItemNameList.data = [];
   }
   onClose() {

@@ -262,11 +262,11 @@ export class NewIssueTodeptComponent {
         "issueDate": [(new Date()).toISOString().split('T')[0]],
         "issueTime": [(new Date()).toISOString()],
         "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "totalAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "totalVatAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "netAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "remark": [''],
         "addedby": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "modifiedBy": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isVerified": [false],
@@ -512,10 +512,10 @@ export class NewIssueTodeptComponent {
 
 
     this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-      setTimeout(() => {
+      // setTimeout(() => {
         this.Itemchargeslist1 = draftdata as any;
         console.log(draftdata)
-      }, 1000);
+      // }, 1000);
       
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
@@ -617,7 +617,7 @@ export class NewIssueTodeptComponent {
     // console.log(this.Indbalqty)
     // console.log(this.issueqty)
 
-    // console.log(contact)
+    console.log(contact)
     // console.log(Qty)
 
     this.CellCalculation = 1

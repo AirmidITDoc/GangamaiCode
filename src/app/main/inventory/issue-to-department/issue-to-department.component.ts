@@ -61,9 +61,9 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
     allcolumns = [
 
-        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
 
-        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },

@@ -80,12 +80,12 @@
 
 
                                 <airmid-textbox fxFlex="10%" label="BatchNO" formControlName="BatchNO"
-                                    [formGroup]="NewIssueGroup" placeholder="BatchNO"
+                                    [formGroup]="NewIssueGroup" placeholder="BatchNO" [readonly]="true"
                                     [(ngModel)]="vBatchNo"></airmid-textbox>
 
 
                                 <airmid-textbox fxFlex="8%" label="BalanceQty" formControlName="BalanceQty"
-                                    [formGroup]="NewIssueGroup" type="number" placeholder="BalanceQty"
+                                    [formGroup]="NewIssueGroup" type="number" placeholder="BalanceQty" [readonly]="true"
                                     [(ngModel)]="vBalanceQty"></airmid-textbox>
 
 
@@ -95,11 +95,11 @@
                                 </airmid-textbox>
 
                                 <airmid-textbox fxFlex="8%" label="UnitRate" formControlName="UnitRate" type="number"
-                                    [formGroup]="NewIssueGroup" placeholder="UnitRate"
+                                    [formGroup]="NewIssueGroup" placeholder="UnitRate" [readonly]="true"
                                     (valueChange)="CalculateTotalAmt()" [(ngModel)]="vLandedRate"></airmid-textbox>
 
 
-                                <airmid-textbox fxFlex="12%" label="TotalAmount" [readonly]="true"
+                                <airmid-textbox fxFlex="12%" label="TotalAmount" [readonly]="true" [readonly]="true"
                                     formControlName="TotalAmount" [formGroup]="NewIssueGroup" placeholder="TotalAmount"
                                     [(ngModel)]="vTotalAmount"></airmid-textbox>
 
@@ -122,7 +122,7 @@
                 <div style="width: 100%;" fxLayoutGap="10px">
 
                     <div class="airmid-table-container py-12" fxFlex="70%">
-                        <mat-table #table class="airmid-table table3 max-h-300" matSort
+                        <mat-table #table class="airmid-table table3 max-h-400" matSort
                             [dataSource]="dsNewIssueItemList" [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="ItemId">
@@ -165,8 +165,7 @@
                                     {{contact.BalanceQty}}
                                 </mat-cell>
                             </ng-container>
- <!-- [id]="'Qty_' + index" -->
-                                            <!-- [min]="0" -->
+
                             <ng-container matColumnDef="Qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">Qty</mat-header-cell>
@@ -245,9 +244,8 @@
                         </mat-table>
                     </div>
                     <div class="airmid-table-container py-12" fxFlex="30%">
-                        <mat-table class="airmid-table table3 max-h-300" matSort [dataSource]="dsSelectedIndentItemList"
+                        <mat-table class="airmid-table table3 max-h-400" matSort [dataSource]="dsSelectedIndentItemList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
                                     ItemName </mat-header-cell>
@@ -309,40 +307,16 @@
 
                 <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px;margin-left: 20px;">
 
-                    <!-- <mat-form-field appearance="outline" fxFlex="30%">
-                        <mat-label>Remark</mat-label>
-                        <input type="text" name="Remark" formControlName="Remark" matInput #remark [maxLength]="500"
-                            [(ngModel)]="vremark" required>
-                    </mat-form-field> -->
-
                     <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="IssueFinalForm" #remark
                         [value]="vremark" required fxFlex="0%">
                     </airmid-textbox>
 
-                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                        <mat-label>GST Amount</mat-label>
-                        <input type="text" name="GST Amount" formControlName="GSTAmount" matInput #GSTAmount
-                            [(ngModel)]="vFinalGSTAmount">
-                    </mat-form-field> -->
-
                     <airmid-textbox label="GST Amount" formControlName="GSTAmount" [value]="vFinalGSTAmount" #GSTAmount
                         [formGroup]="IssueFinalForm">
                     </airmid-textbox>
-
-                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                        <mat-label>Total Amount</mat-label>
-                        <input type="text" name="Total Amount" formControlName="FinalTotalAmount" #FinalTotalAmount
-                            matInput [(ngModel)]="vFinalTotalAmount" readonly>
-                    </mat-form-field> -->
                     <airmid-textbox label="Total Amount" formControlName="FinalTotalAmount" [value]="vFinalTotalAmount"  #FinalTotalAmount
                         [formGroup]="IssueFinalForm">
                     </airmid-textbox>
-
-                    <!-- <mat-form-field appearance="outline" fxFlex="10%">
-                        <mat-label>Net Amount</mat-label>
-                        <input type="text" name="NetAmount" formControlName="FinalNetAmount" #FinalTotalAmount matInput
-                            [(ngModel)]="vFinalNetAmount" readonly>
-                    </mat-form-field> -->
 
                     <airmid-textbox label="Net Amount" formControlName="FinalNetAmount" [value]="vFinalNetAmount" #FinalTotalAmount 
                         [formGroup]="IssueFinalForm">

@@ -33,20 +33,20 @@ export class IssueToDepartmentService {
       BatchNO:['', [Validators.required]],
       BalanceQty:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
       Qty:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-      UnitRate:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-      TotalAmount:['', [Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
+      UnitRate:['', [Validators.required,this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      TotalAmount:['', [Validators.required,this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       Remark:[''],
-      GSTAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      FinalTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      FinalNetAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+      GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      FinalTotalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      FinalNetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
     });
   }
   createfinal(){
     return this._formBuilder.group({
       Remark:[''],
       GSTAmount: [0],
-      FinalTotalAmount:['', [Validators.required]],
-      FinalNetAmount:['', [Validators.required]],
+      FinalTotalAmount:['', [Validators.required,this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      FinalNetAmount:['', [Validators.required,this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
   }); 
   }
   CreateStoreFrom(){

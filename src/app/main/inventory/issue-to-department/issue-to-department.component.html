@@ -33,11 +33,10 @@
 
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted"
-                        class="pill green-600 s-16">circle</mat-icon>
+                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted">assignment_turned_in</mat-icon>
 
-                    <mat-icon *ngIf="element.isAccepted=='0'" matTooltip="NotAccepted"
-                        class="pill red-600 s-16">circle</mat-icon>
+                    <!-- <mat-icon *ngIf="element.isAccepted=='0'" matTooltip="NotAccepted"
+                        class="pill red-600 s-16">circle</mat-icon> -->
                 </div>
             </ng-template>
 

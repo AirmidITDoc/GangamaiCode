@@ -48,6 +48,7 @@ export class IndentComponent implements OnInit {
    
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+ @ViewChild('detailactionsTemplate') detailactionsTemplate!: TemplateRef<any>;
 
 
     ngAfterViewInit() {
@@ -56,12 +57,14 @@ export class IndentComponent implements OnInit {
           this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
       
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
+          this.gridConfig1.columnsList.find(col => col.key === 'isclosed')!.template = this.detailactionsTemplate;
        
       }
 
     allcolumns = [
-         { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
-        { heading: "", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+         { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
          
      
         { heading: "IndentNo", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -69,6 +72,7 @@ export class IndentComponent implements OnInit {
         { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
          { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+          { heading: "Verified By", key: "verifiedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
              heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -98,11 +102,12 @@ export class IndentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "Indent/IndentDetailsList",
             columnsList:[
-                { heading: "Item", key: "itemId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width:200 },
+                { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
+                { heading: "Item Code ", key: "itemId", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width:200 },
                 { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Issue QTY", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Pending QTY", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
+                { heading: "Issue Qty", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Pending Qty", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
                 
                ],
             sortField: "IndentId",
@@ -187,7 +192,7 @@ debugger
         const dialogRef = this._matDialog.open(NewIndentComponent,
             {
                 maxWidth: "90vw",
-                height: '650px',
+                height: '750px',
                 width: '90%',
                 data: row
             });
