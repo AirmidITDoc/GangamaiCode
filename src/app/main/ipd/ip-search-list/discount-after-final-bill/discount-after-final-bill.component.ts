@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core'; 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-discount-after-final-bill',
@@ -16,7 +17,8 @@ import { IPSearchListService } from '../ip-search-list.service';
 })
 export class DiscountAfterFinalBillComponent implements OnInit {
 
-  MyFrom:FormGroup;
+  MyFrom:FormGroup; 
+   saveform:FormGroup; 
   selectedAdvanceObj:any
   vNetamount:any;
   vTotalAmount:any;
@@ -30,6 +32,8 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   ConcessionReasonList:any=[];
   vFinalCompanyDiscAmt:any;
   CompanyName:any = '';
+  
+  autocompleteModeConcession: string = "Concession";
 
   constructor(
     public _matDialog: MatDialog,
@@ -38,28 +42,27 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     public dialogRef: MatDialogRef<DiscountAfterFinalBillComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AuthenticationService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: FormBuilder,
     public _IpSearchListService: IPSearchListService,
+    public _formvalidationservice : FormvalidationserviceService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     if(this.data){
       this.selectedAdvanceObj = this.data
       console.log(this.selectedAdvanceObj)
-      this.vDiscAmount = Math.round(this.selectedAdvanceObj.ConcessionAmt);
-      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.TotalAmt);
-      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
-      this.vNetamount =  Math.round(this.selectedAdvanceObj.NetPayableAmt)
-      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.ConcessionAmt);
-      this.CompanyName = this.selectedAdvanceObj.CompanyName || '';
-      console.log(this.CompanyName)
-    }
-    this.CreateMyForm();
-    this.getConcessionReasonList();
-
+      this.vDiscAmount = Math.round(this.selectedAdvanceObj.concessionAmt);
+      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.totalAmt);
+      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.netPayableAmt)
+      this.vNetamount =  Math.round(this.selectedAdvanceObj.netPayableAmt)
+      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.concessionAmt);
+      this.CompanyName = this.selectedAdvanceObj.companyName || ''; 
+    } 
+     this.MyFrom = this.CreateMyForm();
+     this.saveform = this.CreatesaveMyForm();  
   }
-  CreateMyForm(){
-    this.MyFrom = this.formBuilder.group({
+  CreateMyForm():FormGroup{
+    return this.formBuilder.group({
       NetAmount:[''],
       TotalAmount:[''],
       DiscAmount:[''],
@@ -70,12 +73,22 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       CompanyDiscper:[''],
       CompanyDiscAmt:[''],
       ConcessionId:[''],
-      FinalCompanyDiscAmt:['']
+      FinalCompanyDiscAmt:[''],  
     });
-  }
-
-  CalcDiscPer(){
-    
+  }  
+    CreatesaveMyForm(): FormGroup {
+      return this.formBuilder.group({  
+       billNo:[ this.selectedAdvanceObj?.BillNo,this._formvalidationservice.notEmptyOrZeroValidator()],
+      netPayableAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()],
+      concessionAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator()],
+      compDiscAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator()],
+      balanceAmt:[ this.selectedAdvanceObj?.BalanceAmt,this._formvalidationservice.AllowDecimalNumberValidator()],
+      concessionReasonId:[0,this._formvalidationservice.notEmptyOrZeroValidator()] 
+      });
+    }   
+ 
+  CalcDiscPer(){  
+    debugger
     let DiscAmt2;
     let CompanyDiscAmt ;
     let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
@@ -89,7 +102,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vDiscountPer2 = '';
       }
       else{
-        this.vDiscAmount2 = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vDiscountPer2)) / 100).toFixed(2) || 0;
+        this.vDiscAmount2 = ((parseFloat(this.vFinalNetAmt) * parseFloat(DiscPer2)) / 100).toFixed(2) || 0; 
         DiscAmt2 = this.vDiscAmount2;
       } 
     }else{
@@ -107,7 +120,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return  this.vCompanyDiscper = '';
       }
       else{
-        this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(this.vCompanyDiscper)) / 100).toFixed(2) || 0;
+        this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
         CompanyDiscAmt =   this.vCompanyDiscAmt;
         this.vFinalCompanyDiscAmt = this.vCompanyDiscAmt
       } 
@@ -123,6 +136,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)) -  parseFloat(CompanyDiscAmt)).toFixed(2);
   }
   CalcDiscAmt() {
+    debugger
     let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
     let CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
     let DiscPer2;
@@ -136,7 +150,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return this.vDiscAmount2 = '';
       }
       else {
-        this.vDiscountPer2 = ((parseFloat(this.vDiscAmount2) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+        this.vDiscountPer2 = ((parseFloat(DiscAmt2) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
         DiscPer2 = this.vDiscountPer2;
       }
     } else {
@@ -154,7 +168,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         return this.vCompanyDiscAmt = '';
       }
       else {
-        this.vCompanyDiscper = ((parseFloat(this.vCompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+        this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
         CompanyDiscPer = this.vCompanyDiscper;
         this.vFinalCompanyDiscAmt = CompanyDiscAmt
       }
@@ -168,93 +182,53 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     }
     this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
     this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)) - parseFloat(CompanyDiscAmt)).toFixed(2);
-  }
-  getConcessionReasonList() { 
-    this._IpSearchListService.getConcessionCombo().subscribe(data => {
-      this.ConcessionReasonList = data;
-    })
-  }
-  OnSave(){
-    
-    if(this.vDiscAmount2 > 0 || this.vCompanyDiscAmt > 0){
-      if(!this.MyFrom.get('ConcessionId').value){
+  } 
+  OnSave() {
+    const formvalues = this.MyFrom.value
+    if (formvalues.DiscAmount2 > 0 || formvalues.CompanyDiscAmt > 0) {
+      if (!this.MyFrom.get('ConcessionId').value) {
         this.toastr.warning('Please select Concession Reason ', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         return
       }
     }
-    if(this.vFinalDiscAmt == 0 || this.vFinalDiscAmt == '' || this.vFinalDiscAmt == undefined || this.vFinalDiscAmt == null){
-      this.toastr.warning('Please check final DiscAmount is zero', 'warning !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-      return
-    }
-    if(this.vNetamount == 0 || this.vNetamount == '' || this.vNetamount == undefined || this.vNetamount == null){
+    if (formvalues.NetAmount == 0 || formvalues.NetAmount == '' || formvalues.NetAmount == undefined || formvalues.NetAmount == null) {
       this.toastr.warning('Please check final netamount is zero', 'warning !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
       return
-    }
+    } 
+    this.saveform.get('netPayableAmt').setValue(formvalues?.NetAmount)
+    this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2)
+    this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt)
+    this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId)
 
-    // let billDiscountAfterUpdateObj = {};
-
-    // billDiscountAfterUpdateObj['billNo'] =  this.selectedAdvanceObj.BillNo || 0;
-    // billDiscountAfterUpdateObj['netPayableAmt'] = this.MyFrom.get('FinalNetAmt').value || 0;
-    // billDiscountAfterUpdateObj['concessionAmt'] = this.MyFrom.get('DiscAmount2').value || 0;
-    // billDiscountAfterUpdateObj['compDiscAmt'] =this.MyFrom.get('CompanyDiscAmt').value || 0;
-    // billDiscountAfterUpdateObj['balanceAmt'] =this.selectedAdvanceObj.BalanceAmt || 0;
-    // billDiscountAfterUpdateObj['concessionReasonId'] = this.MyFrom.get('ConcessionId').value.ConcessionId || 0;
-
-    // let submitData={
-    //   'billDiscountAfterUpdate': billDiscountAfterUpdateObj
-    // }
-
-    var m_data1 = {
-      "billDiscountAfterUpdate": {
-        "billNo": this.selectedAdvanceObj.BillNo || 0,
-        "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
-        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
-        "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
-        "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
-        "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
+    if (this.saveform.valid) {
+      console.log(this.saveform.value)
+      this._IpSearchListService.BillDiscountAfter(this.saveform.value).subscribe(response => {
+        if (response) {
+          this._matDialog.closeAll();
+          this.onClose();
+        }
+      },);
+    } else {
+      let invalidFields = [];
+      if (this.saveform.invalid) {
+        for (const controlName in this.saveform.controls) {
+          if (this.saveform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
       }
     }
-    console.log(m_data1)
-     this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response =>{
-      if (response) {
-        this.toastr.success('Record  Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        }); 
-        this._matDialog.closeAll();
-        this.onClose(); 
-      
-      } else {
-        this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      } 
-    }, error => {
-      this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    }); 
-
-    // this._IpSearchListService.BillDiscountAfter(m_data1).subscribe(response => {
-    //   if (response == 'true') {
-    //     Swal.fire('Congratulations !', 'Discount After Final Bill data saved Successfully !', 'success').then((result) => {
-    //       if (result.isConfirmed) {
-    //         this._matDialog.closeAll();
-    //         this.onClose(); 
-    //       }
-    //     });
-    //   }
-    //   else {
-    //     Swal.fire('Error !', 'Discount After Final Bill data not saved', 'error');
-    //   }
-      
-    // });
-   
   }
   onClose(){
     this.dialogRef.close();
@@ -281,6 +255,42 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   public onEnterFinalDiscAmt(event): void { 
     if (event.which === 13) {
       this.save.nativeElement.focus(); 
+    }
+  }
+
+ 
+  getValidationMessages() {
+    return {
+      TotalAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      FinalDiscAmt: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      FinalCompanyDiscAmt: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      NetAmount: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+      DiscAmount: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      DiscountPer2: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      DiscAmount2: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      CompanyDiscper: [
+        { name: "pattern", Message: "only Number allowed." }
+      ],
+      CompanyDiscAmt: [{ name: "pattern", Message: "only Number allowed." }],
+      ConcessionId: [],
     }
   }
 }

@@ -16,6 +16,7 @@ import { RegInsert } from '../Admission/admission/admission.component';
 import { IPSettlementService } from './ip-settlement.service';
 import { IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
 
 
 @Component({
@@ -195,9 +196,9 @@ export class IPSettlementComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
-                maxWidth: "85vw",
-                height: '700px',
-                width: '100%',
+               maxWidth: "80vw",
+               height: '750px',
+               width: '80%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "IP-SETTLEMENT",
@@ -263,5 +264,20 @@ export class IPSettlementComponent implements OnInit {
         if ((obj.regID ?? 0) > 0) {
           console.log("Admitted patient:", obj) 
         }
+      } 
+
+          getFinalDisc(contact){
+        console.log(contact);
+        const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+          {
+            maxWidth: "100%",
+            height: '65%',
+            width: '45%',
+            data: contact
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed - Insert Action', result);
+            this.grid.bindGridData();
+        });
       } 
 }
