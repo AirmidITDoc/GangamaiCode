@@ -79,18 +79,18 @@
                                             placeholder="GST %"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="9%" label="MRP" formControlName="MRP"
-                                            [(ngModel)]="vMRP" type="number" [formGroup]="OPeningtemForm"
-                                            placeholder="MRP" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                                            type="number" [formGroup]="OPeningtemForm"
+                                            placeholder="MRP" (input)="onMRPInput($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="9%" label="Rate PerUnit" formControlName="RatePerUnit"
-                                            [(ngModel)]="vRatePerUnit" [formGroup]="OPeningtemForm" type="number"
+                                           [formGroup]="OPeningtemForm" type="number"
                                             placeholder="Rate PerUnit" (keyup)="CheckValidation()"
-                                            (valueChange)="calculateTotalamt()"
+                                            (input)="onRatePerUnitInput($event)"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="9%" label="LandedRate" formControlName="LandedRate"
                                             [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="Landed Rate" (valueChange)="calculateTotalamt()"
+                                            placeholder="Landed Rate" (input)="onLandedRateInput($event)"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <div style="margin-left: 20px;"
