@@ -99,7 +99,7 @@ export class NewIndentComponent implements OnInit {
 
   CreateIndentSaveFrom() {
     return this._formBuilder.group({
-      unitId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       indentId: this.IndentId,
       IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
