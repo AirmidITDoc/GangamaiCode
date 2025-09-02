@@ -21,22 +21,6 @@ export class NewTemplateComponent implements OnInit {
     vTemplateDesc: any;
     isActive: boolean = true;
 
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
-
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
-        throw new Error('Method not implemented.');
-    }
-
     constructor(
         public _NursingnoteService: NursingnoteService,
         private accountService: AuthenticationService,
@@ -52,6 +36,11 @@ export class NewTemplateComponent implements OnInit {
             this.isActive = this.data.isActive
             this.myTemplateform.patchValue(this.data);
         }
+    }
+
+    onEditorValueChange(content: string) {
+        console.log("Got from editor:", content);
+        this.myTemplateform.get('templateDesc')?.setValue(content);
     }
 
     onSubmit() {

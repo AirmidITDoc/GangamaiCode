@@ -1,8 +1,9 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, EventEmitter, Input, Optional, Output, Self } from '@angular/core';
+import { Component, EventEmitter, Input, Optional, Output, Self, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subject, takeUntil } from 'rxjs';
+import { LanguageOption, SpeechRecognitionService } from '../../services/speech-recognition.service';
 
 @Component({
     selector: 'airmid-editor',
@@ -11,6 +12,8 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AirmidEditorComponent {
     editor = ClassicEditor;
+    languages: LanguageOption[] = [];
+    selectedLang = 'en-US';
     @Input() data: string = '';
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
@@ -85,7 +88,8 @@ export class AirmidEditorComponent {
     writeValue(value: string | null): void {
         this.control.setValue(value);
     }
-    constructor(@Optional() @Self() public ngControl: NgControl | null) {
+    constructor(@Optional() @Self() public ngControl: NgControl | null,
+        public speechService: SpeechRecognitionService) {
         if (ngControl) {
             this.ngControl.valueAccessor = this;
             ngControl.valueAccessor = this;
@@ -97,9 +101,65 @@ export class AirmidEditorComponent {
     }
 
     // added by raksha 1/9/25
-    onEditorChange({ editor }: any): void {
-        const editorData = editor.getData();
-        console.log("Editor content: ", editorData);
-        this.valueChange.emit(editorData);
+    // onEditorChange({ editor }: any): void {
+    //     const editorData = editor.getData();
+    //     console.log("Editor content: ", editorData);
+    //     this.valueChange.emit(editorData);
+    // }
+
+    editorInstance: any;
+    onReady(editor: any): void {
+        this.editorInstance = editor;
+
+        // Set initial data (from parent)
+        if (this.value) {
+            editor.setData(this.value);
+        }
+
+        // Listen for live typing without cursor reset
+        editor.model.document.on('change:data', () => {
+            const data = editor.getData();
+            this.valueChange.emit(data);
+        });
     }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['value'] && this.editorInstance) {
+            const newVal = changes['value'].currentValue;
+            if (newVal !== this.editorInstance.getData()) {
+                this.editorInstance.setData(newVal);
+            }
+        }
+    }
+
+    //////////////// mic code /////////////////
+    ngOnInit(): void {
+        this.languages = this.speechService.supportedLanguages;
+    }
+
+    onLangChange() {
+        debugger
+        if (this.speechService.isListening) {
+            this.speechService.stopRecognition();
+        }
+    }
+
+    onMicToggle() {
+        const lang = this.selectedLang || 'en-US';
+
+        this.speechService.toggleRecognition(lang, (text: string) => {
+            // Append to existing editor content
+            const newValue = this.value ? `${this.value} ${text}` : text;
+
+            // Update both local value + editor content
+            this.value = newValue;
+            if (this.editorInstance) {
+                this.editorInstance.setData(newValue);
+            }
+
+            // Emit upwards so parent stays in sync
+            this.valueChange.emit(newValue);
+        });
+    }
+
 }

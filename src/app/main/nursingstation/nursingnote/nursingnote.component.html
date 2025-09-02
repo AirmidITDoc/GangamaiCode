@@ -197,15 +197,9 @@
 
                                                                     <mat-card style="padding: 5px;overflow: auto;">
                                                                         <div>
-                                                                            <airmid-editor label="Template Details"
-                                                                                formControlName="nursingNotes"
-                                                                                [(value)]="vDescription"
-                                                                                [formGroup]="myNursingForm"></airmid-editor>
-
-                                                                            <!-- <mat-label>Template Details</mat-label>
-                                                                        <angular-editor (blur)="onBlur($event)" [config]="editorConfig" style="height:400px;"
-                                                                            [(ngModel)]="vDescription" required formControlName="nursingNotes">
-                                                                        </angular-editor> -->
+                                                                            <airmid-editor label="Template Details" formControlName="nursingNotes"
+                                                                                [(value)]="vDescription" [formGroup]="myNursingForm"  (valueChange)="onEditorValueChange($event)">
+                                                                            </airmid-editor>
                                                                         </div>
                                                                     </mat-card>
 

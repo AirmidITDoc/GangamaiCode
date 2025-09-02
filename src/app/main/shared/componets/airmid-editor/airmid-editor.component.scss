@@ -2,3 +2,26 @@
   max-width: 50px;
   width: 100%;
 }
+
+// ::ng-deep .editor-area .ck-editor__editable {
+//   min-height: 400px !important;
+//   overflow: visible !important;   /* let content push height */
+// }
+
+.editor-title-bar {
+  display: flex;
+  justify-content: space-between; /* pushes title left, actions right */
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.editor-title-bar h2 {
+  margin-top: -20px;
+  font-size: 25px;
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

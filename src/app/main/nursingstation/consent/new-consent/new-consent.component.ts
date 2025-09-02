@@ -194,6 +194,10 @@ export class NewConsentComponent {
     this.selectedTemplateOption = option.consentDesc; //details of template dd should pass
   }
 
+   onEditorValueChange(content: string) {
+    this.ConsentinsertForm.get('ConsentText')?.setValue(content);
+  }
+
   onSave() {
 
     if (this.ConsentinsertForm.get("consentId").value > 0) {

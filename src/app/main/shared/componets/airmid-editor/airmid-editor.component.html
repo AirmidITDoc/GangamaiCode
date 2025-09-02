@@ -10,7 +10,9 @@
         </ng-container>
     </mat-error>
 </mat-form-field> -->
-<div class="ckeditor-container">
+
+<!-- Working code -->
+<!-- <div class="ckeditor-container">
     <mat-card>
         <mat-card-content>
             <div class="editor-title" *ngIf="label">
@@ -22,4 +24,41 @@
             </div>
         </mat-card-content>
     </mat-card>
+</div> -->
+
+<!-- Tryed code -->
+
+<div class="ckeditor-container">
+  <mat-card>
+    <mat-card-content>
+      
+      <div class="editor-title-bar">
+        <h2 class="fw-600 border-bottom">{{label}}</h2>
+
+        <div class="editor-actions">
+          <button mat-icon-button
+                  (click)="onMicToggle()"
+                  [color]="speechService.isListening ? 'warn' : 'primary'"
+                  type="button">
+            <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+          </button>
+
+          <mat-form-field appearance="outline" style="min-width: 160px;">
+            <mat-label>Language</mat-label>
+            <mat-select [(ngModel)]="selectedLang" [ngModelOptions]="{standalone: true}">
+              <mat-option *ngFor="let lang of languages" [value]="lang.code">
+                {{ lang.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="editor-area">
+         <ckeditor [editor]="editor"[disabled]="disabled" [formControlName]="formControlName"
+                (ready)="onReady($event)"></ckeditor>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
 </div>

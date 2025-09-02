@@ -101,7 +101,7 @@ export class NursingnoteComponent implements OnInit {
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-openedFromClinical = false;
+  openedFromClinical = false;
   ngAfterViewInit() {
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
@@ -172,7 +172,7 @@ openedFromClinical = false;
     sortOrder: 0,
     filters: this.allMedicationFilters
   }
-// 40923
+  // 40923
   getMedicationList() {
     this.gridConfig1 = {
       apiUrl: "Nursing/MedicationChartlist",
@@ -246,7 +246,7 @@ openedFromClinical = false;
     public datePipe: DatePipe,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
-       private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -264,9 +264,9 @@ openedFromClinical = false;
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-        this.grid.bindGridData();
-        this.showDropdown = false;
-        setTimeout(() => this.showDropdown = true, 100);
+      this.grid.bindGridData();
+      this.showDropdown = false;
+      setTimeout(() => this.showDropdown = true, 100);
     });
   }
 
@@ -332,13 +332,13 @@ openedFromClinical = false;
     this.vAgeyear = '';
     this.vAgeMonth = '';
     this.vAgeDay = '';
-     this.vAge = '';
+    this.vAge = '';
     this.vGenderName = '';
     this.vRefDocName = '';
     this.vPatientType = '';
     this.vTariffName = '';
     this.vCompanyName = '';
-    this.vDOA='';
+    this.vDOA = '';
     this.myform.get('RegID').setValue('')
   }
 
@@ -350,7 +350,7 @@ openedFromClinical = false;
   }
 
   Chargelist: any[] = [];
-// 1
+  // 1
   getSchedulerlist() {
     // debugger
     var param = {
@@ -361,7 +361,7 @@ openedFromClinical = false;
       "filters": [
         {
           "fieldName": "AdmissionId",
-          "fieldValue":String(this.OP_IP_Id), //1
+          "fieldValue": String(this.OP_IP_Id), //1
           "opType": "Equals"
         }
       ],
@@ -373,19 +373,19 @@ openedFromClinical = false;
       this.dsItemList.data = data.data as MedicineItemList[];
       console.log(this.dsItemList.data)
       this.Chargelist = data.data as MedicineItemList[];
-         })
+    })
   }
 
-deleteTableRow(event, element) {
-  const index = this.Chargelist.indexOf(element);
-  if (index >= 0) {
-    this.Chargelist.splice(index, 1);
-    this.dsItemList.data = [...this.Chargelist];
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
+  deleteTableRow(event, element) {
+    const index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dsItemList.data = [...this.Chargelist];
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }
   }
-}
 
   onAdd() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
@@ -403,6 +403,10 @@ deleteTableRow(event, element) {
 
     this.vDescription = this.tempdesc || '';
     this.myform.get('TemplateId').setValue('');
+  }
+
+  onEditorValueChange(content: string) {
+    this.myNursingForm.get('nursingNotes')?.setValue(content);
   }
 
   // Doctor Note insert
@@ -447,14 +451,17 @@ deleteTableRow(event, element) {
   }
 
 
-     ViewNusrsingNote(element) {
-        this.commonService.Onprint("AdmId", element, "NursingNotesReceipt");
-    }
+  ViewNusrsingNote(element) {
+    this.commonService.Onprint("AdmId", element, "NursingNotesReceipt");
+  }
 
   onClear() {
     this.vDoctNoteId = null;
     this.IsAddFlag = true
     this.vDescription = null;
+    this.myNursingForm.get('nursingNotes')?.setValue('');
+    this.vDescription = '';
+
     // this.onClearPatientInfo()
   }
   // patient hand over
@@ -474,10 +481,10 @@ deleteTableRow(event, element) {
 
       this._NursingStationService.HandOverInsert(this.myHandOverForm.value).subscribe(response => {
         this.getHandOverNotelist()
-            this.grid1.bindGridData();
+        this.grid1.bindGridData();
         this.onClose();
       });
-    }else {
+    } else {
       let invalidFields = [];
 
       if (this.myHandOverForm.invalid) {
