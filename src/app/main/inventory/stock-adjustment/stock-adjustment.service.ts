@@ -25,7 +25,7 @@ export class StockAdjustmentService {
     this.StoreFrom = this.CreateStoreFrom();
     this.userFormGroup = this.createUserForm();
     this.MRPAdjform = this.createMRPAdjForm();
-    this.GSTAdjustment = this.createGSTForm();
+    // this.GSTAdjustment = this.createGSTForm();
  this.MRPAdjform.markAllAsTouched();
 
   }
@@ -50,24 +50,24 @@ export class StockAdjustmentService {
       LandedRate: ['', [Validators.min(0)]],
       PurchaseRate: ['', [Validators.min(0)]],
       ConversionFactor: [0, [Validators.min(0)]],
-      NewMRP: ['', [ Validators.required,Validators.min(0)]],
-      newLandedRate: ['', [ Validators.required,Validators.min(0)]],
-      NewPurchaseRate: ['', [ Validators.required,Validators.min(0)]],
-     // AddedDate:[new Date()],
+      NewMRP: ['', [ Validators.required,Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      newLandedRate: ['', [ Validators.required,Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      NewPurchaseRate: ['', [ Validators.required,Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+     
     });
   }
-  createGSTForm() {
-    return this._formBuilder.group({
-      CGSTPer: [0, [Validators.min(0)]],
-      SGSTPer: [0, [Validators.min(0)]],
-      IGSTPer: [0, [Validators.min(0)]],
-      NewCGSTPer: [0, [Validators.min(0)]],
-      NewSGSTPer: [0, [Validators.min(0)]],
-      NewIGSTPer: [0, [Validators.min(0)]],
-      TotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      OldTotalGSTPer: [0, [Validators.min(0)]],
-    });
-  }
+  // createGSTForm() {
+  //   return this._formBuilder.group({
+  //     CGSTPer: [0, [Validators.min(0)]],
+  //     SGSTPer: [0, [Validators.min(0)]],
+  //     IGSTPer: [0, [Validators.min(0)]],
+  //     NewCGSTPer: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     NewSGSTPer: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     NewIGSTPer: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     TotalGSTPer: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     OldTotalGSTPer: [0, [Validators.min(0)]],
+  //   });
+  // }
    
     createExpForm() {
     return this._formBuilder.group({

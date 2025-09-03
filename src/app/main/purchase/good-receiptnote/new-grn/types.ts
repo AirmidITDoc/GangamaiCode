@@ -74,6 +74,9 @@ export interface GRNFormModel {
   GRNType: string;
   GSTType: GSTType;
   PaymentType: string;
+  CGSTPer:any;
+  SGSTPer:any;
+  IGSTPer:any;
 }
 
 // Enum for GST Type Text

@@ -1,7 +1,7 @@
-<!-- NEW -->
+
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-        <!-- Modal header -->
+      
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
@@ -9,9 +9,7 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <!-- <app-common-date [screenFrom]="'OP-billing'"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
-                        <div class="close-icon">
+                      <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                                 matTooltip="Close">
                                 <mat-icon>close</mat-icon>
@@ -39,15 +37,6 @@
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().ToStoreId"
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
-
-                                    <!-- <mat-radio-group name="IsUrgent" formControlName="priority"
-                                        style="padding: 15px 0px 0px 30px;" (change)="setpriority($event)">
-                                        <mat-label class="example-margin" style="font-weight:bold;font-size:large"> Is
-                                            Urgent:</mat-label>&nbsp;&nbsp;
-                                        <mat-radio-button value="1" class="mr-sm-12">Yes</mat-radio-button>
-                                        <mat-radio-button value="0" class="mr-sm-12">No</mat-radio-button>
-                                    </mat-radio-group> -->
-
 
                                     <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
                                         formControlName="priority" [(ngModel)]="status" style="font-weight: bolder;padding: 10px;">

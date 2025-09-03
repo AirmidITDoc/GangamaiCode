@@ -24,7 +24,8 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Print IssueToDept" (click)="viewgetIssuetodeptReportPdf(element)">
+                    <button mat-icon-button matTooltip="Print IssueToDept"
+                        (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
                 </div>
@@ -33,10 +34,17 @@
 
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted">assignment_turned_in</mat-icon>
+                    <mat-icon *ngIf="element.isVerified =='1'" matTooltip="IsVerified" style="color: green;">done_all
+                    </mat-icon>
 
-                    <!-- <mat-icon *ngIf="element.isAccepted=='0'" matTooltip="NotAccepted"
-                        class="pill red-600 s-16">circle</mat-icon> -->
+                </div>
+            </ng-template>
+
+
+            <ng-template #isacceptedstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Is Accepted"
+                        style="color: blueviolet;">spellcheck</mat-icon>
                 </div>
             </ng-template>
 
@@ -60,9 +68,9 @@
                             [mode]="autocompletestore">
                         </airmid-dropdown>
 
- 
+
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
-                            Accepted
+                            IsVerify
                         </mat-slide-toggle>
 
                     </form>
@@ -70,7 +78,7 @@
             </airmid-table>
         </div>
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-               <ng-template #detailstatus let-element>
+            <ng-template #detailstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.status=='1'" matTooltip="Status True"
                         class="pill green-600 s-16">circle</mat-icon>
@@ -83,5 +91,5 @@
             </airmid-table>
         </div>
     </div>
-   
+
 </div>

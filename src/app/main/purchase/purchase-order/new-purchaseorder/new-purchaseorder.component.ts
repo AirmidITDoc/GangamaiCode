@@ -780,6 +780,7 @@ export class NewPurchaseorderComponent {
     let OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
 
+    this.FinalNetAmount=Math.ceil(this.FinalNetAmount)
     return this.FinalNetAmount;
   } 
   getTotalGST(element) {
@@ -1092,7 +1093,7 @@ export class NewPurchaseorderComponent {
     }
   } 
   getchangegstper(rate, GSTTYP): void {
-    debugger
+    
     const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
     const gstValues = [
       { value: 2.5 },
@@ -1100,21 +1101,21 @@ export class NewPurchaseorderComponent {
       { value: 9 },
       { value: 14 }
     ];
-    if (rate >= 2.5) {
+   
+    debugger
       const dvalue = gstValues.find(item => item.value == parseFloat(rate))
       if (!dvalue) {
         this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
         return;
       }
-    } else {
-      this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-      return;
-    }
-    const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+   
+else{
+    const GSTPer = Number(formValues.CGSTPer) + Number(formValues.SGSTPer) + Number(formValues.IGSTPer)
     this.userFormGroup.patchValue({
       GST: GSTPer
     });
     this.calculateTotalamt();
+  }
   } 
   resetForm() {
     this.userFormGroup.reset();
@@ -1151,10 +1152,13 @@ export class NewPurchaseorderComponent {
       DisAmount: 0,
       DisAmount2: 0,
       CGST: 0,
+      CGSTPer:0,
       CGSTAmount: 0,
       SGST: 0,
+      SGSTPer:0,
       SGSTAmount: 0,
       IGST: 0,
+      IGSTPer:0,
       GST: 0,
       GSTAmount: 0,
       TotalAmount: "",

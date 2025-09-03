@@ -34,22 +34,15 @@ export class NewIssueTodeptComponent {
   IssueMainForm: FormGroup;
   FinalIssueaginstForm: FormGroup;
 
-
-
   Indentid: any;
   indentdetid: any;
   IsClosed: any;
   IndQty: any;
   RQty: any = 0;
-
-  Itemchargeslist1: any = [];
   QtyBalchk: any = 0;
   fromstoreId = 0
   dateTimeObj: any;
   sIsLoading: string = '';
-
-
-  Charglist: any = [];
   vIndentId: any = 0;
   vIndtDetId: any;
   vFinalTotalAmount: any;
@@ -83,19 +76,27 @@ export class NewIssueTodeptComponent {
   vTotalMRP: any = 0;
   vDiscAmt: any
   vNetAmt: any
+  Indbalqty = 0
+  issueqty = 0
+  vstoreId: any = '';
+  vstoreId1: any = '';
+  fromstore: any;
+
+
+  batchresult: any;
   vItemObj: NewIssueList3;
   chargeslist: any = [];
   ItemSamelist: any = [];
-  Indbalqty = 0
-  issueqty = 0
-  batchresult: any;
+  Itemchargeslist1: any = [];
+  Charglist: any = [];
+
   showIndentFlag: boolean = false;
   Addflag: boolean = false;
   vAgainstIndet: boolean = false;
   Isclosedchk: boolean = false;
   AgainstInd: boolean = true;
   ItemID = 0;
-  fromstore: any;
+
 
   autocompletestore: string = "Store";
   autocompletestore1: string = "Store";
@@ -162,7 +163,7 @@ export class NewIssueTodeptComponent {
     this.stockArray1.push(this.currentstockform());
     this.indentdetailArray.push(this.indentdetailform());
     if (this.data) {
-      console.log(this.data)
+      // console.log(this.data)
       this.dsSelectedIndentItemList.data = this.data
     }
 
@@ -299,7 +300,7 @@ export class NewIssueTodeptComponent {
       });
       return;
     }
-    debugger
+
     this.ItemSamelist = this.dsNewIssueItemList.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemName').value.itemId)
     if (this.ItemSamelist) {
       if (this.ItemSamelist.some(item => item.BatchNo === this.batchresult.batchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
@@ -465,14 +466,18 @@ export class NewIssueTodeptComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.dsSelectedIndentItemList.data = result;
-      console.log(this.dsSelectedIndentItemList.data)
-      if (result) this.updatestatus()
+
+      if (result.length !== 0) this.updatestatus()
+      else {
+        this.vAgainstIndet = false
+        this.AgainstInd = true
+      }
 
     });
   }
 
   updatestatus() {
-    debugger
+
     this.AgainstInd = true
     this.vIndentId = this.dsSelectedIndentItemList.data[0]['indentId'];
     this.vAgainstIndet = true;
@@ -512,24 +517,24 @@ export class NewIssueTodeptComponent {
 
 
     this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-     this.Itemchargeslist1 = draftdata as any;
-        console.log(draftdata)
-        console.log(this.Itemchargeslist1)
-         console.log(this.Itemchargeslist1.length)
-debugger
+      this.Itemchargeslist1 = draftdata as any;
+      // console.log(draftdata)
+      // console.log(this.Itemchargeslist1)
+      // console.log(this.Itemchargeslist1.length)
+
       if (this.Itemchargeslist1.length == 0) {
-     Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
+        Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
       else if (this.Itemchargeslist1.length > 0) {
         let ItemID = contact.itemId;
-        debugger
+
         let remaing_qty = contact.balanceQty;
         let bal_qnt = 0;
         this.Itemchargeslist1.forEach((element) => {
 
           let IndQty = remaing_qty;
           if (IndQty > 0) {
-            debugger
+
             if (contact.itemId != element.itemId) {
               this.QtyBalchk = 0;
             } else if (IndQty <= element.balanceQty) {
@@ -562,7 +567,7 @@ debugger
 
 
   getFinalCalculation(contact, DraftQty) {
-    debugger
+
     console.log(contact)
 
     this.RQty = parseInt(DraftQty);
@@ -613,7 +618,7 @@ debugger
 
   CellCalculation = 0
   getCellCalculation(contact, Qty) {
-    debugger
+
     // console.log(this.Indbalqty)
     // console.log(this.issueqty)
 
@@ -636,7 +641,7 @@ debugger
         contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
         this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
         contact.IssueBalQty = (this.Indbalqty)
-        debugger
+
         if (contact.IssueBalQty == 0)
           contact.IsClosed = true
         else
@@ -668,10 +673,8 @@ debugger
       });
       return;
     }
-    debugger
-    if (!this.IssueFinalForm.invalid) {
-      console.log(this.vIndentId)
 
+    if (!this.IssueFinalForm.invalid) {
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
@@ -743,7 +746,7 @@ debugger
       console.log(element)
       if (this.CellCalculation == 0)
         console.log(element)
-      debugger
+
       let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
       if (balQty == 0)
         element.IsClosed = true;
@@ -871,8 +874,6 @@ debugger
     this.NewIssueGroup.reset();
   }
 
-  vstoreId: any = '';
-  vstoreId1: any = '';
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value

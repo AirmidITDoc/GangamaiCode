@@ -28,13 +28,15 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
   autocompletestore: string = "Store";
   dateTimeObj: any;
   sIsLoading: string = '';
+    vstoreId: any = 0;
   isLoading = true;
-  FromStoreList: any = [];
-  hasSelectedContacts: boolean = false;
+   isStoreSelected: boolean = false;
+ hasSelectedContacts: boolean = false;
   Charglist: any = [];
   Charglist1: any = [];
+   FromStoreList: any = [];
   filteredOptionsStore: Observable<string[]>;
-  isStoreSelected: boolean = false;
+ 
   displayedColumns: string[] = [
     // 'CheckBox',
     'Priority',
@@ -51,8 +53,6 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     'IssueQty',
     'IndBalQty',
   ]
-
-
 
   dsIndentList = new MatTableDataSource<IndentList>();
   dsIndentItemDetList = new MatTableDataSource<IndentItemDetList>();
@@ -79,7 +79,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
 
   getIndentList() {
     this.sIsLoading = 'loading-data';
-    debugger
+    
     let frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
     let todate = this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
     let status = this.IndentFrom.get("Status").value
@@ -132,7 +132,6 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data.data as IndentList[];
-      console.log(data);
       this.dsIndentList.sort = this.sort;
       this.dsIndentList.paginator = this.paginator;
       this.sIsLoading = '';
@@ -142,11 +141,9 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
       });
   }
 
-  toStoreId = 0
+ 
   getIndentItemDetList(Param) {
-    console.log(Param)
-    this.toStoreId = Param.toStoreId
-
+    
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
@@ -168,36 +165,20 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
         }
       ]
     }
-    debugger
+    
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data.data as IndentItemDetList[];
       console.log(data.data)
       this.Charglist = this.dsIndentItemDetList.data;
-      // this.dsIndentItemDetList.sort = this.sort;
-      // this.dsIndentItemDetList.paginator = this.paginator;
+      this.dsIndentItemDetList.sort = this.sort;
+      this.dsIndentItemDetList.paginator = this.paginator;
 
       this.sIsLoading = '';
     });
-    // this.GetIndentGainstlist(Param);
-  }
+    }
 
-  // GetIndentGainstlist(param) {
-  //   debugger
-  //   var vdata = {
-  //     'IndentId': param.indentId
-  //   }
-  //   console.log(vdata);
-  //   this._IssueToDep.getAgainstIndentList(vdata).subscribe(data => {
-  //     this.dstempdata.data = data as IndentItemDetList[];
-  //     this.Charglist = this.dstempdata.data;
-  //     console.log(this.Charglist);
-  //     // this.Charglist[0]['toStoreId']=this.toStoreId
-  //     console.log(this.dstempdata.data);
-  //          console.log(this.Charglist);
-  //   });
-  // }
-
-  vstoreId: any = 0;
+ 
+ 
   selectChangeStore(obj: any) {
     this.vstoreId = obj.value
     this.getIndentList()
@@ -223,21 +204,10 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     }
 
     console.log(this.Charglist1)
-this._dialogRef.close(this.Charglist1)
-    // const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
-    //   {
-    //     maxWidth: "97vw",
-    //     height: '90%',
-    //     width: '95%',
-    //     data: this.Charglist1,
+    this._dialogRef.close(this.Charglist1)
 
-    //   });
-  
   }
 
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }

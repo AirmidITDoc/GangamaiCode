@@ -46,20 +46,16 @@
                             <mat-header-cell *matHeaderCellDef class="w-100">Status</mat-header-cell>
 
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <mat-icon *ngIf="contact.status==1" matTooltip="Verified"
-                                    class="pill green-600 s-16">circle</mat-icon>
-                                <mat-icon *ngIf="contact.status==0" matTooltip="Pending"
-                                    class="pill red-600 s-16">circle</mat-icon>
-                                <!-- <mat-icon *ngIf="contact.Status==2" matTooltip="Returned"
-                                    class="pill orenge-600 s-16">circle</mat-icon> -->
+                                <mat-icon *ngIf="contact.status=='A'" matTooltip="Verified" style="color: green;">assignment_turned_in</mat-icon>
+                                
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="ItemName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-350">
                                 ItemName
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350">
                                 {{contact.itemName}}
                             </mat-cell>
                         </ng-container>
@@ -125,7 +121,7 @@
     <div class="modal-footer" fxLayout="column">
 
         <div class="modal-footer-buttons">
-            <button class="btn btn-primary " (click)="onSubmit()" [disabled]="savebtn">Save</button>
+            <button class="btn btn-primary " (click)="onSubmit()" >Save</button>
             <button class="btn btn-danger-outline" (click)="onClose()">Reset</button>
 
         </div>

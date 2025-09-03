@@ -34,29 +34,25 @@
 
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>Old Exp Date</mat-label>
                                     <input name="OldexpDate" formControlName="OldexpDate" matInput required
                                         [(ngModel)]="oldExpdate">
                                 </mat-form-field>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New Exp Date</mat-label>
-                                    <input name="NewexpDate" formControlName="NewexpDate" matInput required>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="4px">
+                                <!-- <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-label>ExpDate</mat-label>
+                                    <input matInput #inputField (keyup.enter)="calculateLastDay()"
+                                        formControlName="NewexpDate" autocomplete="off" placeholder="mmyyyy" required>
                                 </mat-form-field> -->
 
-                                <!-- <mat-form-field appearance="outline" fxFlex="40%">
-                                    <input matInput [matDatepicker]="validFromPicker" formControllName="NewexpDate"
-                                        placeholder="New Exp Date">
-                                    <mat-datepicker-toggle matSuffix [for]="validFromPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #validFromPicker></mat-datepicker>
-                                </mat-form-field> -->
                                 <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>ExpDate</mat-label>
                                     <input matInput #inputField (keyup.enter)="calculateLastDay()"
                                         formControlName="NewexpDate" autocomplete="off" placeholder="mmyyyy" required>
                                 </mat-form-field>
-
 
                             </div>
 

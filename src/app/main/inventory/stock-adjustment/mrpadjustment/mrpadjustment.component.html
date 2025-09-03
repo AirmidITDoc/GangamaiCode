@@ -33,36 +33,17 @@
 
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Old MRP</mat-label>
-                                    <input name="OldMRP" formControlName="OldMRP" matInput required readonly
-                                    (keyup.enter)="focusNext('LandedRate')" [(ngModel)]="vOldMRP" type="text" OnlyNUmber>
-                                </mat-form-field> -->
-
                                 <airmid-textbox label="Old MRP" formControlName="OldMRP"
                                     [formGroup]="MRPAdjform"
                                     [validations]="getValidationMessages().OldMRP" [value]="vOldMRP"
                                      [readonly]="true">
                                 </airmid-textbox>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Old LandedRate</mat-label>
-                                    <input name="LandedRate" formControlName="LandedRate" matInput required type="text"
-                                        OnlyNUmber (keyup.enter)="focusNext('PurchaseRate')" id="LandedRate"
-                                        [(ngModel)]="vLandedRate" readonly>
-                                </mat-form-field> -->
                                 <airmid-textbox label="Old LandedRate" formControlName="LandedRate"
                                     [formGroup]="MRPAdjform"
                                     [validations]="getValidationMessages().LandedRate" [value]="vLandedRate"
                                      [readonly]="true">
                                 </airmid-textbox>
-
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Old PurchaseRate</mat-label>
-                                    <input name="PurchaseRate" formControlName="PurchaseRate" matInput required
-                                        type="text" OnlyNUmber (keyup.enter)="focusNext('ConversionFactor')"
-                                        id="PurchaseRate" [(ngModel)]="vPurchaseRate" readonly>
-                                </mat-form-field> -->
 
                                 <airmid-textbox label="Old PurchaseRate" formControlName="PurchaseRate"
                                     [formGroup]="MRPAdjform"
@@ -72,34 +53,18 @@
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New MRP</mat-label>
-                                    <input name="NewMRP" formControlName="NewMRP" type="text" OnlyNUmber matInput
-                                        required (keyup.enter)="focusNext('newLandedRate')" id="NewMRP"
-                                        [(ngModel)]="vNewMRP">
-                                </mat-form-field> -->
                                 <airmid-textbox label="New MRP" formControlName="NewMRP"
                                     [formGroup]="MRPAdjform"  [value]="vNewMRP"   [type]="'number'" 
                                     [validations]="getValidationMessages().NewMRP"  (input)="calculationAmt()">
                                 </airmid-textbox>
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New LandedRate</mat-label>
-                                    <input name="newLandedRate" formControlName="newLandedRate" matInput required
-                                        type="text" OnlyNUmber id="newLandedRate" [(ngModel)]="vNewLandedRate"
-                                        (keyup)="calculationAmt()" (keyup.enter)="focusNext('NewPurchaseRate')">
-                                </mat-form-field> -->
+                             
                                 <airmid-textbox label="New LandedRate" formControlName="newLandedRate"
                                     [formGroup]="MRPAdjform" [value]="vNewLandedRate"   [type]="'number'" 
                                     [validations]="getValidationMessages().newLandedRate" 
                                     
                                      (keyup)="calculationAmt()">
                                 </airmid-textbox>
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New PurchaseRate</mat-label>
-                                    <input name="NewPurchaseRate" formControlName="NewPurchaseRate" matInput required
-                                        type="text" OnlyNUmber [(ngModel)]="vNewPurchaseRate" id="NewPurchaseRate"
-                                        (keyup)="calculationAmt()">
-                                </mat-form-field> -->
+                               
                                 <airmid-textbox label="New PurchaseRate" formControlName="NewPurchaseRate"
                                     [formGroup]="MRPAdjform" [value]="vNewPurchaseRate"  (input)="calculationAmt()" 
                                     [validations]="getValidationMessages().NewPurchaseRate"  [type]="'number'" >

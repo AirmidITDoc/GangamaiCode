@@ -143,7 +143,7 @@ export class NewIndentComponent implements OnInit {
     }
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
-  debugger
+  
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
@@ -172,7 +172,7 @@ export class NewIndentComponent implements OnInit {
 
   setpriority(event){
     console.log(event)
-    debugger
+    
     this.status=event.checked
 
   }
@@ -266,7 +266,7 @@ export class NewIndentComponent implements OnInit {
       this.IndentdetailArray.push(this.createdetailInsert(item));
     });
 
-    debugger
+    
     if (this.status=="1")
       this.IndentSaveFrom.get('priority').setValue(true)
     else

@@ -72,18 +72,18 @@ export class MRPAdjustmentComponent implements OnInit {
   }
 
 
-  createMRPAdjForm() {
-    return this._formBuilder.group({
-      OldMRP: [0, [Validators.min(0)]],
-      LandedRate: [0, [Validators.min(0)]],
-      PurchaseRate: [0, [Validators.min(0)]],
-      ConversionFactor: [0, [Validators.min(0)]],
-      NewMRP: [0, [Validators.required, Validators.min(0)]],
-      newLandedRate: [0, [Validators.required, Validators.min(0)]],
-      NewPurchaseRate: [0, [Validators.required, Validators.min(0)]],
-      // AddedDate:[new Date()],
-    });
-  }
+  // createMRPAdjForm() {
+  //   return this._formBuilder.group({
+  //     OldMRP: [0, [Validators.min(0)]],
+  //     LandedRate: [0, [Validators.min(0)]],
+  //     PurchaseRate: [0, [Validators.min(0)]],
+  //     ConversionFactor: [0, [Validators.min(0)]],
+  //     NewMRP: [0, [Validators.required, Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     newLandedRate: [0, [Validators.required, Validators,this._FormvalidationserviceService.AllowDecimalNumberValidator().min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+  //     NewPurchaseRate: [0, [Validators.required, Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      
+  //   });
+  // }
 
 
   createmrpform() {
@@ -96,9 +96,9 @@ export class MRPAdjustmentComponent implements OnInit {
         "oldPurRate": [this.vPurchaseRate],
         "oldLandedRate": [this.vLandedRate],
         "qty": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "mrp": [this.vNewMRP],
-        "landedRate": [this.vNewLandedRate],
-        "purRate": [this.vNewPurchaseRate],
+        "mrp": [this.vNewMRP,this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+        "landedRate": [this.vNewLandedRate,this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+        "purRate": [this.vNewPurchaseRate,this._FormvalidationserviceService.AllowDecimalNumberValidator()],
         "addedBy": [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "addedDateTim": [(new Date()).toISOString().split('T')[0]],
 
@@ -131,16 +131,9 @@ export class MRPAdjustmentComponent implements OnInit {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  // focusNext(nextElementId: string): void {
-  //   const nextElement = this.elementRef.nativeElement.querySelector(`#${nextElementId}`);
-  //   if (nextElement) {
-  //     nextElement.focus();
-  //   }
-  // }
 
   calculationAmt() {
-    debugger
-
+    
     this.vNewLandedRate = this.MRPAdjform.get('newLandedRate').value
     this.vNewMRP = this.MRPAdjform.get('NewMRP').value
     this.vNewPurchaseRate = this.MRPAdjform.get('NewPurchaseRate').value
@@ -172,75 +165,9 @@ export class MRPAdjustmentComponent implements OnInit {
     // this.PerUnitMRP = (parseFloat(this.vNewMRP) / parseFloat(this.registerObj.ConversionFactor)).toFixed(2);
   }
   Savebtn: boolean = false;
-  // onSubmit1() {
-  //   if (this.MRPAdjform.invalid) {
-  //     this.toastr.warning('please check from is invalid', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.vNewMRP == '' || this.vNewMRP == null || this.vNewMRP == undefined)) {
-  //     this.toastr.warning('Please enter a New MRP', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.vNewLandedRate == '' || this.vNewLandedRate == null || this.vNewLandedRate == undefined)) {
-  //     this.toastr.warning('Please enter a New LandedRate', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.vNewPurchaseRate == '' || this.vNewPurchaseRate == null || this.vNewPurchaseRate == undefined)) {
-  //     this.toastr.warning('Please enter a New PurchaseRate', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-
-  //   this.Savebtn = true;
-  //   let insertMRPAdju = {};
-  //   insertMRPAdju['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-  //   insertMRPAdju['itemId'] = this.registerObj.itemId || 0;
-  //   insertMRPAdju['batchNo'] = this.registerObj.batchNo || '';
-  //   insertMRPAdju['oldMrp'] = this.MRPAdjform.get('OldMRP').value || 0;
-  //   insertMRPAdju['oldLandedRate'] = this.MRPAdjform.get('LandedRate').value || 0;
-  //   insertMRPAdju['oldPurRate'] = this.MRPAdjform.get('PurchaseRate').value || 0;
-  //   insertMRPAdju['qty'] = 0;
-  //   insertMRPAdju['mrp'] = this.MRPAdjform.get('NewMRP').value || 0;
-  //   insertMRPAdju['landedRate'] = this.MRPAdjform.get('newLandedRate').value || 0;
-  //   insertMRPAdju['purRate'] = this.MRPAdjform.get('NewPurchaseRate').value || 0;
-  //   insertMRPAdju['addedBy'] = this.accountService.currentUserValue.user.storeId || 0;
-  //   insertMRPAdju['addedDateTime'] = new Date();
-
-  //   let insertMRPAdjuNew = {};
-  //   insertMRPAdjuNew['storeId'] = this.accountService.currentUserValue.user.storeId || 0;
-  //   insertMRPAdjuNew['stockid'] = this.registerObj.stockId || 0;
-  //   insertMRPAdjuNew['itemId'] = this.registerObj.itemId || 0;
-  //   insertMRPAdjuNew['batchNo'] = this.registerObj.batchNo || '';
-  //   insertMRPAdjuNew['unitMrp'] = this.MRPAdjform.get('NewMRP').value || 0;
-  //   insertMRPAdjuNew['purchaserate'] = this.MRPAdjform.get('newLandedRate').value || 0;
-  //   insertMRPAdjuNew['landedRate'] = this.MRPAdjform.get('NewPurchaseRate').value || 0;
-  //   insertMRPAdjuNew['oldUnitMrp'] = this.MRPAdjform.get('OldMRP').value || 0;
-  //   insertMRPAdjuNew['oldUnitPur'] = this.MRPAdjform.get('PurchaseRate').value || 0;
-  //   insertMRPAdjuNew['oldUnitLanded'] = this.MRPAdjform.get('LandedRate').value || 0;
-
-
-  //   let submitData = {
-  //     "mrpAdjustmentMod": insertMRPAdju,
-  //     "curruntStockModel": insertMRPAdjuNew
-  //   };
-  //   console.log(submitData);
-  //   this._StockAdjustment.MRPAdjSave(submitData).subscribe(response => {
-  //     this._matDialog.closeAll();
-  //     this.Savebtn = false;
-  //   });
-  // }
-
+  
   onSubmit() {
     console.log(this.MRPAdjform.value)
-    debugger
-    // this.Savebtn = true;
     if (!this.MRPAdjform.invalid) {
 
       this.mrpform.get('mrpAdjustmentMod.storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)

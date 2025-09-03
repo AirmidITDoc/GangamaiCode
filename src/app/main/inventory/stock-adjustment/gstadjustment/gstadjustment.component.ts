@@ -76,31 +76,22 @@ export class GSTAdjustmentComponent implements OnInit {
       batchNo: [''],
       oldCgstper: ['', [Validators.required, Validators.min(0)]],
       oldSgstper: ['', [Validators.required, Validators.min(0)]],
-      oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: ['', [Validators.required, Validators.min(0)]],
-      sgstper: ['', [Validators.required, Validators.min(0)]],
-      igstper: [0, [Validators.min(0)]],
+      oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstper: ['', [Validators.required, this._FormvalidationserviceService.AllowDecimalNumberValidator(), Validators.min(0)]],
+      sgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       addedBy: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
   createGSTfinalForm() {
     return this._formBuilder.group({
-      OldTotalGSTPer: ['', [Validators.required, Validators.min(0)]],
-      TotalGSTPer: ['', [Validators.required, Validators.min(0)]],
+      OldTotalGSTPer: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      TotalGSTPer: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
 
     })
   }
 
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
   gstflag = false
   getchangegstper(Id, rate, GSTTYP): void {
 

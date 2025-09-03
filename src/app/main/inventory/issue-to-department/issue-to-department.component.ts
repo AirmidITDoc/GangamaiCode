@@ -46,9 +46,15 @@ export class IssueToDepartmentComponent implements OnInit {
     ngOnInit(): void {
         this.IssueSearchGroup = this._IssueToDep.IssueSearchFrom();
     }
+     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+     @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
+    @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isVerifiedstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
+          this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
         // this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
 
     }
@@ -56,13 +62,12 @@ export class IssueToDepartmentComponent implements OnInit {
 
     gridConfig1: gridModel = new gridModel();
 
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
-    @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+   
     allcolumns = [
+      { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "IsAccepted", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
-
+        { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },

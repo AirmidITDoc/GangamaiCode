@@ -79,11 +79,7 @@
                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Is
                                 Urgent</mat-header-cell>
                             <mat-cell *matCellDef="let contact" class="w-90">
-                                <!-- <mat-icon
-                                   *ngIf="!contact.priority" matTooltip="Not Urgent"
-                                    class=" green-600 s-16">circle</mat-icon> -->
-
-                                <mat-icon *ngIf="contact.priority=='1'" matTooltip="Urgent"
+                               <mat-icon *ngIf="contact.priority=='1'" matTooltip="Urgent"
                                     style="color: brown;">pan_tool
                                 </mat-icon>
 

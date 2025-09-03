@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -12,6 +12,7 @@ import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component'
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 import { StockAdjustmentService } from './stock-adjustment.service';
 import { ExpeditComponent } from './expedit/expedit.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-stock-adjustment',
@@ -25,21 +26,15 @@ import { ExpeditComponent } from './expedit/expedit.component';
 export class StockAdjustmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     StoreFrom: FormGroup;
-
+    BatchForm: FormGroup;
+    screenFromString = 'admission-form';
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType";
 
     sIsLoading: string = '';
-    isLoading = true;
-    StoreList: any = [];
-    screenFromString = 'admission-form';
-    isItemIdSelected: boolean = false;
     ItemName: any;
     ItemId: any;
     dateTimeObj: any;
-    ItemList: any = [];
-    OptionsItemName: any;
-    filteredoptionsItemName: Observable<string[]>;
     vBatchNo: any;
     vQty: any;
     vMRP: any;
@@ -54,6 +49,21 @@ export class StockAdjustmentComponent implements OnInit {
     vBatchEdit: any;
     vExpDateEdit: any;
     vDeudQty: any;
+    OptionsItemName: any;
+   
+    ItemList: any = [];
+    StoreList: any = [];
+    filteredoptionsItemName: Observable<string[]>;
+
+     isLoading = true;
+    isItemIdSelected: boolean = false;
+      Addeditable: boolean = false;
+    Dedueditable: boolean = false;
+    Expeditable: boolean = false;
+    Batcheditable: boolean = false;
+    Rateeditable: boolean = false;
+    // Landededitable: boolean = false;
+
 
     displayedColumns = [
         'batchNo',
@@ -77,32 +87,30 @@ export class StockAdjustmentComponent implements OnInit {
         public toastr: ToastrService,
         public _matDialog: MatDialog,
         private accountService: AuthenticationService,
-        public datePipe: DatePipe,
+        public datePipe: DatePipe, private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
     ) { }
 
     ngOnInit(): void {
         this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
-         this.StoreFrom.markAllAsTouched();
-    this.getStockList();
-    }
-
-    storeId = 0
-    selectChangeStore(obj: any) {
-        this.storeId = obj.value
-    }
-
-    itemId = 0
-    selectChangeItem(obj: any) {
-        console.log(obj)
-        this.itemId = obj.itemId
+         this.BatchForm = this.CreateBatchFrom();
+        this.StoreFrom.markAllAsTouched();
         this.getStockList();
     }
 
-    onClear() { 
-        this.StoreFrom.get('ItemID').reset('');
-        
-        this.dsStockAdjList.data=[]
-    }
+      CreateBatchFrom() {
+    
+        return this._formBuilder.group({
+          batchAdjId:0,
+          storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+          stkId: [this.vStockId|| 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+          itemId: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+          oldBatchNo: [ this.vBatchNo || ''],
+          oldExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'), [Validators.required]],
+          newBatchNo: [this.vBatchEdit || '', [Validators.required, Validators.min(0)]],
+          newExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd')],
+            addedBy: [this.accountService.currentUserValue.userId  || 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+      }
     getStockList() {
         var Param = {
             "first": 0,
@@ -136,47 +144,10 @@ export class StockAdjustmentComponent implements OnInit {
         });
     }
 
-   
-    // AddQty(contact, AddQty) {
-    //     if (contact.AddQty > 0) {
-    //         contact.UpdatedQty = parseFloat(contact.BalanceQty) + parseFloat(contact.AddQty);
-    //         this.AddType = 1;
-    //     } else {
-    //         contact.UpdatedQty = 0;
-    //     }
-    //     this.vUpdatedQty = contact.UpdatedQty;
-    //     this.vQty = contact.AddQty;
-    //     this.vBalQty = contact.BalanceQty;
-    //     this.vStockId = contact.StockId;
-    //     this.vBatchNo = contact.BatchNo;
-    //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    // }
-    // DeduQty(contact, DeduQty) {
-    //     if (contact.DeduQty > 0) {
-    //         contact.UpdatedQty = parseFloat(contact.BalanceQty) - parseFloat(contact.DeduQty);
-    //         this.AddType = 0;
-    //     } else {
-    //         contact.UpdatedQty = 0;
-    //     }
-    //     this.vUpdatedQty = contact.UpdatedQty,
-    //         this.vQty = contact.DeduQty;
-    //     this.vBalQty = contact.BalanceQty;
-    //     this.vStockId = contact.StockId;
-    //     this.vBatchNo = contact.BatchNo;
-    //     this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-    //         toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    // }
 
     batchEdit: boolean = false;
-    // BatchenableEditing(row: StockAdjList) {
-    //   row.batchEdit = true;
-    //   row.batchEdit = '';
-    // }
 
-OneditDate(contact) {
+    OneditDate(contact) {
         debugger
         console.log(contact)
         this.vBatchNo = contact.batchNo
@@ -184,24 +155,20 @@ OneditDate(contact) {
         this.vBatchEdit = contact.batchNo
         this.vExpDateEdit = contact.batchExpDate;
         this.vStockId = contact.stockId;
-        this.vExpDateEdit=true
-        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-        //     toastClass: 'tostr-tost custom-toast-warning',
-        // });
+        this.vExpDateEdit = true
+
     }
     OneditBatch(contact) {
-        
+
         console.log(contact)
         this.vBatchNo = contact.batchNo
         this.vExpDate = contact.batchExpDate;
         this.vBatchEdit = contact.batchEdit;
         this.vExpDateEdit = contact.batchExpDate;
         this.vStockId = contact.stockId;
-        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-        //     toastClass: 'tostr-tost custom-toast-warning',
-        // });
+
     }
-  
+
     resetFormItem() {
 
     }
@@ -216,126 +183,124 @@ OneditDate(contact) {
     vlastDay: string = '';
     lastDay2: string = '';
 
-    CellcalculateLastDay(contact, inputDate: string) {
-debugger
+    // CellcalculateLastDay(contact, inputDate: string) {
+    //     debugger
 
-        this.OneditDate(contact)
-        if (inputDate && inputDate.length === 6) {
-            const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);
+    //     this.OneditDate(contact)
+    //     if (inputDate && inputDate.length === 6) {
+    //         const month = +inputDate.substring(0, 2);
+    //         const year = +inputDate.substring(2, 6);
 
-            if (month >= 1 && month <= 12) {
-                const lastDay1 = this.getLastDayOfMonth(month, year);
-                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-                contact.ExpDateEdit = this.lastDay1;
-                this.vExpDateEdit = this.lastDay1;
-            } else {
-                this.vlastDay = 'Invalid month';
-            }
-        } else {
-            this.vlastDay = ' ';
-        }
-        this.vBatchNo = contact.batchNo
-        this.vExpDate = contact.batchExpDate;
-        this.vBatchEdit = contact.batchEdit;
-        this.vExpDateEdit = contact.expDateEdit;
-        this.vStockId = contact.stockId;
-        // this.toastr.warning('Record Not Saved Please Save Record', 'Warning !', {
-        //     toastClass: 'tostr-tost custom-toast-warning',
-        // });
-    }
+    //         if (month >= 1 && month <= 12) {
+    //             const lastDay1 = this.getLastDayOfMonth(month, year);
+    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+    //             contact.ExpDateEdit = this.lastDay1;
+    //             this.vExpDateEdit = this.lastDay1;
+    //         } else {
+    //             this.vlastDay = 'Invalid month';
+    //         }
+    //     } else {
+    //         this.vlastDay = ' ';
+    //     }
+    //     this.vBatchNo = contact.batchNo
+    //     this.vExpDate = contact.batchExpDate;
+    //     this.vBatchEdit = contact.batchEdit;
+    //     this.vExpDateEdit = contact.expDateEdit;
+    //     this.vStockId = contact.stockId;
+      
+    // }
 
 
-      calculateLastDay(event) {
-            const inputDate =event.expDateEdit
-           this.OneditDate(event)
-                const numericPattern = /^[0-9]+$/; 
-                const CurrentDate = new Date(); 
-                const Currentmonths = new Date(); 
-                const currentMonth = Currentmonths.getMonth();
-                console.log(currentMonth)
-                const currentYear = CurrentDate.getFullYear();
-                console.log(currentYear)   
-        debugger
-                if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
-                const month = +inputDate.substring(0, 2);
-                const year = +inputDate.substring(2, 6);  
-            
-                if (year >= currentYear){
-                    if (month <= currentMonth && year == currentYear)  {
-                        Swal.fire({
-                            icon: "warning",
-                            title: "This item is already expired",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        this.vlastDay = '';
-                         this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-                        return
-                    }
-                    if (month > 12 && month <= 0) {
-                        this.vlastDay = '';
-                        this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-                        this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                        });
-                        return;
-                    }
-                    const lastDay = this.getLastDayOfMonth(month, year);
-                    this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
-                    this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
-                    const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-                    this.StoreFrom.get('expDateEdit').setValue(this.vlastDay) 
-                      const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                            if (QtyElement) {
-                                QtyElement.focus();
-                            } 
-    
-                } else {
-                        Swal.fire({
-                            icon: "warning",
-                            title: "This item is already expired",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        this.vlastDay = '';
-                         this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-                        return
-                  
-                } 
-            }
-            //  else {  
-            //     this.vlastDay = '';
-            //     this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
-            //     this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
-            //         toastClass: 'tostr-tost custom-toast-warning',
-            //     });
-            //     return;
-            // }
-        
-        }
-    OnSaveBatchAdj(){
-        debugger
-    const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit ==  this.vlastDay);
-    if(!chkExpDate){
-      if(this.vExpDateEdit){
-        this.OnSaveBatchAdjustment() 
-      }else{
-        this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        }); 
-      } 
-    }else{
-      this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
-      this.getStockList();
-  }
+    // calculateLastDay(event) {
+    //     const inputDate = event.expDateEdit
+    //     this.OneditDate(event)
+    //     const numericPattern = /^[0-9]+$/;
+    //     const CurrentDate = new Date();
+    //     const Currentmonths = new Date();
+    //     const currentMonth = Currentmonths.getMonth();
+    //     console.log(currentMonth)
+    //     const currentYear = CurrentDate.getFullYear();
+    //     console.log(currentYear)
+    //     debugger
+    //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+    //         const month = +inputDate.substring(0, 2);
+    //         const year = +inputDate.substring(2, 6);
+
+    //         if (year >= currentYear) {
+    //             if (month <= currentMonth && year == currentYear) {
+    //                 Swal.fire({
+    //                     icon: "warning",
+    //                     title: "This item is already expired",
+    //                     showConfirmButton: false,
+    //                     timer: 1500
+    //                 });
+    //                 this.vlastDay = '';
+    //                 this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
+    //                 return
+    //             }
+    //             if (month > 12 && month <= 0) {
+    //                 this.vlastDay = '';
+    //                 this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
+    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 return;
+    //             }
+    //             const lastDay = this.getLastDayOfMonth(month, year);
+    //             this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
+    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+    //             const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+    //             this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
+    //             const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    //             if (QtyElement) {
+    //                 QtyElement.focus();
+    //             }
+
+    //         } else {
+    //             Swal.fire({
+    //                 icon: "warning",
+    //                 title: "This item is already expired",
+    //                 showConfirmButton: false,
+    //                 timer: 1500
+    //             });
+    //             this.vlastDay = '';
+    //             this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
+    //             return
+
+    //         }
+    //     }
+    //     //  else {  
+    //     //     this.vlastDay = '';
+    //     //     this.StoreFrom.get('expDateEdit').setValue(this.vlastDay)
+    //     //     this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+    //     //         toastClass: 'tostr-tost custom-toast-warning',
+    //     //     });
+    //     //     return;
+    //     // }
+
+    // }
+    // OnSaveBatchAdj() {
+    //     debugger
+    //     const chkExpDate = this.dsStockAdjList.data.some((item) => item.ExpDateEdit == this.vlastDay);
+    //     if (!chkExpDate) {
+    //         if (this.vExpDateEdit) {
+    //             this.OnSaveBatchAdjustment()
+    //         } else {
+    //             this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+    //                 toastClass: 'tostr-tost custom-toast-warning',
+    //             });
+    //         }
+    //     } else {
+    //         this.toastr.warning('Please enter BatchExpDate', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //     }
+    //     this.getStockList();
+    // }
     Lastbatch: string = '';
     OnSaveBatch() {
-        const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit ==  this.Lastbatch);
+        const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
         if (this.vBatchEdit) {
             this.OnSaveBatchAdjustment();
         }
@@ -344,7 +309,7 @@ debugger
                 toastClass: 'tostr-tost custom-toast-warning',
             });
         }
-  this.getStockList();
+        this.getStockList();
     }
 
     OnSaveBatchAdjustment() {
@@ -356,34 +321,35 @@ debugger
             });
             return;
         }
-           this.dsStockAdjList.data.forEach(element => {
-                if (element.expDateEdit && element.expDateEdit.length === 10) {
-                    const day = +element.expDateEdit.substring(0, 2);
-                    const month = +element.expDateEdit.substring(3, 5);
-                    const year = +element.expDateEdit.substring(6, 10);
+        this.dsStockAdjList.data.forEach(element => {
+            if (element.expDateEdit && element.expDateEdit.length === 10) {
+                const day = +element.expDateEdit.substring(0, 2);
+                const month = +element.expDateEdit.substring(3, 5);
+                const year = +element.expDateEdit.substring(6, 10);
 
-                    this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-                    // console.log(this.vExpDate)
-                }
-            })
-
-        let submitData = {
-                "batchAdjId": 0,
-                "storeId": this.accountService.currentUserValue.user.storeId || 0,
-                "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
-                "oldBatchNo": this.vBatchNo || '',
-                "oldExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
-                "newBatchNo": this.vBatchEdit || '',
-                "newExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
-                "addedBy": this.accountService.currentUserValue.userId || 0,
-                "stkId": this.vStockId || 0
+                this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+                // console.log(this.vExpDate)
             }
-            console.log(submitData);
-            this._StockAdjustmentService.BatchAdjSave(submitData).subscribe(response => {
-                this._matDialog.closeAll();
-                this.dsStockAdjList.data=[];
-            });
-      this.StoreFrom.get("ItemID").setValue('')
+        })
+
+        // let submitData = {
+        //     "batchAdjId": 0,
+        //     "storeId": this.accountService.currentUserValue.user.storeId || 0,
+        //     "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
+        //     "oldBatchNo": this.vBatchNo || '',
+        //     "oldExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+        //     "newBatchNo": this.vBatchEdit || '',
+        //     "newExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+        //     "addedBy": this.accountService.currentUserValue.userId || 0,
+        //     "stkId": this.vStockId || 0
+        // }
+
+        console.log(this.BatchForm.value);
+        this._StockAdjustmentService.BatchAdjSave(this.BatchForm.value).subscribe(response => {
+            this._matDialog.closeAll();
+            this.dsStockAdjList.data = [];
+        });
+        this.StoreFrom.get("ItemID").setValue('')
     }
     EditMRP(contact) {
         console.log(contact)
@@ -418,7 +384,7 @@ debugger
         });
     }
 
-     EditExpDate(contact) {
+    EditExpDate(contact) {
         console.log(contact)
         const dialogRef = this._matDialog.open(ExpeditComponent,
             {
@@ -434,13 +400,7 @@ debugger
             this.getStockList();
         });
     }
-    Addeditable: boolean = false;
-    Dedueditable: boolean = false;
-    Expeditable: boolean = false;
-    Batcheditable: boolean = false;
-    Rateeditable: boolean = false;
-    Landededitable: boolean = false;
-
+  
     enableEditing(row: StockAdjList) {
         row.Addeditable = true;
     }
@@ -468,30 +428,41 @@ debugger
     ExpDateenableEditing(row: StockAdjList) {
         row.Expeditable = true;
     }
-    ExpDatedisableEditing(row: StockAdjList) {
-        row.Expeditable = false;
-    }
-    LandedenableEditing(row: StockAdjList) {
-        row.Landededitable = true;
-    }
-    LandeddisableEditing(row: StockAdjList) {
-        row.Landededitable = false;
-    }
-
-
-    //  batchEdit: boolean = false;
-    // BatchenableEditing(row: StockAdjList) {
-    //   row.batchEdit = true;
-    //   row.batchEdit = '';
+    // ExpDatedisableEditing(row: StockAdjList) {
+    //     row.Expeditable = false;
     // }
+    // LandedenableEditing(row: StockAdjList) {
+    //     row.Landededitable = true;
+    // }
+    // LandeddisableEditing(row: StockAdjList) {
+    //     row.Landededitable = false;
+    // }
+
+
     BatchisableEditing(row: StockAdjList) {
         row.batchEdit = false;
         this.StoreFrom.get('batchEdit').setValue('')
         this.getStockList();
     }
 
+storeId = 0
+    selectChangeStore(obj: any) {
+        this.storeId = obj.value
+    }
 
-  
+    itemId = 0
+    selectChangeItem(obj: any) {
+        console.log(obj)
+        this.itemId = obj.itemId
+        this.getStockList();
+    }
+
+    onClear() {
+        this.StoreFrom.get('ItemID').reset('');
+
+        this.dsStockAdjList.data = []
+    }
+
 
 }
 

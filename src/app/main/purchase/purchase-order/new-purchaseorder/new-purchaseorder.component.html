@@ -1,7 +1,7 @@
-<!-- NEW -->
+
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-        <!-- Modal header -->
+
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <!-- Modal body -->
+       
         <div class="modal-body">
             <div class="modal-body-container">
                 <div fxLayout="column" class="h-100-p">
@@ -123,13 +123,7 @@
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
-                                        <!-- </div>
-                                    <div fxLayout="row" class="gap-4"> -->
-
-                                        <!-- <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
-                                            [formGroup]="userFormGroup" type="number"
-                                            (valueChange)="calculateTotalamt()"></airmid-textbox> -->
-
+                                     
                                         <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
                                             (valueChange)="calculateTotalamt()" [maxLength]="3">
@@ -326,14 +320,6 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="CGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
-                                    CGST(%)</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                    {{contact.CGST | number:'1.2-2'}}
-                                </mat-cell>
-                            </ng-container> -->
-
                             <ng-container matColumnDef="CGSTAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     CGST Amt</mat-header-cell>
@@ -360,14 +346,6 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="SGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
-                                    SGST(%)</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                    {{contact.SGST | number:'1.2-2'}}
-                                </mat-cell>
-                            </ng-container> -->
-
                             <ng-container matColumnDef="SGSTAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     SGST Amt</mat-header-cell>
@@ -393,14 +371,6 @@
                                 </mat-cell>
                             </ng-container>
 
-
-                            <!-- <ng-container matColumnDef="IGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
-                                    IGST(%)</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm >
-                                    {{contact.IGST | number:'1.2-2'}}
-                                </mat-cell>
-                            </ng-container> -->
 
                             <ng-container matColumnDef="IGSTAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
@@ -674,8 +644,7 @@
             </div>
 
         </div>
-        <!-- Modal footer -->
-
+      
         <div class="modal-footer" style="padding-top: 10px;">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">

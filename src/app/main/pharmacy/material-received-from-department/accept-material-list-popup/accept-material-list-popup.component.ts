@@ -96,10 +96,11 @@ creatematerial(){
 
 
 itemdetailform(element: any = {}): FormGroup {
+  console.log(element)
 return this._formBuilder.group({
       issueId: [element.issueId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueDetId: [element.issueDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status:0
+      issueDetId: [element.issueDepId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      status:[element.status || 0]
     });
   }
 
@@ -202,12 +203,12 @@ return this._formBuilder.group({
       this.tempItemlist.forEach(element => {
     let selectedchk="0";
       if (element.selected == 1) {
-        selectedchk = "1";
+        selectedchk = "A";
       } else if (element.selected != 1) {
-        element = "0";
+        selectedchk = "0";
       }
 
-        element.status=element
+        element.status=selectedchk
         this.itemdetailarray.push(this.itemdetailform(element));
       });
    
@@ -215,6 +216,7 @@ return this._formBuilder.group({
   
     console.log(this.MaterialForm.value);
     this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
+      this.dialogRef.close();
      this.viewgetIssuetodeptReportPdf(response)
     });
   }
@@ -224,72 +226,72 @@ return this._formBuilder.group({
          console.log(element)
          this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");
      }
-  savebtn:boolean=false;
-  onSubmit1() {
-    if ((!this.dsItemList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.savebtn =true;
-    if(this.dsItemList.data.length == this.tempItemlist.length){
-      this.Acceptedchk = 1;  
-    }else{
-      this.Acceptedchk = 0;
-    }
+  // savebtn:boolean=false;
+  // onSubmit1() {
+  //   if ((!this.dsItemList.data.length)) {
+  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   this.savebtn =true;
+  //   if(this.dsItemList.data.length == this.tempItemlist.length){
+  //     this.Acceptedchk = 1;  
+  //   }else{
+  //     this.Acceptedchk = 0;
+  //   }
    
-    let materialAcceptIssueHeader = {};
-    materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
-    materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.userId;
-    materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
+  //   let materialAcceptIssueHeader = {};
+  //   materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
+  //   materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.userId;
+  //   materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
 
     
-    let materialAcceptIssueDetails = [];
-    this.tempItemlist.forEach((element) => { 
-      let materialAcceptIssueDetailsObj = {};
-      materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
-      materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
-      let selectedchk="0";
-      if (element.selected == 1) {
-        selectedchk = "1";
-      } else if (element.selected != 1) {
-        selectedchk = "0";
-      }
+  //   let materialAcceptIssueDetails = [];
+  //   this.tempItemlist.forEach((element) => { 
+  //     let materialAcceptIssueDetailsObj = {};
+  //     materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
+  //     materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
+  //     let selectedchk="0";
+  //     if (element.selected == 1) {
+  //       selectedchk = "1";
+  //     } else if (element.selected != 1) {
+  //       selectedchk = "0";
+  //     }
 
       
-      materialAcceptIssueDetailsObj['Status'] = selectedchk;
-      materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
-    });
+  //     materialAcceptIssueDetailsObj['Status'] = selectedchk;
+  //     materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
+  //   });
 
-    let materialAcceptStockUpdate = {};
-    materialAcceptStockUpdate['issueId'] = parseInt(this.registerObj.IssueId); 
+  //   let materialAcceptStockUpdate = {};
+  //   materialAcceptStockUpdate['issueId'] = parseInt(this.registerObj.IssueId); 
 
-    let submitData = {
-      "materialAcceptIssueHeader": materialAcceptIssueHeader,
-      "materialAcceptIssueDetails": materialAcceptIssueDetails,
-      "materialAcceptStockUpdate":materialAcceptStockUpdate 
-    };
-    console.log(submitData);
-    this._materialAcceptanceService.AcceptmaterialSave(submitData).subscribe(response => {
-      console.log(response)
-      if (response) {
-        this.toastr.success('Record Accept material Saved Successfully.', 'Saved !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-        this._matDialog.closeAll();
-        this.savebtn =false;
-      } else {
-        this.toastr.error('New Accept material Data not saved !, Please check  error..', 'Error !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    }, error => {
-      this.toastr.error('New Accept material not saved !, Please check API error..', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    });
-  }
+  //   let submitData = {
+  //     "materialAcceptIssueHeader": materialAcceptIssueHeader,
+  //     "materialAcceptIssueDetails": materialAcceptIssueDetails,
+  //     "materialAcceptStockUpdate":materialAcceptStockUpdate 
+  //   };
+  //   console.log(submitData);
+  //   this._materialAcceptanceService.AcceptmaterialSave(submitData).subscribe(response => {
+  //     console.log(response)
+  //     if (response) {
+  //       this.toastr.success('Record Accept material Saved Successfully.', 'Saved !', {
+  //         toastClass: 'tostr-tost custom-toast-success',
+  //       });
+  //       this._matDialog.closeAll();
+  //       this.savebtn =false;
+  //     } else {
+  //       this.toastr.error('New Accept material Data not saved !, Please check  error..', 'Error !', {
+  //         toastClass: 'tostr-tost custom-toast-error',
+  //       });
+  //     }
+  //   }, error => {
+  //     this.toastr.error('New Accept material not saved !, Please check API error..', 'Error !', {
+  //       toastClass: 'tostr-tost custom-toast-error',
+  //     });
+  //   });
+  // }
 
     
   onClose() {
