@@ -87,65 +87,66 @@
               <!-- <div class="table-right" fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-sm="100%"> -->
               <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
+                <div class="airmid-table-container">
+                  <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
+                    [@animateStagger]="{ value: '50' }">
 
-                <mat-table matSort [dataSource]="DSServicedetailMainList" class="airmid-table"
-                  [@animateStagger]="{ value: '50' }">
+                    <ng-container matColumnDef="ServiceName">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.serviceName}}</mat-cell>
+                    </ng-container>
 
-                  <ng-container matColumnDef="ServiceName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.serviceName}}</mat-cell>
-                  </ng-container>
+                    <ng-container matColumnDef="ClassName">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className}}</mat-cell>
+                    </ng-container>
 
-                  <ng-container matColumnDef="ClassName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className}}</mat-cell>
-                  </ng-container>
+                    <ng-container matColumnDef="classRate">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                            (keypress)="keyPressCharater($event)" />
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+                    <!-- (keyup)="gettableclassrate(element, $event.value)" -->
 
-                  <ng-container matColumnDef="classRate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                      <mat-form-field appearance="fill">
-                        <input matInput [(ngModel)]="element.classRate" OnlyNumber
-                          (keypress)="keyPressCharater($event)" />
-                      </mat-form-field>
-                    </mat-cell>
-                  </ng-container>
-                  <!-- (keyup)="gettableclassrate(element, $event.value)" -->
+                    <ng-container matColumnDef="DiscountAmount">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
+                            (keypress)="keyPressCharater($event)" />
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
 
-                  <ng-container matColumnDef="DiscountAmount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amount</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                      <mat-form-field appearance="fill">
-                        <input matInput [(ngModel)]="element.DiscountAmount" OnlyNumber
-                          (keypress)="keyPressCharater($event)" />
-                      </mat-form-field>
-                    </mat-cell>
-                  </ng-container>
+                    <ng-container matColumnDef="DiscountPercentage">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
+                            (keypress)="keyPressCharater($event)" />
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+                    <!--  (keyup)="gettableclassrate(element, $event.value)" -->
 
-                  <ng-container matColumnDef="DiscountPercentage">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Discount %</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                      <mat-form-field appearance="fill">
-                        <input matInput [(ngModel)]="element.DiscountPercentage" OnlyNumber
-                          (keypress)="keyPressCharater($event)" />
-                      </mat-form-field>
-                    </mat-cell>
-                  </ng-container>
-                  <!--  (keyup)="gettableclassrate(element, $event.value)" -->
-
-                  <ng-container matColumnDef="noData">
-                    <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                  </ng-container>
-
-
-                  <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2;"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
-                    [@animate]="{ value: '*', params: { y: '100%' } }" style="height:40px;"></mat-row>
-                  <mat-footer-row *matFooterRowDef="['noData']"
-                    [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+                    <ng-container matColumnDef="noData">
+                      <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                    </ng-container>
 
 
-                </mat-table>
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2;"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
+                      [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                      [ngClass]="{ hide: !(DSServicedetailMainList != null && DSServicedetailMainList.data.length == 0) }"></mat-footer-row>
+
+
+                  </mat-table>
+                </div>
               </div>
               <mat-paginator [length]="totalRecords" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
                 showFirstLastButtons (page)="getServiceListMain($event)">
