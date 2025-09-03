@@ -58,17 +58,18 @@
                                         '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
-                                    <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon green-600 s-16"
-                                        style="color: azure;">check_circle</mat-icon>
+                                    <mat-icon *ngIf="getStatus(element[row.key])" 
+                                        class="active-icon" style="color: #039855;"
+                                       >check_circle_outline</mat-icon>
                                     <mat-icon *ngIf="!getStatus(element[row.key])"
-                                        class="active-icon red-500 s-16">close</mat-icon>
+                                        class="active-icon" style="color: #f44336;">close</mat-icon>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.image">
                                     <div class="profile_image_wrapper">
                                         <img class="showImage" height="50px" width="50px"
                                             [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
                                     </div>
-                                </ng>
+                                </ng>
                                 <ng *ngSwitchCase="GridColumnType.date">
                                     <span class="text-overflow"
                                         [matTooltip]="element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'">{{
