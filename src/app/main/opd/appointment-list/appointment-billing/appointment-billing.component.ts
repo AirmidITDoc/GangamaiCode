@@ -314,11 +314,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   //Footer Form
   CreateOPFooter() {
     return this.formBuilder.group({
-      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-      netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
     })
   }
@@ -382,16 +382,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         receiptNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         paymentDate: [''],
         paymentTime: [''],
-        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         chequeDate: ['1999-01-01'],
-        cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardDate: ['1999-01-01'],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -400,14 +400,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1999-01-01'],
-        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftdate: ['1999-01-01'],
-        payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
-        tdsamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       })
     });
   }
@@ -419,18 +419,18 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorName: [item?.DoctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isComServ: [false],
       isPrintCompSer: [false], 
       isGenerated: [true],
@@ -470,13 +470,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       doctorId: [item?.doctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorName: [item?.doctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -985,7 +985,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
-    this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regId) 
+    this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo) 
     this.OpBillForm.get('patientName')?.setValue(this.patientDetail?.patientName)
     this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
@@ -1066,7 +1066,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
         this.OpBillForm.get('balanceAmt').setValue(0)
         this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-        this.OpBillForm.get('payments.cashPayAmount')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+        this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
         this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
         console.log(this.OpBillForm.value)

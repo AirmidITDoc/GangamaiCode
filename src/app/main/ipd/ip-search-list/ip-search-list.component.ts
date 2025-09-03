@@ -343,14 +343,16 @@ export class IPSearchListComponent implements OnInit {
                     }
                 });
             dialogRef.afterClosed().subscribe(result => {
-                //this.grid.bindGridData();
-                // if (result) {
-                //     this.grid.bindGridData();
-                // }
-                const currentPath = this.router.url.split('?')[0];
-                this.router.navigate([currentPath], { queryParams: {} });
-                this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
-                this.grid.bindGridData();
+                debugger
+                if (this.myFilterform.get('IsDischarge').value == false) {
+                    const currentPath = this.router.url.split('?')[0];
+                    this.router.navigate([currentPath], { queryParams: {} });
+                    this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = "0";
+                    this.grid.bindGridData();
+                } else {
+                    this.grid.bindGridData();
+                }
+
             });
         }
         else if (m == "Bed Transfer") {
@@ -369,20 +371,7 @@ export class IPSearchListComponent implements OnInit {
                     that.grid.bindGridData();
                 }
             });
-        } 
-        // else if (m = "Add Charges") {
-        //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        //     buttonElement.blur(); // Remove focus from the button
-
-        //     this.advanceDataStored.storage = new AdvanceDetailObj(element);
-        //     const dialogRef = this._matDialog.open(IPBillingComponent,
-        //         {
-        //             maxWidth: "100%",
-        //             width: '95%',
-        //             height: '95%',
-        //               data: element
-        //         });
-        // }
+        }  
         else if (m == "Advance") {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;

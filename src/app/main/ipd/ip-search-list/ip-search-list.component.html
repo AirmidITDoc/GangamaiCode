@@ -78,19 +78,17 @@
                         <mat-icon>
                             <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
                                 style="background-color: transparent;">
-                        </mat-icon>
-
+                        </mat-icon> 
                     </button>
 
-
-                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
-                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
+                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)" *ngIf="element.isDischarged"
+                        matTooltip="Discharge Summary Without LetterHead Print">
                         <mat-icon>
-                            <img width="14px" height="4px" src="assets/images/logos/withoutLetterHead.png"
+                            <img width="10px" height="4px" src="assets/images/logos/withoutLetterHead.png"
                                 style="background-color: transparent;">
-                        </mat-icon>
-                    </button>
-
+                        </mat-icon> 
+                    </button> 
+                    
                     <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
                         <mat-icon style="color: black;">feedback</mat-icon>
                     </button>

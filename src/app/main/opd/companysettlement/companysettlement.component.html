@@ -88,6 +88,12 @@
 
                     <ng-template #actionButtonTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 " matTooltip="Final Discount"
+                    (click)="getFinalDisc(element)">
+                    <mat-icon> money </mat-icon>
+                </button>
+                
                             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                                 *ngIf="element.balanceAmt!='0'">
                                 <mat-icon title="Settlement">receipt</mat-icon>
