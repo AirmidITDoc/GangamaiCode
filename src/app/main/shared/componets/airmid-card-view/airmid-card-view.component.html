@@ -1,0 +1,81 @@
+<div class="search-bar-container" *ngIf="ShowFilter">
+  <ng-content select="[filters]"></ng-content>
+</div>
+
+<div class="card-view-container">
+  <!-- Card Grid -->
+  <div class="card-grid" *ngIf="data && data.length > 0">
+    <div class="card-item" *ngFor="let item of data">
+      <mat-card class="user-card">
+        <mat-card-header class="card-header">
+          <div mat-card-avatar class="user-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <mat-card-title class="card-title">
+            {{ item[config.fields[0]?.key] }} {{ item[config.fields[1]?.key] }}
+          </mat-card-title>
+          <mat-card-subtitle class="card-subtitle" *ngIf="config.fields[2]">
+            {{ item[config.fields[2]?.key] }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content class="card-content">
+          <div class="field-list">
+            <ng-container *ngFor="let field of config.fields; let i = index">
+              <div class="field-item" *ngIf="field.label && i > 2">
+                <span class="field-label">{{ field.label }}:</span>
+                <span class="field-value">{{ item[field.key] || '--' }}</span>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions class="card-actions" *ngIf="config.actions">
+          <button *ngFor="let act of config.actions" 
+                  mat-icon-button 
+                  class="action-button"
+                  [matTooltip]="act.tooltip" 
+                  (click)="onAction(act.action, item)">
+            <mat-icon>{{ act.icon }}</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!data || data.length === 0">
+    <mat-icon class="empty-icon">people</mat-icon>
+    <h3 class="empty-title">No Users Found</h3>
+    <p class="empty-message">Try adjusting your search criteria or add a new user.</p>
+  </div>
+  
+  <!-- Footer with Export and Pagination -->
+  <div class="card-footer" *ngIf="data && data.length > 0">
+    <!-- Export Buttons -->
+    <div class="export-buttons" *ngIf="ShowButtons">
+      <button mat-stroked-button color="primary" (click)="onExportClick('Excel')">
+        <mat-icon>table_chart</mat-icon>
+        <span>Excel</span>
+      </button>
+      <button mat-stroked-button color="primary" (click)="onExportClick('Pdf')">
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>PDF</span>
+      </button>
+      <button mat-stroked-button color="primary" (click)="onExportClick('Csv')">
+        <mat-icon>table_view</mat-icon>
+        <span>CSV</span>
+      </button>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination-wrapper">
+      <mat-paginator [pageSizeOptions]="[25, 50, 120, 200]" 
+                     [pageSize]="pageSize"
+                     [length]="resultsLength" 
+                     showFirstLastButtons 
+                     (page)="onPage($event)">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

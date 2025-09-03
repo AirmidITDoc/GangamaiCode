@@ -69,11 +69,15 @@ import { AirmidPhotoComponent } from './componets/airmid-photo/airmid-photo.comp
 import { AirmidPhotoIconComponent } from './componets/airmid-photo-icon/airmid-photo-icon.component';
 import { WebcamModule } from 'ngx-webcam';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AirmidCardViewComponent } from './componets/airmid-card-view/airmid-card-view.component';
 
 
 @NgModule({
-    declarations: [TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent],
+    declarations: [
+        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
+        AirmidCardViewComponent
+    ],
     imports: [
         CommonModule,
         MatFormFieldModule,
@@ -143,7 +147,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         AirmidChipautocompleteComponent,
         AirmidFullDatepickerComponent,
         AirmidPhotoComponent,
-        AirmidPhotoIconComponent
+        AirmidPhotoIconComponent,
+        AirmidCardViewComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

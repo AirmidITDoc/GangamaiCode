@@ -11,11 +11,20 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <mat-button-toggle-group [(ngModel)]="viewMode" aria-label="View mode">
+                <mat-button-toggle  value="table">
+                    <mat-icon>table_view</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="card">
+                    <mat-icon>view_module</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
             <button mat-raised-button (click)="onSave()">+ New User
             </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -41,9 +50,9 @@
             </div>
         </ng-template>
 
-        <airmid-table [gridConfig]="gridConfig" class="content">
+        <!-- Table View -->
+        <airmid-table *ngIf="viewMode === 'table'" [gridConfig]="gridConfig" class="content" (afterLoadData)="onAfterLoadData($event)">
             <ng-container filters>
-
                 <form [formGroup]="myuserform">
                     <mat-form-field appearance="outline">
                         <mat-label>User Name</mat-label>
@@ -53,7 +62,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search FirstName" autocomplete="off" [formGroup]="myuserform"
@@ -62,7 +70,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search LastName" autocomplete="off" [formGroup]="myuserform"
@@ -71,27 +78,105 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
                     <airmid-dropdown label="Store Name" formControlName="storeId" [formGroup]="myuserform"
                         (selectionChange)="storeChange($event)" [mode]="autocompleteModeStoreName">
                     </airmid-dropdown>
-                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
-
                     <airmid-dropdown label="Role Name" formControlName="roleId" [formGroup]="myuserform"
                         (selectionChange)="roleChange($event)" [mode]="autocompleteModeWebRoleName">
                     </airmid-dropdown>
-                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
-
-                    <mat-radio-group value=""
-                        fxLayoutAlign="center center">
+                    <mat-radio-group value="" fxLayoutAlign="center center">
                         <mat-radio-button value="">All</mat-radio-button>
                         <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                         <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                     </mat-radio-group>
-                    <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
                 </form>
-
             </ng-container>
         </airmid-table>
+        <!-- Card View -->
+        <div *ngIf="viewMode === 'card'" class="card-view-layout">
+            <!-- Filter Bar -->
+            <mat-card class="filter-card">
+                <mat-card-content class="filter-content">
+                    <form [formGroup]="myuserform" class="filter-form">
+                        <div class="filter-row">
+                            <mat-form-field appearance="outline" class="filter-field">
+                                <mat-label>User Name</mat-label>
+                                <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform"
+                                    formControlName="UserName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" class="filter-field">
+                                <mat-label>First Name</mat-label>
+                                <input matInput placeholder="Search FirstName" autocomplete="off" [formGroup]="myuserform"
+                                    formControlName="FirstName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" class="filter-field">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput placeholder="Search LastName" autocomplete="off" [formGroup]="myuserform"
+                                    formControlName="LastName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="filter-row">
+                            <div class="filter-field">
+                                <airmid-dropdown label="Store Name" formControlName="storeId" [formGroup]="myuserform"
+                                    (selectionChange)="storeChange($event)" [mode]="autocompleteModeStoreName">
+                                </airmid-dropdown>
+                            </div>
+                            
+                            <div class="filter-field">
+                                <airmid-dropdown label="Role Name" formControlName="roleId" [formGroup]="myuserform"
+                                    (selectionChange)="roleChange($event)" [mode]="autocompleteModeWebRoleName">
+                                </airmid-dropdown>
+                            </div>
+                            
+                            <div class="status-filter">
+                                <mat-radio-group value="" class="status-radio-group">
+                                    <mat-radio-button value="" class="status-radio">All</mat-radio-button>
+                                    <mat-radio-button value="1" class="status-radio">Active</mat-radio-button>
+                                    <mat-radio-button value="0" class="status-radio">Inactive</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button mat-raised-button color="primary" type="button" (click)="fetchUserData()" class="search-button">
+                                    <mat-icon>search</mat-icon>
+                                    <span>Search</span>
+                                </button>
+                                <button mat-stroked-button type="button" (click)="resetFilters()" class="reset-button">
+                                    <mat-icon>refresh</mat-icon>
+                                    <span>Reset</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+            
+            <!-- Card Content -->
+            <div class="card-content-wrapper">
+                <airmid-card-view
+                    [data]="userList"
+                    [config]="cardConfig"
+                    [ShowFilter]="false"
+                    [ShowButtons]="true"
+                    [pageSize]="pageSize"
+                    [resultsLength]="resultsLength"
+                    (action)="onCardAction($event)"
+                    (export)="onCardExport($event)"
+                    (page)="onCardPage($event)">
+                </airmid-card-view>
+            </div>
+        </div>
     </div>
 </div>
