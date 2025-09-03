@@ -62,7 +62,7 @@
             <ng-container matColumnDef="Company Code">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Company Code</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-form-field appearance="fill">
                   <input matInput (keyup)="gettableServName(element, $event.target.value)"
                     [(ngModel)]="element.companyCode" />
                 </mat-form-field>
@@ -74,7 +74,7 @@
             <ng-container matColumnDef="PrintName">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Service Print Name</mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <mat-form-field appearance="fill" style="width: 100%;">
+                <mat-form-field appearance="fill">
                   <input matInput (keyup)="gettableServName(element, $event.target.value)"
                     [(ngModel)]="element.companyServicePrint" />
                 </mat-form-field>
@@ -130,6 +130,7 @@
   <div class="modal-footer">
     <div class="footer-navigation-container">
       <div class="modal-footer-buttons">
+        <button type="button" class="btn btn-primary" (click)="onGet()">GetData</button>
         <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
         <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
       </div>

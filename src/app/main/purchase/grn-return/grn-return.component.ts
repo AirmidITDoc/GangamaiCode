@@ -119,29 +119,31 @@ export class GRNReturnComponent implements OnInit {
   // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
   toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
-  
+
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.ColorCode; 
+    this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.ColorCode;
   }
-  
+
   ToStoreId: any = this.accountService.currentUserValue.user.storeId
   Status: any = "0";
   vSupplier: any = "0";
 
   allColumns = [
-    { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
-          template:this.ColorCode},
+    {
+      heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+      template: this.ColorCode
+    },
     { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA',width: 150},
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount },
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -166,11 +168,11 @@ export class GRNReturnComponent implements OnInit {
 
   onChangeFirst() {
     this.isShowDetailTable = false;
-     if (this._GRNReturnService.GRNReturnSearchFrom.get('Status').value == true) {
-            this.Status = "1"
-        } else {
-            this.Status = "0"
-        }
+    if (this._GRNReturnService.GRNReturnSearchFrom.get('Status').value == true) {
+      this.Status = "1"
+    } else {
+      this.Status = "0"
+    }
     this.fromDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._GRNReturnService.GRNReturnSearchFrom.get('end').value, "yyyy-MM-dd")
     // this.ToStoreId = this.vstoreId || '2'
@@ -232,18 +234,18 @@ export class GRNReturnComponent implements OnInit {
     this.gridConfig1 = {
       apiUrl: "GRNReturn/GRNReturnList",
       columnsList: [
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA',width: 150 },
+        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "LandRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+        { heading: "LandRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+        { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
         { heading: "GSt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA' }, //landedTotalAmount if i provide same name then shows error
+        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //landedTotalAmount if i provide same name then shows error
         { heading: "StkId", key: "stkId", sort: true, align: 'left', emptySign: 'NA' },
       ],
       sortField: "GRNReturnId",
@@ -290,7 +292,7 @@ export class GRNReturnComponent implements OnInit {
         });
 
       });
-      this.vSupplier = "0"
+    this.vSupplier = "0"
     this.grid.bindGridData();
     this.onChangeFirst();
   }
@@ -300,7 +302,7 @@ export class GRNReturnComponent implements OnInit {
       {
         maxWidth: "95vw",
         maxHeight: '100vh',
-        width: '100%',
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -308,21 +310,21 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
-   newGRNRetunr() {
-      const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
-        {
-          maxWidth: "95vw",
-          maxHeight: '100vh',
-          width: '100%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-      this.getfilterdata();
-        // this.getGRNReturnList();
+  newGRNRetunr() {
+    const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '100vh',
+        width: '90%',
       });
-  
-    }
-    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getfilterdata();
+      // this.getGRNReturnList();
+    });
+
+  }
+
   onPrint(row) {
     this.commonService.Onprint("GRNReturnId", row.grnReturnId, "GRNReturnReport");
   }
@@ -541,26 +543,26 @@ export class ItemNameList {
   PurchaseID: any;
   GRNDetID: any;
   ReturnQty: any;
-  grnid:any;
-  itemId:any
-itemName:any
-batchNo:any
-batchExpDate:any
-grnDetID:any
-conversionFactor:any;
-mrp:any;
-vatPer:any;
-rate:any;
-stkId:any;
-balanceQty:any
-totalAmount:any
-netAmount:any
-vatAmount:any
-totalQty:any;
-supplierId:any;
-storeId:any;
-supplierName:any;
-issueqty:any;
+  grnid: any;
+  itemId: any
+  itemName: any
+  batchNo: any
+  batchExpDate: any
+  grnDetID: any
+  conversionFactor: any;
+  mrp: any;
+  vatPer: any;
+  rate: any;
+  stkId: any;
+  balanceQty: any
+  totalAmount: any
+  netAmount: any
+  vatAmount: any
+  totalQty: any;
+  supplierId: any;
+  storeId: any;
+  supplierName: any;
+  issueqty: any;
   /**
    * Constructor
    *
@@ -638,26 +640,26 @@ issueqty:any;
       this.GRNDetID = ItemNameList.GRNDetID || 0;
       this.ReturnQty = ItemNameList.ReturnQty || 0;
       this.cash_CreditType = ItemNameList.cash_CreditType;
-      this.grnid=ItemNameList.grnid;
-      this.itemId=ItemNameList.itemId || 0
-      this.itemName=ItemNameList.itemName || 0
-      this.batchNo=ItemNameList.batchNo || 0
-      this.batchExpDate=ItemNameList.batchExpDate || 0
-      this.grnDetID=ItemNameList.grnDetID || 0
-      this.conversionFactor=ItemNameList.conversionFactor
-      this.mrp=ItemNameList.mrp
-      this.vatPer=ItemNameList.vatPer
-      this.rate=ItemNameList.rate
-      this.stkId=ItemNameList.stkId
-      this.balanceQty=ItemNameList.balanceQty
-      this.totalAmount=ItemNameList.totalAmount
-      this.netAmount=ItemNameList.netAmount
-      this.vatAmount=ItemNameList.vatAmount
-      this.totalQty=ItemNameList.totalQty
-      this.supplierId=ItemNameList.supplierId
-      this.storeId=ItemNameList.storeId
-      this.supplierName=ItemNameList.supplierName
-      this.issueqty=ItemNameList.issueqty
+      this.grnid = ItemNameList.grnid;
+      this.itemId = ItemNameList.itemId || 0
+      this.itemName = ItemNameList.itemName || 0
+      this.batchNo = ItemNameList.batchNo || 0
+      this.batchExpDate = ItemNameList.batchExpDate || 0
+      this.grnDetID = ItemNameList.grnDetID || 0
+      this.conversionFactor = ItemNameList.conversionFactor
+      this.mrp = ItemNameList.mrp
+      this.vatPer = ItemNameList.vatPer
+      this.rate = ItemNameList.rate
+      this.stkId = ItemNameList.stkId
+      this.balanceQty = ItemNameList.balanceQty
+      this.totalAmount = ItemNameList.totalAmount
+      this.netAmount = ItemNameList.netAmount
+      this.vatAmount = ItemNameList.vatAmount
+      this.totalQty = ItemNameList.totalQty
+      this.supplierId = ItemNameList.supplierId
+      this.storeId = ItemNameList.storeId
+      this.supplierName = ItemNameList.supplierName
+      this.issueqty = ItemNameList.issueqty
     }
   }
 }
