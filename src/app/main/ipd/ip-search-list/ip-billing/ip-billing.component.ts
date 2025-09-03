@@ -406,6 +406,7 @@ export class IPBillingComponent implements OnInit {
             companyServiceName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             isInclusionExclusion: [false],
             isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            createdBy: this.accountService.currentUserValue.userId,
             packcagecharges: this.formBuilder.array([])
         });
     }
@@ -444,6 +445,7 @@ export class IPBillingComponent implements OnInit {
             wardId:[this.WardId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             bedId:[this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
+            createdBy: this.accountService.currentUserValue.userId,
         });
     }
     // Getters 
@@ -680,6 +682,10 @@ export class IPBillingComponent implements OnInit {
     }
     // Service Add 
     onSaveAddCharges() {
+        const formattedDate = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        this.Serviceform.get('chargesDate').setValue(formattedDate);
+        this.Serviceform.get('chargesTime').setValue(formattedDate + ' ' + formattedTime);
         const formValue = this.Serviceform.value
         let doctorid = 0;
         if (this.isDoctor) {
@@ -704,14 +710,7 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get("isInclusionExclusion").setValue(formValue.serviceName?.isInclusionOrExclusion ?? false)
         this.Serviceform.get("doctorId")?.enable();
         this.Serviceform.get("doctorId").setValue(doctorid ?? 0)
-        this.Serviceform.get("tariffId").setValue(this.TariffId)
-
-        const date = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd HH:mm:ss");
-        const chargeTime = new Date()
-        const formattedDate = this.datePipe.transform(date, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(chargeTime, "HH:mm:ss");
-        this.Serviceform.get('chargesDate').setValue(formattedDate);
-        this.Serviceform.get('chargesTime').setValue(formattedDate + ' ' + formattedTime);
+        this.Serviceform.get("tariffId").setValue(this.TariffId) 
 
         console.log(this.Serviceform.get('doctorId'));
         console.log(this.Serviceform.get('doctorId')?.enabled);
@@ -1390,7 +1389,7 @@ export class IPBillingComponent implements OnInit {
             this.PackageDatasource.data = this.PacakgeList
         });
     }
-    //Pacakge list        
+    //Pacakge list  with serviceId     
     getpackagedetList(obj) {
         var vdata = {
             "first": 0,
@@ -1441,6 +1440,7 @@ export class IPBillingComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
+            this.getRtrvpackagedetList();
             this.getChargesList()
         });
     }

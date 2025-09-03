@@ -13,6 +13,7 @@ import { RegInsert } from '../registration/registration.component';
 import { CompanysettlementService } from './companysettlement.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DiscountAfterFinalBillComponent } from 'app/main/ipd/ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
 
 @Component({
     selector: 'app-companysettlement',
@@ -318,4 +319,22 @@ export class CompanysettlementComponent implements OnInit {
             return false;
         }
     }
+
+         getFinalDisc(contact){ 
+            const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+              {
+                maxWidth: "100%",
+                height: '65%',
+                width: '45%',
+                data: {
+                Obj:contact,
+                PatientObj:this.registerObj
+                }
+                
+              });
+            dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+                this.grid.bindGridData();
+            });
+          } 
 }

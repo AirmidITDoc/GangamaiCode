@@ -32,6 +32,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   ConcessionReasonList:any=[];
   vFinalCompanyDiscAmt:any;
   CompanyName:any = '';
+  PatientObj:any;
   
   autocompleteModeConcession: string = "Concession";
 
@@ -49,7 +50,8 @@ export class DiscountAfterFinalBillComponent implements OnInit {
 
   ngOnInit(): void { 
     if(this.data){
-      this.selectedAdvanceObj = this.data
+      this.selectedAdvanceObj = this.data.Obj
+      this.PatientObj = this.data.PatientObj
       console.log(this.selectedAdvanceObj)
       this.vDiscAmount = Math.round(this.selectedAdvanceObj.concessionAmt);
       this.vTotalAmount =  Math.round(this.selectedAdvanceObj.totalAmt);
@@ -76,14 +78,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       FinalCompanyDiscAmt:[''],  
     });
   }  
-    CreatesaveMyForm(): FormGroup {
+    CreatesaveMyForm(): FormGroup { 
       return this.formBuilder.group({  
-       billNo:[ this.selectedAdvanceObj?.BillNo,this._formvalidationservice.notEmptyOrZeroValidator()],
-      netPayableAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()],
-      concessionAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator()],
-      compDiscAmt:[0,this._formvalidationservice.AllowDecimalNumberValidator()],
-      balanceAmt:[ this.selectedAdvanceObj?.BalanceAmt,this._formvalidationservice.AllowDecimalNumberValidator()],
-      concessionReasonId:[0,this._formvalidationservice.notEmptyOrZeroValidator()] 
+       billNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
+      netPayableAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()]],
+      concessionAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
+      compDiscAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
+      balanceAmt:[ 0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
+      concessionReasonId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]] 
       });
     }   
  
@@ -199,9 +201,17 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       });
       return
     } 
+
+    let BalAmt = this.selectedAdvanceObj?.balanceAmt
+    if(formvalues?.DiscAmount2 > 0){
+      BalAmt = formvalues?.NetAmount   
+    } 
+
+    this.saveform.get('billNo').setValue( this.selectedAdvanceObj?.billNo)
+    this.saveform.get('balanceAmt').setValue(BalAmt)
     this.saveform.get('netPayableAmt').setValue(formvalues?.NetAmount)
     this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2)
-    this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt)
+    this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt || 0)
     this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId)
 
     if (this.saveform.valid) {

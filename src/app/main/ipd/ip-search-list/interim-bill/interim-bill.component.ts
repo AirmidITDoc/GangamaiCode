@@ -276,6 +276,8 @@ export class InterimBillComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(new Date(), 'shortTime');
     const formattedDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+
     debugger
     const formValue = this.InterimFooterForm.value
     if (formValue.discPer > 0 || formValue.concessionAmt > 0) {
@@ -291,7 +293,7 @@ export class InterimBillComponent implements OnInit {
     this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
     this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
     this.IPInterimBillForm.get('ipBillling.billDate').setValue(formattedDate)
-    this.IPInterimBillForm.get('ipBillling.billTime').setValue(formattedTime)
+    this.IPInterimBillForm.get('ipBillling.billTime').setValue(FormattedDateTime)
     this.IPInterimBillForm.get('ipBillling.concessionReasonId')?.setValue(this.InterimFooterForm.get('ConcessionId')?.value)
     this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(this.InterimFooterForm.get('Remark')?.value)
     this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(this.InterimFooterForm.get('CashCounterID')?.value)
@@ -306,7 +308,7 @@ export class InterimBillComponent implements OnInit {
       if (this.InterimFooterForm.get('paymode').value == 'cashpay') {
         this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
-        this.IPInterimBillForm.get('payments.paymentTime').setValue(formattedTime)
+        this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
           this.viewgetInterimBillReportPdf(response);
@@ -319,7 +321,7 @@ export class InterimBillComponent implements OnInit {
         this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.InterimFooterForm.get('UPINO')?.value)
         this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
-        this.IPInterimBillForm.get('payments.paymentTime').setValue(formattedTime)
+        this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
           this.viewgetInterimBillReportPdf(response);

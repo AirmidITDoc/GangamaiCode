@@ -245,7 +245,9 @@ export class PackageDetailsComponent {
       packageId: [0, [this._FormvalidationService.onlyNumberValidator()]],
       chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
       packageMainChargeId: [0, [this._FormvalidationService.onlyNumberValidator()]],
-      classId: [0, [this._FormvalidationService.onlyNumberValidator()]]
+      classId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      wardId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+      bedId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
     });
 
   }
@@ -275,6 +277,8 @@ export class PackageDetailsComponent {
       this.PacakgeInsertForm.get('packageId').setValue(this.registerObj?.serviceId)
       this.PacakgeInsertForm.get('packageMainChargeId').setValue(this.registerObj?.chargesId)
       this.PacakgeInsertForm.get('classId').setValue(this.registerObj?.classId)
+      this.PacakgeInsertForm.get('wardId').setValue(this.registerObj?.wardId)
+      this.PacakgeInsertForm.get('bedId').setValue(this.registerObj?.bedId)
       console.log(this.PacakgeInsertForm.value)
       this._OpBillingService.InsertIPAddCharges(this.PacakgeInsertForm.value).subscribe(data => {
         this.getIPDpackagedetList(this.registerObj)  
@@ -388,7 +392,9 @@ export class PackageDetailsComponent {
       concessionPercentage: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
       concessionAmount: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
       netAmount: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
-      doctorId: [0, [this._FormvalidationService.onlyNumberValidator()]]
+      doctorId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isInclusionExclusion: [false],
+      ModifiedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationService.onlyNumberValidator()]] 
     })
   }
   // Pacakge service details update save
@@ -401,7 +407,7 @@ export class PackageDetailsComponent {
       this.PacakgeUpdateForm.get('concessionPercentage').setValue(element.ConcessionPercentage);
       this.PacakgeUpdateForm.get('concessionAmount').setValue(element.DiscAmt);
       this.PacakgeUpdateForm.get('netAmount').setValue(element.NetAmount);
-      this.PacakgeUpdateForm.get('doctorId').setValue(element.doctorId);
+      this.PacakgeUpdateForm.get('doctorId').setValue(element.doctorId);  
     }
     console.log(this.PacakgeUpdateForm.value);
     this._OpBillingService.UpdatePacakgeDet(this.PacakgeUpdateForm.value, element.chargesId).subscribe(response => {
