@@ -21,8 +21,8 @@ export class CompanyMasterService {
         // this.myformSearch = this.createSearchForm();
     }
 
-createCompanymasterFormDemo(): FormGroup {
-return this._formBuilder.group({
+    createCompanymasterFormDemo(): FormGroup {
+        return this._formBuilder.group({
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             companyName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
@@ -32,9 +32,9 @@ return this._formBuilder.group({
             companyShortName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$')]],
             // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             companyCode: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
-this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            address: ['', [Validators.required,Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            address: ['', [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
@@ -71,15 +71,15 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
             pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
             Validators.minLength(6),
             Validators.maxLength(6),]],
-            faxNo: [" ",[Validators.required, Validators.maxLength(10)]],
+            faxNo: [" ", [Validators.required, Validators.maxLength(10)]],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             creditDays: [0, Validators.maxLength(3)],
 
             loginWebsiteUser: "",
             loginWebsitePassword: "",
 
-});
-}
+        });
+    }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
@@ -117,11 +117,11 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
     createCompanysearchFormDemo(): FormGroup {
         return this._formBuilder.group({
             companyName: [""],
-            compTypeId: [0, [ notEmptyOrZeroValidator()]],
+            compTypeId: [0, [notEmptyOrZeroValidator()]],
             ServiceSearch: [""],
             // ClassId1: [0, [notEmptyOrZeroValidator()]],
-            TariffId1:[0, [notEmptyOrZeroValidator()]],
-            ClassId2:[0, [notEmptyOrZeroValidator()]],
+            TariffId1: [0, [notEmptyOrZeroValidator()]],
+            ClassId2: [0, [notEmptyOrZeroValidator()]],
             // TariffId2: [0, [notEmptyOrZeroValidator()]],
             // IsPathRad: ["3"],
             ServiceName: ['%']
@@ -168,22 +168,25 @@ this._FormvalidationserviceService.allowEmptyStringValidator()]],
         // if (Param.serviceId) {
         //     return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
         // } else 
-            return this._httpClient.PutData("CompanyMaster/updatecompanywiseservicerate", Param);
+        return this._httpClient.PutData("CompanyMaster/updatecompanywiseservicerate", Param);
     }
 
     public updateservicecodeSave(Param: any) {
-      return this._httpClient.PostData("CompanyMaster/ServiceWiseCompanySave", Param);
+        return this._httpClient.PostData("CompanyMaster/ServiceWiseCompanySave", Param);
     }
 
+    public SaveserviceCompanyCode(Param: any) {
+        return this._httpClient.PostData("BillingService/ServiceWiseCompanyCode", Param);
+    }
 
- public Servdiscupdate(Param: any) {
-     if (Param.compServiceDetailId) {
+    public Servdiscupdate(Param: any) {
+        if (Param.compServiceDetailId) {
             return this._httpClient.PutData("CompanyMaster/CompanyWiseServiceDiscount/" + Param.compServiceDetailId, Param);
-        } else 
-      return this._httpClient.PostData("CompanyMaster/CompanyWiseServiceDiscount", Param);
+        } else
+            return this._httpClient.PostData("CompanyMaster/CompanyWiseServiceDiscount", Param);
     }
 
-    
+
 }
 function notEmptyOrZeroValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {

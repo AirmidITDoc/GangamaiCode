@@ -192,6 +192,8 @@ export class ServiceMasterFormComponent implements OnInit {
             tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {

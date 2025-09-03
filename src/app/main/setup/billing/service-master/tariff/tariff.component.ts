@@ -82,11 +82,9 @@ export class TariffComponent implements OnInit {
   onSubmit() {
     if (!this.serviceForm.invalid) {
       console.log('Insert tariff:', this.serviceForm.value);
-
-      this._ServiceMasterService.SaveTariff(this.serviceForm.value).subscribe(response => {
+      this._ServiceMasterService.UpdateTariff(this.serviceForm.value).subscribe(response => {
         this.onClear(true);
       });
-
     } else {
       let invalidFields = [];
 

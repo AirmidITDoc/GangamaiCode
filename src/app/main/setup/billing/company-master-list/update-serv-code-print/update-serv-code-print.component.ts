@@ -97,7 +97,7 @@ export class UpdateServCodePrintComponent {
   pageSize = 10;
   pageIndex = 0;
   @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   getServicecompwiseList(event?: any) {
     // debugger
     if (event) {
@@ -135,13 +135,13 @@ export class UpdateServCodePrintComponent {
   }
 
   selectService(event) {
-    if (event.text){
+    if (event.text) {
       this.serviceName = event.text
     }
-    else{
+    else {
       this.serviceName = "%"
     }
-     this.pageIndex = 0;
+    this.pageIndex = 0;
     this.getServicecompwiseList()
   }
 
@@ -151,6 +151,16 @@ export class UpdateServCodePrintComponent {
     // this.selectdiscservicelist(event)
   }
 
+  onGet() {
+    const param = {
+      "tariffId": Number(this.tariffId)
+    }
+    console.log("Insert:-", param);
+
+    this._CompanyMasterService.SaveserviceCompanyCode(param).subscribe((response) => {
+      this.getServicecompwiseList()
+    });
+  }
 
   onSubmit() {
     debugger
