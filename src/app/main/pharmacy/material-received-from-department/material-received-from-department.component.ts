@@ -77,21 +77,21 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
   allcolumns = [
 
     { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
-     { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30},
+     { heading: "IsVerify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60},
     { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
     { heading: "Accepted Date", key: "acceptedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-    { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "acceptedByDepartment", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "AcceptedBy Dept", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "rejetcedByDepartment", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "pendingByDepartment", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "RejetcedBy Dept", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "PendingBy Dept", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
@@ -126,9 +126,9 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
       columnsList: [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
-        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
+        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' , width: 100 },
+        { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100  },
         { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
         { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },

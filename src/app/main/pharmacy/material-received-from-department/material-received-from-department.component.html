@@ -34,14 +34,18 @@
 
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified=='1'" matTooltip="Is Verified" style="color: green;">spellcheck</mat-icon>
+                   
+                 <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
                 </div>
             </ng-template>
 
 
              <ng-template #isacceptstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted" style="color: blueviolet;">done_all</mat-icon>
+                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted" style="color: blueviolet;">spellcheck</mat-icon>
                 </div>
             </ng-template>
 

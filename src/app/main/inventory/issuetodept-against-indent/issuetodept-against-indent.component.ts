@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,11 +10,14 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-issuetodept-against-indent',
   templateUrl: './issuetodept-against-indent.component.html',
-  styleUrls: ['./issuetodept-against-indent.component.scss']
+  styleUrls: ['./issuetodept-against-indent.component.scss'],
+   encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class IssuetodeptAgainstIndentComponent {
   IndentFrom: FormGroup;
@@ -75,7 +78,8 @@ export class IssuetodeptAgainstIndentComponent {
     
     let frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
     let todate = this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
-    let status = this.IndentFrom.get("Status").value
+    let IsClose= this.IndentFrom.get("Status").value
+
     var vdata = {
       "first": 0,
       "rows": 20,
@@ -107,8 +111,22 @@ export class IssuetodeptAgainstIndentComponent {
 
         },
         {
-          "fieldName": "Status",
-          "fieldValue": status,
+          "fieldName": "IsActive",
+          "fieldValue": "0",
+          "opType": "Equals"
+
+        },
+        ,
+        {
+          "fieldName": "IsVerify",
+          "fieldValue": "1",
+          "opType": "Equals"
+
+        },
+        ,
+        {
+          "fieldName": "IsClosed",
+          "fieldValue": "0",
           "opType": "Equals"
 
         }

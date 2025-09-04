@@ -115,7 +115,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
                 { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },

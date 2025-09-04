@@ -55,19 +55,8 @@ export class MaterialReceivedFromDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);
   }
   
-  // public getStoreFromList(){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  // }
-
-  // public getToList(){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",{});
-  // }
-
-  // public getLoggedStoreList(Param) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
-  // }
   public AcceptmaterialSave(Param){
-    return this._httpClient1.PutData("IssueToDepartment/UpdateMaterialAcceptance",Param);
+    return this._httpClient1.PostData("IssueToDepartment/UpdateMaterialAcceptance",Param);
   }
    
   public getMaterialreceivedfrDeptview(IssueId){

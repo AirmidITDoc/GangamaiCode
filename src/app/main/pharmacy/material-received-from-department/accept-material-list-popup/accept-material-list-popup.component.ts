@@ -217,83 +217,16 @@ return this._formBuilder.group({
     console.log(this.MaterialForm.value);
     this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
       this.dialogRef.close();
-     this.viewgetIssuetodeptReportPdf(response)
+     this.viewgetIssuetodeptReportPdf(this.registerObj.issueId)
     });
   }
   }
 
     viewgetIssuetodeptReportPdf(element) {
          console.log(element)
-         this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");
+         this.commonService.Onprint("IssueId", element, "MaterialReceivedByDept");
      }
-  // savebtn:boolean=false;
-  // onSubmit1() {
-  //   if ((!this.dsItemList.data.length)) {
-  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   this.savebtn =true;
-  //   if(this.dsItemList.data.length == this.tempItemlist.length){
-  //     this.Acceptedchk = 1;  
-  //   }else{
-  //     this.Acceptedchk = 0;
-  //   }
-   
-  //   let materialAcceptIssueHeader = {};
-  //   materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
-  //   materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.userId;
-  //   materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
-
-    
-  //   let materialAcceptIssueDetails = [];
-  //   this.tempItemlist.forEach((element) => { 
-  //     let materialAcceptIssueDetailsObj = {};
-  //     materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
-  //     materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
-  //     let selectedchk="0";
-  //     if (element.selected == 1) {
-  //       selectedchk = "1";
-  //     } else if (element.selected != 1) {
-  //       selectedchk = "0";
-  //     }
-
       
-  //     materialAcceptIssueDetailsObj['Status'] = selectedchk;
-  //     materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
-  //   });
-
-  //   let materialAcceptStockUpdate = {};
-  //   materialAcceptStockUpdate['issueId'] = parseInt(this.registerObj.IssueId); 
-
-  //   let submitData = {
-  //     "materialAcceptIssueHeader": materialAcceptIssueHeader,
-  //     "materialAcceptIssueDetails": materialAcceptIssueDetails,
-  //     "materialAcceptStockUpdate":materialAcceptStockUpdate 
-  //   };
-  //   console.log(submitData);
-  //   this._materialAcceptanceService.AcceptmaterialSave(submitData).subscribe(response => {
-  //     console.log(response)
-  //     if (response) {
-  //       this.toastr.success('Record Accept material Saved Successfully.', 'Saved !', {
-  //         toastClass: 'tostr-tost custom-toast-success',
-  //       });
-  //       this._matDialog.closeAll();
-  //       this.savebtn =false;
-  //     } else {
-  //       this.toastr.error('New Accept material Data not saved !, Please check  error..', 'Error !', {
-  //         toastClass: 'tostr-tost custom-toast-error',
-  //       });
-  //     }
-  //   }, error => {
-  //     this.toastr.error('New Accept material not saved !, Please check API error..', 'Error !', {
-  //       toastClass: 'tostr-tost custom-toast-error',
-  //     });
-  //   });
-  // }
-
-    
   onClose() {
     this.dialogRef.close();
   }
