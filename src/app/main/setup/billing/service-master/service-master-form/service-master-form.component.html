@@ -10,7 +10,8 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -26,65 +27,62 @@
                         <mat-card>
                             <mat-card-content class="p-4">
                                 <form [formGroup]="serviceForm" style="padding-left: 10px; padding-right: 10px">
-                                    <input type="hidden" name="serviceId" formControlName="serviceId" [ngModel]="ServiceId" />
+                                    <input type="hidden" name="serviceId" formControlName="serviceId"
+                                        [ngModel]="ServiceId" />
 
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="b-service-master gap-6" style="padding-top: 10px">
+                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                        class="b-service-master gap-6" style="padding-top: 10px">
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown
-                                                label="Group Name"
-                                                formControlName="groupId"
+                                            <airmid-dropdown label="Group Name" formControlName="groupId"
                                                 [formGroup]="serviceForm"
                                                 (selectionChange)="selectChangegroupName($event)"
                                                 [validations]="getValidationMessages().groupId"
-                                                [mode]="autocompleteModegroupName"
-                                            ></airmid-dropdown>
+                                                [mode]="autocompleteModegroupName"></airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown
-                                                label="SubGroup Name"
-                                                formControlName="subGroupId"
+                                            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
                                                 [formGroup]="serviceForm"
                                                 (selectionChange)="selectChangesubGroupName($event)"
-                                                [mode]="autocompleteModesubGroupName"
-                                            ></airmid-dropdown>
+                                                [mode]="autocompleteModesubGroupName"></airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                             <airmid-dropdown
-                                                label="Sponsor / Tariff Name"
-                                                formControlName="tariffId"
-                                                [formGroup]="serviceForm"
-                                                (selectionChange)="selectChangetariff($event)"
+                                            <airmid-dropdown label="Sponsor / Tariff Name" formControlName="tariffId"
+                                                [formGroup]="serviceForm" (selectionChange)="selectChangetariff($event)"
                                                 [validations]="getValidationMessages().tariffId"
-                                                [mode]="autocompleteModetariff"
-                                            ></airmid-dropdown>
+                                                [mode]="autocompleteModetariff"></airmid-dropdown>
                                         </div>
                                     </div>
 
                                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-6">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Service Name</mat-label>
-                                            <input name="ServiceName" formControlName="serviceName" placeholder="ServiceName" matInput
-                                                (keydown)="onEnterServiceName($event)" #ServiceName/>
+                                            <input name="ServiceName" formControlName="serviceName"
+                                                placeholder="ServiceName" matInput
+                                                (keydown)="onEnterServiceName($event)" #ServiceName />
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>ServiceShortDesc</mat-label>
-                                            <input name="Service Short Desc" formControlName="serviceShortDesc" placeholder="ServiceShortDesc" matInput
-                                                (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc/>
+                                            <input name="Service Short Desc" formControlName="serviceShortDesc"
+                                                placeholder="ServiceShortDesc" matInput
+                                                (keydown)="onEnterServiceShortDesc($event)" #ServiceShortDesc />
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>PrintOrder</mat-label>
-                                            <input name="PrintOrder" placeholder="Select PrintOrder" formControlName="printOrder" matInput required OnlyNumber
+                                            <input name="PrintOrder" placeholder="Select PrintOrder"
+                                                formControlName="printOrder" matInput required OnlyNumber
                                                 (keypress)="keyPressCharater($event)" min="0" maxlength="5" />
-                                        </mat-form-field>                                       
-                                           
+                                        </mat-form-field>
+
 
                                         <mat-form-field appearance="outline" fxFlex>
-                                             <mat-label>Effective Date</mat-label>
-                                            <input matInput [matDatepicker]="picker3" placeholder="Choose an Effective Date" name="EffectiveDate" formControlName="EffectiveDate" />
+                                            <mat-label>Effective Date</mat-label>
+                                            <input matInput [matDatepicker]="picker3"
+                                                placeholder="Choose an Effective Date" name="EffectiveDate"
+                                                formControlName="EffectiveDate" />
                                             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                             <mat-datepicker #picker3></mat-datepicker>
                                         </mat-form-field>
@@ -96,161 +94,181 @@
 
                     <div style="display: flex; flex-direction: column; gap: 10px;">
 
-                    <div class="modal-card-container airmid-table-container"  
-                                style="max-height: 400px; overflow-y: auto;">
-                         <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }">
-                        <!-- <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }"
+                        <div class="modal-card-container airmid-table-container"
+                            style="max-height: 400px; overflow-y: auto;">
+                            <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table"
+                                [@animateStagger]="{ value: '50' }">
+                                <!-- <mat-table #table matSort [dataSource]="DSServicedetailList" class="airmid-table" [@animateStagger]="{ value: '50' }"
                         style="overflow: auto;height:250px;"> -->
-                            <ng-container matColumnDef="classId">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Code</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>{{ element.classId }}</mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="classId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                        fxShow.gt-sm>Code</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>{{ element.classId
+                                        }}</mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="className">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className }}</mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="className">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>{{ element.className }}</mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="classRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ClassRate</mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="element.classRate" OnlyNumber (keyup)="gettableclassrate(element, $event.value)" (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
-                                </mat-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="classRate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        fxShow.gt-sm>ClassRate</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+                                            <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                                                (keyup)="gettableclassrate(element, $event.value)"
+                                                (keypress)="keyPressCharater($event)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="loading">
-                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                                </ng-container>
 
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                            </ng-container>
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                                </ng-container>
 
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
-                        </mat-table>
-                    </div>
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: DSServicedetailList != null }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(DSServicedetailList != null && DSServicedetailList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                        </div>
 
-                    <div class="modal-card-container">
-                        <form [formGroup]="serviceForm">
-                            <div class="p-10 pb-24">
-
-                                <div fxLayout="row" fxLayoutGap="12px">
-
-                                    <mat-checkbox  name="IsEditable" formControlName="isEditable">IsEditable</mat-checkbox>
-
-                                    <mat-checkbox  name="IsPackage" formControlName="isPackage">IsPackage</mat-checkbox>
-
-                                    <mat-checkbox  name="isDiscount" formControlName="isDiscount">IsDiscount</mat-checkbox>
-
-                                    <mat-checkbox  name="IsSurgery" formControlName="isProcedure">IsSurgery</mat-checkbox>
-
-                                    <mat-checkbox  name="IsServiceTaxApplicable" formControlName="isServiceTaxApplicable">IsServiceTaxApplicable</mat-checkbox>
-
-                                </div>
-
-                                <hr/>
-
-                                <div fxLayout="row" fxLayoutGap="12px">
-                                    <mat-checkbox name="opipType" formControlName="opipType" (change)="keepChecked()">IsApplicableFor</mat-checkbox>
+                        <div class="modal-card-container">
+                            <form [formGroup]="serviceForm">
+                                <div class="p-10 pb-24">
 
                                     <div fxLayout="row" fxLayoutGap="12px">
-                                        <mat-radio-group value='' [formGroup]="serviceForm" [(ngModel)]="vSelectedOption"
-                                            formControlName="isApplicableFor" fxLayoutAlign="center center">
-                                            <mat-radio-button value='2'>All</mat-radio-button>
-                                            <mat-radio-button mat-fab value='0'>OP</mat-radio-button>
-                                            <mat-radio-button mat-fab value='1'>IP</mat-radio-button>
-                                        </mat-radio-group>
+
+                                        <mat-checkbox name="IsEditable"
+                                            formControlName="isEditable">IsEditable</mat-checkbox>
+
+                                        <mat-checkbox name="IsPackage"
+                                            formControlName="isPackage">IsPackage</mat-checkbox>
+
+                                        <mat-checkbox name="isDiscount"
+                                            formControlName="isDiscount">IsDiscount</mat-checkbox>
+
+                                        <mat-checkbox name="IsSurgery"
+                                            formControlName="isProcedure">IsSurgery</mat-checkbox>
+
+                                        <mat-checkbox name="IsServiceTaxApplicable"
+                                            formControlName="isServiceTaxApplicable">IsServiceTaxApplicable</mat-checkbox>
+
                                     </div>
-                                </div>
-                                <hr />
 
-                                <div fxLayout="row" fxLayoutGap="12px">
-                                                                    
-                                    <mat-checkbox  name="IsDocEditable" (change)="onChange($event.checked)" value="false" formControlName="isDocEditable" [(ngModel)]="IsDocEditable">
-                                        Is Doc Editable For Service
-                                    </mat-checkbox>
-                                    
-                                    <div fxLayout="row" fxLayoutGap="6px">
-                                        <mat-checkbox  name="CreditedtoDoctor" formControlName="creditedtoDoctor" value="false" *ngIf="iscreditedtoDoctor" [(ngModel)]="showDoctor">
-                                            CreditedtoDoctor
-                                        </mat-checkbox>
+                                    <hr />
 
-                                        <airmid-dropdown
-                                            label="Doctor Name"
-                                            formControlName="doctorId"
-                                            [value]="data?.doctorId"
-                                            [formGroup]="serviceForm"
-                                            [validations]="getValidationMessages().DoctorId"
-                                            fxFlex="100%"
-                                            [mode]="autocompleteModedoctor"
-                                            *ngIf="showDoctor"
-                                            (selectionChange)="SelectionDoctor($event)"
-                                        ></airmid-dropdown>
-                                    </div>
-                                
-                                </div>
+                                    <div fxLayout="row" fxLayoutGap="12px">
+                                        <mat-checkbox name="opipType" formControlName="opipType"
+                                            (change)="keepChecked()">IsApplicableFor</mat-checkbox>
 
-                                 <hr />
-
-                                <div fxLayout="row" fxLayoutGap="12px">
-                                
-                                    <div fxLayoutGap="8px">
-                                        <mat-checkbox name="IsRadiology" formControlName="isRadiology" value="false" (change)="onChange2($event.checked)"
-                                         >IsRadiology</mat-checkbox>
-                                
-                                        <mat-checkbox name="isRadOutSource" formControlName="isRadOutSource"
-                                            *ngIf="showRadOut">OutSource</mat-checkbox>
-                                    </div>
-                                
-                                    <div fxLayoutGap="8px">
-                                        <mat-checkbox name="IsPathology" formControlName="isPathology" value="false" (change)="onChange3($event.checked)"
-                                         >IsPathology</mat-checkbox>
-                                            
-                                        <mat-checkbox name="isPathOutSource" formControlName="isPathOutSource"
-                                            *ngIf="showPathOut">OutSource</mat-checkbox>
-                                    </div>
-                                
-                                </div>
-                                
-                                <hr />
-
-                                <div fxLayout="row" fxLayoutGap="12px">
-
-                                    <div fxLayout="row" fxLayoutGap="6px" fxFlex>
-                                        <mat-checkbox  name="IsEmergency" [(ngModel)]="showEmg" value="true" formControlName="isEmergency" (change)="emg_amt = ''; emg_per = ''">
-                                            IsEmergency
-                                        </mat-checkbox>
-
-                                        <div *ngIf="showEmg" class="emg-amt-input w-100-p gap-8">
-                                            <mat-form-field appearance="outline" fxFlex="15%">
-                                                <input name="EmgAmt" placeholder="Select EmgAmt" [(ngModel)]="emg_amt" formControlName="emgAmt" matInput />
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex="15%">
-                                                <input name="EmgPer" placeholder="Select EmgPer" [(ngModel)]="emg_per" formControlName="emgPer" matInput />
-                                            </mat-form-field>
-
-                                             <mat-form-field appearance="outline" fxFlex="15%">
-                                                <mat-label>Start Time</mat-label>
-                                                <input matInput type="time" formControlName="emgStartTime" (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex="15%">
-                                                <mat-label>End Time</mat-label>
-                                                <input matInput type="time" formControlName="emgEndTime" (timeChange)="onChangeTime($event)">
-                                            </mat-form-field>
+                                        <div fxLayout="row" fxLayoutGap="12px">
+                                            <mat-radio-group value='' [formGroup]="serviceForm"
+                                                [(ngModel)]="vSelectedOption" formControlName="isApplicableFor"
+                                                fxLayoutAlign="center center">
+                                                <mat-radio-button value='2'>All</mat-radio-button>
+                                                <mat-radio-button mat-fab value='0'>OP</mat-radio-button>
+                                                <mat-radio-button mat-fab value='1'>IP</mat-radio-button>
+                                            </mat-radio-group>
                                         </div>
                                     </div>
-                                </div>
+                                    <hr />
 
-                            </div>
-                        </form>
-                    </div>
+                                    <div fxLayout="row" fxLayoutGap="12px">
+
+                                        <mat-checkbox name="CreditedtoDoctor" formControlName="creditedtoDoctor"
+                                            value="false" (change)="onChange($event.checked)"
+                                            [(ngModel)]="IsCreaditDoc">
+                                            CreditedToDoctor
+                                        </mat-checkbox>
+
+                                        <div fxLayout="row" fxLayoutGap="6px" fxFlex="60%">
+                                            <mat-checkbox name="IsDocEditable" value="false" fxFlex="30%"
+                                                formControlName="isDocEditable" [(ngModel)]="showDoctor"
+                                                *ngIf="isDocEditableBoolen"  (change)="onDocEditableChange($event)">
+                                                Is Doc Editable For Service
+                                            </mat-checkbox>
+
+                                            <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                                [value]="data?.doctorId" [formGroup]="serviceForm"
+                                                [validations]="getValidationMessages().DoctorId" fxFlex="50%"
+                                                [mode]="autocompleteModedoctor" *ngIf="showDoctor"
+                                                (selectionChange)="SelectionDoctor($event)"></airmid-dropdown>
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+
+                                    <div fxLayout="row" fxLayoutGap="12px">
+
+                                        <div fxLayoutGap="8px">
+                                            <mat-checkbox name="IsRadiology" formControlName="isRadiology" value="false"
+                                                (change)="onChange2($event.checked)">IsRadiology</mat-checkbox>
+
+                                            <mat-checkbox name="isRadOutSource" formControlName="isRadOutSource"
+                                                *ngIf="showRadOut">OutSource</mat-checkbox>
+                                        </div>
+
+                                        <div fxLayoutGap="8px">
+                                            <mat-checkbox name="IsPathology" formControlName="isPathology" value="false"
+                                                (change)="onChange3($event.checked)">IsPathology</mat-checkbox>
+
+                                            <mat-checkbox name="isPathOutSource" formControlName="isPathOutSource"
+                                                *ngIf="showPathOut">OutSource</mat-checkbox>
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+
+                                    <div fxLayout="row" fxLayoutGap="12px">
+
+                                        <div fxLayout="row" fxLayoutGap="6px" fxFlex>
+                                            <mat-checkbox name="IsEmergency" [(ngModel)]="showEmg" value="true"
+                                                formControlName="isEmergency" (change)="emg_amt = ''; emg_per = ''">
+                                                IsEmergency
+                                            </mat-checkbox>
+
+                                            <div *ngIf="showEmg" class="emg-amt-input w-100-p gap-8">
+                                                <mat-form-field appearance="outline" fxFlex="15%">
+                                                    <input name="EmgAmt" placeholder="Select EmgAmt"
+                                                        [(ngModel)]="emg_amt" formControlName="emgAmt" matInput />
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="15%">
+                                                    <input name="EmgPer" placeholder="Select EmgPer"
+                                                        [(ngModel)]="emg_per" formControlName="emgPer" matInput />
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="15%">
+                                                    <mat-label>Start Time</mat-label>
+                                                    <input matInput type="time" formControlName="emgStartTime"
+                                                        (timeChange)="onChangeTime($event)">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" fxFlex="15%">
+                                                    <mat-label>End Time</mat-label>
+                                                    <input matInput type="time" formControlName="emgEndTime"
+                                                        (timeChange)="onChangeTime($event)">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
 
                     </div>
 
@@ -261,9 +279,10 @@
         <!-- Modal footer  || savebtn-->
         <div class="modal-footer">
             <div class="footer-navigation-container" fxLayoutAlign="space-between">
-                 <form [formGroup]="serviceForm">
-                        <app-airmid-slider label="IsActive/Deactive"  formControlName="isActive" [formGroup]="serviceForm" [(ngModel)]="isActive"></app-airmid-slider>
-                   </form>
+                <form [formGroup]="serviceForm">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="serviceForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                </form>
                 <div class="modal-footer-buttons">
                     <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button type="button" class="btn btn-primary" (click)="onSubmit()" #savebutton>Save</button>

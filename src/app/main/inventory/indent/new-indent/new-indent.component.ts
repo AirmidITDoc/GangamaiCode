@@ -23,7 +23,7 @@ import { IndentService } from '../indent.service';
 export class NewIndentComponent implements OnInit {
   IndentSaveFrom: FormGroup;
   IndentForm: FormGroup;
-  displayedColumns2 = [
+  displayedColumns = [
     'ItemID',
     'ItemName',
     'IndentQuantity',
@@ -83,12 +83,15 @@ export class NewIndentComponent implements OnInit {
       this.IndentSaveFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.IndentSaveFrom.get("comments").setValue(this.registerObj.remarks)
 
-      if (this.registerObj.priority)
-        this.status = "1"
-      else
-        this.status = "0"
-      
-      this.IndentSaveFrom.get('priority').setValue(this.status)
+      debugger
+      if (this.registerObj.priority=='True'){
+        this.status = '1'
+       this.IndentSaveFrom.get('priority').setValue(true)
+      }
+      else{
+        this.status = '0'
+       this.IndentSaveFrom.get('priority').setValue(false)
+      }
       this.getupdateIndentList(this.registerObj.indentId);
     }
 
@@ -315,6 +318,41 @@ export class NewIndentComponent implements OnInit {
 
   }
 
+   getCellCalculation(contact, Qty) {
+
+    console.log(contact)
+    if (parseFloat(contact.Qty) < 0) {
+      this.toastr.warning('Issue Qty cannot be 0.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      contact.Qty = 0;
+      contact.Qty = '';
+      contact.VatAmount = 0;
+      contact.LandedRateandedTotal = 0;
+    }
+    // else {
+    //   if (contact.Qty > 0) {
+    //     contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
+    //     contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+    //     this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
+    //     contact.IssueBalQty = (this.Indbalqty)
+
+    //     if (contact.IssueBalQty == 0)
+    //       contact.IsClosed = true
+    //     else
+    //       contact.IsClosed = false
+    //   }
+    //   else {
+    //     contact.Qty = 0;
+    //     contact.Qty = '';
+    //     contact.VatAmount = 0;
+    //     contact.LandedRateandedTotal = 0;
+    //   }
+    // }
+
+  }
+
+  
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)

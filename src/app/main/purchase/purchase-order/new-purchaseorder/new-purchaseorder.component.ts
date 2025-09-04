@@ -28,11 +28,11 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations,
 })
 export class NewPurchaseorderComponent {
-    displayedColumns2 = [
+  displayedColumns2 = [
     // 'ItemID',
     'ItemName',
     'UOM',
-    'Qty', 
+    'Qty',
     'MRP',
     'Rate',
     'DefRate',
@@ -51,7 +51,7 @@ export class NewPurchaseorderComponent {
     'Specification',
     'Action',
   ];
-  displayedColumns3 = [ 
+  displayedColumns3 = [
     'supplierName',
     'receiveQty',
     'freeQty',
@@ -78,17 +78,17 @@ export class NewPurchaseorderComponent {
   sIsLoading: string = '';
   isLoading = true;
 
- 
+
   screenFromString = 'Common-form';
   ItemID: any = "0";
   labelPosition: 'before' | 'after' = 'after';
-  ItemnameList = [];  
-  chargeslist: any = []; 
+  ItemnameList = [];
+  chargeslist: any = [];
   vDefRate: any = 0;
   vGSTAmt: any = 0.0;
   CGSTAmount: any;
   IGSTAmount: any;
-  SGSTAmount: any = 0.0; 
+  SGSTAmount: any = 0.0;
   isItemIdSelected: boolean = false;
   VatPercentage: any = 0.0;
   state = false;
@@ -223,11 +223,11 @@ export class NewPurchaseorderComponent {
 
   ngOnInit(): void {
     this.userFormGroup = this.getPurchaseOrderForm();
-    this.FinalPurchaseform = this.getPurchaseOrderFinalForm()  
+    this.FinalPurchaseform = this.getPurchaseOrderFinalForm()
     this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
-    
-   this.PurchaseInsertform = this.getPurchaseInsertForm(); 
+
+    this.PurchaseInsertform = this.getPurchaseInsertForm();
     if (this.data) {
       this.registerObj = this.data.Obj
       this.PurchaseID = this.data.Obj.purchaseID
@@ -243,19 +243,19 @@ export class NewPurchaseorderComponent {
       // setTimeout(() => {
       this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
         console.log(response)
-        this.SupplierObj = response;  
-         this.userFormGroup.patchValue({ 
-        Address:this.SupplierObj.address,
-        Mobile: this.SupplierObj.mobile,
-        Contact: this.SupplierObj.contactPerson,
-        GSTNo: this.SupplierObj.gstNo,
-        Email:this.SupplierObj.email,
-       }) 
+        this.SupplierObj = response;
+        this.userFormGroup.patchValue({
+          Address: this.SupplierObj.address,
+          Mobile: this.SupplierObj.mobile,
+          Contact: this.SupplierObj.contactPerson,
+          GSTNo: this.SupplierObj.gstNo,
+          Email: this.SupplierObj.email,
+        })
         let SupplierRate = 0;
         SupplierRate = this.supplierRateList[0].SupplierRate;
-        this.vDefRate = SupplierRate; 
+        this.vDefRate = SupplierRate;
       });
-      this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID); 
+      this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
       this.FinalPurchaseform.get('PaymentTerm').setValue(this.data.Obj.paymentTermId);
       this.FinalPurchaseform.get('PaymentMode').setValue(this.data.Obj.modeOfPayment);
       this.FinalPurchaseform.get('Remark').setValue(this.data.Obj.remarks);
@@ -263,10 +263,10 @@ export class NewPurchaseorderComponent {
       this.FinalPurchaseform.get('TransportCharges').setValue(this.data.Obj.transportChanges);
       this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
       this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
-      this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty); 
+      this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
       // }, 100);
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
-    } 
+    }
   }
 
   // Item Calculation form
@@ -278,13 +278,13 @@ export class NewPurchaseorderComponent {
       SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       TotalAmount: [''],
       DiscAmount: [''],
-      Disc: [''], 
+      Disc: [''],
       grandTotal: [''],
       ItemName: ['', [Validators.required]],
       ConversionFactor: [''],
       Qty: [0, [Validators.required]],
       UOM: [''],
-      Rate: ['', [Validators.required]], 
+      Rate: ['', [Validators.required]],
       HSNcode: '',
       GST: [''],
       GSTPer: [''],
@@ -314,10 +314,10 @@ export class NewPurchaseorderComponent {
 
     });
 
-  } 
+  }
   // Footer Calculation form
   getPurchaseOrderFinalForm() {
-    return this._formBuilder.group({ 
+    return this._formBuilder.group({
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
@@ -327,11 +327,11 @@ export class NewPurchaseorderComponent {
       NetAmount: [''],
       Remark: ['', [Validators.required]],
       PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], 
+      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
-  } 
+  }
   // Purchase Save Form
-  getPurchaseInsertForm() { 
+  getPurchaseInsertForm() {
     return this._formBuilder.group({
       purchaseId: [this.PurchaseID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseNo: this.PurchaseNo,
@@ -365,42 +365,42 @@ export class NewPurchaseorderComponent {
       isCancelled: false,
       tPurchaseDetails: this._formBuilder.array([])
     });
-  } 
-    getPurchaseInsertFormnew() { 
+  }
+  getPurchaseInsertFormnew() {
     return this._formBuilder.group({
-      purchaseId: [this.PurchaseID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseNo: [this.PurchaseNo,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseDate: new Date(),
       purchaseTime: new Date(),
-      storeId: [this.vstoreId[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      supplierId: [this.vSupplierId [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalAmount: [this.FinalTotalAmt [this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeId: [this.vstoreId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      supplierId: [this.vSupplierId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [this.FinalTotalAmt[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      taxAmount: [parseFloat(this.GSTAmount) || 0 ,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      freightAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      octriAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      grandTotal:[this.FinalNetAmount,[this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isclosed:  [false],
-      isVerified:  [false],
-      remarks:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
-      taxId:[0,[ this._FormvalidationserviceService.onlyNumberValidator()]], 
-      paymentTermId: this.paymentterm || 0, 
-      modeofPayment: this.paymentmode || 0,  
+      taxAmount: [parseFloat(this.GSTAmount) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      grandTotal: [this.FinalNetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isclosed: [false],
+      isVerified: [false],
+      remarks: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentTermId: this.paymentterm || 0,
+      modeofPayment: this.paymentmode || 0,
       worrenty: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
-      roundVal:[0,[ this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
-      prefix: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
-      isVerifiedId: [0,[ this._FormvalidationserviceService.onlyNumberValidator()]],
+      roundVal: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      prefix: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
       totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
       totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
       totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      transportChanges:[0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],  
-      handlingCharges:[0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      freightCharges:[0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+      transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isCancelled: [false],
       tPurchaseDetails: this._formBuilder.array([])
     });
-  } 
+  }
   // Purchase Save Details Form
   createPurchasedetailForm(item: any = {}): FormGroup {
     return this._formBuilder.group({
@@ -428,25 +428,25 @@ export class NewPurchaseorderComponent {
       vendDiscPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       vendDiscAm: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
-  } 
-  get purchasedetailArray(): FormArray { 
+  }
+  get purchasedetailArray(): FormArray {
     return this.PurchaseInsertform.get('tPurchaseDetails') as FormArray;
-  }  
-//Supplier select obj
-  getSelectedSupplierObj(obj) { 
+  }
+  //Supplier select obj
+  getSelectedSupplierObj(obj) {
     this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
-      this.SupplierObj = response; 
-      this.vSupplierId = this.SupplierObj.supplierId 
-      this.userFormGroup.patchValue({ 
-      Address:this.SupplierObj.address,
-      Mobile: this.SupplierObj.mobile,
-      Contact: this.SupplierObj.contactPerson,
-      GSTNo: this.SupplierObj.gstNo,
-      Email:this.SupplierObj.email,
-      }) 
-      this.getSupplierRate(); 
-    }); 
-  } 
+      this.SupplierObj = response;
+      this.vSupplierId = this.SupplierObj.supplierId
+      this.userFormGroup.patchValue({
+        Address: this.SupplierObj.address,
+        Mobile: this.SupplierObj.mobile,
+        Contact: this.SupplierObj.contactPerson,
+        GSTNo: this.SupplierObj.gstNo,
+        Email: this.SupplierObj.email,
+      })
+      this.getSupplierRate();
+    });
+  }
   // Add Item
   onAdd() {
     if ((this.userFormGroup.get("Qty").value == 0 || this.userFormGroup.get("Qty").value == "")) {
@@ -460,10 +460,10 @@ export class NewPurchaseorderComponent {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
+    }
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
     debugger
-    if (!isDuplicate) { 
+    if (!isDuplicate) {
       const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
       console.log(formValues)
       if (formValues.ItemName) {
@@ -481,13 +481,13 @@ export class NewPurchaseorderComponent {
           DiscAmount: formValues.DiscAmount || 0,
           CGSTPer: formValues.CGSTPer || 0,
           CGSTAmount: formValues.CGSTAmount || 0,
-          CGSTAmt: formValues.CGSTAmount || 0, 
+          CGSTAmt: formValues.CGSTAmount || 0,
           SGSTPer: formValues.SGSTPer || 0,
           SGSTAmount: formValues.SGSTAmount || 0,
-          SGSTAmt: formValues.SGSTAmount || 0, 
+          SGSTAmt: formValues.SGSTAmount || 0,
           IGST: formValues.IGSTPer || 0,
           IGSTAmont: formValues.IGSTAmount || 0,
-          IGSTAmt: formValues.IGSTAmount || 0, 
+          IGSTAmt: formValues.IGSTAmount || 0,
           GST: formValues.GST || 0,
           GSTAmount: formValues.GSTAmount || 0,
           NetAmount: formValues.NetAmount || 0,
@@ -500,7 +500,7 @@ export class NewPurchaseorderComponent {
         this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
         this.updatePurchaseFinalForm();
       }
-    } 
+    }
     else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -511,17 +511,18 @@ export class NewPurchaseorderComponent {
       itemNameElement.focus();
     }
     this.resetFormItem();
-  } 
-    deleteTableRow(row: ItemNameList) { 
+  }
+
+  deleteTableRow(row: ItemNameList) {
     this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
     this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
-    this.updatePurchaseFinalForm();  
+    this.updatePurchaseFinalForm();
     if (this.dsItemNameList.data.length == 0) {
       this.FinalPurchaseform.get("TransportCharges").setValue(0)
       this.FinalPurchaseform.get("Freight").setValue(0)
       this.FinalPurchaseform.get("OctriAmount").setValue(0)
     }
-  } 
+  }
 
   //Item selected Obj
   getSelectedObj(obj) {
@@ -537,14 +538,14 @@ export class NewPurchaseorderComponent {
     this.vDis = '';
     this.vCGSTPer = obj.cgstPer
     this.vSGSTPer = obj.sgstPer
-    this.vIGSTPer = obj.igstPer 
+    this.vIGSTPer = obj.igstPer
     this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(4);
     this.vNetAmount = this.vTotalAmount;
     this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
     this.vSpecification = obj.Specification || '';
-    this.getLastThreeItemInfo(); 
+    this.getLastThreeItemInfo();
     this.getSupplierRate();
-  }  
+  }
 
   // @HostListener('document:keydown', ['$event'])
   // handleKeyboardEvent(event: KeyboardEvent) {
@@ -671,27 +672,29 @@ export class NewPurchaseorderComponent {
     let Pdate;
     let pTime;
     if (this.PurchaseID != 0) {
-        Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01', 
-        pTime = this.data.Obj.purchaseTime 
-     } else {
-        Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+      Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+        pTime = this.data.Obj.purchaseTime
+    } else {
+      Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
         pTime = this.dateTimeObj.time;
-    } 
+    }
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
-    } 
-   
+    }
+
     const fomrValues = this.userFormGroup.value
     const FooterfomrValues = this.FinalPurchaseform.value
-     console.log(fomrValues) 
-      console.log(FooterfomrValues) 
+    console.log(fomrValues)
+    console.log(FooterfomrValues)
     debugger
-    if (!this.FinalPurchaseform.invalid) { 
+    if (!this.FinalPurchaseform.invalid) {
+      this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
+      this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
       this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
-      this.PurchaseInsertform.get("purchaseTime").setValue(pTime) 
+      this.PurchaseInsertform.get("purchaseTime").setValue(pTime)
       this.PurchaseInsertform.get("supplierId").setValue(this.userFormGroup.get('SupplierId').value)
       this.PurchaseInsertform.get("freightAmount").setValue(this.FinalPurchaseform.get('Freight').value)
       this.PurchaseInsertform.get("octriAmount").setValue(this.FinalPurchaseform.get('OctriAmount').value)
@@ -709,19 +712,19 @@ export class NewPurchaseorderComponent {
       this.PurchaseInsertform.get("roundVal").setValue(Math.round(this.FinalNetAmount),)
       this.PurchaseInsertform.get("totCgstamt").setValue(parseFloat(this.CGSTFinalAmount))
       this.PurchaseInsertform.get("totSgstamt").setValue(parseFloat(this.SGSTFinalAmount))
-      this.PurchaseInsertform.get("totIgstamt").setValue(parseFloat(this.IGSTFinalAmount)) 
+      this.PurchaseInsertform.get("totIgstamt").setValue(parseFloat(this.IGSTFinalAmount))
 
       this.purchasedetailArray.clear();
       this.dsItemNameList.data.forEach(item => {
-        console.log(item)
+        // console.log(item)
         this.purchasedetailArray.push(this.createPurchasedetailForm(item));
-      }); 
+      });
       console.log(this.PurchaseInsertform.value);
-      this._PurchaseOrder.InsertPurchaseSave(this.PurchaseInsertform.value).subscribe(response => { 
+      this._PurchaseOrder.InsertPurchaseSave(this.PurchaseInsertform.value).subscribe(response => {
         if (response) {
           this.viewgetPurchaseorderReportPdf(response)
           this._matDialog.closeAll();
-        } 
+        }
       });
     } else {
       let invalidFields = [];
@@ -732,21 +735,21 @@ export class NewPurchaseorderComponent {
       }
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-      } 
+      }
     }
   }
   viewgetPurchaseorderReportPdf(PurchaseID) {
     this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
   }
   // Table Calculation 
-  getCellCalculation(item: ItemNameList) { 
+  getCellCalculation(item: ItemNameList) {
     this._PurchaseOrder.validateCellData(item);
     this._PurchaseOrder.calculateBasicValues(item);
-    this._PurchaseOrder.validateGSTRates(item); 
+    this._PurchaseOrder.validateGSTRates(item);
     const updatedItem = this.calculateCellGSTType(item);
-    Object.assign(item, updatedItem); 
+    Object.assign(item, updatedItem);
     this.updatePurchaseFinalForm();
-  }  
+  }
   //Update footer Values
   updatePurchaseFinalForm() {
     const form = this.userFormGroup;
@@ -763,10 +766,10 @@ export class NewPurchaseorderComponent {
     form.patchValue({
       ...updatableFormValues
     });
-  }  
+  }
   getTotalNet(element) {
     let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0); 
+    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0);
 
     let handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(4);
@@ -780,9 +783,9 @@ export class NewPurchaseorderComponent {
     let OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
 
-    this.FinalNetAmount=Math.ceil(this.FinalNetAmount)
+    this.FinalNetAmount = Math.ceil(this.FinalNetAmount)
     return this.FinalNetAmount;
-  } 
+  }
   getTotalGST(element) {
     this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(4);
 
@@ -790,13 +793,13 @@ export class NewPurchaseorderComponent {
     this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(4);
     this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(4);
     this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(4);
-  } 
+  }
   getTotalDisc(element) {
     this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
     if (this.DiscAmount > 0)
       this.DiscAmount = this.DiscAmount.toFixed(4);
     return this.DiscAmount;
-  } 
+  }
   getTotalAmt(element) {
     this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(4);
     return this.FinalTotalAmt;
@@ -820,11 +823,11 @@ export class NewPurchaseorderComponent {
     return this.IGSTFinalAmount
   }
 
-  
+
   getTotalAmount() {
     return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
   }
- 
+
   highlight(contact) {
     this.selectedRowIndex = contact.ItemID;
   }
@@ -882,7 +885,7 @@ export class NewPurchaseorderComponent {
       this.getCellCalculation(item);
     })
 
-  } 
+  }
   getSelectedItem(item: GRNItemResponseType): void {
     console.log(item)
     this.lastsupplierflag = true
@@ -898,8 +901,8 @@ export class NewPurchaseorderComponent {
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,
       GST: item.cgstPer + item.sgstPer + item.igstPer,
-      HSNcode: item.hsNcode 
-    }); 
+      HSNcode: item.hsNcode
+    });
     this.getLastThreeItemInfo();
     const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
     if (QtyElement) {
@@ -916,7 +919,7 @@ export class NewPurchaseorderComponent {
         }
       }
     }, 100);
-  } 
+  }
   calculateTotalamt() {
     // if (this.vDefRate == 0) {
     this.validateFormValues();
@@ -959,8 +962,8 @@ export class NewPurchaseorderComponent {
 
     //   }
     // }
-  } 
-  calculateDiscountAmount() { 
+  }
+  calculateDiscountAmount() {
     const form = this.userFormGroup;
     const values = form.getRawValue() as PurchaseFormModel;
     debugger
@@ -1091,9 +1094,9 @@ export class NewPurchaseorderComponent {
         ConversionFactor: 1,
       });
     }
-  } 
+  }
   getchangegstper(rate, GSTTYP): void {
-    
+
     const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
     const gstValues = [
       { value: 2.5 },
@@ -1101,26 +1104,26 @@ export class NewPurchaseorderComponent {
       { value: 9 },
       { value: 14 }
     ];
-   
+
     debugger
-      const dvalue = gstValues.find(item => item.value == parseFloat(rate))
-      if (!dvalue) {
-        this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-        return;
-      }
-   
-else{
-    const GSTPer = Number(formValues.CGSTPer) + Number(formValues.SGSTPer) + Number(formValues.IGSTPer)
-    this.userFormGroup.patchValue({
-      GST: GSTPer
-    });
-    this.calculateTotalamt();
+    const dvalue = gstValues.find(item => item.value == parseFloat(rate))
+    if (!dvalue) {
+      this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+      return;
+    }
+
+    else {
+      const GSTPer = Number(formValues.CGSTPer) + Number(formValues.SGSTPer) + Number(formValues.IGSTPer)
+      this.userFormGroup.patchValue({
+        GST: GSTPer
+      });
+      this.calculateTotalamt();
+    }
   }
-  } 
   resetForm() {
     this.userFormGroup.reset();
-    this.dsItemNameList.data = []; 
-  } 
+    this.dsItemNameList.data = [];
+  }
   OnReset() {
     this.userFormGroup.reset();
     this.FinalPurchaseform.reset();
@@ -1135,7 +1138,7 @@ else{
   }
 
   resetFormItem() {
-    const form = this.userFormGroup; 
+    const form = this.userFormGroup;
     form.patchValue({
       ItemName: "",
       ConversionFactor: 1,
@@ -1152,13 +1155,13 @@ else{
       DisAmount: 0,
       DisAmount2: 0,
       CGST: 0,
-      CGSTPer:0,
+      CGSTPer: 0,
       CGSTAmount: 0,
       SGST: 0,
-      SGSTPer:0,
+      SGSTPer: 0,
       SGSTAmount: 0,
       IGST: 0,
-      IGSTPer:0,
+      IGSTPer: 0,
       GST: 0,
       GSTAmount: 0,
       TotalAmount: "",
@@ -1167,11 +1170,12 @@ else{
       HSNcode: '',
       DefRate: 0
     });
+    this.lastsupplierflag = false;
     this.userFormGroup.markAsUntouched();
   }
   selectChangeSupplier(supplier: any): void {
     console.log({ supplier });
-  } 
+  }
   getValidationMessages() {
     return {
       supplierId: [
@@ -1206,41 +1210,41 @@ else{
 
       ],
     };
-  } 
+  }
   isValidForm(): boolean {
     return this.dsItemNameList.data.every((i) => i.Qty > 0 && i.MRP > 0);
   }
   // Last Three item list
-  getLastThreeItemInfo() { 
-    var vdata = { 
+  getLastThreeItemInfo() {
+    var vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "ItemId",
       "sortOrder": 0,
-      "filters": [ { "fieldName": "ItemId",  "fieldValue": String(this.ItemID), "opType": "Equals"  }  ],
+      "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" }],
       "exportType": "JSON",
-      "columns": [  { "data": "string",  "name": "string"  } ]
-    } 
+      "columns": [{ "data": "string", "name": "string" }]
+    }
     this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
       this.dsLastThreeItemList.data = data.data as LastThreeItemList[]; this.sIsLoading = '';
     });
   }
-    // Retreving Item Details Edit Time
-  getOldPurchaseOrder(Id) { 
-    var Param = { 
+  // Retreving Item Details Edit Time
+  getOldPurchaseOrder(Id) {
+    var Param = {
       "first": 0,
       "rows": 10,
       "sortField": "PurchaseID",
       "sortOrder": 0,
-      "filters": [ { "fieldName": "PurchaseID", "fieldValue": String(Id), "opType": "Equals" } ],
+      "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(Id), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": []
-    } 
-    this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => { 
+    }
+    this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
       this.dsItemNameList.data = data.data as ItemNameList[];
-      this.chargeslist = data as ItemNameList[]; 
-      this.dsItemNameList.data.forEach(element => { 
-        console.log(element) 
+      this.chargeslist = data as ItemNameList[];
+      this.dsItemNameList.data.forEach(element => {
+        console.log(element)
         element.ItemName = element.itemName,
           element.ItemId = element.itemId,
           element.Qty = element.qty,
@@ -1255,33 +1259,33 @@ else{
           element.GSTAmt = element.vatAmount,
           element.NetAmount = element.grandTotalAmount,
           element.MRP = element.mrp
-          element.CGSTPer = element.cgstPer,
+        element.CGSTPer = element.cgstPer,
           element.CGSTAmount = element.cgstAmt,
           element.SGSTPer = element.sgstPer,
           element.SGSTAmount = element.sgstAmt,
           element.IGST = element.igstPer,
           element.IGSTAmount = element.igstAmt
-          element.DefRate = element.defRate,
+        element.DefRate = element.defRate,
           element.Specification = element.specification
-        element.UOM = element.uomid 
+        element.UOM = element.uomid
       });
     });
     console.log(this.dsItemNameList)
-  } 
-    // Defined Rate Validation
-  OnchekPurchaserateValidation() { 
+  }
+  // Defined Rate Validation
+  OnchekPurchaserateValidation() {
     if (this.vDefRate > 0) {
       if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
         Swal.fire("Please Check defined Supplier Rate for product ...!!!");
         this.vRate = 0
-      } else { this.calculateTotalamt(); } 
+      } else { this.calculateTotalamt(); }
     } else if (this.vDefRate == 0) {
       if (this.userFormGroup.get("Rate").value) {
         this.calculateTotalamt();
       }
     }
-  } 
-    supplierRateList: any = [];
+  }
+  supplierRateList: any = [];
   getSupplierRate() {
     this.supplierRateList = [];
     var data =
@@ -1300,16 +1304,16 @@ else{
     this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
       console.log(data);
       debugger
-      if (data.data[0]) { 
+      if (data.data[0]) {
         let SupplierRate = data.data[0].supplierRate;
         this.vDefRate = SupplierRate;
         console.log(this.vDefRate)
       }
     });
   }
-    onKeydown(e, data) { }
-   
-} 
+  onKeydown(e, data) { }
+
+}
 function elseif(GST: any) {
   throw new Error('Function not implemented.');
 }

@@ -1,7 +1,6 @@
-
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-      
+
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
@@ -9,7 +8,7 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                      <div class="close-icon">
+                        <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                                 matTooltip="Close">
                                 <mat-icon>close</mat-icon>
@@ -37,9 +36,9 @@
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().ToStoreId"
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
-
+                                    <!-- [(ngModel)]="status" -->
                                     <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
-                                        formControlName="priority" [(ngModel)]="status" style="font-weight: bolder;padding: 10px;">
+                                        formControlName="priority" style="font-weight: bolder;padding: 10px;">
                                         Urgent
                                     </mat-slide-toggle>
 
@@ -82,15 +81,7 @@
                                     <mat-table #table matSort [dataSource]="dsIndentNameList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                        <ng-container matColumnDef="Action">
-                                            <mat-header-cell *matHeaderCellDef style="color: white;">
-                                                Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let row">
-                                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                    <mat-icon>delete_outline</mat-icon>
-                                                </button>
-                                            </mat-cell>
-                                        </ng-container>
+                                     
 
                                         <ng-container matColumnDef="ItemID">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -109,11 +100,33 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="IndentQuantity">
+                                        <!-- <ng-container matColumnDef="IndentQuantity">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                 Indent Quantity</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.Qty}}
+                                            </mat-cell>
+                                        </ng-container> -->
+
+                                        <ng-container matColumnDef="IndentQuantity">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-100">Indent Quantity</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
+                                                        (ngModelChange)="getCellCalculation(contact,contact.Qty)" />
+                                                </mat-form-field>
+
+                                            </mat-cell>
+                                        </ng-container>
+
+                                           <ng-container matColumnDef="Action">
+                                            <mat-header-cell *matHeaderCellDef style="color: white;">
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let row">
+                                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                    <mat-icon>delete_outline</mat-icon>
+                                                </button>
                                             </mat-cell>
                                         </ng-container>
 
@@ -128,17 +141,15 @@
                                             </mat-footer-cell>
                                         </ng-container>
 
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns2; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                      
+                                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="accent"></mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns" style="height: 40px;"
+                                           [@animate]="{ value: '*', params: { y: '100%' } }"
+                                           ></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
+                                            [ngClass]="{ hide: dsIndentNameList != null }"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsIndentNameList!=null && dsIndentNameList.data.length==0)}">
-                                        </mat-footer-row>
+                                            [ngClass]="{ hide: !(dsIndentNameList != null && dsIndentNameList.data.length == 0) }"></mat-footer-row>
                                     </mat-table>
 
                                     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
