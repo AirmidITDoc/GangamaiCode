@@ -159,3 +159,56 @@ app-create-user {
     padding: 8px 0;
     min-height: 0;
 }
+
+// Filter Form Styling for Card View
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        // align-items: flex-end;
+        align-content: center;
+        width: 100%;
+        
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+    
+    .filter-field {
+        flex: 1;
+        min-width: 180px;
+        max-width: 220px;
+        
+        @media (max-width: 768px) {
+            max-width: none;
+        }
+    }
+    
+    .status-filter {
+        display: flex;
+        align-items: center;
+        min-width: 200px;
+        flex-shrink: 0;
+        
+        .status-radio-group {
+            display: flex;
+            gap: 8px;
+            
+            .status-radio {
+                font-size: 14px;
+                
+                ::ng-deep .mat-radio-label-content {
+                    padding-left: 8px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

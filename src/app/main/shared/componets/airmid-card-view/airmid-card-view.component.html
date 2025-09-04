@@ -1,11 +1,35 @@
-<div class="search-bar-container" *ngIf="ShowFilter">
-  <ng-content select="[filters]"></ng-content>
+<!-- Top Search Facility - Full Width -->
+<div class="search-facility-container p-12" *ngIf="ShowFilter==true">
+  <div class="search-facility-content">
+    <div class="search-header">
+      <span class="search-title">Search Facility</span>
+    </div>
+    <div class="search-body">
+      <div class="search-form">
+        <form>
+          <div class="search-filters">
+            <ng-content select="[cardFilters]"></ng-content>
+            <div class="action-buttons">
+              <button mat-raised-button color="primary" type="button" (click)="bindGridData()" class="search-button p-12">
+                  <mat-icon>search</mat-icon>
+                  <span>Search</span>
+              </button>
+              <button mat-stroked-button type="button" (click)="onClear()" class="reset-button p-12">
+                  <mat-icon>refresh</mat-icon>
+                  <span>Reset</span>
+              </button>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="card-view-container">
   <!-- Card Grid -->
-  <div class="card-grid" *ngIf="data && data.length > 0">
-    <div class="card-item" *ngFor="let item of data">
+  <div class="card-grid" *ngIf="dataSource?.data && dataSource?.data.length > 0">
+    <div class="card-item" *ngFor="let item of dataSource?.data">
       <mat-card class="user-card">
         <mat-card-header class="card-header">
           <div mat-card-avatar class="user-avatar">
@@ -18,6 +42,7 @@
             {{ item[config.fields[2]?.key] }}
           </mat-card-subtitle>
         </mat-card-header>
+
         
         <mat-card-content class="card-content">
           <div class="field-list">
@@ -44,14 +69,14 @@
   </div>
   
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="!data || data.length === 0">
+  <div class="empty-state" *ngIf="!dataSource?.data || dataSource?.data.length === 0">
     <mat-icon class="empty-icon">people</mat-icon>
     <h3 class="empty-title">No Users Found</h3>
     <p class="empty-message">Try adjusting your search criteria or add a new user.</p>
   </div>
   
   <!-- Footer with Export and Pagination -->
-  <div class="card-footer" *ngIf="data && data.length > 0">
+  <div class="card-footer" *ngIf="dataSource.data && dataSource.data.length > 0">
     <!-- Export Buttons -->
     <div class="export-buttons" *ngIf="ShowButtons">
       <button mat-stroked-button color="primary" (click)="onExportClick('Excel')">

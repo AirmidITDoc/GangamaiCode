@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { AirmidCardViewComponent } from 'app/main/shared/componets/airmid-card-view/airmid-card-view.component';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { CreateUserService } from './create-user.service';
@@ -37,7 +38,7 @@ export class CreateUserComponent implements OnInit {
       { label: 'Store Name', key: 'storeName' },
       { label: 'Doctor Name', key: 'doctorName' },
       { label: 'Days', key: 'days' },
-      { label: 'Status', key: 'isActive' }
+      { label: 'Is Active', key: 'isActive' }
     ],
     actions: [
       { icon: 'remove_red_eye', tooltip: 'View Password', action: 'viewPassword' },
@@ -52,6 +53,7 @@ export class CreateUserComponent implements OnInit {
     public _matDialog: MatDialog, public toastr: ToastrService) { }
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild(AirmidCardViewComponent) cardView: AirmidCardViewComponent;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -170,8 +172,15 @@ export class CreateUserComponent implements OnInit {
         { fieldName: "UserName", fieldValue: this.UserName, opType: OperatorComparer.Contains }
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    
+    // Update grid based on current view mode
+    if (this.viewMode === 'table' && this.grid) {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    } else if (this.viewMode === 'card' && this.cardView) {
+      this.cardView.gridConfig = this.gridConfig;
+      this.cardView.bindGridData();
+    }
   }
 
   onSave(row: any = null) {
@@ -188,7 +197,11 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        that.grid.bindGridData();
+        if (that.viewMode === 'table' && that.grid) {
+          that.grid.bindGridData();
+        } else if (that.viewMode === 'card' && that.cardView) {
+          that.cardView.bindGridData();
+        }
       }
     });
   }
@@ -208,7 +221,11 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        that.grid.bindGridData();
+        if (that.viewMode === 'table' && that.grid) {
+          that.grid.bindGridData();
+        } else if (that.viewMode === 'card' && that.cardView) {
+          that.cardView.bindGridData();
+        }
       }
     });
   }
@@ -240,7 +257,11 @@ export class CreateUserComponent implements OnInit {
         this._CreateUserService.PasswordUpdate(submitData).subscribe(
           (response) => {
             this.toastr.success(response.message);
-            this.grid.bindGridData();
+            if (this.viewMode === 'table' && this.grid) {
+              this.grid.bindGridData();
+            } else if (this.viewMode === 'card' && this.cardView) {
+              this.cardView.bindGridData();
+            }
           });
       }
     });
