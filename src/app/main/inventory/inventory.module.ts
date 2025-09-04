@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IssuetodeptAgainstIndentComponent } from './issuetodept-against-indent/issuetodept-against-indent.component';
 
 const appRoutes: Routes = [
 //   {
@@ -42,11 +43,10 @@ const appRoutes: Routes = [
           import("./patient-material-consumption-return/patient-material-consumption-return.module").then((m) => m.PatientMaterialConsumptionReturnModule),
   },
 
-//   {
-//       path: "mrpadjustment",
-//       loadChildren: () =>
-//           import("./mrp-adjustment/mrp-adjustment.module").then((m) => m.MRPAdjustmentModule),
-//   },
+  {
+      path: "issuetodepartmentaginstindent",
+      loadChildren: () => import("./issuetodept-against-indent/issuetodeptagainst-indent.module").then((m) => m.IssuetodeptagainstIndentModule),
+  },
   {
       path: "materialconsumption",
       loadChildren: () =>
@@ -71,7 +71,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ ],
+  declarations: [ 
+    
+  ],
   imports: [
     RouterModule.forChild(appRoutes),
   ]

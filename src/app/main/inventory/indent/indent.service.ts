@@ -60,6 +60,11 @@ export class IndentService {
     return this._httpClient1.PostData("Indent/IndentDetailsList", Param)
   }
 
+  
+ public IndentCancle(Param){
+    return this._httpClient1.PostData("Indent/IndentDetailsList", Param)
+  }
+
   populateForm(employee) {
     // this.newIndentFrom.patchValue(employee);
 }

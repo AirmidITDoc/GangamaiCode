@@ -83,12 +83,15 @@ export class NewIndentComponent implements OnInit {
       this.IndentSaveFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.IndentSaveFrom.get("comments").setValue(this.registerObj.remarks)
 
-      if (this.registerObj.priority)
-        this.status = "1"
-      else
-        this.status = "0"
-      
-      this.IndentSaveFrom.get('priority').setValue(this.status)
+      debugger
+      if (this.registerObj.priority=='True'){
+        this.status = '1'
+       this.IndentSaveFrom.get('priority').setValue(true)
+      }
+      else{
+        this.status = '0'
+       this.IndentSaveFrom.get('priority').setValue(false)
+      }
       this.getupdateIndentList(this.registerObj.indentId);
     }
 

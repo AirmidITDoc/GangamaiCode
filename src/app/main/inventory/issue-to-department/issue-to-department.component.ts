@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
 import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -40,11 +41,15 @@ export class IssueToDepartmentComponent implements OnInit {
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public _matDialog: MatDialog, private accountService: AuthenticationService,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,  private _ActRoute: Router,
     ) { }
 
     ngOnInit(): void {
         this.IssueSearchGroup = this._IssueToDep.IssueSearchFrom();
+           if (this._ActRoute.url == '/inventory/issuetodepartment') {
+
+
+           }
     }
      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
@@ -232,6 +237,8 @@ export class IssueToDepartmentComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
+        // if(this._ActRoute.url == '/inventory/issuetodepartment')
+            
         const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
             {
                 maxWidth: "97vw",

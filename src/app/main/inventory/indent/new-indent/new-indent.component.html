@@ -37,9 +37,9 @@
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().ToStoreId"
                                         [value]="data?.ToStoreId" [mode]="autocompletestore">
                                     </airmid-dropdown>
-
+<!-- [(ngModel)]="status" -->
                                     <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
-                                        formControlName="priority" [(ngModel)]="status" style="font-weight: bolder;padding: 10px;">
+                                        formControlName="priority"  style="font-weight: bolder;padding: 10px;">
                                         Urgent
                                     </mat-slide-toggle>
 

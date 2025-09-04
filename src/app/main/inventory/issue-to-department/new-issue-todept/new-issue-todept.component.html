@@ -8,12 +8,12 @@
             <div class="modal-header-right">
                 <div class="comman-date-container">
 
-                    <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
+                    <!-- <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
                         <button mat-raised-button (click)="OnIndentAgainst()" fxLayoutAlign="center center" class="py-8"
                             [disabled]="AgainstInd">
                             <span>Indent List</span>
                         </button>
-                    </div>
+                    </div> -->
                     <div class="comman-date">
                         <app-common-date [screenFrom]="'Common-form'"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
@@ -49,16 +49,16 @@
                                 (selectionChange)="selectChangeStore1($event)">
                             </airmid-dropdown>
                             <!--  -->
-                            <div style="padding-top: 10px;">
+                            <!-- <div style="padding-top: 10px;">
                                 <mat-checkbox formControlName="AgainstIndent" (change)="getAgainstIndet($event)"
                                     [(ngModel)]="vAgainstIndet"></mat-checkbox>
 
-                            </div>
+                            </div> -->
                             <!--   -->
-                            <div style="margin-left: 30px;" *ngIf="showIndentFlag">
+                            <!-- <div style="margin-left: 30px;" *ngIf="showIndentFlag">
                                 <strong style="color: rgb(3, 45, 77);font-size: 18px;">
                                      Issue Against Indent:<span style="color: rgb(35, 35, 245);">{{vIndentId}}</span> /Store:<span style="color: rgb(35, 35, 245);">{{fromstore}}</span></strong>
-                            </div>
+                            </div> -->
                         </form>
 
                     </mat-card>
