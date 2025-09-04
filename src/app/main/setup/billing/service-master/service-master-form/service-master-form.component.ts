@@ -46,20 +46,20 @@ export class ServiceMasterFormComponent implements OnInit {
     autocompleteModetariff: string = "Tariff";
     autocompleteModedoctor: string = "ConDoctor";
     grid: any;
-    IsDocEditable: any = false;
+    IsCreaditDoc: any = false;
     showRadOut: boolean = false;
     showPathOut: boolean = false;
-    iscreditedtoDoctor: boolean = false;
+    isDocEditableBoolen: boolean = false;
     isActive: boolean = true;
     vSelectedOption: any = '2';
 
     constructor(public _serviceMasterService: ServiceMasterService,
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-           private _formBuilder: FormBuilder,
+        private _formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public _matDialog: MatDialog,
-     
+
         public dialogRef: MatDialogRef<ServiceMasterComponent>,
     ) { }
 
@@ -85,21 +85,21 @@ export class ServiceMasterFormComponent implements OnInit {
             console.log(this.data)
             this.registerObj = this.data;
             this.ServiceId = this.registerObj.serviceId;
-            this.IsDocEditable = this.registerObj.isDocEditable
+            this.IsCreaditDoc = this.registerObj.creditedtoDoctor
             this.emg_amt = this.registerObj.emgAmt
             this.emg_per = this.registerObj.emgPer
             this.vSelectedOption = String(this.registerObj?.isApplicableFor)
 
-            if (this.registerObj.creditedtoDoctor == true) {
-                this.serviceForm.get('creditedtoDoctor').setValue(true)
+            if (this.registerObj.isDocEditable == true) {
+                this.serviceForm.get('isDocEditable').setValue(true)
                 this.showDoctor = true;
                 this.serviceForm.get('doctorId').setValue(this.registerObj.doctorId)
             }
-            this.serviceForm.get('isDocEditable')?.valueChanges.subscribe((val: boolean) => {
-            if (!val) {
-                this.serviceForm.get('creditedtoDoctor')?.setValue(false);
-                this.serviceForm.get('doctorId')?.setValue('');
-            }
+            this.serviceForm.get('creditedtoDoctor')?.valueChanges.subscribe((val: boolean) => {
+                if (!val) {
+                    this.serviceForm.get('isDocEditable')?.setValue(false);
+                    this.serviceForm.get('doctorId')?.setValue('');
+                }
             });
 
             if (this.registerObj.isEmergency) this.showEmg = true;
@@ -116,12 +116,12 @@ export class ServiceMasterFormComponent implements OnInit {
 
             if (this.registerObj.isRadiology) this.showRadOut = true;
             this.serviceForm.get('isRadiology')?.valueChanges.subscribe((val: boolean) => {
-                if (!val){ this.serviceForm.get('isRadOutSource')?.setValue(false);}
+                if (!val) { this.serviceForm.get('isRadOutSource')?.setValue(false); }
             });
 
             if (this.registerObj.isPathology) this.showPathOut = true;
             this.serviceForm.get('isPathology')?.valueChanges.subscribe((val: boolean) => {
-                if (!val){this.serviceForm.get('isPathOutSource')?.setValue(false);}
+                if (!val) { this.serviceForm.get('isPathOutSource')?.setValue(false); }
             });
 
         }
@@ -138,8 +138,8 @@ export class ServiceMasterFormComponent implements OnInit {
         this.serviceForm.get('isPathology')?.valueChanges.subscribe(val => {
             this.showPathOut = val;
         });
-        this.serviceForm.get('isDocEditable')?.valueChanges.subscribe(val => {
-            this.iscreditedtoDoctor = val;
+        this.serviceForm.get('creditedtoDoctor')?.valueChanges.subscribe(val => {
+            this.isDocEditableBoolen = val;
         });
     }
 
@@ -159,9 +159,9 @@ export class ServiceMasterFormComponent implements OnInit {
             isRadiology: [0],
             isRadOutSource: [false],
             isDiscount: [false],
-            isProcedure:[false],
+            isProcedure: [false],
             isPackage: [0],
-            subGroupId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            subGroupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: 0,
             isEmergency: false,
             emgAmt: [0, [Validators.required, Validators.pattern("[0-9]+")]],
@@ -171,8 +171,8 @@ export class ServiceMasterFormComponent implements OnInit {
             printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isActive: true,
             isDocEditable: false,
-            isServiceTaxApplicable:false,
-            isApplicableFor:['2'],
+            isServiceTaxApplicable: false,
+            isApplicableFor: ['2'],
             packageTotalDays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageIcudays: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageMedicineAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -182,7 +182,7 @@ export class ServiceMasterFormComponent implements OnInit {
             // extra field which we not insert
             EffectiveDate: [""],
             tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            opipType:[true],
+            opipType: [true],
         });
     }
     createserviceDetails(item: any = {}): FormGroup {
@@ -192,8 +192,8 @@ export class ServiceMasterFormComponent implements OnInit {
             tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discountPercentage:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discountPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {
@@ -244,10 +244,20 @@ export class ServiceMasterFormComponent implements OnInit {
         }
     }
 
+    onDocEditableChange(event: any) {
+        const doctorControl = this.serviceForm.get('doctorId');
+        if (event.checked) {
+            doctorControl?.setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+        } else {
+            doctorControl?.clearValidators();
+        }
+        doctorControl?.updateValueAndValidity();
+    }
+
     updateEmergencyValidators() {
         const now = new Date();
         const defaultTime = now.toTimeString().slice(0, 5);
-         if (this.showEmg) {
+        if (this.showEmg) {
             this.serviceForm.get('emgAmt')?.setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('emgPer')?.setValidators([Validators.required, Validators.min(0)]);
             this.serviceForm.get('emgStartTime')?.setValidators([Validators.required, Validators.min(0)]);
@@ -278,14 +288,14 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     onSubmit() {
-         this.updateEmergencyValidators();
+        this.updateEmergencyValidators();
         if (!this.serviceForm.invalid) {
-        if (this.serviceForm.get('opipType').value == false) {
-            this.toastr.warning('IsApplicableFor is required', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+            if (this.serviceForm.get('opipType').value == false) {
+                this.toastr.warning('IsApplicableFor is required', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
 
             Swal.fire({
                 title: 'Confirm Action',
@@ -309,7 +319,7 @@ export class ServiceMasterFormComponent implements OnInit {
                             data: { context: 'new' }
                         });
                     dialogRef.afterClosed().subscribe(result => {
-                        
+
                     });
 
                 } else if (result.isDenied) {
@@ -420,16 +430,16 @@ export class ServiceMasterFormComponent implements OnInit {
 
     // }
 
-      tableElementChecked(event, element) {
-    // if (event.checked) {
-    //   this.interimArray.push(element);
-    // } else if (this.interimArray.length > 0) {
-    //   let index = this.interimArray.indexOf(element);
-    //   if (index !== -1) {
-    //     this.interimArray.splice(index, 1);
-    //   }
-    // }
-  }
+    tableElementChecked(event, element) {
+        // if (event.checked) {
+        //   this.interimArray.push(element);
+        // } else if (this.interimArray.length > 0) {
+        //   let index = this.interimArray.indexOf(element);
+        //   if (index !== -1) {
+        //     this.interimArray.splice(index, 1);
+        //   }
+        // }
+    }
 
 
     onChangeTime(event: any): void {
@@ -480,28 +490,25 @@ export class ServiceMasterFormComponent implements OnInit {
 
     onChange(isChecked: boolean) {
         if (isChecked == true) {
-            // this.butDisabled = true;
-            // console.log(this.butDisabled);
-            this.iscreditedtoDoctor = true;
+            this.isDocEditableBoolen = true;
         }
         else {
-            // this.butDisabled = false;
-            // console.log(this.butDisabled);
-            this.iscreditedtoDoctor = false;
+            this.showDoctor=false
+            this.isDocEditableBoolen = false;
         }
     }
 
-     onChange2(isChecked: boolean) {
-        if (isChecked == true) 
+    onChange2(isChecked: boolean) {
+        if (isChecked == true)
             this.showRadOut = true;
-        else 
+        else
             this.showRadOut = false;
     }
 
-     onChange3(isChecked: boolean) {
-        if (isChecked == true) 
+    onChange3(isChecked: boolean) {
+        if (isChecked == true)
             this.showPathOut = true;
-        else 
+        else
             this.showPathOut = false;
     }
 
