@@ -27,31 +27,25 @@
             <ng-template #actionsTemplate2 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.priority=='True'" matTooltip="Urgent" style="color: brown;">pan_tool
+                    <mat-icon *ngIf="element.priority=='True'" matTooltip="Urgent" style="color: brown;">priority_high
                     </mat-icon>
-                     <mat-icon *ngIf="element.priority=='False'" matTooltip="Urgent" style="color: rgb(19, 126, 13);">pan_tool
+                     <mat-icon *ngIf="element.priority=='False'" matTooltip="Normal" style="color: rgb(19, 126, 13);">low_priority
                     </mat-icon>
                 </div>
             </ng-template>
 
                <ng-template #isverifyTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                  <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify" style="color: green;">done_all
-                    </mat-icon>
-
-                     <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Is Verify" style="color: rgb(128, 0, 30);">done_all
-                    </mat-icon>
+                  <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify" style="color: green;">done_all</mat-icon>
+                  <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Is Verify" style="color: rgb(128, 0, 30);">close</mat-icon>
                 </div>
             </ng-template>
 
 
             <ng-template #actionsTemplate1 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed">assignment_late
-                    </mat-icon>
-
-                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending" >add_shopping_cart
-                    </mat-icon>
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed">close</mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending" >hourglass_bottom</mat-icon>
                 </div>
             </ng-template>
 
@@ -116,14 +110,12 @@
         </div>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-            
             <ng-template #detailactionsTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed" class="pill green-600 s-16">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="IsClosed" style="color: green;">done_all
                     </mat-icon>
-
-                    <!-- <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending" class="pill red-600 s-16">
-                    </mat-icon> -->
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="IsPending" style="color: rgb(128, 0, 30);">close
+                    </mat-icon>
                 </div>
             </ng-template>
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">

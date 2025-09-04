@@ -563,6 +563,7 @@ export class ItemNameList {
   storeId: any;
   supplierName: any;
   issueqty: any;
+  receiveQty:any;
   /**
    * Constructor
    *
@@ -660,6 +661,7 @@ export class ItemNameList {
       this.storeId = ItemNameList.storeId
       this.supplierName = ItemNameList.supplierName
       this.issueqty = ItemNameList.issueqty
+      this.receiveQty = ItemNameList.receiveQty
     }
   }
 }
