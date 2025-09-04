@@ -65,18 +65,15 @@ export class IndentComponent implements OnInit {
   }
 
   allcolumns = [
-    { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
-    { heading: "", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-
-    { heading: "", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-
+    { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
+    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
     { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Verified By", key: "verifyIncharge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Verified Date", key: "isInchargeVerifyDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
-    { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Verified By", key: "verifyIncharge", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     {
