@@ -1,4 +1,3 @@
-
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
 
@@ -22,7 +21,7 @@
             </div>
         </div>
 
-       
+
         <div class="modal-body">
             <div class="modal-body-container">
                 <div fxLayout="column" class="h-100-p">
@@ -123,7 +122,7 @@
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
-                                     
+
                                         <airmid-textbox fxFlex="4%" label="Disc" formControlName="Disc"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
                                             (valueChange)="calculateTotalamt()" [maxLength]="3">
@@ -445,13 +444,14 @@
 
                     <mat-accordion>
                         <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
+                            <!-- <mat-expansion-panel-header>
                                 <mat-panel-title>Total Summary </mat-panel-title>
                                 <span class="net-amt-mat-label" style="font-weight:bold;padding-bottom: 8px;">No Of
                                     Item:</span>&nbsp;
                                 <span class="net-amt-value"
                                     style="margin-left:10px;font-weight:bolder;color: blue;">{{dsItemNameList.data.length}}</span>&nbsp;&nbsp;&nbsp;
-                                <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 10px">CGST
+                                
+                                    <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 10px">CGST
                                     Amt:</span>&nbsp;
                                 <span class="net-amt-value text-primary"
                                     style="margin-left: 10px; font-weight: bolder">{{ getCGSTAmt() | currency
@@ -492,13 +492,59 @@
                                 <span class="net-amt-value" style="margin-left:10px;font-weight:bolder;color: blue;
                                     background-color: rgb(171, 248, 245);">{{getTotalNet(dsItemNameList.data)
                                     | currency:'INR'}}</span>
+                            </mat-expansion-panel-header> -->
 
-                                <!-- <span style="margin-left: 10px;margin-right: 10px;font-weight: bold;font-size: large;color:rgb(3, 67, 85); display: inline-block;
-  border: 2px solid rgb(4, 29, 33); background-color: rgb(171, 248, 245);border-style: outset; ">Net Amount :
-                                    {{FinalNetAmount}}</span> -->
+                            <mat-expansion-panel-header>
+                                <mat-panel-title style="font-size: 15px;">Total Summary </mat-panel-title>
+                                <div class="summary-container">
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">No Of Item:</span>
+                                        <span class="net-amt-value">{{dsItemNameList.data.length}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">CGSTAmt:</span>
+                                        <span class="net-amt-value">{{ getCGSTAmt() | currency :'INR'}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">SGSTAmt:</span>
+                                        <span class="net-amt-value">{{ getSGSTAmt() | currency :'INR'}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">IGSTAmt</span>
+                                        <span class="net-amt-value">{{ getIGSTAmt() | currency : 'INR'}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">Total Amt:</span>
+                                        <span class="net-amt-value">{{getTotalAmt(dsItemNameList.data)
+                                            | currency:'INR'}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">Disc Amt:</span>
+                                        <span class="net-amt-value">{{getTotalDisc(dsItemNameList.data)
+                                            | currency:'INR'}}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">GST Amt:</span>
+                                        <span class="net-amt-value">{{getTotalGST(dsItemNameList.data)
+                                            | currency:'INR'}}</span>
+                                    </div>
+
+                                    <div class="final-amt-box">
+                                        <span class="final-amt-label">Net Amt :</span>
+                                        <span class="final-amt-value">{{getTotalNet(dsItemNameList.data)
+                                            | currency:'INR'}}</span>
+                                    </div>
+                                </div>
+
                             </mat-expansion-panel-header>
 
-                            <div fxLayout="column" fxLayout.gt-xs="row" class="gap-2">
+                            <div fxLayout="column" fxLayout.gt-xs="row" class="textBox gap-2">
 
                                 <div fxFlex fxFlex.gt-xs="100%" fxFlex.xs="100%" fxLayout="row" fxLayoutGap="5px">
                                     <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%" class="airmid-table-container"
@@ -570,7 +616,7 @@
                                             <ng-container matColumnDef="vatPercentage">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                     class="w-100">
-                                                    Vat(%)</mat-header-cell>
+                                                    GST(%)</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                     {{contact.vatPercentage}}%
                                                 </mat-cell>
@@ -593,42 +639,45 @@
                                             </mat-footer-row>
                                         </mat-table>
                                     </div>
-                                    <div fxLayout="column" fxLayoutGap="2px">
+                                    <div fxLayout="column" fxLayoutGap="2px" fxFlex fxFlex.gt-xs="100%"
+                                        fxFlex.xs="100%">
                                         <form [formGroup]="FinalPurchaseform">
-                                            <div fxLayout="row wrap" fxLayoutGap="1px grid">
-                                                <airmid-textbox fxFlex="25%" label="HandlingCharges"
-                                                    formControlName="HandlingCharges"
+                                            <div fxLayout="row wrap" fxLayoutGap="5px">
+                                                <airmid-textbox fxFlex="12%" label="HandlingCharges"
+                                                    formControlName="HandlingCharges" [min]="0"
                                                     [(ngModel)]="registerObj.handlingCharges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="25%" label="Transport Charges"
-                                                    formControlName="TransportCharges"
+                                                <airmid-textbox fxFlex="12%" label="Transport Charges"
+                                                    formControlName="TransportCharges" [min]="0"
                                                     [(ngModel)]="registerObj.transportChanges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="25%" label="Freight" formControlName="Freight"
-                                                    [(ngModel)]="registerObj.freightAmount"
+                                                <airmid-textbox fxFlex="12%" label="Freight" formControlName="Freight"
+                                                    [(ngModel)]="registerObj.freightAmount" [min]="0"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="25%" label="OctriAmount"
+                                                <airmid-textbox fxFlex="12%" label="OctriAmount" [min]="0"
                                                     formControlName="OctriAmount" [(ngModel)]="registerObj.octriAmount"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="25%" label="Guarantee/ Worrenty"
+                                                <airmid-textbox fxFlex="12%" label="Guarantee/ Worrenty"
                                                     formControlName="Worrenty" [(ngModel)]="registerObj.worrenty"
                                                     [formGroup]="FinalPurchaseform"></airmid-textbox>
+
                                                 <airmid-dropdown label="Payment Term" formControlName="PaymentTerm"
-                                                    fxFlex="25%" [formGroup]="FinalPurchaseform"
+                                                    fxFlex="12%" [formGroup]="FinalPurchaseform"
                                                     [mode]="autocompletepaymentterm"
                                                     (selectionChange)="selPaymentterm($event)">
                                                 </airmid-dropdown>
+
                                                 <airmid-dropdown label="-- Select PaymentMode --"
-                                                    formControlName="PaymentMode" fxFlex="25%"
+                                                    formControlName="PaymentMode" fxFlex="12%"
                                                     [formGroup]="FinalPurchaseform" [mode]="autocompletepaymentmode"
                                                     (selectionChange)="selPaymentmode($event)">
                                                 </airmid-dropdown>
 
-                                                <airmid-textbox fxFlex="25%" label="Remark"
+                                                <airmid-textbox fxFlex="12%" label="Remark"
                                                     [(ngModel)]="registerObj.remarks" formControlName="Remark"
                                                     [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 
@@ -644,7 +693,7 @@
             </div>
 
         </div>
-      
+
         <div class="modal-footer" style="padding-top: 10px;">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">

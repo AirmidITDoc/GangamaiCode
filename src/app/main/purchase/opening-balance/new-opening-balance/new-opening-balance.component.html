@@ -57,40 +57,49 @@
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-
-                                        <airmid-textbox fxFlex="9%" label="BatchNo" formControlName="BatchNo"
+                                        <airmid-textbox fxFlex="5%" label="BatchNo" formControlName="BatchNo"
                                             [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
                                             placeholder="BatchNo"></airmid-textbox>
 
-                                        <mat-form-field appearance="outline" fxFlex="9%">
+                                        <mat-form-field appearance="outline" fxFlex="5%">
                                             <mat-label>ExpDate</mat-label>
-                                            <input matInput #inputField (keyup.enter)="calculateLastDay()"
+                                            <input matInput #inputField (keydown.enter)="calculateLastDay()"
                                                 (keypress)="keyPressAlphanumeric($event)" formControlName="ExpDate"
                                                 id="ExpDatess" [(ngModel)]="vlastDay" #expdate autocomplete="off"
-                                                placeholder="MMYYYY" required>
+                                                placeholder="MMYYYY" (input)="onExpDateInput($event)" required>
                                         </mat-form-field>
 
-                                        <airmid-textbox fxFlex="9%" label="Bal Qty" formControlName="BalanceQty"
+                                        <airmid-textbox fxFlex="5%" label="Bal Qty" formControlName="BalanceQty"
                                             [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="BalanceQty"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="9%" label="GST %" formControlName="GST"
-                                            [(ngModel)]="vGST" type="number" [formGroup]="OPeningtemForm"
-                                            placeholder="GST %"></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGST"
+                                            [formGroup]="OPeningtemForm" type="text" #CGST
+                                            (valueChange)="getchangegstper($event,CGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="9%" label="MRP" formControlName="MRP"
-                                            type="number" [formGroup]="OPeningtemForm"
-                                            placeholder="MRP" (input)="onMRPInput($event)"></airmid-textbox>
+                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGST"
+                                            [formGroup]="OPeningtemForm" type="text" #SGST
+                                            (valueChange)="getchangegstper($event,SGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="9%" label="Rate PerUnit" formControlName="RatePerUnit"
-                                           [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="Rate PerUnit" (keyup)="CheckValidation()"
-                                            (input)="onRatePerUnitInput($event)"
+                                        <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGST"
+                                            [formGroup]="OPeningtemForm" type="text" #IGST
+                                            (valueChange)="getchangegstper($event,IGST)"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="5%" label="GST %" formControlName="GST" [(ngModel)]="vGST"
+                                            [formGroup]="OPeningtemForm" type="text" [readonly]="true"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" type="number"
+                                            [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0"
+                                            (input)="onMRPInput($event)"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="5%" label="Rate PerUnit" formControlName="RatePerUnit"
+                                            [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
+                                            (input)="onRatePerUnitInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="9%" label="LandedRate" formControlName="LandedRate"
-                                            [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="Landed Rate" (input)="onLandedRateInput($event)"
+                                        <airmid-textbox fxFlex="5%" label="LandedRate" formControlName="LandedRate"
+                                            [formGroup]="OPeningtemForm" type="number" placeholder="Landed Rate"
+                                            (input)="onLandedRateInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <div style="margin-left: 20px;"
@@ -122,10 +131,10 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ItemName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-450">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-400">
                                     ItemName
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-450">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
                                     {{contact.ItemName}}
                                 </mat-cell>
                             </ng-container>
@@ -154,6 +163,38 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="CGST">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    CGST%</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.CGST}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="SGST">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    SGST%</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.SGST}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="IGST">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    IGST%</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.IGST}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="GST">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    GST%</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.GST}}
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="PerRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     UnitPerRate</mat-header-cell>
@@ -170,16 +211,7 @@
                                 </mat-cell>
                             </ng-container>
 
-
-                            <ng-container matColumnDef="GST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    GST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.GST}}
-                                </mat-cell>
-                            </ng-container>
-
-                             <ng-container matColumnDef="LandedRate">
+                            <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     LandedRate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
