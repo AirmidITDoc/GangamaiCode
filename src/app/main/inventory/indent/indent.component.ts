@@ -39,19 +39,24 @@ export class IndentComponent implements OnInit {
   Status = "0"
   FromStore: any = String(this.accountService.currentUserValue.user.storeId);
   Tostore: any = "0"
+  IsVerify = "0"
+  IsActive = "0"
+  IsClosed = "0"
+
+
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
-  
+
 
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
   @ViewChild('detailactionsTemplate') detailactionsTemplate!: TemplateRef<any>;
   @ViewChild('isverifyTemplate') isverifyTemplate!: TemplateRef<any>;
-   gridConfig1: gridModel = new gridModel();
+  gridConfig1: gridModel = new gridModel();
   isShowDetailTable: boolean = false;
 
   ngAfterViewInit() {
@@ -59,15 +64,17 @@ export class IndentComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isverifyTemplate;
-      this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig1.columnsList.find(col => col.key === 'isclosed')!.template = this.detailactionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    // this.gridConfig1.columnsList.find(col => col.key === 'isclosed')!.template = this.detailactionsTemplate;
 
   }
 
   allcolumns = [
-    { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
-    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    // { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 90 },
+
+     { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Indent Date", key: "indentDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
     { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -92,20 +99,21 @@ export class IndentComponent implements OnInit {
       { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "Status", fieldValue: this.Status, opType: OperatorComparer.Equals }
+      { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
+      { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
+      { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }
     ]
   }
 
-
   GetDetails1(data) {
-    
+
     let IndentId = data.indentId
     this.gridConfig1 = {
       apiUrl: "Indent/IndentDetailsList",
       columnsList: [
-        { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template,template:this.detailactionsTemplate },
+        { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, template: this.detailactionsTemplate },
         { heading: "Item Code ", key: "itemId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "QTY", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Issue Qty", key: "issQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Pending Qty", key: "bal", sort: true, align: 'left', emptySign: 'NA' }
@@ -143,7 +151,7 @@ export class IndentComponent implements OnInit {
   }
 
   ListView1(value) {
-     console.log(value)
+    console.log(value)
     if (value.value !== 0)
       this.Tostore = value.value
     else
@@ -152,11 +160,23 @@ export class IndentComponent implements OnInit {
   }
 
   onChangeFirst(value) {
-    
-    if (this.IndentSearchGroup.get('Status').value == true) {
-      this.Status = "1"
+debugger
+    if (this.IndentSearchGroup.get('Verify').value == true) {
+      this.IsVerify = "1"
     } else {
-      this.Status = "0"
+      this.IsVerify = "0"
+    }
+
+    if (this.IndentSearchGroup.get('Closed').value == true) {
+      this.IsClosed = "1"
+    } else {
+      this.IsClosed = "0"
+    }
+
+    if (this.IndentSearchGroup.get('Active').value == true) {
+      this.IsActive = "0"
+    } else {
+      this.IsActive = "1"
     }
 
     this.isShowDetailTable = false;
@@ -168,7 +188,7 @@ export class IndentComponent implements OnInit {
   }
 
   getfilterdata() {
-    
+debugger
     this.gridConfig = {
       apiUrl: "Indent/IndentList",
       columnsList: this.allcolumns,
@@ -179,7 +199,9 @@ export class IndentComponent implements OnInit {
         { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Status", fieldValue: this.Status, opType: OperatorComparer.Equals }
+        { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
+        { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
+        { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }
       ],
       row: 25
     }
@@ -208,8 +230,7 @@ export class IndentComponent implements OnInit {
 
   OnEdit(contact) {
     console.log(contact)
-    if (this.IndentSearchGroup.get('Status').value == 0) {
-
+   
       const dialogRef = this._matDialog.open(NewIndentComponent,
         {
           maxWidth: "90vw",
@@ -225,17 +246,30 @@ export class IndentComponent implements OnInit {
         this.isShowDetailTable = true;
         this.grid.bindGridData();
       });
-    }
-    else {
-      this.toastr.warning('Verified Record connot be edited', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
-
-
+   
   }
 
-
+  deleteIndent(data) {
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the Indent?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        var data = {
+          "indentId": data.indentId
+        }
+        this._IndentService.IndentCancle(data).subscribe((response: any) => {
+          this.grid.bindGridData();
+        });
+      }
+    });
+  }
   onVerify(row) {
 
     let submitData = {
