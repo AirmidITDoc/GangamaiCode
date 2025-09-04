@@ -107,8 +107,7 @@ export class NewGRNService {
             this.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
             item.ConversionFactor = 1;
             return false;
-        }
-        debugger
+        } 
         // const expDatePattern = /^(0[1-9]|1[0-2])\d{4}$/;
          const expDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
         if (!expDatePattern.test(item.ExpDate)) {
@@ -311,8 +310,7 @@ export class NewGRNService {
             this.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
             form.patchValue({ ConversionFactor: 1 });
             return false;
-        }
-        debugger
+        } 
          if (!values.GSTType || +values.GSTType < 0) {
             this.showToast('Please select an GST Type', ToastType.WARNING);
             return false;

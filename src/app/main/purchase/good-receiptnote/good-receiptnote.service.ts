@@ -93,17 +93,17 @@ export class GoodReceiptnoteService {
       SGSTAmount: [0],
       IGST:[0, [Validators.min(0),Validators.max(100)]],
       IGSTAmount: [0],
-      NetAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      NetAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       SupplierId: ['', [Validators.required]],
       Contact:  ['', [Validators.required]],
       Mobile: [''],
-      InvoiceNo: ['',Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)],
+      InvoiceNo: ['',[Validators.required]],
       DateOfInvoice: [new Date()],
       GateEntryNo: [''], 
-      GSTType: [16,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], // 16 is a value of first GST Type   
+      GSTType: [16,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]], // 16 is a value of first GST Type   
       PaymentDate: [new Date()],
-      GRNType:['true'], 
-      PaymentType:['false'],
+      GRNType:[true], 
+      PaymentType:[false],
       StoreId:[this.accountService.currentUserValue.user.storeId,
         [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
     });
@@ -239,5 +239,8 @@ export class GoodReceiptnoteService {
 
   public getSupplierdetails(Id) { 
     return this._httpClient1.GetData("Supplier/" + Id);
+  }
+    public checkInvoiceNoExist(emp) {
+    return this._httpClient1.PostData("GRN/GrnInvoiceNocheck", emp);
   }
 }
