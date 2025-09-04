@@ -29,6 +29,8 @@
 
                     <mat-icon *ngIf="element.priority=='True'" matTooltip="Urgent" style="color: brown;">pan_tool
                     </mat-icon>
+                     <mat-icon *ngIf="element.priority=='False'" matTooltip="Urgent" style="color: rgb(19, 126, 13);">pan_tool
+                    </mat-icon>
                 </div>
             </ng-template>
 
@@ -36,14 +38,17 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
                   <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify" style="color: green;">done_all
                     </mat-icon>
+
+                     <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Is Verify" style="color: rgb(128, 0, 30);">done_all
+                    </mat-icon>
                 </div>
             </ng-template>
 
 
             <ng-template #actionsTemplate1 let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <!-- <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed">assignment_late
-                    </mat-icon> -->
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed">assignment_late
+                    </mat-icon>
 
                     <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending" >add_shopping_cart
                     </mat-icon>

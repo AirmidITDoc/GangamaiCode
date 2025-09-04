@@ -263,7 +263,7 @@ export class NewIssueTodeptComponent {
         "issueDate": [(new Date()).toISOString().split('T')[0]],
         "issueTime": [(new Date()).toISOString()],
         "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "toStoreId": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "totalAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         "totalVatAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         "netAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
