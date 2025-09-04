@@ -30,7 +30,7 @@ export class ItemFormMasterComponent implements OnInit {
     companyId = 0;
     storeId = 0;
     drugId = 0;
-    drugName=''
+    drugName = ''
     menuId = 0;
 
     // new api
@@ -52,9 +52,9 @@ export class ItemFormMasterComponent implements OnInit {
     vchkactive: any = true;
     grid: any;
     vHSNCode: any;
-    vCGST:any;
-    vIGST:any;
-    vSGST:any;
+    vCGST: any;
+    vIGST: any;
+    vSGST: any;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -67,15 +67,15 @@ export class ItemFormMasterComponent implements OnInit {
     ngOnInit(): void {
         this.itemForm = this._itemService.createItemmasterForm();
         this.itemForm.markAllAsTouched();
-        
-        if(this.data){
+
+        if (this.data) {
             console.log(this.data)
             this.ItemId = this.data.itemID
             this.vHSNCode = this.data.hsNcode
             this.vchkactive = this.data.isActive
-            this.vCGST=this.data.cgst
-            this.vSGST=this.data.sgst
-            this.vIGST=this.data.igst
+            this.vCGST = this.data.cgst
+            this.vSGST = this.data.sgst
+            this.vIGST = this.data.igst
         }
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
@@ -87,6 +87,11 @@ export class ItemFormMasterComponent implements OnInit {
                 this.toastr.error(error.message);
             });
         }
+    }
+
+    onHSNChange(event: any) {
+        const upper = event.target.value.toUpperCase();
+        this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
     }
 
     onSave(row: any = null) {
@@ -110,7 +115,7 @@ export class ItemFormMasterComponent implements OnInit {
         this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
     }
 
-   
+
 
     // selectChangeItemType(obj: any) {
     //     this.itemId = obj.value;
@@ -141,18 +146,18 @@ export class ItemFormMasterComponent implements OnInit {
     // }
     selectChangeDrugType(obj: any) {
         this.drugId = obj.value
-        this.drugName=obj.text
+        this.drugName = obj.text
     }
     // selectChangeMenu(obj: any) {
     //     this.menuId = obj.value
     // }
 
-    gstPerArray:any=[
-        {gstPer :0},
-        {gstPer :2.5},
-        {gstPer :6},
-        {gstPer :9},
-        {gstPer :14},
+    gstPerArray: any = [
+        { gstPer: 0 },
+        { gstPer: 2.5 },
+        { gstPer: 6 },
+        { gstPer: 9 },
+        { gstPer: 14 },
     ]
 
     validateGST(fieldValue, fieldName) {
@@ -166,74 +171,74 @@ export class ItemFormMasterComponent implements OnInit {
         }
         return true;
     }
-    
+
     gstPerChecking() {
         if (!this.validateGST(this.vCGST, 'CGST')) return;
         if (!this.validateGST(this.vSGST, 'SGST')) return;
         if (!this.validateGST(this.vIGST, 'IGST')) return;
-    }    
-
-   onSubmit() {
-  debugger;
-
-  if (this.itemForm.valid) {
-    console.log("Item JSON :-", this.itemForm.value);
-
-    
-    const formData = { ...this.itemForm.value };
-
-    const transformedStores = (formData.mAssignItemToStores || []).map((store: any) => ({
-      assignId: 0,
-      StoreId: store.storeId,
-      itemId: 0
-    }));
-
-    formData.mAssignItemToStores = transformedStores;
-
-    console.log("Transformed Item JSON :-", formData);
-
-    if (this.ItemId) {
-      formData.itemID = this.ItemId;
-
-      this._itemService.updateItemMaster(formData).subscribe(
-        (data) => {
-          this.toastr.success(data.message);
-          this.onClear(true);
-        },
-        (error) => {
-          this.toastr.error(error.message);
-        }
-      );
-    } else {
-      formData.drugTypeName = this.drugName;
-
-      this._itemService.insertItemMaster(formData).subscribe(
-        (data) => {
-          this.toastr.success(data.message);
-          this.onClear(true);
-        },
-        (error) => {
-          this.toastr.error(error.message);
-        }
-      );
     }
-  } else {
-    const invalidFields: string[] = [];
 
-    Object.keys(this.itemForm.controls).forEach((controlName) => {
-      const control = this.itemForm.controls[controlName];
-      if (control.invalid) {
-        invalidFields.push(controlName);
-      }
-    });
+    onSubmit() {
+        debugger;
 
-    if (invalidFields.length > 0) {
-      invalidFields.forEach((field) => {
-        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
-      });
+        if (this.itemForm.valid) {
+            console.log("Item JSON :-", this.itemForm.value);
+
+
+            const formData = { ...this.itemForm.value };
+
+            const transformedStores = (formData.mAssignItemToStores || []).map((store: any) => ({
+                assignId: 0,
+                StoreId: store.storeId,
+                itemId: 0
+            }));
+
+            formData.mAssignItemToStores = transformedStores;
+
+            console.log("Transformed Item JSON :-", formData);
+
+            if (this.ItemId) {
+                formData.itemID = this.ItemId;
+
+                this._itemService.updateItemMaster(formData).subscribe(
+                    (data) => {
+                        this.toastr.success(data.message);
+                        this.onClear(true);
+                    },
+                    (error) => {
+                        this.toastr.error(error.message);
+                    }
+                );
+            } else {
+                formData.drugTypeName = this.drugName;
+
+                this._itemService.insertItemMaster(formData).subscribe(
+                    (data) => {
+                        this.toastr.success(data.message);
+                        this.onClear(true);
+                    },
+                    (error) => {
+                        this.toastr.error(error.message);
+                    }
+                );
+            }
+        } else {
+            const invalidFields: string[] = [];
+
+            Object.keys(this.itemForm.controls).forEach((controlName) => {
+                const control = this.itemForm.controls[controlName];
+                if (control.invalid) {
+                    invalidFields.push(controlName);
+                }
+            });
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach((field) => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+        }
     }
-  }
-}
 
 
     onClear(val: boolean) {

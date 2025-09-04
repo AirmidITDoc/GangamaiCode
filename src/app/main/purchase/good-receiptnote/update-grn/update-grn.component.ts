@@ -1266,6 +1266,8 @@ chekgstper(obj){
         }
 
     }
+
+        // A digit or decimal input handler
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -1275,6 +1277,7 @@ chekgstper(obj){
             return false;
         }
     }
+    // A digit or decimal input handler
     keyPressCharater(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {

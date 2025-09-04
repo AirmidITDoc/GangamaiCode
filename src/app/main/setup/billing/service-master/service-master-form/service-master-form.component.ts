@@ -250,6 +250,7 @@ export class ServiceMasterFormComponent implements OnInit {
             doctorControl?.setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
         } else {
             doctorControl?.clearValidators();
+            this.serviceForm.get('doctorId').setValue('')
         }
         doctorControl?.updateValueAndValidity();
     }
@@ -494,6 +495,7 @@ export class ServiceMasterFormComponent implements OnInit {
         }
         else {
             this.showDoctor=false
+            this.serviceForm.get('doctorId').setValue('')
             this.isDocEditableBoolen = false;
         }
     }

@@ -51,9 +51,8 @@ export class OpeningBalanceComponent {
 
   allcolumns = [
 
-    { heading: "UHID", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "OpeningHId", key: "openingHId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "OpeningDate", key: "openingDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+    { heading: "DateTime", key: "openingTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type:8},
+    { heading: "TransectionNo", key: "transectionNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
@@ -86,10 +85,13 @@ export class OpeningBalanceComponent {
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Pure.Rate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
+        { heading: "Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "perUnitMrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Pure.Rate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "LandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CGST(%)", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "SGST(%)", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IGST(%)", key: "igstPer", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "GST(%)", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' }
 
       ],

@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
             Username: ["", [Validators.required]],
             Password: ["", Validators.required],
             CaptchaCode: ["", Validators.required],
-            unitId:[0]
+            unitId: [0]
         });
         this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
         this.loadCaptcha();
@@ -88,7 +88,8 @@ export class LoginComponent implements OnInit {
         var data = {
             CaptchaToken: this.captchaToken, Username: this.encryptionService.encrypt(this.obj.Username),
             Password: this.encryptionService.encrypt(this.obj.Password),
-            CaptchaCode: this.loginForm.value.CaptchaCode
+            CaptchaCode: this.loginForm.value.CaptchaCode,
+            LoginType: 1
         };
         this.authenticationService.login(data).subscribe(
             (data) => {
@@ -103,7 +104,7 @@ export class LoginComponent implements OnInit {
                     this.confirmDialogRef.componentInstance.confirmMessage = data.msg;
                     this.confirmDialogRef.afterClosed().subscribe((result) => {
                         if (result) {
-                            this.authenticationService.confirmlogin({ Token: data.token }).subscribe((data) => {
+                            this.authenticationService.confirmlogin({ Token: data.token, LoginType: 1 }).subscribe((data) => {
                                 if ((data?.userId ?? 0) > 0) {
                                     this.router.navigate([this.returnUrl]);
                                 }
@@ -132,9 +133,9 @@ export class LoginComponent implements OnInit {
     }
 
 
-      getValidationMessages() {
-    return {
-      unitId:  { name: "required", Message: "Unit Name is required" }, 
-    };
-  }
+    getValidationMessages() {
+        return {
+            unitId: { name: "required", Message: "Unit Name is required" },
+        };
+    }
 }

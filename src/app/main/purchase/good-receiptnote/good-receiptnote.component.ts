@@ -301,8 +301,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         };
 
         reader.readAsBinaryString(target.files[0]);
-    }
-
+    } 
     newGRNEntry(chkNewGRN) {
         const dialogRef = this._matDialog.open(NewGrnComponent,
             {
@@ -360,7 +359,10 @@ export class GoodReceiptnoteComponent implements OnInit {
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
         }); 
         // this.onChangeFirst();
-         this.grid.bindGridData();
+        setTimeout(() => {
+            this.grid.bindGridData();
+        }, 1000);
+         
     }
     LastThreeItemList(contact) {
         var vdata = {
