@@ -184,8 +184,7 @@ export class NewAdvanceComponent implements OnInit {
     this._PharAdvanceService.getAdvanceList(m_data).subscribe(Visit => {
       this.dsIpItemList.data = Visit.data as IpItemList[];
       this.vAdvanceId = this.dsIpItemList.data[0]?.advanceId || 0;
-      this.vAdvanceDetailID = this.dsIpItemList.data[0]?.advanceDetailId || 0;
-      console.log(this.dsIpItemList.data)
+      this.vAdvanceDetailID = this.dsIpItemList.data[0]?.advanceDetailId || 0; 
     });
   }
   onSave() {
@@ -204,7 +203,7 @@ export class NewAdvanceComponent implements OnInit {
     this.insertForm?.get("pharmacyAdvanceDetails.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceDetailId")?.setValue(this.vAdvanceDetailID || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'shortTime'));
+    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.datePipe.transform(this.dateTimeObj.time, 'shortTime'));
     this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? '');

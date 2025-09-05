@@ -218,7 +218,7 @@ vMobile: any;
         if (!isValid) {
             this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING); 
             this.userFormGroup.get(controlName)?.setValue(''); 
-              const NameElement = document.querySelector(`[name='controlName']`) as HTMLElement;
+              const NameElement = document.querySelector(`[name='{{controlName}}']`) as HTMLElement;
              if (NameElement) {
             NameElement.focus();
             }
@@ -672,7 +672,7 @@ vMobile: any;
             remark: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             receivedBy: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             isVerified: [false],
-            isClosed: [true],
+            isClosed: [false],
             addedBy: [this.accountService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
             updatedBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             prefix: ["GRN", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -704,13 +704,13 @@ vMobile: any;
      //Insert grn details form
     createGrndetailInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
-            grndetId: [this.registerObj?.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            grnid: [item?.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            grndetId: [item?.grnDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            grnid: [this.registerObj?.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrp: [item?.MRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmount: [item?.TotalAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -809,8 +809,7 @@ vMobile: any;
             }
         })
     } 
-    OnSavenew() {
-        debugger
+    OnSavenew() { 
         const grnPatchData = {
             grndate: this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             grntime: this.dateTimeObj.time,
@@ -865,7 +864,7 @@ vMobile: any;
                 this.GrnHeaderForm.get("grn.grnNumber").setValue(this.registerObj?.grnNumber)
                 this.GrnHeaderForm.get("grn.updatedBy")?.setValue(this.accountService.currentUserValue.userId)
                 this._GRNList.GRNEdit(this.GrnHeaderForm.value, this.registerObj?.grnid).subscribe(response => {
-                    this.viewgetGRNReportPdf(response)
+                    this.viewgetGRNReportPdf(this.registerObj?.grnid)
                     this.OnReset();
                 });
             }
@@ -913,7 +912,7 @@ vMobile: any;
             "exportType": "JSON"
         }
         this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
-            this.dsItemNameList.data = response.data
+            this.dsItemNameList.data = response.data 
             console.log(this.dsItemNameList.data)
             this.dsItemNameList.data.forEach(element => {
                 this.chargeslist.push(
@@ -956,7 +955,8 @@ vMobile: any;
                         IsVerifiedUserId: element.isVerifiedUserId,
                         IsVerified: element.isVerified,
                         IsVerifiedDatetime: element.isVerifiedDatetime,
-                        StkID: element.stkID
+                        StkID: element.stkID,
+                        grnDetID:element.grnDetID
                     }
                 )
             })
