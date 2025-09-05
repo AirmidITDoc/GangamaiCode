@@ -159,7 +159,8 @@
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>BMI</mat-label>
                                                         <input matInput formControlName="BMI" placeholder="BMI" readonly
-                                                            [(ngModel)]="vBMI" [style.color]="getVitalColorClass('BMI', vBMI)"
+                                                            [(ngModel)]="vBMI"
+                                                            [style.color]="getVitalColorClass('BMI', vBMI)"
                                                             [style.fontWeight]="'500'" />
                                                     </mat-form-field>
 
@@ -177,8 +178,8 @@
                                                         <input matInput formControlName="SpO2" placeholder="SpO2"
                                                             [maxLength]="20" (keydown)="onEnterSpO2($event)" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vSpO2"
-                                                             [style.color]="getVitalColorClass('SpO2', vSpO2)"
-                                                             [style.fontWeight]="'500'">
+                                                            [style.color]="getVitalColorClass('SpO2', vSpO2)"
+                                                            [style.fontWeight]="'500'">
                                                     </mat-form-field>
 
                                                     <!-- Pulse [(ngModel)]="vPulse" -->
@@ -187,8 +188,8 @@
                                                         <input matInput formControlName="Pulse" placeholder="Pulse"
                                                             [maxLength]="10" (keydown)="onEnterPulse($event)" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vPulse"
-                                                             [style.color]="getVitalColorClass('Pulse', vPulse)"
-                                                             [style.fontWeight]="'500'">
+                                                            [style.color]="getVitalColorClass('Pulse', vPulse)"
+                                                            [style.fontWeight]="'500'">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">bpm</span>
@@ -200,8 +201,8 @@
                                                         <input matInput formControlName="BP" placeholder="BP"
                                                             [maxLength]="10" (keydown)="onEnterBP($event)" OnlyNumber
                                                             (keypress)="keyPressOk($event)" [(ngModel)]="vBP"
-                                                             [style.color]="getVitalColorClass('BP', vBP)"
-                                                             [style.fontWeight]="'500'" placeholder="Enter as 120/80">
+                                                            [style.color]="getVitalColorClass('BP', vBP)"
+                                                            [style.fontWeight]="'500'" placeholder="Enter as 120/80">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <span matSuffix
                                                             style="margin-right: 10px; font-size: x-large;">mmHg</span>
@@ -213,8 +214,8 @@
                                                         <input matInput formControlName="Temp" placeholder="Temp"
                                                             [maxLength]="10" (keydown)="onEnterTemp($event)" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vTemp"
-                                                             [style.color]="getVitalColorClass('Temp', vTemp)"
-                                                             [style.fontWeight]="'500'">
+                                                            [style.color]="getVitalColorClass('Temp', vTemp)"
+                                                            [style.fontWeight]="'500'">
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
                                                         <span matSuffix
@@ -322,11 +323,12 @@
                                                             placeholderText="Enter Drug Name" fxFlex
                                                             ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
                                                             (selectionChange)="selectChangeItemName($event)"
-                                                            TextField="formattedText" ValueField="ItemId">
+                                                            TextField="formattedText" ValueField="ItemId"
+                                                            (onClearSelection)="ItemFromReset()">
                                                         </airmid-autocomplete>
 
                                                         <airmid-dropdown label="Dose Name" formControlName="DoseId"
-                                                            [formGroup]="MedicineItemForm"
+                                                            [formGroup]="MedicineItemForm" #doseDropdown
                                                             [validations]="getValidationMessages().DoseId"
                                                             [mode]="autocompleteModeDose" [(ngModel)]="vdoseName"
                                                             (selectionChange)="selectChangeDoseName($event)">
@@ -335,24 +337,24 @@
                                                         <mat-form-field appearance="outline" fxFlex="6%">
                                                             <mat-label>Day</mat-label>
                                                             <input type="text" OnlyNumber [(ngModel)]="vDay" name="Day"
-                                                                required (keydown)="onEnterqty($event)"
+                                                                (keydown.enter)="onEnterqty($event); $event.preventDefault()"
                                                                 formControlName="Day" matInput required #Day
                                                                 (keypress)="keyPressAlphanumeric($event)">
                                                         </mat-form-field>
 
-                                                        <!-- (keydown)="onEnterremark($event)" -->
                                                         <mat-form-field appearance="outline" fxFlex="20%">
                                                             <mat-label>Instruction</mat-label>
                                                             <input type="text" name="Instruction" [maxLength]="200"
                                                                 [(ngModel)]="vInstruction" formControlName="Instruction"
-                                                                matInput #Instruction (keydown)="onEnterremark($event)">
+                                                                matInput #Instruction
+                                                                (keydown.enter)="onEnterremark($event)">
                                                         </mat-form-field>
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Drug to enable this button!!"
                                                                 [matTooltipPosition]="'above'">
-                                                                <button #addbutton class="btn btn-primary btn-with-icon"
-                                                                    (click)="onAdd()">
+                                                                <button class="btn btn-primary btn-with-icon"
+                                                                    (click)="onAdd()" #addbutton>
                                                                     <span class="btn-icon">
                                                                         <mat-icon> add </mat-icon>
                                                                     </span>
@@ -360,6 +362,7 @@
                                                                 </button>
                                                             </div>
                                                         </div>&nbsp;
+                                                        <!-- #addbutton  -->
 
                                                         <mat-divider [vertical]="true"></mat-divider>&nbsp;
 
@@ -413,9 +416,8 @@
                                                                     <!-- Display text when not in edit mode -->
                                                                     <span *ngIf="editingIndex1 !== in">
                                                                         {{ element.GenericName || element.genericName }}
-                                                                        <!-- {{ element.GenericName || vItemGN }} -->
-                                                                        <mat-icon (click)="editItem(in, element)"
-                                                                            class="edit-icon">edit</mat-icon>
+                                                                        <mat-icon *ngIf="element.precriptionId" 
+                                                                        (click)="editItem(in, element)" class="edit-icon">edit</mat-icon>
                                                                     </span>
 
                                                                     <!-- Show dropdown and save button when in edit mode -->
@@ -429,19 +431,21 @@
                                                                             (selectionChange)="selectChangeItemGenericName($event)">
                                                                         </airmid-dropdown>
 
-                                                                        <button mat-icon-button
-                                                                            (click)="OnSaveEditGeneric(element)"
-                                                                            matTooltip="Save">
-                                                                            <mat-icon
-                                                                                class="active-icon green-600 s-16">check</mat-icon>
-                                                                        </button>
+                                                                        <ng-container *ngIf="element.precriptionId">
+                                                                            <button mat-icon-button
+                                                                                (click)="OnSaveEditGeneric(element)"
+                                                                                matTooltip="Save">
+                                                                                <mat-icon
+                                                                                    class="active-icon green-600 s-16">check</mat-icon>
+                                                                            </button>
 
-                                                                        <button mat-icon-button
-                                                                            (click)="GenericdisableEditing(element)"
-                                                                            matTooltip="Close">
-                                                                            <mat-icon
-                                                                                class="active-icon red-600 s-16">close</mat-icon>
-                                                                        </button>
+                                                                            <button mat-icon-button
+                                                                                (click)="GenericdisableEditing(element)"
+                                                                                matTooltip="Close">
+                                                                                <mat-icon
+                                                                                    class="active-icon red-600 s-16">close</mat-icon>
+                                                                            </button>
+                                                                        </ng-container>
                                                                     </div>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -458,8 +462,8 @@
                                                                     <span *ngIf="editingIndex !== i">
                                                                         {{ element.DoseName || element.doseName }}
                                                                         <!-- {{ element.DoseName || vDoseName }} -->
-                                                                        <mat-icon (click)="editDose(i, element)"
-                                                                            class="edit-icon">edit</mat-icon>
+                                                                        <mat-icon *ngIf="element.precriptionId" 
+                                                                        (click)="editDose(i, element)" class="edit-icon">edit</mat-icon>
                                                                     </span>
 
                                                                     <div *ngIf="editingIndex === i"
@@ -470,19 +474,21 @@
                                                                             (selectionChange)="selectChangeDoseName($event)">
                                                                         </airmid-dropdown>
 
-                                                                        <button mat-icon-button
-                                                                            (click)="OnSaveEditDose(element)"
-                                                                            matTooltip="Save">
-                                                                            <mat-icon
-                                                                                class="active-icon green-600 s-16">check</mat-icon>
-                                                                        </button>
+                                                                        <ng-container *ngIf="element.precriptionId">
+                                                                            <button mat-icon-button
+                                                                                (click)="OnSaveEditDose(element)"
+                                                                                matTooltip="Save">
+                                                                                <mat-icon
+                                                                                    class="active-icon green-600 s-16">check</mat-icon>
+                                                                            </button>
 
-                                                                        <button mat-icon-button
-                                                                            (click)="DosedisableEditing(i)"
-                                                                            matTooltip="Close">
-                                                                            <mat-icon
-                                                                                class="active-icon red-600 s-16">close</mat-icon>
-                                                                        </button>
+                                                                            <button mat-icon-button
+                                                                                (click)="DosedisableEditing(i)"
+                                                                                matTooltip="Close">
+                                                                                <mat-icon
+                                                                                    class="active-icon red-600 s-16">close</mat-icon>
+                                                                            </button>
+                                                                        </ng-container>
                                                                     </div>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -509,7 +515,7 @@
                                                                     <mat-form-field appearance="fill"
                                                                         floatLabel="never">
                                                                         <input matInput [maxLength]="200"
-                                                                            [(ngModel)]="element.Instruction || element.instruction"
+                                                                            [(ngModel)]="element.instruction"
                                                                             type="text">
                                                                     </mat-form-field>
                                                                 </mat-cell>
@@ -1325,13 +1331,13 @@
                                                         {{ element.certificateText }}
                                                     </span>
                                                 </mat-cell>
-                                            </ng-container>  
+                                            </ng-container>
 
                                             <ng-container matColumnDef="doctorName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                                Doctor Name </mat-header-cell>
+                                                    Doctor Name </mat-header-cell>
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                {{element.doctorName}} </mat-cell>
+                                                    {{element.doctorName}} </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="Action" stickyEnd>
@@ -1410,11 +1416,11 @@
                                                 </div>
 
                                                 <div>
-                                                    <mat-label>Certificate Details</mat-label>
-                                                    <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                        required formControlName="certificateText"
-                                                        [(ngModel)]="vcertificateText">
-                                                    </angular-editor>
+                                                    <airmid-editor label="Certificate Details"
+                                                        formControlName="certificateText" [(value)]="vcertificateText"
+                                                        [formGroup]="mycertificateForm"
+                                                        (valueChange)="onEditorValueChange($event)">
+                                                    </airmid-editor>
                                                 </div>
 
                                             </mat-card>
