@@ -117,7 +117,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       cgstPer: [element.CGST || 0],
       sgstPer: [element.SGST || 0],
       igstPer: [element.IGST || 0],
-      vatPer: [element.GST || 0],
+      gstper: [element.GST || 0],
       balQty: [element.BalQty || 0],
       addedby: [this._loggedService.currentUserValue.userId],
       updatedby: [this._loggedService.currentUserValue.userId],
