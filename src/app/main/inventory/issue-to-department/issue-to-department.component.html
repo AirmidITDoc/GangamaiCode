@@ -34,8 +34,13 @@
 
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified =='1'" matTooltip="IsVerified" style="color: green;">done_all
-                    </mat-icon>
+                    <!-- <mat-icon *ngIf="element.isVerified =='true'" matTooltip="IsVerified" style="color: green;">done_all
+                    </mat-icon> -->
+
+                       <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
 
                 </div>
             </ng-template>

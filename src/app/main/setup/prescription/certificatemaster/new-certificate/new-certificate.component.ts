@@ -19,22 +19,6 @@ export class NewCertificateComponent implements OnInit {
     vTemplateName: any;
     vcertificateName: any;
     isActive: boolean = true;
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-
-    };
-
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
-        throw new Error('Method not implemented.');
-    }
 
     constructor(
         public _CertificateserviceService: CertificateserviceService,
@@ -49,15 +33,24 @@ export class NewCertificateComponent implements OnInit {
         this.templateForm.markAllAsTouched();
         if ((this.data?.certificateId ?? 0) > 0) {
             this.isActive = this.data.isActive
+            // this.vcertificateName = this.data.certificateName
+            // this.templateForm.patchValue(this.data);
             this.vTemplateDesc = this.data.certificateDesc
-            this.vcertificateName = this.data.certificateName
-            this.templateForm.patchValue(this.data);
+            this.templateForm.get('certificateDesc').setValue(this.vTemplateDesc)
+            this.templateForm.patchValue({
+                certificateId: this.data.certificateId,
+                certificateName: this.data.certificateName,
+            });
         }
     }
 
-    onSubmit() {
+    onEditorValueChange(content: string) {
+        this.templateForm.get('certificateDesc')?.setValue(content);
+    }
 
+    onSubmit() {
         if (!this.templateForm.invalid) {
+            this.templateForm.get('certificateName')?.setValue(this.templateForm.get('certificateName')?.value ?? this.data.certificateName);
             console.log(this.templateForm.value)
             this._CertificateserviceService.templateMasterSave(this.templateForm.value).subscribe((response) => {
                 this.onClear(true);

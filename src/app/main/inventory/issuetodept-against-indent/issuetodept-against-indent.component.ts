@@ -81,65 +81,55 @@ export class IssuetodeptAgainstIndentComponent {
     let IsClose= this.IndentFrom.get("Status").value
 
     var vdata = {
-      "first": 0,
-      "rows": 20,
-      "sortField": "IndentId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "FromStoreId",
-          "fieldValue": String(this.vstoreId),
-          "opType": "Equals"
-
-        },
-        {
-          "fieldName": "ToStoreId",
-          "fieldValue": String(this.accountService.currentUserValue.user.storeId),// String(this.vstoreId),
-          "opType": "Equals"
-
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": frdate,
-          "opType": "Equals"
-
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": todate,
-          "opType": "Equals"
-
-        },
-        {
-          "fieldName": "IsActive",
-          "fieldValue": "0",
-          "opType": "Equals"
-
-        },
-        ,
-        {
-          "fieldName": "IsVerify",
-          "fieldValue": "1",
-          "opType": "Equals"
-
-        },
-        ,
-        {
-          "fieldName": "IsClosed",
-          "fieldValue": "0",
-          "opType": "Equals"
-
-        }
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
-
+  "first": 0,
+  "rows": 10,
+  "sortField": "IndentId",
+  "sortOrder": 0,
+  "filters": [
+    {
+      "fieldName": "FromStoreId",
+      "fieldValue": "1",
+      "opType": "Equals"
+    },
+ {
+      "fieldName": "ToStoreId",
+      "fieldValue": "2",
+      "opType": "Equals"
+    },
+ {
+      "fieldName": "From_Dt",
+      "fieldValue": "2025-09-01",
+      "opType": "Equals"
+    },
+ {
+      "fieldName": "To_Dt",
+      "fieldValue": "2025-09-04",
+      "opType": "Equals"
+    },
+ {
+      "fieldName": "IsVerify",
+      "fieldValue": "1",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "IsActive",
+      "fieldValue": "0",
+      "opType": "Equals"
+    },
+{
+      "fieldName": "IsClosed",
+      "fieldValue": "0",
+      "opType": "Equals"
     }
+  ],
+  "exportType": "JSON",
+  "columns": [
+    {
+      "data": "string",
+      "name": "string"
+    }
+  ]
+}
     console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data.data as IndentList[];
