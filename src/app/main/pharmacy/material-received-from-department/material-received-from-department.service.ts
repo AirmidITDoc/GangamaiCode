@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class MaterialReceivedFromDepartmentService {
 
   constructor(
     public _httpClient: HttpClient,  public _httpClient1: ApiCaller,private _FormvalidationserviceService: FormvalidationserviceService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,private accountService: AuthenticationService,
   ) { 
     this.userFormGroup = this.IndentID();
     this.MaterialReturnFrDept= this.MaterialSearchFrom();
@@ -22,12 +23,12 @@ export class MaterialReceivedFromDepartmentService {
 
   MaterialSearchFrom() {
     return this._formBuilder.group({
-         ToStoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+         ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           // FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           startdate: [(new Date()).toISOString()],
           enddate: [(new Date()).toISOString()],
           IsVerify:[0],
-          IsAccepted:[0]
+          // IsAccepted:[0]
     });
   }
   

@@ -28,6 +28,7 @@ import { MLCInformationComponent } from './mlcinformation/mlcinformation.compone
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -465,50 +466,50 @@ export class AdmissionComponent implements OnInit {
 }
 
   getAdmittedPatientListview() {
-    // setTimeout(() => {
+    setTimeout(() => {
 
-    //   let param = {
+      let param = {
 
-    //     "searchFields": [
-    //       {
-    //         "fieldName": "DoctorId",
-    //         "fieldValue": "4",
-    //         "opType": "13"
-    //       },
-    //       {
-    //         "fieldName": "WardId",
-    //         "fieldValue": "4",
-    //         "opType": "13"
-    //       },
-    //       {
-    //         "fieldName": "CompanyId",
-    //         "fieldValue": "0",
-    //         "opType": "13"
-    //       }
+        "searchFields": [
+          {
+            "fieldName": "DoctorId",
+            "fieldValue": this.DoctorId,
+            "opType": "13"
+          },
+          {
+            "fieldName": "WardId",
+            "fieldValue": "0",
+            "opType": "13"
+          },
+          {
+            "fieldName": "CompanyId",
+            "fieldValue": "0",
+            "opType": "13"
+          }
 
-    //     ],
-    //     "mode": "AdmissionList"
-    //   }
+        ],
+        "mode": "AdmissionList"
+      }
 
-    //   console.log(param)
-    //   this._AdmissionService.getReportView(param).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "IP Admission List  Viewer"
+      console.log(param)
+      this._AdmissionService.getReportView(param).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IP Admission List  Viewer"
 
-    //         }});
+            }});
 
-    //     matDialog.afterClosed().subscribe(result => {
+        matDialog.afterClosed().subscribe(result => {
 
-    //     });
-    //   });
+        });
+      });
 
-    // }, 100);
+    }, 100);
 
   }
 

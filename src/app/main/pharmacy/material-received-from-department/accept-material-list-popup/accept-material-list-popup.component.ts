@@ -99,7 +99,7 @@ itemdetailform(element: any = {}): FormGroup {
   console.log(element)
 return this._formBuilder.group({
       issueId: [element.issueId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueDetId: [element.issueDepId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueDepId: [element.issueDepId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       status:[element.status || 0]
     });
   }
@@ -203,7 +203,7 @@ return this._formBuilder.group({
       this.tempItemlist.forEach(element => {
     let selectedchk="0";
       if (element.selected == 1) {
-        selectedchk = "A";
+        selectedchk = "1";
       } else if (element.selected != 1) {
         selectedchk = "0";
       }

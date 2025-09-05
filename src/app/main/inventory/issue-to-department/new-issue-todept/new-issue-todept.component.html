@@ -247,16 +247,16 @@
                         <mat-table class="airmid-table table3 max-h-400" matSort [dataSource]="dsSelectedIndentItemList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
                             <ng-container matColumnDef="ItemName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
                                     ItemName </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-250">
                                     {{element.itemName}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="BalanceQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
                                     Qty </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                     {{element.balanceQty}} </mat-cell>
                             </ng-container>
 

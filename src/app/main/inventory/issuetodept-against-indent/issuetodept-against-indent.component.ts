@@ -11,28 +11,30 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { fuseAnimations } from '@fuse/animations';
+import { NewIssueTodeptComponent } from '../issue-to-department/new-issue-todept/new-issue-todept.component';
 
 @Component({
   selector: 'app-issuetodept-against-indent',
   templateUrl: './issuetodept-against-indent.component.html',
   styleUrls: ['./issuetodept-against-indent.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class IssuetodeptAgainstIndentComponent {
   IndentFrom: FormGroup;
   autocompletestore: string = "Store";
   dateTimeObj: any;
   sIsLoading: string = '';
-    vstoreId: any = 0;
+  tostoreId=this.accountService.currentUserValue.user.storeId || 0
+  vstoreId: any = "0";
   isLoading = true;
-   isStoreSelected: boolean = false;
- hasSelectedContacts: boolean = false;
+  isStoreSelected: boolean = false;
+  hasSelectedContacts: boolean = false;
   Charglist: any = [];
   Charglist1: any = [];
-   FromStoreList: any = [];
+  FromStoreList: any = [];
   filteredOptionsStore: Observable<string[]>;
- 
+
   displayedColumns: string[] = [
     // 'CheckBox',
     'Priority',
@@ -41,6 +43,7 @@ export class IssuetodeptAgainstIndentComponent {
     'FromStoreName',
     'ToStoreName',
     'Addedby',
+    'action',
   ];
   displayedColumns1: string[] = [
     // 'Status',
@@ -72,64 +75,53 @@ export class IssuetodeptAgainstIndentComponent {
     this.getIndentList()
   }
 
-
   getIndentList() {
     this.sIsLoading = 'loading-data';
-    
+
     let frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
     let todate = this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
-    let IsClose= this.IndentFrom.get("Status").value
+    let IsClose = this.IndentFrom.get("Status").value
 
     var vdata = {
-  "first": 0,
-  "rows": 10,
-  "sortField": "IndentId",
-  "sortOrder": 0,
-  "filters": [
-    {
-      "fieldName": "FromStoreId",
-      "fieldValue": "1",
-      "opType": "Equals"
-    },
- {
-      "fieldName": "ToStoreId",
-      "fieldValue": "2",
-      "opType": "Equals"
-    },
- {
-      "fieldName": "From_Dt",
-      "fieldValue": "2025-09-01",
-      "opType": "Equals"
-    },
- {
-      "fieldName": "To_Dt",
-      "fieldValue": "2025-09-04",
-      "opType": "Equals"
-    },
- {
-      "fieldName": "IsVerify",
-      "fieldValue": "1",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "IsActive",
-      "fieldValue": "0",
-      "opType": "Equals"
-    },
-{
-      "fieldName": "IsClosed",
-      "fieldValue": "0",
-      "opType": "Equals"
+      "first": 0,
+      "rows": 10,
+      "sortField": "IndentId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "FromStoreId",
+          "fieldValue": String(this.vstoreId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToStoreId",
+          "fieldValue":String(this.tostoreId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "From_Dt",
+          "fieldValue": frdate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "To_Dt",
+          "fieldValue": todate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "IsVerify",
+          "fieldValue": "1",
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
-  ],
-  "exportType": "JSON",
-  "columns": [
-    {
-      "data": "string",
-      "name": "string"
-    }
-  ]
-}
     console.log(vdata);
     this._IssueToDep.getIndentList(vdata).subscribe(data => {
       this.dsIndentList.data = data.data as IndentList[];
@@ -142,9 +134,9 @@ export class IssuetodeptAgainstIndentComponent {
       });
   }
 
- 
+
   getIndentItemDetList(Param) {
-    
+
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
@@ -166,36 +158,43 @@ export class IssuetodeptAgainstIndentComponent {
         }
       ]
     }
-    
+
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data.data as IndentItemDetList[];
       console.log(data.data)
+      
       this.Charglist = this.dsIndentItemDetList.data;
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;
-
+      
       this.sIsLoading = '';
     });
-    }
+    if(this.dsIndentItemDetList.data.length > 0)
+    this.OnIndentList()
+  }
+// ongetIndent(data){
+//   this.getIndentItemDetList(data)
+//   this.getIndentList()
+// }
 
- 
- 
   selectChangeStore(obj: any) {
     this.vstoreId = obj.value
     this.getIndentList()
   }
 
   OnIndentList() {
-    if ((!this.dsIndentItemDetList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    this.Charglist.forEach(element => {
-      if (element.balanceQty > 0)
-        this.Charglist1.push(element)
-    })
+    //  this.getIndentItemDetList(Param)
+     
+    // if ((!this.dsIndentItemDetList.data.length)) {
+    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // this.Charglist.forEach(element => {
+    //   if (element.balanceQty > 0)
+    //     this.Charglist1.push(element)
+    // })
 
     // if (this.Charglist1.length > 0)
     //   this._dialogRef.close(this.Charglist1);
@@ -206,6 +205,17 @@ export class IssuetodeptAgainstIndentComponent {
 
     // console.log(this.Charglist1)
     // this._dialogRef.close(this.Charglist1)
+
+    const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
+      {
+        maxWidth: "97vw",
+        height: '99%',
+        width: '95%',
+        data: this.Charglist
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // that.grid.bindGridData();
+    });
 
   }
 

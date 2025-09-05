@@ -78,7 +78,8 @@
                     <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
-                    <button mat-icon-button matTooltip="Delete Indent" (click)="deleteIndent(element)" *ngIf="!element.isdeleted" >
+                  
+                      <button mat-icon-button matTooltip="Delete Indent" (click)="deleteIndent(element)" *ngIf="!element.isverify" >
                         <mat-icon style="color: brown;"> delete</mat-icon>
                     </button>
 
@@ -122,13 +123,13 @@
                                         Verify
                                     </mat-slide-toggle>
                                 </div>
-                                <div fxLayout="row" class="gap-4 ">
+                                <!-- <div fxLayout="row" class="gap-4 ">
                                     <span style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">IsActive :</span>
                                     <mat-slide-toggle name="Active" (change)="onChangeFirst($event)"
                                         formControlName="Active" [formGroup]="IndentSearchGroup">
                                         Active
                                     </mat-slide-toggle>
-                                </div>
+                                </div> -->
 
                             </div>
                         <!-- </div> -->

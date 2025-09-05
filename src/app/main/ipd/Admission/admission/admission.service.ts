@@ -319,6 +319,11 @@ export class AdmissionService {
     public getadmissionlist(employee){
             return this._httpClient1.PostData("Admission/AdmissionList", employee)
     }
+
+     public getReportView(Param) {
+        return this._httpClient1.PostData("Report/ViewReport", Param);
+    }
+
 }
 
 
