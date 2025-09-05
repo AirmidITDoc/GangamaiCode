@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -19,6 +19,11 @@ import { NUserComponent } from './nuser/nuser.component';
   animations: fuseAnimations,
 })
 export class CreateUserComponent implements OnInit {
+  @HostBinding('style.display') display = 'flex';
+  @HostBinding('style.flex') flex = '1 1 auto';
+  @HostBinding('style.minHeight') minH = '0';
+  @HostBinding('style.flexDirection') dir = 'column';
+
   myuserform: FormGroup;
   autocompleteModeStoreName: String = "Store";
   autocompleteModeWebRoleName: String = "WebRole";
