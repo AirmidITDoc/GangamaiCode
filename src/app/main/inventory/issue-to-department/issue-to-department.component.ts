@@ -55,13 +55,14 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
      @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+      @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
           this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
         // this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
-
+ this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     }
 
 
@@ -72,7 +73,7 @@ export class IssueToDepartmentComponent implements OnInit {
       { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
         { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        
+         { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },

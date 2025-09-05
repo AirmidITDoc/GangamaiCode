@@ -1,167 +1,179 @@
-<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Verified Indent
+                        List</span>
+                </div>
+                <div class="modal-header-right">
+                    <!-- <div class="comman-date-container">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Verified Indent List </span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-
-                    <div class="close-icon">
-                        <!-- <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button> -->
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Modal body -->
+        <div class="modal-body modal-body-light" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
+                            <form [formGroup]="IndentFrom">
+                                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                            <input matStartDate formControlName="start" placeholder="Start date">
+                                            <input matEndDate formControlName="end" placeholder="End date"
+                                                (dateChange)='getIndentList()'>
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
 
 
-    <div class="modal-body content">
-        <div fxLayout="column" class="gap-8 h-100-p">
-            <div class="modal-card-container">
-                <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
-                    <mat-card fxFlex.gt-sm="99%" fxFlex style="padding: 6px;">
-                        <form [formGroup]="IndentFrom">
-                            <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                                <mat-form-field appearance="outline" fxFlex="20%">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="start" placeholder="Start date">
-                                        <input matEndDate formControlName="end" placeholder="End date"
-                                            (dateChange)='getIndentList()'>
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
+                                    <airmid-dropdown label="from Store Name" formControlName="FromStoreId"
+                                        [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore"
+                                        (selectionChange)="selectChangeStore($event)">
+                                    </airmid-dropdown>
+
+                                    <!-- <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
+                                        [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore1"
+                                        (selectionChange)="selectChangeStore($event)">
+                                    </airmid-dropdown> -->
+
+                                    <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
+                                        style="padding: 12px;" fxLayout="row" (change)="getIndentList()">
+                                        <mat-label
+                                            style="font-size: large;font-weight: bold;">Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <mat-radio-button value="1" class="mr-sm-12">Close
+                                        </mat-radio-button>
+                                        <mat-radio-button value="0" class="mr-sm-12">Pending
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <button mat-raised-button class="clearbutton" matTooltip="close">
+                                        <mat-icon class="cleariconbutton" style="padding-top: 5px;">close</mat-icon>
+                                    </button>&nbsp;
+
+                                    <button mat-raised-button class="searchButton" (click)="getIndentList()"
+                                        matTooltip="search" style="padding-top: 5px;">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
 
 
-                                <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
-                                    [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore"
-                                    (selectionChange)="selectChangeStore($event)">
-                                </airmid-dropdown>
-
-                                <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
-                                    style="padding: 12px;" fxLayout="row" (change)="getIndentList()">
-                                    <mat-label
-                                        style="font-size: large;font-weight: bold;">Status:</mat-label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <mat-radio-button value="1" class="mr-sm-12">Close
-                                    </mat-radio-button>
-                                    <mat-radio-button value="0" class="mr-sm-12">Pending
-                                    </mat-radio-button>
-                                </mat-radio-group>
-
-                                <button mat-raised-button class="clearbutton" matTooltip="close">
-                                    <mat-icon class="cleariconbutton" style="padding-top: 5px;">close</mat-icon>
-                                </button>&nbsp;
-
-                                <button mat-raised-button class="searchButton" (click)="getIndentList()"
-                                    matTooltip="search" style="padding-top: 5px;">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
-
-                            </div>
-                        </form>
-                    </mat-card>
-
-                </div>
-
-            </div>
-            <div class="modal-card-container h-100-p">
-                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                    <mat-table matSort [dataSource]="dsIndentList" [@animateStagger]="{value:'50'}"
-                        style="overflow: auto;height:250px;">
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <mat-table matSort [dataSource]="dsIndentList" [@animateStagger]="{value:'50'}"
+                            style="overflow: auto;height:250px;">
 
 
-                        <ng-container matColumnDef="Priority">
-                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Is
-                                Urgent</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" class="w-90">
-                               <mat-icon *ngIf="contact.priority=='1'" matTooltip="Urgent"
-                                    style="color: brown;">pan_tool
-                                </mat-icon>
+                            <ng-container matColumnDef="Priority">
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Is
+                                    Urgent</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-90">
+                                    <mat-icon *ngIf="contact.priority=='1'" matTooltip="Urgent"
+                                        style="color: brown;">pan_tool
+                                    </mat-icon>
+
+
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="IndentNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
+                                    Indent No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.indentNo}}
+                                </mat-cell>
+                            </ng-container>
+                            <!-- | date: 'dd/MM/yyyy' -->
+                            <ng-container matColumnDef="IndentTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    Indent Date </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    {{contact.indentTime}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="FromStoreName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-400">
+                                    FromStore Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
+                                    {{contact.fromStoreName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ToStoreName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-400">
+                                    ToStore Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
+                                    {{contact.toStoreName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Addedby">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                    AddedBy </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                    {{contact.addedby}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+
+                                    <button mat-icon-button (click)="getIndentItemDetList(contact)" matTooltip="Edit">
+                                        <mat-icon title="Edit Menu">edit</mat-icon>
+
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" (click)="getIndentItemDetList(contact)"
+                                appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsIndentList!=null && dsIndentList.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </div>
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+
+                        <mat-table class="table h-200" matSort [dataSource]="dsIndentItemDetList"
+                            [@animateStagger]="{value:'50'}" class="airmid-table">
 
                             
-                            </mat-cell>
-                        </ng-container>
-
-
-                        <ng-container matColumnDef="IndentNo">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
-                                Indent No
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                {{contact.indentNo}}
-                            </mat-cell>
-                        </ng-container>
-                        <!-- | date: 'dd/MM/yyyy' -->
-                        <ng-container matColumnDef="IndentTime">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                Indent Date </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                {{contact.indentTime}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="FromStoreName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-400">
-                                FromStore Name</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
-                                {{contact.fromStoreName}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="ToStoreName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-400">
-                                ToStore Name</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
-                                {{contact.toStoreName}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Addedby">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                AddedBy </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                {{contact.addedby}}
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="loading">
-                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                            </mat-header-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                no data found...
-                            </mat-footer-cell>
-                        </ng-container>
-
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getIndentItemDetList(contact)"
-                            appHighlight></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']"
-                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dsIndentList!=null && dsIndentList.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
-
-                    <!-- <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
-                        showFirstLastButtons>
-                    </mat-paginator> -->
-
-                </div>
-                <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                    <mat-table #table class="table2" matSort [dataSource]="dsIndentItemDetList"
-                        [@animateStagger]="{value:'50'}" style="overflow: auto;height:200px;">
-                        <!-- <ng-container matColumnDef="Status">
+                            <!-- <ng-container matColumnDef="Status">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             style="color: white;">Status</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
@@ -172,76 +184,70 @@
                                         </mat-cell>
                                     </ng-container> -->
 
-                        <ng-container matColumnDef="ItemName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-500">
-                                Item Name
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
-                                {{contact.itemName}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="ItemName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-500">
+                                    Item Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-500">
+                                    {{contact.itemName}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="IndTotalQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                Total Qty</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                {{contact.qty}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="IndTotalQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                    Total Qty</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                    {{contact.qty}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="IssueQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                Issue Qty </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                {{contact.issQty}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="IssueQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                    Issue Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                    {{contact.issQty}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="IndBalQty">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                Balance Qty </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                {{contact.balanceQty}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="IndBalQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                    Balance Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                    {{contact.balanceQty}}
+                                </mat-cell>
+                            </ng-container>
 
 
-                        <ng-container matColumnDef="loading">
-                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                            </mat-header-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                no data found...
-                            </mat-footer-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
 
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
-                        </mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
-                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']"
-                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                        </mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{'hide':!(dsIndentItemDetList!=null && dsIndentItemDetList.data.length==0)}">
-                        </mat-footer-row>
-                    </mat-table>
+                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsIndentItemDetList!=null && dsIndentItemDetList.data.length==0)}">
+                            </mat-footer-row>
 
-                    <!-- <mat-paginator #SecondPaginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="7"
-                        showFirstLastButtons>
-                    </mat-paginator> -->
+                        </mat-table>
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer" fxLayout="column" style="margin-left: 1300px;">
 
-        <div class="modal-footer-buttons">
-            <button class="btn btn-primary" (click)="OnIndentList()">Ok</button>
-            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
 
-        </div>
     </div>
+
 </div>

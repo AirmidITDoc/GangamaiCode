@@ -100,7 +100,7 @@ export class IndentComponent implements OnInit {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
-      { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
+      // { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
       { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }
     ]
   }
@@ -200,7 +200,7 @@ debugger
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
-        { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
+        // { fieldName: "IsActive", fieldValue: this.IsActive, opType: OperatorComparer.Equals },
         { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }
       ],
       row: 25
