@@ -9,7 +9,8 @@
         </div>
         <div class="modal-header-right">
           <div class="comman-date-container">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
             <div class="close-icon">
               <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                 matTooltip="Close">
@@ -59,8 +60,8 @@
 
                     <airmid-textbox fxFlex="6%" label="Invoice No" formControlName="InvoiceNo"
                       [(ngModel)]="registerObj.invoiceNo" [formGroup]="userFormGroup" placeholder="Invoice No"
-                      [validations]="getValidationMessages().invoiceNo" 
-                       (change)="chkInvoiceNo(userFormGroup.get('InvoiceNo')?.value, 'InvoiceNo')"></airmid-textbox>
+                      [validations]="getValidationMessages().invoiceNo"
+                      (change)="chkInvoiceNo(userFormGroup.get('InvoiceNo')?.value, 'InvoiceNo')"></airmid-textbox>
 
                     <airmid-textbox fxFlex="6%" label="Gate Entry No" formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.gateEntryNo" [formGroup]="userFormGroup" placeholder="GateEntryNo"
@@ -78,7 +79,8 @@
 
                       <mat-radio-group formControlName="GRNType" fxLayout="column" class="gap-4">
                         <mat-radio-button [value]="true">Direct Purchase</mat-radio-button>
-                        <mat-radio-button [value]="false" (click)="PurchaseOrderList()">Purchase Orders</mat-radio-button>
+                        <mat-radio-button [value]="false" (click)="PurchaseOrderList()">Purchase
+                          Orders</mat-radio-button>
                       </mat-radio-group>
 
                       <mat-radio-group formControlName="PaymentType" fxLayout="column" class="gap-4">
@@ -109,8 +111,8 @@
                       [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
-                      placeholder="BatchNo" [validations]="getValidationMessages().batchNo"></airmid-textbox> 
- 
+                      placeholder="BatchNo" [validations]="getValidationMessages().batchNo"></airmid-textbox>
+
                     <mat-form-field appearance="outline" fxFlex="8%">
                       <mat-label>ExpDate</mat-label>
                       <input matInput #inputField (keyup.enter)="calculateLastDay()" formControlName="ExpDate"
@@ -140,20 +142,20 @@
                     <div *ngIf="IsDiscPer2" fxFlex="5%">
                       <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
                         (keyup)="calculateDiscper2Amt()"></airmid-textbox>
-                    </div> 
+                    </div>
 
                     <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup"
-                      type="text" #CGST  
-                      (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox> 
+                      type="text" #CGST
+                      (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox>
 
 
                     <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [formGroup]="userFormGroup"
-                      type="text" #SGST  
+                      type="text" #SGST
                       (change)="getchangegstper(userFormGroup.get('SGST')?.value, 'SGST')"></airmid-textbox>
 
                     <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [formGroup]="userFormGroup"
-                      type="text" #IGST  
-                       (change)="getchangegstper(userFormGroup.get('IGST')?.value, 'IGST')"></airmid-textbox>
+                      type="text" #IGST
+                      (change)="getchangegstper(userFormGroup.get('IGST')?.value, 'IGST')"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox>
@@ -242,8 +244,8 @@
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                   <mat-form-field appearance="fill">
                     <input matInput #inputField (change)="CellcalculateLastDay(contact, inputField.value)"
-                      [(ngModel)]="contact.ExpDate" placeholder="mmyyyy" [disabled]="contact.isVerified" 
-                      (keypress)="keyPressDigitsOnly($event)"/>
+                      [(ngModel)]="contact.ExpDate" placeholder="mmyyyy" [disabled]="contact.isVerified"
+                      (keypress)="keyPressDigitsOnly($event)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -339,7 +341,8 @@
                       [disabled]="contact.isVerified" (input)="getCellCalculation(contact)" [min]="0" [max]="100"
                       step="0.1" type="number" OnlyNumber autocomplete="off"
                       (keydown.arrowdown)="setFocus('DiscPer2_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)" />
+                      (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))"
+                      (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -420,7 +423,8 @@
                     <input matInput [(ngModel)]="contact.IGST" [id]="'IGSTPer_' + index" step="0.1" type="text"
                       OnlyNumber [disabled]="contact.isVerified" (input)="getCellCalculation(contact)"
                       autocomplete="off" (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)" />
+                      (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
+                      (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -570,55 +574,41 @@
             </mat-table>
           </div>
 
-          <div fxLayout="row" class="gap-4" fxLayoutAlign="space-between">
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; padding-bottom: 8px">No Of Item:</span>
-              &nbsp;
-              <span class="net-amt-value" style="margin-left: 10px; font-weight: bolder; color: blue">{{
-                dsItemNameList.data.length }}</span>
-            </div>
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 20px">Total Amount:</span>
-              &nbsp;
-              <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{
-                getTotalAmount() |
-                currency : 'INR' }}</span>
-            </div>
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 20px">CGST Amt:</span>
-              &nbsp;
-              <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getCGSTAmt() |
-                currency :
-                'INR' }}</span>
-            </div>
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 20px">SGST Amt:</span>
-              &nbsp;
-              <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getSGSTAmt() |
-                currency :
-                'INR' }}</span>
+          
+              <div class="net-amt" fxLayout="row"  fxLayoutAlign="space-between"> 
+                <div class="net-amt-box">
+                  <span class="net-amt-label">No Of Item:</span>
+                  <span class="net-amt-value">
+                    {{dsItemNameList.data.length}}</span>
+                </div>
+                <div class="net-amt-box">
+                  <span class="net-amt-label">Total Amount :</span>
+                  <span class="net-amt-value">
+                    {{getTotalAmount() | currency:'INR' }}</span>
+                </div>
 
-            </div>
+                 <div class="net-amt-box">
+                  <div class="net-amt-label">CGST Amt :</div>
+                  <div class="net-amt-value">{{ getCGSTAmt() | currency : 'INR':'symbol':'1.2-2' }}</div>
+                </div>
 
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 20px">IGST Amt:</span>
-              &nbsp;
-              <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getIGSTAmt() |
-                currency :
-                'INR' }}</span>
+                <div class="net-amt-box">
+                  <span class="net-amt-label">SGST Amt :</span>
+                  <span class="net-amt-value">{{ getSGSTAmt() | currency : 'INR' }}</span>
+                </div>
 
-            </div>
+                <div class="net-amt-box">
+                  <span class="net-amt-label">IGST Amt :</span>
+                  <span class="net-amt-value">{{ getIGSTAmt() | currency : 'INR' }}</span>
+                </div> 
 
-
-            <div fxLayout="row" class="gap-4">
-              <span class="net-amt-mat-label" style="font-weight: bold; margin-left: 20px">Net Amount:</span>
-              &nbsp;
-              <span class="net-amt-value text-primary" style="margin-left: 10px; font-weight: bolder">{{ getNetAmount()
-                | currency
-                : 'INR' }}</span>
-
-            </div>
-          </div>
+                <div class="final-amt-box">
+                  <span class="final-amt-label">Net Amt :</span>
+                  <span class="final-amt-value">{{getNetAmount() | currency : 'INR'
+                    }}</span>
+                </div>
+              </div>  
+              
           <mat-accordion>
             <mat-expansion-panel expanded>
               <mat-expansion-panel-header>
