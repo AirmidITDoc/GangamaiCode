@@ -55,9 +55,11 @@ export class GoodReceiptnoteComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateCheck') actionButtonTemplateCheck!: TemplateRef<any>;
+     @ViewChild('actionButtonTemplateIsClose') actionButtonTemplateIsClose!: TemplateRef<any>;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;
+         this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.actionButtonTemplateIsClose;
        
     }
     AllColumns = [
@@ -77,7 +79,9 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA', width: 100, },
+        { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA', width: 80,type: gridColumnTypes.template,
+              template: this.actionButtonTemplateIsClose
+         },
         {
             heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -481,8 +485,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     //         .filter(i => i !== elm)
     //         .map((i, idx) => (i.position = (idx + 1), i));
     // }
-    viewgetGRNReportPdf(data) { 
-        this.commonService.Onprint("GRNID", data.grnid, "Good Receipt Note");
+    viewgetGRNReportPdf(row) { 
+        this.commonService.Onprint("GRNID", row.grnid, "GRNReport");
       }
 }
 

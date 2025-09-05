@@ -462,7 +462,7 @@ export class NewPurchaseorderComponent {
       return;
     }
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
-    debugger
+    //debugger
     if (!isDuplicate) {
       const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
       console.log(formValues)
@@ -668,7 +668,7 @@ export class NewPurchaseorderComponent {
   //   }
   // } 
   OnSave() {
-    debugger
+    //  debugger
     let Pdate;
     let pTime;
     if (this.PurchaseID != 0) {
@@ -689,8 +689,9 @@ export class NewPurchaseorderComponent {
     const FooterfomrValues = this.FinalPurchaseform.value
     console.log(fomrValues)
     console.log(FooterfomrValues)
-    debugger
+    //debugger
     if (!this.FinalPurchaseform.invalid) {
+      this.PurchaseInsertform.get("storeId").setValue(this.vstoreId || 0)
       this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
       this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
       this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
@@ -857,7 +858,7 @@ export class NewPurchaseorderComponent {
   GSTTypetext: any = 0;
   IsDiscPer2: boolean = false;
   onGSTTypeChange(event: { value: number, text: string }) {
-    debugger
+    //debugger
     // console.log(event)
     // this.GSTTypetext=event.text
     // this.GSTTypeID = event.value
@@ -966,7 +967,7 @@ export class NewPurchaseorderComponent {
   calculateDiscountAmount() {
     const form = this.userFormGroup;
     const values = form.getRawValue() as PurchaseFormModel;
-    debugger
+    //debugger
     // Get and validate discount percentage
     const discountPercentage = Number(this.userFormGroup.get("Disc").value) // Number(values.Disc || 0);
     if (discountPercentage >= 100 || discountPercentage < 0) {
@@ -989,7 +990,7 @@ export class NewPurchaseorderComponent {
     this.calculateGSTType();
   }
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-    debugger
+    //debugger
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._PurchaseOrder.normalizeValues(formValues);
@@ -1010,7 +1011,7 @@ export class NewPurchaseorderComponent {
   calculateCellGSTType(item: ItemNameList): ItemNameList {
 
     if (!item) return item;
-    debugger
+    //debugger
     try {
       const values = this._PurchaseOrder.normalizeValues(item);
       const calculation = this._PurchaseOrder.getGSTCalculation(item.GSTType, values);
@@ -1055,7 +1056,7 @@ export class NewPurchaseorderComponent {
   onClear() { }
 
   //new 
-  vstoreId: any = "2";
+  vstoreId: any = 0;
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value
@@ -1105,7 +1106,7 @@ export class NewPurchaseorderComponent {
       { value: 14 }
     ];
 
-    debugger
+    //debugger
     const dvalue = gstValues.find(item => item.value == parseFloat(rate))
     if (!dvalue) {
       this._PurchaseOrder.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
@@ -1303,7 +1304,7 @@ export class NewPurchaseorderComponent {
     console.log(data);
     this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
       console.log(data);
-      debugger
+      //debugger
       if (data.data[0]) {
         let SupplierRate = data.data[0].supplierRate;
         this.vDefRate = SupplierRate;

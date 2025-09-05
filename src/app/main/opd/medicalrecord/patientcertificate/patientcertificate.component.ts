@@ -80,7 +80,7 @@ export class PatientcertificateComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     public dialogRef: MatDialogRef<PatientcertificateComponent>,
     public _matDialog: MatDialog,
-    private commonService: PrintserviceService,    
+    private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private _formBuilder: FormBuilder
@@ -129,6 +129,10 @@ export class PatientcertificateComponent {
     })
   }
 
+  onEditorValueChange(content: string) {
+    this.mycertificateForm.get('certificateText')?.setValue(content);
+  }
+
   onSave() {
     if (!this.mycertificateForm.invalid) {
       this.mycertificateForm.get('visitId').setValue(this.vVisitedId)
@@ -138,9 +142,10 @@ export class PatientcertificateComponent {
       console.log(payload)
       this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
         this.onSubList()
-        this.viewgetCertificateReportPdf(response)
-        this.mycertificateForm.reset();
+        this.onReset();
         this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
+        this.onClose();
+        this.viewgetCertificateReportPdf(response)
       });
     }
     else {
@@ -171,9 +176,21 @@ export class PatientcertificateComponent {
     this.dialogRef.close();
   }
 
-  onReset(){
+  onReset() {
     this.mycertificateForm.reset()
-    this.mycertificateForm.reset({ Language: '1' });
+    this.mycertificateForm.reset({
+      Language: '1',
+      certificateDate: new Date(
+        Date.UTC(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate()
+        )
+      ).toISOString(),
+      certificateTime: (new Date()).toISOString(),
+    });
+
+    this.vcertificateText = ''
   }
 
   addTemplateDescription() {
@@ -218,22 +235,22 @@ export class PatientcertificateComponent {
       console.log('check:', this.dsCertficateTemp.data)
     })
   }
-  
-    selectedTabIndex = 0;
-    certiID=0;
-   OnEdit(row) {
+
+  selectedTabIndex = 0;
+  certiID = 0;
+  OnEdit(row) {
     console.log('Row data received:', row);
-    this.certiID=row.certificateId
+    this.certiID = row.certificateId
     this.mycertificateForm.get('certificateName').setValue(row.certificateName)
     this.mycertificateForm.patchValue({
       CertificateTemplateId: row.certificateTemplateId,
-      certificateText: row.certificateText
     });
+    this.vcertificateText = row.certificateText
     this.selectedTabIndex = 1;
   }
 
-   getWhatsappshareSales(el, vmono) {
-    
+  getWhatsappshareSales(el, vmono) {
+
   }
 
   viewgetCertificateReportPdf(element: any) {
@@ -246,7 +263,7 @@ export class certificateTemp {
   CreatedBy: any;
   CetificateName: any;
   CertificateText: any;
-  doctorName:any;
+  doctorName: any;
 
   constructor(certificateTemp) {
 

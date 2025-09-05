@@ -51,8 +51,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   mOPDNo: any;
   mIPDNo: any
   mWardName: any = ''
-  mRegId: any = ''
-
+  mRegId: any = '' 
 
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
   @ViewChild('grid1', { static: false }) grid1: AirmidTableComponent;
@@ -265,12 +264,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.userFormGroup.updateValueAndValidity();
     }
     this.PatientInformRest();
-    this.getdata();
-    this.MutliSettlemForm.reset();
+    this.getdata(); 
   }
-  getSelectedObjRegIP(obj) {
-    console.log(obj);
+  getSelectedObjRegIP(obj) { 
     let IsDischarged = 0;
+    this.registerObj =obj
     IsDischarged = obj.isDischarged;
     if (IsDischarged == 1) {
       Swal.fire('Selected Patient is already discharged');
@@ -291,11 +289,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
     this.getdata();
   }
-  getSelectedObjOp(obj) {
-    console.log(obj)
+  getSelectedObjOp(obj) { 
+     this.registerObj =obj
     this.DoctorNamecheck = true;
-    this.IPDNocheck = true;
-    this.OPDNoCheck = false;
+    this.IPDNocheck = false;
+    this.OPDNoCheck = true;
     this.RegId = obj.regId,
       this.OP_IP_Id = obj.visitId,
       this.RegNo = obj.regNo;
@@ -305,7 +303,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.TariffName = obj.tariffName;
     this.getdata();
   }
-  getdata() {
+  getdata() { 
     debugger
     let opiptype = this.userFormGroup.get('PatientType').value
     this.gridConfig = {
@@ -423,12 +421,12 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
     this.PatientInformRest();
     this.getdataMultiple();
-    this.userFormGroup.reset();
-  }
-
+    
+  } 
   getSelectedObjIPMultiple(obj) {
     console.log(obj);
     let IsDischarged = 0;
+     this.registerObj =obj
     IsDischarged = obj.isDischarged;
     if (IsDischarged == 1) {
       Swal.fire('Selected Patient is already discharged');
@@ -451,9 +449,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   }
   getSelectedObjOpMultiple(obj) {
     console.log(obj)
+     this.registerObj =obj
     this.DoctorNamecheck = true;
-    this.IPDNocheck = true;
-    this.OPDNoCheck = false;
+    this.IPDNocheck = false;
+    this.OPDNoCheck = true;
     this.mRegId = obj.regId,
       this.OP_IP_Id = obj.visitId,
       this.mRegNo = obj.regNo;
@@ -486,8 +485,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   vPaidAmount: any = 0;
   SelectedList: any = [];
   tableElementChecked(event, element) { 
-    if (event.checked) {
-      console.log(element)
+    if (event.checked) { 
       this.SelectedList.push(element)
       this.vNetAmount += element.netAmount
       this.vPaidAmount += element.paidAmount
@@ -570,98 +568,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         });
       }
     });
-  }
-
-  //old
-  // MultiplePaySave1() {
-  //   const currentDate = new Date();
-  //   const datePipe = new DatePipe('en-US');
-  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
-  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-  //   console.log(this.SelectedList)
-  //   let PatientHeaderObj = {};
-  //   PatientHeaderObj['Date'] = formattedDate;
-  //   PatientHeaderObj['PatientName'] = this.PatientName;
-  //   PatientHeaderObj['AdvanceAmount'] = Math.round(this.MutliSettlemForm.get('FinalBalanceAmt').value);
-  //   PatientHeaderObj['NetPayAmount'] = Math.round(this.MutliSettlemForm.get('FinalBalanceAmt').value);
-  //   PatientHeaderObj['IPDNo'] = this.IPDNo;
-  //   PatientHeaderObj['RegNo'] = this.RegNo;
-  //   // PatientHeaderObj['OP_IP_Type'] = contact.OP_IP_Type;
-  //   const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-  //     {
-  //       maxWidth: "95vw",
-  //       height: '650px',
-  //       width: '85%',
-  //       data: {
-  //         vPatientHeaderObj: PatientHeaderObj,
-  //         FromName: "IP-Pharma-SETTLEMENT"
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(result)
-
-  //     if (result.IsSubmitFlag == true) {
-  //       let updateBillobj = {};
-  //       updateBillobj['salesID'] = 1// contact.SalesId;
-  //       updateBillobj['salRefundAmt'] = 0;
-  //       updateBillobj['balanceAmount'] = result.BalAmt || 0;// result.submitDataPay.ipPaymentInsert.balanceAmountController //result.BalAmt;
-
-
-  //       let UpdateAdvanceDetailarr1 = [];
-
-  //       UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-
-  //       let UpdateAdvanceDetailarr = [];
-  //       let UsedHeaderAmt = 0;
-  //       if (result.submitDataAdvancePay.length > 0) {
-  //         result.submitDataAdvancePay.forEach((element) => {
-  //           let update_T_PHAdvanceDetailObj = {};
-  //           update_T_PHAdvanceDetailObj['AdvanceDetailID'] = element.AdvanceDetailID;
-  //           update_T_PHAdvanceDetailObj['UsedAmount'] = element.UsedAmount;
-  //           this.UsedAmt1 = (parseInt(this.UsedAmt1) + parseInt(element.UsedAmount));
-  //           update_T_PHAdvanceDetailObj['BalanceAmount'] = element.BalanceAmount;
-  //           this.BalanceAm1 = (parseInt(this.BalanceAm1) + parseInt(element.BalanceAmount));
-  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-  //         });
-  //       }
-  //       else {
-  //         let update_T_PHAdvanceDetailObj = {};
-  //         update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
-  //           update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
-  //           update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-  //       }
-
-  //       let update_T_PHAdvanceHeaderObj = {};
-  //       if (result.submitDataAdvancePay.length > 0) {
-  //         update_T_PHAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-  //           update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = this.UsedAmt1,
-  //           update_T_PHAdvanceHeaderObj['BalanceAmount'] = this.BalanceAm1
-  //       }
-  //       else {
-  //         update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
-  //           update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-  //           update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
-  //       }
-
-  //       let Data = {
-  //         "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert,
-  //         "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
-  //         "update_T_PHAdvanceDetailSettlement": UpdateAdvanceDetailarr,
-  //         "update_T_PHAdvanceHeaderSettlement": update_T_PHAdvanceHeaderObj
-  //       };
-  //       console.log(Data);
-  //       this._SelseSettelmentservice.InsertSalessettlement(Data).subscribe(response => {
-  //         if (response) {
-  //           this._matDialog.closeAll();
-  //           this.UsedAmt1 = 0;
-  //           this.BalanceAm1 = 0;
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
+  } 
   OnReset() {
     this.userFormGroup.reset();
     this.MutliSettlemForm.reset(); 
@@ -691,23 +598,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.mIPDNo = '';
     this.mWardName = '';
     this.mRegId = '';
-  }
+  } 
   getDiscFinalBill(contact) {
-    console.log(contact)
-    let PatientInfo = this.registerObj
     const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
       {
         maxWidth: "100%",
-        height: '72%',
-        width: '60%',
+        height: '65%',
+        width: '45%',
         data: {
-          Obj: contact, PatientInfo
+          Obj: contact,
+          PatientObj: this.registerObj
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
     });
-  }
+  } 
   getValidationMessages() {
     return {
       MobileNo: [
