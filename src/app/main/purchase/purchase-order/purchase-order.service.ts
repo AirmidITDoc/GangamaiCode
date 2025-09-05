@@ -200,7 +200,7 @@ export class PurchaseOrderService {
 
 
   public getGSTCalculation(type: GSTType, values: GSTCalculationResult): GSTCalculation {
-    debugger
+    //debugger
     let calculation: GSTCalculation;
     switch (type) {
       case GSTType.GST_AFTER_DISC: {
@@ -228,7 +228,7 @@ export class PurchaseOrderService {
   }
 
   public calculateBasicValues(contact: ItemNameList): void {
-    debugger
+    //debugger
     contact.TotalQty = (Number(contact.Qty || 0)) * Number(contact.ConversionFactor || 1);
     this.calculateCellTotalAmount(contact);
     const discountAmount = ((Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100).toFixed(4);
@@ -240,7 +240,7 @@ export class PurchaseOrderService {
   }
 
   public calculateGSTAfterDisc(values: GSTCalculationResult): GSTCalculation {
-    debugger
+    //debugger
     const baseAmount = values.totalAmount - values.discAmount;
 
     const cgstAmount = (baseAmount * values.cgst) / 100;
@@ -261,7 +261,7 @@ export class PurchaseOrderService {
   }
 
   public calculateGSTBeforeDisc(values: GSTCalculationResult): GSTCalculation {
-    debugger
+    //debugger
     const baseAmount = values.totalAmount;
 
     const cgstAmount = (baseAmount * values.cgst) / 100;
@@ -363,7 +363,7 @@ export class PurchaseOrderService {
     return this.GST_VALIDATION.VALID_GST_RATES.includes(parseFloat(rate?.toString()));
   }
   validateGSTRates(item: ItemNameList): boolean {
-    debugger
+    //debugger
     item.GST = Number(item.CGST) + Number(item.SGST) + Number(item.IGST);
     const rates = [
       { value: item.CGSTPer, type: 'CGSTPer' },
