@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
 import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-issue-to-department',
@@ -40,23 +41,28 @@ export class IssueToDepartmentComponent implements OnInit {
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public _matDialog: MatDialog, private accountService: AuthenticationService,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,  private _ActRoute: Router,
     ) { }
 
     ngOnInit(): void {
         this.IssueSearchGroup = this._IssueToDep.IssueSearchFrom();
+           if (this._ActRoute.url == '/inventory/issuetodepartment') {
+
+
+           }
     }
      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
      @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
+      @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
           this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
         // this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
-
+ this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     }
 
 
@@ -67,7 +73,7 @@ export class IssueToDepartmentComponent implements OnInit {
       { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
         { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        
+         { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
          { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -110,7 +116,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
                 { heading: "Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -232,6 +238,8 @@ export class IssueToDepartmentComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
+        // if(this._ActRoute.url == '/inventory/issuetodepartment')
+            
         const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
             {
                 maxWidth: "97vw",

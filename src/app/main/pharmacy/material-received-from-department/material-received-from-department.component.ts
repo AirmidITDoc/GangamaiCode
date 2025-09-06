@@ -37,7 +37,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
   BatchSamelist: any = [];
   DraftQty: any = 0;
   Tostore = "0"
-  FromStore: any = String(this.accountService.currentUserValue.user.storeId);
+  // FromStore: any = String(this.accountService.currentUserValue.user.storeId);
   Status = "0"
   IsAccepted = "0"
   autocompletestore: string = "Store";
@@ -57,11 +57,23 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
   ngOnInit(): void {
     this.IssueSearchGroup = this._MaterialReceivedFromDepartmentService.MaterialSearchFrom();
   }
+
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+  @ViewChild('isacceptstatus') isacceptstatus!: TemplateRef<any>;
+  @ViewChild('Rstatus') Rstatus!: TemplateRef<any>;
+  @ViewChild('Pstatus') Pstatus!: TemplateRef<any>;
+  @ViewChild('Astatus') Astatus!: TemplateRef<any>;
+  @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
-this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptstatus;
-    
+    this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptstatus;
+
+    this.gridConfig.columnsList.find(col => col.key === 'rejetcedByDepartment')!.template = this.Rstatus;
+    this.gridConfig.columnsList.find(col => col.key === 'pendingByDepartment')!.template = this.Pstatus;
+    this.gridConfig.columnsList.find(col => col.key === 'acceptedByDepartment')!.template = this.Astatus;
+
     //  this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
 
   }
@@ -69,31 +81,34 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
 
   gridConfig1: gridModel = new gridModel();
 
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
-   @ViewChild('isacceptstatus') isacceptstatus!: TemplateRef<any>;
-
-  @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
   allcolumns = [
 
-    { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50},
-     { heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30},
+    { heading: "Status", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+    { heading: "", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+    { heading: "", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+
+    // { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
     { heading: "Accepted Date", key: "acceptedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-    { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Total Qty", key: "totalQtyIssued", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "From Store Name", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "To Store Name", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "acceptedByDepartment", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "AcceptedBy Dept", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "rejetcedByDepartment", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "pendingByDepartment", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "RejetcedBy Dept", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "PendingBy Dept", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+
     {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -114,7 +129,7 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals },
-      { fieldName: "IsAccepted", fieldValue: this.IsAccepted, opType: OperatorComparer.Equals }
+      // { fieldName: "IsAccepted", fieldValue: this.IsAccepted, opType: OperatorComparer.Equals }
     ]
   }
 
@@ -126,9 +141,9 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
       columnsList: [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 250 },
-        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
+        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
         { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Rate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
         { heading: "Total Amount", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
@@ -145,7 +160,6 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     setTimeout(() => {
       this.grid1.gridConfig = this.gridConfig1;
       this.grid1.bindGridData();
-
 
     }, 500);
   }
@@ -193,14 +207,14 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     console.log(obj)
   }
 
-  ListView(value) {
-    this.isShowDetailTable = false
-    if (value.value !== 0)
-      this.FromStore = value.value
-    else
-      this.FromStore = "0"
-    this.onChangeFirst(value);
-  }
+  // ListView(value) {
+  //   this.isShowDetailTable = false
+  //   if (value.value !== 0)
+  //     this.FromStore = value.value
+  //   else
+  //     this.FromStore = "0"
+  //   this.onChangeFirst(value);
+  // }
 
   ListView1(value) {
     this.isShowDetailTable = false
@@ -219,11 +233,11 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     else
       IsVerify = "0"
 
-    let IsAccept = "0"
-    if (this.IssueSearchGroup.get("IsAccepted").value)
-      IsAccept = "1"
-    else
-      IsAccept = "0"
+    // let IsAccept = "0"
+    // if (this.IssueSearchGroup.get("IsAccepted").value)
+    //   IsAccept = "1"
+    // else
+    //   IsAccept = "0"
 
 
     this.isShowDetailTable = false;
@@ -232,8 +246,8 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
     //  this.FromStore = this.IssueSearchGroup.get("FromStoreId").value || this.FromStore
     this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
     this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
-      this.IsAccepted = IsAccept,//this.IssueSearchGroup.get("IsVerify").value || "0"
-  this.getfilterdata();
+      // this.IsAccepted = IsAccept,//this.IssueSearchGroup.get("IsVerify").value || "0"
+      this.getfilterdata();
   }
 
   getfilterdata() {
@@ -249,7 +263,7 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals },
-         { fieldName: "IsAccepted", fieldValue: this.IsAccepted, opType: OperatorComparer.Equals }
+        //  { fieldName: "IsAccepted", fieldValue: this.IsAccepted, opType: OperatorComparer.Equals }
       ],
       row: 25
     }
@@ -276,7 +290,7 @@ this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = th
       console.log('The dialog was closed - Insert Action', result);
       // this.gridConfig.bind();
     });
-    
+
   }
   viewgetIssuetodeptReportPdf(element) {
     console.log(element)

@@ -138,8 +138,8 @@ export class PharAdvanceComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   onChangeGrid() {
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('AdvfromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('Advenddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"

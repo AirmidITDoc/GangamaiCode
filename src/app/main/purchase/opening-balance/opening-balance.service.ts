@@ -5,6 +5,9 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastType } from '../good-receiptnote/new-grn/types';
+import { ToastrService } from 'ngx-toastr';
+import _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +20,7 @@ export class OpeningBalanceService {
   constructor(
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
     public _formbuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
+    private toastr: ToastrService,
   ) { }
   CreateStorForm() {
     return this._formbuilder.group({
@@ -36,12 +40,15 @@ export class OpeningBalanceService {
       ItemName: ['', [Validators.required]],
       BatchNo: ['', [Validators.required, Validators.maxLength(50)]],
       ExpDate: [''],//['',this._FormvalidationserviceService.validDateValidator()],
-      BalanceQty: [0, [Validators.required]],
-      GST: [0, [Validators.required]],
-      MRP: [0, [Validators.required]],
-      RatePerUnit: [0, [Validators.required]],
-      Remark: '',
-      LandedRate: [0, [Validators.required]],
+      BalanceQty: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CGST: [''],
+      SGST: [''],
+      IGST: [''],
+      GST: [''],
+      MRP: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      RatePerUnit: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Remark: [''],
+      LandedRate: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
 
@@ -64,5 +71,25 @@ export class OpeningBalanceService {
 
   public InsertOpeningBalSave(Param) {
     return this._httpClient1.PostData("OpeningBalance/OpeningBalanceSave", Param)
+  }
+
+  showToast(message: string, type: ToastType = ToastType.SUCCESS) {
+    if (type === ToastType.SUCCESS) {
+      this.toastr.success(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+      });
+    }
+
+    if (type === ToastType.WARNING) {
+      this.toastr.warning(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+      });
+    }
+    if (type === ToastType.ERROR) {
+      this.toastr.error(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+      });
+    }
+
   }
 }

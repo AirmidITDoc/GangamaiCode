@@ -275,8 +275,7 @@ export class IPSettlementComponent implements OnInit {
             data: {
             Obj:contact,
             PatientObj:this.registerObj
-            }
-            
+            } 
           });
         dialogRef.afterClosed().subscribe(result => {
           console.log('The dialog was closed - Insert Action', result);

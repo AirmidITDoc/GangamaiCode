@@ -34,8 +34,13 @@
 
             <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified =='1'" matTooltip="IsVerified" style="color: green;">done_all
-                    </mat-icon>
+                    <!-- <mat-icon *ngIf="element.isVerified =='true'" matTooltip="IsVerified" style="color: green;">done_all
+                    </mat-icon> -->
+
+                       <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
 
                 </div>
             </ng-template>
@@ -45,6 +50,15 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Is Accepted"
                         style="color: blueviolet;">spellcheck</mat-icon>
+                           <mat-icon *ngIf="!element.isAccepted=='1'" matTooltip="Not Accepted"
+                        style="color: rgb(225, 30, 8);">remove_shopping_cart</mat-icon>
+                </div>
+            </ng-template>
+
+               <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed" style="color: rgb(41, 129, 12);">close</mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending"  style="color: brown;">Pending</mat-icon>
                 </div>
             </ng-template>
 

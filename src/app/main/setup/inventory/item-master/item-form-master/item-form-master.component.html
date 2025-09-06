@@ -44,7 +44,8 @@
                   <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start center" style="padding: 10px;">
   
                     <!-- 1st row -->
-                    <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode" [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30" fxFlex="25%">
+                    <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode" [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30" fxFlex="25%"
+                    (input)="onHSNChange($event)">
                     </airmid-textbox>
   
                     <airmid-textbox label="Item Short Name" formControlName="itemShortName" [value]="registerObj?.itemShortName" [formGroup]="itemForm" [validations]="getValidationMessages().itemShortName" [maxLength]="50" fxFlex="25%">

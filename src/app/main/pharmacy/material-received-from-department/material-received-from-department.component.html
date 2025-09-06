@@ -25,26 +25,73 @@
                         <mat-icon> print</mat-icon>
                     </button>
                     <!-- *ngIf="element.isAccepted=='0'" -->
-                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)"
+                        *ngIf="!element.pendingByDepartment=='0';">
                         <mat-icon> edit</mat-icon>
                     </button>
                 </div>
             </ng-template>
 
 
-            <ng-template #isVerifiedstatus let-element>
+
+            <!-- 
+ <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span class="orange-600-fg">Intrim Bills</span>
+            </div>
+            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span class="green-600-fg">Final Bills</span>
+            </div>
+            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span class="red-600-fg">Cancelled Bills</span>
+            </div> -->
+
+            <ng-template #Astatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified=='1'" matTooltip="Is Verified" style="color: green;">spellcheck</mat-icon>
+
+                    <mat-icon *ngIf="element.acceptedByDepartment=='1';" matTooltip="AcceptedByDepartment"
+                        class="pill green-600 s-16">circle</mat-icon>
+
+                    <mat-icon *ngIf="element.acceptedByDepartment=='True';" matTooltip="AcceptedByDepartment"
+                        class="pill green-600 s-16">circle</mat-icon>
+
+                    <mat-icon *ngIf="element.acceptedByDepartment==1;" matTooltip="AcceptedByDepartment"
+                        class="pill green-600 s-16">circle</mat-icon>
+
                 </div>
             </ng-template>
 
 
-             <ng-template #isacceptstatus let-element>
+            <ng-template #Pstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isAccepted=='1'" matTooltip="Accepted" style="color: blueviolet;">done_all</mat-icon>
+
+                    <!-- <mat-icon *ngIf="!element.pendingByDepartment=='1';" matTooltip="PendingByDepartment"
+                        class="pill orange-600 s-16">circle</mat-icon> -->
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                 </div>
             </ng-template>
 
+
+            <ng-template #Rstatus let-element>
+               <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <!-- <mat-icon *ngIf="!element.rejetcedByDepartment=='1';" matTooltip="RejetcedByDepartment"
+                        class="pill red-600 s-16">circle</mat-icon> -->
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                </div>
+            </ng-template>
+
+            <!-- <ng-template #isVerifiedstatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Not Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                </div>
+            </ng-template> -->
 
             <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
 
@@ -53,7 +100,7 @@
 
                         <airmid-datepicker [formGroup]="IssueSearchGroup" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="onChangeFirst($event)"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
@@ -71,9 +118,9 @@
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
                             Verify
                         </mat-slide-toggle>
-                        <mat-slide-toggle name="IsAccepted" (change)="onChangeFirst($event)" formControlName="IsAccepted">
+                        <!-- <mat-slide-toggle name="IsAccepted" (change)="onChangeFirst($event)" formControlName="IsAccepted">
                             Accepted
-                        </mat-slide-toggle>
+                        </mat-slide-toggle> -->
                     </form>
                 </ng-container>
             </airmid-table>

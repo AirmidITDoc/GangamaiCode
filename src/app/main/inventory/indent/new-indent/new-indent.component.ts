@@ -23,10 +23,11 @@ import { IndentService } from '../indent.service';
 export class NewIndentComponent implements OnInit {
   IndentSaveFrom: FormGroup;
   IndentForm: FormGroup;
-  displayedColumns2 = [
+  displayedColumns = [
     'ItemID',
     'ItemName',
     'IndentQuantity',
+    'VerifyQuantity',
     'Action'
   ];
 
@@ -47,6 +48,7 @@ export class NewIndentComponent implements OnInit {
   ItemID = 0;
   dateTimeObj: any;
   status: any;
+  Qty = 0
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -83,12 +85,15 @@ export class NewIndentComponent implements OnInit {
       this.IndentSaveFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
       this.IndentSaveFrom.get("comments").setValue(this.registerObj.remarks)
 
-      if (this.registerObj.priority)
-        this.status = "1"
-      else
-        this.status = "0"
       
-      this.IndentSaveFrom.get('priority').setValue(this.status)
+      if (this.registerObj.priority == 'True') {
+        this.status = '1'
+        this.IndentSaveFrom.get('priority').setValue(true)
+      }
+      else {
+        this.status = '0'
+        this.IndentSaveFrom.get('priority').setValue(false)
+      }
       this.getupdateIndentList(this.registerObj.indentId);
     }
 
@@ -109,19 +114,21 @@ export class NewIndentComponent implements OnInit {
       isverify: false,
       isclosed: false,
       comments: "",
-      priority: ['0'],
+      priority: [false],
       tIndentDetails: this._formBuilder.array([]),
     });
   }
-
+  // || element.VerifyQuantit
   createdetailInsert(element: any = {}): FormGroup {
+    debugger
     return this._formBuilder.group({
       indentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isclosed: [false],
       indQty: [0 | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issQty: [0]
+      issQty: [0],
+      verifiedQty: [element.VerifyQuantity || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
     });
   }
@@ -135,7 +142,7 @@ export class NewIndentComponent implements OnInit {
       return;
     }
 
-    if (this.IndentForm.get('Qty')?.value == "0" ||  this.IndentForm.get('Qty')?.value == " " ) {
+    if (this.IndentForm.get('Qty')?.value == "0" || this.IndentForm.get('Qty')?.value == " ") {
       this.toastr.warning('Please select Qty', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -143,7 +150,7 @@ export class NewIndentComponent implements OnInit {
     }
     const selectedItem = this.IndentForm.get('ItemName').value;
     const iscekDuplicate = this.dsIndentNameList.data.some(item => item.ItemID == this.IndentForm.get('ItemName').value.itemId)
-  
+
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
       this.chargeslist.push(
@@ -151,6 +158,8 @@ export class NewIndentComponent implements OnInit {
           ItemID: this.IndentForm.get("ItemName").value.itemId || 0,
           ItemName: this.IndentForm.get("ItemName").value.formattedText || '',
           Qty: this.IndentForm.get('Qty').value || this.vQty,
+          VerifyQuantity: this.IndentForm.get('Qty').value || this.vQty,
+
         });
       this.dsIndentNameList.data = this.chargeslist
 
@@ -170,11 +179,9 @@ export class NewIndentComponent implements OnInit {
     this.IndentForm.get('Qty').reset('');
   }
 
-  setpriority(event){
+  setpriority(event) {
     console.log(event)
-    
-    this.status=event.checked
-
+    this.status = event.checked
   }
 
   deleteTableRow(element) {
@@ -225,7 +232,7 @@ export class NewIndentComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-   
+
     this._IndentService.getIndentList(Param).subscribe(data => {
       console.log(data.data)
 
@@ -234,7 +241,7 @@ export class NewIndentComponent implements OnInit {
 
       this.dsIndentNameList.data.forEach(element => {
         console.log(element)
-          element.indentId = element.indentId,
+        element.indentId = element.indentId,
           element.ItemName = element.itemName,
           element.ItemID = element.itemId,
           element.Qty = element.qty,
@@ -266,8 +273,8 @@ export class NewIndentComponent implements OnInit {
       this.IndentdetailArray.push(this.createdetailInsert(item));
     });
 
-    
-    if (this.status=="1")
+
+    if (this.status == "1")
       this.IndentSaveFrom.get('priority').setValue(true)
     else
       this.IndentSaveFrom.get('priority').setValue(false)
@@ -275,7 +282,7 @@ export class NewIndentComponent implements OnInit {
     if (!this.IndentSaveFrom.invalid) {
       this.IndentSaveFrom.get("indentId").setValue(this.IndentId)
       console.log(this.IndentSaveFrom.value)
-      
+
       this._IndentService.InsertIndentSave(this.IndentSaveFrom.value).subscribe(response => {
         this.viewgetIndentReportPdf(response)
         this._matDialog.closeAll();
@@ -314,6 +321,49 @@ export class NewIndentComponent implements OnInit {
     });
 
   }
+  VerifyQuantity=0
+
+  getCellCalculation(contact, Qty, Id) {
+    
+    console.log(this.VerifyQuantity)
+    // if (Id == 2) {
+    //   debugger
+    //   this.VerifyQuantity = Qty;
+    //   contact.VerifyQuantity = this.VerifyQuantity
+    // }
+
+    console.log(contact)
+    if (parseFloat(contact.Qty) < 0) {
+      this.toastr.warning('Issue Qty cannot be 0.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      contact.Qty = 0;
+      contact.Qty = '';
+      contact.VatAmount = 0;
+      contact.LandedRateandedTotal = 0;
+    }
+    // else {
+    //   if (contact.Qty > 0) {
+    //     contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
+    //     contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+    //     this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
+    //     contact.IssueBalQty = (this.Indbalqty)
+
+    //     if (contact.IssueBalQty == 0)
+    //       contact.IsClosed = true
+    //     else
+    //       contact.IsClosed = false
+    //   }
+    //   else {
+    //     contact.Qty = 0;
+    //     contact.Qty = '';
+    //     contact.VatAmount = 0;
+    //     contact.LandedRateandedTotal = 0;
+    //   }
+    // }
+
+  }
+
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -332,12 +382,12 @@ export class NewIndentComponent implements OnInit {
       Qty: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Qty is required" },
-      
+
       ],
       Qtykit: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Qty is required" },
-     
+
       ],
     };
   }
@@ -391,6 +441,7 @@ export class IndentNameList {
   issQty: any;
   bal: any;
   itemName: any;
+  VerifyQuantity: any;
   /**
    * Constructor
    *
@@ -414,6 +465,7 @@ export class IndentNameList {
       this.issQty = IndentNameList.issQty || 0;
       this.bal = IndentNameList.bal || 0;
       this.itemName = IndentNameList.itemName || "";
+      this.VerifyQuantity = IndentNameList.VerifyQuantity || 0;
     }
   }
 }

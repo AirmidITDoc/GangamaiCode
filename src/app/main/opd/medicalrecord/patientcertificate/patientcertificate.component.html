@@ -235,10 +235,14 @@
                                                 type="text" id="certificateText" required [(ngModel)]="vcertificateText">
                                             </textarea>
                                     </mat-form-field> -->
-                            <mat-label>Certificate Details</mat-label>
+                            <!-- <mat-label>Certificate Details</mat-label>
                             <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                               [(ngModel)]="vcertificateText" required formControlName="certificateText">
-                            </angular-editor>
+                            </angular-editor> -->
+                            <airmid-editor label="Certificate Details" formControlName="certificateText"
+                              [(value)]="vcertificateText" [formGroup]="mycertificateForm"
+                              (valueChange)="onEditorValueChange($event)">
+                            </airmid-editor>
                           </div>
 
                         </mat-card>

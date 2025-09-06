@@ -77,15 +77,8 @@ export class SalePopupComponent implements OnInit {
 
   selectCurrentRow() {
     if (this.selectedRowIndex >= 0 && this.selectedRowIndex < this.dataSource.data.length) {
-      const selectedData = this.dataSource.data[this.selectedRowIndex];
-      this.dialogRef.close({
-        selectedData: selectedData,
-        vEscflag: this.vEscflag,
-      });
-    }
-  }
-  selectNewRow(row,index:number){
-    if (row.daysFlag == '1') {
+      const selectedData = this.dataSource.data[this.selectedRowIndex]; 
+        if (selectedData.daysFlag == '1') {
       Swal.fire({
         icon: "warning",
         title: "Selected Batch is already Expired",
@@ -94,6 +87,13 @@ export class SalePopupComponent implements OnInit {
       });
       return
     }
+      this.dialogRef.close({
+        selectedData: selectedData,
+        vEscflag: this.vEscflag,
+      });
+    }
+  }
+  selectNewRow(row,index:number){ 
     this.selectedRowIndex = index;
     this.selectCurrentRow();
   }
@@ -152,6 +152,7 @@ export class SalesList {
   ConversionFactor: string;
   position: number;
   DaysFlag: any;
+  daysFlag:any;
   // Bal:number;
   // StoreId:any;
   // StoreName:any;
@@ -171,6 +172,7 @@ export class SalesList {
       this.ItemName = IndentList.ItemName || '';
       this.ConversionFactor = IndentList.ConversionFactor || '';
       this.DaysFlag = IndentList.DaysFlag || 0;
+      this.daysFlag = IndentList.daysFlag || 0;
       // this.StoreId = IndentList.StoreId || 0;
       // this.StoreName =IndentList.StoreName || '';
     }

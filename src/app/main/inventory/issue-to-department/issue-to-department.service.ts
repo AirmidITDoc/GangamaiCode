@@ -60,9 +60,9 @@ export class IssueToDepartmentService {
     return this._formBuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      FromStoreId:['',[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ToStoreId:['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Status:['0']
+      FromStoreId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId:[this.accountService.currentUserValue.user.storeId | 0 [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Status:['1']
      
     });
   }

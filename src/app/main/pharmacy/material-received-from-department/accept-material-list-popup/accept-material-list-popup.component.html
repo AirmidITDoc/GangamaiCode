@@ -24,7 +24,7 @@
 
             <div class="modal-card-container h-100-p">
                 <div fxLayout="row" fxLayoutAlign="start none" fxLayoutGap="8px">
-                    <mat-table #table matSort [dataSource]="dsItemList" style="overflow: auto">
+                    <mat-table #table matSort [dataSource]="dsItemList" style="overflow: auto;height:250px;">
 
                         <ng-container matColumnDef="Action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
@@ -40,8 +40,6 @@
                             </mat-cell>
                         </ng-container>
 
-
-
                         <ng-container matColumnDef="Status">
                             <mat-header-cell *matHeaderCellDef class="w-100">Status</mat-header-cell>
 
@@ -52,10 +50,10 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ItemName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-350">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
                                 ItemName
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350">
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                 {{contact.itemName}}
                             </mat-cell>
                         </ng-container>

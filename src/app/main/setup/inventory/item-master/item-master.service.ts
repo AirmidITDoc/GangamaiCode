@@ -126,7 +126,7 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern('^[0-9]*$')
+                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             cgst: ["",
@@ -182,7 +182,7 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z ]*$")
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                     
                 ]
             ],

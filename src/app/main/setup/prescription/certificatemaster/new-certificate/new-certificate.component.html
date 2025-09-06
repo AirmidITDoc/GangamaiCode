@@ -28,21 +28,16 @@
                                             <!-- Textbox -->
                                             <div fxFlex>
                                                 <airmid-textbox label="TemplateName" formControlName="certificateName"
-                                                    [(ngModel)]="vcertificateName" [formGroup]="templateForm"
-                                                    [validations]="getValidationMessages().certificateName"
+                                                    [formGroup]="templateForm" [validations]="getValidationMessages().certificateName"
                                                     [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
-
-                                            <!-- <airmid-editor label="Template Details" formControlName="certificateDesc" [(value)]="vTemplateDesc" [formGroup]="templateForm"></airmid-editor> -->
-
                                             <!-- Editor -->
                                             <div fxFlex>
-                                                <mat-label>Template Details</mat-label>
-                                                <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                                    formControlName="certificateDesc">
-                                                </angular-editor>
+                                                <airmid-editor label="Template Details"
+                                                    formControlName="certificateDesc" [(value)]="vTemplateDesc"
+                                                    [formGroup]="templateForm" (valueChange)="onEditorValueChange($event)">
+                                                </airmid-editor>
                                             </div>
                                         </div>
                                     </div>
@@ -58,6 +53,11 @@
                                         <li>{{ '{{DoctorName}}' }}</li>
                                         <li>{{ '{{RefDoctorName}}' }}</li>
                                         <li>{{ '{{AgeYear}}' }}</li>
+                                        <li>{{ '{{GenderName}}' }}</li>
+                                        <li>{{ '{{OPDNo}}' }}</li>
+                                        <li>{{ '{{IPDNo}}' }}</li>
+                                        <li>{{ '{{BedName}}' }}</li>
+                                        <li>{{ '{{RoomName}}' }}</li>
                                     </ul>
                                 </div>
 

@@ -222,12 +222,10 @@ export class EmergencyHistoryComponent {
     this.historyForm.get('chiefComplaint')?.setValue(content);
   }
   onSave() {
-    console.log('DirectData:', this.historyForm.get('chiefComplaint').value)
-    console.log('DirectData1:', this.vDescription)
     if (!this.historyForm.invalid) {
       this.historyForm.get('emgHistoryId').setValue(this.registerObj1.emgHistoryId || 0)
       this.historyForm.get('emgId').setValue(this.emergencyId)
-      this.historyForm.get('advice').setValue(this.registerObj1.advice || this.historyForm.get('advice').value)
+      // this.historyForm.get('advice').setValue(this.historyForm.get('advice').value || this.registerObj1.advice)
       this.historyForm.get('bmi').setValue(String(this.historyForm.get('bmi').value))
       this.historyForm.get('bp').setValue(String(this.historyForm.get('bp').value) ?? '')
       this.historyForm.get('bsl').setValue(String(this.historyForm.get('bsl').value) ?? '')

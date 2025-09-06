@@ -14,13 +14,13 @@
                 </div>
             </div>
             <div class="top-header-right" fxLayoutGap="100px" fxLayout="row">
-                <div class="header-add-button">
+                <!-- <div class="header-add-button">
                     <button mat-raised-button fxLayoutAlign="center center" class="py-8">
                         <input type="file" #fileInput (change)="onFileChange($event)"
                             style="font-size: 100px;left: 0;opacity: 0;position: absolute;top: 0;" /><span>Import
                             GRN</span>
                     </button>
-                </div>
+                </div> -->
                 <div class="header-add-button">
                     <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)">
                         New GRN</button>
@@ -30,8 +30,9 @@
 
         <ng-template #actionButtonTemplateStatus let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isVerified" matTooltip="Verified" class="pill green-600 s-16">circle</mat-icon>
-                <mat-icon *ngIf="!element.isVerified" matTooltip="Pending" class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.isVerified" matTooltip="Verified" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!element.isVerified" matTooltip="Pending"
+                    style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
 
                 <mat-icon *ngIf="!element.Cash_CreditType" matTooltip="Credit">
                     <span class="material-icons">credit_card</span>
@@ -39,6 +40,15 @@
 
                 <mat-icon *ngIf="element.Cash_CreditType" matTooltip="Cash">
                     <span class="material-icons">currency_rupee</span>
+                </mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplateIsClose let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">  
+                <mat-icon *ngIf="element.isClosed == 1" matTooltip="IsClosed" style="color: red;"  title="IsClosed">report
+                </mat-icon>
+                <mat-icon *ngIf="element.isClosed != 1" matTooltip="IsOpen" style="color: rgb(19, 126, 13);">report
                 </mat-icon>
             </div>
         </ng-template>
@@ -51,8 +61,16 @@
                 <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit" *ngIf="!element.isVerified">
                     <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onVerify(element)" matTooltip="Verify" *ngIf="!element.isVerified">
-                    <mat-icon title="verify Menu">verified_user</mat-icon>
+                <button mat-icon-button matTooltip="Can't Edit Indent" *ngIf="element.isVerified">
+                    <mat-icon>signal_cellular_no_sim</mat-icon>
+                </button>
+
+                <button *ngIf="!element.isVerified" mat-icon-button (click)="onVerify(element)">
+                    <mat-icon class="disabled-icon" matTooltip="verify Menu"  title="verify Menu">verified_user</mat-icon>
+                </button>
+
+                <button *ngIf="element.isVerified" mat-icon-button>
+                    <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;" title="verified">check_circle</mat-icon>
                 </button>
                 <button mat-icon-button (click)="GRNEmail(element)">
                     <mat-icon *ngIf="!element.isVerified" [disabled]="element.disabled" class="disabled-icon"
@@ -99,7 +117,7 @@
                         <mat-slide-toggle name="Status1" (change)="onChangeFirst()" formControlName="Status1">
                             Verify / Pending
                         </mat-slide-toggle>
-                    </div>  
+                    </div>
                 </form>
             </ng-container>
         </airmid-table>
