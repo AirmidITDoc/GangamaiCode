@@ -15,11 +15,20 @@
 
       <!-- Actions (right) -->
       <div fxFlex="none" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+        <!-- Search -->
         <button mat-raised-button color="primary" type="button" (click)="bindGridData()">
-          <mat-icon>search</mat-icon>&nbsp;Search
+          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <mat-icon inline aria-hidden="true">search</mat-icon>
+            <span>Search</span>
+          </span>
         </button>
+      
+        <!-- Reset -->
         <button mat-stroked-button type="button" (click)="onClear()">
-          <mat-icon>refresh</mat-icon>&nbsp;Reset
+          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <mat-icon inline aria-hidden="true">refresh</mat-icon>
+            <span>Reset</span>
+          </span>
         </button>
       </div>
 
