@@ -1,10 +1,11 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { AirmidCardViewComponent } from 'app/main/shared/componets/airmid-card-view/airmid-card-view.component';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { CreateUserService } from './create-user.service';
@@ -18,14 +19,46 @@ import { NUserComponent } from './nuser/nuser.component';
   animations: fuseAnimations,
 })
 export class CreateUserComponent implements OnInit {
+  @HostBinding('style.display') display = 'flex';
+  @HostBinding('style.flex') flex = '1 1 auto';
+  @HostBinding('style.minHeight') minH = '0';
+  @HostBinding('style.flexDirection') dir = 'column';
+
   myuserform: FormGroup;
   autocompleteModeStoreName: String = "Store";
   autocompleteModeWebRoleName: String = "WebRole";
+
+  // Add view mode and user data for card view
+  viewMode: 'table' | 'card' = 'table';
+  userList: any[] = [];
+
+  // Card view config and pagination
+  cardConfig = {
+    fields: [
+      { label: 'First Name', key: 'firstName' },
+      { label: 'Last Name', key: 'lastName' },
+      { label: 'Web Role', key: 'webRoleName' },
+      { label: 'User Name', key: 'userLoginName' },
+      { label: 'Unit Name', key: 'hospitalName' },
+      { label: 'Store Name', key: 'storeName' },
+      { label: 'Doctor Name', key: 'doctorName' },
+      { label: 'Days', key: 'days' },
+      { label: 'Is Active', key: 'isActive' }
+    ],
+    actions: [
+      { icon: 'remove_red_eye', tooltip: 'View Password', action: 'viewPassword' },
+      { icon: 'edit', tooltip: 'Edit', action: 'edit' },
+      { icon: 'delete', tooltip: 'Delete', action: 'delete' }
+    ]
+  };
+  pageSize = 25;
+  resultsLength = 0;
 
   constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog, public toastr: ToastrService) { }
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild(AirmidCardViewComponent) cardView: AirmidCardViewComponent;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -63,6 +96,25 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.myuserform = this.filterForm();
+  }
+
+  onAfterLoadData(data: any[]) {
+    this.userList = data;
+    this.resultsLength = data.length;
+  }
+
+  onCardAction(event: { action: string, item: any }) {
+    if (event.action === 'viewPassword') {
+      this.PasswordView(event.item);
+    } else if (event.action === 'edit') {
+      this.onEdit(event.item);
+    } else if (event.action === 'delete') {
+    }
+  }
+  onCardExport(type: string) {
+  }
+  onCardPage(event: any) {
+    
   }
   filterForm(): FormGroup {
     return this._formBuilder.group({
@@ -125,8 +177,15 @@ export class CreateUserComponent implements OnInit {
         { fieldName: "UserName", fieldValue: this.UserName, opType: OperatorComparer.Contains }
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    
+    // Update grid based on current view mode
+    if (this.viewMode === 'table' && this.grid) {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    } else if (this.viewMode === 'card' && this.cardView) {
+      this.cardView.gridConfig = this.gridConfig;
+      this.cardView.bindGridData();
+    }
   }
 
   onSave(row: any = null) {
@@ -143,14 +202,18 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        that.grid.bindGridData();
+        if (that.viewMode === 'table' && that.grid) {
+          that.grid.bindGridData();
+        } else if (that.viewMode === 'card' && that.cardView) {
+          that.cardView.bindGridData();
+        }
       }
     });
   }
 
   onEdit(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
 
     let that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
@@ -163,7 +226,11 @@ export class CreateUserComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        that.grid.bindGridData();
+        if (that.viewMode === 'table' && that.grid) {
+          that.grid.bindGridData();
+        } else if (that.viewMode === 'card' && that.cardView) {
+          that.cardView.bindGridData();
+        }
       }
     });
   }
@@ -195,7 +262,11 @@ export class CreateUserComponent implements OnInit {
         this._CreateUserService.PasswordUpdate(submitData).subscribe(
           (response) => {
             this.toastr.success(response.message);
-            this.grid.bindGridData();
+            if (this.viewMode === 'table' && this.grid) {
+              this.grid.bindGridData();
+            } else if (this.viewMode === 'card' && this.cardView) {
+              this.cardView.bindGridData();
+            }
           });
       }
     });

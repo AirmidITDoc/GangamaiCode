@@ -1,97 +1,257 @@
-<div fusePerfectScrollbar
+<div
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Create User
-                </span>
-            </div>
+    fxLayout="column"
+    fxFill
+    dynamicTableHeight
+    style="width: 100%; overflow-x: hidden;"
+>
+  <!-- Top header -->
+  <div class="top-header header accent" fxLayout="column" fxLayout.gt-xs="row"
+       fxLayoutAlign.gt-xs="space-between center" style="padding:16px">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div class="top-header-info">
+        <div class="top-header-title">
+          <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            Create User
+          </span>
         </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New User
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <mat-button-toggle-group [(ngModel)]="viewMode" aria-label="View mode">
+        <mat-button-toggle value="table" matTooltip="Table view">
+          <mat-icon>table_view</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="card" matTooltip="Card view">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <button mat-raised-button color="primary" (click)="onSave()">+ New User</button>
+    </div>
+  </div>
+
+  <div fxFlex fxLayout="column" class="mat-padding" style="min-height:0; overflow:auto;">
+
+  <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxFlex style="margin-top: 16px;">
+
+    <!-- Row action template -->
+    <ng-template #actionButtonTemplate let-element>
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+        <button mat-icon-button matTooltip="View Password" (click)="PasswordView(element)">
+          <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Doc icon template -->
+    <ng-template #docIcon let-element>
+      <div>
+        <mat-icon *ngIf="element.doctorID > 0" matTooltip="Doctor">
+          <img width="20" height="20" src="assets/images/logos/doctor.png" />
+        </mat-icon>
+      </div>
+    </ng-template>
+
+    <!-- TABLE VIEW -->
+    <airmid-table
+      *ngIf="viewMode === 'table'"
+      [gridConfig]="gridConfig"
+      class="content"
+      (afterLoadData)="onAfterLoadData($event)"
+    >
+      <ng-container filters>
+        <form [formGroup]="myuserform" fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start center">
+          <mat-form-field appearance="outline" fxFlex="200px">
+            <mat-label>User Name</mat-label>
+            <input
+              matInput
+              placeholder="Search UserName"
+              autocomplete="off"
+              formControlName="UserName"
+              (input)="onChangeFirst()"
+            />
+            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
+              <mat-icon>close</mat-icon>
             </button>
-        </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="200px">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              placeholder="Search FirstName"
+              autocomplete="off"
+              formControlName="FirstName"
+              (input)="onChangeFirst()"
+            />
+            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="200px">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              placeholder="Search LastName"
+              autocomplete="off"
+              formControlName="LastName"
+              (input)="onChangeFirst()"
+            />
+            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div fxFlex="220px">
+            <airmid-dropdown
+              label="Store Name"
+              formControlName="storeId"
+              [formGroup]="myuserform"
+              (selectionChange)="storeChange($event)"
+              [mode]="autocompleteModeStoreName"
+            >
+            </airmid-dropdown>
+          </div>
+
+          <div fxFlex="220px">
+            <airmid-dropdown
+              label="Role Name"
+              formControlName="roleId"
+              [formGroup]="myuserform"
+              (selectionChange)="roleChange($event)"
+              [mode]="autocompleteModeWebRoleName"
+            >
+            </airmid-dropdown>
+          </div>
+
+          <mat-radio-group
+            aria-label="Status"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="12px"
+            formControlName="status"
+          >
+            <mat-radio-button value="">All</mat-radio-button>
+            <mat-radio-button value="1">IsActive</mat-radio-button>
+            <mat-radio-button value="0">IsDeactive</mat-radio-button>
+          </mat-radio-group>
+        </form>
+      </ng-container>
+    </airmid-table>
+
+    <!-- CARD VIEW -->
+    <div *ngIf="viewMode === 'card'" fxFlex fxLayout="column" style="min-height:0;">
+        <mat-card fxFlex style="overflow: auto;">
+          <airmid-card-view
+            [data]="userList"
+            [config]="cardConfig"
+            [gridConfig]="gridConfig"
+            (afterLoadData)="onAfterLoadData($event)"
+            [ShowFilter]="true"
+            [ShowButtons]="true"
+            [pageSize]="pageSize"
+            [resultsLength]="resultsLength"
+            (action)="onCardAction($event)"
+            (export)="onCardExport($event)"
+            (page)="onCardPage($event)"
+          >
+          <ng-container cardFilters>
+            <form
+              [formGroup]="myuserform"
+              fxLayout="row wrap"
+              fxLayoutGap="16px"
+              fxLayoutAlign="start center"
+              style="width:100%"
+            >
+              <mat-form-field appearance="outline" fxFlex="200px">
+                <mat-label>User Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Search UserName"
+                  autocomplete="off"
+                  formControlName="UserName"
+                  (input)="onChangeFirst()"
+                />
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="200px">
+                <mat-label>First Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Search FirstName"
+                  autocomplete="off"
+                  formControlName="FirstName"
+                  (input)="onChangeFirst()"
+                />
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" fxFlex="200px">
+                <mat-label>Last Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Search LastName"
+                  autocomplete="off"
+                  formControlName="LastName"
+                  (input)="onChangeFirst()"
+                />
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <div fxFlex="220px">
+                <airmid-dropdown
+                  label="Store Name"
+                  formControlName="storeId"
+                  [formGroup]="myuserform"
+                  (selectionChange)="storeChange($event)"
+                  [mode]="autocompleteModeStoreName"
+                >
+                </airmid-dropdown>
+              </div>
+
+              <div fxFlex="220px">
+                <airmid-dropdown
+                  label="Role Name"
+                  formControlName="roleId"
+                  [formGroup]="myuserform"
+                  (selectionChange)="roleChange($event)"
+                  [mode]="autocompleteModeWebRoleName"
+                >
+                </airmid-dropdown>
+              </div>
+
+              <mat-radio-group
+                aria-label="Status"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                fxLayoutGap="12px"
+                formControlName="status"
+              >
+                <mat-radio-button value="">All</mat-radio-button>
+                <mat-radio-button value="1">IsActive</mat-radio-button>
+                <mat-radio-button value="0">IsDeactive</mat-radio-button>
+              </mat-radio-group>
+            </form>
+          </ng-container>
+          </airmid-card-view>
+        </mat-card>
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button mat-icon-button matTooltip="View Password" (click)="PasswordView(element)">
-                    <mat-icon>remove_red_eye</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="Delete">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </ng-template>
-
-        <ng-template #docIcon let-element>
-            <div>
-                <mat-icon *ngIf="element.doctorID > 0" matTooltip="Doctor">
-                    <img width="20px" height="20px" src="assets/images/logos/doctor.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-        <airmid-table [gridConfig]="gridConfig" class="content">
-            <ng-container filters>
-
-                <form [formGroup]="myuserform">
-                    <mat-form-field appearance="outline">
-                        <mat-label>User Name</mat-label>
-                        <input matInput placeholder="Search UserName" autocomplete="off" [formGroup]="myuserform"
-                            formControlName="UserName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('UserName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search FirstName" autocomplete="off" [formGroup]="myuserform"
-                            formControlName="FirstName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search LastName" autocomplete="off" [formGroup]="myuserform"
-                            formControlName="LastName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <airmid-dropdown label="Store Name" formControlName="storeId" [formGroup]="myuserform"
-                        (selectionChange)="storeChange($event)" [mode]="autocompleteModeStoreName">
-                    </airmid-dropdown>
-                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
-
-                    <airmid-dropdown label="Role Name" formControlName="roleId" [formGroup]="myuserform"
-                        (selectionChange)="roleChange($event)" [mode]="autocompleteModeWebRoleName">
-                    </airmid-dropdown>
-                    <!--  [(ngModel)]="gridConfig.filters[3].fieldValue" -->
-
-                    <mat-radio-group value=""
-                        fxLayoutAlign="center center">
-                        <mat-radio-button value="">All</mat-radio-button>
-                        <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                        <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                    </mat-radio-group>
-                    <!--  [(ngModel)]="gridConfig.filters[1].fieldValue" -->
-                </form>
-
-            </ng-container>
-        </airmid-table>
-    </div>
+  </div>
+  </div>
 </div>

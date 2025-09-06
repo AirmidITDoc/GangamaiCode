@@ -1,0 +1,119 @@
+<!-- SEARCH SECTION -->
+<mat-card *ngIf="ShowFilter" class="mat-elevation-z0" style="margin:0 16px 16px;">
+  <mat-toolbar style="background:#3949ab; color:#fff;">
+    <span>Search Facility</span>
+  </mat-toolbar>
+
+  <!-- top space for filters -->
+  <mat-card-content style="padding-top:24px; padding-bottom:16px;">
+    <!-- Filters row -->
+    <div fxLayout="row wrap" fxLayoutAlign="start end" style="gap:16px;">
+      <div fxFlex fxLayout="row wrap" fxLayoutAlign="start end" style="gap:16px;">
+        <!-- Projected filters: give fxFlex on each child -->
+        <ng-content select="[cardFilters]"></ng-content>
+      </div>
+
+      <!-- Actions (right) -->
+      <div fxFlex="none" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+        <!-- Search -->
+        <button mat-raised-button color="primary" type="button" (click)="bindGridData()">
+          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <mat-icon inline aria-hidden="true">search</mat-icon>
+            <span>Search</span>
+          </span>
+        </button>
+      
+        <!-- Reset -->
+        <button mat-stroked-button type="button" (click)="onClear()">
+          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+            <mat-icon inline aria-hidden="true">refresh</mat-icon>
+            <span>Reset</span>
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<!-- RESULTS -->
+<ng-container *ngIf="dataSource?.data && dataSource?.data.length; else emptyState">
+  <!-- Equal spacing on all sides/rows: negative outer margin + inner padding -->
+  <div fxLayout="row wrap" fxLayoutAlign="start start" style="margin:0 4px 16px; margin-left:-12px; margin-right:-12px;">
+    <div *ngFor="let item of dataSource.data"
+         fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="33" fxFlex.gt-lg="33"
+         style="padding:12px;">
+      <mat-card class="mat-elevation-z3">
+        <mat-card-header>
+          <!-- 40px circular, primary-colored avatar -->
+          <button mat-mini-fab mat-card-avatar color="primary" tabindex="-1" aria-label="avatar">
+            <mat-icon>person</mat-icon>
+          </button>
+        
+          <mat-card-title>
+            {{ item[config.fields[0]?.key] }} {{ item[config.fields[1]?.key] }}
+          </mat-card-title>
+          <mat-card-subtitle *ngIf="config.fields[2]">
+            {{ item[config.fields[2]?.key] }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+          <div fxLayout="column" style="gap:8px;">
+            <ng-container *ngFor="let field of config.fields; let i = index; let last = last">
+              <ng-container *ngIf="field.label && i > 2">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <span>{{ field.label }}:</span>
+                  <span>{{ item[field.key] || '--' }}</span>
+                </div>
+                <mat-divider *ngIf="!last"></mat-divider>
+              </ng-container>
+            </ng-container>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions *ngIf="config.actions" fxLayout="row" fxLayoutAlign="end center" style="gap:4px;">
+          <button *ngFor="let act of config.actions" mat-icon-button [matTooltip]="act.tooltip"
+                  (click)="onAction(act.action, item)">
+            <mat-icon>{{ act.icon }}</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- FOOTER (same side padding as search) -->
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center" style="gap:16px; padding:0 16px;">
+    <div *ngIf="ShowButtons" fxLayout="row" fxLayoutAlign="start center" style="gap:8px;">
+      <button mat-stroked-button color="primary" (click)="onExportClick('Excel')">
+        <mat-icon>table_chart</mat-icon><span>Excel</span>
+      </button>
+      <button mat-stroked-button color="primary" (click)="onExportClick('Pdf')">
+        <mat-icon>picture_as_pdf</mat-icon><span>PDF</span>
+      </button>
+      <button mat-stroked-button color="primary" (click)="onExportClick('Csv')">
+        <mat-icon>table_view</mat-icon><span>CSV</span>
+      </button>
+    </div>
+
+    <mat-paginator
+      [pageSizeOptions]="[25,50,120,200]"
+      [pageSize]="pageSize"
+      [length]="resultsLength"
+      showFirstLastButtons
+      (page)="onPage($event)">
+    </mat-paginator>
+  </div>
+</ng-container>
+
+<!-- EMPTY -->
+<ng-template #emptyState>
+  <div fxLayout="column" fxLayoutAlign="center center" style="min-height:200px; padding:24px;">
+    <mat-icon>people</mat-icon>
+    <h3>No Users Found</h3>
+    <p>Try adjusting your search criteria or add a new user.</p>
+  </div>
+</ng-template>
