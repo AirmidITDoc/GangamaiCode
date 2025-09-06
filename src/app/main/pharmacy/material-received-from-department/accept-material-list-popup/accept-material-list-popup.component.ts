@@ -11,6 +11,7 @@ import { MaterialReceivedFromDepartmentService } from '../material-received-from
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-accept-material-list-popup',
@@ -23,15 +24,15 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class AcceptMaterialListPopupComponent implements OnInit {
 
   tempItemlist: any = [];
-  MaterialForm:FormGroup;
+  MaterialForm: FormGroup;
   selected: boolean = false;
-  
-  SelectedRowData:any=[];
-  Acceptedchk:any; 
-    sIsLoading: string = '';
-  registerObj:any;
-    checklist: any[] = [];  
-  masterSelected:any=false;
+
+  SelectedRowData: any = [];
+  Acceptedchk: any;
+  sIsLoading: string = '';
+  registerObj: any;
+  checklist: any[] = [];
+  masterSelected: any = false;
   displayedColumns = [
     'Action',
     'Status',
@@ -54,80 +55,80 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<AcceptMaterialListPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
-      private accountService: AuthenticationService,
-        private _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
-        private _FormvalidationserviceService: FormvalidationserviceService,
+    private accountService: AuthenticationService,
+    private _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public _materialAcceptanceService: MaterialReceivedFromDepartmentService,
-    public _loggedService : AuthenticationService
+    public _loggedService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
     console.log(this.data.Obj.IssueId);
-    this.MaterialForm=this.creatematerial()
-  this.itemdetailarray.push(this.itemdetailform());
+    this.MaterialForm = this.creatematerial()
+    this.itemdetailarray.push(this.itemdetailform());
 
     if (this.data) {
-      this.registerObj =this.data.Obj
+      this.registerObj = this.data.Obj
       console.log(this.registerObj)
-    this.getItemList(this.registerObj.issueId)
+      this.getItemList(this.registerObj.issueId)
 
     }
-   
+
   }
 
-    get itemdetailarray(): FormArray {
-      return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
-    }
-    
-    
-creatematerial(){
+  get itemdetailarray(): FormArray {
+    return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
+  }
+
+
+  creatematerial() {
     return this._formBuilder.group({
       "materialAcceptIssueHeader": this._formBuilder.group({
         "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "acceptedBy": [this.accountService.currentUserValue.user.userId  || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "IsAccepted":  [true, [this._FormvalidationserviceService.onlyNumberValidator()]],
-       }),
-        "materialAcceptIssueDetails": this._formBuilder.array([]),
-        "materialAcceptStockUpdate": this._formBuilder.group({
+        "acceptedBy": [this.accountService.currentUserValue.user.userId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "IsAccepted": [true, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      "materialAcceptIssueDetails": this._formBuilder.array([]),
+      "materialAcceptStockUpdate": this._formBuilder.group({
         "issueId": 0
-             })
+      })
     });
-}
+  }
 
 
-itemdetailform(element: any = {}): FormGroup {
-  console.log(element)
-return this._formBuilder.group({
+  itemdetailform(element: any = {}): FormGroup {
+    console.log(element)
+    return this._formBuilder.group({
       issueId: [element.issueId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueDepId: [element.issueDepId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status:[element.status || 0]
+      status: [element.status || 0]
     });
   }
 
   getItemList(IssueId) {
-   
-   var vdata = {
-  "first": 0,
-  "rows": 10,
-  "sortField": "IssueId",
-  "sortOrder": 0,
-  "filters": [
-    {
-      "fieldName": "IssueId",
-      "fieldValue": String(IssueId),
-      "opType": "Equals"
-    }
-  ],
-  "exportType": "JSON",
-  "columns": [
-    {
-      "data": "string",
-      "name": "string"
-    }
-  ]
-}
 
-  this._materialAcceptanceService.getAccItemdetailList(vdata).subscribe(data => {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "IssueId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "IssueId",
+          "fieldValue": String(IssueId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
+
+    this._materialAcceptanceService.getAccItemdetailList(vdata).subscribe(data => {
       this.dsItemList.data = data.data as ItemList[];
       console.log(this.dsItemList.data);
       this.dsItemList.sort = this.sort;
@@ -138,17 +139,24 @@ return this._formBuilder.group({
         this.sIsLoading = '';
       });
 
-   
+
   }
-  
-  
-  tableElementChecked(event ,contact){
+
+checkboxgflag=0
+  tableElementChecked(event, contact) {
     debugger
-    if(contact.selected){
-      this.tempItemlist.push(contact);
-      console.log(this.tempItemlist);
+    if (contact.selected) {
+    this.checkboxgflag=1
+      if (contact.status != 'A'){
+          this.tempItemlist.push(contact);
+        console.log(this.tempItemlist);
+      }
+      else {
+        Swal.fire('Item Already Accepted...')
+        return;
+      }
     }
-    else if(this.masterSelected){
+    else if (this.masterSelected) {
       if (contact.selected == false) {
         let index = this.tempItemlist.indexOf(contact);
         if (index >= 0) {
@@ -159,74 +167,83 @@ return this._formBuilder.group({
         }
       }
       this.masterSelected = false;
-    }  
-  } 
+    }
+  }
 
-  
+
   checkUncheckAll() {
-    if(this.masterSelected == true){
+    debugger
+    if (this.masterSelected == true) {
+          this.checkboxgflag=1
       this.dsItemList.data.forEach(contact => {
-        contact.selected = true;
+      contact.selected = true;
       });
       this.checklist = this.dsItemList.data;
       this.tempItemlist = this.checklist;
-     }else{
+    } else {
       this.dsItemList.data.forEach(contact => {
         contact.selected = false;
         this.checklist = [];
         this.tempItemlist = [];
-        console.log(this.checklist) 
+        console.log(this.checklist)
       });
     }
-  
+
   }
 
-   onSubmit() {
-    if ((!this.dsItemList.data.length)) {
+  onSubmit() {
+    debugger
+    if( this.checkboxgflag==0){
+        this.toastr.warning('Data is not Selected in list ..', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((!this.tempItemlist.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-  if(this.dsItemList.data.length){
-    if(this.dsItemList.data.length == this.tempItemlist.length){
-      this.Acceptedchk = true;  
-    }else{
-      this.Acceptedchk = false;
-    }
- 
-    this.MaterialForm.get('materialAcceptIssueHeader.issueId').setValue(this.registerObj.issueId)
-      this.MaterialForm.get('materialAcceptIssueHeader.acceptedBy').setValue(this._loggedService.currentUserValue.userId)
-        this.MaterialForm.get('materialAcceptIssueHeader.IsAccepted').setValue(this.Acceptedchk)
-     
-      this.itemdetailarray.clear();
-      this.tempItemlist.forEach(element => {
-    let selectedchk="0";
-      if (element.selected == 1) {
-        selectedchk = "1";
-      } else if (element.selected != 1) {
-        selectedchk = "0";
+    if (this.dsItemList.data.length) {
+      if (this.dsItemList.data.length == this.tempItemlist.length) {
+        this.Acceptedchk = true;
+      } else {
+        this.Acceptedchk = false;
       }
 
-        element.status=selectedchk
+      this.MaterialForm.get('materialAcceptIssueHeader.issueId').setValue(this.registerObj.issueId)
+      this.MaterialForm.get('materialAcceptIssueHeader.acceptedBy').setValue(this._loggedService.currentUserValue.userId)
+      this.MaterialForm.get('materialAcceptIssueHeader.IsAccepted').setValue(this.Acceptedchk)
+
+      this.itemdetailarray.clear();
+      this.tempItemlist.forEach(element => {
+        let selectedchk = "0";
+        if (element.selected == 1) {
+          selectedchk = "1";
+        } else if (element.selected != 1) {
+          selectedchk = "0";
+        }
+
+        element.status = selectedchk
         this.itemdetailarray.push(this.itemdetailform(element));
       });
-   
-    this.MaterialForm.get('materialAcceptStockUpdate.issueId').setValue(this.registerObj.issueId)
-  
-    console.log(this.MaterialForm.value);
-    this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
-      this.dialogRef.close();
-     this.viewgetIssuetodeptReportPdf(this.registerObj.issueId)
-    });
-  }
+
+      this.MaterialForm.get('materialAcceptStockUpdate.issueId').setValue(this.registerObj.issueId)
+
+      console.log(this.MaterialForm.value);
+      this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
+        this.dialogRef.close();
+        this.viewgetIssuetodeptReportPdf(this.registerObj.issueId)
+      });
+    }
   }
 
-    viewgetIssuetodeptReportPdf(element) {
-         console.log(element)
-         this.commonService.Onprint("IssueId", element, "MaterialReceivedByDept");
-     }
-      
+  viewgetIssuetodeptReportPdf(element) {
+    console.log(element)
+    this.commonService.Onprint("IssueId", element, "MaterialReceivedByDept");
+  }
+
   onClose() {
     this.dialogRef.close();
   }
@@ -237,8 +254,8 @@ export class ItemList {
   Bal: number;
   StoreId: any;
   StoreName: any;
- // selected:any;
-  selected:any;
+  // selected:any;
+  selected: any;
 
   constructor(ItemList) {
     {

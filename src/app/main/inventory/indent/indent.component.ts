@@ -24,6 +24,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 
 @Component({
   selector: 'app-indent',
@@ -136,9 +137,12 @@ export class IndentComponent implements OnInit {
     public toastr: ToastrService, public _matDialog: MatDialog, private accountService: AuthenticationService,
     public datePipe: DatePipe
   ) { }
-
+IsPoverify=0;
   ngOnInit(): void {
     this.IndentSearchGroup = this._IndentService.IndentSearchFrom();
+
+    console.log(this.accountService)
+    // this.IsPoverify=this.accountService.currentUser.Is
   }
 
   ListView(value) {
@@ -173,11 +177,11 @@ debugger
       this.IsClosed = "0"
     }
 
-    if (this.IndentSearchGroup.get('Active').value == true) {
-      this.IsActive = "0"
-    } else {
-      this.IsActive = "1"
-    }
+    // if (this.IndentSearchGroup.get('Active').value == true) {
+    //   this.IsActive = "0"
+    // } else {
+    //   this.IsActive = "1"
+    // }
 
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.IndentSearchGroup.get('startdate').value, "yyyy-MM-dd")
