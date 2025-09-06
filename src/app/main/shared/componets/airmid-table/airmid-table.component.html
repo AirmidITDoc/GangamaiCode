@@ -61,8 +61,8 @@
                                     <mat-icon *ngIf="getStatus(element[row.key])" 
                                         class="active-icon" style="color: #039855;"
                                        >check_circle_outline</mat-icon>
-                                    <mat-icon *ngIf="!getStatus(element[row.key])"
-                                        class="active-icon" style="color: #f44336;">close</mat-icon>
+                                       <mat-icon *ngIf="!getStatus(element[row.key])"
+                                       class="active-icon" style="color: #f44336;">highlight_off</mat-icon>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.image">
                                     <div class="profile_image_wrapper">
