@@ -1,17 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms'; 
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
+import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations'; 
-import { AuthenticationService } from 'app/core/services/authentication.service'; 
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
- import * as _moment from 'moment';
+import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
 import { ToastrService } from 'ngx-toastr';
- import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { GrnItemList, GRNList, ItemNameList } from '../good-receiptnote.component';
 import { GoodReceiptnoteService } from '../good-receiptnote.service';
 import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
@@ -28,7 +28,7 @@ const moment = _rollupMoment || _moment;
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class NewGrnComponent implements OnInit, OnDestroy {  
+export class NewGrnComponent implements OnInit, OnDestroy {
     displayedColumns2 = [
         'Status',
         'SrNo',
@@ -75,28 +75,28 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'discpercentage',
         'DiscAmount',
         'VatPercentage'
-    ] 
-    GrnHeaderForm: FormGroup; 
+    ]
+    GrnHeaderForm: FormGroup;
     userFormGroup: FormGroup
 
 
     sIsLoading: string = '';
-    isLoading = true;   
-    screenFromString = 'Common-form'; 
+    isLoading = true;
+    screenFromString = 'Common-form';
     registerObj = new ItemNameList({});
-    chargeslist: any = []; 
-    labelPosition: 'before' | 'after' = 'after'; 
-    PaymentType: any; 
+    chargeslist: any = [];
+    labelPosition: 'before' | 'after' = 'after';
+    PaymentType: any;
     ItemID: any;
     VatPercentage: any;
-    GSTPer: any; 
+    GSTPer: any;
     VatAmount: any;
-    vFinalNetAmount: any;  
+    vFinalNetAmount: any;
     CGSTFinalAmount: any;
     SGSTFinalAmount: any;
-    IGSTFinalAmount: any;    
+    IGSTFinalAmount: any;
     vPurchaseId: any;
-    selectedAdvanceObj: PODetailList;  
+    selectedAdvanceObj: PODetailList;
     InvoiceNo: any;
     GateEntryNo: any;
     SupplierId: any;
@@ -106,21 +106,21 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     DiscAmt: any;
     IGSTAmt: any;
     CGSTAmt: any;
-    SGSTAmt: any;  
-    vContact: any; 
-    ItemId: any;   
+    SGSTAmt: any;
+    vContact: any;
+    ItemId: any;
     vlastDay: string = '';
     lastDay2: string = '';
     vExpDate: string = '';
     dateTimeObj: any;
     lastsupplierflag: boolean = false;
-    autocompletestore: string = "Store";  
+    autocompletestore: string = "Store";
     autocompleteModeGSTType: string = "GstCalcType";
-    ItemName: any;  
-    Dis: any = 0;  
-     vpoBalQty: any;
-vMobile: any;
-    ExpDate: any;   
+    ItemName: any;
+    Dis: any = 0;
+    vpoBalQty: any;
+    vMobile: any;
+    ExpDate: any;
     // Make it true when you want to use mock data.
     mock = false;
     vGRNType: boolean = true;
@@ -136,28 +136,29 @@ vMobile: any;
     dsItemNameList = new MatTableDataSource<ItemNameList>();
     dsItemNameList1 = new MatTableDataSource<ItemNameList>();
     dsTempItemNameList = new MatTableDataSource<ItemNameList>();
-    dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>(); 
+    dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
 
-   
+
     constructor(
         public _GRNList: GoodReceiptnoteService,
-        public _matDialog: MatDialog, 
+        public _matDialog: MatDialog,
         public datePipe: DatePipe,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<NewGrnComponent>,
         public _dialogRef: MatDialogRef<PurchaseorderComponent>,
-        private accountService: AuthenticationService, 
-        public toastr: ToastrService, 
+        private accountService: AuthenticationService,
+        public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private newGRNService: NewGRNService,
         private formBuilder: UntypedFormBuilder,
         private commonService: PrintserviceService,
-    ) {this.userFormGroup = this._GRNList.getGRNForm();
-       this.userFormGroup.markAllAsTouched();
-       this._GRNList.GRNFinalForm.markAllAsTouched();
+    ) {
+        this.userFormGroup = this._GRNList.getGRNForm();
+        this.userFormGroup.markAllAsTouched();
+        this._GRNList.GRNFinalForm.markAllAsTouched();
     }
-    ngOnInit(): void {  
-        this.GrnHeaderForm = this.createGrnHeaderInsert();   
+    ngOnInit(): void {
+        this.GrnHeaderForm = this.createGrnHeaderInsert();
         if (this.mock) {
             this.setMockData();
         }
@@ -176,7 +177,7 @@ vMobile: any;
                 this.userFormGroup.get('PaymentType').setValue(true)
             } else {
                 this.userFormGroup.get('PaymentType').setValue(false)
-            } 
+            }
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
@@ -185,7 +186,7 @@ vMobile: any;
             this.dsItemNameList.data = obj.Items as ItemNameList[];
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
-        } 
+        }
     }
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
@@ -205,31 +206,31 @@ vMobile: any;
         });
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
-    } 
-    getchangegstper(rate: any, controlName: string): void { 
-        const formValues = this.userFormGroup.getRawValue() as GRNFormModel; 
+    }
+    getchangegstper(rate: any, controlName: string): void {
+        const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         // Predefined valid GST percentages (as numbers)
-        const gstValues = [2.5, 6, 9, 14]; 
+        const gstValues = [2.5, 6, 9, 14];
 
         const parsedRate = Number(rate);
 
         const isValid = gstValues.includes(parsedRate);
 
         if (!isValid) {
-            this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING); 
-            this.userFormGroup.get(controlName)?.setValue(''); 
-              const NameElement = document.querySelector(`[name='{{controlName}}']`) as HTMLElement;
-             if (NameElement) {
-            NameElement.focus();
+            this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+            this.userFormGroup.get(controlName)?.setValue('');
+            const NameElement = document.querySelector(`[name='{{controlName}}']`) as HTMLElement;
+            if (NameElement) {
+                NameElement.focus();
             }
             return;
-        }  
+        }
 
         // Safely calculate GST total
-        const GSTPer =  Number(formValues.CGST || 0) + Number(formValues.SGST || 0) +   Number(formValues.IGST || 0); 
+        const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
         this.userFormGroup.patchValue({
             GST: GSTPer
-        }); 
+        });
         this.calculateTotalamt();
     }
 
@@ -250,14 +251,14 @@ vMobile: any;
                 })
             }
         })
-    } 
+    }
     //BatchExpireDate calculation
     calculateLastDay() {
-        const inputDate = this.userFormGroup.get("ExpDate").value;  
+        const inputDate = this.userFormGroup.get("ExpDate").value;
         const numericPattern = /^[0-9]+$/;
-        const CurrentDate = new Date(); 
-        const currentMonth = CurrentDate.getMonth(); 
-        const currentYear = CurrentDate.getFullYear();  
+        const CurrentDate = new Date();
+        const currentMonth = CurrentDate.getMonth();
+        const currentYear = CurrentDate.getFullYear();
         if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -301,7 +302,7 @@ vMobile: any;
                 });
                 this.vlastDay = '';
                 this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-                return 
+                return
             }
         } else {
             this.vlastDay = '';
@@ -310,25 +311,25 @@ vMobile: any;
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        } 
-    }  
+        }
+    }
     private pad(num: number): string {
         return num.toString().padStart(2, '0');
-    } 
+    }
     private getLastDayOfMonth(month: number, year: number): number {
         return new Date(year, month, 0).getDate();
-    } 
+    }
     //Table Exp Date change
     lastDay1: any;
-    CellcalculateLastDay(contact: ItemNameList, inputDate: string) {  
+    CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
         const numericPattern = /^[0-9]+$/;
-        const CurrentDate = new Date(); 
+        const CurrentDate = new Date();
         const currentMonth = CurrentDate.getMonth();
         const currentYear = CurrentDate.getFullYear();
 
         if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6); 
+            const year = +inputDate.substring(2, 6);
             if (year <= currentYear) {
                 if (month <= currentMonth) {
                     Swal.fire({
@@ -374,7 +375,7 @@ vMobile: any;
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        } 
+        }
     }
     //Add item list
     onAddGRNItem() {
@@ -387,7 +388,7 @@ vMobile: any;
         if (isDuplicate) {
             this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
             return;
-        } 
+        }
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
         if (formValues.ItemName) {
@@ -425,7 +426,7 @@ vMobile: any;
     }
     //Reset
     resetFormItem() {
-        const form = this.userFormGroup; 
+        const form = this.userFormGroup;
         form.patchValue({
             ItemName: "a",
             ConversionFactor: 1,
@@ -453,7 +454,7 @@ vMobile: any;
             FinalTotalQty: 0,
         });
         this.userFormGroup.markAsUntouched();
-    } 
+    }
     //item Total amt
     calculateTotalamt() {
         this.validateFormValues();
@@ -462,20 +463,20 @@ vMobile: any;
         const qty = +form.get('Qty').value || 0;
         const freeqty = +form.get('FreeQty').value || 0;
         const rate = +form.get('Rate').value || 0;
-        const conversionFactor = +form.get('ConversionFactor').value || 1; 
+        const conversionFactor = +form.get('ConversionFactor').value || 1;
         // Calculate total quantity and amount
         const totalQty = (qty + freeqty) * conversionFactor;
         let totalAmount = 0;
-        let netAmount = 0; 
+        let netAmount = 0;
         if (qty > 0 && rate > 0) {
             totalAmount = rate * qty;
-            netAmount = totalAmount; 
+            netAmount = totalAmount;
             // Update form values
             form.patchValue({
                 TotalAmount: totalAmount,
                 NetAmount: netAmount,
                 FinalTotalQty: totalQty
-            }); 
+            });
             // Trigger discount and GST calculations
             // this.calculateDiscperAmount();
         } else {
@@ -499,7 +500,7 @@ vMobile: any;
     // Calculate discount when discount percentage changes
     calculateDiscountAmount() {
         const form = this.userFormGroup;
-        const values = form.getRawValue() as GRNFormModel; 
+        const values = form.getRawValue() as GRNFormModel;
         // Get and validate discount percentage
         const discountPercentage = Number(values.Disc || 0);
         if (discountPercentage >= 100 || discountPercentage < 0) {
@@ -507,10 +508,10 @@ vMobile: any;
             form.patchValue({ Disc: 0 });
             this.calculateGSTType();
             return;
-        } 
+        }
         // Calculate discount amount
         const totalAmount = Number(values.TotalAmount || 0);
-        const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(2)); 
+        const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(2));
         // Update form with new discount amount
         form.patchValue({
             DisAmount: discountAmount
@@ -542,7 +543,7 @@ vMobile: any;
     calculateCellGSTType(item: ItemNameList): ItemNameList {
         // Validate input
         debugger
-        if (!item) return item; 
+        if (!item) return item;
         try {
             // Get all required values with proper type conversion
             const values = this.newGRNService.normalizeValues(item);
@@ -569,7 +570,7 @@ vMobile: any;
             console.error('Error calculating GST:', error);
             return item;
         }
-    } 
+    }
     //GST wise calculation
     IsDiscPer2: boolean = false;
     GSTTypeID: any = 0;
@@ -585,13 +586,13 @@ vMobile: any;
             this.IsDiscPer2 = true
         } else {
             this.IsDiscPer2 = false
-        } 
+        }
         // Update gst type of table data 
         this.dsItemNameList.data.forEach((item) => {
             item.GSTType = newGSTType;
             this.getCellCalculation(item);
         })
-    } 
+    }
     getCGSTAmt() {
         this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
         return this.CGSTFinalAmount
@@ -617,15 +618,15 @@ vMobile: any;
         //     Swal.fire("Qty Should Be less than PO Qty");
         //     return;
         // }
-        this.newGRNService.validateCellData(item); 
+        this.newGRNService.validateCellData(item);
         // Calculate basic values
         this.newGRNService.calculateBasicValues(item);
         // Validate GST Rates
-        this.newGRNService.validateGSTRates(item);  
+        this.newGRNService.validateGSTRates(item);
         const updatedItem = this.calculateCellGSTType(item);
-        Object.assign(item, updatedItem); 
+        Object.assign(item, updatedItem);
         this.updateGRNFinalForm();
-    } 
+    }
     updateGRNFinalForm() {
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
@@ -643,65 +644,65 @@ vMobile: any;
         form.patchValue({
             ...updatableFormValues
         });
-    } 
+    }
     resetForm() {
         this.userFormGroup.reset();
         this.dsItemNameList.data = [];
         this.updateGRNFinalForm();
-    }  
+    }
     //Insert header form
     createGrnHeaderInsert(): FormGroup {
-        return this.formBuilder.group({ 
+        return this.formBuilder.group({
             //GRN Header form
-            grn:this.formBuilder.group({
-            grnid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            grnNumber: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            grndate: [""],
-            grntime: [""],
-            storeId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            supplierId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            invoiceNo: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            deliveryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            gateEntryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
-            cashCreditType: [true],
-            grntype: [true],
-            totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totalDiscAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totalVatamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            remark: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            receivedBy: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            isVerified: [false],
-            isClosed: [false],
-            addedBy: [this.accountService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            updatedBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            prefix: ["GRN", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            isCancelled: [false],
-            isPaymentProcess: [true],
-            paymentPrcDate:[this.datePipe.transform(new Date(), "yyyy-MM-dd")],
-            processDes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            invDate: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            debitNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            creditNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            otherCharge: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            roundingAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            balAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totCgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totSgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totIgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            tranProcessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tranProcessMode:["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            billDiscAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            ewayBillNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            //GRN Details form
-            tGrndetails: this.formBuilder.array([]), 
+            grn: this.formBuilder.group({
+                grnid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                grnNumber: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                grndate: [""],
+                grntime: [""],
+                storeId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                supplierId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                invoiceNo: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                deliveryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                gateEntryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                cashCreditType: [true],
+                grntype: [true],
+                totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totalDiscAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totalVatamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                remark: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                receivedBy: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                isVerified: [false],
+                isClosed: [false],
+                addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                updatedBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                prefix: ["GRN", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                isCancelled: [false],
+                isPaymentProcess: [true],
+                paymentPrcDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+                processDes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                invDate: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                debitNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                creditNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                otherCharge: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                roundingAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totCgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totSgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totIgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                tranProcessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                tranProcessMode: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                billDiscAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                ewayBillNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                //GRN Details form
+                tGrndetails: this.formBuilder.array([]),
             }),
             // Current stock form
-             grnItems: this.formBuilder.array([])  
+            grnItems: this.formBuilder.array([])
         });
     }
-     //Insert grn details form
+    //Insert grn details form
     createGrndetailInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
             grndetId: [item?.grnDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -710,52 +711,52 @@ vMobile: any;
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            mrp: [item?.MRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totalAmount: [item?.TotalAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrp: [item?.MRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             vatPercentage: [item?.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vatAmount: [item?.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discPercentage: [item?.Disc || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discAmount: [item?.DisAmount || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            otherTax: [item?.otherTax || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            landedRate: [item?.LandedRate || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [item?.NetAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            grossAmount: [item?.NetAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            totalQty: [item?.TotalQty,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            pono: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            batchNo: [item?.BatchNo,[this._FormvalidationserviceService.allowEmptyStringValidator()] ],
+            discPercentage: [item?.Disc || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [item?.DisAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            otherTax: [item?.otherTax || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            landedRate: [item?.LandedRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            grossAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalQty: [item?.TotalQty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            pono: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             batchExpDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
-            purUnitRate: [item?.PurUnitRate || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            purUnitRateWf: [item?.PurUnitRateWF || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            cgstper: [item?.CGST || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            cgstamt: [item?.CGSTAmount || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgstper: [item?.SGST || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgstamt: [item?.SGSTAmount || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igstper: [item?.IGST || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igstamt: [item?.IGSTAmount || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            mrpStrip: [item?.MRP || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            stkId: [item?.StkID || 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            discPerc2: [item?.DiscPer2 || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discAmt2: [item?.DiscAmt2 || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            purUnitRate: [item?.PurUnitRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            purUnitRateWf: [item?.PurUnitRateWF || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cgstper: [item?.CGST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cgstamt: [item?.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstper: [item?.SGST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstamt: [item?.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstper: [item?.IGST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstamt: [item?.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrpStrip: [item?.MRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            stkId: [item?.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discPerc2: [item?.DiscPer2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmt2: [item?.DiscAmt2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             isVerified: [false],
-            isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")], 
+            isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             isVerifiedUserId: [0],
         });
-    } 
+    }
     //Insert current stk form
     createGrnItemInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
-            itemId: [item.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [item.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             hsncode: [item.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             cgst: [item.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             sgst: [item.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             igst: [item.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         });
-    } 
+    }
     get GrndetailArray(): FormArray {
         return this.GrnHeaderForm.get('grn.tGrndetails') as FormArray;
-    }  
+    }
     get ItemArray(): FormArray {
         return this.GrnHeaderForm.get('grnItems') as FormArray;
     }
@@ -808,8 +809,8 @@ vMobile: any;
                 this.OnSavenew();
             }
         })
-    } 
-    OnSavenew() { 
+    }
+    OnSavenew() {
         const grnPatchData = {
             grndate: this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             grntime: this.dateTimeObj.time,
@@ -892,14 +893,14 @@ vMobile: any;
                 return
             }
         }
-    }  
-    viewgetGRNReportPdf(grnid) { 
+    }
+    viewgetGRNReportPdf(grnid) {
         this.commonService.Onprint("GRNID", grnid, "GRNReport");
-    } 
+    }
     OnReset() {
         this._matDialog.closeAll();
         this.resetForm();
-    } 
+    }
     // item details retreving 
     getGRNrtrvItemlist() {
         var vdata = {
@@ -907,12 +908,12 @@ vMobile: any;
             "rows": 10,
             "sortField": "GRNDetID",
             "sortOrder": 0,
-            "filters": [{"fieldName": "GRNID", "fieldValue": String(this.registerObj.grnid),"opType": "Equals"}],
+            "filters": [{ "fieldName": "GRNID", "fieldValue": String(this.registerObj.grnid), "opType": "Equals" }],
             "Columns": [],
             "exportType": "JSON"
         }
         this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
-            this.dsItemNameList.data = response.data 
+            this.dsItemNameList.data = response.data
             console.log(this.dsItemNameList.data)
             this.dsItemNameList.data.forEach(element => {
                 this.chargeslist.push(
@@ -956,7 +957,7 @@ vMobile: any;
                         IsVerified: element.isVerified,
                         IsVerifiedDatetime: element.isVerifiedDatetime,
                         StkID: element.stkID,
-                        grnDetID:element.grnDetID
+                        grnDetID: element.grnDetID
                     }
                 )
             })
@@ -1003,7 +1004,7 @@ vMobile: any;
                 ConversionFactor: 1,
             });
         }
-    } 
+    }
     ngOnDestroy(): void {
         this.resetForm();
         this.GrnHeaderForm.reset()
@@ -1029,10 +1030,10 @@ vMobile: any;
                 itemName: "Test Item"
             }
         });
-       // console.log("Form values : ", this.userFormGroup.value);
+        // console.log("Form values : ", this.userFormGroup.value);
         this.calculateTotalamt();
     }
-      private resetCalculations(contact: any): void {
+    private resetCalculations(contact: any): void {
         const resetValues = {
             TotalAmount: 0,
             DiscAmount: 0,
@@ -1102,18 +1103,18 @@ vMobile: any;
         });
     }
     // Last three item info
-    getLastThreeItemInfo(Obj) { 
+    getLastThreeItemInfo(Obj) {
         var vdata = {
             "first": 0,
             "rows": 10,
             "sortField": "ItemId",
             "sortOrder": 0,
-            "filters": [  { "fieldName": "ItemId", "fieldValue": String(Obj.itemId), "opType": "Equals"  } ],
+            "filters": [{ "fieldName": "ItemId", "fieldValue": String(Obj.itemId), "opType": "Equals" }],
             "exportType": "JSON",
-            "columns": [ { "data": "string",  "name": "string"  } ]
+            "columns": [{ "data": "string", "name": "string" }]
         }
         this._GRNList.getLastThreeItemInfo(vdata).subscribe(response => {
-            this.dsLastThreeItemList.data = response.data as LastThreeItemList[]; 
+            this.dsLastThreeItemList.data = response.data as LastThreeItemList[];
         });
     }
     isValidForm(): boolean {
@@ -1121,7 +1122,7 @@ vMobile: any;
     }
 
     // it allowed only Digit 
-   keyPressDigitsOnly(event) {
+    keyPressDigitsOnly(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -1130,7 +1131,7 @@ vMobile: any;
             return false;
         }
     }
-      // it allowed only Digit & decimal
+    // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
@@ -1139,27 +1140,27 @@ vMobile: any;
             event.preventDefault();
             return false;
         }
-    } 
-// Check Invice is already exist or not
-chkInvoiceNo(InvoiceNo:any,controlName:any){
-    debugger
-    if(!this.userFormGroup.get('SupplierId')?.value){
-         this.newGRNService.showToast('Please select Supplier Name', ToastType.WARNING);
-         this.userFormGroup.get('controlName')?.setValue('')
-         return
     }
-    var vdata={ 
-  "invoiceNo": InvoiceNo,
-  "storeId":  this.userFormGroup.get('StoreId')?.value,
-  "supplierId": this.userFormGroup.get('SupplierId')?.value 
+    // Check Invice is already exist or not
+    chkInvoiceNo(InvoiceNo: any, controlName: any) {
+        debugger
+        if (!this.userFormGroup.get('SupplierId')?.value) {
+            this.newGRNService.showToast('Please select Supplier Name', ToastType.WARNING);
+            this.userFormGroup.get('controlName')?.setValue('')
+            return
+        }
+        var vdata = {
+            "invoiceNo": InvoiceNo,
+            "storeId": this.userFormGroup.get('StoreId')?.value,
+            "supplierId": this.userFormGroup.get('SupplierId')?.value
+        }
+        this._GRNList.checkInvoiceNoExist(vdata).subscribe(response => (
+            console.log(response)
+            // this.userFormGroup.get('controlName')?.setValue('')
+        ))
     }
-    this._GRNList.checkInvoiceNoExist(vdata).subscribe(response=>(
-        console.log(response)  
-        // this.userFormGroup.get('controlName')?.setValue('')
-    ))
-}
 
-//Purchase order to grn section
+    //Purchase order to grn section
     FinalTotalQty1: any = 0;
     FinalLandedrate1: any = 0;
     FinalpurUnitRate1: any = 0;
@@ -1184,7 +1185,7 @@ chkInvoiceNo(InvoiceNo:any,controlName:any){
             this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
             this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
 
-           // this.getSupplierSearchCombo();
+            // this.getSupplierSearchCombo();
 
             //   
             // //  const toSelectSUpplierId = this.SupplierList.find(c => c.SupplierId == result[0].SupplierID);
@@ -1276,7 +1277,7 @@ export class LastThreeItemList {
     VatPercentage: number;
 
     constructor(LastThreeItemList) {
-        { 
+        {
             this.ItemID = LastThreeItemList.ItemID || 0;
             this.ItemName = LastThreeItemList.ItemName || "";
             this.BatchNo = LastThreeItemList.BatchNo || 0;

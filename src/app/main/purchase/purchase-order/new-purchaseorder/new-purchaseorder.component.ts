@@ -691,7 +691,8 @@ export class NewPurchaseorderComponent {
     console.log(FooterfomrValues)
     //debugger
     if (!this.FinalPurchaseform.invalid) {
-      this.PurchaseInsertform.get("storeId").setValue(this.vstoreId || 0)
+      //this.PurchaseInsertform.get('StoreId')?.value,
+      this.PurchaseInsertform.get("storeId").setValue(this.accountService.currentUserValue?.storeId)
       this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
       this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
       this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
