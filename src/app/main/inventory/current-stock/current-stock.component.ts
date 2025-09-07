@@ -132,7 +132,7 @@ export class CurrentStockComponent implements OnInit {
     }
 
     allcurrentColumn = [
-        {heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300,
+        {heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400,
             type: gridColumnTypes.template, template: this.eyeIcon1
         },
         {heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
@@ -315,10 +315,10 @@ export class CurrentStockComponent implements OnInit {
     // item wise sales summery
 
     allSalesColumn = [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
         { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ReceivedQty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ReceivedQty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allSalesFilter = [
@@ -383,10 +383,10 @@ export class CurrentStockComponent implements OnInit {
 
     // Issue wise item summery
     allItemColumn = [
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
         { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Current BalQty", key: "current_BalQty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Received Qty", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Received Qty", key: "received_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Sales Qty", key: "sales_Qty", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     ]
     allItemFilter = [

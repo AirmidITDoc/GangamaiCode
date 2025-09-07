@@ -101,15 +101,8 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     { heading: "GST Amount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "AcceptedBy Dept", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-    // { heading: "RejetcedBy Dept", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "PendingBy Dept", key: "pendingByDepartment", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
     { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-
-    {
+  {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
@@ -141,7 +134,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
       columnsList: [
-        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
+        { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 450 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
         { heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -207,15 +200,6 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     console.log(obj)
   }
 
-  // ListView(value) {
-  //   this.isShowDetailTable = false
-  //   if (value.value !== 0)
-  //     this.FromStore = value.value
-  //   else
-  //     this.FromStore = "0"
-  //   this.onChangeFirst(value);
-  // }
-
   ListView1(value) {
     this.isShowDetailTable = false
     if (value.value !== 0)
@@ -233,21 +217,12 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     else
       IsVerify = "0"
 
-    // let IsAccept = "0"
-    // if (this.IssueSearchGroup.get("IsAccepted").value)
-    //   IsAccept = "1"
-    // else
-    //   IsAccept = "0"
-
-
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.IssueSearchGroup.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
-    //  this.FromStore = this.IssueSearchGroup.get("FromStoreId").value || this.FromStore
     this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
     this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
-      // this.IsAccepted = IsAccept,//this.IssueSearchGroup.get("IsVerify").value || "0"
-      this.getfilterdata();
+    this.getfilterdata();
   }
 
   getfilterdata() {

@@ -46,18 +46,18 @@ export class StockAdjustmentComponent implements OnInit {
     AddType: any;
     vExpDate: any;
     vPurchaseRate: any;
-    vBatchEdit: any;
+    vBatchEdit: any=0;
     vExpDateEdit: any;
     vDeudQty: any;
     OptionsItemName: any;
-   
+
     ItemList: any = [];
     StoreList: any = [];
     filteredoptionsItemName: Observable<string[]>;
 
-     isLoading = true;
+    isLoading = true;
     isItemIdSelected: boolean = false;
-      Addeditable: boolean = false;
+    Addeditable: boolean = false;
     Dedueditable: boolean = false;
     Expeditable: boolean = false;
     Batcheditable: boolean = false;
@@ -92,25 +92,25 @@ export class StockAdjustmentComponent implements OnInit {
 
     ngOnInit(): void {
         this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
-         this.BatchForm = this.CreateBatchFrom();
+        this.BatchForm = this.CreateBatchFrom();
         this.StoreFrom.markAllAsTouched();
         this.getStockList();
     }
 
-      CreateBatchFrom() {
-    
+    CreateBatchFrom() {
+
         return this._formBuilder.group({
-          batchAdjId:0,
-          storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-          stkId: [this.vStockId|| 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-          itemId: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-          oldBatchNo: [ this.vBatchNo || ''],
-          oldExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'), [Validators.required]],
-          newBatchNo: [this.vBatchEdit || '', [Validators.required, Validators.min(0)]],
-          newExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd')],
-            addedBy: [this.accountService.currentUserValue.userId  || 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            batchAdjId: 0,
+            storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            stkId: [this.vStockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            oldBatchNo: [this.vBatchNo || ''],
+            oldExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'), [Validators.required]],
+            newBatchNo: [this.vBatchEdit || '', [Validators.required, Validators.min(0)]],
+            newExpDate: [this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd')],
+            addedBy: [this.accountService.currentUserValue.userId || 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
         });
-      }
+    }
     getStockList() {
         var Param = {
             "first": 0,
@@ -147,17 +147,17 @@ export class StockAdjustmentComponent implements OnInit {
 
     batchEdit: boolean = false;
 
-    OneditDate(contact) {
-        debugger
-        console.log(contact)
-        this.vBatchNo = contact.batchNo
-        this.vExpDate = contact.batchExpDate;
-        this.vBatchEdit = contact.batchNo
-        this.vExpDateEdit = contact.batchExpDate;
-        this.vStockId = contact.stockId;
-        this.vExpDateEdit = true
+    // OneditDate(contact) {
+    //     debugger
+    //     console.log(contact)
+    //     this.vBatchNo = contact.batchNo
+    //     this.vExpDate = contact.batchExpDate;
+    //     this.vBatchEdit = contact.batchNo
+    //     this.vExpDateEdit = contact.batchExpDate;
+    //     this.vStockId = contact.stockId;
+    //     this.vExpDateEdit = true
 
-    }
+    // }
     OneditBatch(contact) {
 
         console.log(contact)
@@ -208,7 +208,7 @@ export class StockAdjustmentComponent implements OnInit {
     //     this.vBatchEdit = contact.batchEdit;
     //     this.vExpDateEdit = contact.expDateEdit;
     //     this.vStockId = contact.stockId;
-      
+
     // }
 
 
@@ -299,57 +299,80 @@ export class StockAdjustmentComponent implements OnInit {
     //     this.getStockList();
     // }
     Lastbatch: string = '';
-    OnSaveBatch() {
+    // OnSaveBatch() {
+    //     const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
+    //     if (this.vBatchEdit) {
+    //         this.OnSaveBatchAdjustment();
+    //     }
+    //     else {
+    //         this.toastr.warning('Please enter BatchNo', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //     }
+    //     this.getStockList();
+    // }
+
+    OnSaveBatchAdjustment() {
+        debugger
+
         const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
-        if (this.vBatchEdit) {
-            this.OnSaveBatchAdjustment();
+        if (this.vBatchEdit !=0) {
+
+            if ((!this.dsStockAdjList.data.length)) {
+                this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+            this.dsStockAdjList.data.forEach(element => {
+                if (element.expDateEdit && element.expDateEdit.length === 10) {
+                    const day = +element.expDateEdit.substring(0, 2);
+                    const month = +element.expDateEdit.substring(3, 5);
+                    const year = +element.expDateEdit.substring(6, 10);
+
+                    this.vExpDate = `${year}/${this.pad(month)}/${day}`;
+                    console.log(this.vExpDate)
+                }
+            })
+
+            // let submitData = {
+            //     "batchAdjId": 0,
+            //     "storeId": this.accountService.currentUserValue.user.storeId || 0,
+            //     "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
+            //     "oldBatchNo": this.vBatchNo || '',
+            //     "oldExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+            //     "newBatchNo": this.vBatchEdit || '',
+            //     "newExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
+            //     "addedBy": this.accountService.currentUserValue.userId || 0,
+            //     "stkId": this.vStockId || 0
+            // }
+debugger
+            this.BatchForm.get('oldBatchNo').setValue(this.vBatchNo || '')
+            this.BatchForm.get('newBatchNo').setValue(this.vBatchEdit || '')
+            this.BatchForm.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
+            this.BatchForm.get('stkId').setValue(this.vStockId || '')
+            this.BatchForm.get('itemId').setValue( this.itemId || 0)
+            this.BatchForm.get('addedBy').setValue(this.accountService.currentUserValue.userId || 0)
+            // this.BatchForm.get('itemId').setValue(this.StoreFrom.get('ItemID').value.itemId || 0)
+
+
+
+            this.BatchForm.get('oldExpDate').setValue(this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'))
+            this.BatchForm.get('newExpDate').setValue(this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'))
+
+
+            console.log(this.BatchForm.value);
+            this._StockAdjustmentService.BatchAdjSave(this.BatchForm.value).subscribe(response => {
+                this.getStockList();
+            });
+            this.StoreFrom.get("ItemID").setValue('')
         }
         else {
             this.toastr.warning('Please enter BatchNo', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
         }
-        this.getStockList();
-    }
-
-    OnSaveBatchAdjustment() {
-        debugger
-
-        if ((!this.dsStockAdjList.data.length)) {
-            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        this.dsStockAdjList.data.forEach(element => {
-            if (element.expDateEdit && element.expDateEdit.length === 10) {
-                const day = +element.expDateEdit.substring(0, 2);
-                const month = +element.expDateEdit.substring(3, 5);
-                const year = +element.expDateEdit.substring(6, 10);
-
-                this.vExpDate = `${year}/${this.pad(month)}/${day}`;
-                // console.log(this.vExpDate)
-            }
-        })
-
-        // let submitData = {
-        //     "batchAdjId": 0,
-        //     "storeId": this.accountService.currentUserValue.user.storeId || 0,
-        //     "itemId": this.StoreFrom.get('ItemID').value.itemId || 0,
-        //     "oldBatchNo": this.vBatchNo || '',
-        //     "oldExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
-        //     "newBatchNo": this.vBatchEdit || '',
-        //     "newExpDate": this.datePipe.transform(this.vExpDate, 'yyyy-MM-dd'),
-        //     "addedBy": this.accountService.currentUserValue.userId || 0,
-        //     "stkId": this.vStockId || 0
-        // }
-
-        console.log(this.BatchForm.value);
-        this._StockAdjustmentService.BatchAdjSave(this.BatchForm.value).subscribe(response => {
-            this._matDialog.closeAll();
-            this.dsStockAdjList.data = [];
-        });
-        this.StoreFrom.get("ItemID").setValue('')
+        this.vBatchEdit=0
     }
     EditMRP(contact) {
         console.log(contact)
@@ -400,7 +423,7 @@ export class StockAdjustmentComponent implements OnInit {
             this.getStockList();
         });
     }
-  
+
     enableEditing(row: StockAdjList) {
         row.Addeditable = true;
     }
@@ -445,7 +468,7 @@ export class StockAdjustmentComponent implements OnInit {
         this.getStockList();
     }
 
-storeId = 0
+    storeId = 0
     selectChangeStore(obj: any) {
         this.storeId = obj.value
     }
@@ -491,7 +514,7 @@ export class StockAdjList {
     constructor(StockAdjList) {
         {
             this.BalQty = StockAdjList.BalQty || 0;
-            this.BatchNo = StockAdjList.BatchNo || 0;
+            this.BatchNo = StockAdjList.BatchNo || '';
             this.ExpDate = StockAdjList.ExpDate || 0;
             this.UnitMRP = StockAdjList.UnitMRP || 0;
             this.Landedrate = StockAdjList.Landedrate || 0;

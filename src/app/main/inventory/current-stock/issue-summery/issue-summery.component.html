@@ -43,7 +43,7 @@
 
                                             <ng-container matColumnDef="ItemName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName
+                                                    Item Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.itemName}}
@@ -52,7 +52,7 @@
         
                                             <ng-container matColumnDef="BatchNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    BatchNo </mat-header-cell>
+                                                    Batch No </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.batchNo}}
                                                 </mat-cell>
@@ -60,7 +60,7 @@
         
                                             <ng-container matColumnDef="ReceivedQty">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ReceivedQty
+                                                    Received Qty
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.receivedQty}}
@@ -129,91 +129,91 @@
                                             [@animateStagger]="{value:'50'}" style="overflow: auto;width:100%;">
         
                                             <ng-container matColumnDef="IssueNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IssueNo </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Issue No </mat-header-cell >
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.issueNo}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="IssueDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IssueDate
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Issue Date
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.issueDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
         
         
                                             <ng-container matColumnDef="ItemName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    ItemName
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-350">
+                                                    Item Name
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350">
                                                     {{contact.itemName}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="BatchNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    BatchNo
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Batch No
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.batchNo}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="BatchExpDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    BatchExpDate
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Batch ExpDate
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.batchExpDate | date:'dd/MM/YYYY'}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="IssueQty">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    IssueQty
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Issue Qty
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.issueQty}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="StkId">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    StkId
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Stock Id
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.stkId}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="UnitMRP">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    UnitMRP
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Unit Mrp
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.unitMRP | currency:'INR':'symbol-narrow':'0.2'}}
                                                 </mat-cell>
                                             </ng-container>
         
                                             <ng-container matColumnDef="PurRate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    PurRate
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Pur Rate
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.purRate | currency:'INR':'symbol-narrow':'0.2' }}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="LandedRate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    LandedRate
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                    Landed Rate
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                     {{contact.landedRate | currency:'INR':'symbol-narrow':'0.2' }}
                                                 </mat-cell>
                                             </ng-container>

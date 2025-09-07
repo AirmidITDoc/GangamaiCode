@@ -143,22 +143,21 @@
                                         <mat-table #table class="table1" matSort [dataSource]="dsIndentID"
                                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-
-                                      
-                                     <ng-container matColumnDef="FromStoreId">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">FromStoreId
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <mat-icon
-                                                *ngIf="contact.FromStoreId=='1'|| contact.FromStoreId=='2' "
-                                                matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
-                                            <mat-icon
-                                                style="border: black 1px solid;"
-                                                *ngIf="contact.FromStoreId=='0' " matTooltip="Did not Generated Bill"
-                                                class="pill white-600 s-16">
-                                                circle</mat-icon>
-                                        </mat-cell>
-                                    </ng-container>
+                                            <ng-container matColumnDef="FromStoreId">
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    style="color: white;">FromStoreId
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">
+                                                    <mat-icon
+                                                        *ngIf="contact.FromStoreId=='1'|| contact.FromStoreId=='2' "
+                                                        matTooltip="Bill Generated"
+                                                        class="pill red-600 s-16">circle</mat-icon>
+                                                    <mat-icon style="border: black 1px solid;"
+                                                        *ngIf="contact.FromStoreId=='0' "
+                                                        matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                                                        circle</mat-icon>
+                                                </mat-cell>
+                                            </ng-container>
 
                                             <ng-container matColumnDef="IndentNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

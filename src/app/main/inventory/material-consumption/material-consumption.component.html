@@ -22,18 +22,6 @@
         dynamicTableHeight>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-            <ng-template #actionButtonTemplate let-element>
-
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <button mat-icon-button matTooltip="Print Material Consumption" (click)="onPrint(element)">
-                        <mat-icon>print</mat-icon>
-                    </button>
-
-                </div>
-
-            </ng-template>
-
 
             <ng-template #Status let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -46,6 +34,17 @@
                 </div>
             </ng-template>
 
+            <ng-template #actionButtonTemplate let-element>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <button mat-icon-button matTooltip="Print Material Consumption" (click)="onPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+
+                </div>
+
+            </ng-template>
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
                 (onSelectRow)="getSelectedRow($event)" #grid>
@@ -59,10 +58,9 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
-                          <airmid-dropdown label="Store Name" formControlName="ToStoreId"
-                        (selectionChange)="ListView($event)" [formGroup]="myFilterform"
-                        [mode]="autocompletestore">
-                         </airmid-dropdown>
+                        <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                            (selectionChange)="ListView($event)" [formGroup]="myFilterform" [mode]="autocompletestore">
+                        </airmid-dropdown>
 
                     </form>
                 </ng-container>

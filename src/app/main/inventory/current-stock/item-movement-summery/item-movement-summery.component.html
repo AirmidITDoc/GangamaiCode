@@ -58,7 +58,7 @@
 
                                                 <ng-container matColumnDef="TranDate">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        TranDate </mat-header-cell>
+                                                        Tran Date </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.transactionDate | date: 'dd/MM/yyyy'}}
                                                     </mat-cell>
@@ -67,7 +67,7 @@
                                                 <ng-container matColumnDef="TransactionType">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-150">
-                                                        TransactionType
+                                                        Transaction Type
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                                         {{contact.transactionType}}
@@ -76,7 +76,7 @@
 
                                                 <ng-container matColumnDef="DocumentNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        DocumentNo
+                                                        Document No
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.documentNo}}
@@ -86,7 +86,7 @@
                                                 <ng-container matColumnDef="PatientName">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                         class="w-200">
-                                                        PatientName
+                                                        Patient Name
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                         class="w-200 ellipsis" matTooltip="{{contact.patientName}}">
@@ -96,7 +96,7 @@
 
                                                 <ng-container matColumnDef="BatchNo">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        BatchNo
+                                                        Batch No
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.batchNo}}
@@ -105,7 +105,7 @@
 
                                                 <ng-container matColumnDef="BatchExpDate">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        BatchExpDate
+                                                        Batch ExpDate
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{ parseToDate(contact.batchExpDate) | date: 'dd-MM-yyyy' }}
@@ -114,7 +114,7 @@
 
                                                 <ng-container matColumnDef="ReceiptQty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        ReceiptQty
+                                                        Receipt Qty
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.receiptQty}}
@@ -123,7 +123,7 @@
 
                                                 <ng-container matColumnDef="IssueQty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        IssueQty
+                                                        Issue Qty
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.issueQty}}
@@ -132,7 +132,7 @@
 
                                                 <ng-container matColumnDef="BalQty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        BalQty
+                                                        Bal Qty
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.balQty }}
@@ -141,7 +141,7 @@
 
                                                 <ng-container matColumnDef="R_Qty">
                                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                        ReturnQty
+                                                        Return Qty
                                                     </mat-header-cell>
                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                         {{contact.returnQty }}
