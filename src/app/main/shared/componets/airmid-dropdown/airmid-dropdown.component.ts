@@ -49,14 +49,14 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
     }
     set disabled(value: boolean) {
         this._disabled = coerceBooleanProperty(value);
-        if (this.formGroup && this.formControlName) {
-            const ctrl = this.formGroup.get(this.formControlName);
-            if (this._disabled) {
-                ctrl?.disable({ emitEvent: false });
-            } else {
-                ctrl?.enable({ emitEvent: false });
-            }
-        }
+        // if (this.formGroup && this.formControlName) {
+        //     const ctrl = this.formGroup.get(this.formControlName);
+        //     if (this._disabled) {
+        //         ctrl?.disable({ emitEvent: false });
+        //     } else {
+        //         ctrl?.enable({ emitEvent: false });
+        //     }
+        // }
         this.stateChanges.next();
     }
 
