@@ -25,7 +25,7 @@ export class IssuetodeptAgainstIndentComponent {
   autocompletestore: string = "Store";
   dateTimeObj: any;
   sIsLoading: string = '';
-  tostoreId=this.accountService.currentUserValue.user.storeId || 0
+  tostoreId = this.accountService.currentUserValue.user.storeId || 0
   vstoreId: any = "0";
   isLoading = true;
   isStoreSelected: boolean = false;
@@ -95,7 +95,7 @@ export class IssuetodeptAgainstIndentComponent {
         },
         {
           "fieldName": "ToStoreId",
-          "fieldValue":String(this.tostoreId),
+          "fieldValue": String(this.tostoreId),
           "opType": "Equals"
         },
         {
@@ -111,6 +111,11 @@ export class IssuetodeptAgainstIndentComponent {
         {
           "fieldName": "IsVerify",
           "fieldValue": "1",
+          "opType": "Equals"
+        },
+         {
+          "fieldName": "IsClosed",
+          "fieldValue": IsClose,
           "opType": "Equals"
         }
       ],
@@ -162,20 +167,20 @@ export class IssuetodeptAgainstIndentComponent {
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsIndentItemDetList.data = data.data as IndentItemDetList[];
       console.log(data.data)
-      
+
       this.Charglist = this.dsIndentItemDetList.data;
       this.dsIndentItemDetList.sort = this.sort;
       this.dsIndentItemDetList.paginator = this.paginator;
-      
+
       this.sIsLoading = '';
     });
-    if(this.dsIndentItemDetList.data.length > 0)
-    this.OnIndentList()
+    if (this.dsIndentItemDetList.data.length > 0)
+      this.OnIndentList()
   }
-// ongetIndent(data){
-//   this.getIndentItemDetList(data)
-//   this.getIndentList()
-// }
+  // ongetIndent(data){
+  //   this.getIndentItemDetList(data)
+  //   this.getIndentList()
+  // }
 
   selectChangeStore(obj: any) {
     this.vstoreId = obj.value
@@ -184,7 +189,7 @@ export class IssuetodeptAgainstIndentComponent {
 
   OnIndentList() {
     //  this.getIndentItemDetList(Param)
-     
+
     // if ((!this.dsIndentItemDetList.data.length)) {
     //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
@@ -214,7 +219,12 @@ export class IssuetodeptAgainstIndentComponent {
         data: this.Charglist
       });
     dialogRef.afterClosed().subscribe(result => {
-      // that.grid.bindGridData();
+      this.dsIndentList.data = []
+      this.dsIndentItemDetList.data = []
+      this.Charglist.data = []
+      this.vstoreId=0
+      this.IndentFrom.get('FromStoreId').setValue(0)
+      this.getIndentList()
     });
 
   }

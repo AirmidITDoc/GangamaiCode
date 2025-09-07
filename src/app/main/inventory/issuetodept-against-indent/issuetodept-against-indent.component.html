@@ -42,6 +42,7 @@
                                         (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
 
+
                                     <!-- <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                                         [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore1"
                                         (selectionChange)="selectChangeStore($event)">
@@ -80,11 +81,14 @@
                             <ng-container matColumnDef="Priority">
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Is
                                     Urgent</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" class="w-90">
-                                    <mat-icon *ngIf="contact.priority=='1'" matTooltip="Urgent"
-                                        style="color: brown;">pan_tool
+                                <mat-cell *matCellDef="let element" class="w-90">
+                                   
+                                    <mat-icon *ngIf="element.priority=='1'" matTooltip="Urgent"
+                                        style="color: red;">report
                                     </mat-icon>
-
+                                    <mat-icon *ngIf="!element.priority=='1'" matTooltip="Normal"
+                                        style="color: rgb(19, 126, 13);">report
+                                    </mat-icon>
 
                                 </mat-cell>
                             </ng-container>
@@ -136,7 +140,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
 
-                                    <button mat-icon-button (click)="getIndentItemDetList(contact)" matTooltip="Edit">
+                                    <button mat-icon-button (click)="OnIndentList(contact)" matTooltip="Edit">
                                         <mat-icon title="Edit Menu">edit</mat-icon>
 
                                     </button>
@@ -172,7 +176,7 @@
                         <mat-table class="table h-200" matSort [dataSource]="dsIndentItemDetList"
                             [@animateStagger]="{value:'50'}" class="airmid-table">
 
-                            
+
                             <!-- <ng-container matColumnDef="Status">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                             style="color: white;">Status</mat-header-cell>

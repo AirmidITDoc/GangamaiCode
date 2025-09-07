@@ -32,54 +32,29 @@
                 </div>
             </ng-template>
 
-
-
-            <!-- 
- <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                <span class="orange-600-fg">Intrim Bills</span>
-            </div>
-            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                <span class="green-600-fg">Final Bills</span>
-            </div>
-            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                <span class="red-600-fg">Cancelled Bills</span>
-            </div> -->
-
             <ng-template #Astatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.acceptedByDepartment=='1';" matTooltip="AcceptedByDepartment"
-                        class="pill green-600 s-16">circle</mat-icon>
-
-                    <mat-icon *ngIf="element.acceptedByDepartment=='True';" matTooltip="AcceptedByDepartment"
-                        class="pill green-600 s-16">circle</mat-icon>
-
-                    <mat-icon *ngIf="element.acceptedByDepartment==1;" matTooltip="AcceptedByDepartment"
-                        class="pill green-600 s-16">circle</mat-icon>
-
+                    <button mat-icon-button>
+                        <mat-icon matTooltip="Accepted" *ngIf="element.acceptedByDepartment>0"
+                            class="pill green-600 s-18">circle</mat-icon>{{element.acceptedByDepartment}}
+                    </button>
                 </div>
             </ng-template>
 
 
             <ng-template #Pstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <!-- <mat-icon *ngIf="!element.pendingByDepartment=='1';" matTooltip="PendingByDepartment"
-                        class="pill orange-600 s-16">circle</mat-icon> -->
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+<!-- *ngIf="element.pendingByDepartment>0" -->
+                    <mat-icon matTooltip="Pending" class="pill orange-600 s-16" >circle</mat-icon>{{element.pendingByDepartment}}
                 </div>
             </ng-template>
 
 
             <ng-template #Rstatus let-element>
-               <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <!-- <mat-icon *ngIf="!element.rejetcedByDepartment=='1';" matTooltip="RejetcedByDepartment"
-                        class="pill red-600 s-16">circle</mat-icon> -->
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <div fxLayout="row" fxLayoutAlign="center center">
+<!-- *ngIf="element.rejetcedByDepartment>0" -->
+                    <mat-icon class="pill red-600 s-16" matTooltip="Rejected" >circle</mat-icon>{{element.rejetcedByDepartment}}
                 </div>
             </ng-template>
 
@@ -116,7 +91,7 @@
 
                         <!-- [(ngModel)]="Status" -->
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
-                            Verify
+                            Close/Pending
                         </mat-slide-toggle>
                         <!-- <mat-slide-toggle name="IsAccepted" (change)="onChangeFirst($event)" formControlName="IsAccepted">
                             Accepted
@@ -140,5 +115,20 @@
             </airmid-table>
         </div>
     </div>
-
+    <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span>:Accepted</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: Pending </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span>:Rejected</span>
+            </div>
+        </div>
+    </div>
 </div>

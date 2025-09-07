@@ -67,8 +67,8 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
   @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
-    this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptstatus;
+    // this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
+    // this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptstatus;
 
     this.gridConfig.columnsList.find(col => col.key === 'rejetcedByDepartment')!.template = this.Rstatus;
     this.gridConfig.columnsList.find(col => col.key === 'pendingByDepartment')!.template = this.Pstatus;

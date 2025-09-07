@@ -102,7 +102,7 @@ export class NewIssueTodeptComponent {
   autocompletestore1: string = "Store";
 
   dsNewIssueItemList = new MatTableDataSource<NewIssueList3>();
-  dsSelectedIndentItemList = new MatTableDataSource<IssueItemList>();
+  dsSelectedIndentItemList = new MatTableDataSource<IndentItemDetList>();
 
   dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
 
@@ -163,8 +163,12 @@ export class NewIssueTodeptComponent {
     this.stockArray1.push(this.currentstockform());
     this.indentdetailArray.push(this.indentdetailform());
     if (this.data) {
-      // console.log(this.data)
-      this.dsSelectedIndentItemList.data = this.data
+      debugger
+      console.log(this.data)
+      // this.dsSelectedIndentItemList.data = this.data
+      this.fromstoreId = this.data[0].fromStoreId
+      this.vIndentId = this.data[0].indentId
+      this.getIndentItemDetList()
     }
 
   }
@@ -376,31 +380,41 @@ export class NewIssueTodeptComponent {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
+      debugger
       console.log(result);
-      result = result.selectedData
-      this.batchresult = result.selectedData
-      this.vBatchNo = result.batchNo || '';
-      this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
-      this.vMRP = result.landedRate;
-      this.vQty = '';
-      this.vBal = result.BalanceAmt;
-      this.GSTPer = result.VatPercentage;
-      this.vTotalMRP = this.vQty * this.vLandedRate;
-      this.vDiscAmt = 0;
-      this.vNetAmt = this.vTotalMRP;
-      this.vBalanceQty = result.balanceQty;
-      this.vItemObj = result;
-      this.vVatPer = result.vatPercentage;
-      this.vCgstPer = result.cgstPer;
-      this.vSgstPer = result.sgstPer;
-      this.vIgstPer = result.igstPer;
-      this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
-        this.vStockId = result.stockId
-      this.vStoreId = result.storeId;
-      this.vLandedRate = result.landedRate;
-      this.vPurchaseRate = result.purchaseRate;
-      this.vUnitMRP = result.unitMRP;
-
+      if (result.selectedData) {
+        result = result.selectedData
+        this.batchresult = result.selectedData
+        this.vBatchNo = result.batchNo || '';
+        this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
+        this.vMRP = result.landedRate;
+        this.vQty = '';
+        this.vBal = result.BalanceAmt;
+        this.GSTPer = result.VatPercentage;
+        this.vTotalMRP = this.vQty * this.vLandedRate;
+        this.vDiscAmt = 0;
+        this.vNetAmt = this.vTotalMRP;
+        this.vBalanceQty = result.balanceQty;
+        this.vItemObj = result;
+        this.vVatPer = result.vatPercentage;
+        this.vCgstPer = result.cgstPer;
+        this.vSgstPer = result.sgstPer;
+        this.vIgstPer = result.igstPer;
+        this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
+          this.vStockId = result.stockId
+        this.vStoreId = result.storeId;
+        this.vLandedRate = result.landedRate;
+        this.vPurchaseRate = result.purchaseRate;
+        this.vUnitMRP = result.unitMRP;
+      } else {
+        Swal.fire("Select Proper Item ...Batch Not Present")
+        // return;
+        this.NewIssueGroup.get('ItemName').reset('')
+        const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (serviceNameElement) {
+          serviceNameElement.focus();
+        }
+      }
       this.NewIssueGroup.get("Qty").setValue(0);
       const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
       if (serviceNameElement) {
@@ -474,6 +488,43 @@ export class NewIssueTodeptComponent {
       }
 
     });
+  }
+
+  getIndentItemDetList() {
+    debugger
+    this.sIsLoading = 'loading-data';
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "IndentId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "IndentId",
+          "fieldValue": String(this.vIndentId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
+
+    this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
+      this.dsSelectedIndentItemList.data = data.data as IndentItemDetList[];
+      console.log(data.data)
+
+      // this.Charglist = this.dsSelectedIndentItemList.data;
+      this.dsSelectedIndentItemList.sort = this.sort;
+      this.dsSelectedIndentItemList.paginator = this.paginator;
+
+      this.sIsLoading = '';
+    });
+
   }
 
   updatestatus() {
@@ -673,7 +724,7 @@ export class NewIssueTodeptComponent {
       });
       return;
     }
-
+    debugger
     if (!this.IssueFinalForm.invalid) {
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();

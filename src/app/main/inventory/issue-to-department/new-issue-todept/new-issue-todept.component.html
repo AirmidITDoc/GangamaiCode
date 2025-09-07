@@ -321,9 +321,9 @@
                     <airmid-textbox label="Net Amount" formControlName="FinalNetAmount" [value]="vFinalNetAmount" #FinalTotalAmount 
                         [formGroup]="IssueFinalForm">
                     </airmid-textbox>
-                    <div style="padding: 10px;">
+                    <div style="padding: 10px;" [hidden]="true">
 
-                        <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;">
+                        <span class="net-amt-label" style="width: 200px;font-weight: bold;color:blue;" >
                             Total Amount :</span>&nbsp;<span class="net-amt-value"
                             style="margin-right: 10px;font-weight: bold;width: 100px;">{{getTotalamt(dsNewIssueItemList.data)
                             | currency:'INR' }}</span>
