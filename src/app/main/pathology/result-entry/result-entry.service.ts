@@ -96,14 +96,14 @@ export class ResultEntryService {
   }
 
 
-  public getPathologyTemplateforIP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // public getPathologyTemplateforIP(query){
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
-  }
-  public getPathologyTemplateforOP(query){
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // }
+  // public getPathologyTemplateforOP(query){
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
-  }
+  // }
 
   public getPathTemplatePrint(No) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
@@ -116,9 +116,9 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathResultEntryList_Test_Dtls", employee)
   }
 
-  public getInsertStatementQuery(query) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
-  }
+  // public getInsertStatementQuery(query) {
+  //   return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
+  // }
 
   getPathologyPrint(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
@@ -152,10 +152,10 @@ export class ResultEntryService {
     return this._httpClient1.PostData("Pathology/PathResultentryrollback", employee);
   }
 
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.post(
-        "Generic/ExecByQueryStatement?query=" + m_data, {});
-}
+//   public deactivateTheStatus(m_data) {
+//     return this._httpClient.post(
+//         "Generic/ExecByQueryStatement?query=" + m_data, {});
+// }
   populateForm(employee) {
     this.myform.patchValue(employee);
   }
