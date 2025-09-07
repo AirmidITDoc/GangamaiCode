@@ -207,11 +207,11 @@ export class AdmissionService {
     }  
 
     public AdmissionNewInsert(employee) {
-        return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
+        return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
     }
 
     public AdmissionRegisteredInsert(employee) {
-        return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
+        return this._httpClient1.PostData("Admission/AdmissionInsertSP", employee);
     }
 
     public UpdateAddChargesFromEmg(employee) {
@@ -282,6 +282,10 @@ export class AdmissionService {
 
     public getRegistraionById(Id) {
         return this._httpClient1.GetData("OutPatient/" + Id);
+    }
+
+     public getCheckAdmittedPatient(Param) {
+        return this._httpClient1.PostData("Common",Param);
     }
 
     public getEmergencyById(Id) {

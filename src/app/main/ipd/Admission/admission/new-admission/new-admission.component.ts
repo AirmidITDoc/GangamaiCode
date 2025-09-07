@@ -160,15 +160,45 @@ export class NewAdmissionComponent implements OnInit {
       HospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
-
+  FlagAdmittedCheck: any= 0;
   getSelectedObj(obj) {
     console.log(obj)
-    debugger
-
+    
+    debugger;
+    // check Patient is already admiited or not 
+    //  ----------------------------------------------------------------------------- 
     this.RegId = obj.value;
+    var param = {
+      "searchFields": [
+        {
+          "fieldName": "RegId",
+          "fieldValue": String(obj.value),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "CheckPatientAdmitted"
+    }
+    this._AdmissionService.getCheckAdmittedPatient(param).subscribe((response) => {
+      this.FlagAdmittedCheck= response;
+      console.log("Admitted:", this.FlagAdmittedCheck[0].Admitted);
+    });
+
+    if (this.FlagAdmittedCheck[0].Admitted == 1) {
+      Swal.fire({
+        icon: 'warning',
+        title: `Admission for the selected patient has already been completed.`,
+        text: `This patient already admitted.`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6'
+        
+      });
+      return;
+    }
+    //  -----------------------------------------------------------------------------
+
     if ((obj.value ?? 0) > 0) {
 
-      console.log(this.data)
+      // console.log(this.data)
       setTimeout(() => {
         this.searchFormGroup.get('regRadio')?.setValue('registrered');
         this.onChangeReg({ value: 'registrered' });
@@ -176,7 +206,7 @@ export class NewAdmissionComponent implements OnInit {
           this.registerObj = response;
           this.value = response.dateofBirth
           this.onChangeDateofBirth(response.dateofBirth)
-          console.log(this.registerObj)
+          // console.log(this.registerObj)
           // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
           this.personalFormGroup.patchValue({
             FirstName: this.registerObj.firstName.trim(),
@@ -209,50 +239,50 @@ export class NewAdmissionComponent implements OnInit {
     }
   }
 
-  getSelectedObj1(obj) {
-    console.log(obj)
-    debugger
+  // getSelectedObj1(obj) {
+  //   // console.log(obj)
+  //   debugger
 
-    this.RegId = obj;
-    if ((obj ?? 0) > 0) {
+  //   this.RegId = obj;
+  //   if ((obj ?? 0) > 0) {
 
-      console.log(this.data)
-      setTimeout(() => {
-        this._AdmissionService.getRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          this.value = response.dateofBirth
-          this.onChangeDateofBirth(response.dateofBirth)
-          console.log(this.registerObj)
-          // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
-          this.personalFormGroup.patchValue({
-            FirstName: this.registerObj.firstName.trim(),
-            LastName: this.registerObj.lastName.trim(),
-            MobileNo: this.registerObj.mobileNo.trim(),
-            // MaritalStatusId: this.registerObj.maritalStatusId,
-            emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
-            emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
-            emgMobileNo: this.registerObj?.emgMobileNo ?? '',
-            emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
-            engAddress: this.registerObj?.engAddress ?? '',
-            emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
-            emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
-            medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
-            medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
-            medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
-            medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
-            medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
-            medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
-            medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
-            medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
-            medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
-          });
+  //     // console.log(this.data)
+  //     setTimeout(() => {
+  //       this._AdmissionService.getRegistraionById(this.RegId).subscribe((response) => {
+  //         this.registerObj = response;
+  //         this.value = response.dateofBirth
+  //         this.onChangeDateofBirth(response.dateofBirth)
+  //         // console.log(this.registerObj)
+  //         // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
+  //         this.personalFormGroup.patchValue({
+  //           FirstName: this.registerObj.firstName.trim(),
+  //           LastName: this.registerObj.lastName.trim(),
+  //           MobileNo: this.registerObj.mobileNo.trim(),
+  //           // MaritalStatusId: this.registerObj.maritalStatusId,
+  //           emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
+  //           emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
+  //           emgMobileNo: this.registerObj?.emgMobileNo ?? '',
+  //           emgLandlineNo: this.registerObj?.emgLandlineNo ?? '',
+  //           engAddress: this.registerObj?.engAddress ?? '',
+  //           emgAadharCardNo: this.registerObj?.emgAadharCardNo ?? '',
+  //           emgDrivingLicenceNo: this.registerObj?.emgDrivingLicenceNo ?? '',
+  //           medTourismPassportNo: this.registerObj?.medTourismPassportNo ?? '',
+  //           medTourismVisaIssueDate: this.registerObj?.medTourismVisaIssueDate ?? new Date(),
+  //           medTourismVisaValidityDate: this.registerObj?.medTourismVisaValidityDate ?? new Date(),
+  //           medTourismNationalityId: this.registerObj?.medTourismNationalityId ?? '',
+  //           medTourismCitizenship: this.registerObj?.medTourismCitizenship ?? '',
+  //           medTourismPortOfEntry: this.registerObj?.medTourismPortOfEntry ?? '',
+  //           medTourismDateOfEntry: this.registerObj?.medTourismDateOfEntry ?? new Date(),
+  //           medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
+  //           medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
+  //         });
 
-        });
+  //       });
 
-      }, 500);
-    }
+  //     }, 500);
+  //   }
 
-  }
+  // }
 
   chkHealthcard(e) { }
   Patientnewold: any = 1;
@@ -575,12 +605,17 @@ export class NewAdmissionComponent implements OnInit {
 
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
-      let submitData = {
-        "AdmissionReg": this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
-      };
-      console.log(submitData);
+      // let submitData = {
+      //   "AdmissionReg": this.personalFormGroup.value,
+      //   "ADMISSION": this.admissionFormGroup.value
+      // };
+   
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
+        let submitData = {
+          "AdmissionReg": this.personalFormGroup.value,
+          "ADMISSION": this.admissionFormGroup.value
+        };
+        console.log(submitData);
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);
           console.log(response)
@@ -593,6 +628,11 @@ export class NewAdmissionComponent implements OnInit {
         });
       }
       else {
+        // console.log(submitData);
+        let submitData = {
+          // "AdmissionReg": this.personalFormGroup.value,
+          "admission": this.admissionFormGroup.value
+        };
         console.log(submitData);
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
           console.log(response)
@@ -990,22 +1030,22 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   public displayedColumns =
-    ['UHID','vistDateTime', 'patientName', 'PatientType','opdNo','doctorName','RefDoctorName','ConvertId'];
+    ['UHID', 'vistDateTime', 'patientName', 'PatientType', 'opdNo', 'doctorName', 'RefDoctorName', 'ConvertId'];
 
   onRowClick(contact) {
-   
-      if (contact.convertId !== "0") {
-                const name = contact.patientName?.trim();
-                Swal.fire({
-                    icon: 'warning',
-                    title: `Admission for the selected patient ${name} has already been completed.`,
-                    text: `This patient ${name} already admitted.`,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                });
-                return;
-            }
-     this.ListdialogRef.close(contact);
+
+    if (contact.convertId !== "0") {
+      const name = contact.patientName?.trim();
+      Swal.fire({
+        icon: 'warning',
+        title: `Admission for the selected patient ${name} has already been completed.`,
+        text: `This patient ${name} already admitted.`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6'
+      });
+      return;
+    }
+    this.ListdialogRef.close(contact);
   }
   //////////////////////// op to ip convert code end ////////////////////////
 
