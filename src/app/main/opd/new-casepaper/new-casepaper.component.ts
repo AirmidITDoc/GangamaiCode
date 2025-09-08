@@ -498,7 +498,9 @@ export class NewCasepaperComponent implements OnInit {
       storeId: [this._loggedService.currentUserValue.user.storeId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       patientReferDocId: [element.patientReferDocId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       advice: [element.advice ?? ''],
-      isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      allergy: [element.allergy ?? ''],
+      bloodGroup: [element.bloodGroup ?? ''],
     });
   }
 
@@ -587,6 +589,8 @@ export class NewCasepaperComponent implements OnInit {
         temp: this.caseFormGroup.get('Temp')?.value,
         pulse: this.caseFormGroup.get('Pulse')?.value,
         bp: this.caseFormGroup.get('BP')?.value,
+        allergy: this.caseFormGroup.get('Allergies')?.value,
+        bloodGroup: this.caseFormGroup.get('BloodGroup')?.value,
         remark: this.MedicineItemForm.get('Remark')?.value,
         chiefComplaint: this.caseFormGroup.get('ChiefComplaint')?.value,
         diagnosis: this.caseFormGroup.get('Diagnosis')?.value,
@@ -742,7 +746,9 @@ export class NewCasepaperComponent implements OnInit {
           SpO2: current.SpO2 || firstItem.spO2,
           Pulse: current.Pulse || firstItem.pulse,
           BP: current.BP || firstItem.bp,
-          Temp: current.Temp || firstItem.temp
+          Temp: current.Temp || firstItem.temp,
+          Allergies: current.Allergies || firstItem.allergy,
+          BloodGroup: current.BloodGroup || firstItem.bloodGroup
         });
 
         this.vChiefComplaint = firstItem.chiefComplaint;
@@ -774,7 +780,9 @@ export class NewCasepaperComponent implements OnInit {
             SpO2: current.SpO2 || data.spO2,
             Pulse: current.Pulse || data.pulse,
             BP: current.BP || data.bp,
-            Temp: current.Temp || data.temp
+            Temp: current.Temp || data.temp,
+            Allergies: current.Allergies || data.allergy,
+            BloodGroup: current.BloodGroup || data.bloodGroup
           });
         });
       }
@@ -2478,6 +2486,8 @@ export class MedicineItemList {
   doseNameOption3: any;
   daysOption3: any;
   genericid: any;
+  allergy:any;
+bloodGroup:any;
   /**
   * Constructor
   *
@@ -2560,6 +2570,8 @@ export class MedicineItemList {
       this.doseNameOption3 = MedicineItemList.doseNameOption3
       this.daysOption3 = MedicineItemList.daysOption3
       this.genericid = MedicineItemList.genericid || 0
+      this.allergy = MedicineItemList.allergy || ''
+      this.bloodGroup = MedicineItemList.bloodGroup || ''
     }
   }
 }

@@ -32,13 +32,7 @@ export class OTRequestComponent implements OnInit {
   FirstName: any = ""
   RegNo: any = "0"
   LastName: any = ""
-  //  mobileno: any = "%"
-
-  //   VBillcount = 0;
-  // VOPtoIPcount = 0;
-  // vIsDischarg = 0;
-  // VAdmissioncount = 0;
-  //  VNewcount = 0;
+  
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -64,27 +58,10 @@ export class OTRequestComponent implements OnInit {
     { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
-
-    // {
-    //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-    //         {action: gridActions.edit, callback: (data: any) => {
-    //                 this.OnEditRegistration(data);
-
-    //                 this.grid.bindGridData();
-    //             }}
-    //         ,
-    //     {action: gridActions.print, callback: (data: any) => {
-    //                 this.OnPrint(data);
-
-
-    //             }}]
-    // }
-
   ];
 
   allFilters = [
@@ -101,7 +78,6 @@ export class OTRequestComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFilters
   }
-  // autocompleteMode: string = "Department";
 
   constructor(
     public _OtRequestService: OtRequestService,
@@ -124,7 +100,6 @@ export class OTRequestComponent implements OnInit {
         maxWidth: "90vw",
         height: '90%',
         width: '90%',
-
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -175,7 +150,7 @@ export class OTRequestComponent implements OnInit {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Pathology Test Report With Header Viewer"
+          title: "OT Request Report Viewer"
         }
       });
 
@@ -184,9 +159,7 @@ export class OTRequestComponent implements OnInit {
       });
     });
   }
-  //  OnCancel(Param) {
-  //         this.commonService.Onprint("otbookingId", Param.otbookingId, "RequestName");
-  //     } 
+  
   OnCancel(data: any) {
     Swal.fire({
       title: 'Do you want to cancel OT request?',
@@ -229,10 +202,9 @@ export class OTRequestComponent implements OnInit {
     this.getfilterdata();
   }
 
-
   getfilterdata() {
-        this.FromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
       apiUrl: "OTBooking/OtbookingRequestList",
       columnsList: this.allcolumns,

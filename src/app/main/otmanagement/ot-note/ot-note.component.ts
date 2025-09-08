@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -12,57 +12,46 @@ import { OTManagementServiceService } from '../ot-management-service.service';
 import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
+import { fuseAnimations } from '@fuse/animations';
+import { OtNoteService } from './ot-note.service';
 
 @Component({
   selector: 'app-ot-note',
   templateUrl: './ot-note.component.html',
-  styleUrls: ['./ot-note.component.scss']
+  styleUrls: ['./ot-note.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
-export class OTNoteComponent  {
+export class OTNoteComponent {
 
-   OTNoteform: FormGroup;
- opIpType: number;
- opIpId: any;
+  OTNoteform: FormGroup;
+  opIpType: number;
+  opIpId: any;
+  vSelectedOption: any = "OP";
+  vRegNo: any;
+  vPatientName: any;
+  // vDescription:any;
+  vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
+  registerObj = new otNote({});
 
-       vSelectedOption: any = "OP";
-
-
- vRegNo: any;
-vPatientName: any;
-vDoctorName: any;
-vTariffName: any;
-vCompanyName: any;
-vAge: any;
-vAgeDay: any;
-vAgeMonth: any;
-vDepartment: any;
-vMobNo: any;
-vOPDNo: any;
-vIPDNo: any;
-
-autocompleteModestatus: string = "State";
+  autocompleteModestatus: string = "State";
   autocompleteModeSurgery: String = "SurgeryMaster";
-   autocompleteModeConDoctor: String = "ConDoctor";
-    autocompleteModeRefDoctor: String = "RefDoctor";
-     autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeRefDoctor: String = "RefDoctor";
+  autocompleteModeOTTable: String = "OttableMaster";
 
-//       constructor( 
-//           @Inject(MAT_DIALOG_DATA) public data: any,
-         
-//           ) { }
-//            ngOnInit(): void {
-//     // this.reservationForm = this._OtReservationService.createReservationForm();
-//      this.OTNoteform.markAllAsTouched();
-     
-//      if ((this.data?.countryId??0) > 0) 
-//          {
-//              //this.isActive=this.data.isActive
-//              this.OTNoteform.patchValue(this.data);
-//          }
-//  }
- 
- onChangeReg(event) {
+  constructor(
+    public _otNoteService: OtNoteService,
+    private accountService: AuthenticationService,
+    public _matDialog: MatDialog,
+  ) { }
+
+  ngOnInit(): void {
+    this.OTNoteform = this._otNoteService.createOtNoteForm();
+    this.OTNoteform.markAllAsTouched();
+  }
+
+  onChangeReg(event) {
     if (event.value == 'OP') {
       this.opIpType = 0;
       this.opIpId = "";
@@ -79,115 +68,195 @@ autocompleteModestatus: string = "State";
     this.OTNoteform.get('opIpId').reset();
     this.vRegNo = '';
     this.vPatientName = '';
-    // this.vAdmissionDate = '';
-    // this.vAdmissionTime = '';
-    // this.vIPDNo = '';
-    this.vDoctorName = '';
-    this.vTariffName = '';
-    this.vCompanyName = '';
-    // this.vRoomName = '';
-    // this.vBedName = '';
-    // this.vGenderName = '';
-    this.vAge = '';
-    this.vAgeDay='';
-    this.vAgeMonth='';
-    this.vDepartment = '';
-    this.vMobNo='';
-   // this.vDOA = ''
+    this.registerObj = new otNote({});
   }
 
-   getSelectedObjIP(obj) {
-
+  getSelectedObjIP(obj) {
     if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:", obj)
+      this.registerObj = obj
+      console.log("Admitted patient:", this.registerObj)
       this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment = obj.departmentName
-    //   this.vAdmissionDate = obj.admissionDate
-    //   this.vAdmissionTime = obj.admissionTime
-       this.vIPDNo = obj.ipdNo
-      this.vAge = obj.age
-       this.vAgeMonth = obj.ageMonth
-       this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
-    //   this.vRefDocName = obj.refDocName
-    //   this.vRoomName = obj.roomName
-    //   this.vBedName = obj.bedName
-    //   this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-    //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
-      this.vMobNo = obj.mobileNo;
     }
   }
   getSelectedObjOP(obj) {
-
     if ((obj.regId ?? 0) > 0) {
-      console.log("Visite Patient:", obj)
+      this.registerObj = obj
+      console.log("Visite patient:", this.registerObj)
       this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vDepartment = obj.departmentName
-    //   this.vAdmissionDate = obj.admissionDate
-    //   this.vAdmissionTime = obj.admissionTime
-      this.vOPDNo = obj.opdNo
-      this.vAge = obj.age
-     this.vAgeMonth = obj.ageMonth
-       this.vAgeDay = obj.ageDay
-    //   this.vGenderName = obj.genderName
-    //   this.vRefDocName = obj.refDocName
-    //   this.vRoomName = obj.roomName
-    //   this.vBedName = obj.bedName
-    //   this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
       let nameField = obj.formattedText;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
-       this.vMobNo = obj.mobileNo;
     }
   }
 
-   getValidationMessages() {
-       return {
-           SurgeryName: [
-               { name: "required", Message: "Surgery Name is required" },
-               { name: "maxlength", Message: "Surgery Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           SurgeronName1: [
-               { name: "required", Message: "Surgeron Name 1 is required" },
-               { name: "maxlength", Message: "Surgeron Name 1 should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           SurgeronName2: [
-               { name: "required", Message: "Surgeron Name 2 is required" },
-               { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           Anathesiadoctor1: [
-               { name: "required", Message: "Anathesia doctor 1 Name is required" },
-               { name: "maxlength", Message: "Anathesia doctor 1 Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           Anathesiadoctor2: [
-               { name: "required", Message: "Anathesia doctor 2 Name is required" },
-               { name: "maxlength", Message: "Anathesia doctor 2 Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           OTTable: [
-               { name: "required", Message: "OT Table Name is required" },
-               { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-           AnathesiaType: [
-               { name: "required", Message: "Anathesia Type is required" },
-               { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
-               { name: "pattern", Message: "Special char not allowed." }
-           ],
-       };
-   }
+  onEditorValueChange(content: string) {
+    this.OTNoteform.get('description')?.setValue(content);
+  }
+
+  onSubmit() {
+
+  }
+
+  onClose() {
+    this.OTNoteform.reset();
+    // this.dialogRef.close(); 
+    this._matDialog.closeAll();
+    this.OTNoteform.get('opIpType').setValue('IP')
+    this.OTNoteform.get('description').setValue("Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
+    this.vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
+    this.patientInfoReset();
+  }
+
+  getValidationMessages() {
+    return {
+      OTTable: [
+        { name: "required", Message: "OT Table Name is required" },
+        { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ],
+      AnathesiaType: [
+        { name: "required", Message: "Anathesia Type is required" },
+        { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ],
+    };
+  }
 }
 
+export class otNote {
+  RegId: Number;
+  regId: Number;
+  RegID: Number;
+  PatientName: string;
+  patientName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  FirstName: string;
+  MiddleName: string;
+  LastName: string;
+  address: string;
+  city: string;
+  PinNo: string;
+  regNo: string;
+  RegNo: string;
+  Age: any;
+  age: any;
+  genderId: any;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  countryId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  IsCharity: Boolean;
+  ReligionId: number;
+  religionId: number;
+  AreaId: number;
+  areaId: number;
+  VillageId: number;
+  TalukaId: number;
+  PatientWeight: number;
+  AreaName: string;
+  AadharCardNo: string;
+  aadharCardNo: string;
+  PanCardNo: string;
+  currentDate = new Date();
+  AdmissionID: any;
+  VisitId: any;
+  isSeniorCitizen: boolean
+  doctorName: any;
+  departmentName: any;
+  UnitId: any;
+  billNo: any;
+  departmentId: any;
+  doctorId: any;
+  campId: any;
+  emgId: any
+  ipdNo: any;
+  opdNo: any;
+  genderName: any;
+  admissionDate: any;
+  refDoctorName: any;
+  bedName: any;
+  roomName: any;
+  patientType: any;
+  tariffName: any;
+  companyName: any;
+
+  constructor(OtNoteInsert) {
+    {
+      this.RegId = OtNoteInsert.RegId || 0;
+      this.regId = OtNoteInsert.regId || 0;
+      this.RegID = OtNoteInsert.RegID || 0;
+      this.patientName = OtNoteInsert.patientName;
+      this.firstName = OtNoteInsert.firstName || '';
+      this.middleName = OtNoteInsert.middleName || '%';
+      this.lastName = OtNoteInsert.lastName || '';
+      this.FirstName = OtNoteInsert.FirstName || '';
+      this.MiddleName = OtNoteInsert.MiddleName || '';
+      this.LastName = OtNoteInsert.LastName || '';
+      this.RegNo = OtNoteInsert.RegNo || '';
+      this.regNo = OtNoteInsert.regNo || '';
+      this.PinNo = OtNoteInsert.PinNo || '';
+      this.Age = OtNoteInsert.Age || '';
+      this.genderId = OtNoteInsert.genderId || 0;
+      this.phoneNo = OtNoteInsert.phoneNo || '';
+      this.MobileNo = OtNoteInsert.MobileNo || '';
+      this.mobileNo = OtNoteInsert.mobileNo || '';
+      this.AgeDay = OtNoteInsert.AgeDay || '0';
+      this.ageYear = OtNoteInsert.ageYear || '';
+      this.ageMonth = OtNoteInsert.ageMonth || '';
+      this.ageDay = OtNoteInsert.ageDay || '';
+      this.countryId = OtNoteInsert.countryId || 0;
+      this.stateId = OtNoteInsert.stateId || 0;
+      this.CityId = OtNoteInsert.CityId || 0;
+      this.cityId = OtNoteInsert.cityId || 0;
+      this.MaritalStatusId = OtNoteInsert.MaritalStatusId || 0;
+      this.IsCharity = OtNoteInsert.IsCharity || false;
+      this.ReligionId = OtNoteInsert.ReligionId || 0;
+      this.religionId = OtNoteInsert.religionId || 0;
+      this.AreaId = OtNoteInsert.AreaId || 0;
+      this.areaId = OtNoteInsert.areaId || 0;
+      this.VillageId = OtNoteInsert.VillageId || '';
+      this.TalukaId = OtNoteInsert.TalukaId || '';
+      this.PatientWeight = OtNoteInsert.PatientWeight || '';
+      this.AreaName = OtNoteInsert.AreaName || '';
+      this.AadharCardNo = OtNoteInsert.AadharCardNo || '';
+      this.aadharCardNo = OtNoteInsert.aadharCardNo || '';
+      this.PanCardNo = OtNoteInsert.PanCardNo || '';
+      this.AdmissionID = OtNoteInsert.AdmissionID || '';
+      this.VisitId = OtNoteInsert.VisitId || 0;
+      this.isSeniorCitizen = OtNoteInsert.isSeniorCitizen || 0
+      this.maritalStatusId = OtNoteInsert.maritalStatusId || 0;
+      this.doctorName = OtNoteInsert.doctorName || "";
+      this.departmentName = OtNoteInsert.departmentName || "";
+      this.UnitId = OtNoteInsert.UnitId || 0;
+      this.billNo = OtNoteInsert.billNo || 0;
+      this.departmentId = OtNoteInsert.departmentId || 0;
+      this.doctorId = OtNoteInsert.doctorId || 0;
+      this.campId = OtNoteInsert.campId || 0;
+      this.emgId = OtNoteInsert.emgId || 0
+      this.ipdNo = OtNoteInsert.ipdNo || ''
+      this.opdNo = OtNoteInsert.opdNo || ''
+      this.genderName = OtNoteInsert.genderName || ''
+      this.admissionDate = OtNoteInsert.admissionDate || ''
+      this.refDoctorName = OtNoteInsert.refDoctorName || ''
+      this.bedName = OtNoteInsert.bedName || 0
+      this.roomName = OtNoteInsert.roomName || ''
+      this.patientType = OtNoteInsert.patientType || ''
+      this.tariffName = OtNoteInsert.tariffName || ''
+      this.companyName = OtNoteInsert.companyName || ''
+    }
+  }
+}

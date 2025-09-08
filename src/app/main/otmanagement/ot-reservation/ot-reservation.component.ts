@@ -25,7 +25,7 @@ export class OTReservationComponent implements OnInit {
     myFilterform: FormGroup
     msg: any;
     RequestName: any = "";
-tOtbookingRequestsForm:FormGroup;
+    tOtbookingRequestsForm: FormGroup;
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -33,8 +33,8 @@ tOtbookingRequestsForm:FormGroup;
     regNo: any = "0"
     LastName: any = ""
 
-votbookingId: any = ""
-registerobj: any;
+    votbookingId: any = ""
+    registerobj: any;
     //   VBillcount = 0;
     // VOPtoIPcount = 0;
     // vIsDischarg = 0;
@@ -105,15 +105,15 @@ registerobj: any;
         public _OtReservationService: OtReservationService,
         public toastr: ToastrService, public _matDialog: MatDialog,
         private commonService: PrintserviceService,
-         private _FormvalidationserviceService: FormvalidationserviceService,
-                private _formBuilder: FormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        private _formBuilder: FormBuilder,
         public datePipe: DatePipe
     ) { }
 
     ngOnInit(): void {
-        
+
     }
-   
+
 
     onChangeStartDate(value) {
         this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
@@ -163,41 +163,41 @@ registerobj: any;
             this.grid.bindGridData();
         });
     }
-   OnPrint(Param) {
-       const param = {
-         searchFields: [
-            {
-             fieldName: "OTReservationId",
-             fieldValue: String(Param.OTReservationId),
-             opType: "Equals"
-           },
-           {
-             fieldName: "OPIPType",
-             fieldValue: String(Param.opIpType),
-             opType: "Equals"
-           }
-         ],
-         mode: "OTReservationReport"
-       };
-   
-       console.log(param);
-   
-       this._OtReservationService.getReportView(param).subscribe(res => {
-         const matDialog = this._matDialog.open(PdfviewerComponent, {
-           maxWidth: "85vw",
-           height: '750px',
-           width: '100%',
-           data: {
-             base64: res["base64"] as string,
-             title: "Pathology Test Report With Header Viewer"
-           }
-         });
-   
-         matDialog.afterClosed().subscribe(result => {
-   
-         });
-       });
-     }
+    OnPrint(Param) {
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "OTReservationId",
+                    fieldValue: String(Param.OTReservationId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: String(Param.opIpType),
+                    opType: "Equals"
+                }
+            ],
+            mode: "OTReservationReport"
+        };
+
+        console.log(param);
+
+        this._OtReservationService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "OtReservation Report Viewer"
+                }
+            });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
+    }
 
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")

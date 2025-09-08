@@ -75,17 +75,11 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
-                <mat-icon> cancel</mat-icon>
-            </button> -->
-
                 <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
                     *ngIf="element.isCancelled==false">
                     <mat-icon> cancel</mat-icon>
                 </button>
-                <!-- <mat-icon *ngIf="element.isCancelled==true" matTooltip="Cancelled">
-                    block
-                </mat-icon> -->
+                
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
@@ -104,7 +98,6 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>

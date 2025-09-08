@@ -198,14 +198,14 @@
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
                                         <mat-label>OP Start Time</mat-label>
-                                        <input matInput type="time" formControlName="opstartTime">
+                                        <input matInput type="time" formControlName="opstartTime" (change)="onChangeTimeStart($event)">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
                                         <mat-label>OP End Time</mat-label>
-                                        <input matInput type="time" formControlName="opendTime">
+                                        <input matInput type="time" formControlName="opendTime" (change)="onChangeTimeEnd($event)">
                                     </mat-form-field>
                                 </div>
 

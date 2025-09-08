@@ -51,7 +51,7 @@ export class MedicalrecordComponent implements OnInit {
   VEMRcount = 0;
   VCheckoutCount = 0;
   VWaitingCount = 0;
-VMarkcount = 0;
+  vEMRReady = 0;
   screenFromString = 'OP-billing';
   patientDetail = new RegInsert({});
   patientDetail1 = new VisitMaster1({});
@@ -61,7 +61,7 @@ VMarkcount = 0;
   f_name: any = "%"
   regNo: any = "0"
   l_name: any = "%"
-  page: PageNames=PageNames.PATIENT;
+  page: PageNames = PageNames.PATIENT;
 
   constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
     private commonService: PrintserviceService,
@@ -177,7 +177,7 @@ VMarkcount = 0;
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-     this.GetAppointdetail()
+    this.GetAppointdetail()
   }
 
   Clearfilter(event) {
@@ -396,101 +396,101 @@ VMarkcount = 0;
     dialogRef.afterClosed().subscribe(result => {
       this.searchFormGroup.get('RegId').setValue('');
       this.grid.bindGridData();
-       this.GetAppointdetail()
+      this.GetAppointdetail()
     });
 
   }
 
-    dataSource = new MatTableDataSource<VisitMaster1>();
-    GetAppointdetail() {
+  dataSource = new MatTableDataSource<VisitMaster1>();
+  GetAppointdetail() {
 
-  this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-        this.Vtotalcount = 0;
-        this.VNewcount = 0;
-        this.VFollowupcount = 0;
-        this.VBillcount = 0;
-        this.VCrossConscount = 0;
-       
-        let data =
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+    this.Vtotalcount = 0;
+    this.VNewcount = 0;
+    this.VFollowupcount = 0;
+    this.VBillcount = 0;
+    this.VCrossConscount = 0;
+
+    let data =
+    {
+      "first": 0,
+      "rows": 150,
+      "sortField": "VisitId",
+      "sortOrder": 0,
+      "filters": [
         {
-            "first": 0,
-            "rows": 150,
-            "sortField": "VisitId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "F_Name",
-                    "fieldValue": String(this.f_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "L_Name",
-                    "fieldValue": String(this.l_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "Reg_No",
-                    "fieldValue": String(this.regNo),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Doctor_Id",
-                    "fieldValue": String(this.DoctorId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "From_Dt",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "To_Dt",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "IsMark",
-                    "fieldValue": "2",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
+          "fieldName": "F_Name",
+          "fieldValue": String(this.f_name),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "L_Name",
+          "fieldValue": String(this.l_name),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "Reg_No",
+          "fieldValue": String(this.regNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Doctor_Id",
+          "fieldValue": String(this.DoctorId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "From_Dt",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "To_Dt",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "IsMark",
+          "fieldValue": "2",
+          "opType": "Equals"
         }
-        console.log(data)
-        this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
-            this.dataSource.data = response.data;
-             console.log(response)
-            //  debugger
-            if (this.dataSource.data.length > 0) {
-                this.Vtotalcount = this.dataSource.data.length
-                this.dataSource.data.forEach(element => {
-                    if (element.patientOldNew == 1) {
-                        this.VNewcount = this.VNewcount + 1;
-                    }
-                    else if (element.patientOldNew == 2) {
-                        this.VFollowupcount = this.VFollowupcount + 1;
-                    }
-                    if (element.mPbillNo == 1 || element.mPbillNo == 2) {
-                        this.VBillcount = this.VBillcount + 1;
-                    }
-                    if (element.crossConsulFlag == 1) {
-                        this.VCrossConscount = this.VCrossConscount + 1;
-                    }
-                     if (element.IsMark == 1) {
-                        this.VMarkcount = this.VMarkcount + 1;
-                    }
-                });
-                console.log(this.dataSource.data)
-            }
-            });
-}
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
+    console.log(data)
+    this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
+      this.dataSource.data = response.data;
+      console.log(response)
+      //  debugger
+      if (this.dataSource.data.length > 0) {
+        this.Vtotalcount = this.dataSource.data.length
+        this.dataSource.data.forEach(element => {
+          if (element.patientOldNew == 1) {
+            this.VNewcount = this.VNewcount + 1;
+          }
+          else if (element.patientOldNew == 2) {
+            this.VFollowupcount = this.VFollowupcount + 1;
+          }
+          if (element.mPbillNo == 1 || element.mPbillNo == 2) {
+            this.VBillcount = this.VBillcount + 1;
+          }
+          if (element.crossConsulFlag == 1) {
+            this.VCrossConscount = this.VCrossConscount + 1;
+          }
+          if (element.emrReady == 1) {
+            this.vEMRReady = this.vEMRReady + 1;
+          }
+        });
+        console.log(this.dataSource.data)
+      }
+    });
+  }
 
   selectChangedeptdoc(obj: any) {
     this.gridConfig.filters[3].fieldValue = obj.value
@@ -529,9 +529,10 @@ export class VisitMaster1 {
   addedBy: any;
   updatedBy: any;
   doctorID: any;
-  mPbillNo:any;
-  crossConsulFlag:any;
-  IsMark:any;
+  mPbillNo: any;
+  crossConsulFlag: any;
+  IsMark: any;
+  emrReady:any;
   /**
    * Constructor
    *
@@ -560,9 +561,10 @@ export class VisitMaster1 {
       this.addedBy = VisitMaster1.addedBy || 0
       this.updatedBy = VisitMaster1.updatedBy || 0;
       this.doctorID = VisitMaster1.doctorID || 0;
-      this.mPbillNo=VisitMaster1.doctorID || 0;
-       this.crossConsulFlag=VisitMaster1.crossConsulFlag || 0;
-       this.IsMark=VisitMaster1.IsMark || 0;
+      this.mPbillNo = VisitMaster1.doctorID || 0;
+      this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
+      this.IsMark = VisitMaster1.IsMark || 0;
+      this.emrReady = VisitMaster1.emrReady || 0
     }
   }
 }
