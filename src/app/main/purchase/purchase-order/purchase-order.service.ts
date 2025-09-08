@@ -44,14 +44,17 @@ export class PurchaseOrderService {
 
 
   constructor(
-    public _httpClient: HttpClient, public _httpClient1: ApiCaller, private toastr: ToastrService,
-    private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService, private accountService: AuthenticationService,
+    public _httpClient: HttpClient, public _httpClient1: ApiCaller, 
+    private toastr: ToastrService,
+    private _formBuilder: UntypedFormBuilder, 
+    private _FormvalidationserviceService: FormvalidationserviceService,
+     private accountService: AuthenticationService,
   ) { }
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
       StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId:  [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:  [0],
       startdate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       Status: [0],
@@ -108,8 +111,7 @@ export class PurchaseOrderService {
   }
 
   getPurchaseOrderFinalForm() {
-    return this._formBuilder.group({
-
+    return this._formBuilder.group({ 
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
@@ -143,15 +145,10 @@ export class PurchaseOrderService {
   }
 
   public InsertPurchaseSave(Param) {
-
-    if (Param.purchaseId) {
-      return this._httpClient1.PutData("Purchase/Edit/" + Param.purchaseId, Param)
-    } else return this._httpClient1.PostData("Purchase/Insert", Param);
-  }
-
-
-  public InsertPurchaseUpdate(Param) {
-    return this._httpClient1.PutData("Purchase/Edit/" + Param.purchaseId, Param)
+ return this._httpClient1.PostData("Purchase/Insert", Param); 
+  }  
+    public InsertPurchaseUpdate(employee,Id ) { 
+  return this._httpClient1.PutData("Purchase/Edit/"+Id,employee) 
   }
   public getVerifyPurchaseOrdert(Param) {
     return this._httpClient1.PostData("Purchase/Verify", Param)

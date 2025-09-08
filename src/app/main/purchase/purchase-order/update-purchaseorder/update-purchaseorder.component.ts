@@ -661,7 +661,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
       "purchaseDetailInsert": InsertpurchaseDetailObj,
     };
     console.log(submitData);
-    this._PurchaseOrder.InsertPurchaseUpdate(submitData).subscribe(response => {
+    this._PurchaseOrder.InsertPurchaseUpdate(submitData,this.registerObj?.PurchaseID).subscribe(response => {
       this.toastr.success(response.message);
       if (response) {
         this.viewgetPurchaseorderReportPdf(response)

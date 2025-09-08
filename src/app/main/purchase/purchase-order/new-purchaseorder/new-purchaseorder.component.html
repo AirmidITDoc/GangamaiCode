@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'OP-billing'"
+                        <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                         <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
@@ -81,9 +81,7 @@
                                             (selectionChange)="onGSTTypeChange($event)"
                                             [mode]="autocompleteModeGSTType"></airmid-dropdown>
                                     </div>
-                                    <div fxLayout="row" class="gap-2">
-                                        <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId"
-                                            formControlName="PurchaseId" />
+                                    <div fxLayout="row" class="gap-2"> 
                                         <airmid-textbox fxFlex="6%" label="HSNcode" formControlName="HSNcode"
                                             [(ngModel)]="vHSNcode" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
@@ -135,21 +133,20 @@
 
 
                                         <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer" #CGST
-                                            (valueChange)="getchangegstper($event,CGST)" [formGroup]="userFormGroup"
+                                            (change)="getchangegstper(userFormGroup.get('CGSTPer')?.value, 'CGSTPer')" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="CGST Amt" formControlName="CGSTAmount"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
                                         <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer" #SGST
-                                            (valueChange)="getchangegstper($event,SGST)" [formGroup]="userFormGroup"
+                                            (change)="getchangegstper(userFormGroup.get('SGSTPer')?.value, 'SGSTPer')" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
-                                        <!-- <airmid-textbox fxFlex="4%" label="SGSTAmt" formControlName="SGSTAmount"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
+                                      
 
                                         <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
-                                            (valueChange)="getchangegstper($event,IGST)" [formGroup]="userFormGroup"
+                                            (change)="getchangegstper(userFormGroup.get('IGSTPer')?.value, 'IGSTPer')" [formGroup]="userFormGroup"
                                             type="text" [readonly]="true"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="IGSTAmt" formControlName="IGSTAmount"
@@ -173,12 +170,12 @@
                                             [(ngModel)]="vDefRate" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
 
-
+<!--  [disabled]="!userFormGroup.valid" -->
                                         <div
                                             [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
                                             <button type="button" class="btn btn-primary btn-with-icon py-8"
                                                 (click)="onAdd()" #addbutton id="btnAdd"
-                                                [disabled]="!userFormGroup.valid">
+                                               >
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </div>

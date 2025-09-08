@@ -28,7 +28,7 @@ export class PurchaseOrderComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   StoreId: any = String(this.accountService.currentUserValue.user.storeId);
-  SupplierId = "0";
+  SupplierId:any = "0";
   status = "0";
 
 
@@ -78,8 +78,8 @@ export class PurchaseOrderComponent implements OnInit {
     filters: [{ fieldName: "ToStoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "IsVerify", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-    { fieldName: "Supplier_Id", fieldValue: String(this.SupplierId), opType: OperatorComparer.Equals }
+    { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
   }
   gridConfig1: gridModel = new gridModel();
@@ -128,29 +128,26 @@ export class PurchaseOrderComponent implements OnInit {
   ngOnInit(): void {
     this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
   }
+  
+
   selectChangeStore(value) {
     if (value.value !== 0)
       this.StoreId = value.value
     else
       this.StoreId = "0"
 
-    this.onChangeFirst(event);
+    this.onChangeFirst();
   }
-  ListView(value) {
-    if (value.value !== 0)
-      this.StoreId = value.value
-    else
-      this.StoreId = "0"
-    this.onChangeFirst(value);
-  }
-  ListView1(value) {
+  selectChangeSupplier(value) {
+    debugger
     if (value.value !== 0)
       this.SupplierId = value.value
     else
       this.SupplierId = "0"
-    this.onChangeFirst(value);
+
+    this.onChangeFirst();
   }
-  onChangeFirst(value) {
+  onChangeFirst() {
     if (this.mysearchform.get('Status').value == true) {
       this.status = "1"
     } else {
@@ -158,10 +155,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
-    this.StoreId = this.mysearchform.get("StoreId").value || this.StoreId
-    this.SupplierId = this.SupplierId
-
+    this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd") 
     this.getfilterdata();
   }
   getfilterdata() {
@@ -179,11 +173,10 @@ export class PurchaseOrderComponent implements OnInit {
         { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
       ],
       row: 25
-    }
-    console.log(this.gridConfig)
+    } 
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-  }
+  } 
   viewgetPurchaseorderReportPdf(element) {
     this.commonService.Onprint("PurchaseID", element.purchaseID, "Purchaseorder");
   }
@@ -219,13 +212,7 @@ export class PurchaseOrderComponent implements OnInit {
       "purchaseId": row.purchaseID,
       "isVerifiedId": 1
     };
-    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
-      this.toastr.success(response);
-      if (response) {
-        this.commonService.Onprint("PurchaseID", row.purchaseID, "Purchaseorder");
-        this.grid.bindGridData();
-        // this.onChangeFirst(event);
-      }
+    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {  
     });
   }
   //Add New Purchase
@@ -272,6 +259,7 @@ export class ItemNameList {
   Dis: any;
   Disc: any;
   DiscAmount: any;
+ purchaseNo: any;
   GST: number;
   GSTAmount: any;
   CGSTPer: any;
@@ -380,6 +368,7 @@ export class ItemNameList {
       this.DiscAmount = ItemNameList.DiscAmount || 0;
       this.GST = ItemNameList.GST || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
+       this.purchaseNo = ItemNameList.purchaseNo || 0;
       this.CGSTPer = ItemNameList.CGSTPer || 0;
       this.CGSTAmt = ItemNameList.CGSTAmt || 0;
       this.SGSTPer = ItemNameList.SGSTPer || 0;
