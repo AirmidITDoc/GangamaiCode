@@ -92,7 +92,7 @@ export class OpeningBalanceComponent {
         { heading: "CGST(%)", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SGST(%)", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IGST(%)", key: "igstPer", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "GST(%)", key: "vatPer", sort: true, align: 'left', emptySign: 'NA' }
+        { heading: "GST(%)", key: "gstper", sort: true, align: 'left', emptySign: 'NA' }
 
       ],
       sortField: "OpeningHId",

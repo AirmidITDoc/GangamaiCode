@@ -53,7 +53,7 @@ export class DoctornoteService {
       admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
-      doctorsNotes: ['',[Validators.maxLength(500)]],
+      doctorsNotes: ['',[Validators.required]],
       isAddedBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }

@@ -26,7 +26,6 @@ export class NewRequestComponent implements OnInit {
   Regdisplay: boolean = false;
   searchFormGroup: FormGroup;
 
-
   vSelectedOption: any = "OP";
   vsurgeryType: any = "1";
 
@@ -38,28 +37,19 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
 
-  // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
   vbookingId: any;
-  //vAdmissionDate: any; 
   vOPDNo: any;
   vTariffName: any;
   vCompanyName: any;
   vDoctorName: any;
-  //vRoomName: any;
-  //vBedName: any;
   vAge: any;
   vGenderName: any;
-  //vAdmissionTime: any;
   vAgeMonth: any;
   vAgeDay: any;
   vDepartment: any;
   vMobNo: any;
-  //vPatientType: any;
-  //vDOA: any;
-  //vstoreId: any = '';
-  //vAdmissionID: any;
   vIPDNo: any;
 
   screenFromString = 'Common-form';
@@ -130,7 +120,6 @@ export class NewRequestComponent implements OnInit {
       }
 
       console.log(this.registerObj)
-      //this.isActive=this.data.isActive
       this.requestForm.patchValue(this.registerObj);
       this.selectChangedoctorType(this.registerObj)
     }
@@ -141,21 +130,16 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get('opIpId').reset();
     this.vRegNo = '';
     this.vPatientName = '';
-    // this.vAdmissionDate = '';
-    // this.vAdmissionTime = '';
     this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
     this.vCompanyName = '';
-    // this.vRoomName = '';
-    // this.vBedName = '';
     this.vGenderName = '';
     this.vAge = '';
     this.vAgeDay = '';
     this.vAgeMonth = '';
     this.vDepartment = '';
     this.vMobNo = '';
-    // this.vDOA = ''
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -183,20 +167,13 @@ export class NewRequestComponent implements OnInit {
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
-      //   this.vAdmissionDate = obj.admissionDate
-      //   this.vAdmissionTime = obj.admissionTime
       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
-      //   this.vRefDocName = obj.refDocName
-      //   this.vRoomName = obj.roomName
-      //   this.vBedName = obj.bedName
-      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-      //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
       this.vMobNo = obj.mobileNo;
     }
@@ -208,17 +185,11 @@ export class NewRequestComponent implements OnInit {
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vDepartment = obj.departmentName
-      //   this.vAdmissionDate = obj.admissionDate
-      //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
-      //   this.vRefDocName = obj.refDocName
-      //   this.vRoomName = obj.roomName
-      //   this.vBedName = obj.bedName
-      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       let nameField = obj.formattedText;
@@ -320,12 +291,10 @@ export class NewRequestComponent implements OnInit {
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "Pathology Test Report With Header Viewer"
+          title: "OT Request Report Viewer"
         }
       });
-
       matDialog.afterClosed().subscribe(result => {
-
       });
     });
   }
@@ -333,29 +302,19 @@ export class NewRequestComponent implements OnInit {
   getValidationMessages() {
     return {
       DepartmentName: [
-        { name: "required", Message: "Department Name is required" },
-        // { name: "maxlength", Message: "Department Name should not be greater than 50 char." },
-        // { name: "pattern", Message: "Special char not allowed." }
+        { name: "required", Message: "Department Name is required" }
       ],
       SurgeryCategory: [
-        { name: "required", Message: "SurgeryCategory  is required" },
-        //  { name: "maxlength", Message: "SurgeryCategory  should not be greater than 50 char." },
-        //  { name: "pattern", Message: "Special char not allowed." }
+        { name: "required", Message: "SurgeryCategory  is required" }
       ],
       Site: [
-        { name: "required", Message: "Site Name is required" },
-        //  { name: "maxlength", Message: "Site Name should not be greater than 50 char." },
-        //  { name: "pattern", Message: "Special char not allowed." }
+        { name: "required", Message: "Site Name is required" }
       ],
       SurgeryProcedure: [
-        { name: "required", Message: "SurgeryProcedure Name is required" },
-        //  { name: "maxlength", Message: "SurgeryProcedure Name should not be greater than 50 char." },
-        //  { name: "pattern", Message: "Special char not allowed." }
+        { name: "required", Message: "SurgeryProcedure Name is required" }
       ],
       SurgeonName: [
-        { name: "required", Message: "Surgeon Name is required" },
-        //  { name: "maxlength", Message: "Surgeon Name should not be greater than 50 char." },
-        //  { name: "pattern", Message: "Special char not allowed." }
+        { name: "required", Message: "Surgeon Name is required" }
       ],
       SurgeryType: [
         { name: "required", Message: "SurgeryType Name is required" },

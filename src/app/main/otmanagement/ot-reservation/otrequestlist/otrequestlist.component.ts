@@ -8,6 +8,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { OtReservationService } from '../ot-reservation.service';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-otrequestlist',
@@ -42,11 +43,16 @@ export class OtrequestlistComponent implements OnInit {
   ngOnInit() {
     this.getfilterdata()
   }
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+  }
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
     { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-
     { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -99,17 +105,27 @@ export class OtrequestlistComponent implements OnInit {
   onSelectRequest(row: any): void {
     this._dialogRef.close(row); // send selected row to parent (OtReservationComponent)
   }
-  // onChangeFirst() {
-
-  //   this.getfilterdata();
-  // }
 
   onClose(): void {
     this._dialogRef.close(); // allow close without selection
   }
 
-  GetRecord(row) {
-    this._dialogRef.close(row);
+  // GetRecord(row) {
+  //   this._dialogRef.close(row);
+  // }
+
+  GetRecord(row: any) {
+    if (row.otRequestId > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Already reservation done',
+        text: 'This request already has a reservation.',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      this._dialogRef.close(row);
+    }
   }
+
 }
 

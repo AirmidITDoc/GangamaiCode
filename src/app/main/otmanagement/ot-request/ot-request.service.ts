@@ -50,6 +50,9 @@ export class OtRequestService {
         return this._formBuilder.group({
             start: [(new Date()).toISOString()],
             end: [(new Date()).toISOString()],
+            FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
+            LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
+            RegNo:[]
         });
     }
 

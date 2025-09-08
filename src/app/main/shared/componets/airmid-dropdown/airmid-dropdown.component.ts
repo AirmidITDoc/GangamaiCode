@@ -37,7 +37,6 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
     @Input() readonly: boolean = false;
 
     private _disabled: boolean = false;
-    private _focused: boolean = false;
     private _placeholder: string = '';
     private _required: boolean = false;
     // Focusstatus=false;
@@ -49,14 +48,14 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
     }
     set disabled(value: boolean) {
         this._disabled = coerceBooleanProperty(value);
-        // if (this.formGroup && this.formControlName) {
-        //     const ctrl = this.formGroup.get(this.formControlName);
-        //     if (this._disabled) {
-        //         ctrl?.disable({ emitEvent: false });
-        //     } else {
-        //         ctrl?.enable({ emitEvent: false });
-        //     }
-        // }
+        if (this.formGroup && this.formControlName) {
+            const ctrl = this.formGroup.get(this.formControlName);
+            if (this._disabled) {
+                ctrl?.disable({ emitEvent: false });
+            } else {
+                ctrl?.enable({ emitEvent: false });
+            }
+        }
         this.stateChanges.next();
     }
 

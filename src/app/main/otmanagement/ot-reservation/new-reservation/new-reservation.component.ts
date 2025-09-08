@@ -8,6 +8,7 @@ import { OtReservationService } from '../ot-reservation.service';
 import { DatePipe } from '@angular/common';
 import { OtrequestlistComponent } from '../otrequestlist/otrequestlist.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -27,8 +28,6 @@ export class NewReservationComponent implements OnInit {
   opIpId: any;
   RegId: string;
   registerObj: any;
-
-
   personalFormGroup: FormGroup;
   Regflag: boolean = false;
   Patientnewold: any = 1;
@@ -98,8 +97,6 @@ export class NewReservationComponent implements OnInit {
       (this.registerObj?.opendTime)
     {
       const date = new Date(this.registerObj.opstartTime);
-      // const date = new Date(this.registerObj.opstartTime);
-
       if (!isNaN(date.getTime())) {
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -120,9 +117,6 @@ export class NewReservationComponent implements OnInit {
     if ((this.data?.otreservationId) > 0) {
       this.registerObj = this.data
       console.log(this.registerObj)
-
-      //this.registerObj.otbookingTime=this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a')
-      // console.log(this.datePipe.transform(this.registerObj.otbookingTime,'hh:mm a'))
       this.vRegNo = this.registerObj.regNo
       this.vOPDNo = this.registerObj.opdNo
       this.vIPDNo = this.registerObj.ipdNo
@@ -133,7 +127,7 @@ export class NewReservationComponent implements OnInit {
       this.vDoctorName = this.registerObj.doctorName
       this.vTariffName = this.registerObj.tariffName
       this.vCompanyName = this.registerObj.companyName
-      this.votbookingId = this.registerObj.otbookingId
+      this.votbookingId = this.registerObj.otBookingId
 
       if (this.registerObj.opIpType == 0) {
         this.vSelectedOption = "OP"
@@ -151,7 +145,7 @@ export class NewReservationComponent implements OnInit {
 
   createRequestsForm(item: any = {}): FormGroup {
     return this._formBuilder.group({
-      otbookingId: [this.votbookingId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otbookingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otrequestId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]]  // fixed as 1
     });
   }
@@ -254,33 +248,38 @@ export class NewReservationComponent implements OnInit {
 
     }
   }
-  onChangeTime(event: any) {
+  onChangeTimeStart(event: any) {
     let time = event.target.value;
     if (time && time.length >= 5) {
       time = time.substring(0, 5);
     }
     console.log("Time changed:", time); // "11:51"
     this.reservationForm.get('opstartTime')?.setValue(time, { emitEvent: false });
+  }
+
+  onChangeTimeEnd(event: any) {
+    let time = event.target.value;
+    if (time && time.length >= 5) {
+      time = time.substring(0, 5);
+    }
+    console.log("Time changed:", time); // "11:51"
     this.reservationForm.get('opendTime')?.setValue(time, { emitEvent: false });
   }
 
   onSubmit() {
-    if (this.reservationForm.get('opIpType').value == 'IP') { this.reservationForm.get('opIpType').setValue(true) }
-    else { this.reservationForm.get('opIpType').setValue(false) }
-
     this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
     this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
     this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.reservationForm.get('opdate').value, 'yyyy-MM-dd'));
-    this.reservationForm.get('opstartTime').setValue(this.dateTimeObj?.time);
-    this.reservationForm.get('opendTime').setValue(this.dateTimeObj?.time);
-    // this.reservationForm.get('tOtbookingRequests.otbookingId').setValue(this.votbookingId ?? 0);
     this.requestArray.at(0).get('otbookingId')?.setValue(this.votbookingId ?? 0);
     this.reservationForm.get('opIpId').setValue(this.opIpId);
-    //   this.reservationForm.get('isCancelledDateTime')?.setValue('1900-01-01');
 
     if (!this.reservationForm.invalid) {
+      if (this.reservationForm.get('opIpType').value == 'IP') { this.reservationForm.get('opIpType').setValue(true) }
+      else { this.reservationForm.get('opIpType').setValue(false) }
       console.log(this.reservationForm.value)
       this._OtReservationService.reservationSave(this.reservationForm.value).subscribe((response) => {
+        console.log(response)
+        this.OnPrint(response)
         this.onClear(true);
       });
     } {
@@ -322,13 +321,13 @@ export class NewReservationComponent implements OnInit {
         this.vTariffName = selectedData.tariffName
         this.vCompanyName = selectedData.companyName
         this.opIpId = selectedData.opIpId
-        this.opIpType=selectedData.opIpType
+        this.opIpType = selectedData.opIpType
         if (selectedData.opIpType == 0) {
-        this.vSelectedOption = "OP"
-      }
-      else {
-        this.vSelectedOption = "IP"
-      }
+          this.vSelectedOption = "OP"
+        }
+        else {
+          this.vSelectedOption = "IP"
+        }
         this.votbookingId = selectedData.otBookingId
 
         this.reservationForm.patchValue({
@@ -339,6 +338,41 @@ export class NewReservationComponent implements OnInit {
     });
   }
 
+  OnPrint(Param) {
+    const param = {
+      searchFields: [
+        {
+          fieldName: "OTReservationId",
+          fieldValue: String(Param.OTReservationId),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OPIPType",
+          fieldValue: String(Param.opIpType),
+          opType: "Equals"
+        }
+      ],
+      mode: "OTReservationReport"
+    };
+
+    console.log(param);
+
+    this._OtReservationService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OtReservation Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
+  }
 
   getValidationMessages() {
     return {

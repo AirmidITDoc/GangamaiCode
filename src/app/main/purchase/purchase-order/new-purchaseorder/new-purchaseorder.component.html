@@ -140,13 +140,13 @@
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
 
                                         <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer" #SGST
-                                            (change)="getchangegstper(userFormGroup.get('SGSTPer')?.value, 'SGSTPer')" [formGroup]="userFormGroup"
+                                            (valueChange)="getchangegstper($event,SGST)" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
                                       
 
                                         <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
-                                            (change)="getchangegstper(userFormGroup.get('IGSTPer')?.value, 'IGSTPer')" [formGroup]="userFormGroup"
+                                            (valueChange)="getchangegstper($event,IGST)" [formGroup]="userFormGroup"
                                             type="text" [readonly]="true"></airmid-textbox>
 
                                         <!-- <airmid-textbox fxFlex="4%" label="IGSTAmt" formControlName="IGSTAmount"
