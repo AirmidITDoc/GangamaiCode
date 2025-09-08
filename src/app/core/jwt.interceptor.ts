@@ -1,17 +1,18 @@
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpResponse } from "@angular/common/http";
-import { EMPTY, Observable, throwError } from "rxjs";
-import { AppConfig, APP_CONFIG } from './../app-config.module';
-import { AuthenticationService } from "./services/authentication.service";
-import { catchError, finalize, map } from 'rxjs/operators';
-import { LoaderService } from "./components/loader/loader.service";
-import { ToastrService } from 'ngx-toastr';
 import { Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
+import { EMPTY, Observable, throwError } from "rxjs";
+import { catchError, finalize, map } from 'rxjs/operators';
+import { APP_CONFIG, AppConfig } from './../app-config.module';
+import { LoaderService } from "./components/loader/loader.service";
+import { AuthenticationService } from "./services/authentication.service";
+import { MatDialog } from "@angular/material/dialog";
 
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(@Inject(APP_CONFIG) private config: AppConfig,
+    constructor(@Inject(APP_CONFIG) private config: AppConfig, private dialog: MatDialog,
         private _ls: LoaderService, public toastr: ToastrService, private router: Router,
         private authenticationService: AuthenticationService) { }
 
@@ -57,7 +58,12 @@ export class JwtInterceptor implements HttpInterceptor {
                     this.toastr.error(err.error.message, 'Authentication !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
-                    this.router.navigate(["/forbidden"]);
+                    this.dialog.closeAll(); // 👈 close all open dialogs
+                     this.router.navigate(["/forbidden"]);
+                    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                    //     this.router.navigate(['/forbidden']);
+                    // });
+
                 } else if (err.status === 0 || err.status === 500) {
                     this.toastr.error('Unable to connect to the server. Please try again later.', 'Server !', {
                         toastClass: 'tostr-tost custom-toast-error',
