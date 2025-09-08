@@ -1,37 +1,30 @@
 <!-- SEARCH SECTION -->
-<mat-card *ngIf="ShowFilter" class="mat-elevation-z0" style="margin:0 16px 16px;">
-  <mat-toolbar style="background:#3949ab; color:#fff;">
+<mat-card *ngIf="ShowFilter" class="mat-elevation-z0" style="margin:0 8px 8px;">
+  <!-- <mat-toolbar style="background:#3949ab; color:#fff;">
     <span>Search Facility</span>
-  </mat-toolbar>
+  </mat-toolbar> -->
 
   <!-- top space for filters -->
-  <mat-card-content style="padding-top:24px; padding-bottom:16px;">
-    <!-- Filters row -->
-    <div fxLayout="row wrap" fxLayoutAlign="start end" style="gap:16px;">
-      <div fxFlex fxLayout="row wrap" fxLayoutAlign="start end" style="gap:16px;">
-        <!-- Projected filters: give fxFlex on each child -->
-        <ng-content select="[cardFilters]"></ng-content>
-      </div>
+  <mat-card-content style="padding:0 8px;">
+    <!-- Inputs container (full width) -->
+    <div fxLayout="row wrap" fxLayoutAlign="start center" style="gap:4px; width:100%">
+      <ng-content select="[cardFilters]"></ng-content>
+    </div>
 
-      <!-- Actions (right) -->
-      <div fxFlex="none" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
-        <!-- Search -->
-        <button mat-raised-button color="primary" type="button" (click)="bindGridData()">
-          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-            <mat-icon inline aria-hidden="true">search</mat-icon>
-            <span>Search</span>
-          </span>
-        </button>
-      
-        <!-- Reset -->
-        <button mat-stroked-button type="button" (click)="onClear()">
-          <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-            <mat-icon inline aria-hidden="true">refresh</mat-icon>
-            <span>Reset</span>
-          </span>
-        </button>
-      </div>
-
+    <!-- Buttons container (full width; always after inputs) -->
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="4px" style="width:100%; margin-top:4px;">
+      <button mat-raised-button color="primary" type="button" (click)="bindGridData()">
+        <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+          <mat-icon inline aria-hidden="true">search</mat-icon>
+          <span>Search</span>
+        </span>
+      </button>
+      <button mat-stroked-button type="button" (click)="onClear()">
+        <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+          <mat-icon inline aria-hidden="true">refresh</mat-icon>
+          <span>Reset</span>
+        </span>
+      </button>
     </div>
 
   </mat-card-content>
@@ -40,11 +33,11 @@
 <!-- RESULTS -->
 <ng-container *ngIf="dataSource?.data && dataSource?.data.length; else emptyState">
   <!-- Equal spacing on all sides/rows: negative outer margin + inner padding -->
-  <div fxLayout="row wrap" fxLayoutAlign="start start" style="margin:0 4px 16px; margin-left:-12px; margin-right:-12px;">
+  <div fxLayout="row wrap" fxLayoutAlign="start start" style="margin:0 8px 8px;">
     <div *ngFor="let item of dataSource.data"
-         fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="33" fxFlex.gt-lg="33"
-         style="padding:12px;">
-      <mat-card class="mat-elevation-z3">
+         fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="25" fxFlex.gt-lg="25"
+         style="padding:8px 8px;">
+      <mat-card class="mat-elevation-z3 mat-density-compact" style="padding:8px 12px;">
         <mat-card-header>
           <!-- 40px circular, primary-colored avatar -->
           <button mat-mini-fab mat-card-avatar color="primary" tabindex="-1" aria-label="avatar">
@@ -61,8 +54,8 @@
 
         <mat-divider></mat-divider>
 
-        <mat-card-content>
-          <div fxLayout="column" style="gap:8px;">
+        <mat-card-content style="padding:8px 0;">
+          <div fxLayout="column" style="gap:6px;">
             <ng-container *ngFor="let field of config.fields; let i = index; let last = last">
               <ng-container *ngIf="field.label && i > 2">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
