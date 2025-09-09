@@ -221,7 +221,7 @@ export class IssuetodeptAgainstIndentComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.dsIndentList.data = []
       this.dsIndentItemDetList.data = []
-      this.Charglist.data = []
+      this.Charglist = []
       this.vstoreId=0
       this.IndentFrom.get('FromStoreId').setValue(0)
       this.getIndentList()

@@ -425,14 +425,18 @@ export class NewIssueTodeptComponent {
   }
 
   CalculateTotalAmt() {
-    if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
+    if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value ) {
       this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       this.NewIssueGroup.get('Qty').setValue(0);
     }
-    if (this.NewIssueGroup.get("Qty").value && this.NewIssueGroup.get("UnitRate").value) {
+    if (this.NewIssueGroup.get("Qty").value > 0 && this.NewIssueGroup.get("UnitRate").value) {
       this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(2);
+    }else{
+      this.toastr.warning('Enter Qty  greater than 0', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
     }
   }
   getTotalamt(element) {
@@ -677,10 +681,15 @@ export class NewIssueTodeptComponent {
     // console.log(Qty)
 
     this.CellCalculation = 1
-    if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
+    if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty )) {
       this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      if(parseFloat(contact.Qty) ==0 || parseFloat(contact.Qty) < 0)
+       this.toastr.warning('Enter Qty  greater than 0', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+
       contact.Qty = 0;
       contact.Qty = '';
       contact.VatAmount = 0;
@@ -750,6 +759,8 @@ export class NewIssueTodeptComponent {
 
     }
   }
+
+  
 
   OnNewSave() {
 

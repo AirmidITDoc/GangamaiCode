@@ -104,7 +104,7 @@ export class IssueToDepartmentComponent implements OnInit {
             { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+            { fieldName: "IsClosed", fieldValue: this.Status, opType: OperatorComparer.Equals }
         ]
     }
 
@@ -198,17 +198,17 @@ export class IssueToDepartmentComponent implements OnInit {
 
     onChangeFirst(value) {
         
-        let IsVerify = "0"
-        if (this.IssueSearchGroup.get("IsVerify").value)
-            IsVerify = "1"
+        let IsClosed = "0"
+        if (this.IssueSearchGroup.get("IsClosed").value)
+            IsClosed = "1"
         else
-            IsVerify = "0"
+            IsClosed = "0"
         this.isShowDetailTable = false;
         this.fromDate = this.datePipe.transform(this.IssueSearchGroup.get('startdate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
         this.FromStore = this.IssueSearchGroup.get("FromStoreId").value || this.FromStore
         this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
-        this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
+        this.Status = IsClosed,//this.IssueSearchGroup.get("IsVerify").value || "0"
 
             this.getfilterdata();
     }

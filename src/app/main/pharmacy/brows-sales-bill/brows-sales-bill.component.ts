@@ -704,17 +704,19 @@ export class BrowsSalesBillComponent implements OnInit {
 
   viewgetSalesBillReportPdf(response) {
     console.log(response)
+    
     setTimeout(() => {
       let param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
-            "fieldValue": String(response.SalesId),
+            "fieldValue": String(response.salesId
+            ),
             "opType": "Equals"
           },
           {
             "fieldName": "OP_IP_Type",
-            "fieldValue": String(response.OP_IP_Type),
+            "fieldValue": String(response.oP_IP_Type),
             "opType": "Equals"
           }
         ],
@@ -742,17 +744,18 @@ export class BrowsSalesBillComponent implements OnInit {
 
   viewgetSalesreturnBillReportPdf(response) {
     console.log(response)
+    debugger
     setTimeout(() => {
       let param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
-            "fieldValue": String(response.SalesId),
+            "fieldValue": String(response.salesId),
             "opType": "Equals"
           },
           {
             "fieldName": "OP_IP_Type",
-            "fieldValue": String(response.OP_IP_Type),
+            "fieldValue": String(response.oP_IP_Type),
             "opType": "Equals"
           }
         ],
@@ -781,79 +784,79 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
 
-  viewSalesPdf(el) {
-    // 
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      // this.SpinLoading =true;
-      this.AdList = true;
-      this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Pharma sales bill viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
-        });
-      });
+  // viewSalesPdf(el) {
+  //   // 
+  //   this.sIsLoading = 'loading-data';
+  //   setTimeout(() => {
+  //     // this.SpinLoading =true;
+  //     this.AdList = true;
+  //     this._BrowsSalesBillService.getPdfSales(el.SalesId, el.OP_IP_Type).subscribe(res => {
+  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //         {
+  //           maxWidth: "85vw",
+  //           height: '750px',
+  //           width: '100%',
+  //           data: {
+  //             base64: res["base64"] as string,
+  //             title: "Pharma sales bill viewer"
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         this.AdList = false;
+  //         this.sIsLoading = '';
+  //       });
+  //     });
 
-    }, 100);
-  }
+  //   }, 100);
+  // }
 
-  ViewSalesRetPdf(el) {
-    this.sIsLoading = true;
-    setTimeout(() => {
+  // ViewSalesRetPdf(el) {
+  //   this.sIsLoading = true;
+  //   setTimeout(() => {
 
-      this.AdList = true;
-      this._BrowsSalesBillService.getSalesReturnPdf(el.SalesReturnId, el.OP_IP_Type).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Pharma sales bill viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = ' ';
-        });
-      });
+  //     this.AdList = true;
+  //     this._BrowsSalesBillService.getSalesReturnPdf(el.salesReturnId, el.oP_IP_Type).subscribe(res => {
+  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //         {
+  //           maxWidth: "85vw",
+  //           height: '750px',
+  //           width: '100%',
+  //           data: {
+  //             base64: res["base64"] as string,
+  //             title: "Pharma sales bill viewer"
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         this.AdList = false;
+  //         this.sIsLoading = ' ';
+  //       });
+  //     });
 
-    }, 100);
-  }
+  //   }, 100);
+  // }
 
-  getPrint3(el) {
+  // getPrint3(el) {
 
-    var D_data = {
-      "SalesID": el.SalesId,// 
-      "OP_IP_Type": el.OP_IP_Type
-    }
+  //   var D_data = {
+  //     "SalesID": el.SalesId,// 
+  //     "OP_IP_Type": el.OP_IP_Type
+  //   }
 
-    let printContents;
-    this.subscriptionArr.push(
-      this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
+  //   let printContents;
+  //   this.subscriptionArr.push(
+  //     this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
 
-        this.reportPrintObjList = res as Printsal[];
-        console.log(this.reportPrintObjList);
+  //       this.reportPrintObjList = res as Printsal[];
+  //       console.log(this.reportPrintObjList);
 
-        this.reportPrintObj = res[0] as Printsal;
-        console.log(this.reportPrintObj);
-        this.getTemplateTax2();
+  //       this.reportPrintObj = res[0] as Printsal;
+  //       console.log(this.reportPrintObj);
+  //       this.getTemplateTax2();
 
 
-      })
-    );
-  }
+  //     })
+  //   );
+  // }
 
   getTemplateTax() {
 

@@ -24,9 +24,9 @@
                         (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
-                    <!-- *ngIf="element.isAccepted=='0'" -->
+                    <!-- *ngIf="element.isAccepted=='0'" pendingByDepartment -->
                     <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)"
-                        *ngIf="!element.pendingByDepartment=='0';">
+                        *ngIf="element.isAccepted=='0'">
                         <mat-icon> edit</mat-icon>
                     </button>
                 </div>
@@ -91,7 +91,7 @@
 
                         <!-- [(ngModel)]="Status" -->
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
-                            Close/Pending
+                            Pending/Close
                         </mat-slide-toggle>
                         <!-- <mat-slide-toggle name="IsAccepted" (change)="onChangeFirst($event)" formControlName="IsAccepted">
                             Accepted

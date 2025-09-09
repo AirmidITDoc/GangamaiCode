@@ -22,7 +22,7 @@ export class IssueToDepartmentService {
       FromStoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      IsVerify:[0]
+      IsClosed:[0]
     });
   }
   getNewIssueForm() {

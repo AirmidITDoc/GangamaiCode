@@ -26,6 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { PrescriptionComponent } from './prescription/prescription.component';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-sales',
@@ -2364,32 +2365,69 @@ export class SalesComponent implements OnInit {
 
     }
 
+ getPrint3(response) {
+    debugger
+    console.log(response)
+    
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "SalesID",
+            "fieldValue": String(response.salesId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OP_IP_Type",
+            "fieldValue": String(this.OP_IPType),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "SalesBill"
+      }
 
-    getPrint3(el) {
+      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
 
-        if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
-            this.type = "Credit"
-            this.Creditflag = true;
-        } else if (!(el.PaidType == 'Credit' && el.IsRefundFlag == false)) {
-            this.type = " "
-            this.Creditflag = false;
-        }
-        var D_data = {
-            "SalesID": el,// 
-            "OP_IP_Type": this.OP_IPType
-        }
-        let printContents;
-        this.subscriptionArr.push(
-            this._salesService.getSalesPrint(D_data).subscribe(res => {
-                this.reportPrintObjList = res as Printsal[];
-                this.reportPrintObj = res[0] as Printsal;
-                console.log(this.reportPrintObj)
-                setTimeout(() => {
-                    this.print3();
-                }, 1000);
-            })
-        );
-    }
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Bill" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
+    // getPrint3(el) {
+
+    //     if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
+    //         this.type = "Credit"
+    //         this.Creditflag = true;
+    //     } else if (!(el.PaidType == 'Credit' && el.IsRefundFlag == false)) {
+    //         this.type = " "
+    //         this.Creditflag = false;
+    //     }
+    //     var D_data = {
+    //         "SalesID": el,// 
+    //         "OP_IP_Type": this.OP_IPType
+    //     }
+    //     let printContents;
+    //     this.subscriptionArr.push(
+    //         this._salesService.getSalesPrint(D_data).subscribe(res => {
+    //             this.reportPrintObjList = res as Printsal[];
+    //             this.reportPrintObj = res[0] as Printsal;
+    //             console.log(this.reportPrintObj)
+    //             setTimeout(() => {
+    //                 this.print3();
+    //             }, 1000);
+    //         })
+    //     );
+    // }
 
     getWhatsappshareSales(el, vmono) {
         var m_data = {
@@ -3177,30 +3215,30 @@ export class SalesComponent implements OnInit {
         }
     }
 
-    getPrint(el) {
-        var D_data = {
-            "SalesID": el,
-            "OP_IP_Type": 2
-        }
-        let printContents;
-        this.subscriptionArr.push(
-            this._salesService.getSalesPrint(D_data).subscribe(res => {
-                this.reportPrintObjList = res as Printsal[];
-                // console.log(this.reportPrintObjList);
-                this.reportPrintObj = res[0] as Printsal;
+    // getPrint(el) {
+    //     var D_data = {
+    //         "SalesID": el,
+    //         "OP_IP_Type": 2
+    //     }
+    //     let printContents;
+    //     this.subscriptionArr.push(
+    //         this._salesService.getSalesPrint(D_data).subscribe(res => {
+    //             this.reportPrintObjList = res as Printsal[];
+    //             // console.log(this.reportPrintObjList);
+    //             this.reportPrintObj = res[0] as Printsal;
 
-                if (this.reportPrintObj.ChequePayAmount != 0) {
-                    this.UTRNO = this.reportPrintObj.ChequeNo;
-                } else if (this.reportPrintObj.CardPayAmount != 0) {
-                    this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.ChequeNo;
-                } else if (this.reportPrintObj.NEFTPayAmount != 0) {
-                    this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.NEFTNo;
-                } else if (this.reportPrintObj.PayTMAmount != 0) {
-                    this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.PayTMTranNo;
-                }
-            })
-        );
-    }
+    //             if (this.reportPrintObj.ChequePayAmount != 0) {
+    //                 this.UTRNO = this.reportPrintObj.ChequeNo;
+    //             } else if (this.reportPrintObj.CardPayAmount != 0) {
+    //                 this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.ChequeNo;
+    //             } else if (this.reportPrintObj.NEFTPayAmount != 0) {
+    //                 this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.NEFTNo;
+    //             } else if (this.reportPrintObj.PayTMAmount != 0) {
+    //                 this.UTRNO = this.UTRNO + ',' + this.reportPrintObj.PayTMTranNo;
+    //             }
+    //         })
+    //     );
+    // }
 
 
     print() {

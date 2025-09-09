@@ -17,6 +17,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { addBusinessDays } from 'date-fns';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { IpPaymentInsert } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -140,6 +141,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public toastr: ToastrService,
     public _formBuilder: FormBuilder,
+     private commonService: PrintserviceService,
     public _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -394,12 +396,18 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
             this.MutliSettlemForm.reset(); 
+            console.log(response)
+            this.viewgetIPPayemntPdf(response)
             this.grid.bindGridData();
         });
       }
     });
   }
 
+
+   viewgetIPPayemntPdf(paymentId) { 
+        this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
+    } 
   ///Multiple settlement section start --------------------
   onChangePatientTypeMultiple(event) {
     if (event.value == 'OP') {
