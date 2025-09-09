@@ -203,7 +203,7 @@ export class NewAdvanceComponent implements OnInit {
     this.insertForm?.get("pharmacyAdvanceDetails.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceDetailId")?.setValue(this.vAdvanceDetailID || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.datePipe.transform(this.dateTimeObj.time, 'shortTime'));
+    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.dateTimeObj.time);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? '');
@@ -303,8 +303,8 @@ export class NewAdvanceComponent implements OnInit {
   }
   viewgetIPAdvanceReportPdf(contact) {
     this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "IPPharmaAdvanceReport");
-  }
-
+  } 
+ 
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

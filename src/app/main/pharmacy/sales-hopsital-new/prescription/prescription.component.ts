@@ -29,7 +29,8 @@ PrescriptionFrom:FormGroup;
   Reg_No: any = 0;
 
   @ViewChild('grid') grid: AirmidTableComponent;
-  @ViewChild('grid1') grid1: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent; 
+
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplateType') actionButtonTemplateType!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -76,7 +77,7 @@ PrescriptionFrom:FormGroup;
       { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "IPPreId", fieldValue: "0", opType: OperatorComparer.Equals }
-    ]
+    ] 
   }
   constructor(
     public _SalesService: SalesHospitalService,
@@ -120,11 +121,10 @@ PrescriptionFrom:FormGroup;
         { fieldName: "OP_IP_Type", fieldValue: String(patientType), opType: OperatorComparer.Equals }
       ]
     }
-    // this.grid1.gridConfig = this.gridConfig1;
-    // this.grid1.bindGridData();
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
   } 
-  ChangeeFilter() {
-    debugger
+  ChangeeFilter() { 
     this.FormDate = this.datePipe.transform(this.PrescriptionFrom.get('start').value, 'yyyy-MM-dd')
     this.ToDate = this.datePipe.transform(this.PrescriptionFrom.get('end').value, 'yyyy-MM-dd')
     this.IsStatus = this.PrescriptionFrom.get('StatusType').value || 0
@@ -146,12 +146,13 @@ PrescriptionFrom:FormGroup;
         { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: String(this.Reg_No), opType: OperatorComparer.Equals },
         { fieldName: "IPPreId", fieldValue: "0", opType: OperatorComparer.Equals }
-      ]
+      ] 
     } 
     //this.grid.bindGridData();
   }
   dsItemDetList:any;
   GetPrescrpList() {
+    debugger
       if(this.SelectedObj?.ipMedID > 0){
         var vdata = {
           "first": 0,
@@ -190,9 +191,7 @@ PrescriptionFrom:FormGroup;
       this.toastr.error('Product not in list Please select Product!', 'Error !', {
         toastClass: 'tostr-tost custom-toast-error',
       }); 
-    }
-
-
+    } 
   } 
   onClose() {
      this.PrescriptionFrom.reset();
