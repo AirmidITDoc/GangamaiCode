@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -14,6 +14,13 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { OtNoteService } from './ot-note.service';
+import { NewOtnotesComponent } from './new-otnotes/new-otnotes.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-ot-note',
@@ -23,106 +30,188 @@ import { OtNoteService } from './ot-note.service';
   animations: fuseAnimations,
 })
 export class OTNoteComponent {
+  myFilterform: FormGroup
+  msg: any;
+  RequestName: any = "";
+  tOtbookingRequestsForm: FormGroup;
 
-  OTNoteform: FormGroup;
-  opIpType: number;
-  opIpId: any;
-  vSelectedOption: any = "OP";
-  vRegNo: any;
-  vPatientName: any;
-  // vDescription:any;
-  vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
-  registerObj = new otNote({});
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  FirstName: any = ""
+  regNo: any = "0"
+  LastName: any = ""
+  votbookingId: any = ""
+  registerobj: any;
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-  autocompleteModestatus: string = "State";
-  autocompleteModeSurgery: String = "SurgeryMaster";
-  autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompleteModeOTTable: String = "OttableMaster";
+  ngAfterViewInit() {
+    // Assign the template to the column dynamically
+    this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
+
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+
+  allcolumns = [
+    { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "Date-Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+    { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+    { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Surgeon Name2", key: "surgenName1", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "AnesthType", key: "anesthTypeId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    { heading: "Instruction", key: "instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "UserName", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "IsCancelledDate", key: "isCancelledDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
+    { heading: "Reasons", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    {
+      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ];
+
+  allFilters = [
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+
+  ]
+  gridConfig: gridModel = {
+    apiUrl: "OTReservation/OTReservationlist",
+    columnsList: this.allcolumns,
+    sortField: "OtreservationId",
+    sortOrder: 0,
+    filters: this.allFilters
+  }
 
   constructor(
     public _otNoteService: OtNoteService,
-    private accountService: AuthenticationService,
-    public _matDialog: MatDialog,
+    public toastr: ToastrService, public _matDialog: MatDialog,
+    private commonService: PrintserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private _formBuilder: FormBuilder,
+    public datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
-    this.OTNoteform = this._otNoteService.createOtNoteForm();
-    this.OTNoteform.markAllAsTouched();
+    this.myFilterform = this._otNoteService.createSearchForm();
   }
 
-  onChangeReg(event) {
-    if (event.value == 'OP') {
-      this.opIpType = 0;
-      this.opIpId = "";
-    }
-    else if (event.value == 'IP') {
-      this.opIpType = 1;
-      this.opIpId = "";
-    }
-    this.patientInfoReset();
+  onChangeStartDate(value) {
+    this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+  }
+  onChangeEndDate(value) {
+    this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
   }
 
-  patientInfoReset() {
-    this.OTNoteform.get('opIpId').setValue('');
-    this.OTNoteform.get('opIpId').reset();
-    this.vRegNo = '';
-    this.vPatientName = '';
-    this.registerObj = new otNote({});
+  onNewNotes(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(NewOtnotesComponent,
+      {
+        maxWidth: "90vw",
+        height: '90%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.grid.bindGridData();
+      }
+    });
   }
 
-  getSelectedObjIP(obj) {
-    if ((obj.regID ?? 0) > 0) {
-      this.registerObj = obj
-      console.log("Admitted patient:", this.registerObj)
-      this.vRegNo = obj.regNo
-      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.opIpId = obj.admissionID;
-    }
-  }
-  getSelectedObjOP(obj) {
-    if ((obj.regId ?? 0) > 0) {
-      this.registerObj = obj
-      console.log("Visite patient:", this.registerObj)
-      this.vRegNo = obj.regNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
-      this.vPatientName = extractedName;
-      this.opIpId = obj.visitId;
-    }
-  }
+  OnPrint(Param) {
+    // const param = {
+    //   searchFields: [
+    //     {
+    //       fieldName: "OTReservationId",
+    //       fieldValue: String(Param.OTReservationId),
+    //       opType: "Equals"
+    //     },
+    //     {
+    //       fieldName: "OPIPType",
+    //       fieldValue: String(Param.opIpType),
+    //       opType: "Equals"
+    //     }
+    //   ],
+    //   mode: "OTReservationReport"
+    // };
 
-  onEditorValueChange(content: string) {
-    this.OTNoteform.get('description')?.setValue(content);
-  }
+    // console.log(param);
 
-  onSubmit() {
+    // this._otNoteService.getReportView(param).subscribe(res => {
+    //   const matDialog = this._matDialog.open(PdfviewerComponent, {
+    //     maxWidth: "85vw",
+    //     height: '750px',
+    //     width: '100%',
+    //     data: {
+    //       base64: res["base64"] as string,
+    //       title: "OtReservation Report Viewer"
+    //     }
+    //   });
 
-  }
+    //   matDialog.afterClosed().subscribe(result => {
 
-  onClose() {
-    this.OTNoteform.reset();
-    // this.dialogRef.close(); 
-    this._matDialog.closeAll();
-    this.OTNoteform.get('opIpType').setValue('IP')
-    this.OTNoteform.get('description').setValue("Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
-    this.vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
-    this.patientInfoReset();
+    //   });
+    // });
   }
 
-  getValidationMessages() {
-    return {
-      OTTable: [
-        { name: "required", Message: "OT Table Name is required" },
-        { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
-        { name: "pattern", Message: "Special char not allowed." }
+  onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
+    this.FirstName = this.myFilterform.get('FirstName').value + "%"
+    this.LastName = this.myFilterform.get('LastName').value + "%"
+    this.regNo = this.myFilterform.get('RegNo').value || "0"
+    this.getfilterdata();
+  }
+  getfilterdata() {
+    this.gridConfig = {
+      apiUrl: "OTReservation/OTReservationlist",
+      columnsList: this.allcolumns,
+      sortField: "OtreservationId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
+        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+
       ],
-      AnathesiaType: [
-        { name: "required", Message: "Anathesia Type is required" },
-        { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
-        { name: "pattern", Message: "Special char not allowed." }
-      ],
-    };
+      row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterform.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myFilterform.get('RegNo').setValue("")
+
+
+    this.onChangeFirst();
+  }
+
+  selectChange(obj: any) {
+    console.log(obj);
   }
 }
 
@@ -193,6 +282,12 @@ export class otNote {
   patientType: any;
   tariffName: any;
   companyName: any;
+  opIpType: any;
+  surgeryId: any;
+  surgeonId: any;
+  surgeonId1: any;
+  anestheticsDrID: any;
+  anestheticsDrID1: any;
 
   constructor(OtNoteInsert) {
     {
@@ -257,6 +352,12 @@ export class otNote {
       this.patientType = OtNoteInsert.patientType || ''
       this.tariffName = OtNoteInsert.tariffName || ''
       this.companyName = OtNoteInsert.companyName || ''
+      this.opIpType = OtNoteInsert.opIpType || ''
+      this.surgeryId = OtNoteInsert.surgeryId || ''
+      this.surgeonId = OtNoteInsert.surgeonId || ''
+      this.surgeonId1 = OtNoteInsert.surgeonId1 || ''
+      this.anestheticsDrID = OtNoteInsert.anestheticsDrID || ''
+      this.anestheticsDrID1 = OtNoteInsert.anestheticsDrID1 || ''
     }
   }
 }

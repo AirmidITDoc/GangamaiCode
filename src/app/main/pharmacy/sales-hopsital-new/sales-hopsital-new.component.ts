@@ -11,9 +11,7 @@ import { parseInt } from 'lodash';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { MatDrawer } from '@angular/material/sidenav';
-import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
-import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
+import { MatDrawer } from '@angular/material/sidenav'; 
 import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
@@ -23,6 +21,9 @@ import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel,
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -166,8 +167,8 @@ export class SalesHospitalNewComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public _RequestforlabtestService: RequestforlabtestService,
-    public toastr: ToastrService,
-    private onlinePaymentService: OnlinePaymentService,
+    public toastr: ToastrService,   
+   public _AppointmentlistService: AppointmentlistService,
     private _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -994,7 +995,7 @@ export class SalesHospitalNewComponent implements OnInit {
     this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId)
     this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId)
     this.PharmaSalesForm.get('sales.isPrescription').setValue(this.IPMedID || 0)
-    this.PharmaSalesForm.get('prescription.opipid').setValue(this.OP_IP_Id) 
+    this.PharmaSalesForm.get('prescription.opipid').setValue(this.IPMedID || 0) 
     this.PharmaSalesForm.get('salesDraft.dSalesId').setValue(this.DraftID || 0) 
  
 
@@ -1027,6 +1028,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
+          this.OnSalesprint(this.OP_IP_Id)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
@@ -1036,6 +1038,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
+          this.OnSalesprint(this.OP_IP_Id)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
@@ -1066,6 +1069,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.PharmaSalesForm.value)
             this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe(response => {
+              this.OnSalesprint(this.OP_IP_Id)
               this.onClose()
             });
           }
@@ -1536,25 +1540,35 @@ vExpDate:any;
     if (this.ItemSubform.get('opIpType').value != '2') {
       const dialogRef = this._matDialog.open(PrescriptionComponent, {
         maxWidth: '100%',
-        height: '95%',
+        height: '100%',
         width: '95%',
       });
       dialogRef.afterClosed().subscribe((result) => { 
         console.log('The dialog was closed - Insert Action', result);
         console.log(result);
+
         this.DoctorNamecheck = true;
-        this.IPDNocheck = true;
-        this.OPDNoCheck = false;
         this.PatientName = result[0]?.PatientName;
         this.RegId = result[0]?.RegId;
         this.OP_IP_Id = result[0]?.AdmissionID;
-        this.ItemSubform.get('regId').setValue(result[0]?.RegId);
-        this.IPDNo = result[0]?.IPDNo;
-        this.DoctorName = result[0]?.DoctorName;
-        this.IPMedID = result[0]?.IPMedID;
-        if (this.IPMedID > 0) {
+         this.DoctorName = result[0]?.DoctorName;  
+        this.ItemSubform.get('regId').setValue(result[0]?.RegId); 
+        
+        if (result[0]?.IPMedID > 0) {
+          this.IPDNocheck = true;
+          this.OPDNoCheck = false;
+          this.IPDNo = result[0]?.IPDNo; 
+          this.IPMedID = result[0]?.IPMedID; 
           this.paymethod = true;
           this.vSelectedOption = '1';
+        }else{ 
+          this.IPDNocheck = false;
+          this.OPDNoCheck = true;   
+          this.OPDNo = result[0].IPDNo; 
+          this.IPMedID = result[0].AdmissionID;  
+            this.paymethod = true;
+            this.vSelectedOption = '0';
+            this.OP_IPType = 0;  
         } 
         this.dsItemNameList1.data = result;
         this.dsItemNameList1.data.forEach((contact) => {
@@ -2039,8 +2053,34 @@ vExpDate:any;
       }
     });
   }
-  T
-}
+ 
+
+  OnSalesprint(contact) {
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          { "fieldName": "OP_IP_ID", "fieldValue": String(contact.advanceDetailId), "opType": "13" },
+          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeID), "opType": "13" }
+        ],
+        "mode": "IPSalesBillReport"
+      } 
+      this._AppointmentlistService.getReportView(param).subscribe(res => { 
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "IPSalesBillReport" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
+} 
 
 export class IndentList {
   SalesNo: any

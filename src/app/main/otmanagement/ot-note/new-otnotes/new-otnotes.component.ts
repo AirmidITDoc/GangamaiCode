@@ -1,0 +1,115 @@
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { OPIPPatientModel } from 'app/main/ipd/ipdsearc-patienth/ipdsearc-patienth.component';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.service';
+import { DatePipe } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { fuseAnimations } from '@fuse/animations';
+import { OtNoteService } from '../ot-note.service';
+import { otNote } from '../ot-note.component';
+
+@Component({
+  selector: 'app-new-otnotes',
+  templateUrl: './new-otnotes.component.html',
+  styleUrls: ['./new-otnotes.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
+})
+export class NewOtnotesComponent {
+
+  OTNoteform: FormGroup;
+  opIpType: number;
+  opIpId: any;
+  vOPDNo:any;
+  vIPDNo:any;
+  vSelectedOption: any = "OP";
+  vRegNo: any;
+  vPatientName: any;
+  // vDescription:any;
+  vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
+  registerObj = new otNote({});
+
+  autocompleteModestatus: string = "State";
+  autocompleteModeSurgery: String = "SurgeryMaster";
+  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeRefDoctor: String = "RefDoctor";
+  autocompleteModeOTTable: String = "OttableMaster";
+
+  constructor(
+    public _otNoteService: OtNoteService,
+    private accountService: AuthenticationService,
+    public _matDialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
+
+  ngOnInit(): void {
+    this.OTNoteform = this._otNoteService.createOtNoteForm();
+    this.OTNoteform.markAllAsTouched();
+
+     if ((this.data?.otreservationId) > 0) {
+      this.registerObj = this.data
+      this.OTNoteform.get('surgeryId').setValue(this.registerObj?.surgeryId)
+      this.OTNoteform.get('surgeonId1').setValue(this.registerObj?.surgeonId)
+      this.OTNoteform.get('surgeonId2').setValue(this.registerObj?.surgeonId1)
+      this.OTNoteform.get('anestheticsDr').setValue(this.registerObj?.anestheticsDrID)
+      this.OTNoteform.get('anestheticsDr1').setValue(this.registerObj?.anestheticsDrID1)
+      // this.OTNoteform.get('anestheticsDr2').setValue(this.registerObj?.surgeonId1)
+      console.log(this.registerObj)
+    }
+    if(this.registerObj.opIpType == true){
+      this.vSelectedOption="IP"
+      this.vIPDNo=this.registerObj.ipdNo
+    }else{
+      this.vSelectedOption="OP"
+      this.vOPDNo=this.registerObj.opdNo
+    }
+  }
+
+  patientInfoReset() {
+    this.OTNoteform.get('opIpId').setValue('');
+    this.OTNoteform.get('opIpId').reset();
+    this.vRegNo = '';
+    this.vPatientName = '';
+    this.registerObj = new otNote({});
+  }
+
+  onEditorValueChange(content: string) {
+    this.OTNoteform.get('description')?.setValue(content);
+  }
+
+  onSubmit() {
+
+  }
+
+  onClose() {
+    this.OTNoteform.reset();
+    // this.dialogRef.close(); 
+    this._matDialog.closeAll();
+    this.OTNoteform.get('opIpType').setValue('IP')
+    this.OTNoteform.get('description').setValue("Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
+    this.vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
+    this.patientInfoReset();
+  }
+
+  getValidationMessages() {
+    return {
+      OTTable: [
+        { name: "required", Message: "OT Table Name is required" },
+        { name: "maxlength", Message: "OT Table Name should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ],
+      AnathesiaType: [
+        { name: "required", Message: "Anathesia Type is required" },
+        { name: "maxlength", Message: "Anathesia Type should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ],
+    };
+  }
+}

@@ -1,4 +1,6 @@
-<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
     <div class="top-header header accent p-16">
         <div class="top-header-info">
             <div class="top-header-title">
@@ -10,49 +12,8 @@
     </div>
     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center" class="px-12 py-4 border-bottom">
         <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
-            <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
-                </div>                
-                <div style="color: red;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Appointment : {{Vtotalcount}}</span>
-                </div>
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="orange-600-fg">FollowUp : {{VFollowupcount}}</span>
-                </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
-                </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Cross Consultant Count :
-                        {{VCrossConscount}}</span>
-                </div>
-                
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg">EMR Ready : {{VEMRcount}}</span>
-                </div>
-                <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Check Out : {{VCheckoutCount}}</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="red-orange-fg">Waiting : {{VWaitingCount}}</span>
-                </div>
 
-            </div> -->
-      
-         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                 <!-- Registrations -->
                 <div class="dashboard-card registrations">
                     <div class="card-label">Registrations</div>
@@ -99,7 +60,7 @@
                     <mat-icon class="card-icon">groups</mat-icon>
                 </div>
             </div>
-              </div>
+        </div>
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -108,7 +69,8 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
 
-                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
+                    class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld" class="pill orange-600 s-16">circle
                 </mat-icon>
 
@@ -117,8 +79,10 @@
         <ng-template #actionsTemplate1 let-element>
             <div>
 
-                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated" class="pill red-600 s-16">circle</mat-icon>
-                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' " matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' "
+                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
                     circle
                 </mat-icon>
             </div>
@@ -132,16 +96,22 @@
         </ng-template>
         <ng-template #actionsTemplate3 let-element>
             <div>
-                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1" class="active-icon green-600 s-16">cached
+                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1"
+                    class="active-icon green-600 s-16">cached
                     icon</mat-icon>
             </div>
         </ng-template>
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                
-                <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
+
+                <!-- <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
                     <mat-icon> list_alt</mat-icon>
+                </button> -->
+                <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
+                    <mat-icon [ngStyle]="{ color: element.emrReady === 1 ? 'green' : 'inherit' }">
+                        list_alt
+                    </mat-icon>
                 </button>
 
                 <button mat-icon-button matTooltip="Certificate" (click)="OpenCertificate(element)">
@@ -152,18 +122,16 @@
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="print"
-                    (click)="getPrint(element)">
+                <button mat-icon-button matTooltip="print" (click)="getPrint(element)">
                     <mat-icon title="Print Menu">print</mat-icon>
                 </button>
-                
-                <button mat-icon-button matTooltip="CrossConsultation"
-                    (click)="OnNewCrossConsultation(element)">
+
+                <button mat-icon-button matTooltip="CrossConsultation" (click)="OnNewCrossConsultation(element)">
                     <mat-icon>cached icon</mat-icon>
                 </button>
 
-                <airmid-fileupload-icon [refId]="element.visitId" [refType]="page"
-                    [multiple]="true" [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
+                <airmid-fileupload-icon [refId]="element.visitId" [refType]="page" [multiple]="true"
+                    [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
             </div>
         </ng-template>
 
@@ -171,11 +139,14 @@
             <ng-container filters>
                 <form [formGroup]="myformSearch">
 
-                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNo" (input)="onChangeFirst()" />
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -183,7 +154,8 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="FirstName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -191,16 +163,17 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch" formControlName="LastName" (input)="onChangeFirst()" />
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="LastName" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
 
                     <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
-                     [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().DoctorId"
-                      [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
-                      (keyup)="ListView($event)">
+                        [(ngModel)]="gridConfig.filters[3].fieldValue"
+                        [validations]="getValidationdoctorMessages().DoctorId" [mode]="autocompleteModedeptdoc"
+                        (selectionChange)="ListView($event)" (keyup)="ListView($event)">
                     </airmid-dropdown>
                 </form>
             </ng-container>

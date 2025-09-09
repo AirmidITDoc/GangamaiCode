@@ -28,13 +28,7 @@
                 <div class="modal-card-container">
 
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
-                        <!-- <div class="radio-container">
-                                        <mat-radio-group aria-label="Select an option" formControlName="opIpType"
-                                            name="opIpType" (change)="onChangeReg($event)">
-                                            <mat-radio-button value="registration">OP </mat-radio-button>
-                                            <mat-radio-button value="registrered">IP</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div> -->
+
                         <div class="radio-container">
                             <mat-radio-group aria-label="Select an option" [formGroup]="requestForm"
                                 formControlName="opIpType" name="opIpType" (change)="onChangeReg($event)"
@@ -213,15 +207,17 @@
                                     [mode]="autocompleteModeSurgeryMaster">
                                 </airmid-dropdown>
                             </div>
+
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <!-- i am pass categoryid formcontrolname to doctortype because doctortypeid field is not in payload
                                  but during retrive doctortype id is coming -->
                                 <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
-                                    [formGroup]="requestForm" [value]="registerObj?.doctorTypeId"
+                                    [formGroup]="requestForm" [value]="registerObj?.categoryId"
                                     [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>
                             </div>
+
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                                 <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
                                     [value]="registerObj?.surgeonId" [formGroup]="requestForm"

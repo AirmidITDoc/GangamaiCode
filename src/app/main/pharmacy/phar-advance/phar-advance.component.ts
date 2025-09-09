@@ -116,10 +116,11 @@ export class PharAdvanceComponent implements OnInit {
   gridConfig1: gridModel = {
     apiUrl: "Sales/PhAdvRefundReceiptList",
     columnsList: this.allColumnsRefund,
-    sortField: "StoreId",
+    sortField: "RegNo",
     sortOrder: 0,
-    filters: this.allfiltersRefund
+    filters: this.allfiltersRefund 
   }
+ 
 
   constructor(
     public _PharAdvanceService: PharAdvanceService,
@@ -191,7 +192,7 @@ export class PharAdvanceComponent implements OnInit {
     this.gridConfig1 = {
       apiUrl: "Sales/PhAdvRefundReceiptList",
       columnsList: this.allColumnsRefund,
-      sortField: "RefundId",
+      sortField: "RegNo",
       sortOrder: 0,
       filters: [
         { fieldName: "F_Name", fieldValue: this.f_name1, opType: OperatorComparer.StartsWith },
@@ -201,7 +202,7 @@ export class PharAdvanceComponent implements OnInit {
         { fieldName: "Reg_No", fieldValue: this.regNo1, opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.storeId1), opType: OperatorComparer.Equals }
       ]
-    }
+    } 
     console.log(this.gridConfig1)
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
@@ -248,54 +249,10 @@ export class PharAdvanceComponent implements OnInit {
     });
   }
   viewgetIPAdvanceReportPdf(contact) {
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-
-      this._PharAdvanceService.getViewPahrmaAdvanceReceipt(
-        contact.AdvanceDetailID
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Pharma Advance Receipt Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100)
-
+       this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "IPPharmaAdvanceReport"); 
   }
   viewgetRefundofAdvanceReportPdf(contact) {
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-
-      this._PharAdvanceService.getViewPahrmaRefundAdvanceReceipt(
-        contact
-      ).subscribe(res => {
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Pharma Refund Of Advance Receipt Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
-          this.sIsLoading = '';
-        });
-      });
-
-    }, 100)
-
+     this.commonService.Onprint("RefundId", contact.refundId, "IPPharmaAdvanceReturnReport");
   }
   currentDate = new Date();
   getWhatsappsAdvance(el, vmono) {

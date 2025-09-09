@@ -20,87 +20,74 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-// import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-
 import { CommonModule, DatePipe } from "@angular/common";
-
 import { ScrollingModule } from "@angular/cdk/scrolling";
-
 import { MatCardModule } from "@angular/material/card";
-
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
-
 import { MatListModule } from "@angular/material/list";
-
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
-
-
-//import { NgxPrintModule } from "ngx-print";
 import { MatTooltipModule } from "@angular/material/tooltip";
-// import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
-//import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { OTNoteComponent } from "./ot-note.component";
-import { NewOtnotesComponent } from './new-otnotes/new-otnotes.component';
-
-
+import { NewOtconsentsComponent } from './new-otconsents/new-otconsents.component';
+import { OtConsentsComponent } from "./ot-consents.component";
+import { OtConsentsService } from "./ot-consents.service";
 
 const routes: Routes = [
-    {
-        path: "**",
-        component: OTNoteComponent,
-    },
+  {
+    path: "**",
+    component: OtConsentsComponent,
+  },
 ];
 
 @NgModule({
-    declarations: [OTNoteComponent, NewOtnotesComponent],
-    imports: [
-        RouterModule.forChild(routes),
-        CommonModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        // MatSnackBarModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        MatProgressSpinnerModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
-        MatCardModule,
-MatDialogModule,
-MatDividerModule,
-MatExpansionModule,
-MatListModule,
-MatSlideToggleModule, 
-MatSnackBarModule,
-MatStepperModule,
-MatTabsModule,
-MatTooltipModule,
-MatButtonToggleModule,
-MatSidenavModule,
-    ],
-    providers: [DatePipe]
+  declarations: [
+    OtConsentsComponent, NewOtconsentsComponent
+  ],
+  imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    SharedModule,
+    NgxMatSelectSearchModule,
+    MatCardModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatListModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatButtonToggleModule,
+    MatSidenavModule,
+  ],
+  providers: [DatePipe, OtConsentsService]
 })
-export class OTNoteModule { }
+export class OtConsentsModule { }

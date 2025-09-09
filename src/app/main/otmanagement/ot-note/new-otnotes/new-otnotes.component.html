@@ -1,0 +1,234 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
+    <mat-toolbar style="width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center"> <span class="logo-text h1"
+                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;"> OT Notes </span>
+        </div>
+
+        <div class="modal-header-right">
+            <div class="comman-date-container">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div class="modal-card-container">
+                <form [formGroup]="OTNoteform">
+                    <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
+                        <mat-card style="padding: 5px;">
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-sales my-8">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                                fxLayoutAlign="space-between center" class="patient-info">
+                                                <div class="patient-sub">
+                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                        fxLayoutAlign="space-between">
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">UHID No
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.regNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{ registerObj.patientName }}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Doctor Name</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.doctorName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Department</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.departmentName}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">DOA | Time</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.admissionDate
+                                                                    |
+                                                                    date:'dd/MM/YYYY'}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">
+                                                                    {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span>{{ vSelectedOption === 'OP' ? vOPDNo :vIPDNo}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Age
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.age}}Y|{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D
+                                                                    | {{registerObj.genderName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ref-Doctor Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.refDoctorName}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div fxLayout="column" fxLayoutGap="6px">
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Ward | Bed Name
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span class="patient-col-value">{{registerObj.roomName}}
+                                                                    | {{registerObj.bedName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Patient Type
+                                                                </span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.patientType}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Tariff</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.tariffName}}</span>
+                                                            </div>
+                                                            <div class="patient-col">
+                                                                <span class="patient-col-key">Company Name</span>
+                                                                <span>:</span>
+                                                                <span
+                                                                    class="patient-col-value">{{registerObj.companyName}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                    <div class="modal-body" fusePerfectScrollbar>
+                        <div class="modal-body-container" fxLayout="column">
+
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px; margin-top: 10px; gap: 5px;">
+
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeSurgery" >
+                                        </airmid-dropdown>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Surgeron Name 1" formControlName="surgeonId1"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeConDoctor" >
+                                        </airmid-dropdown>
+                                    </div>
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Surgeon Name 2" formControlName="surgeonId2"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeConDoctor" >
+                                        </airmid-dropdown>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Anesthestish doctor" formControlName="anestheticsDr"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Anesthestish doctor 1" formControlName="anestheticsDr1"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
+                                        </airmid-dropdown>
+                                    </div>
+                                    <!-- need to check -->
+                                    <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
+                                        <airmid-dropdown label="Assistant doctor" formControlName="anestheticsDr2"
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
+                                        </airmid-dropdown>
+                                    </div>
+                                </div>
+                            </mat-card>
+
+                            <div style="margin-top: 10px;">
+                                <airmid-editor label="Details" formControlName="description" [(value)]="vDescription"
+                                    [formGroup]="OTNoteform" (valueChange)="onEditorValueChange($event)">
+                                </airmid-editor>
+                            </div>
+
+                            <mat-card fxFlex.gt-sm="100%" fxFlex fxLayout="row"
+                                style="padding: 10px; margin-top: 10px; gap: 5px;">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Assistant" formControlName="assistant"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="BloodLoss" formControlName="bloodLoss"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="sorubNurse" formControlName="sorubNurse"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Histopathology" formControlName="histopathology"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="BostOPOrders" formControlName="bostOPOrders"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="ComplicationMode" formControlName="complicationMode"
+                                        [formGroup]="OTNoteform"></airmid-textbox>
+                                </div>
+
+                            </mat-card>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer" class="p-12">
+        <div class="footer-navigation-container" fxLayoutAlign="end">
+            <div class="modal-footer-buttons" fxLayoutGap="6px">
+                <button class="btn btn-danger-outline" (click)="onClose()">Cancel</button>
+                <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+
+</div>
