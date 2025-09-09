@@ -6,11 +6,17 @@ app-appointment-list {
   .mat-icon-button {
     padding: 0;
     min-width: 0;
-    width: 40px;
-    height: 20px;
+    width: 28px !important;
+    height: 28px !important;
     flex-shrink: 0;
-    line-height: 20px;
-    border-radius: 50%;
+    line-height: 28px;
+    border-radius: 4px;
+    
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+    }
   }
 }
 

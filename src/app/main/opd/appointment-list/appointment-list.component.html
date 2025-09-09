@@ -177,76 +177,100 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- Button 1: Edit Patient Registration  -->
-                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
-                    <mat-icon>edit</mat-icon>
+                
+                <!-- Material UI Icon Button with Menu -->
+                <button mat-icon-button 
+                        [matMenuTriggerFor]="actionsMenu" 
+                        matTooltip="Actions"
+                        matTooltipPosition="above"
+                        (click)="$event.stopPropagation();">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
 
-                <!-- Button 2: Edit Patient Registration  -->
-                <button *ngIf="false" mat-icon-button matTooltip="how_to_reg" (click)="OngetRecord(element,m)">
-                    <mat-icon>how_to_reg</mat-icon>
-                </button>
-
-                <!-- Button 3: Print Patient Case paper  -->
-                <button mat-icon-button matTooltip="Print Case papaer" (click)="OnViewReportPdf(element,true)">
-                    <mat-icon> print</mat-icon>
-                </button>
-
-                <!-- Button 4: Billing Page  -->
-                <button mat-icon-button matTooltip="Bill" (click)="OnBillPayment(element)">
-                    <mat-icon> payment</mat-icon>
-                </button>
-
-                <!-- Button 5: Cross Consultation  -->
-                <button mat-icon-button matTooltip="Cross Consultation" (click)="OnNewCrossConsultation(element)">
-                    <mat-icon>cached icon</mat-icon>
-                </button>
-
-                <!-- Button 6: Vital Information  -->
-                <button mat-icon-button matTooltip="Vital Information" (click)="OnVitalInfo(element)">
-                    <mat-icon> perm_identity</mat-icon>
-                </button>
-
-                <!-- Button 7: Patient i card Print  -->
-                <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
-                    <mat-icon [disabled]="element.IsCancelled">pages</mat-icon>
-                </button>
-
-                <!-- Button 8: Patient i card Print  -->
-                <button mat-icon-button matTooltip="Send message On WhatsApp"
-                    (click)="OnWhatsAppAppointmentSend(element)">
-                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
-
-                <div fxLayout="row" fxLayoutGap="5px">
-                    <button mat-raised-button matTooltip="Consultant start / Check-In"
-                        style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
-                        [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                        <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" />
-                        <!-- Check-In -->
+                <!-- Material UI Menu with Compact Design -->
+                <mat-menu #actionsMenu="matMenu" 
+                          xPosition="before" 
+                          yPosition="below"
+                          [overlapTrigger]="false">
+                    
+                    <button mat-menu-item 
+                            (click)="OnEditRegistration(element)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
+                        <span style="font-size: 13px;">Edit Registration</span>
                     </button>
-
-                    <button mat-raised-button matTooltip="Consultant End / Check Out"
-                        style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
-                        [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                        <img src="assets/images/logos/checkOut.png" alt="Check-Out" width="24" height="24" />
-                        <!-- Check-Out -->
+                    
+                    <button mat-menu-item 
+                            (click)="OnViewReportPdf(element,true)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">print</mat-icon>
+                        <span style="font-size: 13px;">Print Case Paper</span>
                     </button>
-                </div>
-
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                    (click)="$event.stopPropagation();">
-                    <mat-icon class="secondary-text">more_vert</mat-icon>
-                </button>
-
-                <mat-menu #moreMenu="matMenu">
+                    
+                    <button mat-menu-item 
+                            (click)="OnBillPayment(element)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">payment</mat-icon>
+                        <span style="font-size: 13px;">Billing</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="onCheckIn(element.visitId)"
+                            [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
+                                  [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">check_circle</mat-icon>
+                        <span style="font-size: 13px;">Check-In</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="onCheckOut(element.visitId)"
+                            [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
+                                  [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
+                        <span style="font-size: 13px;">Check-Out</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="OnNewCrossConsultation(element)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">sync</mat-icon>
+                        <span style="font-size: 13px;">Cross Consultation</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="OnVitalInfo(element)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">favorite_border</mat-icon>
+                        <span style="font-size: 13px;">Vital Information</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="OnPrintPatientIcard(element)"
+                            [disabled]="element.IsCancelled"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">format_list_bulleted</mat-icon>
+                        <span style="font-size: 13px;">Patient Details Sticker</span>
+                    </button>
+                    
+                    <button mat-menu-item 
+                            (click)="OnWhatsAppAppointmentSend(element)"
+                            style="height: 32px; min-height: 32px;">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">chat</mat-icon>
+                        <span style="font-size: 13px;">Send WhatsApp Message</span>
+                    </button>
+                    
                     <ng-container *ngFor="let m of menuActions">
-                        <button mat-menu-item aria-label="remove" (click)="OngetRecord(element, m)"
-                            [disabled]="shouldDisableMenuItem(m, element)">
-                            <span>{{ m }}</span>
+                        <button mat-menu-item 
+                                (click)="OngetRecord(element, m.text)"
+                                [disabled]="shouldDisableMenuItem(m.text, element)"
+                                style="height: 32px; min-height: 32px;">
+                            <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">{{m.icon}}</mat-icon>
+                            <span style="font-size: 13px;">{{ m.text }}</span>
                         </button>
                     </ng-container>
+                    
                 </mat-menu>
 
             </div>
