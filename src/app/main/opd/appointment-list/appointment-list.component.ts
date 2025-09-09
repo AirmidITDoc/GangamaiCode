@@ -55,6 +55,7 @@ export class AppointmentListComponent implements OnInit {
     VNewcount = 0;
     VFollowupcount = 0;
     VBillcount = 0;
+    vEMRReady = 0;
     VCrossConscount = 0;
     VEMRcount = 0;
     VCheckoutCount = 0;
@@ -169,8 +170,8 @@ export class AppointmentListComponent implements OnInit {
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-       
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
@@ -776,6 +777,7 @@ export class AppointmentListComponent implements OnInit {
             this.dataSource.data = response.data;
             if (this.dataSource.data.length > 0) {
                 this.Vtotalcount = this.dataSource.data.length
+                this.vEMRReady = 0;
                 this.dataSource.data.forEach(element => {
                     if (element.patientOldNew == 1) {
                         this.VNewcount = this.VNewcount + 1;
@@ -783,11 +785,15 @@ export class AppointmentListComponent implements OnInit {
                     else if (element.patientOldNew == 2) {
                         this.VFollowupcount = this.VFollowupcount + 1;
                     }
+
                     if (element.mPbillNo == 1 || element.mPbillNo == 2) {
                         this.VBillcount = this.VBillcount + 1;
                     }
                     if (element.crossConsulFlag == 1) {
                         this.VCrossConscount = this.VCrossConscount + 1;
+                    }
+                    if (element.emrReady == 1) {
+                        this.vEMRReady++;
                     }
                 });
                 console.log(this.dataSource.data)
@@ -825,6 +831,7 @@ export class VisitMaster1 {
     doctorID: any;
     crossConsulFlag: any;
     mPbillNo: any;
+    emrReady:any;
     /**
      * Constructor
      *
@@ -855,7 +862,7 @@ export class VisitMaster1 {
             this.doctorID = VisitMaster1.doctorID || 0;
             this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
             this.mPbillNo = VisitMaster1.mPbillNo || 0;
-
+            this.emrReady = VisitMaster1.emrReady || 0
 
         }
     }
