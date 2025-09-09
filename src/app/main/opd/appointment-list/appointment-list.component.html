@@ -219,7 +219,7 @@
                             [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut"
                             style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
-                                  [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">login</mat-icon>
+                                  [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">check_circle</mat-icon>
                         <span style="font-size: 13px;">Check-In</span>
                     </button>
                     
@@ -228,7 +228,7 @@
                             [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut"
                             style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
-                                  [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">logout</mat-icon>
+                                  [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
                         <span style="font-size: 13px;">Check-Out</span>
                     </button>
                     
@@ -242,7 +242,7 @@
                     <button mat-menu-item 
                             (click)="OnVitalInfo(element)"
                             style="height: 32px; min-height: 32px;">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">monitor_heart</mat-icon>
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">favorite_border</mat-icon>
                         <span style="font-size: 13px;">Vital Information</span>
                     </button>
                     
@@ -250,7 +250,7 @@
                             (click)="OnPrintPatientIcard(element)"
                             [disabled]="element.IsCancelled"
                             style="height: 32px; min-height: 32px;">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">badge</mat-icon>
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">format_list_bulleted</mat-icon>
                         <span style="font-size: 13px;">Patient Details Sticker</span>
                     </button>
                     
@@ -263,11 +263,11 @@
                     
                     <ng-container *ngFor="let m of menuActions">
                         <button mat-menu-item 
-                                (click)="OngetRecord(element, m)"
-                                [disabled]="shouldDisableMenuItem(m, element)"
+                                (click)="OngetRecord(element, m.text)"
+                                [disabled]="shouldDisableMenuItem(m.text, element)"
                                 style="height: 32px; min-height: 32px;">
-                            <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">arrow_forward_ios</mat-icon>
-                            <span style="font-size: 13px;">{{ m }}</span>
+                            <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">{{m.icon}}</mat-icon>
+                            <span style="font-size: 13px;">{{ m.text }}</span>
                         </button>
                     </ng-container>
                     

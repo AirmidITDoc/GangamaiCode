@@ -43,7 +43,7 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     searchFormGroup: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    menuActions: Array<string> = [];
+    menuActions: Array<{icon:string, text: string}> = [];
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -87,9 +87,9 @@ export class AppointmentListComponent implements OnInit {
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
         // menu Button List
-        this.menuActions.push("Update Consultant Doctor");
-        this.menuActions.push("Update Referred Doctor");
-        this.menuActions.push("Request For IP");
+        this.menuActions.push({icon: "local_hospital", text: "Update Consultant Doctor"});
+        this.menuActions.push({icon: "people_outline", text:"Update Referred Doctor"});
+        this.menuActions.push({icon: "language", text:"Request For IP"});
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -181,7 +181,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         {
-            heading: "Action", key: "action", align: "center", width: 50, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "center", width: 65, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
