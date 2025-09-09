@@ -73,7 +73,7 @@
             <mat-label>User Name</mat-label>
             <input
               matInput
-              placeholder="Search UserName"
+              placeholder="Search By User Name"
               autocomplete="off"
               formControlName="UserName"
               (input)="onChangeFirst()"
@@ -87,7 +87,7 @@
             <mat-label>First Name</mat-label>
             <input
               matInput
-              placeholder="Search FirstName"
+              placeholder="Search By First Name"
               autocomplete="off"
               formControlName="FirstName"
               (input)="onChangeFirst()"
@@ -101,7 +101,7 @@
             <mat-label>Last Name</mat-label>
             <input
               matInput
-              placeholder="Search LastName"
+              placeholder="Search By Last Name"
               autocomplete="off"
               formControlName="LastName"
               (input)="onChangeFirst()"
@@ -113,7 +113,7 @@
 
           <div fxFlex="220px">
             <airmid-dropdown
-              label="Store Name"
+              label="Search By Store Name"
               formControlName="storeId"
               [formGroup]="myuserform"
               (selectionChange)="storeChange($event)"
@@ -124,7 +124,7 @@
 
           <div fxFlex="220px">
             <airmid-dropdown
-              label="Role Name"
+              label="Serch By Role Name"
               formControlName="roleId"
               [formGroup]="myuserform"
               (selectionChange)="roleChange($event)"
@@ -133,17 +133,17 @@
             </airmid-dropdown>
           </div>
 
-          <mat-radio-group
-            aria-label="Status"
-            fxLayout="row"
-            fxLayoutAlign="start center"
-            fxLayoutGap="12px"
-            formControlName="status"
-          >
-            <mat-radio-button value="">All</mat-radio-button>
-            <mat-radio-button value="1">IsActive</mat-radio-button>
-            <mat-radio-button value="0">IsDeactive</mat-radio-button>
-          </mat-radio-group>
+          <div fxFlex="220px">
+            <airmid-dropdown
+              label="Serch By Status"
+              formControlName="status"
+              [formGroup]="myuserform"
+              (selectionChange)="statusChange($event)"
+              [options]="statusOptions"
+              [ReqFullObj]="true"
+            >
+            </airmid-dropdown>
+          </div>
         </form>
       </ng-container>
     </airmid-table>
@@ -168,15 +168,15 @@
             <form
               [formGroup]="myuserform"
               fxLayout="row wrap"
-              fxLayoutGap="16px"
+              fxLayoutGap="4px"
               fxLayoutAlign="start center"
-              style="width:100%"
+              style="width:100%; margin-top: 10px"
             >
-              <mat-form-field appearance="outline" fxFlex="200px">
+              <mat-form-field appearance="outline" fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
                 <mat-label>User Name</mat-label>
                 <input
                   matInput
-                  placeholder="Search UserName"
+                  placeholder="Search By User Name"
                   autocomplete="off"
                   formControlName="UserName"
                   (input)="onChangeFirst()"
@@ -186,11 +186,11 @@
                 </button>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" fxFlex="200px">
+              <mat-form-field appearance="outline" fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
                 <mat-label>First Name</mat-label>
                 <input
                   matInput
-                  placeholder="Search FirstName"
+                  placeholder="Search By First Name"
                   autocomplete="off"
                   formControlName="FirstName"
                   (input)="onChangeFirst()"
@@ -200,11 +200,11 @@
                 </button>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" fxFlex="200px">
+              <mat-form-field appearance="outline" fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
                 <mat-label>Last Name</mat-label>
                 <input
                   matInput
-                  placeholder="Search LastName"
+                  placeholder="Search By Last Name"
                   autocomplete="off"
                   formControlName="LastName"
                   (input)="onChangeFirst()"
@@ -214,9 +214,9 @@
                 </button>
               </mat-form-field>
 
-              <div fxFlex="220px">
+              <div fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
                 <airmid-dropdown
-                  label="Store Name"
+                  label="Search By Store Name"
                   formControlName="storeId"
                   [formGroup]="myuserform"
                   (selectionChange)="storeChange($event)"
@@ -225,9 +225,9 @@
                 </airmid-dropdown>
               </div>
 
-              <div fxFlex="220px">
+              <div fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
                 <airmid-dropdown
-                  label="Role Name"
+                  label="Search By Role Name"
                   formControlName="roleId"
                   [formGroup]="myuserform"
                   (selectionChange)="roleChange($event)"
@@ -236,17 +236,17 @@
                 </airmid-dropdown>
               </div>
 
-              <mat-radio-group
-                aria-label="Status"
-                fxLayout="row"
-                fxLayoutAlign="start center"
-                fxLayoutGap="12px"
-                formControlName="status"
-              >
-                <mat-radio-button value="">All</mat-radio-button>
-                <mat-radio-button value="1">IsActive</mat-radio-button>
-                <mat-radio-button value="0">IsDeactive</mat-radio-button>
-              </mat-radio-group>
+              <div fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0" class="mat-density-compact">
+                <airmid-dropdown
+                  label="Search By Status"
+                  formControlName="status"
+                  [formGroup]="myuserform"
+                  (selectionChange)="statusChange($event)"
+                  [options]="statusOptions"
+                  [ReqFullObj]="true"
+                >
+                </airmid-dropdown>
+              </div>
             </form>
           </ng-container>
           </airmid-card-view>

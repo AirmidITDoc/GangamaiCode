@@ -27,6 +27,11 @@ export class CreateUserComponent implements OnInit {
   myuserform: FormGroup;
   autocompleteModeStoreName: String = "Store";
   autocompleteModeWebRoleName: String = "WebRole";
+  statusOptions = [
+    { text: 'All', value: '' },
+    { text: 'IsActive', value: '1' },
+    { text: 'IsDeactive', value: '0' }
+  ];
 
   // Add view mode and user data for card view
   viewMode: 'table' | 'card' = 'table';
@@ -122,7 +127,8 @@ export class CreateUserComponent implements OnInit {
       FirstName: [''],
       LastName: [''],
       storeId: [],
-      roleId: []
+      roleId: [],
+      status: ['']
     });
   }
 
@@ -142,6 +148,7 @@ export class CreateUserComponent implements OnInit {
   lName: any;
   StoreId = "0";
   RoleId = "0";
+  StatusValue = "";
   onChangeFirst() {
     this.UserName = this.myuserform.get('UserName').value + '%'
     // this.fName = this.myuserform.get('FirstName').value + '%'
@@ -164,6 +171,14 @@ export class CreateUserComponent implements OnInit {
     else
       this.RoleId = "0"
 
+    // this.onChangeFirst();
+  }
+
+  statusChange(value) {
+    const selected = value;
+    this.myuserform.get('status').setValue(selected);
+    this.StatusValue = selected?.value ?? "";
+    // Optionally trigger filtering
     // this.onChangeFirst();
   }
 
