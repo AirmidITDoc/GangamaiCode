@@ -182,7 +182,8 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         {
-            heading: "Action", key: "action", align: "center", width: 65, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "center", width: 150
+            , sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
