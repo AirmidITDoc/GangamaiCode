@@ -39,4 +39,7 @@ export class SalesReturnBillSettlementService {
   public InsertSalessettlement(emp) { 
     return this._httpClient1.PostData("Sales/PaymentSettlement", emp);
   }
+    public BillDiscountAfter(emp) { 
+    return this._httpClient1.PostData("Sales/PhBillDiscountAfter", emp);
+  }
 }

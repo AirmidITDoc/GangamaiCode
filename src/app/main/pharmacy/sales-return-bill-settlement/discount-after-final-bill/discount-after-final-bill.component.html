@@ -92,15 +92,7 @@
                                     [formGroup]="MyFrom" [validations]="getValidationMessages().FinalDiscAmt"
                                     [readonly]="true" required [(ngModel)]="vFinalDiscAmt">
                                 </airmid-textbox>
-                            </div>
-
-                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="CompanyName != ''">
-                                <airmid-textbox label="Company DiscAmt" formControlName="FinalCompanyDiscAmt"
-                                    [formGroup]="MyFrom" [validations]="getValidationMessages().FinalCompanyDiscAmt"
-                                    [readonly]="true" required [(ngModel)]="vFinalCompanyDiscAmt">
-                                </airmid-textbox>
-                            </div>
-
+                            </div> 
                             <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Net Amount" formControlName="NetAmount" [formGroup]="MyFrom"
                                     [validations]="getValidationMessages().NetAmount" [readonly]="true" required
@@ -131,23 +123,8 @@
                                         required [(ngModel)]="vDiscAmount2" (keyup)="CalcDiscAmt()">
                                     </airmid-textbox>
                                 </div>
-                            </div>
-
-                            <div fxLayout="row" fxLayoutGap="4px" *ngIf="CompanyName != ''"
-                            fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%"> 
-                                <div>
-                                    <airmid-textbox label="Company Disc%" formControlName="CompanyDiscper"
-                                        [formGroup]="MyFrom" [validations]="getValidationMessages().CompanyDiscper"
-                                        required [(ngModel)]="vCompanyDiscper" (keyup)="CalcDiscPer()">
-                                    </airmid-textbox>
-                                </div> 
-                                <div>
-                                    <airmid-textbox label="Company DiscAmt" formControlName="CompanyDiscAmt"
-                                        [formGroup]="MyFrom" [validations]="getValidationMessages().CompanyDiscAmt"
-                                        required [(ngModel)]="vCompanyDiscAmt" (keyup)="CalcDiscAmt()">
-                                    </airmid-textbox>
-                                </div>
-                            </div>
+                            </div> 
+                           
                             <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%"> 
                                 <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"  
                                     [formGroup]="MyFrom" [validations]="getValidationMessages().ConcessionId"

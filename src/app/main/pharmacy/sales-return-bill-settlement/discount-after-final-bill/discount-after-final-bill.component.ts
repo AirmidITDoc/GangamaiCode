@@ -27,12 +27,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vDiscountPer2:any;
   vDiscAmount2:any;
   vFinalDiscAmt:any;
-  vFinalNetAmt:any;
-  vCompanyDiscAmt:any;
-  vCompanyDiscper:any;
-  ConcessionReasonList:any=[];
-  vFinalCompanyDiscAmt:any;
-  CompanyName:any = '';
+  vFinalNetAmt:any;  
   PatientObj:any;
   patientName:any;
   
@@ -54,13 +49,12 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.selectedAdvanceObj = this.data.Obj
       this.PatientObj = this.data.PatientObj
       console.log(this.selectedAdvanceObj)
-      this.patientName  = this.selectedAdvanceObj.firstName+' '+this.selectedAdvanceObj.middleName+' '+this.selectedAdvanceObj.lastName
-      this.vDiscAmount = Math.round(this.selectedAdvanceObj.concessionAmt);
-      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.totalAmt);
-      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.netPayableAmt)
-      this.vNetamount =  Math.round(this.selectedAdvanceObj.netPayableAmt)
-      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.concessionAmt);
-      this.CompanyName = this.selectedAdvanceObj.companyName || ''; 
+      this.patientName  = this.PatientObj.firstName+' '+this.PatientObj.middleName+' '+this.PatientObj.lastName
+      this.vDiscAmount = Math.round(this.selectedAdvanceObj.discAmount);
+      this.vTotalAmount =  Math.round(this.selectedAdvanceObj.totalAmount);
+      this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.netAmount)
+      this.vNetamount =  Math.round(this.selectedAdvanceObj.netAmount)
+      this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.discAmount); 
     } 
      this.MyFrom = this.CreateMyForm();
      this.saveform = this.CreatesaveMyForm();  
@@ -73,30 +67,23 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       DiscountPer2:[''],
       DiscAmount2:[''],
       FinalDiscAmt:[''],
-      FinalNetAmt:[''],
-      CompanyDiscper:[''],
-      CompanyDiscAmt:[''],
-      ConcessionId:[''],
-      FinalCompanyDiscAmt:[''],  
+      FinalNetAmt:[''], 
+      ConcessionId:[''] 
     });
   }  
     CreatesaveMyForm(): FormGroup { 
       return this.formBuilder.group({  
-       billNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
-      netPayableAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()]],
-      concessionAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
-      compDiscAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
-      balanceAmt:[ 0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
+       salesId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
+      netAmount:[0,[this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()]],
+      discAmount:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
+       balanceAmount:[ 0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
       concessionReasonId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]] 
       });
-    }   
- 
+    }  
   CalcDiscPer(){  
     debugger
-    let DiscAmt2;
-    let CompanyDiscAmt ;
-    let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
-    let CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
+    let DiscAmt2; 
+    let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0; 
 
     if(DiscPer2){
       if(DiscPer2 > 100){
@@ -116,35 +103,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       }
     }
 
-    if(CompanyDiscPer){
-      if(CompanyDiscPer > 100){
-        this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-        return  this.vCompanyDiscper = '';
-      }
-      else{
-        this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
-        CompanyDiscAmt =   this.vCompanyDiscAmt;
-        this.vFinalCompanyDiscAmt = this.vCompanyDiscAmt
-      } 
-    }
-    else{
-       if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){ 
-        this.vCompanyDiscAmt = '';
-        CompanyDiscAmt = 0;
-        this.vFinalCompanyDiscAmt = 0;
-      }
-    }
+  
     this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2)  + parseFloat(this.vDiscAmount));
-    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)) -  parseFloat(CompanyDiscAmt)).toFixed(2);
+    this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)).toFixed(2);
   }
   CalcDiscAmt() {
     debugger
-    let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
-    let CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
-    let DiscPer2;
-    let CompanyDiscPer;
+    let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0; 
+    let DiscPer2; 
 
     if (DiscAmt2) {
       if (DiscAmt2 > this.vFinalNetAmt) {
@@ -164,137 +130,64 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       }
     }
 
-    if (CompanyDiscAmt) {
-      if (CompanyDiscAmt > this.vFinalNetAmt) {
-        this.toastr.warning('Please enter company discount amt less than netamount and greater than 0', 'warning !', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-        return this.vCompanyDiscAmt = '';
-      }
-      else {
-        this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
-        CompanyDiscPer = this.vCompanyDiscper;
-        this.vFinalCompanyDiscAmt = CompanyDiscAmt
-      }
-    }
-    else {
-      if (CompanyDiscAmt == 0 || CompanyDiscAmt == '' || CompanyDiscAmt == null || CompanyDiscAmt == undefined) {
-        this.vCompanyDiscper = '';
-        CompanyDiscPer = 0;
-        this.vFinalCompanyDiscAmt = 0;
-      }
-    }
-    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
-    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)) - parseFloat(CompanyDiscAmt)).toFixed(2);
-  } 
-
-    OnSave(){
     
-    if(this.vDiscAmount2 > 0 || this.vCompanyDiscAmt > 0){
-      if(!this.MyFrom.get('ConcessionId').value){
+    this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
+    this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)).toFixed(2);
+  }  
+  OnSave() {
+    const formvalues = this.MyFrom.value
+    if (formvalues.DiscAmount2 > 0) {
+      if (!this.MyFrom.get('ConcessionId').value) {
         this.toastr.warning('Please select Concession Reason ', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
         });
         return
       }
     }
-    if(this.vFinalDiscAmt == 0 || this.vFinalDiscAmt == '' || this.vFinalDiscAmt == undefined || this.vFinalDiscAmt == null){
-      this.toastr.warning('Please check final DiscAmount is zero', 'warning !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-      return
-    }
-    if(this.vNetamount == 0 || this.vNetamount == '' || this.vNetamount == undefined || this.vNetamount == null){
+    if (formvalues.NetAmount == 0 || formvalues.NetAmount == '' || formvalues.NetAmount == undefined || formvalues.NetAmount == null) {
       this.toastr.warning('Please check final netamount is zero', 'warning !', {
         toastClass: 'tostr-tost custom-toast-error',
       });
       return
     } 
-    var m_data1 = {
-      "billDiscountAfterUpdate": {
-        "billNo": this.selectedAdvanceObj.BillNo || 0,
-        "netPayableAmt": this.MyFrom.get('NetAmount').value || 0,
-        "concessionAmt":this.MyFrom.get('DiscAmount2').value || 0,
-        "compDiscAmt": this.MyFrom.get('CompanyDiscAmt').value || 0,
-        "balanceAmt": this.selectedAdvanceObj.BalanceAmt || 0,
-        "concessionReasonId": this.MyFrom.get('ConcessionId').value.ConcessionId || 0
+
+    let BalAmt = this.selectedAdvanceObj?.balanceAmount
+    if(formvalues?.DiscAmount2 > 0){
+      BalAmt = formvalues?.NetAmount   
+    } 
+
+    this.saveform.get('salesId').setValue( this.selectedAdvanceObj?.salesId)
+    this.saveform.get('netAmount').setValue(formvalues?.NetAmount)
+    this.saveform.get('discAmount').setValue(formvalues?.DiscAmount2) 
+    this.saveform.get('balanceAmount').setValue(BalAmt)
+    this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId) 
+
+    if (this.saveform.valid) {
+      console.log(this.saveform.value)
+      this._SelseSettelmentservice.BillDiscountAfter(this.saveform.value).subscribe(response => {
+        if (response) {
+          this._matDialog.closeAll();
+          this.onClose();
+        }
+      },);
+    } else {
+      let invalidFields = [];
+      if (this.saveform.invalid) {
+        for (const controlName in this.saveform.controls) {
+          if (this.saveform.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
       }
     }
-    console.log(m_data1)
-    //  this._BrowsSalesBillService.BillDiscountAfter(m_data1).subscribe(response =>{
-    //   if (response) {
-    //     this.toastr.success('Record  Saved Successfully.', 'Saved !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     }); 
-    //     this._matDialog.closeAll();
-    //     this.onClose(); 
-      
-    //   } else {
-    //     this.toastr.error(' Data not saved !, Please check API error..', 'Error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   } 
-    // }, error => {
-    //   this.toastr.error('Discount After Bill Data not saved !, Please check API error..', 'Error !', {
-    //     toastClass: 'tostr-tost custom-toast-error',
-    //   });
-    // });  
   }
-  // OnSave() {
-  //   const formvalues = this.MyFrom.value
-  //   if (formvalues.DiscAmount2 > 0 || formvalues.CompanyDiscAmt > 0) {
-  //     if (!this.MyFrom.get('ConcessionId').value) {
-  //       this.toastr.warning('Please select Concession Reason ', 'warning !', {
-  //         toastClass: 'tostr-tost custom-toast-error',
-  //       });
-  //       return
-  //     }
-  //   }
-  //   if (formvalues.NetAmount == 0 || formvalues.NetAmount == '' || formvalues.NetAmount == undefined || formvalues.NetAmount == null) {
-  //     this.toastr.warning('Please check final netamount is zero', 'warning !', {
-  //       toastClass: 'tostr-tost custom-toast-error',
-  //     });
-  //     return
-  //   } 
-
-  //   let BalAmt = this.selectedAdvanceObj?.balanceAmt
-  //   if(formvalues?.DiscAmount2 > 0){
-  //     BalAmt = formvalues?.NetAmount   
-  //   } 
-
-  //   this.saveform.get('billNo').setValue( this.selectedAdvanceObj?.billNo)
-  //   this.saveform.get('balanceAmt').setValue(BalAmt)
-  //   this.saveform.get('netPayableAmt').setValue(formvalues?.NetAmount)
-  //   this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2)
-  //   this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt || 0)
-  //   this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId)
-
-  //   if (this.saveform.valid) {
-  //     console.log(this.saveform.value)
-  //     this._IpSearchListService.BillDiscountAfter(this.saveform.value).subscribe(response => {
-  //       if (response) {
-  //         this._matDialog.closeAll();
-  //         this.onClose();
-  //       }
-  //     },);
-  //   } else {
-  //     let invalidFields = [];
-  //     if (this.saveform.invalid) {
-  //       for (const controlName in this.saveform.controls) {
-  //         if (this.saveform.controls[controlName].invalid) {
-  //           invalidFields.push(`${controlName}`);
-  //         }
-  //       }
-  //     }
-  //     if (invalidFields.length > 0) {
-  //       invalidFields.forEach(field => {
-  //         this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-  //         );
-  //       });
-  //       return
-  //     }
-  //   }
-  // }
   onClose(){
     this.dialogRef.close();
     this.MyFrom.reset();
