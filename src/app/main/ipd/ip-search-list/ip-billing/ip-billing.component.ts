@@ -1665,7 +1665,7 @@ export class IPBillingComponent implements OnInit {
             "concessionAmount": element.concessionAmount || 0,
             "netAmount": element.netAmount || 0,
             "doctorId": DoctorId || 0,
-            "isInclusionExclusion": element.isInclusionExclusion,
+            "isInclusionExclusion": element.isInclusionExclusion || false,
             "ModifiedBy": this.accountService.currentUserValue.userId
         }
         this._IpSearchListService.UpdateChargesDetails(addCharge, element.chargesId).subscribe(response => {
