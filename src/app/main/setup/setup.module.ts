@@ -61,10 +61,17 @@ const appRoutes: Routes = [
                 (m) => m.OTManagementModule
             ),
     },
+    {
+        path: "nursing",
+        loadChildren: () =>
+            import("./nursing-master/nursing-master.module").then(
+                (m) => m.NursingMasterModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [ ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class SetupModule {}

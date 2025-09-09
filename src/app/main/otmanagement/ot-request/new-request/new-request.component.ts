@@ -200,19 +200,26 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
+  opstartTime: any;
   onChangeTime(event: any) {
     let time = event.target.value;
     if (time && time.length >= 5) {
       time = time.substring(0, 5);
     }
     console.log("Time changed:", time); // "11:51"
+    this.opstartTime = time
     this.requestForm.get('otRequestTime')?.setValue(time, { emitEvent: false });
   }
+
   onSubmit() {
+    let opdate = this.datePipe.transform(this.requestForm.get('otRequestDate')?.value,'yyyy-MM-dd');
+    const combinedDateStartTime = `${opdate}T${this.opstartTime}:00`;
+
     this.requestForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
     this.requestForm.get('opIpId').setValue(this.opIpId);
     this.requestForm.get('otbookingId')?.setValue(this.vbookingId || 0);
     this.requestForm.get('otRequestDate').setValue(this.datePipe.transform(this.requestForm.get('otRequestDate').value, 'yyyy-MM-dd'));
+    this.requestForm.get('otRequestTime').setValue(combinedDateStartTime);
     this.requestForm.get('categoryId').setValue(this.requestForm.get('doctorTypeId').value);
     if (!this.requestForm.invalid) {
       if (this.requestForm.get('opIpType').value == 'IP') { this.requestForm.get('opIpType').setValue(1) }
@@ -248,7 +255,7 @@ export class NewRequestComponent implements OnInit {
         this.surgeonList.bindGridAutoComplete();
       });
     } else {
-      this._OtRequestService.getSurgeonsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
+      this._OtRequestService.getSurgeonsByDoctorType(obj.categoryId).subscribe((data: any[]) => {
         this.surgeonList.options = data;
         // this.surgeonList.bindGridAutoComplete();
         const incomingDoctorId = obj.surgeonId;

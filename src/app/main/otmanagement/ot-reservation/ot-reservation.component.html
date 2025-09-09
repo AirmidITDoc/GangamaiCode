@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                   OT Reservation List
+                    OT Reservation List
                 </span>
             </div>
         </div>
@@ -17,84 +17,94 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-          
- <div class="info-badge-top p-12 border-bottom">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
-            
-            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                <span class="green-600-fg"> IP </span>
-            </div>
-        
-            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                <span class="orange-600-fg">OP
-                   </span>
-            </div>
-            <div style="color: rgba(39, 12, 12, 0.123)" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                <span class="red-600-fg">Booking </span>
-            </div>
-             <div style="color: rgb(14, 60, 79);" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                <span class="blue-600-fg">Unbooking </span>
+
+        <div class="info-badge-top p-12 border-bottom">
+            <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+
+                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span class="green-600-fg"> IP </span>
+                </div>
+
+                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span class="orange-600-fg">OP
+                    </span>
+                </div>
+                <!-- <div style="color: rgba(39, 12, 12, 0.123)" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                    <span class="red-600-fg">Booking </span>
+                </div>
+                <div style="color: rgb(14, 60, 79);" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                    <span class="blue-600-fg">Unbooking </span>
+                </div> -->
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                    <span>Request Accepted </span>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill purple-600 s-16">circle</mat-icon>
+                    <span>Reservation PostPone</span>
+                </div>
             </div>
         </div>
-    </div>
-    <ng-template #actionsTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP"
-                                class="pill green-600 s-16">circle</mat-icon>
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
 
-                            <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP"
-                                class="pill orange-600 s-16">circle</mat-icon>
-                        </div>
-                    </ng-template>
-                    <ng-template #actionsTemplate1 let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.surgeryTypeId=='2'" matTooltip="Emergency"
-                                class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
 
-                            <mat-icon *ngIf="element.surgeryTypeId=='1'" matTooltip="Normal"
-                                class="pill blue-600 s-16">circle</mat-icon>
-                        </div>
-                    </ng-template>
-<ng-template #actionButtonTemplate let-element>
+        <ng-template #actionsTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
+                    class="pill blue-600 s-16 ">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate2 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isNewRecord == 1 ; else noPostpone" matTooltip="Reservation PostPone"
+                    class="pill purple-600 s-16 ">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <!-- Button 1: Edit Patient Registration  -->
-                <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                <button mat-icon-button matTooltip="Edit Reservation" (click)="OnEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <!-- Button 2: Print Registration  -->
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
                     <mat-icon> print</mat-icon>
                 </button>
 
-               <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
-                <mat-icon> cancel</mat-icon>
-  
-            </button>
+                <button mat-icon-button matTooltip="OT Reservation Date Change" (click)="tOTBookingDateChange(element)">
+                    <mat-icon>date_range</mat-icon>
+                </button>
 
-            <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-            *ngIf="element.isCancelled==false" [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
-                <mat-icon> cancel</mat-icon>
-            </button> -->
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                    <mat-icon> cancel</mat-icon>
+                </button>
+
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
-                    
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
-                    formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                    [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
-                  
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
                     <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"
-                        (input)="onChangeFirst()"/>
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -104,9 +114,8 @@
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
                         <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="FirstName" (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('FirstName')">
+                            formControlName="FirstName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
@@ -114,9 +123,8 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()"/>
-                        <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="Clearfilter('LastName')">
+                            formControlName="LastName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
