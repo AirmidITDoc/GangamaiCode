@@ -27,13 +27,7 @@
             <form [formGroup]="reservationForm">
                 <div class="modal-card-container">
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
-                        <!-- <div class="radio-container">
-                                        <mat-radio-group aria-label="Select an option" formControlName="opIpType"
-                                            name="opIpType" (change)="onChangeReg($event)">
-                                            <mat-radio-button value="registration">OP </mat-radio-button>
-                                            <mat-radio-button value="registrered">IP</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div> -->
+
                         <div class="radio-container">
                             <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm"
                                 formControlName="opIpType" name="opIpType" (change)="onChangeReg($event)"
@@ -43,16 +37,6 @@
                             </mat-radio-group>
 
                         </div>
-                        <!-- <div class="input-container gap-8" fxFlex>
-
-                            <airmid-autocomplete lbl="opIpId" [formGroup]="reservationForm" formControlName="opIpId"
-                                placeholderText="Op-RegNo/First Name/Last Name/Mobile No"
-                                label="Search Op-RegNo / First Name / Last Name / Mobile No"
-                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjOT($event)"
-                                ValueField="admissionID" TextField="formattedText">
-                            </airmid-autocomplete>
-
-                        </div> -->
 
                         <div class="input-container gap-8" fxFlex>
 
@@ -123,7 +107,8 @@
                                                             <span class="patient-col-key">Age
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
+                                                            <span
+                                                                class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
                                                                 | {{vGenderName}}</span>
                                                         </div>
                                                         <div class="patient-col">
@@ -198,14 +183,16 @@
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
                                         <mat-label>OP Start Time</mat-label>
-                                        <input matInput type="time" formControlName="opstartTime" (change)="onChangeTimeStart($event)">
+                                        <input matInput type="time" formControlName="opstartTime"
+                                            (change)="onChangeTimeStart($event)">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
                                         <mat-label>OP End Time</mat-label>
-                                        <input matInput type="time" formControlName="opendTime" (change)="onChangeTimeEnd($event)">
+                                        <input matInput type="time" formControlName="opendTime"
+                                            (change)="onChangeTimeEnd($event)">
                                     </mat-form-field>
                                 </div>
 
@@ -233,15 +220,12 @@
                             </div>
                             <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                                 <airmid-dropdown label="Anathesia doctor 1" formControlName="anestheticsDr"
-                                    [formGroup]="reservationForm" [value]="registerObj?.anestheticsDrID"
-                                   
-                                    [mode]="autocompleteModeRefDoctor">
+                                    [formGroup]="reservationForm" [mode]="autocompleteModeRefDoctor">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">
                                 <airmid-dropdown label="Anathesia doctor 2" formControlName="anestheticsDr1"
-                                    [formGroup]="reservationForm" [value]="registerObj?.anestheticsDrID1"
-                                    [mode]="autocompleteModeRefDoctor">
+                                    [formGroup]="reservationForm" [mode]="autocompleteModeRefDoctor">
                                 </airmid-dropdown>
                             </div>
                             <div fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="10%">

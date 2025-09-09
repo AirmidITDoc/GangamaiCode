@@ -36,45 +36,46 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SharedModule } from '../shared/shared.module';
 import { OTManagementServiceService } from './ot-management-service.service';
 
-
-
-// otmanagement/listofreservation
-
-const approutes : Routes =[
+const approutes: Routes = [
   {
     path: "listofreservation",
     loadChildren: () =>
-    import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
-       
-},
-// {
-//   path: "endoscopylist",
-//   loadChildren: () =>
-//   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
-     
-// },
-{
-  path: "otrequest",
-  loadChildren: () =>
-  import("./ot-request/ot-request.module").then((m) => m.OtRequestModule),
-     
-},
-{
-  path: "cathlablist",
-  loadChildren: () =>
-  import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
-     
-},
-{
-  path:"otnotes",
-  loadChildren: () =>
-    import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
-},
-{
-  path:"endoscopylist",
-  loadChildren: () =>
-  import("./Endoscopy/endoscopy/endoscopy.module").then((m) => m.EndoscopyModule),
-}
+      import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+
+  },
+  // {
+  //   path: "endoscopylist",
+  //   loadChildren: () =>
+  //   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+
+  // },
+  {
+    path: "otrequest",
+    loadChildren: () =>
+      import("./ot-request/ot-request.module").then((m) => m.OtRequestModule),
+
+  },
+  {
+    path: "cathlablist",
+    loadChildren: () =>
+      import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
+
+  },
+  {
+    path: "otnotes",
+    loadChildren: () =>
+      import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
+  },
+  {
+    path: "endoscopylist",
+    loadChildren: () =>
+      import("./Endoscopy/endoscopy/endoscopy.module").then((m) => m.EndoscopyModule),
+  },
+  {
+    path: "otconsents",
+    loadChildren: () =>
+      import("./ot-consents/ot-consents.module").then((m) => m.OtConsentsModule),
+  }
 ];
 
 @NgModule({
@@ -112,7 +113,7 @@ const approutes : Routes =[
     SharedModule,
     MatStepperModule,
     NgxMatSelectSearchModule,
-    MatDatepickerModule ,
+    MatDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot(),
     MatTooltipModule,
     SharedModule,
@@ -122,9 +123,9 @@ const approutes : Routes =[
     //  RichTextEditorModule,
     //  DateTimePickerModule,
     MatIconModule,
-  RouterModule.forChild(approutes)
+    RouterModule.forChild(approutes)
   ],
-   providers:[OTManagementServiceService
-   ]
+  providers: [OTManagementServiceService
+  ]
 })
 export class OTManagementModule { }

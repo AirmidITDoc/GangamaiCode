@@ -48,29 +48,19 @@ export class NewReservationComponent implements OnInit {
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes";
 
-  // vClassId: any = 0;
   vRegNo: any;
   vPatientName: any;
-  //vAdmissionDate: any;
   vOPDNo: any;
   vTariffName: any;
   vCompanyName: any;
   vDoctorName: any;
-  //vRoomName: any;
-  //vBedName: any;
   vAge: any;
   vGenderName: any;
-  //vAdmissionTime: any;
   vAgeMonth: any;
   vAgeDay: any;
   vDepartment: any;
   vMobNo: any;
-  //vPatientType: any;
-  //vDOA: any;
-  //vstoreId: any = '';
-  //vAdmissionID: any;
   vIPDNo: any;
-
 
   constructor(public _OtReservationService: OtReservationService,
     public dialogRef: MatDialogRef<NewReservationComponent>,
@@ -83,7 +73,6 @@ export class NewReservationComponent implements OnInit {
     private _matDialog: MatDialog,
     public toastr: ToastrService) { }
 
-
   ngOnInit(): void {
     this.reservationForm = this._OtReservationService.createReservationForm();
     this.reservationForm.markAllAsTouched();
@@ -91,28 +80,6 @@ export class NewReservationComponent implements OnInit {
     this.tOtbookingRequestsForm = this._OtReservationService.tOtbookingRequestsForm();
 
     this.requestArray.push(this.createRequestsForm());
-
-
-    if (this.registerObj?.opstartTime)
-      (this.registerObj?.opendTime)
-    {
-      const date = new Date(this.registerObj.opstartTime);
-      if (!isNaN(date.getTime())) {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-
-        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
-
-        setTimeout(() => {
-          this.reservationForm.get('opstartTime')?.setValue(formattedTime);
-          this.reservationForm.get('opendTime')?.setValue(formattedTime);
-        });
-
-        console.log("Raw from backend:", this.registerObj.otRequestTime);
-        console.log("Formatted:", formattedTime);
-        console.log("Control value after patch:", this.reservationForm.get('opstartTime')?.value);
-      }
-    }
 
     if ((this.data?.otreservationId) > 0) {
       this.registerObj = this.data
@@ -122,12 +89,16 @@ export class NewReservationComponent implements OnInit {
       this.vIPDNo = this.registerObj.ipdNo
       this.vPatientName = this.registerObj.patientName
       this.vAge = this.registerObj.ageYear
+      this.vAgeMonth = this.registerObj.ageMonth
+      this.vAgeDay = this.registerObj.ageDay
       this.vDepartment = this.registerObj.departmentName
       this.vMobNo = this.registerObj.mobileNo
       this.vDoctorName = this.registerObj.doctorName
       this.vTariffName = this.registerObj.tariffName
       this.vCompanyName = this.registerObj.companyName
       this.votbookingId = this.registerObj.otBookingId
+      this.opIpId = this.registerObj.opIpId
+      this.vInstruction = this.registerObj.instruction
 
       if (this.registerObj.opIpType == 0) {
         this.vSelectedOption = "OP"
@@ -135,11 +106,40 @@ export class NewReservationComponent implements OnInit {
       else {
         this.vSelectedOption = "IP"
       }
-
-      console.log(this.registerObj)
-      //this.isActive=this.data.isActive
       this.reservationForm.patchValue(this.registerObj);
+      this.reservationForm.get("anestheticsDr")?.setValue(this.registerObj?.anestheticsDrID)
+      this.reservationForm.get("anestheticsDr1")?.setValue(this.registerObj?.anestheticsDrID1)
+
     }
+
+    if (this.registerObj?.opstartTime) {
+      const date = new Date(this.registerObj.opstartTime);
+      if (!isNaN(date.getTime())) {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+
+        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+        setTimeout(() => {
+          this.reservationForm.get('opstartTime')?.setValue(formattedTime);
+        });
+      }
+    }
+
+    if (this.registerObj?.opendTime) {
+      const date = new Date(this.registerObj.opendTime);
+      if (!isNaN(date.getTime())) {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+
+        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+        setTimeout(() => {
+          this.reservationForm.get('opendTime')?.setValue(formattedTime);
+        });
+      }
+    }
+
     this.reservationForm.get("this.isCancelledDate")?.setValue('1900-01-01')
   }
 
@@ -194,50 +194,35 @@ export class NewReservationComponent implements OnInit {
     this.patientInfoReset();
   }
   getSelectedObjIP(obj) {
-
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vDepartment = obj.departmentName
-      //   this.vAdmissionDate = obj.admissionDate
-      //   this.vAdmissionTime = obj.admissionTime
       this.vIPDNo = obj.ipdNo
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
-      //   this.vRefDocName = obj.refDocName
-      //   this.vRoomName = obj.roomName
-      //   this.vBedName = obj.bedName
-      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-      //   this.vDOA = obj.admissionDate
       this.opIpId = obj.admissionID;
       this.vMobNo = obj.mobileNo;
-
     }
   }
-  getSelectedObjOP(obj) {
 
+  getSelectedObjOP(obj) {
     if ((obj.regId ?? 0) > 0) {
       console.log("Visit Patient:", obj)
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vDepartment = obj.departmentName
-      //   this.vAdmissionDate = obj.admissionDate
-      //   this.vAdmissionTime = obj.admissionTime
       this.vOPDNo = obj.opdNo
       this.vAge = obj.age
       this.vAgeMonth = obj.ageMonth
       this.vAgeDay = obj.ageDay
       this.vGenderName = obj.genderName
-      //   this.vRefDocName = obj.refDocName
-      //   this.vRoomName = obj.roomName
-      //   this.vBedName = obj.bedName
-      //   this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       let nameField = obj.formattedText;
@@ -245,15 +230,18 @@ export class NewReservationComponent implements OnInit {
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
       this.vMobNo = obj.mobileNo;
-
     }
   }
+
+  opstartTime: any;
+  opendTime: any;
   onChangeTimeStart(event: any) {
     let time = event.target.value;
     if (time && time.length >= 5) {
       time = time.substring(0, 5);
     }
-    console.log("Time changed:", time); // "11:51"
+    console.log("Time changed:", time); // "11:51"    
+    this.opstartTime = time
     this.reservationForm.get('opstartTime')?.setValue(time, { emitEvent: false });
   }
 
@@ -263,14 +251,21 @@ export class NewReservationComponent implements OnInit {
       time = time.substring(0, 5);
     }
     console.log("Time changed:", time); // "11:51"
+    this.opendTime = time
     this.reservationForm.get('opendTime')?.setValue(time, { emitEvent: false });
   }
 
   onSubmit() {
+    let opdate = this.datePipe.transform(this.reservationForm.get('opdate')?.value,'yyyy-MM-dd');
+    const combinedDateStartTime = `${opdate}T${this.opstartTime}:00`;
+    const combinedDateEndTime = `${opdate}T${this.opendTime}:00`;
+
     this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
     this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
+    this.opstartTime = this.reservationForm.get('opstartTime')?.setValue(combinedDateStartTime);
+    this.opendTime = this.reservationForm.get('opendTime')?.setValue(combinedDateEndTime);
     this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.reservationForm.get('opdate').value, 'yyyy-MM-dd'));
-    this.requestArray.at(0).get('otbookingId')?.setValue(this.votbookingId ?? 0);
+    this.requestArray.at(0).get('otbookingId')?.setValue(Number(this.votbookingId ?? 0));
     this.reservationForm.get('opIpId').setValue(this.opIpId);
 
     if (!this.reservationForm.invalid) {

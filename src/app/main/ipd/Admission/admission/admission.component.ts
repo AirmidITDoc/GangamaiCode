@@ -119,16 +119,16 @@ export class AdmissionComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
     this.myFilterform = this._AdmissionService.filterForm();
     this.GetAdmissiondetail()
-   // menu Button List
-   this.menuActions.push("Bill");
-   this.menuActions.push("Bed Transfer");
-   this.menuActions.push("Discharge");
-   this.menuActions.push("MLC Update");
-   this.menuActions.push("Sub TPA Company");
-   this.menuActions.push("Discharge SummarY");
-   this.menuActions.push("Refund Of Bill");
-   this.menuActions.push("Refund Of Advance");
-    
+    // menu Button List
+    this.menuActions.push("Bill");
+    this.menuActions.push("Bed Transfer");
+    this.menuActions.push("Discharge");
+    this.menuActions.push("MLC Update");
+    this.menuActions.push("Sub TPA Company");
+    this.menuActions.push("Discharge SummarY");
+    this.menuActions.push("Refund Of Bill");
+    this.menuActions.push("Refund Of Advance");
+
   }
 
 
@@ -151,10 +151,10 @@ export class AdmissionComponent implements OnInit {
   allcolumns = [
     { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
-   
+
     { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
-   
-   
+
+
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
@@ -164,8 +164,8 @@ export class AdmissionComponent implements OnInit {
     { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14, width: 170 },
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' , width: 170 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120},
+    { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
     {
@@ -173,16 +173,16 @@ export class AdmissionComponent implements OnInit {
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
-  allFilters=[{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue:"", opType: OperatorComparer.Equals },
-    { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
-    { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
-       ]
+  allFilters = [{ fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+  { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+  { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+  { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
+  { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+  { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+  { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals }
+  ]
 
   gridConfig: gridModel = {
     apiUrl: "Admission/AdmissionList",
@@ -190,7 +190,7 @@ export class AdmissionComponent implements OnInit {
     sortField: "AdmissionId",
     sortOrder: 1,
     filters: this.allFilters,
-       row: 25
+    row: 25
   }
 
   constructor(public _AdmissionService: AdmissionService,
@@ -207,7 +207,7 @@ export class AdmissionComponent implements OnInit {
     private commonService: PrintserviceService,
   ) { }
 
- 
+
   Admissiondetail(data) {
     this.Vtotalcount = 0;
     this.VNewcount = 0;
@@ -277,7 +277,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   OngetRecord(element, m) {
-    
+
     if (m == "Bill") {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
@@ -400,13 +400,13 @@ export class AdmissionComponent implements OnInit {
 
   onChangeFirst() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900",
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
-    this.f_name = this.myFilterform.get('FirstName').value + "%"
+      this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900",
+      this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.m_name = this.myFilterform.get('MiddleName').value + "%"
     this.regNo = this.myFilterform.get('RegNo').value || "0"
     this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
-    this.DoctorId= this.myFilterform.get('searchDoctorId').value || "0"
+    this.DoctorId = this.myFilterform.get('searchDoctorId').value || "0"
 
     this.getfilterdata();
   }
@@ -416,25 +416,25 @@ export class AdmissionComponent implements OnInit {
       apiUrl: "Admission/AdmissionList",
       columnsList: this.allcolumns,
       sortField: "AdmissionId",
-        sortOrder: 0,
-        filters:  [
-          { fieldName: "F_Name", fieldValue:  this.f_name, opType: OperatorComparer.Contains },
-          { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-          { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-          { fieldName: "Doctor_Id", fieldValue:this.DoctorId, opType: OperatorComparer.Equals },
-          { fieldName: "From_Dt", fieldValue: this.fromDate ||  "1900-01-01", opType: OperatorComparer.Equals },
-          { fieldName: "To_Dt", fieldValue:this.toDate ||  "2100-12-31", opType: OperatorComparer.Equals },
-          { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "M_Name", fieldValue:  this.m_name, opType: OperatorComparer.Equals },
-          { fieldName: "IPNo", fieldValue:  this.IPDNo, opType: OperatorComparer.Equals }
-        
-            ],
-        row: 25
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.Equals },
+        { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+        { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+
+      ],
+      row: 25
     }
     console.log(this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
- this.GetAdmissiondetail()
+    this.GetAdmissiondetail()
   }
 
   Clearfilter(event) {
@@ -445,8 +445,8 @@ export class AdmissionComponent implements OnInit {
       if (event == 'LastName')
         this.myFilterform.get('LastName').setValue("")
       else
-      if (event == 'MiddleName')
-        this.myFilterform.get('MiddleName').setValue("")
+        if (event == 'MiddleName')
+          this.myFilterform.get('MiddleName').setValue("")
     if (event == 'RegNo')
       this.myFilterform.get('RegNo').setValue("")
     if (event == 'IPDNo')
@@ -457,13 +457,13 @@ export class AdmissionComponent implements OnInit {
 
   ListView(value) {
     console.log(value)
-     if(value.value!==0)
-        this.DoctorId=String(value.value)
+    if (value.value !== 0)
+      this.DoctorId = String(value.value)
     else
-    this.DoctorId="0"
+      this.DoctorId = "0"
 
     this.onChangeFirst();
-}
+  }
 
   getAdmittedPatientListview() {
     setTimeout(() => {
@@ -502,7 +502,8 @@ export class AdmissionComponent implements OnInit {
               base64: res["base64"] as string,
               title: "IP Admission List  Viewer"
 
-            }});
+            }
+          });
 
         matDialog.afterClosed().subscribe(result => {
 
@@ -521,10 +522,10 @@ export class AdmissionComponent implements OnInit {
     this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
   }
 
-   OnPrintPatientIcard(element) {
-        console.log('Third action clicked for:', element);
-        this.commonService.Onprint("AdmissionId", element.admissionId, "IPStickerPrint");
-    }
+  OnPrintPatientIcard(element) {
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("AdmissionId", element.admissionId, "IPStickerPrint");
+  }
 
   NewMLc(contact) {
 
@@ -562,14 +563,14 @@ export class AdmissionComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
     });
-   
+
     this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
-    this.onChangeFirst() 
+    this.onChangeFirst()
     console.log(this.gridConfig)
     this.grid.bindGridData();
-     this.GetAdmissiondetail()
+    this.GetAdmissiondetail()
   }
   getEditAdmission(row) {
 
@@ -588,9 +589,9 @@ export class AdmissionComponent implements OnInit {
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
-      this.onChangeFirst() 
+      this.onChangeFirst()
     });
-     
+
   }
 
   getEditCompany(row) {
@@ -677,15 +678,15 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
-        keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 
   dateStyle?: string = 'Date';
   OnChangeDobType(e) {
@@ -719,117 +720,119 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      
+
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
 
-      this.onChangeFirst() 
-     
+      this.onChangeFirst()
+
     });
-   
+
   }
 
   //
-   dataSource = new MatTableDataSource<AdmissionPersonlModel>();
-    GetAdmissiondetail() {
-debugger
-console.log(this.myFilterform.value)
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-        this.Vtotalcount = 0;
-        this.VNewcount = 0;
-        this.VFollowupcount = 0;
-        this.VBillcount = 0;
-        // this.VCrossConscount = 0;
-        //    debugger
-        let data =
+  dataSource = new MatTableDataSource<AdmissionPersonlModel>();
+  GetAdmissiondetail() {
+    debugger
+    console.log(this.myFilterform.value)
+    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+    this.Vtotalcount = 0;
+    this.VNewcount = 0;
+    this.VFollowupcount = 0;
+    this.VBillcount = 0;
+    // this.VCrossConscount = 0;
+    //    debugger
+    let data =
+    {
+      "first": 0,
+      "rows": 150,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
         {
-            "first": 0,
-            "rows": 150,
-            "sortField": "AdmissionId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "F_Name",
-                    "fieldValue": String(this.f_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "L_Name",
-                    "fieldValue": String(this.l_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "Reg_No",
-                    "fieldValue": String(this.regNo),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Doctor_Id",
-                    "fieldValue": String(this.DoctorId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "From_Dt",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "To_Dt",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Admtd_Dschrgd_All",
-                    "fieldValue": "0",
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "M_Name",
-                    "fieldValue":  String(this.m_name),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "IPNo",
-                    "fieldValue": String(this.IPDNo),
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
+          "fieldName": "F_Name",
+          "fieldValue": String(this.f_name),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "L_Name",
+          "fieldValue": String(this.l_name),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "Reg_No",
+          "fieldValue": String(this.regNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Doctor_Id",
+          "fieldValue": String(this.DoctorId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "From_Dt",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "To_Dt",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "Admtd_Dschrgd_All",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "M_Name",
+          "fieldValue": String(this.m_name),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "IPNo",
+          "fieldValue": String(this.IPDNo),
+          "opType": "Equals"
         }
-        console.log(data)
-        this._AdmissionService.getadmissionlist(data).subscribe((response) => {
-            this.dataSource.data = response.data;
-            console.log(response)
-            if (this.dataSource.data.length > 0) {
-                this.VAdmissioncount = this.dataSource.data.length
-                this.dataSource.data.forEach(element => {
-                  console.log(element)
-                    // if (element.patientOldNew == 1) {
-                    //     this.VNewcount = this.VNewcount + 1;
-                    // }
-                    // else 
-                      
-                      if (element.isOpToIpconv == 1) {
-                        this.VOPtoIPcount = this.VOPtoIPcount + 1;
-                    }
-                    if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
-                        this.VBillcount = this.VBillcount + 1;
-                    }
-                    if (element.isDischarged == 1) {
-                        this.vIsDischarg = this.vIsDischarg + 1;
-                    }
-                });
-                console.log(this.dataSource.data)
-            }
-        });
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
     }
+    console.log(data)
+    this._AdmissionService.getadmissionlist(data).subscribe((response) => {
+      this.dataSource.data = response.data;
+      console.log("akakak:", response)
+      if (this.dataSource.data.length > 0) {
+        this.VAdmissioncount = this.dataSource.data.length
+        this.dataSource.data.forEach(element => {
+          console.log(element)
+          // if (element.patientOldNew == 1) {
+          //     this.VNewcount = this.VNewcount + 1;
+          // }
+          // else 
+
+          if (element.admissionType == 1) {
+            this.VOPtoIPcount=this.VOPtoIPcount + 1
+          }
+          if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
+            this.VBillcount = this.VBillcount + 1;
+          }
+          if (element.isDischarged == 1) {
+            this.vIsDischarg = this.vIsDischarg + 1;
+          }
+        });
+        console.log(this.dataSource.data)
+      }
+    });
+  }
 
 }
 
@@ -1039,8 +1042,8 @@ export class AdmissionPersonlModel {
   doctorName: any;
   genderName: any;
   opD_IPD_ID: any;
-  opdipdtype:any;
-  opdipdid:any;
+  opdipdtype: any;
+  opdipdid: any;
   pathReportId: any;
   adm_Visit_docId: any;
   visit_Adm_ID: any;
@@ -1048,14 +1051,14 @@ export class AdmissionPersonlModel {
   sampleCollectionTime: any;
   isSampleCollection: any;
   isTemplateTest: any;
-  isDischarge:any;
-  HospitalID:any;
-  hospitalID:any;
-  emgId:any;
-isOpToIpconv:any;
-isDischarged:any;
-isBillGenerated:any;
-
+  isDischarge: any;
+  HospitalID: any;
+  hospitalID: any;
+  emgId: any;
+  isOpToIpconv: any;
+  isDischarged: any;
+  isBillGenerated: any;
+admissionType:any;
   /**
 * Constructor
 *
@@ -1242,7 +1245,7 @@ isBillGenerated:any;
       this.admissionId = AdmissionPersonl.admissionId || 0
       this.dischargeTime = AdmissionPersonl.dischargeTime || ''
       this.patientTypeId = AdmissionPersonl.patientTypeId || ''
-      
+
       this.genderId = AdmissionPersonl.genderId || ''
       this.oP_IP_No = AdmissionPersonl.oP_IP_No || ''
       this.doctorName = AdmissionPersonl.doctorName || ''
@@ -1255,17 +1258,18 @@ isBillGenerated:any;
       this.sampleCollectionTime = AdmissionPersonl.sampleCollectionTime || ''
       this.isSampleCollection = AdmissionPersonl.isSampleCollection || ''
       this.isTemplateTest = AdmissionPersonl.isTemplateTest || ''
-      this.opdipdtype=AdmissionPersonl.opdipdtype || ''
-      this.opdipdid=AdmissionPersonl.opdipdid || ''
-      this.isDischarge=AdmissionPersonl.isDischarge 
-      this.HospitalID=AdmissionPersonl.HospitalID || 1
-      this.hospitalID=AdmissionPersonl.hospitalID || 1
+      this.opdipdtype = AdmissionPersonl.opdipdtype || ''
+      this.opdipdid = AdmissionPersonl.opdipdid || ''
+      this.isDischarge = AdmissionPersonl.isDischarge
+      this.HospitalID = AdmissionPersonl.HospitalID || 1
+      this.hospitalID = AdmissionPersonl.hospitalID || 1
       this.doctorId = AdmissionPersonl.doctorId || 0
       this.tariffid = AdmissionPersonl.tariffid || 0
       this.emgId = AdmissionPersonl.emgId || 0
-       this.isBillGenerated = AdmissionPersonl.isBillGenerated || 0
+      this.isBillGenerated = AdmissionPersonl.isBillGenerated || 0
       this.isDischarged = AdmissionPersonl.isDischarged || 0
       this.isOpToIpconv = AdmissionPersonl.isOpToIpconv || 0
+      this.admissionType = AdmissionPersonl.admissionType || 0
     }
   }
 }
@@ -1337,23 +1341,23 @@ export class RegInsert {
   AdmissionID: any;
   VisitId: any;
   isSeniorCitizen: boolean
-  emgContactPersonName:any;
-  emgRelationshipId:any;
-  emgMobileNo:any;
-  emgLandlineNo:any;
-  engAddress:any;
-  emgAadharCardNo:any;
-  emgDrivingLicenceNo:any;
-  medTourismNationalityId:any;
-  medTourismPassportNo:any;
-  medTourismVisaIssueDate:Date;
-  medTourismCitizenship:any;  
-  medTourismPortOfEntry:any;  
-  medTourismResidentialAddress:any;
-  medTourismOfficeWorkAddress:any;
-  medTourismVisaValidityDate:Date;
-  medTourismDateOfEntry:Date;
-  emgId:any;
+  emgContactPersonName: any;
+  emgRelationshipId: any;
+  emgMobileNo: any;
+  emgLandlineNo: any;
+  engAddress: any;
+  emgAadharCardNo: any;
+  emgDrivingLicenceNo: any;
+  medTourismNationalityId: any;
+  medTourismPassportNo: any;
+  medTourismVisaIssueDate: Date;
+  medTourismCitizenship: any;
+  medTourismPortOfEntry: any;
+  medTourismResidentialAddress: any;
+  medTourismOfficeWorkAddress: any;
+  medTourismVisaValidityDate: Date;
+  medTourismDateOfEntry: Date;
+  emgId: any;
   // addedBy:any;
   // updatedBy:any;
 

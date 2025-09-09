@@ -46,18 +46,21 @@ export class OTReservationComponent implements OnInit {
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'isNewRecord')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
     }
+
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "Date", key: "opdate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
-        { heading: "OPDate&Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "Date-Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+        { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -68,20 +71,13 @@ export class OTReservationComponent implements OnInit {
         { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AnesthType", key: "anesthTypeId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "Instruction", key: "instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-
-
+        { heading: "UserName", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "IsCancelledDate", key: "isCancelledDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
+        { heading: "Reasons", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-
-        // {
-        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
-        //         {action: gridActions.edit, callback: (data: any) => {
-        //                 this.onEdit(data);
-        //                 this.grid.bindGridData();
-        //             }},]
-        // }
     ];
 
     allFilters = [
@@ -100,7 +96,6 @@ export class OTReservationComponent implements OnInit {
         filters: this.allFilters
     }
 
-
     constructor(
         public _OtReservationService: OtReservationService,
         public toastr: ToastrService, public _matDialog: MatDialog,
@@ -111,9 +106,8 @@ export class OTReservationComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
+        this.myFilterform = this._OtReservationService.createSearchForm();
     }
-
 
     onChangeStartDate(value) {
         this.gridConfig.filters[1].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
@@ -121,20 +115,17 @@ export class OTReservationComponent implements OnInit {
     onChangeEndDate(value) {
         this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
+
     onNewotrequest(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         let that = this;
         const dialogRef = this._matDialog.open(NewReservationComponent,
             {
-                //   maxWidth: "90vw",
-                //   maxHeight: '90vh',
-                //   height:'90%',
-                //   width: '90%',
                 maxWidth: "90vw",
                 height: '90%',
                 width: '90%',
-
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
@@ -143,8 +134,25 @@ export class OTReservationComponent implements OnInit {
         });
     }
 
+    tOTBookingDateChange(contact) {
+        // const dialogRef = this._matDialog.open(OTPopUpComponent,
+        //     {
+        //         maxWidth: "40%",
+        //         height: '50%',
+        //         width: '100%',
+        //         data: {
+        //             Obj: contact,
+        //             FormName: 'OT Booking Date'
+        //         }
+        //     });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         this.grid.bindGridData();
+        //     }
+        // });
+    }
 
-    OnEditRegistration(row) {
+    OnEdit(row) {
         this._OtReservationService.populateForm(row);
         const dialogRef = this._matDialog.open(
             NewReservationComponent,
@@ -200,15 +208,14 @@ export class OTReservationComponent implements OnInit {
     }
 
     onChangeFirst() {
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
         this.FirstName = this.myFilterform.get('FirstName').value + "%"
         this.LastName = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.getfilterdata();
     }
     getfilterdata() {
-        debugger
         this.gridConfig = {
             apiUrl: "OTReservation/OTReservationlist",
             columnsList: this.allcolumns,
@@ -219,7 +226,7 @@ export class OTReservationComponent implements OnInit {
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
                 { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
-                { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
 
             ],
             row: 25

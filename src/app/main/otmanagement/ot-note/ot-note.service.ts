@@ -19,21 +19,13 @@ export class OtNoteService {
     // this.OTNoteform = this.createOtNoteForm();
   }
 
-  createReservationForm(): FormGroup {
+  createSearchForm(): FormGroup {
     return this._formBuilder.group({
-
-      surgeonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-      surgeonId1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-      anestheticsDr: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-      anestheticsDr1: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-      surgeryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-      ottypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
+      LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
+      RegNo: []
     });
   }
 
@@ -46,17 +38,17 @@ export class OtNoteService {
       opIpType: ["OP"],
       surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       surgeonId1: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeonId2: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      surgeonId2: [0],
       anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      anestheticsDr1: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      anestheticsDr2: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      anestheticsDr1: [0],
+      anestheticsDr2: [0],
       description: [''],
-      assistant:[''],
-      bloodLoss:[''],
-      sorubNurse:[''],
-      histopathology:[''],
-      bostOPOrders:[''],
-      complicationMode:[''],
+      assistant: [''],
+      bloodLoss: [''],
+      sorubNurse: [''],
+      histopathology: [''],
+      bostOPOrders: [''],
+      complicationMode: [''],
 
       Duration: '',
       OTTableId: '',
@@ -79,5 +71,9 @@ export class OtNoteService {
       RegID: '',
       PatientType: ['IP'],
     });
+  }
+
+  public getReportView(Param) {
+    return this._httpClient.PostData("Report/ViewReport", Param);
   }
 }

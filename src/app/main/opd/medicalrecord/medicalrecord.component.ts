@@ -232,6 +232,7 @@ export class MedicalrecordComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         that.grid.bindGridData();
+        this.GetAppointdetail();
       }
     });
   }
@@ -470,6 +471,7 @@ export class MedicalrecordComponent implements OnInit {
       //  debugger
       if (this.dataSource.data.length > 0) {
         this.Vtotalcount = this.dataSource.data.length
+        this.vEMRReady = 0;
         this.dataSource.data.forEach(element => {
           if (element.patientOldNew == 1) {
             this.VNewcount = this.VNewcount + 1;
@@ -484,7 +486,7 @@ export class MedicalrecordComponent implements OnInit {
             this.VCrossConscount = this.VCrossConscount + 1;
           }
           if (element.emrReady == 1) {
-            this.vEMRReady = this.vEMRReady + 1;
+            this.vEMRReady++;
           }
         });
         console.log(this.dataSource.data)
