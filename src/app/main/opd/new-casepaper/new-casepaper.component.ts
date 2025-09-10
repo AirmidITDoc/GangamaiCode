@@ -482,7 +482,7 @@ export class NewCasepaperComponent implements OnInit {
       qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
       totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
       [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isClosed: true,
+      isClosed: false,
       isEnglishOrIsMarathi: [true],
       chiefComplaint: [element.chiefComplaint ?? ''],
       diagnosis: [element.diagnosis ?? ''],
