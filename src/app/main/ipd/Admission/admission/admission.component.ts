@@ -1059,6 +1059,8 @@ export class AdmissionPersonlModel {
   isDischarged: any;
   isBillGenerated: any;
 admissionType:any;
+emgTime:any;
+refDoctorName:any;
   /**
 * Constructor
 *
@@ -1132,6 +1134,7 @@ admissionType:any;
       this.RelationshipName = AdmissionPersonl.RelationshipName || '';
 
       this.RefDoctorName = AdmissionPersonl.RefDoctorName || '';
+      this.refDoctorName = AdmissionPersonl.refDoctorName || '';
       this.AdmittedDoctor2 = AdmissionPersonl.AdmittedDoctor2 || 0;
       this.AdmittedDoctor1 = AdmissionPersonl.AdmittedDoctor1 || 0;
       this.BedName = AdmissionPersonl.BedName || '';
@@ -1270,6 +1273,7 @@ admissionType:any;
       this.isDischarged = AdmissionPersonl.isDischarged || 0
       this.isOpToIpconv = AdmissionPersonl.isOpToIpconv || 0
       this.admissionType = AdmissionPersonl.admissionType || 0
+      this.emgTime = AdmissionPersonl.emgTime || ''
     }
   }
 }

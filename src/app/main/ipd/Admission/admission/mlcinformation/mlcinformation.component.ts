@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { DatePipe } from '@angular/common';
@@ -11,12 +11,15 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { AdmissionPersonlModel } from '../admission.component';
 import { AdmissionService } from '../admission.service';
+import { fuseAnimations } from '@fuse/animations';
 
 
 @Component({
   selector: 'app-mlcinformation',
   templateUrl: './mlcinformation.component.html',
-  styleUrls: ['./mlcinformation.component.scss']
+  styleUrls: ['./mlcinformation.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class MLCInformationComponent implements OnInit {
 
@@ -26,6 +29,7 @@ export class MLCInformationComponent implements OnInit {
   Personaldata = new AdmissionPersonlModel({});
   registerObj = new MlcDetail({})
   AdmissionId: any;
+  EmgId: any;
   public value = new Date();
   date: string;
   dateValue: any = new Date().toISOString();
@@ -43,7 +47,7 @@ export class MLCInformationComponent implements OnInit {
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-     private _FormvalidationserviceService: FormvalidationserviceService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public toastr: ToastrService,
@@ -62,11 +66,23 @@ export class MLCInformationComponent implements OnInit {
     if (this.data) {
       this.Personaldata = this.data;
       this.AdmissionId = this.Personaldata.admissionId;
+      this.EmgId = this.Personaldata.emgId;
 
       if ((this.data?.admissionId ?? 0) > 0) {
         setTimeout(() => {
           this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
-            if (response.mlcid > 0)
+            if (response?.mlcid > 0)
+              this.registerObj = response;
+            console.log(this.registerObj)
+
+          });
+        }, 500);
+      }
+      // emergency patient
+      if ((this.data?.emgId ?? 0) > 0) {
+        setTimeout(() => {
+          this._AdmissionService.getMLCById(this.data.emgId).subscribe((response) => {
+            if (response?.mlcid > 0)
               this.registerObj = response;
             console.log(this.registerObj)
 
@@ -90,16 +106,16 @@ export class MLCInformationComponent implements OnInit {
     return this.formBuilder.group({
 
       mlcid: 0,
-      admissionId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       mlcno: ['', [Validators.minLength(10), Validators.maxLength(15),
-        Validators.required]],
+      Validators.required]],
       reportingDate: [(new Date()).toISOString()],
       reportingTime: ['', [
         Validators.required]],
       authorityName: ['', [
         Validators.required]],
-      buckleNo: ['',  [Validators.minLength(5), Validators.maxLength(7),
-        Validators.required]],
+      buckleNo: ['', [Validators.minLength(5), Validators.maxLength(7),
+      Validators.required]],
       policeStation: ['', [
         Validators.required]],
       // Given:"",
@@ -111,6 +127,7 @@ export class MLCInformationComponent implements OnInit {
   onSubmit() {
     console.log(this.MlcInfoFormGroup.value)
     this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
+    this.MlcInfoFormGroup.get('admissionId').setValue(this.EmgId ?? this.AdmissionId)
     if (!this.MlcInfoFormGroup.invalid) {
       this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
         this.toastr.success(response.message);
@@ -152,7 +169,7 @@ export class MLCInformationComponent implements OnInit {
       ]
     };
   }
-  getMLCdetailview(AdmissionId = 10) {
+  getMLCdetailview(AdmissionId) {
     this.commonService.Onprint("AdmissionID", AdmissionId, "IpMLCCasePaperPrint");
   }
 
