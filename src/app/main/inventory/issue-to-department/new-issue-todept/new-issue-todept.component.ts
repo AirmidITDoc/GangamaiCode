@@ -170,7 +170,7 @@ export class NewIssueTodeptComponent {
       this.vIndentId = this.data[0].indentId
       this.getIndentItemDetList()
     }
-
+  
   }
 
   get deptArray(): FormArray {
@@ -197,8 +197,8 @@ export class NewIssueTodeptComponent {
       "issue": this._formBuilder.group({
         "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "indentId": [this.vIndentId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "issueDate": [(new Date()).toISOString().split('T')[0]],
-        "issueTime": [(new Date()).toISOString()],
+        "issueDate":this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "issueTime": this.datePipe.transform(new Date(), 'shortTime'),
         "fromStoreId": [this.accountService.currentUserValue.user.storeId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -264,8 +264,8 @@ export class NewIssueTodeptComponent {
       "updateIndent": this._formBuilder.group({
         "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "indentId": [this.vIndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "issueDate": [(new Date()).toISOString().split('T')[0]],
-        "issueTime": [(new Date()).toISOString()],
+        "issueDate":  this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "issueTime":this.datePipe.transform(new Date(), 'shortTime'),
         "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "totalAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -521,13 +521,15 @@ export class NewIssueTodeptComponent {
     this._IssueToDep.getIndentItemDetList(vdata).subscribe(data => {
       this.dsSelectedIndentItemList.data = data.data as IndentItemDetList[];
       console.log(data.data)
-
-      // this.Charglist = this.dsSelectedIndentItemList.data;
+      this.dsSelectedIndentItemList.data.forEach((element) => {
+          this.AddIndentSelectedItem(element)
+        })
       this.dsSelectedIndentItemList.sort = this.sort;
       this.dsSelectedIndentItemList.paginator = this.paginator;
 
       this.sIsLoading = '';
     });
+
 
   }
 
@@ -570,13 +572,9 @@ export class NewIssueTodeptComponent {
       "StoreId": this.accountService.currentUserValue.user.storeId || 0
     }
 
-
     this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
       this.Itemchargeslist1 = draftdata as any;
-      // console.log(draftdata)
-      // console.log(this.Itemchargeslist1)
-      // console.log(this.Itemchargeslist1.length)
-
+    
       if (this.Itemchargeslist1.length == 0) {
         Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
@@ -615,7 +613,7 @@ export class NewIssueTodeptComponent {
 
 
         });
-        Swal.fire("Balance Qty is :", String(bal_qnt))
+        // Swal.fire("Balance Qty is :", String(bal_qnt))
       }
     });
   }
@@ -775,8 +773,8 @@ export class NewIssueTodeptComponent {
     });
 
     this.FinalIssueForm.get("issue.issueId").setValue(0)
-    this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-    this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
+    // this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    // this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
     this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
     this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
     this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
@@ -828,8 +826,8 @@ export class NewIssueTodeptComponent {
     });
 
     this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
-    this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-    this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
+    // this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    // this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
     this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
     this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
     this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)

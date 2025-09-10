@@ -71,36 +71,17 @@
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New CGSTPer</mat-label>
-                                    <input name="NewCGSTPer" formControlName="NewCGSTPer" type="text" OnlyNUmber
-                                        matInput required (keyup.enter)="focusNext('NewSGSTPer')" id="NewCGSTPer"
-                                        [(ngModel)]="vNewCGSTPer" (keyup)="calculationAmt()"
-                                        (keypress)="keyPressCharater($event)">
-                                </mat-form-field> -->
-
+                             
                                 <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
                                     [value]="vNewCGSTPer" (valueChange)="getchangegstper(1,$event,CGST)"  [type]="'number'" >
                                 </airmid-textbox>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New SGSTPer</mat-label>
-                                    <input name="NewSGSTPer" formControlName="NewSGSTPer" matInput required type="text"
-                                        OnlyNUmber id="NewSGSTPer" [(ngModel)]="vNewSGSTPer" (keyup)="calculationAmt()"
-                                        (keyup.enter)="focusNext('NewIGSTPer')" (keypress)="keyPressCharater($event)">
-                                </mat-form-field> -->
                                 <airmid-textbox label="New SGSTPer" formControlName="sgstper" #SGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
                                     [value]="vNewSGSTPer" (valueChange)="getchangegstper(2,$event,SGST)"   [type]="'number'" >
                                 </airmid-textbox>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New IGSTPer</mat-label>
-                                    <input name="NewIGSTPer" formControlName="NewIGSTPer" matInput required type="text"
-                                        OnlyNUmber [(ngModel)]="vNewIGSTPer" id="NewIGSTPer" (keyup)="calculationAmt()"
-                                        (keypress)="keyPressCharater($event)" (keyup.enter)="focusNext('Save')">
-                                </mat-form-field> -->
                                 <airmid-textbox label="New IGSTPer" formControlName="igstper" #IGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
                                     [value]="vNewIGSTPer" (valueChange)="getchangegstper(3,$event,IGST)"  [type]="'number'" >
@@ -111,11 +92,6 @@
                           <form [formGroup]="GSTAdjfinal">
                             <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Old GSTPer</mat-label>
-                                    <input name="OldTotalGSTPer" formControlName="OldTotalGSTPer" matInput required
-                                        type="text" OnlyNUmber [(ngModel)]="vOldTotalGSTPer" id="OldTotalGSTPer">
-                                </mat-form-field> -->
                                
                                  <airmid-textbox label="OldTotalGSTPer" formControlName="OldTotalGSTPer"
                                     [formGroup]="GSTAdjfinal" 
@@ -128,13 +104,7 @@
                                     [value]="vTotalGSTPer" [readonly]="true">
                                 </airmid-textbox>
 
-                                <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>New GSTPer</mat-label>
-                                    <input name="TotalGSTPer" formControlName="TotalGSTPer" matInput required
-                                        type="text" OnlyNUmber [(ngModel)]="vTotalGSTPer" id="TotalGSTPer">
-                                </mat-form-field> -->
-                              
-                                <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
+                            <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
                                     fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
 
                                     <button class="btn btn-primary" (click)="onSubmit()">Save</button>

@@ -225,7 +225,7 @@ export class IssueToDepartmentComponent implements OnInit {
                 { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
+                { fieldName: "IsClosed", fieldValue: this.Status, opType: OperatorComparer.Equals }
             ],
             row: 25
         }

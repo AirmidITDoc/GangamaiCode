@@ -5,7 +5,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { GRNFormModel, ToastType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 
@@ -78,6 +78,9 @@ export class GSTAdjustmentComponent implements OnInit {
       oldSgstper: ['', [Validators.required, Validators.min(0)]],
       oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       cgstper: ['', [Validators.required, this._FormvalidationserviceService.AllowDecimalNumberValidator(), Validators.min(0)]],
+   
+     
+      // cgstper: ['',  , [this.forbidSpecificValue(2.5)]],
       sgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       igstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       addedBy: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -91,6 +94,20 @@ export class GSTAdjustmentComponent implements OnInit {
 
     })
   }
+
+  onInputChange(event: any) {
+  if (event.target.value === '2.5') {
+    event.target.value = '';
+  }
+}
+// validateRate(value: any) {
+//   if (parseFloat(value) === 2.5) {
+//     this.showError = true;
+//     this.rate = null;   // clear value
+//   } else {
+//     this.showError = false;
+//   }
+// }
 
   gstflag = false
   getchangegstper(Id, rate, GSTTYP): void {
@@ -117,7 +134,7 @@ export class GSTAdjustmentComponent implements OnInit {
         }
        });
       console.log(this.gstflag)
-      
+      debugger
       if (!this.gstflag) {
         debugger
         this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
@@ -251,3 +268,9 @@ export class GSTAdjustmentComponent implements OnInit {
     this._matDialog.closeAll();
   }
 }
+
+// forbidSpecificValue(blocked: number) {
+//   return (control: AbstractControl) => {
+//     return parseFloat(control.value) === blocked ? { invalidValue: true } : null;
+//   };
+// }

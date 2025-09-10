@@ -149,7 +149,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
-                                                        (input)="getCellCalculation(contact,contact.Qty,1)" />
+                                                        (input)="getCellCalculation(contact,contact.Qty,1)" [min]="0" />
                                                 </mat-form-field>
 
                                             </mat-cell>
@@ -162,7 +162,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput type="number" OnlyNumber [(ngModel)]="contact.Qty"
-                                                        (input)="getCellCalculation(contact,contact.VerifyQuantity,2)" />
+                                                        (input)="getCellCalculation(contact,contact.VerifyQuantity,2)" [min]="0"/>
                                                 </mat-form-field>
 
                                             </mat-cell>
