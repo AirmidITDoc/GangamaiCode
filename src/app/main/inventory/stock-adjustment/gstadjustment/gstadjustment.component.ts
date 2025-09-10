@@ -77,12 +77,9 @@ export class GSTAdjustmentComponent implements OnInit {
       oldCgstper: ['', [Validators.required, Validators.min(0)]],
       oldSgstper: ['', [Validators.required, Validators.min(0)]],
       oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      cgstper: ['', [Validators.required, this._FormvalidationserviceService.AllowDecimalNumberValidator(), Validators.min(0)]],
-   
-     
-      // cgstper: ['',  , [this.forbidSpecificValue(2.5)]],
-      sgstper: ['', [Validators.required, Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      igstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstper: ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
+      sgstper:  ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
+      igstper:  ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
       addedBy: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
@@ -110,57 +107,57 @@ export class GSTAdjustmentComponent implements OnInit {
 // }
 
   gstflag = false
-  getchangegstper(Id, rate, GSTTYP): void {
+  // getchangegstper(Id, rate, GSTTYP): void {
 
-    console.log(Id)
-    const formValues = this.GSTAdjustment.getRawValue() as GRNFormModel;
-    const gstValues = [
-      { value: 2.5 },
-      { value: 6 },
-      { value: 9 },
-      { value: 14 }
-    ];
+  //   console.log(Id)
+  //   const formValues = this.GSTAdjustment.getRawValue() as GRNFormModel;
+  //   const gstValues = [
+  //     { value: 2.5 },
+  //     { value: 6 },
+  //     { value: 9 },
+  //     { value: 14 }
+  //   ];
     
-    const numericRate = parseFloat(rate);
-    if (!isNaN(numericRate) && numericRate >= 2.5) {
-      // const exists = gstValues.some(item => item.value === rate);
+  //   const numericRate = parseFloat(rate);
+  //   if (!isNaN(numericRate) && numericRate >= 2.5) {
+  //     // const exists = gstValues.some(item => item.value === rate);
 
-      gstValues.forEach(element => {
-        console.log(element)
-        debugger
-        if (element.value == rate){
-          this.gstflag = true
-          return;
-        }
-       });
-      console.log(this.gstflag)
-      debugger
-      if (!this.gstflag) {
-        debugger
-        this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-        this.gstflag = false
+  //     gstValues.forEach(element => {
+  //       console.log(element)
+  //       debugger
+  //       if (element.value == rate){
+  //         this.gstflag = true
+  //         return;
+  //       }
+  //      });
+  //     console.log(this.gstflag)
+  //     debugger
+  //     if (!this.gstflag) {
+  //       debugger
+  //       this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+  //       this.gstflag = false
 
-        if (Id == 1)
-          this.GSTAdjustment.get('cgstper').setValue(0);
-        else if (Id == 2)
-          this.GSTAdjustment.get('sgstper').setValue(0);
-        else
-          this.GSTAdjustment.get('igstper').setValue(0)
-        return;
-      } else {
-        const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
-        this.GSTAdjfinal.patchValue({
-          GST: GSTPer
-        });
-        this.calculationAmt();
-      }
-    }
-    else {
-      this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-      return;
-    }
+  //       if (Id == 1)
+  //         this.GSTAdjustment.get('cgstper').setValue(0);
+  //       else if (Id == 2)
+  //         this.GSTAdjustment.get('sgstper').setValue(0);
+  //       else
+  //         this.GSTAdjustment.get('igstper').setValue(0)
+  //       return;
+  //     } else {
+  //       const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+  //       this.GSTAdjfinal.patchValue({
+  //         GST: GSTPer
+  //       });
+  //       this.calculationAmt();
+  //     }
+  //   }
+  //   else {
+  //     this._StockAdjustment.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+  //     return;
+  //   }
 
-  }
+  // }
   calculationAmt() {
     this.vTotalGSTPer = (parseFloat(this.GSTAdjustment.get('cgstper').value) + parseFloat(this.GSTAdjustment.get('sgstper').value) + parseFloat(this.GSTAdjustment.get('igstper').value)).toFixed(2);
     this.GSTAdjfinal.get('TotalGSTPer').setValue(this.vTotalGSTPer)
@@ -173,9 +170,7 @@ export class GSTAdjustmentComponent implements OnInit {
   Savebtn: boolean = false;
   onSubmit() {
     debugger
-    // if (this.gstflag == false)
-    //   this.toastr.warning('Enter Proper GST Value ', 'Warning')
-    // return;
+
 
     console.log(this.GSTAdjustment.value)
     this.GSTAdjustment.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)

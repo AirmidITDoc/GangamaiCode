@@ -96,5 +96,22 @@ export class FormvalidationserviceService {
   //     return value ? null : { notBlank: true };
   //   };
   // }
+
+
+
+   // GST validation
+   validGstValidator(allowedValues: number[]): any {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (control.value === null || control.value === undefined || control.value === '') {
+      return null; 
+    }
+
+    const value = parseFloat(control.value);
+
+    return allowedValues.includes(value)
+      ? null
+      : { invalidGST: { value: control.value } };
+  };
+}
 }
 

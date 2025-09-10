@@ -71,20 +71,20 @@
                             </div>
                             <div fxLayout="row" fxLayoutGap="4px">
 
-                             
+                             <!-- (valueChange)="getchangegstper(1,$event,CGST)" -->
                                 <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
-                                    [value]="vNewCGSTPer" (valueChange)="getchangegstper(1,$event,CGST)"  [type]="'number'" >
+                                    [value]="vNewCGSTPer"   [type]="'number'" >
                                 </airmid-textbox>
 
                                 <airmid-textbox label="New SGSTPer" formControlName="sgstper" #SGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
-                                    [value]="vNewSGSTPer" (valueChange)="getchangegstper(2,$event,SGST)"   [type]="'number'" >
+                                    [value]="vNewSGSTPer"  [type]="'number'" >
                                 </airmid-textbox>
 
                                 <airmid-textbox label="New IGSTPer" formControlName="igstper" #IGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
-                                    [value]="vNewIGSTPer" (valueChange)="getchangegstper(3,$event,IGST)"  [type]="'number'" >
+                                    [value]="vNewIGSTPer"   [type]="'number'" >
                                 </airmid-textbox>
 
                             </div>
