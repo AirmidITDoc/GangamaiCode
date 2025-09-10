@@ -228,7 +228,7 @@ export class SalesHospitalNewComponent implements OnInit {
       balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doctorName: [''],
       regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       extMobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -2079,6 +2079,21 @@ vExpDate:any;
         });
       });
     }, 100);
+  }
+  getSelectedObjexternal(event){ 
+    debugger
+    this.ItemSubform.patchValue({
+      //extMobileNo:event?.extMobileNo,
+      externalPatientName:event?.patientName ?? '' ,
+      doctorName:event?.doctorName ?? '' 
+    }) 
+   // this.ItemSubform.get('doctorName').setValue(event?.doctorName ?? '') 
+  }
+   getSelectedObjExtDocName(event){ 
+    //   this.ItemSubform.patchValue({ 
+    //   doctorName:event?.doctorName ?? '' 
+    // }) 
+    this.DoctorName = event?.doctorName ?? '' 
   }
 } 
 

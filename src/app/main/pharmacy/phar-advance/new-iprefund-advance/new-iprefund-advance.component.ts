@@ -44,7 +44,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
    RefundSaveForm:FormGroup 
 dsPreRefundList= new MatTableDataSource<IpItemList>();
 dsIpItemList= new MatTableDataSource<IpItemList>();
-
+advanceDetailId:any=0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -165,6 +165,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
       element.balanceAmount = element.netBalAmt;
     } 
     this.AdvanceId = element?.advanceId || 0
+     this.advanceDetailId = element?.advanceDetailId || 0
     this.getAdvaceSum(this.dsIpItemList.data)
   } 
   getAdvaceSum(ItemList) { 
@@ -190,7 +191,7 @@ dsIpItemList= new MatTableDataSource<IpItemList>();
       this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
-    this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.AdvanceId)
+    this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.advanceDetailId)
     this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(this.AdvanceId)
     this.RefundSaveForm.get('phAdvanceHeader.balanceAmount').setValue(formValues?.BalanceAmount)
     if (this.RefundSaveForm.valid) {
