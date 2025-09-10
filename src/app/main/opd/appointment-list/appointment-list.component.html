@@ -177,9 +177,36 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                
+
+                <button mat-icon-button matTooltip="Print Case papaer" style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"  (click)="OnViewReportPdf(element,true)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Bill"  style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"  (click)="OnBillPayment(element)">
+                    <mat-icon> payment</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Consultant start / Check-In"
+                        style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
+                        [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
+                        [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">check_circle</mat-icon>
+
+                        <!-- <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" /> -->
+                        <!-- Check-In -->
+                    </button>
+
+                    <button mat-icon-button
+                     matTooltip="Consultant End / Check Out"
+                        style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
+                        [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
+                                  [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
+
+                        <!-- Check-Out -->
+                    </button>
                 <!-- Material UI Icon Button with Menu -->
-                <button mat-icon-button 
+                <button mat-icon-button
                         [matMenuTriggerFor]="actionsMenu" 
                         matTooltip="Actions"
                         matTooltipPosition="above"
@@ -200,7 +227,7 @@
                         <span style="font-size: 13px;">Edit Registration</span>
                     </button>
                     
-                    <button mat-menu-item 
+                    <!-- <button mat-menu-item 
                             (click)="OnViewReportPdf(element,true)"
                             style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">print</mat-icon>
@@ -230,7 +257,7 @@
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
                                   [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
                         <span style="font-size: 13px;">Check-Out</span>
-                    </button>
+                    </button> -->
                     
                     <button mat-menu-item 
                             (click)="OnNewCrossConsultation(element)"
