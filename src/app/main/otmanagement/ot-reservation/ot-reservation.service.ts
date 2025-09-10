@@ -44,7 +44,7 @@ export class OtReservationService {
 
             surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anesthTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            instruction: ["",this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+            instruction: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
             ottypeId: [0],
             unBooking: [false],
             isCancelled: [false],
@@ -63,13 +63,21 @@ export class OtReservationService {
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-             start: [(new Date()).toISOString()],
+            start: [(new Date()).toISOString()],
             end: [(new Date()).toISOString()],
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
-            RegNo:[]
+            RegNo: []
         });
     }
+    
+    CreateForm() {
+        return this._formBuilder.group({
+            PatientName: [''],
+            Reason: ['']
+        })
+    }
+
     populateForm(param) {
         // this.personalFormGroup.patchValue(param);
     }
@@ -81,11 +89,14 @@ export class OtReservationService {
         return this._httpClient.PostData("Report/ViewReport", Param);
     }
 
-
     public reservationSave(Param: any) {
         if (Param.otreservationId) {
             return this._httpClient.PutData("OTReservation/Edit/" + Param.otreservationId, Param);
         } else return this._httpClient.PostData("OTReservation/Insert", Param);
+    }
+
+    public getBookingDatePostpone(Param: any) {
+        return this._httpClient.PostData("", Param);
     }
 
 }

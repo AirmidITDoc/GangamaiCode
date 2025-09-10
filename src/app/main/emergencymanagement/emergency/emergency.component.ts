@@ -41,6 +41,7 @@ export class EmergencyComponent implements OnInit {
   @ViewChild('ismlc') ismlc!: TemplateRef<any>;
   f_name: any = ""
   l_name: any = ""
+  Status: any = "0";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -80,6 +81,7 @@ export class EmergencyComponent implements OnInit {
     { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+    // { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
@@ -101,7 +103,8 @@ export class EmergencyComponent implements OnInit {
     { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
     { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
@@ -127,6 +130,11 @@ export class EmergencyComponent implements OnInit {
     this.f_name = this.myFilterform.get('firstName').value + "%"
     console.log(this.myFilterform.get('firstName').value)
     this.l_name = this.myFilterform.get('L_Name').value + "%"
+    if (this.myFilterform.get('isConverted').value == true) {
+      this.Status = "1"
+    } else {
+      this.Status = "0"
+    }
     this.getfilterdata();
   }
 
@@ -140,7 +148,8 @@ export class EmergencyComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
         { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
         { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
+        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -310,25 +319,77 @@ export class EmergencyComponent implements OnInit {
     });
   }
 
-  EmergencyCancel(data) {
-    Swal.fire({
-      title: 'Do You want to cancel Emergency?',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!"
-    }).then((flag) => {
-      if (flag.isConfirmed) {
-        let submitData = { "emgId": data.emgId, "isCancelledBy": this._loggedService.currentUserValue.userId }
-        console.log(submitData);
-        this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
-          this.grid.bindGridData();
-        })
+  // append method tried
+  EmergencyCancel(data: any) {
+  Swal.fire({
+    title: 'Do you want to cancel Emergency?',
+    text: "Please provide a reason for cancellation",
+    icon: "warning",
+    input: 'text',
+    inputValue: data.reason ? data.reason + ' ' : '', // prefill old reason if exists
+    inputPlaceholder: 'Enter cancellation reason...',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Cancel it!",
+    preConfirm: (reason) => {
+      if (!reason || reason.trim() === '') {
+        Swal.showValidationMessage('Reason is required');
       }
-    })
-  }
+      return reason;
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let finalReason = data.reason 
+        ? data.reason + "; " + result.value 
+        : result.value;
+
+      let submitData = {
+        emgId: data.emgId,
+        reason: finalReason,
+        isCancelledBy: this._loggedService.currentUserValue.userId
+      };
+
+      console.log(submitData);
+      this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
+        this.grid.bindGridData();
+      });
+    }
+  });
+}
+
+
+  // EmergencyCancel(data: any) {
+  //   Swal.fire({
+  //     title: 'Do you want to cancel Emergency?',
+  //     text: "Please provide a reason for cancellation",
+  //     icon: "warning",
+  //     input: 'text',
+  //     inputPlaceholder: 'Enter cancellation reason...',
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Cancel it!",
+  //     preConfirm: (reason) => {
+  //       if (!reason || reason.trim() === '') {
+  //         Swal.showValidationMessage('Reason is required');
+  //       }
+  //       return reason;
+  //     }
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       let submitData = {
+  //         emgId: data.emgId,
+  //         reason: result.value,
+  //         isCancelledBy: this._loggedService.currentUserValue.userId
+  //       };
+  //       console.log(submitData);
+  //       this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
+  //         this.grid.bindGridData();
+  //       });
+  //     }
+  //   });
+  // }
 
   OnViewReportPdf(element: any) {
     this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
@@ -352,7 +413,7 @@ export class EmergencyComponent implements OnInit {
   }
 
   getMLCdetailview(element) {
-    // this.commonService.Onprint("AdmissionID", element.admissionId, "IpMLCCasePaperPrint");
+    this.commonService.Onprint("AdmissionID", element.emgId, "IpMLCCasePaperPrint");
   }
 }
 
@@ -413,8 +474,8 @@ export class EmergencyList {
   emgHistoryId: any;
   attendingDoctorId: any;
   refDoctorId: any;
-  spO2:any;
-  isMlc:any
+  spO2: any;
+  isMlc: any
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;

@@ -269,7 +269,7 @@
                           <div class="patient-col">
                             <span class="patient-col-key font-weight-600">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }} - {{ selectedAdvanceObj?.admissionTime | date : 'hh:mm' }}</span>
+                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm a' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -321,7 +321,7 @@
                           <div class="patient-col">
                             <span class="patient-col-key">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.doa }}-{{ selectedAdvanceObj?.admissionTime | date : 'hh:mm' }}</span>
+                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm a' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -743,7 +743,7 @@
                   </div>
                 </mat-tab>
 
-                <mat-tab label="Prev.Bill">
+                <!-- <mat-tab label="Prev.Bill">
                   <ng-template #actionButtonTemplate1 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
                       <button mat-icon-button matTooltip="Details" (click)="getPreBilldet(element)">
@@ -758,7 +758,7 @@
                     </div>
                   </ng-template>
                   <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
-                </mat-tab>
+                </mat-tab> -->
               </mat-tab-group>
               <!-- END 3RD TAB OF TABLES --> 
               
@@ -779,9 +779,9 @@
                       <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency : 'INR' }}</span>
                     </div>
 
-                    <div class="net-amt-box">
-                      <span class="net-amt-label">Net Amt :</span>
-                      <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}</span>
+                    <div class="final-amt-box">
+                      <span class="final-amt-label">Net Amt :</span>
+                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}</span>
                     </div>
                   </div>
                 </div>
@@ -844,7 +844,7 @@
                         formControlName="ConcessionId"
                         [formGroup]="IpbillFooterform"
                         [validations]="getValidationMessages().ConcessionId"
-                        [mode]="autocompleteModeConcession"
+                        [mode]="autocompleteModeConcession" (selectionChange)="selectChangeConcession($event)"
                       ></airmid-dropdown>
                     </div>
 
@@ -867,10 +867,16 @@
                     </div>
                   </div>
 
-                  <div fxLayout="row" fxLayoutAlign="end center">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div class="action-content-left" fxLayout="row" class="gap-24" fxLayoutAlign="start center">
+                      <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
+                    </div>
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
                       <div class="button-row-group">
+                        <!-- <button class="btn btn-primary" (click)="getInterimData()" *ngIf="IpbillFooterform.get('GenerateBill')?.value">Supplementary Bill</button> -->
+                        <button class="btn btn-primary" (click)="onSave()" *ngIf="IpbillFooterform.get('GenerateBill')?.value">Save</button>
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                       </div>
                     </div>
