@@ -25,13 +25,13 @@ import { Router } from '@angular/router';
 export class IssueToDepartmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
-  
+
     DraftQty: any = 0;
     Tostore = "0"
     FromStore: any = String(this.accountService.currentUserValue.user.storeId);
     Status = "0"
     autocompletestore: string = "Store";
-    autocompleteitem: string = "ItemType"; 
+    autocompleteitem: string = "ItemType";
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     AgainstInd: boolean = true;
@@ -41,41 +41,41 @@ export class IssueToDepartmentComponent implements OnInit {
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public _matDialog: MatDialog, private accountService: AuthenticationService,
-        public datePipe: DatePipe,  private _ActRoute: Router,
+        public datePipe: DatePipe, private _ActRoute: Router,
     ) { }
 
     ngOnInit(): void {
         this.IssueSearchGroup = this._IssueToDep.IssueSearchFrom();
-           if (this._ActRoute.url == '/inventory/issuetodepartment') {
+        if (this._ActRoute.url == '/inventory/issuetodepartment') {
 
 
-           }
+        }
     }
-     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
-     @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    // @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+    @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
-      @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
-          this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
-        // this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
- this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
+        // this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
+        this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+        this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     }
 
 
     gridConfig1: gridModel = new gridModel();
 
-   
-    allcolumns = [
-      { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-         { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    allcolumns = [
+        { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+        // { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-         { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+        { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "To StoreName", key: "toStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
@@ -83,10 +83,10 @@ export class IssueToDepartmentComponent implements OnInit {
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      
+
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate 
+            template: this.actionButtonTemplate
         }
     ];
 
@@ -111,11 +111,13 @@ export class IssueToDepartmentComponent implements OnInit {
 
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
-        
+
         let IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
+                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Batch Exp Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
@@ -133,7 +135,7 @@ export class IssueToDepartmentComponent implements OnInit {
         };
         this.isShowDetailTable = true;
         setTimeout(() => {
-        this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
 
 
@@ -179,7 +181,7 @@ export class IssueToDepartmentComponent implements OnInit {
     // onAddBarcodeItemList(contact, DraftQty) {
 
     // }
-  
+
     ListView(value) {
         if (value.value !== 0)
             this.FromStore = value.value
@@ -197,7 +199,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     onChangeFirst(value) {
-        
+debugger
         let IsClosed = "0"
         if (this.IssueSearchGroup.get("IsClosed").value)
             IsClosed = "1"
@@ -214,7 +216,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     getfilterdata() {
-        
+debugger
         this.gridConfig = {
             apiUrl: "IssueToDepartment/IssueToDeptList",
             columnsList: this.allcolumns,
@@ -239,7 +241,7 @@ export class IssueToDepartmentComponent implements OnInit {
     onSave(row: any = null) {
         let that = this;
         // if(this._ActRoute.url == '/inventory/issuetodepartment')
-            
+
         const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
             {
                 maxWidth: "97vw",
@@ -306,7 +308,7 @@ export class NewIssueList3 {
     IndentDetailsId: any;
     IndQty: any;
     IsClosed: any;
-IssueQty: any;
+    IssueQty: any;
     IssueBalQty: any;
     Status: any;
 
@@ -350,7 +352,7 @@ IssueQty: any;
         this.PurchaseRate = NewIssueList3.PurchaseRate || 0;
         this.LandedRateandedTotal = NewIssueList3.LandedRateandedTotal || 0;
         this.PurTotAmt = NewIssueList3.PurTotAmt || 0;
-         this.IssueQty = NewIssueList3.IssueQty || 0;
+        this.IssueQty = NewIssueList3.IssueQty || 0;
         this.IssueBalQty = NewIssueList3.IssueBalQty || 0;
         this.Status = NewIssueList3.Status || false;
 
@@ -373,7 +375,7 @@ export class IssueItemList {
     IndentId: any;
     IndentDetailsId: any;
     IsClosed: any;
-    BalanceQty:any;
+    BalanceQty: any;
 
     constructor(IssueItemList) {
         {
@@ -390,7 +392,7 @@ export class IssueItemList {
             this.IndentId = IssueItemList.IndentId || 0;
             this.IndentDetailsId = IssueItemList.IndentDetailsId || 0;
             this.IsClosed = IssueItemList.IsClosed || 0;
-             this.BalanceQty = IssueItemList.BalanceQty || 0;
+            this.BalanceQty = IssueItemList.BalanceQty || 0;
         }
     }
 }

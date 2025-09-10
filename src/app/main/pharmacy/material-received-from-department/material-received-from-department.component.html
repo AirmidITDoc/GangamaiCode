@@ -25,38 +25,46 @@
                         <mat-icon> print</mat-icon>
                     </button>
                     <!-- *ngIf="element.isAccepted=='0'" pendingByDepartment -->
-                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)"
-                        *ngIf="element.isAccepted=='0'">
+                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)" *ngIf="element.pendingByDepartment!='0'">
                         <mat-icon> edit</mat-icon>
                     </button>
                 </div>
             </ng-template>
 
             <ng-template #Astatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
+                <!-- <div fxLayout="row" fxLayoutAlign="center center">
 
                     <button mat-icon-button>
                         <mat-icon matTooltip="Accepted" *ngIf="element.acceptedByDepartment>0"
                             class="pill green-600 s-18">circle</mat-icon>{{element.acceptedByDepartment}}
                     </button>
+                </div> -->
+                <div matTooltip="Accepted" class="pill1 green-600 s-18" >
+                    {{element.acceptedByDepartment}}
                 </div>
             </ng-template>
 
 
-            <ng-template #Pstatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-<!-- *ngIf="element.pendingByDepartment>0" -->
-                    <mat-icon matTooltip="Pending" class="pill orange-600 s-16" >circle</mat-icon>{{element.pendingByDepartment}}
-                </div>
-            </ng-template>
-
+           
 
             <ng-template #Rstatus let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-<!-- *ngIf="element.rejetcedByDepartment>0" -->
-                    <mat-icon class="pill red-600 s-16" matTooltip="Rejected" >circle</mat-icon>{{element.rejetcedByDepartment}}
+                <!-- <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon class="pill red-600 s-16" matTooltip="Rejected" >circle</mat-icon>{{element.rejetcedByDepartment}}
+                </div> -->
+                <div matTooltip="Rejected" class="pill1 red-600 s-18">
+                    {{element.rejetcedByDepartment}}
                 </div>
             </ng-template>
+
+             <ng-template #Pstatus let-element>
+                <!-- <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon matTooltip="Pending" class="pill orange-600 s-16" >circle</mat-icon>{{element.pendingByDepartment}}
+                </div> -->
+                <div matTooltip="Pending" class="pill1 orange-600 s-18">
+                    {{element.pendingByDepartment}}
+                </div>
+            </ng-template>
+
 
             <!-- <ng-template #isVerifiedstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -79,11 +87,6 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
-                        <!-- <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
-                            (selectionChange)="ListView($event)" [formGroup]="IssueSearchGroup"
-                            [mode]="autocompletestore">
-                        </airmid-dropdown> -->
-
                         <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                             (selectionChange)="ListView1($event)" [formGroup]="IssueSearchGroup"
                             [mode]="autocompletestore">
@@ -93,9 +96,7 @@
                         <mat-slide-toggle name="IsVerify" (change)="onChangeFirst($event)" formControlName="IsVerify">
                             Pending/Close
                         </mat-slide-toggle>
-                        <!-- <mat-slide-toggle name="IsAccepted" (change)="onChangeFirst($event)" formControlName="IsAccepted">
-                            Accepted
-                        </mat-slide-toggle> -->
+
                     </form>
                 </ng-container>
             </airmid-table>

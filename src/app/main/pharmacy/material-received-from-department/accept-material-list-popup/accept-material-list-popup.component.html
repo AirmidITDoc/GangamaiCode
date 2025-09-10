@@ -30,12 +30,13 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">
 
                                 <mat-checkbox aria-label="Checked" [(ngModel)]="masterSelected"
-                                    (change)="checkUncheckAll()">
+                                    (change)="checkUncheckAll()" >
                                 </mat-checkbox>
                             </mat-header-cell>
+<!-- [disabled]="contact.Status==1"  -->
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
-                                    [(ngModel)]="contact.selected" [disabled]="contact.Status==1">
+                                    [(ngModel)]="contact.selected" *ngIf="contact.status==0">
                                 </mat-checkbox>
                             </mat-cell>
                         </ng-container>

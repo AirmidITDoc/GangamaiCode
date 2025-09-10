@@ -2,16 +2,42 @@
     opacity: 0.5; /* Reduce opacity to indicate disabled state */
     cursor: not-allowed; /* Change cursor to indicate disabled state */
 }
-.circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-  }
+// .circle {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 24px;
+//     height: 24px;
+//     border-radius: 50%;
+//   }
   
   .green {
     background-color: green;
-    color: white;
+    color: rgb(28, 63, 238);
   }
+
+  .pill {
+  // display: inline-block;
+  background-color: #16a34a; /* Tailwind green-600 */
+  color: blue;               /* Text color */
+  font-size: 18px;    
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 9999px;     /* pill shape */
+
+  
+}
+
+.pill1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;               /* adjust as needed */
+  height: 24px;              /* same as width for perfect circle */
+  color: rgb(30, 68, 224);              /* text color */
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px; 
+  font-size: 18px;    /* pill shape */
+      /* makes it round */
+}
