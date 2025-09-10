@@ -61,7 +61,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         // this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
-        this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
+        // this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
         this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     }
 
@@ -116,7 +116,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+                //   { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
