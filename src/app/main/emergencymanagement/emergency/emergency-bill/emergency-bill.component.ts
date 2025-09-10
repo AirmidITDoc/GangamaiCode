@@ -23,6 +23,10 @@ import Swal from 'sweetalert2';
 import { element } from 'protractor';
 import { EmergencyService } from '../emergency.service';
 import { ChargesList } from '../emergency.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { InterimBillComponent } from 'app/main/ipd/ip-search-list/interim-bill/interim-bill.component';
 
 @Component({
   selector: 'app-emergency-bill',
@@ -95,15 +99,14 @@ export class EmergencyBillComponent {
   BillDiscperFlag: boolean = false;
   public subscription: Array<Subscription> = [];
   public isUpdating = false;
-  checkdata:any=0;
+  checkdata: any = 0;
 
   // 
-    draftSaveform: FormGroup;
-    IPBillMyForm:FormGroup 
-    sIsLoading: string = '';  
-    vMobileNo: any;
-    ConcessionShow: boolean = false;
-    // 
+  IPInterimBillForm: FormGroup;
+  sIsLoading: string = '';
+  vMobileNo: any;
+  ConcessionShow: boolean = false;
+  // 
 
   autocompleteModeClass: string = "Class";
   autocompleteModeCashcounter: string = "CashCounter";
@@ -112,7 +115,7 @@ export class EmergencyBillComponent {
   autocompleteModeConcession: string = "Concession";
 
   dataSource1 = new MatTableDataSource<ChargesList>();
-  dataSource = new MatTableDataSource<ChargesList>();  
+  dataSource = new MatTableDataSource<ChargesList>();
   prevbilldatasource = new MatTableDataSource<Bill>();
   PackageDatasource = new MatTableDataSource
 
@@ -129,7 +132,7 @@ export class EmergencyBillComponent {
     public _printPreview: PrintPreviewService,
     public _matDialog: MatDialog,
     public _EmergencyService: EmergencyService,
-    // private advanceDataStored: AdvanceDataStored,
+    private advanceDataStored: AdvanceDataStored,
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<EmergencyBillComponent>,
     private accountService: AuthenticationService,
@@ -149,18 +152,21 @@ export class EmergencyBillComponent {
     this.IpbillFooterform = this.createBillForm();
     this.IpbillFooterform.markAllAsTouched();
 
-    this.IPBillMyForm=this.CreateIPBillForm();
-    
+    this.IPInterimBillForm = this.createInterimbillForm();
+    this.IPInterimBillForm.markAllAsTouched();
+
+    this.BillDetailsArray.push(this.createBillDetails());
+
     if (this.data) {
       this.selectedAdvanceObj = this.data;
       console.log(this.selectedAdvanceObj)
       this.opD_IPD_Id = this.selectedAdvanceObj.emgId || "0"
       // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=1&ClassId=1&ServiceName="
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffid + "&ClassId=" + this.selectedAdvanceObj.classid + "&ServiceName="
-       this.getdata(this.selectedAdvanceObj.emgId)
-       this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classid)
-       this.IPBillMyForm=this.CreateIPBillForm();
-       this.checkdata = 1
+      this.getdata(this.selectedAdvanceObj.emgId)
+      this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classid)
+      this.checkdata = 1
+      this.IPInterimBillForm = this.createInterimbillForm();
     }
     this.getChargesList();
     this.getLabRequestChargelist();
@@ -168,7 +174,7 @@ export class EmergencyBillComponent {
 
   }
 
-   getdata(opD_IPD_Id) {
+  getdata(opD_IPD_Id) {
     this.gridConfig1 = {
       apiUrl: "IPBill/IPPreviousBillList",
       columnsList: this.allColumns,
@@ -195,7 +201,7 @@ export class EmergencyBillComponent {
 
   //////////////////////////////////// NURSING TABLE //////////////////////////////
 
-   NursingReqListColumn = [
+  NursingReqListColumn = [
     { heading: "ServiceId", key: "serviceId", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
@@ -207,8 +213,8 @@ export class EmergencyBillComponent {
       template: this.actionButtonTemplate5  // Assign ng-template to the column
     }
   ]
-  
-    gridConfig2: gridModel = {
+
+  gridConfig2: gridModel = {
     apiUrl: "IPBill/PathRadRequestList",
     columnsList: this.NursingReqListColumn,
     sortField: "ServiceId",
@@ -218,7 +224,7 @@ export class EmergencyBillComponent {
     ]
   }
 
-    //////////////////////////////////// END NURSING TABLE //////////////////////////////
+  //////////////////////////////////// END NURSING TABLE //////////////////////////////
 
   //////////////////////////////////// 1ST TAB ////////////////////////////////////
   showAllFilter(event) {
@@ -289,7 +295,7 @@ export class EmergencyBillComponent {
   //Charge list 
   chargeDate = '01/01/1900'
   getChargesList() {
-    debugger
+    // debugger
     this.chargeslist = [];
     this.dataSource.data = [];
     var vdata = {
@@ -319,12 +325,12 @@ export class EmergencyBillComponent {
       this.dataSource.data = this.chargeslist;
       this.copiedData = structuredClone(this.chargeslist);
       this.isLoadingStr = this.dataSource.data.length == 0 ? 'no-data' : '';
-    this.getNetAmtSum()
-    this.getbillbalamt();
+      this.getNetAmtSum()
+      this.getbillbalamt();
     });
   }
 
-   //Table Total netAmt
+  //Table Total netAmt
   TotalShowAmt: any = 0;
   DiscShowAmt: any = 0;
   FinalNetAmt: any = 0;
@@ -336,7 +342,7 @@ export class EmergencyBillComponent {
     this.IpbillFooterform.patchValue({
       FinalAmount: this.FinalNetAmt,
       totalconcessionAmt: this.DiscShowAmt,
-       TotalAmt:this.TotalShowAmt 
+      TotalAmt: this.TotalShowAmt
     }, { emitEvent: false }); // Prevent infinite loop
 
     if (this.DiscShowAmt > 0) {
@@ -350,8 +356,8 @@ export class EmergencyBillComponent {
     this.CalculateAdminCharge()
   }
 
-  checkAdvBalAmt:any=0;
-  getbillbalamt() { 
+  checkAdvBalAmt: any = 0;
+  getbillbalamt() {
     this.AdvanceBalAmt = this.checkAdvBalAmt
     if (this.AdvanceBalAmt > 0) {
       let netAmt = this.IpbillFooterform.get('FinalAmount').value || 0
@@ -360,7 +366,7 @@ export class EmergencyBillComponent {
         this.BillBalAmount = netAmt - this.checkAdvBalAmt
       } else {
         let balamt = this.AdvanceBalAmt - netAmt
-        this.AdvanceBalAmt= balamt
+        this.AdvanceBalAmt = balamt
         this.BillBalAmount = 0;
       }
     }
@@ -820,14 +826,14 @@ export class EmergencyBillComponent {
     // this.advanceDataStored.storage = [];
   }
 
-   viewgetBillReportPdf(billNo) {
+  viewgetBillReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
   }
 
   //////////////////////////////////// END 4TH TAB FOOTER ////////////////////////////////////
 
   //////////////////////////////////// SIDE BAR CODE ////////////////////////////////////
-  
+
   toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
@@ -837,13 +843,13 @@ export class EmergencyBillComponent {
     }));
   }
 
-   private setupFormListener(): void {
+  private setupFormListener(): void {
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('concessiondiscPer', () => this.updateDiscountAmount());
     this.handleChange('concessionAmount', () => this.updateDiscountdiscPer());
-  } 
-  
+  }
+
   calculateTotalCharge(row: any = null): void {
     let qty = +this.Serviceform.get("qty").value;
     let price = +this.Serviceform.get("price").value;
@@ -857,7 +863,7 @@ export class EmergencyBillComponent {
     }, { emitEvent: false }); // Prevent infinite loop
 
     this.updateDiscountAmount();
-    this.updateDiscountdiscPer(); 
+    this.updateDiscountdiscPer();
   }
   // Trigger when discount discPer change
   updateDiscountAmount(row: any = null): void {
@@ -885,7 +891,7 @@ export class EmergencyBillComponent {
     this.isUpdating = false; // Reset flag
   }
   // Trigger when discount amount change
-  updateDiscountdiscPer(): void { 
+  updateDiscountdiscPer(): void {
     if (this.isUpdating) return;
     this.isUpdating = true;
 
@@ -959,7 +965,7 @@ export class EmergencyBillComponent {
       if (formValue.doctorId)
         doctorid = this.Serviceform.get("doctorId").value;
     }
-    debugger
+    // debugger
 
     this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id)
     this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
@@ -971,9 +977,9 @@ export class EmergencyBillComponent {
 
     console.log(this.Serviceform.value)
     if (this.Serviceform.valid) {
-      if(formValue.serviceName?.isPackage == 1){  
-          this.PackageDetArray.clear();
-          this.PackageDatasource.data.forEach(item => {
+      if (formValue.serviceName?.isPackage == 1) {
+        this.PackageDetArray.clear();
+        this.PackageDatasource.data.forEach(item => {
           this.PackageDetArray.push(this.createPacakgeForm(item));
         });
       }
@@ -1006,6 +1012,38 @@ export class EmergencyBillComponent {
     }
     // this.Serviceform.markAllAsTouched();
     // this.IpbillFooterform.markAllAsTouched();
+  }
+
+  getWhatsappshareIPInterimBill(el, vmono) {
+    if (vmono != '' && vmono != "0") {
+      var m_data = {
+        "insertWhatsappsmsInfo": {
+          "mobileNumber": vmono || 0,
+          "smsString": '',
+          "isSent": 0,
+          "smsType": 'IPInterim',
+          "smsFlag": 0,
+          "smsDate": this.currentDate,
+          "tranNo": el,
+          "PatientType": 2,//el.PatientType,
+          "templateId": 0,
+          "smSurl": "info@gmail.com",
+          "filePath": '',
+          "smsOutGoingID": 0
+        }
+      }
+      this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+        if (response) {
+          this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
+            toastClass: 'tostr-tost custom-toast-success',
+          });
+        } else {
+          this.toastr.error('API Error!', 'Error WhatsApp!', {
+            toastClass: 'tostr-tost custom-toast-error',
+          });
+        }
+      });
+    }
   }
 
   onClearServiceAddList() {
@@ -1106,91 +1144,226 @@ export class EmergencyBillComponent {
       billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      packcagecharges:this.formBuilder.array([])
+      packcagecharges: this.formBuilder.array([])
     });
   }
 
-   createPacakgeForm(item: any): FormGroup {
+  createPacakgeForm(item: any): FormGroup {
     return this.formBuilder.group({
-        chargesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
-        opdIpdType: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdIpdId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        serviceId: [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        price:  [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        qty: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmt: [item?.serviceId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionPercentage:[item?.serviceId, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAmount:  [item?.serviceId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        netAmount:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        doctorId:[0], 
-        docPercentage:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        docAmt: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        hospitalAmt:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isGenerated: [false],
-        addedBy: this.accountService.currentUserValue.userId,
-        isCancelled: [false],
-        isCancelledBy:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: "1900-01-01", 
-        isPathology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isRadiology:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],  
-        isPackage:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        isSelfOrCompanyService:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        packageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
-      });
-  } 
-     // Getters 
+      chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
+      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId: [item?.serviceId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      price: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmt: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      concessionPercentage: [item?.serviceId, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.onlyNumberValidator()]],
+      concessionAmount: [item?.serviceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [0],
+      docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      hospitalAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isGenerated: [false],
+      addedBy: this.accountService.currentUserValue.userId,
+      isCancelled: [false],
+      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelledDate: "1900-01-01",
+      isPathology: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isRadiology: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isPackage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+    });
+  }
+  // Getters 
   get PackageDetArray(): FormArray {
     return this.Serviceform.get('packcagecharges') as FormArray;
-  }  
-
-  //Ip Bill Footer form
-  createBillForm() {
-    return this.formBuilder.group({
-      AdminPer: ['', [Validators.max(100)]],
-      AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totaldiscPer: [0, [Validators.min(0), Validators.max(100),]],
-      totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-      FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      CashCounterID: [4, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
-      Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      Admincheck: [''],
-      GenerateBill: [false],
-      CreditBill: [false,],
-      ChargeDate: [new Date()],
-      BillType: ['1', this._FormvalidationserviceService.onlyNumberValidator()],
-      EditDoctor: [''],
-      TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
   }
 
-   //IP bill save form 
-  CreateIPBillForm(): FormGroup {
+  /////////////////////////////// Save intrim bill code ////////////////////////
+
+  // getInterimData() {
+  //   if (this.interimArray.length > 0) {
+  //     console.log('this.interimArray==', this.interimArray);
+  //     const dialogRef = this._matDialog.open(InterimBillComponent,
+  //       {
+  //         maxWidth: "85vw",
+  //         width: '100%',
+  //         height: "75%",
+  //         data: {
+  //           PatientHeaderObj: this.selectedAdvanceObj,
+  //           Obj: this.interimArray
+  //         }
+  //       });
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       this.getChargesList();
+  //     });
+  //   } else {
+  //     Swal.fire('Warring !', 'Please select check box ', 'warning');
+  //   }
+  //   this.getChargesList();
+  //   this.interimArray = [];
+  // }
+
+  onSave() {
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(new Date(), 'shortTime');
+    const formattedDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime
+
+    this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(this.TotalShowAmt)
+    this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt').value)
+    this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(this.IpbillFooterform.get('FinalAmount').value)
+    this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(this.IpbillFooterform.get('FinalAmount').value)
+    this.IPInterimBillForm.get('ipBillling.billDate').setValue(formattedDate)
+    this.IPInterimBillForm.get('ipBillling.billTime').setValue(FormattedDateTime)
+    this.IPInterimBillForm.get('ipBillling.concessionReasonId')?.setValue(this.IpbillFooterform.get('ConcessionId')?.value)
+    this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(this.IpbillFooterform.get('Remark')?.value)
+    this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
+
+    debugger
+    console.log(this.IPInterimBillForm.value)
+    if (this.IPInterimBillForm.valid) {
+      debugger
+      this.BillDetailsArray.clear();
+      this.dataSource.data.forEach(item => {
+        this.BillDetailsArray.push(this.createBillDetails(item));
+      });
+
+      if (this.IpbillFooterform.get('paymode').value == 'cashpay') {
+        this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+        this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
+        this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+        console.log("form values", this.IPInterimBillForm.value)
+        this._EmergencyService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+          this.viewgetInterimBillReportPdf(response);
+          this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+          this.onClose()
+        });
+      }
+      else if (this.IpbillFooterform.get('paymode').value == 'onlinepay') {
+        this.IPInterimBillForm.get('payments.payTmamount')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+        this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.IpbillFooterform.get('UPINO')?.value)
+        this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
+        this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
+        this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+        console.log("form values", this.IPInterimBillForm.value)
+        this._EmergencyService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+          this.viewgetInterimBillReportPdf(response);
+          this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+          this.onClose()
+        });
+      }
+      else if (this.IpbillFooterform.get('paymode').value == 'PayOption') {
+        let PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = formattedDate
+        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
+        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo;
+        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
+        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
+        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
+        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
+        PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
+        PatientHeaderObj['NetPayAmount'] = this.IpbillFooterform.get('FinalAmount').value
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+          {
+            maxWidth: "80vw",
+            height: '750px',
+            width: '80%',
+            data: {
+              vPatientHeaderObj: PatientHeaderObj,
+              FromName: "IP-IntrimBIll",
+              advanceObj: PatientHeaderObj,
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result.submitDataPay.ipPaymentInsert)
+          this.IPInterimBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+
+          console.log("form values", this.IPInterimBillForm.value)
+          this._EmergencyService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+            this.viewgetInterimBillReportPdf(response);
+            this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+            this.onClose()
+          });
+        });
+      }
+    } else {
+      let invalidFields = [];
+      if (this.IPInterimBillForm.invalid) {
+        for (const controlName in this.IPInterimBillForm.controls) {
+          const control = this.IPInterimBillForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`IP Interim Date : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`IP InterimBill From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
+
+  concessionId: any;
+  selectChangeConcession(event) {
+    this.concessionId = event.value
+  }
+
+  createInterimbillForm(): FormGroup {
     return this.formBuilder.group({
+      //Addcharges
+      addChargeM: this.formBuilder.group({
+        chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
       //ipInterim bill header  
-      bill: this.formBuilder.group({
+      ipBillling: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdid: [this.selectedAdvanceObj?.emgId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        regNo: [this.selectedAdvanceObj?.regNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientName: [this.selectedAdvanceObj?.patientName, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ipdno: [this.selectedAdvanceObj?.seqNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        ageYear: [Number(this.selectedAdvanceObj?.ageYear || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageMonth: [Number(this.selectedAdvanceObj?.ageMonth || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        ageDays: [Number(this.selectedAdvanceObj?.ageDay || 0), [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorId: [this.selectedAdvanceObj?.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        doctorName: [this.selectedAdvanceObj?.doctorName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        wardId: [this.selectedAdvanceObj?.wardId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        bedId: [this.selectedAdvanceObj?.bedId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        patientType: [this.selectedAdvanceObj?.companyId ? true : false],
+        companyName: [this.selectedAdvanceObj?.companyName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        paidAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-        opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this.accountService.currentUserValue.userId],
-        totalAdvanceAmount: [this.TotalAdvanceAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAdvanceAmount: [this.selectedAdvanceObj?.AdvTotalAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        concessionReasonId: [this.concessionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isSettled: false,
         isPrinted: true,
-        isFree: true,    
+        isFree: true,
         companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         tariffId: [this.selectedAdvanceObj?.tariffid, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [this.selectedAdvanceObj?.hospitalID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        interimOrFinal: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         speTaxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1199,18 +1372,10 @@ export class EmergencyBillComponent {
         discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
         cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
       }),
-      // IP bill details in array
-      billDetail: this.formBuilder.array([]),
-      // Addcharge insert
-      addCharge: this.formBuilder.group({
-        billNo:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
-      // Admission Id Insert
-      addmission: this.formBuilder.group({
-        admissionID: [this.selectedAdvanceObj?.emgId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
+      // ✅ Fixed: should be FormArray
+      billingDetails: this.formBuilder.array([]),
       //Payment form
-      payment: this.formBuilder.group({
+      payments: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         receiptNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -1241,49 +1406,43 @@ export class EmergencyBillComponent {
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
         tdsAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
-      // BIll insert
-      bills: this.formBuilder.group({
-        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }), 
-      // Advance details update in array
-      advancesupdate: this.formBuilder.array([]),
-      // Advacne header update
-      advancesHeaderupdate: this.formBuilder.group({
-        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
-        //Addcharges
-      addChargessupdate: this.formBuilder.group({
-        chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      }),
+      })
     });
   }
-  createBillDetails(item: any): FormGroup {
+  createBillDetails(item: any={}): FormGroup {
     return this.formBuilder.group({
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
-  createAdvanceUpdate(item: any): FormGroup {
-    return this.formBuilder.group({
-      advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    });
-  }  
   // Getters 
   get BillDetailsArray(): FormArray {
-    return this.IPBillMyForm.get('billDetail') as FormArray;
-  }  
-    get AdvacnedetUpdateArray(): FormArray {
-    return this.IPBillMyForm.get('advancesupdate') as FormArray;
-  }   
-      get DraftBillDetArray(): FormArray {
-    return this.draftSaveform.get('tdrBillDet') as FormArray;
-  } 
+    return this.IPInterimBillForm.get('billingDetails') as FormArray;
+  }
+
+  //Ip Bill Footer form
+  createBillForm() {
+    return this.formBuilder.group({
+      AdminPer: ['', [Validators.max(100)]],
+      AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totaldiscPer: [0, [Validators.min(0), Validators.max(100),]],
+      totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+      ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      CashCounterID: [4, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+      Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      Admincheck: [''],
+      GenerateBill: [false],
+      CreditBill: [false,],
+      ChargeDate: [new Date()],
+      BillType: ['1', this._FormvalidationserviceService.onlyNumberValidator()],
+      EditDoctor: [''],
+      TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymode: ['cashpay'],
+    });
+  }
+
+  /////////////////////////////// Save intrim bill code end ////////////////////////
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -1378,7 +1537,7 @@ export class Bill {
     this.PatientName = InsertBillUpdateBillNoObj.PatientName || ''
   }
 
-}  
+}
 export class DraftBill {
 
   OPD_IPD_ID: number;

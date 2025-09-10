@@ -172,6 +172,13 @@
                             </button>
                         </mat-form-field>
 
+                        <div fxFlex fxLayout="row">
+                            <span style="font-weight: bold;">Status :</span>
+                            <mat-slide-toggle name="Status" (change)="onChangeFirst()" formControlName="isConverted">
+                                Pending / Converted
+                            </mat-slide-toggle>
+                        </div>
+
                     </div>
 
                 </form>

@@ -18,17 +18,18 @@ export class EmergencyService {
   constructor(
     public _frombuilder: UntypedFormBuilder,
     public _httpClient: ApiCaller,
-    private _loaderService: LoaderService,    
+    private _loaderService: LoaderService,
     private accountService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService,
-  ) {}
+  ) { }
 
   CreateSearchGroup() {
     return this._frombuilder.group({
       fromDate: [],
       enddate: [],
       firstName: [''],
-      L_Name: ['']
+      L_Name: [''],
+      isConverted: [0]
     })
   }
 
@@ -38,30 +39,30 @@ export class EmergencyService {
       emgDate: [new Date()],
       emgTime: [new Date()],
       firstName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      address: ['', [Validators.maxLength(100),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      mobileNo: ['', [Validators.required,Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      departmentId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      doctorId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      StateId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      CountryId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      cityId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      DateOfBirth:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-      ageYear: ['', [Validators.maxLength(3),Validators.pattern("^[0-9]*$")]],
+      StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
       ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
       ageDay: ['', [Validators.pattern("^[0-9]*$")]],
-      comment:['',[Validators.maxLength(200),this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      comment: ['', [Validators.maxLength(200)]],
       emgId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      classId:[0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      classId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       attendingDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       IsMlc: [false],
-      createdBy:this.accountService.currentUserValue.userId,
-      modifiedBy:this.accountService.currentUserValue.userId,
+      createdBy: this.accountService.currentUserValue.userId,
+      modifiedBy: this.accountService.currentUserValue.userId,
     })
   }
 
@@ -81,24 +82,24 @@ export class EmergencyService {
     return this._httpClient.GetData("StateMaster/" + Id);
   }
 
-  public EmgSaveUpdate(param: any){
-    if(param.emgId){
-      return this._httpClient.PutData('Emergency/Edit/'+param.emgId, param)
-    }else return this._httpClient.PostData('Emergency/InsertSP',param)
+  public EmgSaveUpdate(param: any) {
+    if (param.emgId) {
+      return this._httpClient.PutData('Emergency/Edit/' + param.emgId, param)
+    } else return this._httpClient.PostData('Emergency/InsertSP', param)
   }
 
-  public EmgHistorySave(param: any){
-    if(param.emgHistoryId){
-      return this._httpClient.PutData('Emergency/EmergencyMedical/'+param.emgHistoryId, param)
-    }else return this._httpClient.PostData('Emergency/EmergencyMedical',param)
+  public EmgHistorySave(param: any) {
+    if (param.emgHistoryId) {
+      return this._httpClient.PutData('Emergency/EmergencyMedical/' + param.emgHistoryId, param)
+    } else return this._httpClient.PostData('Emergency/EmergencyMedical', param)
   }
 
   public retriveHistoryList(employee) {
-  return this._httpClient.PostData("Emergency/EmergencyMedicalHistoryList",employee)
-}
+    return this._httpClient.PostData("Emergency/EmergencyMedicalHistoryList", employee)
+  }
 
-  public EmgCancel(param){
-    return this._httpClient.PostData('Emergency/Cancel',param)
+  public EmgCancel(param) {
+    return this._httpClient.PostData('Emergency/Cancel', param)
   }
   public getDoctorsByDepartment(deptId) {
     return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
@@ -107,55 +108,55 @@ export class EmergencyService {
   public InsertIPAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient.PostData("IPBill/AddChargeInsert", employee);
   }
 
   public InsertIPAddChargesNew(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient.PostData("IPBill/InsertLabRequest",employee)
+    }
+    return this._httpClient.PostData("IPBill/InsertLabRequest", employee)
   }
 
-   public getchargesList1(data, loader = true) {
+  public getchargesList1(data, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient.PostData("IPBill/PathRadRequestList",data)
+    }
+    return this._httpClient.PostData("IPBill/PathRadRequestList", data)
   }
-  
+
   public getchargesList(Id) {
-    return this._httpClient.PostData("IPBill/IPAddchargesList" , Id);
-}
+    return this._httpClient.PostData("IPBill/IPAddchargesList", Id);
+  }
 
-  public UpdateChargesDetails(employee,Id, loader = true) {
+  public UpdateChargesDetails(employee, Id, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient.PutData("IPBill/UpdateAddcharges/"+Id,employee) 
+    }
+    return this._httpClient.PutData("IPBill/UpdateAddcharges/" + Id, employee)
   }
 
   public AddchargesDelete(m_data, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient.PostData("IPBill/IPAddchargesdelete" , m_data);
+    }
+    return this._httpClient.PostData("IPBill/IPAddchargesdelete", m_data);
   }
 
-  public getpackagedetList(employee)
-  {    
-    return this._httpClient.PostData("IPBill/PackageDetailsList",employee);
+  public getpackagedetList(employee) {
+    return this._httpClient.PostData("IPBill/PackageDetailsList", employee);
   }
 
-    public InsertIPBillingCredit(employee, loader = true) {
+  public InsertInterim(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient.PostData("IPBill/IPBilllCreditInsert",employee)
+    }
+    return this._httpClient.PostData("IPBill/IPInterimBillInsertWithCashCounter", employee)
   }
 
-   public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
-          return this._httpClient.GetData(apiUrl + inputValue);
-      }
+  public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+    return this._httpClient.GetData(apiUrl + inputValue);
+  }
+
 }

@@ -83,7 +83,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
   allcolumns = [
 
-    { heading: "Status", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Status", key: "acceptedByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
     { heading: "", key: "rejetcedByDepartment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
@@ -102,7 +102,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Recevied By", key: "receivedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  {
+    {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
@@ -129,7 +129,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
   isShowDetailTable: boolean = false;
   GetDetails1(data) {
-
+    debugger
     let IssueId = data.issueId
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
@@ -222,11 +222,11 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
     this.toDate = this.datePipe.transform(this.IssueSearchGroup.get('enddate').value, "yyyy-MM-dd")
     this.Tostore = this.IssueSearchGroup.get("ToStoreId").value || this.Tostore
     this.Status = IsVerify,//this.IssueSearchGroup.get("IsVerify").value || "0"
-    this.getfilterdata();
+      this.getfilterdata();
   }
 
   getfilterdata() {
-debugger
+    debugger
     this.gridConfig = {
       apiUrl: "IssueToDepartment/MaterialRecvedByDeptList",
       columnsList: this.allcolumns,
@@ -263,10 +263,13 @@ debugger
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      // this.gridConfig.bind();
+       this.getfilterdata()
+       this.isShowDetailTable=false
     });
 
   }
+
+
   viewgetIssuetodeptReportPdf(element) {
     console.log(element)
     this.commonService.Onprint("IssueId", element.issueId, "MaterialReceivedByDept");

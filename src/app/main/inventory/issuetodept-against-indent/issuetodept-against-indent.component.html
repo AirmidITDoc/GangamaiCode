@@ -1,23 +1,16 @@
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-        <!-- Modal header -->
-        <div class="modal-header accent">
+                <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Verified Indent
                         List</span>
                 </div>
-                <div class="modal-header-right">
-                    <!-- <div class="comman-date-container">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-
-                    </div> -->
-                </div>
+              
             </div>
         </div>
 
-        <!-- Modal body -->
+        
         <div class="modal-body modal-body-light" fusePerfectScrollbar>
             <div class="modal-body-container">
                 <div fxLayout="column" class="gap-8 h-100-p">
@@ -41,12 +34,6 @@
                                         [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore"
                                         (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
-
-
-                                    <!-- <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
-                                        [formGroup]="IndentFrom" fxFlex="30%" [mode]="autocompletestore1"
-                                        (selectionChange)="selectChangeStore($event)">
-                                    </airmid-dropdown> -->
 
                                     <mat-radio-group name="Status" formControlName="Status" fxFlex="20%" value="0"
                                         style="padding: 12px;" fxLayout="row" (change)="getIndentList()">

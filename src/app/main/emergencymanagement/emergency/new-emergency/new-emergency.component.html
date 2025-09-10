@@ -234,7 +234,7 @@
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Comment" formControlName="comment"
-                                                    [formGroup]="myForm" [maxLength]="200">
+                                                    [formGroup]="myForm" [maxLength]="200" [value]="registerObj?.comment">
                                                 </airmid-textbox>
                                             </div>
 
@@ -260,8 +260,8 @@
 
                                 <!-- Patient Name Column -->
                                 <ng-container matColumnDef="patientName">
-                                    <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let element"><span>{{ element.patientName
+                                    <mat-header-cell *matHeaderCellDef class="w-200">Patient Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" class="w-200"><span>{{ element.patientName
                                             }}</span></mat-cell>
                                 </ng-container>
 

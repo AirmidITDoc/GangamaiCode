@@ -174,8 +174,8 @@ export class IssuetodeptAgainstIndentComponent {
 
       this.sIsLoading = '';
     });
-    if (this.dsIndentItemDetList.data.length > 0)
-      this.OnIndentList()
+    // if (this.dsIndentItemDetList.data.length > 0)
+    //   this.OnIndentList()
   }
   // ongetIndent(data){
   //   this.getIndentItemDetList(data)
@@ -187,7 +187,7 @@ export class IssuetodeptAgainstIndentComponent {
     this.getIndentList()
   }
 
-  OnIndentList() {
+  OnIndentList(contact) {
     //  this.getIndentItemDetList(Param)
 
     // if ((!this.dsIndentItemDetList.data.length)) {
@@ -208,7 +208,7 @@ export class IssuetodeptAgainstIndentComponent {
     //   this._dialogRef.close(this.Charglist1);
     // }
 
-    // console.log(this.Charglist1)
+    console.log(contact)
     // this._dialogRef.close(this.Charglist1)
 
     const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
@@ -216,15 +216,15 @@ export class IssuetodeptAgainstIndentComponent {
         maxWidth: "97vw",
         height: '99%',
         width: '95%',
-        data: this.Charglist
+        data:contact// this.Charglist
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.dsIndentList.data = []
-      this.dsIndentItemDetList.data = []
-      this.Charglist = []
-      this.vstoreId=0
-      this.IndentFrom.get('FromStoreId').setValue(0)
-      this.getIndentList()
+      // this.dsIndentList.data = []
+      // this.dsIndentItemDetList.data = []
+      // this.Charglist = []
+      // this.vstoreId=0
+      // this.IndentFrom.get('FromStoreId').setValue(0)
+      // this.getIndentList()
     });
 
   }

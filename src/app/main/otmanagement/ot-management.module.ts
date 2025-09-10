@@ -79,7 +79,7 @@ const approutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [ ],
   imports: [
     MatCheckboxModule,
     MatDatepickerModule,

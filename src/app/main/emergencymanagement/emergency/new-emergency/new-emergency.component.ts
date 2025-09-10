@@ -63,7 +63,7 @@ export class NewEmergencyComponent {
       this._EmergencyService.getEmergencyById(this.data.emgId).subscribe((response) => {
           this.registerObj = response;
           this.selectChangedepartment(this.registerObj)
-          // this.onChangecity(this.registerObj)
+          this.RegId=this.registerObj.regId
           this.myForm.get('IsMlc').setValue(this.registerObj.isMlc)
           console.log(this.registerObj)
       });

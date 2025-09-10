@@ -5,7 +5,6 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
-
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { NewReservationComponent } from "./new-reservation/new-reservation.component";
 import { OtReservationService } from "./ot-reservation.service";
@@ -13,6 +12,7 @@ import { DatePipe } from "@angular/common";
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { OtPopupComponent } from "./ot-popup/ot-popup.component";
 
 @Component({
     selector: 'app-ot-reservation',
@@ -135,31 +135,24 @@ export class OTReservationComponent implements OnInit {
     }
 
     tOTBookingDateChange(contact) {
-        // const dialogRef = this._matDialog.open(OTPopUpComponent,
-        //     {
-        //         maxWidth: "40%",
-        //         height: '50%',
-        //         width: '100%',
-        //         data: {
-        //             Obj: contact,
-        //             FormName: 'OT Booking Date'
-        //         }
-        //     });
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         this.grid.bindGridData();
-        //     }
-        // });
+        const dialogRef = this._matDialog.open(OtPopupComponent,
+            {
+                maxWidth: "80vh",
+                height: '60%',
+                width: '100%',
+                data: contact
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
+        });
     }
 
     OnEdit(row) {
         this._OtReservationService.populateForm(row);
-        const dialogRef = this._matDialog.open(
-            NewReservationComponent,
+        const dialogRef = this._matDialog.open(NewReservationComponent,
             {
-                //    maxWidth: "95vw",
-                //    maxHeight: '90%',
-                //    width: '94%',
                 maxWidth: "90vw",
                 height: '90%',
                 width: '90%',

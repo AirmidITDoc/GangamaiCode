@@ -42,7 +42,7 @@
                     <div class="patient-col">
                       <span class="patient-col-key">Doctor Name</span>
                       <span>:</span>
-                      <span class="patient-col-value">{{ Personaldata.doctorname }}</span>
+                      <span class="patient-col-value">{{ Personaldata.doctorname || Personaldata.doctorName}}</span>
                     </div>
                     <div class="patient-col">
                       <span class="patient-col-key">Department</span>
@@ -54,7 +54,7 @@
                     <div class="patient-col">
                       <span class="patient-col-key">DOA | Time</span>
                       <span>:</span>
-                      <span class="patient-col-value">{{ Personaldata.admissionTime }}</span>
+                      <span class="patient-col-value">{{ (Personaldata.admissionTime || Personaldata.emgTime) | date:'dd-MM-yyyy | hh:mm a' }}</span>
                     </div>
                     <div class="patient-col">
                       <span class="patient-col-key">IPD No</span>
@@ -69,7 +69,7 @@
                     <div class="patient-col">
                       <span class="patient-col-key">Ref-Doctor Name</span>
                       <span>:</span>
-                      <span class="patient-col-value">{{ Personaldata.refDocName }}</span>
+                      <span class="patient-col-value">{{ Personaldata.refDocName || Personaldata.refDoctorName }}</span>
                     </div>
                   </div>
                   <div fxLayout="column" fxLayoutGap="10px">
