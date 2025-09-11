@@ -253,56 +253,70 @@
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <!-- <airmid-textbox label="MobileNo" [(ngModel)]="MobileNo" formControlName="extMobileNo"
-                                [formGroup]="ItemSubform" [validations]="getValidationMessages().mobileNo"
-                                [type]="'number'" [maxLength]="10"></airmid-textbox> -->
+                            <div fxFlex="30%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' &&
+                            chkExternalPatient == true  ">
+                              <airmid-autocomplete label="Mobile No" (dblclick)="checkextpatent(false)"
+                                [formGroup]="ItemSubform" formControlName="ExternalPatID"
+                                placeholder="Enter 10 digit Mobile No." fxFlex TextField="text"
+                                ApiUrl="Sales/External-auto-complete?Keyword="
+                                (selectionChange)="getSelectedObjextPat($event)"></airmid-autocomplete>
+                            </div>
 
-                              <!-- <mat-form-field appearance="outline" fxFlex>
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' && 
+                              chkExternalPatient != true " fxLayout="row" fxLayoutAlign="space-between" fxFlex>
+                              <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>MobileNo</mat-label>
                                 <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."
-                                  autocomplete="off" maxlength="10" minlength="10"
-                                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
-                              </mat-form-field> -->
-
-                               <airmid-autocomplete label="Mobile No"
-                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10" minlength="10"
-                                placeholder="Enter 10 digit Mobile No." fxFlex    TextField="text"  TextField="value" 
-                                ApiUrl="Sales/External-auto-complete?Keyword="  
-                                (selectionChange)="getSelectedObjexternal($event)"  
-                               ></airmid-autocomplete>
-
+                                  autocomplete="off" maxlength="10" minlength="10" (dblclick)="checkextpatent(true)"
+                                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);"
+                                  >
+                              </mat-form-field>
                             </div>
 
                             <!-- Patient Name autocomplete pending -->
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <!-- <airmid-autocomplete label="Patient Name" [(ngModel)]="PatientName"
-                                [formGroup]="ItemSubform" formControlName="externalPatientName"
-                                placeholderText="Patient Name" fxFlex
-                                ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName="
-                                (selectionChange)="onPatientChange($event)" TextField="formattedText"
-                                ></airmid-autocomplete> -->
-                              <airmid-textbox label="Patient Name" [(ngModel)]="PatientName"
-                                formControlName="externalPatientName" placeholder="extAddress" [formGroup]="ItemSubform"
-                                [type]="'text'" [validations]="getValidationMessages().PatientName"></airmid-textbox>
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'&& 
+                              chkExternalPatient != true ">
+                              <airmid-textbox label="Patient Name"  [(ngModel)]="PatientName"
+                                formControlName="externalPatientName" placeholder="PatientName"
+                                [formGroup]="ItemSubform" [type]="'text'" 
+                                [validations]="getValidationMessages().PatientName"></airmid-textbox>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'&& 
+                              chkExternalPatient != true ">
 
-                            <airmid-autocomplete label="Doctor Name"
-                                [formGroup]="ItemSubform" formControlName="doctorName"
-                                placeholderText="First Name / Last Name" fxFlex 
-                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
-                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete>
+                              <!-- <airmid-autocomplete label="Doctor Name" [formGroup]="ItemSubform"
+                                formControlName="doctorName" placeholderText="First Name / Last Name" fxFlex
+                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword="
+                                (selectionChange)="getSelectedObjExtDocName($event)"></airmid-autocomplete> -->
+
+
+                              <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Doctor Namer</mat-label>
+                                <input matAutocompletePosition="below" type="text" placeholder="Select Doctor Name"
+                                  matInput formControlName="doctorName" [matAutocomplete]="autoDoc" 
+                                  (input)="getExtDoctorName(true)" [(ngModel)]="DoctorName"    >
+                                  <span matSuffix style="display: flex;">
+                                        <mat-icon class="mat-icon-close"
+                                            (click)="ItemSubform.get('doctorName').setValue(''); isExtDocSelected = false;">close</mat-icon>
+                                      </span>
+                                <mat-autocomplete #autoDoc="matAutocomplete" [displayWith]="getOptionTextDocname"
+                                  (optionSelected)='SelectedDocName($event.option.value)'>
+                                  <mat-option *ngFor="let option of filtergetDocName" [value]="option">
+                                    {{option.doctorName}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
 
                               <!-- <airmid-textbox label="Doctor Name" [(ngModel)]="DoctorName" formControlName="doctorName"
                                 placeholder="DoctorName" [formGroup]="ItemSubform"
                                 [validations]="getValidationMessages().doctorName" [type]="'text'"></airmid-textbox> -->
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'&& 
+                              chkExternalPatient != true ">
                               <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
-                                placeholder="extAddress" [formGroup]="ItemSubform"
+                                placeholder="extAddress" [formGroup]="ItemSubform"    
                                 [validations]="getValidationMessages().extAddress" [type]="'text'"
                                 (input)="onEnterAddress($event)"></airmid-textbox>
                             </div>
@@ -688,7 +702,7 @@
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
 
-                                  <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
+                                  <button class="btn btn-primary" (click)="onSaveDraftBill()" *ngIf="Draftchk">DraftBill</button>
 
                                   <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button>
                                   <button class="btn btn-danger-outline" (click)="onClose()"

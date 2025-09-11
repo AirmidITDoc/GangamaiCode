@@ -239,8 +239,8 @@ export class GoodReceiptnoteService {
 
   public getSupplierdetails(Id) { 
     return this._httpClient1.GetData("Supplier/" + Id);
-  }
-    public checkInvoiceNoExist(emp) {
-    return this._httpClient1.PostData("GRN/GrnInvoiceNocheck", emp);
+  } 
+    public getGRNchkInvoice_chkGSTTypes(param){
+    return this._httpClient1.PostData("Common",param)
   }
 }
