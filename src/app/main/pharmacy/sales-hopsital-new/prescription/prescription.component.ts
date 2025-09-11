@@ -109,15 +109,18 @@ PrescriptionFrom:FormGroup;
     this.SelectedObj = Obj
     this.isShowDetailTable = true;
     let patientType = 0;
-    if(Obj.patientType == 'IP')
+    let Op_ip_Id  = Obj?.oP_IP_ID;
+    if(Obj.patientType == 'IP'){
+    Op_ip_Id = Obj?.ipMedID
     patientType  = 1
+    } 
     this.gridConfig1 = {
       apiUrl: "Sales/PrescriptionDetaillist",
       columnsList: this.AllColumnsDetails,
       sortField: "ItemID",
       sortOrder: 0,
       filters: [
-        { fieldName: "OP_IP_Id", fieldValue: String(Obj.ipMedID), opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Id", fieldValue: String(Op_ip_Id), opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: String(patientType), opType: OperatorComparer.Equals }
       ]
     }
