@@ -24,6 +24,7 @@ import { PrescriptionComponent } from './prescription/prescription.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
+import { FakeDbService } from 'app/fake-db/fake-db.service';
 
 @Component({
   selector: 'app-sales-hospital',
@@ -92,6 +93,7 @@ export class SalesHospitalNewComponent implements OnInit {
   PatientHeaderObj: any;
   StockId: any;
   paymethod: boolean = true;
+   Draftchk: boolean = true;
   ConShow: Boolean = false;
   chkdiscper: boolean = true;
   Creditflag: boolean = false;
@@ -233,6 +235,7 @@ export class SalesHospitalNewComponent implements OnInit {
       extMobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
       extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      ExternalPatID:''
     });
   }
   //sales save form
@@ -435,6 +438,7 @@ export class SalesHospitalNewComponent implements OnInit {
     if (event.value == '0') {
       this.RegId = '';
       this.paymethod = true;
+      this.Draftchk = true;
       this.ItemSubform.get('extMobileNo').clearValidators();
       this.ItemSubform.get('externalPatientName').clearValidators();
       this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -444,6 +448,7 @@ export class SalesHospitalNewComponent implements OnInit {
     } else if (event.value == '1') {
       this.RegId = '';
       this.paymethod = true;
+      this.Draftchk = true;
       this.ItemSubform.get('extMobileNo').clearValidators();
       this.ItemSubform.get('externalPatientName').clearValidators();
       this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -461,6 +466,7 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.updateValueAndValidity();
       this.saleSelectedDatasource.data = [];
       this.paymethod = false;
+      this.Draftchk = false;
     }
   }
   getSelectedObjRegIP(obj) {
@@ -966,7 +972,7 @@ export class SalesHospitalNewComponent implements OnInit {
       return;
     }
     if (this.ItemSubform.get('opIpType').value == '2') {
-      if (formValue.externalPatientName == '' || formValue.doctorName == '' || formValue.extMobileNo == '') {
+      if (formValue.externalPatientName == '' || ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' || formValue.extMobileNo == '') {
         this.toastr.warning('Please select Customer Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -1001,7 +1007,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     if (formValue.opIpType == 2) {
       this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue?.externalPatientName ?? '')
-      this.PharmaSalesForm.get('sales.doctorName').setValue(formValue?.doctorName ?? '')
+      this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || 0)
       this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress ?? '')
       this.PharmaSalesForm.get('sales.extMobileNo').setValue(formValue?.extMobileNo ?? '')
       this.PharmaSalesForm.get('sales.regId').clearValidators();
@@ -1367,9 +1373,11 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('doctorName').setValue(contact.admDoctorName)
       this.ItemSubform.get('extAddress').setValue(contact.extAddress)
       this.paymethod = false;
+      this.Draftchk = false;
       this.RegId = '';
     } else if (contact.opipType == 0) {
       this.paymethod = true;
+      this.Draftchk = true;
       this.vSelectedOption = '0';
       this.DoctorNamecheck = true;
       this.OPDNoCheck = true;
@@ -1385,6 +1393,7 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     else if (contact.opipType == 1) {
       this.paymethod = true;
+      this.Draftchk = true;
       this.vSelectedOption = '1';
       this.DoctorNamecheck = true;
       this.OPDNoCheck = false;
@@ -1978,10 +1987,10 @@ vExpDate:any;
     }
   }
   public onEntermobileno(event): void {
-    if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
-      this.getTopSalesDetailsList(this.MobileNo);
+   // if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
+      // this.getTopSalesDetailsList(this.MobileNo);
       this.patientname.nativeElement.focus();
-    }
+   // }
   }
   public onEnterDoctorname(event): void {
     if (event.which === 13) {
@@ -2080,21 +2089,61 @@ vExpDate:any;
       });
     }, 100);
   }
-  getSelectedObjexternal(event){ 
-    debugger
+
+    checkextpatent(event){
+    if(event == true){
+   this.chkExternalPatient = true   
+    }else{
+    this.chkExternalPatient = false
+    }
+  } 
+  chkExternalPatient:boolean=false;
+  getSelectedObjextPat(event){ 
+    debugger 
+    this.ItemSubform.value 
+   if(event){
     this.ItemSubform.patchValue({
-      //extMobileNo:event?.extMobileNo,
-      externalPatientName:event?.patientName ?? '' ,
+      extMobileNo:event?.extMobileNo,
+      //externalPatientName:event?.patientName ,
       doctorName:event?.doctorName ?? '' 
     }) 
-   // this.ItemSubform.get('doctorName').setValue(event?.doctorName ?? '') 
-  }
-   getSelectedObjExtDocName(event){ 
-    //   this.ItemSubform.patchValue({ 
-    //   doctorName:event?.doctorName ?? '' 
-    // }) 
-    this.DoctorName = event?.doctorName ?? '' 
-  }
+    this.PatientName = event?.patientName
+    this.ItemSubform.value 
+    this.chkExternalPatient = false
+    this.getExtDoctorName(false)
+
+      const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+            if (extAddressNameElement) {
+                extAddressNameElement.focus();
+            }
+   } 
+  }  
+    filtergetDocName:any;
+    noOptionFoundDoc:any;
+    isExtDocSelected:boolean=false;
+    getExtDoctorName(obj) {
+      debugger   
+        this._salesService.getexternalDoctorList(this.ItemSubform.get('doctorName').value).subscribe(data => {
+            this.filtergetDocName = data; 
+              console.log(data) 
+            if (this.filtergetDocName.length == 0) {
+                this.noOptionFoundDoc = true;
+            } else {
+                this.noOptionFoundDoc = false;
+            }
+
+        if(obj != true){
+         this.ItemSubform.get('doctorName').setValue(this.filtergetDocName[0]) 
+         }
+        }); 
+    }  
+
+        getOptionTextDocname(option) {
+        return option && option.doctorName ? option.doctorName : '';
+    }
+    SelectedDocName(Obj){
+      console.log(Obj)
+    } 
 } 
 
 export class IndentList {

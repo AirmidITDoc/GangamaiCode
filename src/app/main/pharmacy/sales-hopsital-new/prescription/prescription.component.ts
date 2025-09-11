@@ -155,17 +155,25 @@ PrescriptionFrom:FormGroup;
   }
   dsItemDetList:any;
   GetPrescrpList() {
-    debugger
-      if(this.SelectedObj?.ipMedID > 0){
+    debugger 
+    let patientType = 0;
+    let Op_ip_Id  = this.SelectedObj?.oP_IP_ID;
+    if(this.SelectedObj?.patientType == 'IP'){
+    Op_ip_Id = this.SelectedObj?.ipMedID
+    patientType  = 1 
+    } 
+      if(Op_ip_Id > 0){
         var vdata = {
           "first": 0,
           "rows": 10,
           "sortField": "ItemId",
           "sortOrder": 0,
-          "filters": [{ "fieldName": "IPMedID", "fieldValue": String(this.SelectedObj?.ipMedID), "opType": "Contains" }],//"40039"
+          "filters": [
+            { "fieldName": "IPMedID", "fieldValue": String(Op_ip_Id), "opType": "Contains" },
+            { "fieldName": "OP_IP_Type", "fieldValue": String(patientType), "opType": "Contains" }],//"40039"
           "exportType": "JSON",
           "columns": [{ "data": "string", "name": "string" }]
-        }
+        } 
        this._SalesService.getPrescriptionBalQtyList(vdata).subscribe(reponse => {
         this.chargelist = reponse.data as any;  
       });   

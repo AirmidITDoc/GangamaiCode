@@ -8,10 +8,13 @@ import { APP_CONFIG, AppConfig } from './../app-config.module';
 import { LoaderService } from "./components/loader/loader.service";
 import { AuthenticationService } from "./services/authentication.service";
 import { MatDialog } from "@angular/material/dialog";
+import { Error0Component } from "app/main/shared/APIerrorpages/error-0/error-0.component";
 
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
+    private dialogOpen = false;
+
     constructor(@Inject(APP_CONFIG) private config: AppConfig, private dialog: MatDialog,
         private _ls: LoaderService, public toastr: ToastrService, private router: Router,
         private authenticationService: AuthenticationService) { }
@@ -59,13 +62,33 @@ export class JwtInterceptor implements HttpInterceptor {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
                     this.dialog.closeAll(); // 👈 close all open dialogs
-                     this.router.navigate(["/forbidden"]);
+                    this.router.navigate(["/forbidden"]);
                     // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                     //     this.router.navigate(['/forbidden']);
                     // });
 
-                } else if (err.status === 0 || err.status === 500) {
-                    this.toastr.error('Unable to connect to the server. Please try again later.', 'Server !', {
+                } else if (err.status === 500) {
+                    this.toastr.error('Server Error. Please try again after some time', 'Server Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                } else if (err.status === 0) {
+                    if (!this.dialogOpen) {
+                        this.dialogOpen = true;
+                        const dialogRef = this.dialog.open(Error0Component, {
+                            disableClose: true,
+                            width: '400px',
+                            data: { countdown: 300 } // 300 seconds = 5 minutes
+                        });
+
+                        dialogRef.afterClosed().subscribe(() => {
+                            this.dialogOpen = false;
+                            this.router.navigate(['']);
+                        });
+                    }
+                }
+                else {
+                    let errorMessage = 'An unknown error occurred. Please try again after sometime';
+                    this.toastr.error(errorMessage, 'Error !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
                 }

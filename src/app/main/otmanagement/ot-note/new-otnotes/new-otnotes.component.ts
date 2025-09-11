@@ -27,11 +27,12 @@ export class NewOtnotesComponent {
   OTNoteform: FormGroup;
   opIpType: number;
   opIpId: any;
-  vOPDNo:any;
-  vIPDNo:any;
+  vOPDNo: any;
+  vIPDNo: any;
   vSelectedOption: any = "OP";
   vRegNo: any;
   vPatientName: any;
+  VsurgeryName: any;
   // vDescription:any;
   vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
   registerObj = new otNote({});
@@ -46,6 +47,8 @@ export class NewOtnotesComponent {
     public _otNoteService: OtNoteService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
+    private toastr: ToastrService,
+    public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
@@ -53,28 +56,28 @@ export class NewOtnotesComponent {
     this.OTNoteform = this._otNoteService.createOtNoteForm();
     this.OTNoteform.markAllAsTouched();
 
-     if ((this.data?.otreservationId) > 0) {
+    this.OTNoteform.get('description').setValue("Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
+
+    if ((this.data?.otreservationId) > 0) {
       this.registerObj = this.data
       this.OTNoteform.get('surgeryId').setValue(this.registerObj?.surgeryId)
-      this.OTNoteform.get('surgeonId1').setValue(this.registerObj?.surgeonId)
-      this.OTNoteform.get('surgeonId2').setValue(this.registerObj?.surgeonId1)
-      this.OTNoteform.get('anestheticsDr').setValue(this.registerObj?.anestheticsDrID)
-      this.OTNoteform.get('anestheticsDr1').setValue(this.registerObj?.anestheticsDrID1)
-      // this.OTNoteform.get('anestheticsDr2').setValue(this.registerObj?.surgeonId1)
+      this.OTNoteform.get('surgeonId').setValue(this.registerObj?.surgeonId)
+      this.OTNoteform.get('surgeonId1').setValue(this.registerObj?.surgeonId1)
+      this.OTNoteform.get('anesthetishId').setValue(this.registerObj?.anestheticsDrID)
+      this.OTNoteform.get('anesthetishId1').setValue(this.registerObj?.anestheticsDrID1)
+      // this.OTNoteform.get('anesthetishId2').setValue(this.registerObj?.surgeonId1)
       console.log(this.registerObj)
     }
-    if(this.registerObj.opIpType == true){
-      this.vSelectedOption="IP"
-      this.vIPDNo=this.registerObj.ipdNo
-    }else{
-      this.vSelectedOption="OP"
-      this.vOPDNo=this.registerObj.opdNo
+    if (this.registerObj.opIpType == true) {
+      this.vSelectedOption = "IP"
+      this.vIPDNo = this.registerObj.ipdNo
+    } else {
+      this.vSelectedOption = "OP"
+      this.vOPDNo = this.registerObj.opdNo
     }
   }
 
   patientInfoReset() {
-    this.OTNoteform.get('opIpId').setValue('');
-    this.OTNoteform.get('opIpId').reset();
     this.vRegNo = '';
     this.vPatientName = '';
     this.registerObj = new otNote({});
@@ -84,18 +87,92 @@ export class NewOtnotesComponent {
     this.OTNoteform.get('description')?.setValue(content);
   }
 
-  onSubmit() {
+  selectChangeSurgery(obj: any) {
+    this.VsurgeryName = obj.text
+  }
 
+  onSubmit() {
+    let row, IncisionNew, OPeDignosis, OperFinding, OperProcuder, Extperformed, Closertech, PostOperat, DetSpecLab
+    let discription = this.OTNoteform.get('description').value
+    let ID = discription.split('<br><br>')
+    ID.forEach(element => {
+      row = element.split(':')
+      if (row[0] == 'Incision') {
+        IncisionNew = row[1]
+      }
+      if (row[0] == 'OperativeDiagnosis') {
+        OPeDignosis = row[1]
+      }
+      if (row[0] == 'OperativeFindings') {
+        OperFinding = row[1]
+      }
+      if (row[0] == 'OperativeProcedure') {
+        OperProcuder = row[1]
+      }
+      if (row[0] == 'ExtraProPerformed') {
+        Extperformed = row[1]
+      }
+      if (row[0] == 'ClosureTechnique') {
+        Closertech = row[1]
+      }
+      if (row[0] == 'PostOpertiveInstru') {
+        PostOperat = row[1]
+      }
+      if (row[0] == 'DetSpecimenForLab') {
+        DetSpecLab = row[1]
+      }
+    })
+
+    this.OTNoteform.get('otdate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.OTNoteform.get('surgeryName')?.setValue(this.VsurgeryName ?? this.registerObj.surgeryName);
+    this.OTNoteform.get('incision')?.setValue(IncisionNew);
+    this.OTNoteform.get('operativeDiagnosis')?.setValue(OPeDignosis);
+    this.OTNoteform.get('operativeFindings')?.setValue(OperFinding);
+    this.OTNoteform.get('operativeProcedure')?.setValue(OperProcuder);
+    this.OTNoteform.get('extraProPerformed')?.setValue(Extperformed);
+    this.OTNoteform.get('closureTechnique')?.setValue(Closertech);
+    this.OTNoteform.get('postOpertiveInstru')?.setValue(PostOperat);
+    this.OTNoteform.get('detSpecimenForLab')?.setValue(DetSpecLab);
+    this.OTNoteform.get('fromTime')?.setValue(this.registerObj.opstartTime);
+    this.OTNoteform.get('toTime')?.setValue(this.registerObj.opendTime);
+    this.OTNoteform.get('otreservationId')?.setValue(this.registerObj.otreservationId);
+
+    // console.log(this.OTNoteform.value)
+    if (!this.OTNoteform.invalid) {
+
+      this.OTNoteform.removeControl('description')
+      console.log(this.OTNoteform.value)
+      this._otNoteService.otNoteSave(this.OTNoteform.value).subscribe((response) => {
+        this.OnPrint(response)
+        this.onClose();
+      });
+    } {
+      let invalidFields = [];
+      if (this.OTNoteform.invalid) {
+        for (const controlName in this.OTNoteform.controls) {
+          if (this.OTNoteform.controls[controlName].invalid) {
+            invalidFields.push(`OT Note Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
   }
 
   onClose() {
     this.OTNoteform.reset();
-    // this.dialogRef.close(); 
     this._matDialog.closeAll();
-    this.OTNoteform.get('opIpType').setValue('IP')
     this.OTNoteform.get('description').setValue("Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:")
-    this.vDescription = "Incision:<br><br>OperativeDiagnosis:<br><br>OperativeFindings:<br><br>OperativeProcedure:<br><br>ExtraProPerformed:<br><br>ClosureTechnique:<br><br>PostOpertiveInstru:<br><br>DetSpecimenForLab:"
     this.patientInfoReset();
+  }
+
+  OnPrint(e) {
+
   }
 
   getValidationMessages() {

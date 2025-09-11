@@ -187,6 +187,16 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
         }
+        this.getGSTTypesValues();
+    }
+    getGSTTypesValues() {
+        var vdata = {
+            "searchFields": [{ "fieldName": "ConstantType", "fieldValue": "GST_TYPES", "opType": "13" }],
+            "mode": "gsttypeslist"
+        }
+        this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
+            this.gstValues = response.map(item => Number(item.Value))
+        ))
     }
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
@@ -207,19 +217,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
     }
+    gstValues:any=[];
     getchangegstper(rate: any, controlName: string): void {
+        debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         // Predefined valid GST percentages (as numbers)
-        const gstValues = [2.5, 6, 9, 14];
-
-        const parsedRate = Number(rate);
-
-        const isValid = gstValues.includes(parsedRate);
+        //const gstValues = [2.5, 6, 9, 14];  
+        const parsedRate = Number(rate); 
+        const isValid = this.gstValues.includes(parsedRate);
 
         if (!isValid) {
             this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-            this.userFormGroup.get(controlName)?.setValue('');
-            const NameElement = document.querySelector(`[name='{{controlName}}']`) as HTMLElement;
+            this.userFormGroup.get(controlName).setValue('');
+            const NameElement = document.querySelector(`[name='controlName']`) as HTMLElement;
             if (NameElement) {
                 NameElement.focus();
             }
@@ -1141,25 +1151,34 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             return false;
         }
     }
-    // Check Invice is already exist or not
-    chkInvoiceNo(InvoiceNo: any, controlName: any) {
-        debugger
-        if (!this.userFormGroup.get('SupplierId')?.value) {
+    // Check Invice is already exist or not 
+chkInvoiceNo(InvoiceNo){
+     if (!this.userFormGroup.get('SupplierId')?.value) {
             this.newGRNService.showToast('Please select Supplier Name', ToastType.WARNING);
             this.userFormGroup.get('controlName')?.setValue('')
             return
         }
-        var vdata = {
-            "invoiceNo": InvoiceNo,
-            "storeId": this.userFormGroup.get('StoreId')?.value,
-            "supplierId": this.userFormGroup.get('SupplierId')?.value
-        }
-        this._GRNList.checkInvoiceNoExist(vdata).subscribe(response => (
-            console.log(response)
-            // this.userFormGroup.get('controlName')?.setValue('')
-        ))
-    }
+     var vdata = {
+            "searchFields": [
+                { "fieldName": "InvoiceNo", "fieldValue": String(InvoiceNo), "opType": "13" },
+                { "fieldName": "SupplierId", "fieldValue": String(this.userFormGroup.get('StoreId')?.value), "opType": "13" },
+                { "fieldName": "StoreId", "fieldValue": String(this.userFormGroup.get('SupplierId')?.value), "opType": "13" }
+            ],
+            "mode": "grnInvoicenocheck"
+        } 
+        this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => {
+            if(response[0]?.Invoice_Exists == 1){
+            this.newGRNService.showToast('Entered Invoice no already exists', ToastType.WARNING);
+            this.userFormGroup.get('InvoiceNo').setValue('');
+            const InvoiceNoNameElement = document.querySelector(`[name='InvoiceNo']`) as HTMLElement;
+            if (InvoiceNoNameElement) {
+                InvoiceNoNameElement.focus();
+            }
+            return; 
+            }
+        });
 
+}
     //Purchase order to grn section
     FinalTotalQty1: any = 0;
     FinalLandedrate1: any = 0;

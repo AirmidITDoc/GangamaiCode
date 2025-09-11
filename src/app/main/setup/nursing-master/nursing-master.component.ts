@@ -22,10 +22,9 @@ export class NursingMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Code", key: "nursingId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Template Name", key: "nursTempName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Template Desc ", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -43,13 +42,13 @@ export class NursingMasterComponent {
     } //Action 1-view, 2-Edit,3-delete
   ]
   allFilters = [
-    { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "nursTempName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "Nursing/NursingTemplateList",
     columnsList: this.allColumns,
-    sortField: "ConsentId",
+    sortField: "NursingId",
     sortOrder: 0,
     filters: this.allFilters
   }

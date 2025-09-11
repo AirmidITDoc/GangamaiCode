@@ -61,7 +61,7 @@
                     <airmid-textbox fxFlex="6%" label="Invoice No" formControlName="InvoiceNo"
                       [(ngModel)]="registerObj.invoiceNo" [formGroup]="userFormGroup" placeholder="Invoice No"
                       [validations]="getValidationMessages().invoiceNo"
-                      (change)="chkInvoiceNo(userFormGroup.get('InvoiceNo')?.value, 'InvoiceNo')"></airmid-textbox>
+                      (change)="chkInvoiceNo(userFormGroup.get('InvoiceNo')?.value)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="6%" label="Gate Entry No" formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.gateEntryNo" [formGroup]="userFormGroup" placeholder="GateEntryNo"

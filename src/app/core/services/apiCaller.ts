@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import {  map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
 
@@ -26,18 +26,6 @@ export class ApiCaller {
                         });
                     return of(null); // Avoid returning anything invalid
                 }
-            }),
-            catchError((err: any): any => {
-                let errorMessage = 'An unknown error occurred. Please try again after sometime';
-                // if (err.error instanceof ErrorEvent) {
-                //     errorMessage = `Error: ${err.error.message}`;
-                // } else {
-                //     errorMessage = `Error Code: ${err.status}\nMessage: ${err.message}`;
-                // }
-                this.toastr.error(errorMessage, 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                });
-                return of(null);  // Return an empty observable to continue without crashing
             }));
     }
 
