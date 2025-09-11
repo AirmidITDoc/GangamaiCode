@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { ToastType } from 'app/main/purchase/good-receiptnote/new-grn/types';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormvalidationserviceService {
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   // allow when the number is required
   notEmptyOrZeroValidator(): any {
@@ -103,6 +105,7 @@ export class FormvalidationserviceService {
    validGstValidator(allowedValues: number[]): any {
   return (control: AbstractControl): ValidationErrors | null => {
     if (control.value === null || control.value === undefined || control.value === '') {
+       this.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
       return null; 
     }
 
@@ -113,5 +116,25 @@ export class FormvalidationserviceService {
       : { invalidGST: { value: control.value } };
   };
 }
+
+ showToast(message: string, type: ToastType = ToastType.SUCCESS) {
+          if (type === ToastType.SUCCESS) {
+              this.toastr.success(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+              });
+          }
+  
+          if (type === ToastType.WARNING) {
+              this.toastr.warning(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+              });
+          }
+          if (type === ToastType.ERROR) {
+              this.toastr.error(message, `${type} !`, {
+                  toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+              });
+          }
+  
+      }
 }
 

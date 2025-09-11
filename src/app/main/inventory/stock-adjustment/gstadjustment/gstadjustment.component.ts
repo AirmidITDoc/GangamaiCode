@@ -77,9 +77,9 @@ export class GSTAdjustmentComponent implements OnInit {
       oldCgstper: ['', [Validators.required, Validators.min(0)]],
       oldSgstper: ['', [Validators.required, Validators.min(0)]],
       oldIgstper: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      cgstper: ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
-      sgstper:  ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
-      igstper:  ['', [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
+      cgstper: [1, [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
+      sgstper:  [1, [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
+      igstper:  [1, [Validators.required, this._FormvalidationserviceService.validGstValidator([0, 2.5, 5, 12, 18, 28])]],
       addedBy: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
