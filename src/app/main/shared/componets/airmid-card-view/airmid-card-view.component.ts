@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -167,6 +167,15 @@ onExportClick(type: gridResponseType) {
     this._httpClient.downloadFile(this.gridConfig.apiUrl, this.gridDataRequest, 1, filename).subscribe((data) => {
 
     });
+}
+
+onPage(event: PageEvent) {
+    this.pageSize = event.pageSize ?? this.pageSize;
+    if (this.paginator) {
+        this.paginator.pageIndex = event.pageIndex ?? 0;
+        this.paginator.pageSize = this.pageSize;
+    }
+    this.bindGridData();
 }
 
 }

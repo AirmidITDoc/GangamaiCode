@@ -95,7 +95,12 @@ export class CreateUserComponent implements OnInit {
     sortField: "UserId",
     sortOrder: 0,
     filters: [
-      { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+      { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      // { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      // { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      // { fieldName: "storeId", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      // { fieldName: "roleId", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      // { fieldName: "status", fieldValue: "%", opType: OperatorComparer.StartsWith },
     ]
   }
 
