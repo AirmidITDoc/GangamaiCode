@@ -19,9 +19,13 @@ export class DischargeCancelService {
     return this._formbuilder.group({
       RegID: '',
       Op_ip_id: '1',
-      IsDischarged: '', 
+      IsDischargedit: 0, 
+      IsIPDnoEdit: 0,
+      AdmissionDateEdit:0,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
+      OldIpdNo:[''],
+      NewIpdNo:['']
     });
    }
    public getAdmittedpatientlist(id){
@@ -42,5 +46,9 @@ export class DischargeCancelService {
  
 public getDateTimeChange(employee){
   return this._httpClient1.PutData("Administration/UpdateAdmissiondatetime"+ employee.admissionID, employee)
+}
+
+public IpdNoupdate(data){
+  return this._httpClient1.PostData("",data)
 }
 }

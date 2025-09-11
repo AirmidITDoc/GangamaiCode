@@ -119,10 +119,11 @@
                 <mat-card style="padding-:2px;" fxFlex>
                     <mat-table #table matSort [dataSource]="dsNewmaterialList" [@animateStagger]="{value:'50'}"
                         style="overflow:auto;height: 250px;">
+
                         <ng-container matColumnDef="ItemName" sticky>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">
                                 ItemName</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                 {{contact.ItemName}}
                             </mat-cell>
                         </ng-container>

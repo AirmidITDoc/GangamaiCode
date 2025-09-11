@@ -199,7 +199,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
 
     onChangeFirst(value) {
-debugger
+
         let IsClosed = "0"
         if (this.IssueSearchGroup.get("IsClosed").value)
             IsClosed = "1"
@@ -216,7 +216,7 @@ debugger
     }
 
     getfilterdata() {
-debugger
+
         this.gridConfig = {
             apiUrl: "IssueToDepartment/IssueToDeptList",
             columnsList: this.allcolumns,

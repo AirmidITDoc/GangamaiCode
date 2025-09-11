@@ -539,7 +539,7 @@ export class NewIssueTodeptComponent {
     this.showIndentFlag = true
   }
   AddIndentSelectedItem(contact) {
-    debugger
+    
     console.log(contact)
     this.vIndentId = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
@@ -795,7 +795,7 @@ export class NewIssueTodeptComponent {
       console.log(element)
       if (this.CellCalculation == 0)
         console.log(element)
-      debugger
+      
       let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
       if (balQty == 0)

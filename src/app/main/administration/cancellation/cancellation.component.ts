@@ -137,9 +137,10 @@ export class CancellationComponent implements OnInit {
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
-        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //not there in payload
-        { heading: "Discount Amt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
-        { heading: "Net Amt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+        { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //not there in payload
+        { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+        { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
         {
           heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
           template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -152,7 +153,8 @@ export class CancellationComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith }
+        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
       ]
 
   // 1st table
@@ -186,7 +188,9 @@ getfilteropd() {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals }
+      { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+      { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
+
       ]
   }
   this.grid.gridConfig = this.gridConfig;
@@ -218,7 +222,7 @@ ClearfilterOPD(event) {
     { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:250 },
-    { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Bill Amt", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
     { heading: "Discount Amt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
     { heading: "Net Amt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
     {
@@ -325,9 +329,9 @@ onRadioChange(event: MatRadioChange) {
     { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
     { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount, 
       columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount,
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount,
       columnClass: (element) => element["refundAmount"] > 0 ? Color.GREEN : "" },
-    { heading: "Use rName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPAdvance
@@ -400,7 +404,7 @@ ClearfilterAdvance(event) {
     { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
     { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
     { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -469,10 +473,10 @@ ClearfilterIPRefund(event) {
     { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
-    { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Advance UsedAmt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "AdvUsed Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
     { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9  },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -567,10 +571,8 @@ ClearfilterRefundAd(event) {
             data: row
         });
     dialogRef.afterClosed().subscribe(result => {
-        // if (result) {
-            this.grid.bindGridData();
-        // }
-    });
+       this.grid.bindGridData();
+       });
   }
 
   toggleSidebar(name): void {
@@ -578,7 +580,6 @@ ClearfilterRefundAd(event) {
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
 
@@ -602,21 +603,11 @@ ClearfilterRefundAd(event) {
           }
         console.log("Json:",SubmitDate)
         this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
-          if (response) {
-            this.toastr.success('OP Bill Cancelled Successfully', 'success !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-          this.grid.bindGridData();
+         
         });
-      } else {
-        // this.getSearchList();
-      }
+      } 
     })
+      this.grid.bindGridData();
   }
 
   BillCancelIP(contact) {
@@ -630,29 +621,19 @@ ClearfilterRefundAd(event) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      
-      /* Read more about isConfirmed, isDenied below */
+     
       if (result.isConfirmed) {
           let SubmitDate = {
             "billNo":contact.billNo || 0
           }
         console.log("Json:",SubmitDate)
         this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
-          if (response) {
-            this.toastr.success('IP Bill Cancelled Successfully', 'success !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
+         
           this.grid.bindGridData();
         });
-      } else {
-        // this.getSearchList();
-      }
+      } 
     })
+      this.grid.bindGridData();
   }
 
   CancelAdvance(contact){ 
@@ -678,32 +659,24 @@ ClearfilterRefundAd(event) {
 
         console.log(SubmitDate)
         this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
-          if (response) {
-            this.toastr.success('Record Successfully Updated', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          } else {
-            this.toastr.error('Record not Updated Successfully!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          } 
-          this.grid1.bindGridData();
+       
         });  
       }
     })
+      this.grid1.bindGridData();
   }
 
-  getRecord(contact, m): void {
-    if (this._CancellationService.UserFormGroup.get('OP_IP_Type').value == '1') {
-      if (!contact.InterimOrFinal) {
-        this.viewgetBillReportPdf(contact.BillNo)
-      } else {
-        this.viewgetInterimBillReportPdf(contact.BillNo)
-      }
-    } else {
-      this.viewgetOPBillReportPdf(contact)
-    }
-  }
+  // getRecord(contact, m): void {
+  //   if (this._CancellationService.UserFormGroup.get('OP_IP_Type').value == '1') {
+  //     if (!contact.InterimOrFinal) {
+  //       this.viewgetBillReportPdf(contact.BillNo)
+  //     } else {
+  //       this.viewgetInterimBillReportPdf(contact.BillNo)
+  //     }
+  //   } else {
+  //     this.viewgetOPBillReportPdf(contact)
+  //   }
+  // }
   Billdateupdate(contact) {
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
@@ -714,54 +687,52 @@ ClearfilterRefundAd(event) {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      // this.getSearchList();
-    });
-  }
-
-  viewgetBillReportPdf(BillNo) {
-    setTimeout(() => {
-      // this.SpinLoading =true;  
-      this._IpBillBrowseListService.getIpFinalBillReceipt(
-        BillNo
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "IP Bill  Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          // this.SpinLoading = false; 
-        });
       });
-
-    }, 100);
+        this.grid1.bindGridData();
   }
-  viewgetInterimBillReportPdf(BillNo) {
-    setTimeout(() => {
-      this._IpBillBrowseListService.getIpInterimBillReceipt(
-        BillNo
-      ).subscribe(res => {
-        const dialogRef = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "IP Interim Bill  Viewer"
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-        });
-      });
 
-    }, 100);
-  }
+  // viewgetBillReportPdf(BillNo) {
+  //   setTimeout(() => {
+  //           this._IpBillBrowseListService.getIpFinalBillReceipt(
+  //       BillNo
+  //     ).subscribe(res => {
+  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //         {
+  //           maxWidth: "85vw",
+  //           height: '750px',
+  //           width: '100%',
+  //           data: {
+  //             base64: res["base64"] as string,
+  //             title: "IP Bill  Viewer"
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //         });
+  //     });
+
+  //   }, 100);
+  // }
+  // viewgetInterimBillReportPdf(BillNo) {
+  //   setTimeout(() => {
+  //     this._IpBillBrowseListService.getIpInterimBillReceipt(
+  //       BillNo
+  //     ).subscribe(res => {
+  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
+  //         {
+  //           maxWidth: "85vw",
+  //           height: '750px',
+  //           width: '100%',
+  //           data: {
+  //             base64: res["base64"] as string,
+  //             title: "IP Interim Bill  Viewer"
+  //           }
+  //         });
+  //       dialogRef.afterClosed().subscribe(result => {
+  //       });
+  //     });
+
+  //   }, 100);
+  // }
   viewgetOPBillReportPdf(contact) {
     setTimeout(() => {
       // this.SpinLoading =true; 

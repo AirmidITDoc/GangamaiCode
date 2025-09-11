@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
                                         fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
+                                        <div class="patient-sub" style="font-size: large;">
                                             <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                                 fxLayoutAlign="space-between">
 
@@ -53,8 +53,14 @@
                                                         currency:'INR'}}</span>
                                                 </div>
 
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Paid Amount</span>
+                                                <div class="patient-col" style="font-weight: bold;
+             color: rgb(7, 90, 126);
+             font-size: large;
+             border: 2px solid rgb(7, 90, 126);
+             border-radius: 8px;
+             padding: 4px 10px;
+             display: inline-block;">
+                                                    <span class="patient-col-key">Total Paid Amount</span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{registerObj.paidAmount |
                                                         currency:'INR'}}</span>
@@ -68,15 +74,15 @@
                         </mat-card>
 
                         <mat-card fxFlex="100%" style="padding: 5px 5px 5px 15px; ">
-                            <div fxLayout="row">
-                                <span class="flex-item-middle" fxFlex="17%" style="padding:10px;">
+                            <!-- <div fxLayout="row">
+                                <span class="flex-item-middle" fxFlex="17%">
                                     Total Paid Amount :- </span>
                                 <mat-form-field appearance="outline" fxFlex="24.5%">
                                     <mat-label>Paid Amount</mat-label>
                                     <input name="PaidAmount" formControlName="PaidAmount" matInput readonly
                                         [(ngModel)]="vPaidAmount">
                                 </mat-form-field>
-                            </div>
+                            </div> -->
 
                             <!-- <div fxLayout="row">
                                 <span class="flex-item-middle" fxFlex="17%" style="padding:10px;">
@@ -161,8 +167,8 @@
                                     </mat-checkbox>
                                     <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>Cheque Pay</mat-label>
-                                        <input name="ChequePayAmount" formControlName="ChequePayAmount" matInput required
-                                            [(ngModel)]="vchequepay" #CardPayAmount (keyup)="getbalAmt()"
+                                        <input name="ChequePayAmount" formControlName="ChequePayAmount" matInput
+                                            required [(ngModel)]="vchequepay" #CardPayAmount (keyup)="getbalAmt()"
                                             (keydown)="onEnterCheckPayAmt($event)">
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentInsertform.get('ChequePayAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('ChequePayAmount')?.touched">
@@ -193,7 +199,7 @@
                                     </airmid-dropdown>
 
                                 </div>
-                                
+
                                 <div fxLayout="row" fxLayoutGap="20px" style="padding-left: 10px;">
                                     <mat-checkbox [checked] style="margin-left:70px;margin-top: 24px;" fxFlex="15%"
                                         [(ngModel)]="vNFTPayCheckStatus" formControlName="IsNEFTpay"
@@ -294,7 +300,7 @@
 
                                 <div class="footer-navigation-container">
                                     <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                                        style="margin: 10px 20px 0px 150px; ">
+                                        style="margin: 10px 20px 0px 100px; ">
                                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                                         <button class="btn btn-primary" (click)="Save()"
                                             [disabled]="vbalanceAmt>0">Payment</button>

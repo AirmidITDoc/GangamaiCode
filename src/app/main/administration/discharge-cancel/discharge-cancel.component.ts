@@ -46,6 +46,8 @@ export class DischargeCancelComponent implements OnInit {
   vPatientType:any;
   screenFromString = 'admission-form';
   vCheckBox:boolean=false;
+  vIpdnoCheckBox=false;
+  vAdmissonDateCheckBox=false;
   AdmissionId:any;
   convertedDate: Date;
   formattedTime:any;
@@ -53,6 +55,9 @@ export class DischargeCancelComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   registerObj:any;
   registerObjAM:any;
+
+  OldIpdNo:any;
+  NewIpdNo:any;
   
   constructor(
     public _DischargeCancelService: DischargeCancelService,
@@ -77,14 +82,38 @@ export class DischargeCancelComponent implements OnInit {
  
   getDischargedList(event){
     if(event.checked == true){
-      this.patientInfoReset();
+      // this.patientInfoReset();
       this.vCheckBox = true;
     }else{
       this.patientInfoReset(); 
       this.vCheckBox = false;
     } 
 }
- 
+
+
+getvIpdnoCheckBox(event){
+  debugger
+   if (this._DischargeCancelService.DischargeForm.get("IsIPDnoEdit").value){
+          this.vIpdnoCheckBox  = true
+        }
+        else{
+          this.patientInfoReset();
+            this.vIpdnoCheckBox  = false
+        }
+        
+}
+
+getAdmissionDateEdit(event){
+  debugger
+   if (this._DischargeCancelService.DischargeForm.get("AdmissionDateEdit").value){
+          this.vAdmissonDateCheckBox  = true
+        }
+        else{
+          this.patientInfoReset();
+            this.vAdmissonDateCheckBox  = false
+        }
+        
+}
 
 getSelectedObjDC(obj) {
   console.log(obj)
@@ -110,6 +139,7 @@ getSelectedObjDC(obj) {
     let extractedName = nameField.split('|')[0].trim();
     this.vPatientName=extractedName;
     this.AdmissionId=obj.admissionID
+    // this.OldIpdNo=obj.Ip
     // setTimeout(() => {
     //   this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
     //     this.registerObj = response;
@@ -205,6 +235,42 @@ getSelectedObjDC(obj) {
        }
        console.log(data);
         this._DischargeCancelService.getDateTimeChange(data).subscribe(response => {
+          this.toastr.success(response);
+          this.resetform()
+          // this._matDialog.closeAll();
+      }, (error) => {
+          this.toastr.error(error.message);
+      });
+     
+      }
+    }); 
+  }
+
+  OnIpdNoUpdate(){
+     if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
+      this.toastr.success('Please select patient', 'Save !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      return
+    }  
+
+    Swal.fire({
+      title: 'Do you want to Update IPDNO ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      if (result.isConfirmed) { 
+       var data={
+        'admissionID':this.AdmissionId,
+        'admissionDate':this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd"),
+        // 'admissionTime':formattedDate+this.dateTimeObj.time
+       }
+       console.log(data);
+        this._DischargeCancelService.IpdNoupdate(data).subscribe(response => {
           this.toastr.success(response);
           this.resetform()
           // this._matDialog.closeAll();

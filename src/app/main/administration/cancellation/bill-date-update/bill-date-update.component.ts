@@ -74,11 +74,7 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data);
           this._CancellationService.getDateTimeChangeBill(data).subscribe(response => {
-            this.toastr.success(response);
-            this._matDialog.closeAll();
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+                    });
 
         } else if (this.AdvanceDetailId) {
           var data1 = {
@@ -88,11 +84,7 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data1);
           this._CancellationService.getDateTimeChangeAdvanceDetId(data1).subscribe(response => {
-            this.toastr.success(response);
-            this._matDialog.closeAll();
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+           });
 
         } else if(this.RefundId){
           var data2 = {
@@ -102,11 +94,7 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data2);
           this._CancellationService.getDateTimeChangeRefundId(data2).subscribe(response => {
-            this.toastr.success(response);
-            this._matDialog.closeAll();
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+           });
 
         }else if(this.SalesId){
           var data3 = {
@@ -116,10 +104,6 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data3);
           this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
-            this.toastr.success(response);
-            this._matDialog.closeAll();
-          }, (error) => {
-            this.toastr.error(error.message);
           });
 
         }else if(this.PaymentId){
@@ -130,11 +114,7 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data4);
           this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
-            this.toastr.success(response);
-            this._matDialog.closeAll();
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+           });
         }
 
       }

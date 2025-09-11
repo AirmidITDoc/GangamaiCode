@@ -123,6 +123,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
 
     this.MaterialInsertForm = this.creatematerialconsInsert()
     this.MaterialConDetailsArray.push(this.creatematerialconsDetail());
+     this.currentstockArray.push(this.createcurrentstock());
   }
 
   creatematerialconsInsert(): FormGroup {
@@ -140,11 +141,11 @@ export class NewMaterialConsumptionComponent implements OnInit {
         addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         updatedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         admId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        tMaterialConsumptionDetails: this.formBuilder.array([])
+         tMaterialConsumptionDetails:this.formBuilder.array([]),
+      currentStockUpdate: this.formBuilder.array([]),
     });
   }
 
-  // 2. FormArray Group for Refund Detail
   creatematerialconsDetail(item: any = {}): FormGroup {
     console.log(item)
     return this.formBuilder.group({
@@ -166,15 +167,28 @@ export class NewMaterialConsumptionComponent implements OnInit {
       admId: [item.admId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
-  // 5.FormArray Getters
+ 
   get MaterialConDetailsArray(): FormArray {
     return this.MaterialInsertForm.get('tMaterialConsumptionDetails') as FormArray;
   }
+createcurrentstock(item: any = {}): FormGroup {
+  debugger
+    console.log(item)
+    return this.formBuilder.group({
+      itemId: [item.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [item.UsedQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      stkId:[item.StockId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  }
 
+    get currentstockArray(): FormArray {
+    return this.MaterialInsertForm.get('currentStockUpdate') as FormArray;
+  }
 
   Pstatus = 1
   onChange(event) {
-    debugger
+    
     if (event.value = "0")
       this.Pstatus = 0
     if (event.value = "1")
@@ -268,7 +282,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     if (!isDuplicate) {
 
       this.chargeslist = this.dsTempItemNameList.data;
-      debugger
+      
       this.chargeslist.push(
         {
           ItemId: this.ItemID,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
@@ -302,7 +316,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
 
   getSelectedserviceObj(obj) {
-    debugger
+    
     this.ItemName = obj.itemName;
     this.ItemID = obj.itemId;
     this.vBalQty = obj.balanceQty;
@@ -332,7 +346,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
 
 
   QtyCondition() {
-debugger
+
     if (this.vBalQty < this.ItemFormGroup.get("UsedQty").value) {
       this.toastr.warning('Enter UsedQty less than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -345,7 +359,7 @@ debugger
 
 
   getTotalamt() {
-debugger
+
     this.vMRPTotalAmount = this.chargeslist.reduce((sum, charge) => sum + (+charge.MRPTotalAmt), 0);
     this.vPurTotalAmount = this.chargeslist.reduce((sum, charge) => sum + (+charge.PurTotalAmt), 0);
     this.vLandedTotalAmount = this.chargeslist.reduce((sum, charge) => sum + (+charge.LandedRate), 0);
@@ -375,11 +389,15 @@ debugger
       return;
     }
     this.Savebtn = true;
-
-     // Material table detail assign to array
-      this.MaterialConDetailsArray.clear();
+    this.MaterialConDetailsArray.clear();
       this.dsNewmaterialList.data.forEach(item => {
         this.MaterialConDetailsArray.push(this.creatematerialconsDetail(item));
+      });
+
+
+       this.currentstockArray.clear();
+      this.dsNewmaterialList.data.forEach(item => {
+        this.currentstockArray.push(this.createcurrentstock(item));
       });
 
 

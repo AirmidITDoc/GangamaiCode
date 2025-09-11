@@ -12,143 +12,165 @@
             </span>
         </div>
     </mat-toolbar>
-    <div class="content">
-      
-        <div class="center p-16 pb-56" fxFlexAlign="start center">
-            <div class="content-card" style="border-radius: 4px;">
-                <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
-                    <form [formGroup]="_DischargeCancelService.DischargeForm">
+    <mat-card style="padding: 15px;">
+        <div class="content">
 
-                        <mat-card style="padding: 15px;" fxlayout="row">
-                            <div fxlayout="row">
-                                <div class="radio-container" style="padding: 15px;">
-                                    <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                        <mat-radio-button value="1">IP</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-    
-                                <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
-                                     [formGroup]="_DischargeCancelService.DischargeForm" 
-                                    formControlName="RegID" fxFlex="80%"
-                                    label="Search Reg No / Patient Name / Mobile No(AD)"
-                                    ApiUrl="Admission/Dischargesearch-patient?Keyword=" 
-                                    (selectionChange)="getSelectedObjDC($event)"
-                                    ValueField="admissionID" TextField="firstName">
-                                </airmid-autocomplete>
-    
-                                <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
-                                     [formGroup]="_DischargeCancelService.DischargeForm"  label="Search Reg No / Patient Name / Mobile No(DC)"
-                                    formControlName="RegID" fxFlex="80%"
-                                     placeholderText="RegNo / First Name / Last Name / Mobile No(DC)" 
-                                    ApiUrl="Admission/search-patient?Keyword=" 
-                                    (selectionChange)="getSelectedObjDC($event)"
-                                    TextField="formattedText" ValueField="regId">
-                                </airmid-autocomplete>
-    
-                                <div style="padding: 15px;">
-                                    <mat-checkbox fxFlex="15%" [checked] value="1" formControlName="IsDischarged"
-                                        [(ngModel)]="vCheckBox" (change)="getDischargedList($event)">IsDischarged
-                                    </mat-checkbox>
-                                </div>
-                            </div>
+            <div class="center p-16 pb-56" fxFlexAlign="start center">
+                <div class="content-card" style="border-radius: 4px;">
+                    <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
+                        <form [formGroup]="_DischargeCancelService.DischargeForm">
 
-                        </mat-card>
-                    </form>
-
-                    <mat-card style="padding: 15px;">
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <div class="patient-info-title">
-                                        <span class="h1">Patient Information</span>
+                            <mat-card style="padding: 15px;" fxlayout="row">
+                                <div fxlayout="row">
+                                    <div class="radio-container" style="padding: 15px;">
+                                        <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                            <mat-radio-button value="1">IP</mat-radio-button>
+                                        </mat-radio-group>
                                     </div>
-                                    <hr>
-                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                        fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                fxLayoutAlign="space-between">
-                                                <div fxLayout="column" fxLayoutGap="10px">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">UHID No
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRegNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vPatientName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Doctor Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">Dr.{{vDoctorName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Department</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vDepartment}}</span>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="10px">
 
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">DOA | Time</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vAdmissionDate |
-                                                            date:'dd/MM/YYYY'}} |
-                                                            {{vAdmissionTime | date:'hh:mm a' }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">IPD No</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vIPDNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Age | Sex
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}
-                                                            D |
-                                                            {{vGenderName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ref-Doctor Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRefDocName}}</span>
-                                                    </div>
+                                    <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
+                                        [formGroup]="_DischargeCancelService.DischargeForm" formControlName="RegID"
+                                        fxFlex="50%" label="Search Reg No / Patient Name / Mobile No(AD)"
+                                        ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                        (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
+                                        TextField="firstName">
+                                    </airmid-autocomplete>
 
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="10px">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ward | Bed Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRoomName}} |
-                                                            {{vBedName}}</span>
+                                    <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
+                                        [formGroup]="_DischargeCancelService.DischargeForm"
+                                        label="Search Reg No / Patient Name / Mobile No(DC)" formControlName="RegID"
+                                        fxFlex="50%" placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                        ApiUrl="Admission/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjDC($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete>
+                                </div>
+                                <div fxlayout="row" style="align-items: center;">
+                                    <div style="padding: 15px;">
+                                        <!-- <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
+                                        (change)="getDischargedList($event)">IsDischarged
+                                    </mat-checkbox> -->
+
+                                        <mat-slide-toggle name="AdmissionDateEdit"
+                                            (change)="getAdmissionDateEdit($event)" formControlName="AdmissionDateEdit">
+                                            AdmissionDate
+                                        </mat-slide-toggle>
+
+
+                                        <mat-slide-toggle name="IsDischarged" (change)="getDischargedList($event)"
+                                            formControlName="IsDischargedit">
+                                            IsDischarged
+                                        </mat-slide-toggle>
+
+                                        <!-- <mat-checkbox fxFlex="15%" formControlName="IsIPDnoEdit" style="margin-left: 100px;"
+                                        [(ngModel)]="vIpdnoCheckBox" (change)="getvIpdnoCheckBox($event)">IsIPDNoEdit
+                                    </mat-checkbox> -->
+
+                                        <mat-slide-toggle name="IsIPDNoEdit" (change)="getvIpdnoCheckBox($event)"
+                                            style="margin-left: 20px;" formControlName="IsIPDnoEdit">
+                                            IPDNoEdit
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+
+                            </mat-card>
+                        </form>
+
+                        <mat-card style="padding: 15px;">
+                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                <div class="patient-info-container">
+                                    <div class="patient-info-box">
+                                        <div class="patient-info-title">
+                                            <span class="h1">Patient Information</span>
+                                        </div>
+                                        <hr>
+                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutAlign="space-between">
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">UHID No
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vRegNo}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vPatientName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">Dr.{{vDoctorName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Department</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vDepartment}}</span>
+                                                        </div>
                                                     </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Type
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vPatientType}}</span>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">DOA | Time</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vAdmissionDate |
+                                                                date:'dd/MM/YYYY'}} |
+                                                                {{vAdmissionTime | date:'hh:mm a' }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">IPD No</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vIPDNo}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Age | Sex
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}
+                                                                D |
+                                                                {{vGenderName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ref-Doctor Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vRefDocName}}</span>
+                                                        </div>
+
                                                     </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Tarrif Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vTariffName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Company Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value"
-                                                            style="color: orange;">{{vCompanyName}}</span>
+                                                    <div fxLayout="column" fxLayoutGap="10px">
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Ward | Bed Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vRoomName}} |
+                                                                {{vBedName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Patient Type
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vPatientType}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Tarrif Name
+                                                            </span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value">{{vTariffName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value"
+                                                                style="color: orange;">{{vCompanyName}}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -156,44 +178,66 @@
                                     </div>
                                 </div>
                             </div>
+                        </mat-card>
+
+                        <form [formGroup]="_DischargeCancelService.DischargeForm">
+                            <div fxLayout="row" fxLayoutGap="6px" *ngIf="vAdmissonDateCheckBox">
+                                <mat-card style="padding: 15px;" fxFlex>
+                                    <app-common-date [screenFrom]="screenFromString"
+                                        (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
+                                    </app-common-date>
+                                </mat-card>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" *ngIf="vIpdnoCheckBox">
+                                <mat-card style="padding: 10px;" fxFlex>
+
+                                    <div fxLayout="row" fxLayoutGap="10px" fxFlexFill>
+
+                                        <airmid-textbox label="Old IPDNo" formControlName="OldIpdNo" fxFlex="50"
+                                            [formGroup]="_DischargeCancelService.DischargeForm">
+                                        </airmid-textbox>
+
+                                        <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="50"
+                                            [formGroup]="_DischargeCancelService.DischargeForm">
+                                        </airmid-textbox>
+
+                                    </div>
+
+                                </mat-card>
+                            </div>
+
+                        </form>
+
+                        <div fxLayoutAlign="space-between">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
+                                <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+                                    style="color: white;" [disabled]="vRegNo>0">Admission Cancel</button>
+                            </div>
+
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                                style="margin: 0px 20px 0px 50px; ">
+                                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                <button *ngIf="vCheckBox && !vIpdnoCheckBox" class="btn btn-primary"
+                                    style="color: white;" (click)="DischargeCancel()">Dicharge Cancel</button>
+                                <button *ngIf="vAdmissonDateCheckBox" class="btn btn-primary"
+                                    (click)="OnAdmDateTimeUpdate()">Save</button>
+                                <button *ngIf="vIpdnoCheckBox" class="btn btn-primary"
+                                    (click)="OnIpdNoUpdate()">Save</button>
+                            </div>
                         </div>
-                    </mat-card>
 
-                    <form [formGroup]="_DischargeCancelService.DischargeForm">
-                        <div fxLayout="row" fxLayoutGap="6px" *ngIf="!vCheckBox && vRegNo">
-                            <mat-card style="padding: 15px;" fxFlex>
-                                <app-common-date [screenFrom]="screenFromString"
-                                    (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
-                                </app-common-date>
-                            </mat-card>
 
-                        </div>
-                    </form>
-
-                    <div fxLayoutAlign="space-between">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
-                            <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
-                                style="color: white;" [disabled]="vRegNo>0">Admission Cancel</button>
+                        <div fxLayout="row" fxLayoutAlign=center>
+                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
+                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date &
+                                Time/Discharge Cancel</span>
                         </div>
 
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                            style="margin: 0px 20px 0px 50px; ">
-                            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-                            <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;"
-                                (click)="DischargeCancel()">Dicharge Cancel</button>
-                            <button *ngIf="!vCheckBox" class="btn btn-primary"
-                                (click)="OnAdmDateTimeUpdate()">Save</button>
-                        </div>
-                    </div>
-
-
-                    <div fxLayout="row" fxLayoutAlign=center>
-                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
-                        <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date &
-                            Time/Discharge Cancel</span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </mat-card>
 </div>

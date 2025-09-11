@@ -371,8 +371,8 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
     //   });
      const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
-        height: "85%",
-        width: '75%',
+        height: "97%",
+        width: '85%',
         data: {
           registerObj: m,
           FromName: "Pharma-PaymentModeChange"

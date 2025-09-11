@@ -64,7 +64,7 @@ export class PaymentmodechangesComponent implements OnInit {
     { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Bill Amt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
+      { heading: "Bill Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
     { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
     { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
     { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
@@ -426,8 +426,8 @@ getfilterAd() {
     console.log(row)
     const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
-        height: "85%",
-        width: '75%',
+        height: "99%",
+        width: '80%',
         data: {
           registerObj: row,
           FromName: "IP-PaymentModeChange"
