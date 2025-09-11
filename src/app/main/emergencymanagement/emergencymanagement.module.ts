@@ -7,6 +7,10 @@ const appRoutes: Routes = [
     loadChildren :() =>import("./emergency/emergency.module").then ((m)=>m.EmergencyModule),
     // loadChildren :() =>import("./emergency-list/emergency-list.module").then ((m)=>m.EmergencyListModule),
   },
+  {
+    path:"emergencysettlement", 
+    loadChildren :() =>import("./emg-settlement/emg-settlement.module").then ((m)=>m.EmgSettlementModule)
+  },
 ];
 
 @NgModule({

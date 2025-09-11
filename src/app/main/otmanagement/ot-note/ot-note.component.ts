@@ -288,6 +288,10 @@ export class otNote {
   surgeonId1: any;
   anestheticsDrID: any;
   anestheticsDrID1: any;
+  opstartTime: any;
+  opendTime: any;
+  otreservationId: any;
+  surgeryName:any;
 
   constructor(OtNoteInsert) {
     {
@@ -358,6 +362,10 @@ export class otNote {
       this.surgeonId1 = OtNoteInsert.surgeonId1 || ''
       this.anestheticsDrID = OtNoteInsert.anestheticsDrID || ''
       this.anestheticsDrID1 = OtNoteInsert.anestheticsDrID1 || ''
+      this.opstartTime = OtNoteInsert.opstartTime || ''
+      this.opendTime = OtNoteInsert.opendTime || ''
+      this.otreservationId = OtNoteInsert.otreservationId || 0
+      this.surgeryName = OtNoteInsert.surgeryName || ''
     }
   }
 }

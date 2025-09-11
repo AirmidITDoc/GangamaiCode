@@ -159,4 +159,15 @@ export class EmergencyService {
     return this._httpClient.GetData(apiUrl + inputValue);
   }
 
+  public getEmgList(employee) {
+    return this._httpClient.PostData("Emergency/Emergencylist", employee)
+  }
+
+   public InsertIPBillingCredit(employee, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+  } 
+    return this._httpClient.PostData("IPBill/IPBilllCreditInsert",employee)
+  }
+
 }

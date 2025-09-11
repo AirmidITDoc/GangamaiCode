@@ -70,6 +70,8 @@ export class EmergencyComponent implements OnInit {
 
   ngOnInit(): void {
     this.myFilterform = this._EmergencyService.CreateSearchGroup();
+
+    this.GetAppointdetail();
   }
 
   allcolumns = [
@@ -154,7 +156,7 @@ export class EmergencyComponent implements OnInit {
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-    console.log("GridConfig:", this.gridConfig);
+    this.GetAppointdetail();
   }
   newEmergency(row: any = null) {
     const dialogRef = this._matDialog.open(NewEmergencyComponent,
@@ -169,6 +171,7 @@ export class EmergencyComponent implements OnInit {
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.grid.bindGridData();
+      this.GetAppointdetail();
     });
   }
 
@@ -183,6 +186,7 @@ export class EmergencyComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
+      this.GetAppointdetail();
     });
   }
 
@@ -196,6 +200,7 @@ export class EmergencyComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
+      this.GetAppointdetail();
     });
   }
 
@@ -302,6 +307,7 @@ export class EmergencyComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           console.log('IPD conversion dialog closed', result);
           this.grid.bindGridData();
+          this.GetAppointdetail();
         });
       }
       else if (result.isDenied && !showIPD) {
@@ -314,6 +320,7 @@ export class EmergencyComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           console.log('OPD conversion dialog closed', result);
           this.grid.bindGridData();
+          this.GetAppointdetail();
         });
       }
     });
@@ -321,42 +328,43 @@ export class EmergencyComponent implements OnInit {
 
   // append method tried
   EmergencyCancel(data: any) {
-  Swal.fire({
-    title: 'Do you want to cancel Emergency?',
-    text: "Please provide a reason for cancellation",
-    icon: "warning",
-    input: 'text',
-    inputValue: data.reason ? data.reason + ' ' : '', // prefill old reason if exists
-    inputPlaceholder: 'Enter cancellation reason...',
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Cancel it!",
-    preConfirm: (reason) => {
-      if (!reason || reason.trim() === '') {
-        Swal.showValidationMessage('Reason is required');
+    Swal.fire({
+      title: 'Do you want to cancel Emergency?',
+      text: "Please provide a reason for cancellation",
+      icon: "warning",
+      input: 'text',
+      inputValue: data.reason ? data.reason + ' ' : '', // prefill old reason if exists
+      inputPlaceholder: 'Enter cancellation reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
       }
-      return reason;
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      let finalReason = data.reason 
-        ? data.reason + "; " + result.value 
-        : result.value;
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let finalReason = data.reason
+          ? data.reason + "; " + result.value
+          : result.value;
 
-      let submitData = {
-        emgId: data.emgId,
-        reason: finalReason,
-        isCancelledBy: this._loggedService.currentUserValue.userId
-      };
+        let submitData = {
+          emgId: data.emgId,
+          reason: finalReason,
+          isCancelledBy: this._loggedService.currentUserValue.userId
+        };
 
-      console.log(submitData);
-      this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
-        this.grid.bindGridData();
-      });
-    }
-  });
-}
+        console.log(submitData);
+        this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
+          this.grid.bindGridData();
+          this.GetAppointdetail();
+        });
+      }
+    });
+  }
 
 
   // EmergencyCancel(data: any) {
@@ -415,6 +423,152 @@ export class EmergencyComponent implements OnInit {
   getMLCdetailview(element) {
     this.commonService.Onprint("AdmissionID", element.emgId, "IpMLCCasePaperPrint");
   }
+
+  dataSource = new MatTableDataSource<EmergencyList>();
+  // GetAppointdetail() {
+  //   this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
+  //   this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
+  //   this.VEmgcount = 0;
+  //   this.VOPcount = 0;
+  //   this.VIPcount = 0;
+  //   this.VBillcount = 0;
+  //   //    debugger
+  //   let data =
+  //   {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "EmgId",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "From_Dt",
+  //         "fieldValue": this.fromDate,
+  //         "opType": "GreaterThanOrEqual"
+  //       },
+  //       {
+  //         "fieldName": "To_Dt",
+  //         "fieldValue": this.toDate,
+  //         "opType": "LessThanOrEqual"
+  //       },
+  //       {
+  //         "fieldName": "FirstName",
+  //         "fieldValue": this.f_name,
+  //         "opType": "StartsWith"
+  //       },
+  //       {
+  //         "fieldName": "LastName",
+  //         "fieldValue": this.l_name,
+  //         "opType": "StartsWith"
+  //       },
+  //       {
+  //         "fieldName": "IsConverted",
+  //         "fieldValue": this.Status,
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "exportType": "JSON",
+  //     "columns": []
+  //   }
+
+  //   console.log(data)
+  //   this._EmergencyService.getEmgList(data).subscribe((response) => {
+  //     this.dataSource.data = response.data;
+  //     if (this.dataSource.data.length > 0) {
+  //       this.VEmgcount = this.dataSource.data.length
+  //       this.dataSource.data.forEach(element => {
+  //         // if (element.mPbillNo == 1 || element.mPbillNo == 2) {
+  //         //   this.VBillcount = this.VBillcount + 1;
+  //         // }
+  //         if (element.convertedIntoAdm > 0) {
+  //           this.VIPcount++;
+  //         }
+  //       });
+  //       console.log(this.dataSource.data)
+  //     }
+  //   });
+  // }
+  AllCount:any=0;
+  GetAppointdetail() {
+    let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";
+    let toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") //"01/01/1900";
+
+    this.VEmgcount = 0;
+    this.VOPcount = 0;
+    this.VIPcount = 0;
+    this.VBillcount = 0;
+    this.AllCount = 0;
+
+    let filters: any[] = [];
+
+    if (fromDateControl && toDateControl) {
+      this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+      this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+    }
+    else {
+      this.fromDate = "01/01/1900";
+      this.toDate = "01/01/1900";
+    }
+    filters.push(
+      {
+        "fieldName": "From_Dt",
+        "fieldValue": this.fromDate,
+        "opType": "GreaterThanOrEqual"
+      },
+      {
+        "fieldName": "To_Dt",
+        "fieldValue": this.toDate,
+        "opType": "LessThanOrEqual"
+      },
+      {
+        "fieldName": "FirstName",
+        "fieldValue": '%',
+        "opType": "StartsWith"
+      },
+      {
+        "fieldName": "LastName",
+        "fieldValue": '%',
+        "opType": "StartsWith"
+      },
+      {
+        "fieldName": "IsConverted",
+        "fieldValue": '0',
+        "opType": "Equals"
+      }
+    );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "EmgId",
+      "sortOrder": 0,
+      "filters": filters, // 👈 only adds date filter if selected
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._EmergencyService.getEmgList(data).subscribe((response) => {
+      this.dataSource.data = response.data;
+
+      if (this.dataSource.data.length > 0) {
+       
+        this.AllCount = this.dataSource.data.length;
+
+        let today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+        this.VEmgcount = this.dataSource.data.filter(
+          (element: any) => this.datePipe.transform(element.emgDate, "yyyy-MM-dd") === today
+        ).length;
+
+        this.VIPcount = 0;
+        this.dataSource.data.forEach((element: any) => {
+          if (element.convertedIntoAdm > 0) {
+            this.VIPcount++;
+          }
+        });
+
+      }
+    });
+
+  }
+
 }
 
 export class EmergencyList {
@@ -475,7 +629,9 @@ export class EmergencyList {
   attendingDoctorId: any;
   refDoctorId: any;
   spO2: any;
-  isMlc: any
+  isMlc: any;
+  convertedIntoAdm: any;
+  age:any;
   constructor(EmergencyList) {
     {
       this.Date = EmergencyList.Date || 0;
@@ -534,6 +690,8 @@ export class EmergencyList {
       this.refDoctorId = EmergencyList.refDoctorId || 0
       this.spO2 = EmergencyList.spO2 || 0
       this.isMlc = EmergencyList.isMlc || false
+      this.convertedIntoAdm = EmergencyList.convertedIntoAdm || ''
+      this.age = EmergencyList.age || 0
     }
   }
 }

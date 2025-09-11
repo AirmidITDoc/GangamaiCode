@@ -23,12 +23,18 @@
                 <!-- New Admissions -->
                 <div class="dashboard-card emg">
                     <div class="card-label">New Emergency</div>
-                    <div class="card-value">{{VEmgcount}}</div>
-                    <mat-icon class="card-icon">event</mat-icon>
+                    <div class="card-value">{{VEmgcount}} </div>
+                    <mat-icon class="card-icon">person_add</mat-icon>
                 </div>
                 <!-- Admissions New/Follow-up -->
                 <div class="dashboard-card emg-split">
                     <div class="card-label">Total Emergency</div>
+                    <div class="card-value">{{AllCount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+
+                <div class="dashboard-card checkout">
+                    <div class="card-label">Converted Emergency</div>
                     <div class="card-value">
                         <div>OP {{VOPcount}}</div>
                         <div>IP {{VIPcount}}</div>
