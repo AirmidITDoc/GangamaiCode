@@ -1,0 +1,97 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Emergency Bill Settlement
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="modal-body-container p-12">
+            <mat-card style="padding: 8px;">
+                <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
+                
+                        <airmid-autocomplete class="w-700" label="Search Reg No / Patient Name / Mobile No"
+                            [formGroup]="searchFormGroup"   formControlName="RegId"
+                            placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="Emergency/auto-complete?Keyword="
+                            (selectionChange)="getSelectedObj($event)">
+                        </airmid-autocomplete>
+                
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container" *ngIf="PatientName">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row ">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.regNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{PatientName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.ageDay}}D
+                                                    | {{registerObj.ageMonth}}M | {{registerObj.ageYear}}Y </span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Mobile No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.mobileNo}}</span>
+                                            </div>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </mat-card> 
+        </div> 
+
+        <ng-template #actionsTemplate let-element>
+            <div>
+                <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
+                </mat-icon>
+
+                <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
+                </mat-icon>
+            </div>
+        </ng-template> 
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+            
+                <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 " matTooltip="Final Discount"
+                    (click)="getFinalDisc(element)">
+                    <mat-icon> money </mat-icon>
+                </button>
+            
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement" *ngIf="element.balanceAmt!='0'">
+                    <mat-icon title="Settlement">payment</mat-icon>
+                </button>
+                <!-- <button mat-icon-button matTooltip="Print" (click)="viewgetOPPayemntPdf(element)">
+                                <mat-icon>print</mat-icon>
+                            </button> -->
+            </div>
+        </ng-template>
+
+        
+        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"> 
+        </airmid-table>
+    </div>
+</div>

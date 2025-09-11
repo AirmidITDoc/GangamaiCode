@@ -138,16 +138,17 @@
                                 <div fxLayout="row" fxLayoutGap="8px">
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
                                         <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                            [formGroup]="OTNoteform" [mode]="autocompleteModeSurgery" >
+                                            [formGroup]="OTNoteform" [mode]="autocompleteModeSurgery"
+                                            (selectionChange)="selectChangeSurgery($event)" >
                                         </airmid-dropdown>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
-                                        <airmid-dropdown label="Surgeron Name 1" formControlName="surgeonId1"
+                                        <airmid-dropdown label="Surgeron Name 1" formControlName="surgeonId"
                                             [formGroup]="OTNoteform" [mode]="autocompleteModeConDoctor" >
                                         </airmid-dropdown>
                                     </div>
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
-                                        <airmid-dropdown label="Surgeon Name 2" formControlName="surgeonId2"
+                                        <airmid-dropdown label="Surgeon Name 2" formControlName="surgeonId1"
                                             [formGroup]="OTNoteform" [mode]="autocompleteModeConDoctor" >
                                         </airmid-dropdown>
                                     </div>
@@ -155,19 +156,19 @@
 
                                 <div fxLayout="row" fxLayoutGap="8px">
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
-                                        <airmid-dropdown label="Anesthestish doctor" formControlName="anestheticsDr"
+                                        <airmid-dropdown label="Anesthestish doctor" formControlName="anesthetishId"
                                             [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
-                                        <airmid-dropdown label="Anesthestish doctor 1" formControlName="anestheticsDr1"
+                                        <airmid-dropdown label="Anesthestish doctor 1" formControlName="anesthetishId1"
                                             [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
                                         </airmid-dropdown>
                                     </div>
                                     <!-- need to check -->
                                     <div fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="10%">
-                                        <airmid-dropdown label="Assistant doctor" formControlName="anestheticsDr2"
+                                        <airmid-dropdown label="Assistant doctor" formControlName="anesthetishId2"
                                             [formGroup]="OTNoteform" [mode]="autocompleteModeRefDoctor">
                                         </airmid-dropdown>
                                     </div>
@@ -204,7 +205,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="BostOPOrders" formControlName="bostOPOrders"
+                                    <airmid-textbox label="BostOPOrders" formControlName="bostOporders"
                                         [formGroup]="OTNoteform"></airmid-textbox>
                                 </div>
 

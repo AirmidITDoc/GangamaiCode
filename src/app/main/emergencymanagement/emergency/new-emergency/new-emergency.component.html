@@ -234,7 +234,7 @@
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Comment" formControlName="comment"
-                                                    [formGroup]="myForm" [maxLength]="200" [value]="registerObj?.comment">
+                                                    [formGroup]="myForm" [maxLength]="200" [value]="registerObj?.comment ?? ''">
                                                 </airmid-textbox>
                                             </div>
 

@@ -7,8 +7,8 @@
       <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Nursing Request list</span>
     </div>
   </mat-toolbar>
- 
-   <div class="service-table1 p-12" fxFlex="100%" >
+
+  <div class="service-table1 p-12" fxFlex="100%">
     <mat-table #table matSort [dataSource]="dataSource1" [@animateStagger]="{ value: '50' }">
       <ng-container matColumnDef="ServiceName">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">Service Name</mat-header-cell>
@@ -39,8 +39,8 @@
       </ng-container>
 
       <ng-container matColumnDef="billingUser">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >User Name</mat-header-cell>
-        <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>User Name</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
           <span>{{ contact.billingUser }}</span>
         </mat-cell>
       </ng-container>
@@ -48,8 +48,7 @@
       <ng-container matColumnDef="Action" sticky="end">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Action</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)"
-          *ngIf="!contact.isStatus">
+          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)" *ngIf="!contact.isStatus">
             <mat-icon color="warn">add</mat-icon>
           </button>
         </mat-cell>
@@ -64,11 +63,11 @@
       </ng-container>
 
       <mat-header-row class="accent" *matHeaderRowDef="NurReqColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let contact; columns: NurReqColumns"
-       [ngClass]="{'red-row': contact.isStatus == true}"
+      <mat-row *matRowDef="let contact; columns: NurReqColumns" [ngClass]="{'red-row': contact.isStatus == true}"
         [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
       <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource1 != null }"></mat-footer-row>
-      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource1 != null && dataSource1.data.length == 0) }"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']"
+        [ngClass]="{ hide: !(dataSource1 != null && dataSource1.data.length == 0) }"></mat-footer-row>
     </mat-table>
   </div>
 </ng-template>
@@ -86,10 +85,12 @@
       <div class="modal-header-right">
         <div class="comman-date-container">
           <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
           <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -98,7 +99,7 @@
     </div>
   </div>
 
-   <div class="modal-body" fusePerfectScrollbar>
+  <div class="modal-body" fusePerfectScrollbar>
     <div class="modal-body-container">
       <mat-drawer-container class="main-container h-100-p">
         <!-- SIDE BAR -->
@@ -109,167 +110,116 @@
                 <div style="width: 260px">
                   <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Service Date</mat-label>
-                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="chargesDate" />
+                    <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
+                      formControlName="chargesDate" />
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                   </mat-form-field>
                 </div>
                 <div style="width: 260px">
-                  <airmid-dropdown
-                    label="Class Name"
-                    formControlName="classId"
-                    [formGroup]="Serviceform"
-                    [validations]="getValidationMessages().ChargeClass"
-                    [mode]="autocompleteModeClass"
-                    (selectionChange)="getSelectedClassObj($event)"
-                  ></airmid-dropdown>
+                  <airmid-dropdown label="Class Name" formControlName="classId" [formGroup]="Serviceform"
+                    [validations]="getValidationMessages().ChargeClass" [mode]="autocompleteModeClass"
+                    (selectionChange)="getSelectedClassObj($event)"></airmid-dropdown>
                 </div>
 
                 <div style="width: 260px">
-                  <airmid-autocomplete
-                    label="Enter Service Name"
-                    [formGroup]="Serviceform"
-                    formControlName="serviceName"
-                    placeholderText="Enter Service Name"
-                    fxFlex
-                    ApiUrl="{{ ApiURL }}"
-                    (selectionChange)="getselectObj($event)"
-                    TextField="formattedText" 
-                  ></airmid-autocomplete>
+                  <airmid-autocomplete label="Enter Service Name" [formGroup]="Serviceform"
+                    formControlName="serviceName" placeholderText="Enter Service Name" fxFlex ApiUrl="{{ ApiURL }}"
+                    (selectionChange)="getselectObj($event)" TextField="formattedText"></airmid-autocomplete>
                 </div>
 
                 <div style="width: 260px">
                   <div fxLayout="row" class="gap-4">
                     <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="48%">
-                      <airmid-textbox
-                        label="Price"
-                        formControlName="price"
-                        [formGroup]="Serviceform"
-                        [validations]="getValidationMessages().price"
-                        [type]="'text'"
-                        (keypress)="keyPressCharater($event)" 
-                      ></airmid-textbox>
+                      <airmid-textbox label="Price" formControlName="price" [formGroup]="Serviceform"
+                        [validations]="getValidationMessages().price" [type]="'text'"
+                        (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
                     <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="48%">
-                      <airmid-textbox
-                        label="Qty"
-                        formControlName="qty"
-                        [formGroup]="Serviceform"
-                        [validations]="getValidationMessages().qty"
-                        [type]="'text'"
-                        (keypress)="keyPressCharater($event)"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Qty" formControlName="qty" [formGroup]="Serviceform"
+                        [validations]="getValidationMessages().qty" [type]="'text'"
+                        (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
                   </div>
                 </div>
                 <div style="width: 260px">
-                  <airmid-textbox
-                    label="TotalAmt"
-                    formControlName="totalAmt"
-                    [formGroup]="Serviceform"
-                    [type]="'text'" 
-                    [validations]="getValidationMessages().totalAmount"
-                    [readonly]="true"
-                  ></airmid-textbox>
+                  <airmid-textbox label="TotalAmt" formControlName="totalAmt" [formGroup]="Serviceform" [type]="'text'"
+                    [validations]="getValidationMessages().totalAmount" [readonly]="true"></airmid-textbox>
                 </div>
 
                 <div style="width: 260px" *ngIf="isDoctor">
-                  <airmid-dropdown
-                    label="Doctor Name"
-                    formControlName="doctorId"
-                    [formGroup]="Serviceform"
-                    [validations]="getValidationMessages().DoctorId"
-                    [mode]="autocompleteModedeptdoc"
-                    (selectionChange)="getdocdetail($event)"
-                  ></airmid-dropdown>
+                  <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="Serviceform"
+                    [validations]="getValidationMessages().DoctorId" [mode]="autocompleteModedeptdoc"
+                    (selectionChange)="getdocdetail($event)"></airmid-dropdown>
                 </div>
 
                 <div style="width: 260px">
                   <div fxLayout="row" class="gap-4">
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                      <airmid-textbox
-                        label="Discount per"
-                        formControlName="concessionPercentage"
-                        [formGroup]="Serviceform"
-                        [validations]="getValidationMessages().discPer"
-                        [min]="0"
-                        [max]="100"
-                        [type]="'text'"
-                        (keypress)="keyPressCharater($event)" 
-                      ></airmid-textbox>
+                      <airmid-textbox label="Discount per" formControlName="concessionPercentage"
+                        [formGroup]="Serviceform" [validations]="getValidationMessages().discPer" [min]="0" [max]="100"
+                        [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                      <airmid-textbox
-                        label="Discount amount"
-                        [formGroup]="Serviceform"
-                        formControlName="concessionAmount"
-                        [validations]="getValidationMessages().discAmount"
-                        [type]="'text'"
-                        [min]="0"
-                        [max]="Serviceform.get('totalAmt')?.value"
-                        (keypress)="keyPressCharater($event)"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Discount amount" [formGroup]="Serviceform"
+                        formControlName="concessionAmount" [validations]="getValidationMessages().discAmount"
+                        [type]="'text'" [min]="0" [max]="Serviceform.get('totalAmt')?.value"
+                        (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
                   </div>
                 </div>
 
                 <div style="width: 260px">
-                  <airmid-textbox
-                    label="Net amount"
-                    formControlName="netAmount"
-                    [formGroup]="Serviceform"
-                    [validations]="getValidationMessages().netAmount"
-                    [type]="'text'"
-                    [readonly]="true"
-                  ></airmid-textbox>
+                  <airmid-textbox label="Net amount" formControlName="netAmount" [formGroup]="Serviceform"
+                    [validations]="getValidationMessages().netAmount" [type]="'text'"
+                    [readonly]="true"></airmid-textbox>
                 </div>
 
                 <div fxFlex="100%" fxLayout="row">
                   <div class="mt-2">
-                    <button
-                      type="button"
-                      (click)="onSaveAddCharges()"
-                      class="btn btn-primary btn-with-icon py-8"                      
+                    <button type="button" (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
                       [matTooltip]="!Serviceform.valid ? 'Enter all data to enable this button!!' : ''"
-                      [matTooltipPosition]="'above'"
-                      fxFlex>
+                      [matTooltipPosition]="'above'" fxFlex>
                       <span class="btn-icon">
                         <mat-icon>add</mat-icon>
                       </span>
                     </button>
                   </div>
                 </div>
-                
+
               </form>
             </div>
           </mat-card>
         </mat-drawer>
         <!-- END SIDE BAR -->
-        
-         <mat-drawer-content [class.expanded]="!isOpen" class="overflow-hidden">
+
+        <mat-drawer-content [class.expanded]="!isOpen" class="overflow-hidden">
           <div class="main-content h-100-p">
             <div fxLayout="column" fxLayoutGap="8px" class="h-100-p">
               <!-- 1ST TAB -->
               <mat-accordion>
                 <mat-expansion-panel>
-                    <!-- HALF INFO -->
+                  <!-- HALF INFO -->
                   <mat-expansion-panel-header>
                     <div fxFlex.gt-sm="100%" fxFlex class="border-bottom">
                       <div fxLayout="row wrap" fxLayoutGap="16px grid">
-                        <div fxFlex.gt-sm="85%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxFlex.gt-sm="85%" fxFlex class="bill-info-title py-8 border-bottom" fxLayout="row"
+                          fxLayoutAlign="space-between">
                           <div class="bill-summary-title py-8 ml-8">
-                          <span class="h3 font-weight-600" style="color: sandybrown;margin-left: 5px;">Patient Information</span>
-                        </div>
+                            <span class="h3 font-weight-600" style="color: sandybrown;margin-left: 5px;">Patient
+                              Information</span>
+                          </div>
                           <div class="patient-col">
                             <span class="patient-col-key font-weight-600">PatientName</span>
-                            <span>:</span>                            
+                            <span>:</span>
                             <span class="patient-col-value">{{ selectedAdvanceObj?.patientName }}</span>
                           </div>
 
                           <div class="patient-col">
                             <span class="patient-col-key font-weight-600">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm a' }}</span>
+                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm
+                              a' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -284,16 +234,17 @@
                             <span class="patient-col-value">{{ selectedAdvanceObj?.doctorName }}</span>
                           </div>
                         </div>
-                        
+
                       </div>
-                    </div>                    
+                    </div>
                   </mat-expansion-panel-header>
-                    <!-- END HALF INFO -->
+                  <!-- END HALF INFO -->
 
                   <div fxLayout="row wrap" fxLayoutGap="16px grid">
                     <!-- COMPLETE INFO -->
                     <div fxFlex.gt-sm="75%">
-                      <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+                      <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                        fxLayoutAlign="space-between">
                         <div fxLayout="column" fxLayoutGap="6px">
                           <div class="patient-col">
                             <span class="patient-col-key">UHID No</span>
@@ -321,7 +272,8 @@
                           <div class="patient-col">
                             <span class="patient-col-key">DOA</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm a' }}</span>
+                            <span class="patient-col-value">{{ (selectedAdvanceObj?.emgTime) | date:'dd-MM-yyyy | hh:mm
+                              a' }}</span>
                           </div>
 
                           <div class="patient-col">
@@ -334,7 +286,8 @@
                             <span class="patient-col-key">Age | Sex</span>
                             <span>:</span>
                             <span class="patient-col-value">
-                              {{ selectedAdvanceObj?.ageYear }}Y|{{ selectedAdvanceObj?.ageMonth }}M|{{ selectedAdvanceObj?.ageDay }} D | {{ selectedAdvanceObj?.genderName }}
+                              {{ selectedAdvanceObj?.ageYear }}Y|{{ selectedAdvanceObj?.ageMonth }}M|{{
+                              selectedAdvanceObj?.ageDay }} D | {{ selectedAdvanceObj?.genderName }}
                             </span>
                           </div>
                           <div class="patient-col">
@@ -347,7 +300,8 @@
                           <div class="patient-col">
                             <span class="patient-col-key">Ward | Bed Name</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ selectedAdvanceObj?.roomName }} | {{ selectedAdvanceObj?.bedName }}</span>
+                            <span class="patient-col-value">{{ selectedAdvanceObj?.roomName }} | {{
+                              selectedAdvanceObj?.bedName }}</span>
                           </div>
                           <div class="patient-col">
                             <span class="patient-col-key">Patient Type</span>
@@ -363,7 +317,8 @@
                           <div class="patient-col">
                             <span class="patient-col-key">Company Name</span>
                             <span>:</span>
-                            <span class="patient-col-value" style="color: orange">{{ selectedAdvanceObj?.companyName }}</span>
+                            <span class="patient-col-value" style="color: orange">{{ selectedAdvanceObj?.companyName
+                              }}</span>
                           </div>
                         </div>
                       </div>
@@ -371,7 +326,7 @@
                     <!-- END COMPLETE INFO -->
 
                     <!-- CHOOSE DATE PART -->
-                   <!-- <div fxFlex.gt-sm="25%" fxFlex>                    
+                    <!-- <div fxFlex.gt-sm="25%" fxFlex>                    
                        <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
                         <ng-container *ngIf="isFilteredDateDisabled">
                           <form [formGroup]="IpbillFooterform">
@@ -404,7 +359,7 @@
               <!-- END OF 1ST TAB -->
 
               <!-- 2ND TAB -->
-               <!-- <mat-card style="padding: 2px;"> 
+              <!-- <mat-card style="padding: 2px;"> 
 
                 <div fxFlex.gt-sm="85%" fxFlex class="bill-info-title" fxLayout="row" fxLayoutAlign="space-between center">
  
@@ -461,31 +416,35 @@
               <!-- END OF 2ND TAB -->
 
               <!-- 3RD TAB OF TABLES -->
-               <mat-tab-group class="mat-tab-header-small dynamic-table-wrapper" mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%">
+              <mat-tab-group class="mat-tab-header-small dynamic-table-wrapper" mat-stretch-tabs="false"
+                mat-align-tabs="start" style="width: 100%">
                 <mat-tab label="Charges List">
                   <div class="airmid-table-container">
                     <div class="content-card">
-                      <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="airmid-table table">
+                      <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
+                        class="airmid-table table">
                         <ng-container matColumnDef="checkbox" sticky>
                           <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
                             <span class="material-icons" (click)="getChargesList()">cached</span>
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-60">
-                            <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                            <mat-checkbox aria-label="Checked"
+                              (change)="tableElementChecked($event, contact)"></mat-checkbox>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="IsCheck" sticky>
                           <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">Status</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-80">
-                            <div fxLayout="row" fxLayoutGap="4px"> 
+                            <div fxLayout="row" fxLayoutGap="4px">
                               <mat-icon *ngIf="contact.isPathology != 1" matTooltip="IsRadiology">
                                 <img width="15px" height="8px" src="assets/images/logos/radiology.png" />
                               </mat-icon>
                               <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
                                 <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
-                              </mat-icon> 
-                              <mat-icon *ngIf="contact.isPackage == 1" matTooltip="IsPackage" (click)="getpackageDet(contact)">
+                              </mat-icon>
+                              <mat-icon *ngIf="contact.isPackage == 1" matTooltip="IsPackage"
+                                (click)="getpackageDet(contact)">
                                 <img width="15px" height="9px" src="assets/images/logos/package.png">
                               </mat-icon>
                             </div>
@@ -500,7 +459,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ServiceName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 border-right">Service Name</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                            class="w-200 border-right">Service Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
                             <span>{{ contact.serviceName }}</span>
                           </mat-cell>
@@ -510,21 +470,19 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <mat-form-field floatLabel="never">
-                              <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber
-                                    placeholder="price" (keyup)="gettablecalculation(contact)"
-                                  (keypress)="keyPressCharater($event)"  >
-                          </mat-form-field>
+                              <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber placeholder="price"
+                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)">
+                            </mat-form-field>
                           </mat-cell>
-                        </ng-container> 
+                        </ng-container>
 
                         <ng-container matColumnDef="Qty">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
                           <mat-cell *matCellDef="let contact;" fxShow.gt-sm>
                             <mat-form-field floatLabel="never">
-                              <input matInput [(ngModel)]="contact.qty" type="text" OnlyNumber
-                                    placeholder="qty" (keyup)="gettablecalculation(contact)"
-                                  (keypress)="keyPressCharater($event)"  >
-                          </mat-form-field> 
+                              <input matInput [(ngModel)]="contact.qty" type="text" OnlyNumber placeholder="qty"
+                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)">
+                            </mat-form-field>
                           </mat-cell>
                         </ng-container>
 
@@ -557,38 +515,38 @@
                         </ng-container>
 
                         <ng-container matColumnDef="DoctorName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">ChargeDoctorName</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                            class="w-230">ChargeDoctorName</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
                             <span>{{ contact.doctorName}}</span>
                             <ng-container *ngIf="!contact.EditDoctor; else showInput">
-                              <button mat-icon-button (click)="DocenableEditing(contact)"
-                                  class="clear-button">
-                                  <mat-icon>edit</mat-icon></button>
-                          </ng-container>
-                          <ng-template #showInput>
+                              <button mat-icon-button (click)="DocenableEditing(contact)" class="clear-button">
+                                <mat-icon>edit</mat-icon></button>
+                            </ng-container>
+                            <ng-template #showInput>
                               <form [formGroup]="IpbillFooterform" fxLayout="row" fxLayoutGap="2px">
-                                  <airmid-dropdown formControlName="EditDoctor" class="w-180" appearance="fill"
-                                      [formGroup]="IpbillFooterform" [mode]="autocompleteModedeptdoc"
-                                      [validations]="getValidationMessages().DoctorId"
-                                      (selectionChange)="DropDownValue($event)"></airmid-dropdown> 
+                                <airmid-dropdown formControlName="EditDoctor" class="w-180" appearance="fill"
+                                  [formGroup]="IpbillFooterform" [mode]="autocompleteModedeptdoc"
+                                  [validations]="getValidationMessages().DoctorId"
+                                  (selectionChange)="DropDownValue($event)"></airmid-dropdown>
                               </form>
-                              <mat-icon matTooltip="Close"
-                              (click)="DoctorisableEditing(contact)">cancel</mat-icon>
-                          </ng-template>
+                              <mat-icon matTooltip="Close" (click)="DoctorisableEditing(contact)">cancel</mat-icon>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
- 
+
                         <ng-container matColumnDef="ClassName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent" class="w-200"
-                          >ClassName</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent"
+                            class="w-200">ClassName</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <span>{{ contact.className }}</span>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesAddedName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargesAddedName</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"> 
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                            class="w-200">ChargesAddedName</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <span>{{ contact.chargesAddedName }}</span>
                           </mat-cell>
                         </ng-container>
@@ -597,12 +555,14 @@
                           <mat-header-cell *matHeaderCellDef class="table-actions" class="w-70">Action</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-80">
                             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save" [disabled]="!contact.EditDoctor && !contact.isUpdated">
-                              <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                             </button>
-                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete" *ngIf="!contact.EditDoctor ">
-                              <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
-                             </button>
+                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save"
+                                [disabled]="!contact.EditDoctor && !contact.isUpdated">
+                                <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                              </button>
+                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete"
+                                *ngIf="!contact.EditDoctor ">
+                                <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
+                              </button>
                             </div>
                           </mat-cell>
                         </ng-container>
@@ -618,15 +578,15 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1750" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row
-                          *matRowDef="let contact; columns: displayedColumns"
-                          class="min-width-1750"
+                        <mat-header-row class="accent min-width-1750"
+                          *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: displayedColumns" class="min-width-1750"
                           [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
-                          [@animate]="{ value: '*', params: { y: '100%' } }"
-                        ></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dataSource != null }"></mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
+                          [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                          [ngClass]="{ hide: dataSource != null }"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                          [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
                       </mat-table>
                     </div>
                   </div>
@@ -686,14 +646,16 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ChequePayAmount">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Cheque Pay</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Cheque
+                            Pay</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <span>{{ contact.ChequePayAmount }}</span>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="CardPayAmount">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Card Pay</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent">Card
+                            Pay</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <span>{{ contact.CardPayAmount }}</span>
                           </mat-cell>
@@ -732,12 +694,16 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1100" *matHeaderRowDef="PackageBillColumns; sticky: true"></mat-header-row>
+                        <mat-header-row class="accent min-width-1100"
+                          *matHeaderRowDef="PackageBillColumns; sticky: true"></mat-header-row>
 
-                        <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns"
+                          [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
 
-                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: PackageBillColumns != null }"></mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{ hide: !(PackageDatasource != null && PackageDatasource.data.length == 0) }"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                          [ngClass]="{ hide: PackageBillColumns != null }"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                          [ngClass]="{ hide: !(PackageDatasource != null && PackageDatasource.data.length == 0) }"></mat-footer-row>
                       </mat-table>
                     </div>
                   </div>
@@ -760,10 +726,10 @@
                   <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
                 </mat-tab> -->
               </mat-tab-group>
-              <!-- END 3RD TAB OF TABLES --> 
-              
+              <!-- END 3RD TAB OF TABLES -->
+
               <!-- 4TH TAB FOOTER -->
-               <form class="example-form" [formGroup]="IpbillFooterform">
+              <form class="example-form" [formGroup]="IpbillFooterform">
                 <div class="net-amt-section mb-2 mt-16" style="margin-left: 500px">
                   <div class="net-amt gap-24">
                     <div class="net-amt-box">
@@ -776,94 +742,64 @@
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
-                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency : 'INR' }}</span>
+                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency :
+                        'INR' }}</span>
                     </div>
 
                     <div class="final-amt-box">
                       <span class="final-amt-label">Net Amt :</span>
-                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}</span>
+                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR'
+                        }}</span>
                     </div>
                   </div>
                 </div>
                 <div fxLayout="column" class="gap-6" style="width: 100%">
                   <div fxLayout="row" class="gap-6">
                     <div fxFlex="6%" *ngIf="isAdminDisabled">
-                      <airmid-textbox
-                        label="Admin %"
-                        formControlName="AdminPer"
-                        [formGroup]="IpbillFooterform"
-                        [type]="'text'" 
-                        (keypress)="keyPressCharater($event)"
-                        [min]="0"
-                        (keyup)="CalculateAdminCharge()"
-                        [max]="100"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Admin %" formControlName="AdminPer" [formGroup]="IpbillFooterform"
+                        [type]="'text'" (keypress)="keyPressCharater($event)" [min]="0" (keyup)="CalculateAdminCharge()"
+                        [max]="100"></airmid-textbox>
                     </div>
 
                     <div fxFlex="8%" *ngIf="isAdminDisabled">
-                      <airmid-textbox
-                        label="Admin Amount"
-                        formControlName="AdminAmt"
-                        [formGroup]="IpbillFooterform"
-                        [type]="'text'"
-                        [min]="0"
-                        (keypress)="keyPressCharater($event)"
-                        [readonly]="true"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Admin Amount" formControlName="AdminAmt" [formGroup]="IpbillFooterform"
+                        [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"
+                        [readonly]="true"></airmid-textbox>
                     </div>
 
                     <div fxFlex="6%" *ngIf="BillDiscperFlag">
-                      <airmid-textbox
-                        label="Disc %"
-                        formControlName="totaldiscPer"
-                        [formGroup]="IpbillFooterform"
-                        [type]="'text'"
-                        [min]="0"
-                        [max]="100"
-                        (keypress)="keyPressCharater($event)"
-                        (keyup)="CalFinalDiscper()"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Disc %" formControlName="totaldiscPer" [formGroup]="IpbillFooterform"
+                        [type]="'text'" [min]="0" [max]="100" (keypress)="keyPressCharater($event)"
+                        (keyup)="CalFinalDiscper()"></airmid-textbox>
                     </div>
 
                     <div fxFlex="8%">
-                      <airmid-textbox
-                        label="Disc Amount"
-                        formControlName="totalconcessionAmt"
-                        [formGroup]="IpbillFooterform"
-                        [type]="'text'"
-                        [min]="0"
-                        (keypress)="keyPressCharater($event)"
-                        [readonly]="!BillDiscperFlag"
-                        (keyup)="getDiscAmtCal()"
-                      ></airmid-textbox>
+                      <airmid-textbox label="Disc Amount" formControlName="totalconcessionAmt"
+                        [formGroup]="IpbillFooterform" [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"
+                        [readonly]="!BillDiscperFlag" (keyup)="getDiscAmtCal()"></airmid-textbox>
                     </div>
 
                     <div *ngIf="ConcessionShow" fxFlex="15%">
-                      <airmid-dropdown
-                        label="Concession Reason"
-                        formControlName="ConcessionId"
-                        [formGroup]="IpbillFooterform"
-                        [validations]="getValidationMessages().ConcessionId"
-                        [mode]="autocompleteModeConcession" (selectionChange)="selectChangeConcession($event)"
-                      ></airmid-dropdown>
+                      <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
+                        [formGroup]="IpbillFooterform" [validations]="getValidationMessages().ConcessionId"
+                        [mode]="autocompleteModeConcession"
+                        (selectionChange)="selectChangeConcession($event)"></airmid-dropdown>
                     </div>
 
                     <div fxFlex="10%">
-                      <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="IpbillFooterform" [type]="'text'" [readonly]="true"></airmid-textbox>
+                      <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="IpbillFooterform"
+                        [type]="'text'" [readonly]="true"></airmid-textbox>
                     </div>
 
                     <div fxFlex="15%">
-                      <airmid-dropdown
-                        label="Select Cash Counter "
-                        formControlName="CashCounterID"
-                        [formGroup]="IpbillFooterform"
-                        [validations]="getValidationMessages().cashCounterId"
-                        [mode]="autocompleteModeCashcounter"
-                      ></airmid-dropdown>
+                      <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID"
+                        [formGroup]="IpbillFooterform" [validations]="getValidationMessages().cashCounterId"
+                        [mode]="autocompleteModeCashcounter"></airmid-dropdown>
                     </div>
 
                     <div fxFlex>
-                      <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="IpbillFooterform" [type]="'text'"></airmid-textbox>
+                      <airmid-textbox label="Remark" formControlName="Remark" [formGroup]="IpbillFooterform"
+                        [type]="'text'"></airmid-textbox>
                     </div>
                   </div>
 
@@ -871,12 +807,38 @@
 
                     <div class="action-content-left" fxLayout="row" class="gap-24" fxLayoutAlign="start center">
                       <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
+                      <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
+                        formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
                     </div>
 
-                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center" class="gap-24">
+                    <!-- <div *ngIf="IpbillFooterform.get('GenerateBill')?.value" fxLayout="row">
+                      <mat-radio-group aria-label="Select an option" formControlName="paymode" name="paymode"
+                        (change)="onChangeReg($event)" fxFlex>
+                        <mat-radio-button checked="true" value="cashpay">Cash Pay </mat-radio-button>
+                        <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
+                        <mat-radio-button value="PayOption">PayOption</mat-radio-button>
+                      </mat-radio-group>
+
+                      <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="20%" style="margin-right: 450px;">
+                        <mat-label>UPI NO</mat-label>
+                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"
+                          maxlength="12" minlength="4" type="text" Onlynumber max="999999999999" min="100000000000"
+                          autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
+                          oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                          required="required" value="987665868822">
+                        <mat-error class="error"
+                          *ngIf="IpbillFooterform.get('UPINO').invalid && IpbillFooterform.get('UPINO').touched">12
+                          digits upi number is required</mat-error>
+                      </mat-form-field>
+
+                    </div> -->
+
+                    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center"
+                      class="gap-24">
                       <div class="button-row-group">
                         <!-- <button class="btn btn-primary" (click)="getInterimData()" *ngIf="IpbillFooterform.get('GenerateBill')?.value">Supplementary Bill</button> -->
-                        <button class="btn btn-primary" (click)="onSave()" *ngIf="IpbillFooterform.get('GenerateBill')?.value">Save</button>
+                        <button class="btn btn-primary" (click)="onSave()"
+                          *ngIf="IpbillFooterform.get('GenerateBill')?.value">Save</button>
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                       </div>
                     </div>
@@ -885,8 +847,8 @@
               </form>
             </div>
           </div>
-        </mat-drawer-content> 
-        
+        </mat-drawer-content>
+
       </mat-drawer-container>
     </div>
   </div>
