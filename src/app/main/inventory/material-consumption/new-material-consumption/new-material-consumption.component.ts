@@ -123,25 +123,27 @@ export class NewMaterialConsumptionComponent implements OnInit {
 
     this.MaterialInsertForm = this.creatematerialconsInsert()
     this.MaterialConDetailsArray.push(this.creatematerialconsDetail());
-     this.currentstockArray.push(this.createcurrentstock());
+    this.currentstockArray.push(this.createcurrentstock());
   }
 
-  creatematerialconsInsert(): FormGroup {
-    
+  creatematerialconsInsert() {
+
     return this.formBuilder.group({
-      materialConsumptionId: [0, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        consumptionNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        consumptionDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-        consumptionTime: [this.datePipe.transform(new Date(), 'shortTime')],
-        fromStoreId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-        landedTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        purTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        mrpTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        remark: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-        updatedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-        admId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-         tMaterialConsumptionDetails:this.formBuilder.array([]),
+      "materialConsumption": this.formBuilder.group({
+        "materialConsumptionId": [0, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        "consumptionNo": ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        "consumptionDate": [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        "consumptionTime": [this.datePipe.transform(new Date(), 'shortTime')],
+        "fromStoreId": [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        "landedTotalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "purTotalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "mrpTotalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "remark": ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        "addedBy": [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        "updatedBy": [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+        "admId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "tMaterialConsumptionDetails": this.formBuilder.array([]),
+      }),
       currentStockUpdate: this.formBuilder.array([]),
     });
   }
@@ -167,35 +169,35 @@ export class NewMaterialConsumptionComponent implements OnInit {
       admId: [item.admId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
- 
+
   get MaterialConDetailsArray(): FormArray {
-    return this.MaterialInsertForm.get('tMaterialConsumptionDetails') as FormArray;
+    return this.MaterialInsertForm.get('materialConsumption.tMaterialConsumptionDetails') as FormArray;
   }
-createcurrentstock(item: any = {}): FormGroup {
-  debugger
+  createcurrentstock(item: any = {}): FormGroup {
+    debugger
     console.log(item)
     return this.formBuilder.group({
       itemId: [item.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueQty: [item.UsedQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      stkId:[item.StockId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      istkId: [item.StockId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
-    get currentstockArray(): FormArray {
+  get currentstockArray(): FormArray {
     return this.MaterialInsertForm.get('currentStockUpdate') as FormArray;
   }
 
   Pstatus = 1
   onChange(event) {
-    
+
     if (event.value = "0")
       this.Pstatus = 0
     if (event.value = "1")
       this.Pstatus = 1
 
     this.userFormGroup.get('RegID').setValue('')
- }
+  }
 
   vRegNo = 0
   vAdmissionID = 0
@@ -282,7 +284,7 @@ createcurrentstock(item: any = {}): FormGroup {
     if (!isDuplicate) {
 
       this.chargeslist = this.dsTempItemNameList.data;
-      
+
       this.chargeslist.push(
         {
           ItemId: this.ItemID,//this._MaterialConsumptionService.userFormGroup.get('ItemID').value.ItemId || 0,
@@ -316,7 +318,7 @@ createcurrentstock(item: any = {}): FormGroup {
   }
 
   getSelectedserviceObj(obj) {
-    
+
     this.ItemName = obj.itemName;
     this.ItemID = obj.itemId;
     this.vBalQty = obj.balanceQty;
@@ -390,29 +392,26 @@ createcurrentstock(item: any = {}): FormGroup {
     }
     this.Savebtn = true;
     this.MaterialConDetailsArray.clear();
-      this.dsNewmaterialList.data.forEach(item => {
-        this.MaterialConDetailsArray.push(this.creatematerialconsDetail(item));
-      });
+    this.dsNewmaterialList.data.forEach(item => {
+      this.MaterialConDetailsArray.push(this.creatematerialconsDetail(item));
+    });
 
 
-       this.currentstockArray.clear();
-      this.dsNewmaterialList.data.forEach(item => {
-        this.currentstockArray.push(this.createcurrentstock(item));
-      });
+    this.currentstockArray.clear();
+    this.dsNewmaterialList.data.forEach(item => {
+      this.currentstockArray.push(this.createcurrentstock(item));
+    });
 
 
     // changed by raksha
-    this.MaterialInsertForm.get("consumptionDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-    this.MaterialInsertForm.get("consumptionTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
-    this.MaterialInsertForm.get("landedTotalAmount").setValue(this.vLandedTotalAmount || 0)
-    this.MaterialInsertForm.get("purTotalAmount").setValue(this.vPurTotalAmount || 0)
-    this.MaterialInsertForm.get("mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
-    this.MaterialInsertForm.get("fromStoreId").setValue(this._loggedService.currentUserValue.user.storeId || 0)
-
-    
-    // this._MaterialConsumptionService.insertMaterialForm.get("tMaterialConsumptionDetails").setValue(insertMaterialConsDetail)
-    this.MaterialInsertForm.get("admId").setValue(this.vAdmissionId || 0)
-    this.MaterialInsertForm.get("remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
+    this.MaterialInsertForm.get("materialConsumption.consumptionDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.MaterialInsertForm.get("materialConsumption.consumptionTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+    this.MaterialInsertForm.get("materialConsumption.landedTotalAmount").setValue(this.vLandedTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.purTotalAmount").setValue(this.vPurTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.fromStoreId").setValue(this._loggedService.currentUserValue.user.storeId || 0)
+     this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
+    this.MaterialInsertForm.get("materialConsumption.remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
 
     console.log(this.MaterialInsertForm.value)
 

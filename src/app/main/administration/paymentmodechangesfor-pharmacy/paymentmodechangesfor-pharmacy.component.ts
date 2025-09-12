@@ -26,20 +26,24 @@ import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-pa
   animations: fuseAnimations,
 })
 export class PaymentmodechangesforPharmacyComponent implements OnInit {
-  //   displayedColumns:string[] = [
-  //     'Type',
-  //     'Date',
-  //     'ReceiptNo',
-  //     'SalesNo',
-  //     'PatientName',
-  //     'PaidAmount',
-  //     'CashAmt',
-  //     'ChequeAmt',
-  //     'CardAmt',
-  //     'NeftPay',
-  //      'PayAtm',
-  //      'action',
-  //   ];
+  sIsLoading: string = '';
+  isLoading = true;
+  dateTimeObj: any;
+f_name: any = ""
+regNo: any = "0"
+l_name: any = ""
+SalesNo: any = "0"
+fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+pf_name: any = ""
+pregNo: any = "0"
+pl_name: any = ""
+pSalesNo: any = "0"
+pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+  dsPaymentPharmacyList = new MatTableDataSource<PaymentPharmayList>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -80,19 +84,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     this.gridConfigIpPhy.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeIp; 
 }
 
-f_name: any = ""
-regNo: any = "0"
-l_name: any = ""
-SalesNo: any = "0"
-fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-pf_name: any = ""
-pregNo: any = "0"
-pl_name: any = ""
-pSalesNo: any = "0"
-pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
 onNameFieldChange(): void {
   debugger
@@ -277,23 +269,6 @@ onRadioChange(event: MatRadioChange) {
   }
 }
 
-  onSave(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-    //     {
-    //         maxHeight: '95vh',
-    //         width: '90%',
-    //         data: row
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     if (result) {
-    //         that.grid.bindGridData();
-    //     }
-    // });
-  }
 
   OnUpdate(row){
 const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -308,22 +283,14 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
             data: row
         });
     dialogRef.afterClosed().subscribe(result => {
-        // if (result) {
-            this.grid.bindGridData();
-        // }
-    });
+        this.grid.bindGridData();
+        });
   }
   
-  sIsLoading: string = '';
-  isLoading = true;
-  dateTimeObj: any;
-
-
-  dsPaymentPharmacyList = new MatTableDataSource<PaymentPharmayList>();
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+  
+  // toggleSidebar(name): void {
+  //   this._fuseSidebarService.getSidebar(name).toggleOpen();
+  // }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -360,15 +327,7 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
       IsInchIndVfy: m.IsInchIndVfy,
     };
     this.advanceDataStored.storage = new PaymentPharmayList(xx);
-    // const dialogRef = this._matDialog.open(EditPaymentmodeComponent,
-    //   {
-    //     height: "85%",
-    //     width: '75%',
-    //     data: {
-    //       registerObj: m,
-    //       FromName: "Pharma-PaymentModeChange"
-    //     }
-    //   });
+   
      const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
         height: "97%",
@@ -379,10 +338,11 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
       this.grid.bindGridData();
     });
   }
+
+  
   BillDate() {
     Swal.fire('Api Error !', 'Bill Date Update!')
   }

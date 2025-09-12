@@ -35,6 +35,26 @@ export class CancellationComponent implements OnInit {
   isLoading = true;
   gridConfig: any;
 
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  PBillNo: any = "%"
+  IsIntrimOrFinal: any = "2";
+
+  af_name: any = ""
+  aregNo: any = "0"
+  al_name: any = ""
+  aPBillNo: any = "0"
+  afromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  atoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+  ipf_name: any = ""
+  ipregNo: any = "0"
+  ipl_name: any = ""
+  ipfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  iptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
   dsCancellation = new MatTableDataSource<CancellationList>();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -71,91 +91,72 @@ export class CancellationComponent implements OnInit {
       console.log("OP_IP_Type changed to:", value);
       this.gridConfig = value === '0' ? this.opdGridConfig : this.ipdGridConfig;
     });
-    
-    console.log("GridConfig:",this.gridConfig)
+
+    console.log("GridConfig:", this.gridConfig)
   }
-  
+
   ngAfterViewInit() {
-          // Assign the template to the column dynamically
-          // this.gridConfig.columnsList.find(col => col.key === 'OPD_IPD_Type')!.template = this.actionsTemplate;  
-          this.opdGridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplate;  
-          this.opdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancel;  
-          this.opdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+    // Assign the template to the column dynamically
+    // this.gridConfig.columnsList.find(col => col.key === 'OPD_IPD_Type')!.template = this.actionsTemplate;  
+    this.opdGridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplate;
+    this.opdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancel;
+    this.opdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-          this.ipdGridConfig.columnsList.find(col => col.key === 'opD_IPD_Type')!.template = this.actionsTemplateIP;  
-          this.ipdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancelIP; 
-          this.ipdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP; 
+    this.ipdGridConfig.columnsList.find(col => col.key === 'opdipdType')!.template = this.actionsTemplateIP;
+    this.ipdGridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancelIP;
+    this.ipdGridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
 
-          this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdvance; 
-          this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill; 
-          this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundAdv; 
+    this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPAdvance;
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill;
+    this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundAdv;
 
-          this.gridConfig1.columnsList.find(col => col.key === 'PatientTypeId')!.template = this.patientTypeId;  
-          this.gridConfig1.columnsList.find(col => col.key === 'RefundAmount')!.template = this.RefundAmount;  
+    this.gridConfig1.columnsList.find(col => col.key === 'PatientTypeId')!.template = this.patientTypeId;
+    this.gridConfig1.columnsList.find(col => col.key === 'RefundAmount')!.template = this.RefundAmount;
 
-      }
-      @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-      @ViewChild('ColorCodeCancel') ColorCodeCancel!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  }
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('ColorCodeCancel') ColorCodeCancel!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-      @ViewChild('ColorCodeCancelIP') ColorCodeCancelIP!: TemplateRef<any>;
-      @ViewChild('actionsTemplateIP') actionsTemplateIP!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
-      
-      @ViewChild('actionButtonTemplateIPAdvance') actionButtonTemplateIPAdvance!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplateIPRefundBill') actionButtonTemplateIPRefundBill!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplateIPRefundAdv') actionButtonTemplateIPRefundAdv!: TemplateRef<any>;
+  @ViewChild('ColorCodeCancelIP') ColorCodeCancelIP!: TemplateRef<any>;
+  @ViewChild('actionsTemplateIP') actionsTemplateIP!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateIP') actionButtonTemplateIP!: TemplateRef<any>;
 
-      @ViewChild('patientTypeId') patientTypeId!: TemplateRef<any>;
-      @ViewChild('RefundAmount') RefundAmount!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateIPAdvance') actionButtonTemplateIPAdvance!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateIPRefundBill') actionButtonTemplateIPRefundBill!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateIPRefundAdv') actionButtonTemplateIPRefundAdv!: TemplateRef<any>;
+
+  @ViewChild('patientTypeId') patientTypeId!: TemplateRef<any>;
+  @ViewChild('RefundAmount') RefundAmount!: TemplateRef<any>;
 
 
-      f_name: any = ""
-      regNo: any = "0"
-      l_name: any = ""
-      PBillNo: any = "%"
-      IsIntrimOrFinal:any="2";
+  allopdColumns = [
+    { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
+    { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, //not there in payload
+    { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },//not there in payload
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },//not there in payload
+    { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+    {
+      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]
 
-      af_name: any = ""
-      aregNo: any = "0"
-      al_name: any = ""
-      aPBillNo: any = "0"
-      afromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-      atoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-      ipf_name: any = ""
-      ipregNo: any = "0"
-      ipl_name: any = ""
-      ipfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-      iptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-      allopdColumns=[
-        { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-        // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
-        { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250 },
-        { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //not there in payload
-        { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
-        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
-        { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-        {
-          heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-          template: this.actionButtonTemplate  // Assign ng-template to the column
-      }
-      ]
-
-      allopdFilters=[
-        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
-      ]
+  allopdFilters = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+  ]
 
   // 1st table
   opdGridConfig: gridModel = {
@@ -163,7 +164,7 @@ export class CancellationComponent implements OnInit {
     columnsList: this.allopdColumns,
     sortField: "BillNo",
     sortOrder: 0,
-    filters:this.allopdFilters 
+    filters: this.allopdFilters
   }
 
   onChangeopd() {
@@ -174,11 +175,11 @@ export class CancellationComponent implements OnInit {
     this.regNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
     this.PBillNo = this._CancellationService.UserFormGroup.get('PBillNo').value || "%"
     this.getfilteropd();
-}
+  }
 
-getfilteropd() {
-  debugger    
-  this.gridConfig = {
+  getfilteropd() {
+    debugger
+    this.gridConfig = {
       apiUrl: "OPBill/BrowseOPDBillPagiList",
       columnsList: this.allopdColumns,
       sortField: "BillNo",
@@ -189,49 +190,49 @@ getfilteropd() {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-      { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
+      { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
 
       ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+    console.log("opd:", this.gridConfig)
   }
-  this.grid.gridConfig = this.gridConfig;
-  this.grid.bindGridData();
-  console.log("opd:",this.gridConfig)
-}
 
-ClearfilterOPD(event) {
-  console.log(event)
-  if (event == 'FirstName')
+  ClearfilterOPD(event) {
+    console.log(event)
+    if (event == 'FirstName')
       this._CancellationService.UserFormGroup.get('FirstName').setValue("")
-  else
+    else
       if (event == 'LastName')
-          this._CancellationService.UserFormGroup.get('LastName').setValue("")
-  if (event == 'RegNo')
+        this._CancellationService.UserFormGroup.get('LastName').setValue("")
+    if (event == 'RegNo')
       this._CancellationService.UserFormGroup.get('RegNo').setValue("")
-  if (event == 'PBillNo')
+    if (event == 'PBillNo')
       this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
 
-  // this.onChangeopd();
-  this.onNameFieldChange()
-}
+    // this.onChangeopd();
+    this.onNameFieldChange()
+  }
 
-  allipdColumns=[
-    { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+  allipdColumns = [
+    { heading: "-", key: "opipdType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
-    { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+    { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:250 },
-    { heading: "Bill Amt", key: "billAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Discount Amt", key: "discountAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Net Amt", key: "netAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },//not there in payload
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Discount Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },//not there in payload
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIP  // Assign ng-template to the column
-  } //Action 1-view, 2-Edit,3-delete
+    } //Action 1-view, 2-Edit,3-delete
   ]
 
-  allipdFilters=[
+  allipdFilters = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -256,13 +257,13 @@ ClearfilterOPD(event) {
     this.l_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
     this.regNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
     this.PBillNo = this._CancellationService.UserFormGroup.get('PBillNo').value || "%"
-    this.IsIntrimOrFinal=this._CancellationService.UserFormGroup.get("IsIntrimOrFinal").value || "2"
+    this.IsIntrimOrFinal = this._CancellationService.UserFormGroup.get("IsIntrimOrFinal").value || "2"
     this.getfilteripd();
-}
+  }
 
-getfilteripd() {
-  debugger    
-  this.gridConfig = {
+  getfilteripd() {
+    debugger
+    this.gridConfig = {
       apiUrl: "Billing/BrowseIPBillList",
       columnsList: this.allipdColumns,
       sortField: "BillNo",
@@ -273,72 +274,76 @@ getfilteripd() {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-    { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals }
+      { fieldName: "IsIntrimOrFinal", fieldValue: "2", opType: OperatorComparer.Equals }
       ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+    console.log("IPD:", this.gridConfig)
   }
-  this.grid.gridConfig = this.gridConfig;
-  this.grid.bindGridData();
-  console.log("IPD:",this.gridConfig)
-}
 
-// ClearfilterIPD(event) {
-//   debugger
-//   console.log(event)
-//   if (event == 'FirstName')
-//       this._CancellationService.UserFormGroup.get('FirstName').setValue("")
-//   else
-//       if (event == 'LastName')
-//           this._CancellationService.UserFormGroup.get('LastName').setValue("")
-//   if (event == 'RegNo')
-//       this._CancellationService.UserFormGroup.get('RegNo').setValue("")
-//   if (event == 'PBillNo')
-//       this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
+  // ClearfilterIPD(event) {
+  //   debugger
+  //   console.log(event)
+  //   if (event == 'FirstName')
+  //       this._CancellationService.UserFormGroup.get('FirstName').setValue("")
+  //   else
+  //       if (event == 'LastName')
+  //           this._CancellationService.UserFormGroup.get('LastName').setValue("")
+  //   if (event == 'RegNo')
+  //       this._CancellationService.UserFormGroup.get('RegNo').setValue("")
+  //   if (event == 'PBillNo')
+  //       this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
 
-//   this.onChangeipd();
-// }
+  //   this.onChangeipd();
+  // }
 
-onNameFieldChange(): void {
-  debugger
-  const selectedType = this._CancellationService.UserFormGroup.get('OP_IP_Type')?.value;
+  onNameFieldChange(): void {
+    debugger
+    const selectedType = this._CancellationService.UserFormGroup.get('OP_IP_Type')?.value;
 
-  if (selectedType === '0' || selectedType === 0) {
-    this.onChangeopd();
-  } else if (selectedType === '1' || selectedType === 1) {
-    this.onChangeipd();
+    if (selectedType === '0' || selectedType === 0) {
+      this.onChangeopd();
+    } else if (selectedType === '1' || selectedType === 1) {
+      this.onChangeipd();
+    }
   }
-}
 
-onRadioChange(event: MatRadioChange) {
-  debugger
-  const selectedValue = event.value;
-  if (selectedValue === '0' || selectedValue === 0) {
-    this.onChangeopd();
-  } else if (selectedValue === '1' || selectedValue === 1) {
-    this.onChangeipd();
+  onRadioChange(event: MatRadioChange) {
+    debugger
+    const selectedValue = event.value;
+    if (selectedValue === '0' || selectedValue === 0) {
+      this.onChangeopd();
+    } else if (selectedValue === '1' || selectedValue === 1) {
+      this.onChangeipd();
+    }
   }
-}
 
   // 2nd table
-  allColumnsOfAdvanceList=[
+  allColumnsOfAdvanceList = [
     { heading: "", key: "PatientTypeId", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
     { heading: "", key: "RefundAmount", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200, },
-    { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
-    { heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount, 
-      columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
-    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount,
-      columnClass: (element) => element["refundAmount"] > 0 ? Color.GREEN : "" },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, },
+    { heading: "Advance Amt ", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    {
+      heading: "Balance Amt ", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount,
+      columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : ""
+    },
+    {
+      heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount,
+      columnClass: (element) => element["refundAmount"] > 0 ? Color.GREEN : ""
+    },
     { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPAdvance
-  } //Action 1-view, 2-Edit,3-delete
+    } //Action 1-view, 2-Edit,3-delete
   ]
 
-  allFiltersOfAdvanceList=[
+  allFiltersOfAdvanceList = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -349,7 +354,7 @@ onRadioChange(event: MatRadioChange) {
 
   gridConfig1: gridModel = {
     apiUrl: "Advance/BrowseAdvanceList",
-    columnsList:this.allColumnsOfAdvanceList ,
+    columnsList: this.allColumnsOfAdvanceList,
     sortField: "RegID",
     sortOrder: 0,
     filters: this.allFiltersOfAdvanceList
@@ -364,55 +369,56 @@ onRadioChange(event: MatRadioChange) {
     this.aregNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
     this.aPBillNo = this._CancellationService.UserFormGroup.get('PBillNo').value || "0"
     this.getfilterAdvance();
-}
+  }
 
-getfilterAdvance() {
+  getfilterAdvance() {
+    debugger
     this.gridConfig1 = {
-        apiUrl: "Advance/BrowseAdvanceList",
-        columnsList: this.allColumnsOfAdvanceList,
-        sortField: "RegID",
-        sortOrder: 0,
-        filters: [{ fieldName: "F_Name", fieldValue: this.af_name, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.al_name, opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.afromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.atoDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.aregNo, opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: this.aPBillNo, opType: OperatorComparer.Equals }
-        ]
+      apiUrl: "Advance/BrowseAdvanceList",
+      columnsList: this.allColumnsOfAdvanceList,
+      sortField: "RegID",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: this.af_name, opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: this.al_name, opType: OperatorComparer.Contains },
+      { fieldName: "From_Dt", fieldValue: this.afromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.atoDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.aregNo, opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: this.aPBillNo, opType: OperatorComparer.Equals }
+      ]
     }
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
-}
+  }
 
-ClearfilterAdvance(event) {
+  ClearfilterAdvance(event) {
     console.log(event)
     if (event == 'FirstName')
-        this._CancellationService.UserFormGroup.get('FirstName').setValue("")
+      this._CancellationService.UserFormGroup.get('FirstName').setValue("")
     else
-        if (event == 'LastName')
-            this._CancellationService.UserFormGroup.get('LastName').setValue("")
+      if (event == 'LastName')
+        this._CancellationService.UserFormGroup.get('LastName').setValue("")
     if (event == 'RegNo')
-        this._CancellationService.UserFormGroup.get('RegNo').setValue("")
+      this._CancellationService.UserFormGroup.get('RegNo').setValue("")
     if (event == 'PBillNo')
-        this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
+      this._CancellationService.UserFormGroup.get('PBillNo').setValue("")
     this.onChangeAdvance();
-}
+  }
 
   // 3rd table
 
-  allColumnsOfIpRefund= [
-    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+  allColumnsOfIpRefund = [
+    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200 },
-    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9},
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", width: 150,sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPRefundBill  // Assign ng-template to the column
-  } //Action 1-view, 2-Edit,3-delete
+    } //Action 1-view, 2-Edit,3-delete
   ]
-  allFiltersOfIpRefund=[
+  allFiltersOfIpRefund = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -422,7 +428,7 @@ ClearfilterAdvance(event) {
 
   gridConfig2: gridModel = {
     apiUrl: "Billing/BrowseIPRefundlist",
-    columnsList:this.allColumnsOfIpRefund,
+    columnsList: this.allColumnsOfIpRefund,
     sortField: "RegNo",
     sortOrder: 0,
     filters: this.allFiltersOfIpRefund
@@ -436,55 +442,55 @@ ClearfilterAdvance(event) {
     this.ipl_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
     this.ipregNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
     this.getfilterIPRefund();
-}
+  }
 
-getfilterIPRefund() {
+  getfilterIPRefund() {
     this.gridConfig2 = {
-        apiUrl: "Billing/BrowseIPRefundlist",
-        columnsList: this.allColumnsOfIpRefund,
-        sortField: "RegNo",
-        sortOrder: 0,
-        filters: [{ fieldName: "F_Name", fieldValue: this.ipf_name, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.ipl_name, opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.ipfromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.iptoDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.ipregNo, opType: OperatorComparer.Equals }
-        ]
+      apiUrl: "Billing/BrowseIPRefundlist",
+      columnsList: this.allColumnsOfIpRefund,
+      sortField: "RegNo",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: this.ipf_name, opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: this.ipl_name, opType: OperatorComparer.Contains },
+      { fieldName: "From_Dt", fieldValue: this.ipfromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.iptoDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.ipregNo, opType: OperatorComparer.Equals }
+      ]
     }
     this.grid2.gridConfig = this.gridConfig2;
     this.grid2.bindGridData();
-}
+  }
 
-ClearfilterIPRefund(event) {
+  ClearfilterIPRefund(event) {
     console.log(event)
     if (event == 'FirstName')
-        this._CancellationService.UserFormGroup.get('FirstName').setValue("")
+      this._CancellationService.UserFormGroup.get('FirstName').setValue("")
     else
-        if (event == 'LastName')
-            this._CancellationService.UserFormGroup.get('LastName').setValue("")
+      if (event == 'LastName')
+        this._CancellationService.UserFormGroup.get('LastName').setValue("")
     if (event == 'RegNo')
-        this._CancellationService.UserFormGroup.get('RegNo').setValue("")
+      this._CancellationService.UserFormGroup.get('RegNo').setValue("")
     this.onChangeIPRefund();
-}
+  }
 
   // 4th table
 
-  allColumnsOfRefundAd=[
-    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9 },
+  allColumnsOfRefundAd = [
+    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width:200},
-    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "AdvUsed Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:200, type: 9  },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "AdvUsed Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPRefundAdv  // Assign ng-template to the column
-  }  //Action 1-view, 2-Edit,3-delete
+    }  //Action 1-view, 2-Edit,3-delete
   ]
 
-  allFiltersOfRefundAd=[
+  allFiltersOfRefundAd = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
@@ -508,37 +514,37 @@ ClearfilterIPRefund(event) {
     this.ipl_name = this._CancellationService.UserFormGroup.get('LastName').value + "%"
     this.ipregNo = this._CancellationService.UserFormGroup.get('RegNo').value || "0"
     this.getfilterRefundAd();
-}
+  }
 
-getfilterRefundAd() {
+  getfilterRefundAd() {
     this.gridConfig3 = {
-        apiUrl: "Advance/BrowseRefundOfAdvanceList",
-        columnsList: this.allColumnsOfRefundAd,
-        sortField: "RegId",
-        sortOrder: 0,
-        filters: [{ fieldName: "F_Name", fieldValue: this.ipf_name, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.ipl_name, opType: OperatorComparer.Contains },
-        { fieldName: "From_Dt", fieldValue: this.ipfromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.iptoDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.ipregNo, opType: OperatorComparer.Equals }
-        ]
+      apiUrl: "Advance/BrowseRefundOfAdvanceList",
+      columnsList: this.allColumnsOfRefundAd,
+      sortField: "RegId",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: this.ipf_name, opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: this.ipl_name, opType: OperatorComparer.Contains },
+      { fieldName: "From_Dt", fieldValue: this.ipfromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.iptoDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.ipregNo, opType: OperatorComparer.Equals }
+      ]
     }
     this.grid3.gridConfig = this.gridConfig3;
     this.grid3.bindGridData();
     console.log(this.gridConfig3)
-}
+  }
 
-ClearfilterRefundAd(event) {
+  ClearfilterRefundAd(event) {
     console.log(event)
     if (event == 'FirstName')
-        this._CancellationService.UserFormGroup.get('FirstName').setValue("")
+      this._CancellationService.UserFormGroup.get('FirstName').setValue("")
     else
-        if (event == 'LastName')
-            this._CancellationService.UserFormGroup.get('LastName').setValue("")
+      if (event == 'LastName')
+        this._CancellationService.UserFormGroup.get('LastName').setValue("")
     if (event == 'RegNo')
-        this._CancellationService.UserFormGroup.get('RegNo').setValue("")
+      this._CancellationService.UserFormGroup.get('RegNo').setValue("")
     this.onChangeRefundAd();
-}
+  }
 
   onSave(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -558,23 +564,30 @@ ClearfilterRefundAd(event) {
     // });
   }
 
-  OnUpdate(row){
+  OnUpdate(row) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
     let that = this;
-    const dialogRef = this._matDialog.open( BillDateUpdateComponent, 
-        {
-            maxHeight: "35vh",
-            maxWidth: '90vh',
-            width: '100%',
-            data: row
-        });
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        maxHeight: "35vh",
+        maxWidth: '90vh',
+        width: '100%',
+        data: row
+      });
     dialogRef.afterClosed().subscribe(result => {
-       this.grid.bindGridData();
-       });
+      this.refreshdatalist()
+
+    });
   }
 
+  refreshdatalist() {
+    this.grid.bindGridData();
+    this.grid1.bindGridData();
+    this.grid2.bindGridData();
+    this.grid3.bindGridData();
+  }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -586,7 +599,7 @@ ClearfilterRefundAd(event) {
   resultsLength = 0;
 
   BillCancelOP(contact) {
-    console.log("Data:",contact)
+    console.log("Data:", contact)
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
       text: "You won't be able to revert this!",
@@ -596,22 +609,23 @@ ClearfilterRefundAd(event) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      
+
       if (result.isConfirmed) {
-          let SubmitDate = {
-            "billNo":contact.billNo || 0
-          }
-        console.log("Json:",SubmitDate)
+        let SubmitDate = {
+          "billNo": contact.billNo || 0
+        }
+        console.log("Json:", SubmitDate)
         this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
-         
+
         });
-      } 
+      }
     })
-      this.grid.bindGridData();
+    this.grid.bindGridData();
   }
 
   BillCancelIP(contact) {
-    console.log("Data:",contact)
+    debugger
+    console.log("Data:", contact)
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
       text: "You won't be able to revert this!",
@@ -621,23 +635,23 @@ ClearfilterRefundAd(event) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-     
+
       if (result.isConfirmed) {
-          let SubmitDate = {
-            "billNo":contact.billNo || 0
-          }
-        console.log("Json:",SubmitDate)
+        let SubmitDate = {
+          "billNo": contact.billNo || 0
+        }
+        console.log("Json:", SubmitDate)
         this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
-         
+
           this.grid.bindGridData();
         });
-      } 
+      }
     })
-      this.grid.bindGridData();
+    
   }
 
-  CancelAdvance(contact){ 
-    console.log("Data:",contact)
+  CancelAdvance(contact) {
+    console.log("Data:", contact)
 
     Swal.fire({
       title: 'Do you want to cancel the Advance',
@@ -646,24 +660,24 @@ ClearfilterRefundAd(event) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!" 
+      confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
       debugger
-      if (result.isConfirmed) {  
-        let SubmitDate ={
-            "advanceId": contact.advanceId || 0,
-            "advanceDetailId": contact.advanceDetailID || 0,
-            "addedBy": contact.addedBy || 0,
-            "advanceAmount": contact.advanceAmount || 0
-          }
+      if (result.isConfirmed) {
+        let SubmitDate = {
+          "advanceId": contact.advanceId || 0,
+          "advanceDetailId": contact.advanceDetailID || 0,
+          "addedBy": contact.addedBy || 0,
+          "advanceAmount": contact.advanceAmount || 0
+        }
 
         console.log(SubmitDate)
         this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
-       
-        });  
+  this.grid1.bindGridData();
+        });
       }
     })
-      this.grid1.bindGridData();
+    this.grid1.bindGridData();
   }
 
   // getRecord(contact, m): void {
@@ -687,8 +701,8 @@ ClearfilterRefundAd(event) {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      });
-        this.grid1.bindGridData();
+    });
+    this.grid1.bindGridData();
   }
 
   // viewgetBillReportPdf(BillNo) {

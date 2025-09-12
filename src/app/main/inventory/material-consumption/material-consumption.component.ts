@@ -36,7 +36,8 @@ export class MaterialConsumptionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
     allcolumns = [
-        { heading: "-", key: "admId", sort: true, align: 'left', type: gridColumnTypes.template, width: 30 },
+       
+     { heading: "-", key: "admId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "DateTime", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "LandedTotal Amt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.amount },

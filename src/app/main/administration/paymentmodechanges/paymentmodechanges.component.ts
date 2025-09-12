@@ -257,7 +257,7 @@ allAdColumns=[
   { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
   { heading: "Pay Date", key: "payDate", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-  { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+  { heading: "Bill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
   { heading: "Bill Amt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
