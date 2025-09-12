@@ -131,7 +131,7 @@ export class NUserComponent implements OnInit {
       this.getUnitDetail(this.data)
       this.getStoreDetail(this.data)
 
-    }else{
+    } else {
       this.getList()
     }
     this.LoginAccessDetailsArray.push(this.createLoginAccessDetails());
@@ -205,13 +205,13 @@ export class NUserComponent implements OnInit {
     }
     this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
-      this.RtrvUnitList = rowData.map(item=>({
+      this.RtrvUnitList = rowData.map(item => ({
         value: item.unitId,
         text: item.hospitalName
       }))
       debugger
       console.log("Unit data:", this.RtrvUnitList)
-        const assignedUnits = this.RtrvUnitList.filter(unit => {
+      const assignedUnits = this.RtrvUnitList.filter(unit => {
         const originalItem = rowData.find(r => r.unitId === unit.value);
         return originalItem?.isAssigned === true;
       });
@@ -244,12 +244,12 @@ export class NUserComponent implements OnInit {
     }
     this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
-      this.RtrvStoreList = rowData.map(item=>({
+      this.RtrvStoreList = rowData.map(item => ({
         value: item.storeId,
-        text:item.storeName
+        text: item.storeName
       }))
       console.log("store data:", this.RtrvStoreList)
-        const assignedStore = this.RtrvUnitList.filter(store => {
+      const assignedStore = this.RtrvUnitList.filter(store => {
         const originalItem = rowData.find(r => r.storeId === store.value);
         return originalItem?.isAssigned === true;
       });
@@ -280,7 +280,7 @@ export class NUserComponent implements OnInit {
           Validators.required,
           Validators.pattern('[a-z A-Z 0-9_ ]*')
         ]],
-      password: ["",[ Validators.required]],
+      password: ["", [Validators.required]],
       unitId: [1],
       mobileNo: ["", [
         Validators.required,
@@ -333,9 +333,9 @@ export class NUserComponent implements OnInit {
       tLoginStoreDetails: this._formBuilder.array([]),
 
       // extra fields
-      multipleUnitId: [[],[Validators.required]],
-      multipleStoreId: [[],[Validators.required]],
-      IsPharmacyBalClearnace:false
+      multipleUnitId: [[], [Validators.required]],
+      multipleStoreId: [[], [Validators.required]],
+      IsPharmacyBalClearnace: false
 
     });
   }
@@ -345,7 +345,7 @@ export class NUserComponent implements OnInit {
       loginAccessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       accessValueId: [item.LoginConfigId ?? item.accessValueId],
-      accessValue: [item.IsInputField ?? item.accessValue ??false, [Validators.maxLength(100)]],
+      accessValue: [item.IsInputField ?? item.accessValue ?? false, [Validators.maxLength(100)]],
       accessInputValue: [item.InputValue ?? item.accessInputValue ?? ''],
     });
   }
@@ -391,28 +391,38 @@ export class NUserComponent implements OnInit {
   }
 
   getCheckboxValue(element: any): boolean {
-  return element.IsInputField ?? element.accessValue ?? false;
-}
-
-setCheckboxValue(element: any, value: boolean): void {
-  if (element.hasOwnProperty('IsInputField')) {
-    element.IsInputField = value;
-  } else {
-    element.accessValue = value;
+    return element.IsInputField ?? element.accessValue ?? false;
   }
-}
 
-getInputFieldValue(element: any): string {
-  return element.InputValue ?? element.accessInputValue ?? '';
-}
-
-setInputFieldValue(element: any, value: string): void {
-  if ('InputValue' in element) {
-    element.InputValue = value;
-  } else {
-    element.accessInputValue = value;
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
-}
+
+  setCheckboxValue(element: any, value: boolean): void {
+    if (element.hasOwnProperty('IsInputField')) {
+      element.IsInputField = value;
+    } else {
+      element.accessValue = value;
+    }
+  }
+
+  getInputFieldValue(element: any): string {
+    return element.InputValue ?? element.accessInputValue ?? '';
+  }
+
+  setInputFieldValue(element: any, value: string): void {
+    if ('InputValue' in element) {
+      element.InputValue = value;
+    } else {
+      element.accessInputValue = value;
+    }
+  }
 
   onSubmitApproval() {
 
@@ -515,11 +525,15 @@ setInputFieldValue(element: any, value: string): void {
 
   docflag: boolean = false;
   chkdoctorApp(event) {
+    const doctorControl = this.myuserApprovalform.get('doctorId');
     if (this.myuserApprovalform.get('isDoctorType').value == true) {
       this.docflag = true
+      doctorControl?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
     } else {
+      doctorControl?.clearValidators();
       this.docflag = false
     }
+    doctorControl?.updateValueAndValidity();
   }
 
   DisclimitFlag: boolean = false;
@@ -639,11 +653,11 @@ export class UserDetail {
   PharIPOpt: any;
   PharOPOpt: any;
   InputValue: any;
-  accessValueId:any;
-  accessValue:any;
-  accessInputValue:any;
-  accessValueName:any;
-  loginId:any;
+  accessValueId: any;
+  accessValue: any;
+  accessInputValue: any;
+  accessValueName: any;
+  loginId: any;
   /**
    * Constructor
    *

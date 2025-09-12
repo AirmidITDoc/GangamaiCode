@@ -92,47 +92,101 @@ export class NewOtnotesComponent {
   }
 
   onSubmit() {
-    let row, IncisionNew, OPeDignosis, OperFinding, OperProcuder, Extperformed, Closertech, PostOperat, DetSpecLab
-    let discription = this.OTNoteform.get('description').value
-    let ID = discription.split('<br><br>')
+    // let row, IncisionNew, OPeDignosis, OperFinding, OperProcuder, Extperformed, Closertech, PostOperat, DetSpecLab
+    // let discription = this.OTNoteform.get('description').value
+    // let ID = discription.split('<br><br>')
+    // ID.forEach(element => {
+    //   row = element.split(':')
+    //   if (row[0] == 'Incision') {
+    //     IncisionNew = row[1]
+    //   }
+    //   if (row[0] == 'OperativeDiagnosis') {
+    //     OPeDignosis = row[1]
+    //   }
+    //   if (row[0] == 'OperativeFindings') {
+    //     OperFinding = row[1]
+    //   }
+    //   if (row[0] == 'OperativeProcedure') {
+    //     OperProcuder = row[1]
+    //   }
+    //   if (row[0] == 'ExtraProPerformed') {
+    //     Extperformed = row[1]
+    //   }
+    //   if (row[0] == 'ClosureTechnique') {
+    //     Closertech = row[1]
+    //   }
+    //   if (row[0] == 'PostOpertiveInstru') {
+    //     PostOperat = row[1]
+    //   }
+    //   if (row[0] == 'DetSpecimenForLab') {
+    //     DetSpecLab = row[1]
+    //   }
+    // })
+    let description = this.OTNoteform.get('description')?.value || '';
+    let ID = description.split('<br><br>');
+
+    let row: string[];
+
+    let IncisionNew = '', OPeDignosis = '', OperFinding = '', OperProcuder = '',
+      Extperformed = '', Closertech = '', PostOperat = '', DetSpecLab = '';
+
     ID.forEach(element => {
-      row = element.split(':')
-      if (row[0] == 'Incision') {
-        IncisionNew = row[1]
+      // Remove HTML tags and trim
+      element = element.replace(/<\/?[^>]+(>|$)/g, '').trim();
+
+      row = element.split(':');
+      if (row.length < 2) return;
+
+      let key = row[0].trim();
+      let value = row[1].trim();
+
+      if (key === 'Incision') {
+        IncisionNew = value;
       }
-      if (row[0] == 'OperativeDiagnosis') {
-        OPeDignosis = row[1]
+      if (key === 'OperativeDiagnosis') {
+        OPeDignosis = value;
       }
-      if (row[0] == 'OperativeFindings') {
-        OperFinding = row[1]
+      if (key === 'OperativeFindings') {
+        OperFinding = value;
       }
-      if (row[0] == 'OperativeProcedure') {
-        OperProcuder = row[1]
+      if (key === 'OperativeProcedure') {
+        OperProcuder = value;
       }
-      if (row[0] == 'ExtraProPerformed') {
-        Extperformed = row[1]
+      if (key === 'ExtraProPerformed') {
+        Extperformed = value;
       }
-      if (row[0] == 'ClosureTechnique') {
-        Closertech = row[1]
+      if (key === 'ClosureTechnique') {
+        Closertech = value;
       }
-      if (row[0] == 'PostOpertiveInstru') {
-        PostOperat = row[1]
+      if (key === 'PostOpertiveInstru') {
+        PostOperat = value;
       }
-      if (row[0] == 'DetSpecimenForLab') {
-        DetSpecLab = row[1]
+      if (key === 'DetSpecimenForLab') {
+        DetSpecLab = value;
       }
-    })
+    });
+
+    this.OTNoteform.patchValue({
+      incision: IncisionNew,
+      operativeDiagnosis: OPeDignosis,
+      operativeFindings: OperFinding,
+      operativeProcedure: OperProcuder,
+      extraProPerformed: Extperformed,
+      closureTechnique: Closertech,
+      postOpertiveInstru: PostOperat,
+      detSpecimenForLab: DetSpecLab
+    });
 
     this.OTNoteform.get('otdate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
     this.OTNoteform.get('surgeryName')?.setValue(this.VsurgeryName ?? this.registerObj.surgeryName);
-    this.OTNoteform.get('incision')?.setValue(IncisionNew);
-    this.OTNoteform.get('operativeDiagnosis')?.setValue(OPeDignosis);
-    this.OTNoteform.get('operativeFindings')?.setValue(OperFinding);
-    this.OTNoteform.get('operativeProcedure')?.setValue(OperProcuder);
-    this.OTNoteform.get('extraProPerformed')?.setValue(Extperformed);
-    this.OTNoteform.get('closureTechnique')?.setValue(Closertech);
-    this.OTNoteform.get('postOpertiveInstru')?.setValue(PostOperat);
-    this.OTNoteform.get('detSpecimenForLab')?.setValue(DetSpecLab);
+    // this.OTNoteform.get('incision')?.setValue(IncisionNew);
+    // this.OTNoteform.get('operativeDiagnosis')?.setValue(OPeDignosis);
+    // this.OTNoteform.get('operativeFindings')?.setValue(OperFinding);
+    // this.OTNoteform.get('operativeProcedure')?.setValue(OperProcuder);
+    // this.OTNoteform.get('extraProPerformed')?.setValue(Extperformed);
+    // this.OTNoteform.get('closureTechnique')?.setValue(Closertech);
+    // this.OTNoteform.get('postOpertiveInstru')?.setValue(PostOperat);
+    // this.OTNoteform.get('detSpecimenForLab')?.setValue(DetSpecLab);
     this.OTNoteform.get('fromTime')?.setValue(this.registerObj.opstartTime);
     this.OTNoteform.get('toTime')?.setValue(this.registerObj.opendTime);
     this.OTNoteform.get('otreservationId')?.setValue(this.registerObj.otreservationId);

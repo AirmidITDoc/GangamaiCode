@@ -85,19 +85,19 @@
                                             [formGroup]="OPeningtemForm" type="text" #IGST
                                             (valueChange)="getchangegstper($event,IGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="GST %" formControlName="GST" [(ngModel)]="vGST"
+                                        <airmid-textbox fxFlex="4%" label="GST %" formControlName="GST" [(ngModel)]="vGST"
                                             [formGroup]="OPeningtemForm" type="text" [readonly]="true"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" type="number"
+                                        <airmid-textbox fxFlex="4%" label="MRP" formControlName="MRP" type="number"
                                             [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0"
                                             (input)="onMRPInput($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="Rate PerUnit" formControlName="RatePerUnit"
+                                        <airmid-textbox fxFlex="4%" label="Rate PerUnit" formControlName="RatePerUnit"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
                                             (input)="onRatePerUnitInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="LandedRate" formControlName="LandedRate"
+                                        <airmid-textbox fxFlex="4%" label="LandedRate" formControlName="LandedRate"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Landed Rate"
                                             (input)="onLandedRateInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -117,12 +117,12 @@
                     </mat-accordion>
                     <div class="airmid-table-container py-12" fxFlex>
                         <mat-table class="table2" matSort [dataSource]="dsItemNameList" [@animateStagger]="{value:'50'}"
-                            style="overflow: auto;">
+                            style="overflow: auto; height: 350px;">
 
                             <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                <mat-header-cell *matHeaderCellDef style="color: white;" class="w-180"> Action
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
+                                <mat-cell *matCellDef="let row" class="w-180">
                                     <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>

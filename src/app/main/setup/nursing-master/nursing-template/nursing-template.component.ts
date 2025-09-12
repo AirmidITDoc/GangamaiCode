@@ -31,9 +31,11 @@ export class NursingTemplateComponent {
 
   ngOnInit(): void {
     this.myTemplateform = this._NursingService.templateForm();
-    if ((this.data?.templateId ?? 0) > 0) {
+    if ((this.data?.nursingId ?? 0) > 0) {
       this.isActive = this.data.isActive
-      this.myTemplateform.patchValue(this.data);
+      this.vTemplateDesc=this.data.templateDesc
+      this.myTemplateform.get('templateDesc').setValue(this.vTemplateDesc)
+      this.myTemplateform.get('nursTempName').setValue(this.data?.nursTempName)
     }
   }
 
@@ -43,6 +45,7 @@ export class NursingTemplateComponent {
 
   onSubmit() {
     if (!this.myTemplateform.invalid) {
+      this.myTemplateform.get('nursingId').setValue(this.data?.nursingId ?? 0)
       this.myTemplateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
       this.myTemplateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
       this._NursingService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {

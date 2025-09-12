@@ -67,6 +67,7 @@ export class GrnListComponent implements OnInit {
     // debugger;
     const fromDate = this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get('start').value, "yyyy-MM-dd")
     const toDate = this.datePipe.transform(this._GRNReturnHeaderList.GRNListFrom.get('end').value, "yyyy-MM-dd")
+    this.vSupplier=this._GRNReturnHeaderList.GRNListFrom.get('SupplierId').value ?? "0";
   
     const Param = {
       first: 0,

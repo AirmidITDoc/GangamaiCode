@@ -731,7 +731,7 @@
               <!-- 4TH TAB FOOTER -->
               <form class="example-form" [formGroup]="IpbillFooterform">
                 <div class="net-amt-section mb-2 mt-16" style="margin-left: 500px">
-                  <div class="net-amt gap-24">
+                  <!-- <div class="net-amt gap-24">
                     <div class="net-amt-box">
                       <span class="net-amt-label">No of Items :</span>
                       <span class="net-amt-value">{{ chargeslist.length }}</span>
@@ -751,7 +751,7 @@
                       <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR'
                         }}</span>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 <div fxLayout="column" class="gap-6" style="width: 100%">
                   <div fxLayout="row" class="gap-6">
@@ -807,8 +807,8 @@
 
                     <div class="action-content-left" fxLayout="row" class="gap-24" fxLayoutAlign="start center">
                       <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
-                      <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
-                        formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
+                      <!-- <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
+                        formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox> -->
                     </div>
 
                     <!-- <div *ngIf="IpbillFooterform.get('GenerateBill')?.value" fxLayout="row">

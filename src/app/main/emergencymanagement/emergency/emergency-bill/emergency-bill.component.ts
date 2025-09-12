@@ -1257,7 +1257,6 @@ export class EmergencyBillComponent {
     this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(this.IpbillFooterform.get('Remark')?.value)
     this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
 
-    console.log(this.IPInterimBillForm.value)
     if (this.IPInterimBillForm.valid) {
       debugger
       this.BillDetailsArray1.clear();
@@ -1320,7 +1319,7 @@ export class EmergencyBillComponent {
           console.log("form values", this.IPInterimBillForm.value)
           this._EmergencyService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
             this.viewgetInterimBillReportPdf(response);
-            this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+            // this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
             this.onClose()
           });
         });
@@ -1352,10 +1351,6 @@ export class EmergencyBillComponent {
             this.dataSource.data.forEach(item => {
               this.BillDetailsArray2.push(this.createBillDetails2(item));
             });
-            // this.BillDetailsArray2.clear();
-            // this.dataSource.data.forEach(item => {
-            //   this.BillDetailsArray2.push(this.createBillDetails1(item));
-            // });
 
             console.log(this.IPBillMyForm.value);
             this._EmergencyService.InsertIPBillingCredit(this.IPBillMyForm.value).subscribe(response => {
@@ -1443,7 +1438,7 @@ export class EmergencyBillComponent {
         paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-        opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdType: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this.accountService.currentUserValue.userId],
         totalAdvanceAmount: [this.selectedAdvanceObj?.AdvTotalAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],

@@ -212,8 +212,7 @@
                                 <!-- i am pass categoryid formcontrolname to doctortype because doctortypeid field is not in payload
                                  but during retrive doctortype id is coming -->
                                 <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
-                                    [formGroup]="requestForm" [value]="registerObj?.categoryId"
-                                    [mode]="autocompleteModeDoctorType"
+                                    [formGroup]="requestForm"  [mode]="autocompleteModeDoctorType"
                                     (selectionChange)="selectChangedoctorType($event)">
                                 </airmid-dropdown>
                             </div>

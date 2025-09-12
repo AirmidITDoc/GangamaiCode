@@ -18,21 +18,7 @@ export class NewConsentMasterComponent {
     myForm: FormGroup;
     isActive: boolean = true;
     vTemplateDesc: any;
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-    };
 
-    onBlur(e: any) {
-        this.vTemplateDesc = e.target.innerHTML;
-        throw new Error('Method not implemented.');
-    }
     constructor(
         public _ConsentMasterService: ConsentMasterService,
         public dialogRef: MatDialogRef<NewSiteDescriptionMasterComponent>,
@@ -47,19 +33,23 @@ export class NewConsentMasterComponent {
     ngOnInit(): void {
         this.myForm = this._ConsentMasterService.createConsentForm();
         this.myForm.markAllAsTouched();
-   
+
         console.log(this.data)
         if ((this.data?.consentId ?? 0) > 0) {
             this.isActive = this.data.isActive
-            this.vTemplateDesc=this.data.consentDesc
+            this.vTemplateDesc = this.data.consentDesc
+            this.myForm.get('consentDesc').setValue(this.vTemplateDesc)
             this.myForm.patchValue(this.data);
             console.log(this.myForm.value)
         }
     }
 
+    onEditorValueChange(content: string) {
+        this.myForm.get('consentDesc')?.setValue(content);
+    }
 
     onSubmit() {
-         if (!this.myForm.invalid) {
+        if (!this.myForm.invalid) {
             console.log(this.myForm.value)
             this._ConsentMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);

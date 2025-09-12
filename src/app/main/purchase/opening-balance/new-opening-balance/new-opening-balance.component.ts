@@ -32,13 +32,13 @@ export class NewOpeningBalanceComponent implements OnInit {
     'BatchNo',
     'ExpDate',
     'BalQty',
-    "PerRate",
-    'UnitMRP',
-    'LandedRate',
     'CGST',
     'SGST',
     'IGST',
     'GST',
+    "PerRate",
+    'UnitMRP',
+    'LandedRate',
     'buttons',
   ];
 

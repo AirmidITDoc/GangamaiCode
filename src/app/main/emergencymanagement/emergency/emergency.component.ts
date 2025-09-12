@@ -366,39 +366,6 @@ export class EmergencyComponent implements OnInit {
     });
   }
 
-
-  // EmergencyCancel(data: any) {
-  //   Swal.fire({
-  //     title: 'Do you want to cancel Emergency?',
-  //     text: "Please provide a reason for cancellation",
-  //     icon: "warning",
-  //     input: 'text',
-  //     inputPlaceholder: 'Enter cancellation reason...',
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, Cancel it!",
-  //     preConfirm: (reason) => {
-  //       if (!reason || reason.trim() === '') {
-  //         Swal.showValidationMessage('Reason is required');
-  //       }
-  //       return reason;
-  //     }
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       let submitData = {
-  //         emgId: data.emgId,
-  //         reason: result.value,
-  //         isCancelledBy: this._loggedService.currentUserValue.userId
-  //       };
-  //       console.log(submitData);
-  //       this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
-  //         this.grid.bindGridData();
-  //       });
-  //     }
-  //   });
-  // }
-
   OnViewReportPdf(element: any) {
     this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
   }
@@ -425,68 +392,6 @@ export class EmergencyComponent implements OnInit {
   }
 
   dataSource = new MatTableDataSource<EmergencyList>();
-  // GetAppointdetail() {
-  //   this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
-  //   this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
-  //   this.VEmgcount = 0;
-  //   this.VOPcount = 0;
-  //   this.VIPcount = 0;
-  //   this.VBillcount = 0;
-  //   //    debugger
-  //   let data =
-  //   {
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "EmgId",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "From_Dt",
-  //         "fieldValue": this.fromDate,
-  //         "opType": "GreaterThanOrEqual"
-  //       },
-  //       {
-  //         "fieldName": "To_Dt",
-  //         "fieldValue": this.toDate,
-  //         "opType": "LessThanOrEqual"
-  //       },
-  //       {
-  //         "fieldName": "FirstName",
-  //         "fieldValue": this.f_name,
-  //         "opType": "StartsWith"
-  //       },
-  //       {
-  //         "fieldName": "LastName",
-  //         "fieldValue": this.l_name,
-  //         "opType": "StartsWith"
-  //       },
-  //       {
-  //         "fieldName": "IsConverted",
-  //         "fieldValue": this.Status,
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "exportType": "JSON",
-  //     "columns": []
-  //   }
-
-  //   console.log(data)
-  //   this._EmergencyService.getEmgList(data).subscribe((response) => {
-  //     this.dataSource.data = response.data;
-  //     if (this.dataSource.data.length > 0) {
-  //       this.VEmgcount = this.dataSource.data.length
-  //       this.dataSource.data.forEach(element => {
-  //         // if (element.mPbillNo == 1 || element.mPbillNo == 2) {
-  //         //   this.VBillcount = this.VBillcount + 1;
-  //         // }
-  //         if (element.convertedIntoAdm > 0) {
-  //           this.VIPcount++;
-  //         }
-  //       });
-  //       console.log(this.dataSource.data)
-  //     }
-  //   });
-  // }
   AllCount:any=0;
   GetAppointdetail() {
     let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";

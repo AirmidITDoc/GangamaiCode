@@ -31,6 +31,8 @@ export class NursingMasterService {
   }
 
   public templateMasterSave(Param: any) {
-        return this._httpClient.PostData("Nursing/NursingTemplateInsert", Param);
-    }
+    if (Param.nursingId) {
+      return this._httpClient.PutData("Nursing/NursingTemplateUpdate/" +Param.nursingId, Param);
+    } else return this._httpClient.PostData("Nursing/NursingTemplateInsert", Param);
+  }
 }
