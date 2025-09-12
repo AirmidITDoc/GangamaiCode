@@ -76,9 +76,10 @@ export class CreateUserComponent implements OnInit {
     { heading: "-", key: "doctorID", sort: true, align: 'left', type: gridColumnTypes.template },
     { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "User Name", key: "userLoginName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Web RoleName", key: "webRoleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Days", key: "days", sort: true, align: 'left', emptySign: 'NA' },
@@ -96,10 +97,11 @@ export class CreateUserComponent implements OnInit {
     sortOrder: 0,
     filters: [
       { fieldName: "UserName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      // { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      // { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      // { fieldName: "storeId", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      // { fieldName: "roleId", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "MobileNo", fieldValue: "0", opType: OperatorComparer.StartsWith },
+      { fieldName: "WebRoleId", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "StoreId", fieldValue: "0", opType: OperatorComparer.Equals },
       // { fieldName: "status", fieldValue: "%", opType: OperatorComparer.StartsWith },
     ]
   }
@@ -124,13 +126,14 @@ export class CreateUserComponent implements OnInit {
   onCardExport(type: string) {
   }
   onCardPage(event: any) {
-    
+
   }
   filterForm(): FormGroup {
     return this._formBuilder.group({
-      UserName: [],
+      UserName: [''],
       FirstName: [''],
       LastName: [''],
+      MobileNo: [''],
       storeId: [],
       roleId: [],
       status: ['']
@@ -145,47 +148,56 @@ export class CreateUserComponent implements OnInit {
       this.myuserform.get('FirstName').setValue("")
     if (event == 'LastName')
       this.myuserform.get('LastName').setValue("")
+    if (event == 'MobileNo')
+      this.myuserform.get('MobileNo').setValue("")
 
     this.onChangeFirst();
   }
-  UserName: any
+  UserName: any;
   fName: any;
   lName: any;
+  mNo: any;
   StoreId = "0";
   RoleId = "0";
   StatusValue = "";
   onChangeFirst() {
     this.UserName = this.myuserform.get('UserName').value + '%'
-    // this.fName = this.myuserform.get('FirstName').value + '%'
-    // this.lName = this.myuserform.get('LastName').value + '%'
+    this.fName = this.myuserform.get('FirstName').value + '%'
+    this.lName = this.myuserform.get('LastName').value + '%'
+    this.mNo = this.myuserform.get('MobileNo').value
+
+    this.RoleId = this.myuserform.get('roleId').value ?? "0";
+    this.StoreId = this.myuserform.get('storeId').value ?? "0";
     this.getfilterdata();
   }
 
   storeChange(value) {
-    if (value.value !== 0)
+    if (value.value !== 0) {
       this.StoreId = value.value
+      this.RoleId = "0"
+    }
     else
       this.StoreId = "0"
-
-    // this.onChangeFirst();
+    this.onChangeFirst();
   }
 
   roleChange(value) {
-    if (value.value !== 0)
+    if (value.value !== 0) {
       this.RoleId = value.value
+      this.StoreId = "0"
+    }
     else
       this.RoleId = "0"
-
-    // this.onChangeFirst();
+    this.onChangeFirst();
   }
 
-  statusChange(value) {
-    const selected = value;
-    this.myuserform.get('status').setValue(selected);
-    this.StatusValue = selected?.value ?? "";
-    // Optionally trigger filtering
-    // this.onChangeFirst();
-  }
+  // statusChange(value) {
+  //   const selected = value;
+  //   this.myuserform.get('status').setValue(selected);
+  //   this.StatusValue = selected?.value ?? "";
+  //   // Optionally trigger filtering
+  //   // this.onChangeFirst();
+  // }
 
   getfilterdata() {
     this.gridConfig = {
@@ -194,10 +206,15 @@ export class CreateUserComponent implements OnInit {
       sortField: "UserId",
       sortOrder: 0,
       filters: [
-        { fieldName: "UserName", fieldValue: this.UserName, opType: OperatorComparer.Contains }
+        { fieldName: "UserName", fieldValue: this.UserName, opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: this.fName, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.lName, opType: OperatorComparer.StartsWith },
+        { fieldName: "MobileNo", fieldValue: this.mNo, opType: OperatorComparer.StartsWith },
+        { fieldName: "WebRoleId", fieldValue: this.RoleId, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: this.StoreId, opType: OperatorComparer.Equals },
       ]
     }
-    
+
     // Update grid based on current view mode
     if (this.viewMode === 'table' && this.grid) {
       this.grid.gridConfig = this.gridConfig;

@@ -71,7 +71,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "AnesthType", key: "anesthTypeId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "Instruction", key: "instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "UserName", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "IsCancelledDate", key: "isCancelledDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
         { heading: "Reasons", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
@@ -138,7 +138,7 @@ export class OTReservationComponent implements OnInit {
         const dialogRef = this._matDialog.open(OtPopupComponent,
             {
                 maxWidth: "80vh",
-                height: '60%',
+                height: '55%',
                 width: '100%',
                 data: contact
             });

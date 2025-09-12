@@ -40,7 +40,7 @@
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                                                [formGroup]="myuserApprovalform"
+                                                [formGroup]="myuserApprovalform" (keypress)="keyPressAlphanumeric($event)"
                                                 [validations]="getValidationMessages().mobileNo" [maxLength]="10">
                                                 <!-- [value]="data.mobileNo"  -->
                                             </airmid-textbox>
@@ -146,7 +146,7 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%">
                                             <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
-                                                [formGroup]="myuserApprovalform"
+                                                [formGroup]="myuserApprovalform" (keypress)="keyPressAlphanumeric($event)"
                                                 [validations]="getValidationMessages().isDateIntervalDays"
                                                 [maxLength]="30">
                                             </airmid-textbox>

@@ -64,7 +64,6 @@ export class NursingMasterComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
     const dialogRef = this._matDialog.open(NursingTemplateComponent,
       {
         maxWidth: "90vw",
@@ -74,7 +73,7 @@ export class NursingMasterComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        that.grid.bindGridData();
+        this.grid.bindGridData();
       }
     });
   }

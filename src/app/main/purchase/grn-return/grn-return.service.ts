@@ -65,7 +65,7 @@ export class GrnReturnService {
   }
   createGRNList() {
     return this._formBuilder.group({
-      SupplierId:['',[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      SupplierId:[''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
     });

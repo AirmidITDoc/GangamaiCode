@@ -88,17 +88,12 @@ export class NewRequestComponent implements OnInit {
       this.vTariffName = this.registerObj.tariffName
       this.vCompanyName = this.registerObj.companyName
 
-      // if (this.registerObj?.otRequestTime) {
-      //   const date = new Date(this.registerObj.otRequestTime);
-
-      //   // Format to HH:mm (24-hour)
-      //   const hours = date.getHours().toString().padStart(2, '0');
-      //   const minutes = date.getMinutes().toString().padStart(2, '0');
-
-      //   const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
-
-      //   this.requestForm.get('otRequestTime')?.setValue(formattedTime);
-      // }
+      if (this.registerObj.opIpType == 0) {
+        this.vSelectedOption = "OP"
+      }
+      else {
+        this.vSelectedOption = "IP"
+      }
 
       if (this.registerObj?.otRequestTime) {
         const date = new Date(this.registerObj.otRequestTime);
@@ -124,6 +119,7 @@ export class NewRequestComponent implements OnInit {
       this.selectChangedoctorType(this.registerObj)
     }
     this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
+    this.requestForm.get("doctorTypeId")?.setValue(this.registerObj.categoryId)
   }
   patientInfoReset() {
     this.requestForm.get('opIpId').setValue('');
@@ -212,8 +208,13 @@ export class NewRequestComponent implements OnInit {
   }
 
   onSubmit() {
-    let opdate = this.datePipe.transform(this.requestForm.get('otRequestDate')?.value,'yyyy-MM-dd');
-    const combinedDateStartTime = `${opdate}T${this.opstartTime}:00`;
+    let opdate = this.datePipe.transform(this.requestForm.get('otRequestDate')?.value, 'yyyy-MM-dd');
+    const time = this.requestForm.get('otRequestTime')?.value;
+    let combinedDateStartTime: string | null = null;
+    if (opdate && time) {
+      combinedDateStartTime = `${opdate}T${time}:00`;
+    }
+    // const combinedDateStartTime = `${opdate}T${this.opstartTime}:00`;
 
     this.requestForm.get('otbookingDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
     this.requestForm.get('opIpId').setValue(this.opIpId);

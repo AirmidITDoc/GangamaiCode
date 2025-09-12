@@ -489,6 +489,14 @@ export class SupplierPaymentStatusComponent implements OnInit {
           this.SelectedList = [];
           this.selection.clear()
           this.getSupplierPayStatusList();
+          this._SupplierPaymentStatusService.SearchFormGroup.patchValue({
+            NetAmount: '',
+            PaidAmount: '',
+            BalanceAmount: ''
+          });
+          this.vNetAmount = 0;
+          this.vPaidAmount = 0;
+          this.vBalanceAmount = 0;
           return;
         }
         this.SelectedList.push(element)
@@ -505,9 +513,12 @@ export class SupplierPaymentStatusComponent implements OnInit {
       if (index >= 0) {
         this.SelectedList.splice(index, 1);
       }
-      this.vNetAmount -= element.netAmount
-      this.vPaidAmount -= element.paidAmount
-      this.vBalanceAmount -= element.balAmount
+      // this.vNetAmount -= element.netAmount
+      // this.vPaidAmount -= element.paidAmount
+      // this.vBalanceAmount -= element.balAmount
+      this.vNetAmount = this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0);
+      this.vPaidAmount = this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0);
+      this.vBalanceAmount = this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0);
     }
     console.log(this.SelectedList)
   }
