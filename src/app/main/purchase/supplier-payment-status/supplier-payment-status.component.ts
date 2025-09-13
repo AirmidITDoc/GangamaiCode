@@ -504,23 +504,37 @@ export class SupplierPaymentStatusComponent implements OnInit {
         this.SelectedList.push(element)
       }
 
-      this.vNetAmount += element.netAmount
-      this.vPaidAmount += element.paidAmount
-      this.vBalanceAmount += element.balAmount
+      // this.vNetAmount += element.netAmount
+      // this.vPaidAmount += element.paidAmount
+      // this.vBalanceAmount += element.balAmount
+      this.vNetAmount = this.roundAmount(this.vNetAmount + element.netAmount);
+      this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.paidAmount);
+      this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balAmount);
     }
     else {
       let index = this.SelectedList.indexOf(element);
       if (index >= 0) {
         this.SelectedList.splice(index, 1);
       }
-      // this.vNetAmount -= element.netAmount
-      // this.vPaidAmount -= element.paidAmount
-      // this.vBalanceAmount -= element.balAmount
-      this.vNetAmount = this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0);
-      this.vPaidAmount = this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0);
-      this.vBalanceAmount = this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0);
+      // this.vNetAmount = this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0);
+      // this.vPaidAmount = this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0);
+      // this.vBalanceAmount = this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0);
+      // 🔹 Recalculate totals with rounding
+      this.vNetAmount = this.roundAmount(
+        this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0)
+      );
+      this.vPaidAmount = this.roundAmount(
+        this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+      );
+      this.vBalanceAmount = this.roundAmount(
+        this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0)
+      );
+
     }
     console.log(this.SelectedList)
+  }
+  roundAmount(value: number, decimals: number = 1): number {
+    return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 }
 

@@ -22,7 +22,6 @@ export class NewReservationComponent implements OnInit {
 
   reservationForm: FormGroup;
   screenFromString = 'Common-form';
-  tOtbookingRequestsForm: FormGroup;
 
   opIpType: boolean = false;
   opIpId: any;
@@ -77,10 +76,6 @@ export class NewReservationComponent implements OnInit {
     this.reservationForm = this._OtReservationService.createReservationForm();
     this.reservationForm.markAllAsTouched();
 
-    this.tOtbookingRequestsForm = this._OtReservationService.tOtbookingRequestsForm();
-
-    this.requestArray.push(this.createRequestsForm());
-
     if ((this.data?.otreservationId) > 0) {
       this.registerObj = this.data
       console.log(this.registerObj)
@@ -109,6 +104,7 @@ export class NewReservationComponent implements OnInit {
       this.reservationForm.patchValue(this.registerObj);
       this.reservationForm.get("anestheticsDr")?.setValue(this.registerObj?.anestheticsDrID)
       this.reservationForm.get("anestheticsDr1")?.setValue(this.registerObj?.anestheticsDrID1)
+      this.reservationForm.get("unBooking")?.setValue(false)
 
     }
 
@@ -140,18 +136,57 @@ export class NewReservationComponent implements OnInit {
       }
     }
 
+    if (this.registerObj?.duration) {
+      const date = new Date(this.registerObj.otRequestTime);
+
+      if (!isNaN(date.getTime())) {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+
+        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+        setTimeout(() => {
+          this.reservationForm.get('duration')?.setValue(formattedTime);
+        });
+      }
+    }
     this.reservationForm.get("this.isCancelledDate")?.setValue('1900-01-01')
-  }
 
-  createRequestsForm(item: any = {}): FormGroup {
-    return this._formBuilder.group({
-      otbookingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otrequestId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]]  // fixed as 1
-    });
-  }
+    /////// calendar code ///////
+    if (this.data) {
+      console.log("CalenderData:", this.data)
 
-  get requestArray(): FormArray {
-    return this.reservationForm.get('tOtbookingRequests') as FormArray;
+      if (this.data?.startTime) {
+        const date = new Date(this.data.startTime);
+        if (!isNaN(date.getTime())) {
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+
+          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+          setTimeout(() => {
+            this.reservationForm.get('opstartTime')?.setValue(formattedTime);
+          });
+        }
+      }
+
+      if (this.data?.endTime) {
+        const date = new Date(this.data.endTime);
+        if (!isNaN(date.getTime())) {
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+
+          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+          setTimeout(() => {
+            this.reservationForm.get('opendTime')?.setValue(formattedTime);
+          });
+        }
+      }
+      this.reservationForm.get('ottableId').setValue(this.data?.otTableId);
+      this.reservationForm.get('duration').setValue(this.data?.duration);
+
+    }
   }
 
   patientInfoReset() {
@@ -159,23 +194,18 @@ export class NewReservationComponent implements OnInit {
     this.reservationForm.get('opIpId').reset();
     this.vRegNo = '';
     this.vPatientName = '';
-    // this.vAdmissionDate = '';
-    // this.vAdmissionTime = '';
     this.vIPDNo = '';
     this.vDoctorName = '';
     this.vTariffName = '';
     this.vCompanyName = '';
-    // this.vRoomName = '';
-    // this.vBedName = '';
     this.vGenderName = '';
     this.vAge = '';
     this.vAgeDay = '';
     this.vAgeMonth = '';
     this.vDepartment = '';
     this.vMobNo = '';
-
-    // this.vDOA = ''
   }
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
 
@@ -235,38 +265,123 @@ export class NewReservationComponent implements OnInit {
 
   opstartTime: any;
   opendTime: any;
-  onChangeTimeStart(event: any) {
-    let time = event.target.value;
-    if (time && time.length >= 5) {
-      time = time.substring(0, 5);
+  optime: any;
+
+  // onChangeTime(event: any) {
+  //   debugger
+  //   const duration = this.reservationForm.get('duration')?.value; // "HH:mm"
+  //   const startTime = this.reservationForm.get('opstartTime')?.value; // "HH:mm"
+
+  //   if (duration && startTime) {
+  //     const [dh, dm] = duration.split(':').map(Number);
+  //     const [sh, sm] = startTime.split(':').map(Number);
+
+  //     // convert everything to minutes
+  //     const startMinutes = sh * 60 + sm;
+  //     const durationMinutes = dh * 60 + dm;
+
+  //     const endMinutes = startMinutes + durationMinutes;
+
+  //     // convert back to HH:mm
+  //     const eh = Math.floor(endMinutes / 60) % 24;
+  //     const em = endMinutes % 60;
+  //     const endTime = `${this.pad(eh)}:${this.pad(em)}`;
+
+  //     this.reservationForm.get('opendTime')?.setValue(endTime);
+  //   }
+  // }
+  onChangeTime(event: any) {
+    debugger
+    const durationHours = parseFloat(this.reservationForm.get('duration')?.value); // e.g. 1.5
+    const startTime = this.reservationForm.get('opstartTime')?.value; // "HH:mm"
+
+    if (durationHours && startTime) {
+      const [sh, sm] = startTime.split(':').map(Number);
+
+      const startMinutes = sh * 60 + sm;
+      const durationMinutes = Math.round(durationHours * 60);
+
+      const endMinutes = startMinutes + durationMinutes;
+      const eh = Math.floor(endMinutes / 60) % 24;
+      const em = endMinutes % 60;
+
+      const endTime = `${this.pad(eh)}:${this.pad(em)}`;
+      this.reservationForm.get('opendTime')?.setValue(endTime);
     }
-    console.log("Time changed:", time); // "11:51"    
-    this.opstartTime = time
-    this.reservationForm.get('opstartTime')?.setValue(time, { emitEvent: false });
+  }
+
+  onChangeTimeStart(event: any) {
+    const duration = this.reservationForm.get('duration')?.value;
+    const startTime = this.reservationForm.get('opstartTime')?.value;
+
+    if (duration) {
+      this.onChangeTime(null); // reuse logic for calculating end time
+    } else {
+      const endTime = this.reservationForm.get('opendTime')?.value;
+      if (endTime) {
+        this.calculateDuration(startTime, endTime);
+      }
+    }
   }
 
   onChangeTimeEnd(event: any) {
-    let time = event.target.value;
-    if (time && time.length >= 5) {
-      time = time.substring(0, 5);
+    const startTime = this.reservationForm.get('opstartTime')?.value;
+    const endTime = this.reservationForm.get('opendTime')?.value;
+
+    if (startTime && endTime) {
+      this.calculateDuration(startTime, endTime);
     }
-    console.log("Time changed:", time); // "11:51"
-    this.opendTime = time
-    this.reservationForm.get('opendTime')?.setValue(time, { emitEvent: false });
   }
 
+  calculateDuration(startTime: string, endTime: string) {
+    debugger
+    const [sh, sm] = startTime.split(':').map(Number);
+    const [eh, em] = endTime.split(':').map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    let durationMinutes = endMinutes - startMinutes;
+    if (durationMinutes < 0) durationMinutes += 24 * 60; // handle next-day wrap
+
+    const dh = Math.floor(durationMinutes / 60);
+    const dm = durationMinutes % 60;
+
+    const duration = `${this.pad(dh)}:${this.pad(dm)}`;
+    this.reservationForm.get('duration')?.setValue(duration);
+  }
+
+  pad(num: number): string {
+    return num.toString().padStart(2, '0');
+  }
+
+
   onSubmit() {
-    let opdate = this.datePipe.transform(this.reservationForm.get('opdate')?.value,'yyyy-MM-dd');
-    const combinedDateStartTime = `${opdate}T${this.opstartTime}:00`;
-    const combinedDateEndTime = `${opdate}T${this.opendTime}:00`;
+    let opdate = this.datePipe.transform(this.reservationForm.get('opdate')?.value, 'yyyy-MM-dd');
+    const durationtime = this.reservationForm.get('duration')?.value;
+    let combineddurationTime: string | null = null;
+    if (opdate && durationtime) {
+      combineddurationTime = durationtime;
+    }
+    const starttime = this.reservationForm.get('opstartTime')?.value;
+    let combinedDateStartTime: string | null = null;
+    if (opdate && starttime) {
+      combinedDateStartTime = `${opdate}T${starttime}:00`;
+    }
+    const endtime = this.reservationForm.get('opendTime')?.value;
+    let combinedDateEndTime: string | null = null;
+    if (opdate && endtime) {
+      combinedDateEndTime = `${opdate}T${endtime}:00`;
+    }
 
     this.reservationForm.get('reservationDate').setValue(this.datePipe.transform(this.dateTimeObj?.date, 'yyyy-MM-dd'));
     this.reservationForm.get('reservationTime').setValue(this.dateTimeObj?.time);
-    this.opstartTime = this.reservationForm.get('opstartTime')?.setValue(combinedDateStartTime);
-    this.opendTime = this.reservationForm.get('opendTime')?.setValue(combinedDateEndTime);
+    this.reservationForm.get('duration')?.setValue(combineddurationTime);
+    this.reservationForm.get('opstartTime')?.setValue(combinedDateStartTime);
+    this.reservationForm.get('opendTime')?.setValue(combinedDateEndTime);
     this.reservationForm.get('opdate').setValue(this.datePipe.transform(this.reservationForm.get('opdate').value, 'yyyy-MM-dd'));
-    this.requestArray.at(0).get('otbookingId')?.setValue(Number(this.votbookingId ?? 0));
     this.reservationForm.get('opIpId').setValue(this.opIpId);
+    this.reservationForm.get('otrequestId').setValue(Number(this.votbookingId ?? 0));
 
     if (!this.reservationForm.invalid) {
       if (this.reservationForm.get('opIpType').value == 'IP') { this.reservationForm.get('opIpType').setValue(true) }
@@ -324,6 +439,20 @@ export class NewReservationComponent implements OnInit {
           this.vSelectedOption = "IP"
         }
         this.votbookingId = selectedData.otBookingId
+
+        if (selectedData?.otRequestTime) {
+          const date = new Date(selectedData.otRequestTime);
+          if (!isNaN(date.getTime())) {
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+
+            const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+            setTimeout(() => {
+              this.reservationForm.get('opstartTime')?.setValue(formattedTime);
+            });
+          }
+        }
 
         this.reservationForm.patchValue({
           surgeonId: selectedData.surgeonId,
@@ -415,6 +544,25 @@ export class NewReservationComponent implements OnInit {
     this.reservationForm.reset();
     this.dialogRef.close(val);
   }
+
+  onEnterKey(event: KeyboardEvent) {
+    event.preventDefault();
+
+    const form = (event.target as HTMLElement).closest('form');
+    if (!form) return;
+
+    const focusable = Array.from(
+      form.querySelectorAll<HTMLElement>(
+        'input, select, textarea, button, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter(el => !el.hasAttribute('disabled') && !el.hasAttribute('readonly'));
+
+    const index = focusable.indexOf(event.target as HTMLElement);
+    if (index > -1 && index < focusable.length - 1) {
+      focusable[index + 1].focus();
+    }
+  }
+
 }
 
 
