@@ -196,6 +196,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
         this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
             this.gstValues = response.map(item => Number(item.Value))
+            //this.gstValues = response
         ))
     }
     //Item details selectedObj
@@ -257,7 +258,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.userFormGroup.patchValue({
                     Contact: response?.contactPerson || '',
                     Mobile: response?.mobile || 0,
-                    SupplierId: response?.supplierId || 0
+                    SupplierId: response?.supplierId || 0,
+                    SupplierName:response?.supplierName || '',
+                    SupplierAddress:response?.address || ''
                 })
             }
         })

@@ -42,10 +42,9 @@
             <ng-template #iconMlc let-element>
                 <div>
 
-                    <button mat-icon-button *ngIf="element.isMLC==1; else noMLC" matTooltip="IsMLC"
+                    <button mat-icon-button *ngIf="element.isMLC==1 && element.isBillGenerated!=1; else noMLC" matTooltip="IsMLC"
                         (click)="NewMLc(element)">
-                        <mat-icon>edit</mat-icon>
-
+                        <mat-icon>edit</mat-icon> 
                     </button>
                     <ng-template #noMLC>
                         <span>--</span>

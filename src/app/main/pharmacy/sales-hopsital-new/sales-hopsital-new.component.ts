@@ -169,8 +169,7 @@ export class SalesHospitalNewComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private _loggedService: AuthenticationService,
     public _RequestforlabtestService: RequestforlabtestService,
-    public toastr: ToastrService,   
-   public _AppointmentlistService: AppointmentlistService,
+    public toastr: ToastrService,    
     private _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -443,6 +442,9 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('externalPatientName').clearValidators();
       this.ItemSubform.get('extMobileNo').updateValueAndValidity();
       this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+      this.ItemSubform.get('extMobileNo').reset('');
+      this.ItemSubform.get('externalPatientName').reset('');
+      this.ItemSubform.get('doctorName').reset('');
       this.ItemSubform.get('regId').setValue('');
       this.saleSelectedDatasource.data = [];
     } else if (event.value == '1') {
@@ -453,6 +455,9 @@ export class SalesHospitalNewComponent implements OnInit {
       this.ItemSubform.get('externalPatientName').clearValidators();
       this.ItemSubform.get('extMobileNo').updateValueAndValidity();
       this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+      this.ItemSubform.get('extMobileNo').reset('');
+      this.ItemSubform.get('externalPatientName').reset('');
+      this.ItemSubform.get('doctorName').reset('');
       this.ItemSubform.get('regId').setValue('');
       this.saleSelectedDatasource.data = [];
     } else {
@@ -516,9 +521,7 @@ export class SalesHospitalNewComponent implements OnInit {
       }
        this.ItemFormreset();
   }
-  onPatientChange(event: any): void {
-    console.log(event);
-  }
+
   onItemChange(event: SalesItemModel): void {
     this.getBatch(event.itemId, event.storeId);
     this.m_getBalAvaListStore(event.itemId)
@@ -972,7 +975,9 @@ export class SalesHospitalNewComponent implements OnInit {
       return;
     }
     if (this.ItemSubform.get('opIpType').value == '2') {
-      if (formValue.externalPatientName == '' || ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' || formValue.extMobileNo == '') {
+      if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' || 
+        ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' || 
+        ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '' )) {
         this.toastr.warning('Please select Customer Detail', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -987,6 +992,7 @@ export class SalesHospitalNewComponent implements OnInit {
         return;
       }
     }
+    let opIpType = formValue?.opIpType || 0
     this.PharmaSalesForm.get('sales.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesForm.get('sales.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
     this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType ?? 0)
@@ -1006,15 +1012,15 @@ export class SalesHospitalNewComponent implements OnInit {
  
 
     if (formValue.opIpType == 2) {
-      this.PharmaSalesForm.get('sales.externalPatientName').setValue(formValue?.externalPatientName ?? '')
-      this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || 0)
+      this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
+      this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
       this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress ?? '')
-      this.PharmaSalesForm.get('sales.extMobileNo').setValue(formValue?.extMobileNo ?? '')
+      this.PharmaSalesForm.get('sales.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '' )
       this.PharmaSalesForm.get('sales.regId').clearValidators();
       this.PharmaSalesForm.get('sales.regId').updateValueAndValidity();
       this.PharmaSalesForm.get('sales.regId').setValue(0);
       this.PharmaSalesForm.get('sales.opIpId').clearValidators();
-      this.PharmaSalesForm.get('sales.opIpId').updateValueAndValidity();
+      this.PharmaSalesForm.get('sales.opIpId').updateValueAndValidity(); 
     }
 
     if (this.PharmaSalesForm.valid) {
@@ -1034,7 +1040,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
-          this.OnSalesprint(this.OP_IP_Id)
+          console.log(response)
+         this.OnSalesprint(response.salesId,opIpType)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
@@ -1044,7 +1051,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
-          this.OnSalesprint(this.OP_IP_Id)
+         this.OnSalesprint(response.salesId,opIpType)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
@@ -1075,7 +1082,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.PharmaSalesForm.value)
             this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe(response => {
-              this.OnSalesprint(this.OP_IP_Id)
+              this.OnSalesprint(response.salesId,opIpType)
               this.onClose()
             });
           }
@@ -1284,14 +1291,14 @@ export class SalesHospitalNewComponent implements OnInit {
       Swal.fire('Please enter valid table data.');
       return;
     }
-    if (this.ItemSubform.get('opIpType').value == '2') {
-      if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
-        this.toastr.warning('Please select Patient Detail', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    } 
+    // if (this.ItemSubform.get('opIpType').value == '2') {
+    //   if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
+    //     this.toastr.warning('Please select Patient Detail', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // } 
     debugger
     this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
     this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm')) 
@@ -2064,16 +2071,16 @@ vExpDate:any;
   }
  
 
-  OnSalesprint(contact) {
-    setTimeout(() => {
+  OnSalesprint(SalesID,OP_IP_Type) {
+    setTimeout(() => { 
       let param = {
         "searchFields": [
-          { "fieldName": "OP_IP_ID", "fieldValue": String(contact.advanceDetailId), "opType": "13" },
-          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeID), "opType": "13" }
+          { "fieldName": "SalesID", "fieldValue": String(SalesID), "opType": "13" },
+          { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
         ],
-        "mode": "IPSalesBillReport"
+        "mode": "SalesBill"
       } 
-      this._AppointmentlistService.getReportView(param).subscribe(res => { 
+      this._salesService.getReportView(param).subscribe(res => { 
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",
@@ -2081,69 +2088,49 @@ vExpDate:any;
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "IPSalesBillReport" + " " + "Viewer"
+               title: "Sales Bill" + " " + "Viewer"
             }
           });
         matDialog.afterClosed().subscribe(result => {
         });
       });
     }, 100);
-  }
-
-    checkextpatent(event){
-    if(event == true){
-   this.chkExternalPatient = true   
-    }else{
-    this.chkExternalPatient = false
-    }
   } 
-  chkExternalPatient:boolean=false;
-  getSelectedObjextPat(event){ 
-    debugger 
-    this.ItemSubform.value 
-   if(event){
-    this.ItemSubform.patchValue({
-      extMobileNo:event?.extMobileNo,
-      //externalPatientName:event?.patientName ,
-      doctorName:event?.doctorName ?? '' 
-    }) 
-    this.PatientName = event?.patientName
-    this.ItemSubform.value 
-    this.chkExternalPatient = false
-    this.getExtDoctorName(false)
-
-      const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+  getSelectedObjextMobile(event){ 
+    debugger  
+   if(event){ 
+    this.ItemSubform.get('externalPatientName').setValue(event)
+     this.ItemSubform.get('doctorName').setValue(event) 
+   }
+   this.PatientName = event.patientName
+       const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+            if (extAddressNameElement) {
+                extAddressNameElement.focus();
+            } 
+  }  
+  getSelectedObjextPatient(event: any): void {
+     debugger  
+   if(event){ 
+    this.ItemSubform.get('extMobileNo').setValue(event)
+     this.ItemSubform.get('doctorName').setValue(event) 
+   }
+   this.PatientName = event.patientName
+       const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+            if (extAddressNameElement) {
+                extAddressNameElement.focus();
+            } 
+  }
+    getSelectedObjExtDocName(event){ 
+      debugger  
+  //  if(event){ 
+  //   this.ItemSubform.get('extMobileNo').setValue(event)
+  //    this.ItemSubform.get('doctorName').setValue(event) 
+  //  }
+       const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
             if (extAddressNameElement) {
                 extAddressNameElement.focus();
             }
-   } 
-  }  
-    filtergetDocName:any;
-    noOptionFoundDoc:any;
-    isExtDocSelected:boolean=false;
-    getExtDoctorName(obj) {
-      debugger   
-        this._salesService.getexternalDoctorList(this.ItemSubform.get('doctorName').value).subscribe(data => {
-            this.filtergetDocName = data; 
-              console.log(data) 
-            if (this.filtergetDocName.length == 0) {
-                this.noOptionFoundDoc = true;
-            } else {
-                this.noOptionFoundDoc = false;
-            }
-
-        if(obj != true){
-         this.ItemSubform.get('doctorName').setValue(this.filtergetDocName[0]) 
-         }
-        }); 
-    }  
-
-        getOptionTextDocname(option) {
-        return option && option.doctorName ? option.doctorName : '';
-    }
-    SelectedDocName(Obj){
-      console.log(Obj)
-    } 
+  } 
 } 
 
 export class IndentList {

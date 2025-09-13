@@ -46,12 +46,12 @@
       <ng-container matColumnDef="Action" sticky="end">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Action</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-          <button mat-icon-button matTooltip="Add Service" (dblclick)="AddList(contact)" *ngIf="!contact.isStatus">
+          <button mat-icon-button matTooltip="Add Service" (click)="AddList(contact)" *ngIf="!contact.isStatus">
             <mat-icon color="warn">add</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Cancel Service" *ngIf="!contact.isStatus">
+          <!-- <button mat-icon-button matTooltip="Cancel Service" *ngIf="!contact.isStatus">
             <mat-icon color="warn">close</mat-icon>
-          </button>
+          </button> -->
         </mat-cell>
       </ng-container>
 
@@ -418,7 +418,7 @@
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Advance Amt : </span>
-                    <span class="net-amt-value">{{ TotalAdvanceAmt | currency : 'INR' }}</span>
+                    <span class="net-amt-value">{{ checkAdvBalAmt | currency : 'INR' }}</span>
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Advance Bal Amt : </span>

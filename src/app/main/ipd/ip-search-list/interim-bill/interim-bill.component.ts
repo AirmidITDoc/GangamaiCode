@@ -426,17 +426,17 @@ export class InterimBillComponent implements OnInit {
         "smsOutGoingID": 0
       }
     }
-    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-      if (response) {
-        this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
-        });
-      } else {
-        this.toastr.error('API Error!', 'Error WhatsApp!', {
-          toastClass: 'tostr-tost custom-toast-error',
-        });
-      }
-    });
+    // this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+    //   if (response) {
+    //     this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
+    //       toastClass: 'tostr-tost custom-toast-success',
+    //     });
+    //   } else {
+    //     this.toastr.error('API Error!', 'Error WhatsApp!', {
+    //       toastClass: 'tostr-tost custom-toast-error',
+    //     });
+    //   }
+    // });
   }
   }  
   viewgetInterimBillReportPdf(billNo) {
