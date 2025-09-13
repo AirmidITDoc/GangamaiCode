@@ -15,41 +15,41 @@ import Swal from 'sweetalert2';
 })
 export class BillDateUpdateComponent implements OnInit {
 
-  dateTimeObj:any;
-  BillNo:any;
-  AdvanceDetailId:any;
-  RefundId:any;
-  SalesId:any;
-  PaymentId:any;
+  dateTimeObj: any;
+  BillNo: any;
+  AdvanceDetailId: any;
+  RefundId: any;
+  SalesId: any;
+  PaymentId: any;
   screenFromString = 'billform-form';
 
   constructor(
-    public _CancellationService:CancellationService,
-    public datePipe: DatePipe, 
+    public _CancellationService: CancellationService,
+    public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    public dialogRef: MatDialogRef<BillDateUpdateComponent>, 
+    public dialogRef: MatDialogRef<BillDateUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit(): void {
     if (this.data) {
       this.BillNo = this.data.billNo;
-      this.AdvanceDetailId=this.data.advanceDetailID
-      this.RefundId=this.data.refundId
-      this.SalesId=this.data.salesId
-      this.PaymentId=this.data.paymentId
-      console.log(this.BillNo) 
-      console.log(this.AdvanceDetailId) 
-      console.log(this.RefundId) 
-      console.log(this.SalesId) 
+      this.AdvanceDetailId = this.data.advanceDetailID
+      this.RefundId = this.data.refundId
+      this.SalesId = this.data.salesId
+      this.PaymentId = this.data.paymentId
+      console.log(this.BillNo)
+      console.log(this.AdvanceDetailId)
+      console.log(this.RefundId)
+      console.log(this.SalesId)
       console.log(this.PaymentId)
     }
   }
   getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj; 
+    this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)
-  } 
+  }
   BillDate() {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
@@ -74,19 +74,21 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data);
           this._CancellationService.getDateTimeChangeBill(data).subscribe(response => {
-                    });
+            this._matDialog.closeAll();
+          });
 
         } else if (this.AdvanceDetailId) {
           var data1 = {
-            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"), 
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "time": formattedDate + this.dateTimeObj.time,
             "advanceDetailId": this.AdvanceDetailId
           }
           console.log(data1);
           this._CancellationService.getDateTimeChangeAdvanceDetId(data1).subscribe(response => {
-           });
+            this._matDialog.closeAll();
+          });
 
-        } else if(this.RefundId){
+        } else if (this.RefundId) {
           var data2 = {
             "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "refundTime": formattedDate + this.dateTimeObj.time,
@@ -94,9 +96,10 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data2);
           this._CancellationService.getDateTimeChangeRefundId(data2).subscribe(response => {
-           });
+            this._matDialog.closeAll();
+          });
 
-        }else if(this.SalesId){
+        } else if (this.SalesId) {
           var data3 = {
             "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "time": formattedDate + this.dateTimeObj.time,
@@ -104,9 +107,10 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data3);
           this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            this._matDialog.closeAll();
           });
 
-        }else if(this.PaymentId){
+        } else if (this.PaymentId) {
           var data4 = {
             "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "paymentTime": formattedDate + this.dateTimeObj.time,
@@ -114,13 +118,15 @@ export class BillDateUpdateComponent implements OnInit {
           }
           console.log(data4);
           this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
-           });
+            this._matDialog.closeAll();
+          });
         }
 
       }
     });
+
   }
-  onClose(){
-    this._matDialog.closeAll(); 
+  onClose() {
+    this._matDialog.closeAll();
   }
 }

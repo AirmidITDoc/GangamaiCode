@@ -16,17 +16,16 @@
                 </mat-toolbar> -->
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <div class="info-badge-top p-12 border-bottom" fxLayout="row"
-                        fxLayoutAlign="space-between" flex>
+                    <div class="info-badge-top p-12 border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <!-- <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                 <mat-icon class="pill orange s-16">circle</mat-icon>
                                 <span class="orange-fg"> OPD</span>
                             </div>
                             <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                 <mat-icon class="pill green s-16">circle</mat-icon>
                                 <span class="green-fg">IPD</span>
-                            </div>
+                            </div> -->
 
                             <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                                 <mat-icon class="pill blue-600 s-16">circle</mat-icon>
@@ -44,6 +43,9 @@
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.opD_IPD_Type=='0'" matTooltip="OPD"
                                 class="pill orange-600 s-16">circle</mat-icon>
+
+                            <!-- <mat-icon *ngIf="element.opD_IPD_Type!=='0'" matTooltip="IPD"
+                                class="pill green-600 s-16">circle</mat-icon> -->
                         </div>
                     </ng-template>
 
@@ -73,16 +75,16 @@
 
                     <ng-template #actionsTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.opD_IPD_Type=='1'" matTooltip="OPD"
+                            <mat-icon *ngIf="element.opipdType=='1'" matTooltip="IPD"
                                 class="pill green-600 s-16">circle</mat-icon>
                         </div>
                     </ng-template>
 
                     <ng-template #ColorCodeCancelIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="Cancelled"
+                            <mat-icon *ngIf="element.isCancelled=='0'" matTooltip="NotCancelled"
                                 class="pill blue-600 s-16">circle</mat-icon>
-                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="NotCancelled"
+                            <mat-icon *ngIf="element.isCancelled=='1'" matTooltip="Cancelled"
                                 class="pill red-600 s-16">circle
                             </mat-icon>
                         </div>
@@ -105,17 +107,18 @@
                     <ng-template #patientTypeId let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                                <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
-                                </mat-icon>
-                                
-                                <mat-icon *ngIf="!element.PatientTypeId=='1'" matTooltip="Patient Category other">business
-                                </mat-icon>
+                            <mat-icon *ngIf="element.PatientTypeId=='1'" matTooltip="Patient Category Self">account_box
+                            </mat-icon>
+
+                            <mat-icon *ngIf="!element.PatientTypeId=='1'" matTooltip="Patient Category other">business
+                            </mat-icon>
                         </div>
                     </ng-template>
 
                     <ng-template #RefundAmount let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon title="Refund" *ngIf="!element.RefundAmount==0" [disabled]="element.disabled" class="disabled-icon">
+                            <mat-icon title="Refund" *ngIf="!element.RefundAmount==0" [disabled]="element.disabled"
+                                class="disabled-icon">
                                 redo</mat-icon>
                         </div>
                     </ng-template>
@@ -171,15 +174,27 @@
 
                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                     <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
-                                    (change)="onRadioChange($event)">
-                                        <mat-label>Type : </mat-label>
+                                        (change)="onRadioChange($event)">
+                                        <mat-label style="color: rgb(4, 47, 78);font-weight: bold;font-size: large;">Type : </mat-label>
                                         <div>
-                                            <mat-radio-button value="0" style="margin-bottom:10px;">
-                                                OPD
-                                            </mat-radio-button>
-                                            <mat-radio-button value="1">
-                                                IPD
-                                            </mat-radio-button>
+
+                                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill orange s-16">circle</mat-icon>
+                                                <!-- <span class="orange-fg"> OPD</span> --> <mat-radio-button value="0"
+                                                    style="margin-bottom:10px;">
+                                                    OPD
+                                                </mat-radio-button>
+                                            </div>
+                                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center"
+                                                class="gap-4">
+                                                <mat-icon class="pill green s-16">circle</mat-icon>
+                                                <!-- <span class="green-fg">IPD</span> -->
+                                                <mat-radio-button value="1">
+                                                    IPD
+                                                </mat-radio-button>
+                                            </div>
+
                                         </div>
                                     </mat-radio-group>
                                 </div>
@@ -369,7 +384,7 @@
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         (input)="onChangeRefundAd()" formControlName="FirstName" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                         (click)=" ClearfilterRefundAd('FirstName')">
+                                        (click)=" ClearfilterRefundAd('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>

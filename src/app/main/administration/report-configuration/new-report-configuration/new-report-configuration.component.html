@@ -219,8 +219,29 @@
                             </airmid-textbox>
                             <!-- [value]="data?.reportSpname"  -->
                         </div>
+
+                          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>ReportPageOrientation</mat-label>
+                                <mat-select placeholder="reportPageOrientation" formControlName="reportPageOrientation" name="reportPageOrientation">
+                                    <mat-option *ngFor="let i of reportPageOrientation" [value]="i">{{
+                                        i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>ReportPageSize</mat-label>
+                                <mat-select placeholder="reportPageSize" formControlName="reportPageSize" name="reportPageSize">
+                                    <mat-option *ngFor="let i of reportPageSize" [value]="i">{{
+                                        i}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
                     </div>
-                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                    <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>ReportPageOrientation</mat-label>
@@ -240,7 +261,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
 
