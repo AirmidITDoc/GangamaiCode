@@ -1,4 +1,4 @@
-<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar dynamicTableHeight>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -109,10 +109,10 @@
 
             </div>
             <div class="modal-card-container h-100-p">
-                <div style="width: 100%;" fxLayoutGap="10px">
+                <div style="width: 100%;" class="h-100-p" fxLayoutGap="10px">
 
-                    <div class="airmid-table-container py-12" fxFlex="70%">
-                        <mat-table #table class="airmid-table table3 max-h-400" matSort
+                    <div class="airmid-table-container py-12 h-100-p" fxLayout="column" fxFlex="70%">
+                        <mat-table #table class="airmid-table table3 h-100-p" matSort
                             [dataSource]="dsNewIssueItemList" [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="ItemId">
@@ -233,8 +233,8 @@
                             </mat-footer-row>
                         </mat-table>
                     </div>
-                    <div class="airmid-table-container py-12" fxFlex="30%">
-                        <mat-table class="airmid-table table3 max-h-400" matSort [dataSource]="dsSelectedIndentItemList"
+                    <div class="airmid-table-container py-12 h-100-p" fxLayout="column" fxFlex="30%">
+                        <mat-table class="airmid-table table3 h-100-p" matSort [dataSource]="dsSelectedIndentItemList"
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
                             <ng-container matColumnDef="ItemName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">

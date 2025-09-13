@@ -54,6 +54,7 @@ export class IssueToDepartmentComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     // @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
     @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
+    @ViewChild('statusTable2') statusTable2!: TemplateRef<any>;
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
@@ -70,7 +71,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
     allcolumns = [
-        { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "Status", key: "isAccepted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 65 },
 
         // { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -116,7 +117,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                //   { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -136,6 +137,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.isShowDetailTable = true;
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
+            this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.statusTable2;
             this.grid1.bindGridData();
 
 
