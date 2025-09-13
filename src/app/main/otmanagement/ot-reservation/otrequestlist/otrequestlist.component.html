@@ -25,8 +25,14 @@
                         <airmid-datepicker [formGroup]="_otreservationService.myformSearch" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[3].fieldValue"
-                            [(toValue)]="gridConfig.filters[4].fieldValue" (dateChange)="getfilterdata()">
+                            [(toValue)]="gridConfig.filters[4].fieldValue">
                         </airmid-datepicker>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary" color="accent" (click)="getfilterdata()">
+                            <mat-icon>search</mat-icon>
+                        </button>
                     </div>
 
                 </div>
@@ -49,9 +55,11 @@
                         class="pill blue-600 s-16">circle</mat-icon>
                 </div>
             </ng-template>
-            <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowFilter="false" :ShowButtons="false"
-                (onSelectRow)="GetRecord($event)">
+            <div dynamicTableHeight>
+                <airmid-table [gridConfig]="gridConfig" class="content" #grid :ShowFilter="false" :ShowButtons="false"
+                    (onSelectRow)="GetRecord($event)">
 
-            </airmid-table>
+                </airmid-table>
+            </div>
         </div>
     </div>

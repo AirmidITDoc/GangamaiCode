@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -79,6 +79,7 @@ export class NewGRNReturnComponent implements OnInit {
   vRoundingAmt: any;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
+vGSTTpe: any;
 
   dsGrnItemList = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
@@ -98,11 +99,14 @@ export class NewGRNReturnComponent implements OnInit {
     public toastr: ToastrService,
     private commonService: PrintserviceService,
     public _formbuilder: UntypedFormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
 
+    this.vGSTTpe = 'GST Return';
+    console.log("GRN Return:",this.data)
     // this.getStoreList();    
     this.GrnReturnForm = this.CreateGrnReturnInsertForm();
     this.grnReturnDetArray.push(this.createGrnReturnDetInsert());
@@ -138,7 +142,7 @@ export class NewGRNReturnComponent implements OnInit {
         "isVerified": [false],
         "isClosed": [false],
         "isCancelled": [false],
-        "grnType": ['string'],
+        "grnType": ['string'], //this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value
         "isGrnTypeFlag": [true],
         "tGrnreturnDetails": this._formbuilder.array([]),
       }),
@@ -627,6 +631,7 @@ export class NewGRNReturnComponent implements OnInit {
       this.GrnReturnForm.get('grnReturn.totalVatAmount').setValue(this.vFinalVatAmount)
       this.GrnReturnForm.get('grnReturn.netAmount').setValue(this.vFinalNetAmount)
       this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value)
+    // this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
     if (!this.GrnReturnForm.invalid) {
       if ((!this.dsGrnItemList.data.length)) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {

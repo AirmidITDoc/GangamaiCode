@@ -139,7 +139,7 @@ export class GRNReturnComponent implements OnInit {
     },
     { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
@@ -236,7 +236,7 @@ export class GRNReturnComponent implements OnInit {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
         { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
@@ -297,12 +297,13 @@ export class GRNReturnComponent implements OnInit {
     this.onChangeFirst();
   }
 
-  getNewGRNRet() {
+  getNewGRNRet(row?:any) {
     const dialogRef = this._matDialog.open(NewGRNReturnComponent,
       {
         maxWidth: "95vw",
         maxHeight: '100vh',
         width: '90%',
+        data:row ?? ''
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -310,12 +311,13 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
-  newGRNRetunr() {
+  newGRNRetunr(row?:any) {
     const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
       {
         maxWidth: "95vw",
         maxHeight: '100vh',
         width: '90%',
+        data:row ?? ''
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
