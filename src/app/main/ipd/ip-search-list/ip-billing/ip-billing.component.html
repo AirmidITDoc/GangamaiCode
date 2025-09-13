@@ -638,9 +638,9 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1950"
+                        <mat-header-row class="accent min-width-1950 h-40"
                           *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns" class="min-width-1950"
+                        <mat-row *matRowDef="let contact; columns: displayedColumns" class="min-width-1950 h-32"
                           [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
                           [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']"
@@ -765,15 +765,15 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1100"
+                        <mat-header-row class="accent min-width-1100 h-40"
                           *matHeaderRowDef="PackageBillColumns; sticky: true"></mat-header-row>
 
-                        <mat-row class="min-width-1100" *matRowDef="let contact; columns: PackageBillColumns"
+                        <mat-row class="min-width-1100 h-32" *matRowDef="let contact; columns: PackageBillColumns"
                           [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
 
-                        <mat-footer-row *matFooterRowDef="['loading']"
+                        <mat-footer-row *matFooterRowDef="['loading']" class="h-32"
                           [ngClass]="{ hide: PackageBillColumns != null }"></mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
+                        <mat-footer-row *matFooterRowDef="['noData']" class="h-32"
                           [ngClass]="{ hide: !(PackageDatasource != null && PackageDatasource.data.length == 0) }"></mat-footer-row>
                       </mat-table>
                     </div>
