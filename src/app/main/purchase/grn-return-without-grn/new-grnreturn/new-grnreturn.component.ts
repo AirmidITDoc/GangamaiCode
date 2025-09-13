@@ -149,19 +149,19 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
-    // let inputDate = element.ExpDate;
-    // let parts = inputDate.split('-');
-    // let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-    // let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
-    let ExpDate = null;
+    let inputDate = element.ExpDate;
+    let parts = inputDate.split('-');
+    let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
+    let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
+    // let ExpDate = null;
 
-    if (element.ExpDate) {
-      let parts = element.ExpDate.split('-');
-      if (parts.length === 3) {
-        ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-      }
-    }
-    let totalQty = (parseFloat(element.Qty || 0) * parseFloat(element.ConversionFactor || 0));
+    // if (element.ExpDate) {
+    //   let parts = element.ExpDate.split('-');
+    //   if (parts.length === 3) {
+    //     ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
+    //   }
+    // }
+    // let totalQty = (parseFloat(element.Qty || 0) * parseFloat(element.ConversionFactor || 0));
 
     return this._formbuilder.group({
       grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
