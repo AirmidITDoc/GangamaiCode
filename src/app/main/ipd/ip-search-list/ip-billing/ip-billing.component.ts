@@ -456,11 +456,11 @@ export class IPBillingComponent implements OnInit {
     createBillForm() {
         this.IpbillFooterform = this.formBuilder.group({
             AdminPer: ['', [Validators.max(100)]],
-            AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-            totaldiscPer: [0, [Validators.min(0), Validators.max(100),]],
-            totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            AdminAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totaldiscPer: [0, [Validators.min(0), Validators.max(100)]],
+            totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-            FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             CashCounterID: [4, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             Admincheck: [''],
@@ -469,7 +469,7 @@ export class IPBillingComponent implements OnInit {
             ChargeDate: [new Date()],
             BillType: ['1', this._FormvalidationserviceService.onlyNumberValidator()],
             EditDoctor: [''],
-            TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
 
         });
     }
@@ -480,14 +480,14 @@ export class IPBillingComponent implements OnInit {
             tDrbill: this.formBuilder.group({
                 drbno: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 opdIpdId: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-                totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-                concessionAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                paidAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
                 opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                totalAdvanceAmount: [this.TotalAdvanceAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAdvanceAmount: [this.TotalAdvanceAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 advanceUsedAmount: [0],
                 addedBy: [this.accountService.currentUserValue.userId],
                 billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -501,8 +501,8 @@ export class IPBillingComponent implements OnInit {
                 interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 companyRefNo: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
                 concessionAuthorizationName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                taxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                taxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+                taxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                taxAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
             }),
             // IP bill details in array
             tdrBillDet: this.formBuilder.array([]),
@@ -1262,7 +1262,7 @@ export class IPBillingComponent implements OnInit {
                         this._IpSearchListService.InsertIPBilling(this.IPBillMyForm.value).subscribe(response => {
                             this._matDialog.closeAll();
                             this.viewgetBillReportPdf(response);
-                            this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
+                           // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
                         });
                     }
                 });

@@ -104,6 +104,8 @@ export class GoodReceiptnoteService {
       PaymentDate: [new Date()],
       GRNType:[true], 
       PaymentType:[false],
+      SupplierName:[''], 
+      SupplierAddress:[''],
       StoreId:[this.accountService.currentUserValue.user.storeId,
         [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
     });

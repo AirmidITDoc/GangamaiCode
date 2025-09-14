@@ -41,7 +41,7 @@ export class OtrequestlistComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getfilterdata()
+    // this.getfilterdata()
   }
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
@@ -53,7 +53,9 @@ export class OtrequestlistComponent implements OnInit {
   allcolumns = [
     { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+
     { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    { heading: "OTReq-Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -62,7 +64,6 @@ export class OtrequestlistComponent implements OnInit {
     { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
   ];
   allFilters = [
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },

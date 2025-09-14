@@ -37,14 +37,21 @@
 
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">
-                        <mat-icon>print</mat-icon>
+                    <button mat-icon-button matTooltip="Edit GRNReturn Without GRN" (click)="newGRNRetunr(element)"
+                        *ngIf="!element.isVerified">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Edit GRNReturn" (click)="getNewGRNRet(element)"
+                        *ngIf="!element.isVerified">
+                        <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"
                         *ngIf="!element.isVerified">
                         <mat-icon>verified_user</mat-icon>
                     </button>
-
+                    <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button>
                 </div>
             </ng-template>
 
@@ -55,7 +62,7 @@
                         <airmid-datepicker [formGroup]="_GRNReturnService.GRNReturnSearchFrom" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[1].fieldValue"
-                            [(toValue)]="gridConfig.filters[2].fieldValue" (dateChange)="onChangeFirst()">
+                            [(toValue)]="gridConfig.filters[2].fieldValue">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"

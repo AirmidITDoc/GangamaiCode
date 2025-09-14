@@ -71,6 +71,12 @@
                                 </mat-radio-button>
                             </mat-radio-group>
 
+                            <!-- <mat-radio-group name="GSTType" formControlName="GSTType" value="GST Return"
+                                style="padding:15px;" [(ngModel)]="vGSTTpe">
+                                <mat-radio-button value="GST Return">GST Return</mat-radio-button>
+                                <mat-radio-button value="Without GST">Without GST</mat-radio-button>
+                            </mat-radio-group> -->
+
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
 

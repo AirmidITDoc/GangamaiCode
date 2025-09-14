@@ -176,5 +176,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public getexternalDoctorList(inputValue){ 
        return this._httpClient1.GetData("Sales/ExternalDoctor-auto-complete?Keyword="+inputValue);
     }
+    public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
   }
   

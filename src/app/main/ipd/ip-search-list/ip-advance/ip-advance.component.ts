@@ -248,7 +248,7 @@ export class IPAdvanceComponent implements OnInit {
         this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
           this.grid.bindGridData();
           this.viewgetAdvanceReceiptReportPdf(response);
-          this.getWhatsappsAdvance(response, this.vMobileNo);
+         // this.getWhatsappsAdvance(response, this.vMobileNo);
           this.onClose();
         });
       }
@@ -261,7 +261,7 @@ export class IPAdvanceComponent implements OnInit {
         console.log(submitData);
         this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => {
           this.viewgetAdvanceReceiptReportPdf(response);
-          this.getWhatsappsAdvance(response, this.vMobileNo);
+          //this.getWhatsappsAdvance(response, this.vMobileNo);
           this.onClose();
         });
       }

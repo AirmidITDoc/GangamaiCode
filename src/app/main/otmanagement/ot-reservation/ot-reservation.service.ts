@@ -10,7 +10,6 @@ export class OtReservationService {
 
     reservationForm: FormGroup;
     myformSearch: FormGroup;
-    bookingRequestForm: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
@@ -18,30 +17,26 @@ export class OtReservationService {
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.reservationForm = this.createReservationForm();
-        this.bookingRequestForm = this.tOtbookingRequestsForm();
         this.myformSearch = this.createSearchForm();
     }
 
     createReservationForm(): FormGroup {
         return this._formBuilder.group({
 
-            otreservationId: [0],
+            otreservationId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             reservationDate: [new Date(), [Validators.required]],
             reservationTime: [new Date(), [Validators.required]],
             opIpId: [""],
             opIpType: ["OP"],
-
             opdate: [new Date()],
             opstartTime: ['', Validators.required],
             opendTime: ['', Validators.required],
-
-            duration: [0],
-            ottableId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            duration: ['', Validators.required],
+            ottableId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId1: [0],
             anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anestheticsDr1: [0],
-
             surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anesthTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             instruction: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
@@ -51,23 +46,18 @@ export class OtReservationService {
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
             departmentId: [0],
-            tOtbookingRequests: this._formBuilder.array([])
+            otrequestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
 
-    tOtbookingRequestsForm(): FormGroup {
-        return this._formBuilder.group({
-            otbookingId: 0,
-            otrequestId: 0
-        });
-    }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             start: [(new Date()).toISOString()],
             end: [(new Date()).toISOString()],
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
-            RegNo: []
+            RegNo: [],
+            ottableId:[0]
         });
     }
     
@@ -99,4 +89,7 @@ export class OtReservationService {
         return this._httpClient.PostData("", Param);
     }
 
+     public OnCancel(param) {
+        return this._httpClient.PostData('OTReservation/Cancel', param)
+    }
 }
