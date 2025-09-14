@@ -28,7 +28,7 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
+                <button class="btn btn-primary" (click)="OnUpdate(element,2)" matTooltip="Payment Date Update">
                     Date Update
                 </button>&nbsp;
                 <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill" style="color: white;">
@@ -40,10 +40,13 @@
         <ng-template #actionButtonTemplateSale let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button class="btn btn-primary" (click)="OnUpdate(element)" matTooltip="Bill Date Update">
-                    Date Update
+                <button class="btn btn-primary" (click)="OnUpdate(element,1)" matTooltip="Sales Date Update">
+                    SalesDate
                 </button>&nbsp;
-                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill" style="color: white;">
+                 <button class="btn btn-primary" (click)="OnUpdate(element,2)" matTooltip="Payment Date Update">
+                    PaymentDate
+                </button>&nbsp;
+                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle SalesBill" style="color: white;">
                     Edit
                 </button>
             </div>

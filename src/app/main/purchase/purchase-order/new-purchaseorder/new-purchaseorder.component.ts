@@ -689,10 +689,10 @@ export class NewPurchaseorderComponent {
     const FooterfomrValues = this.FinalPurchaseform.value
     console.log(fomrValues)
     console.log(FooterfomrValues)
-    //debugger
+    debugger
     if (!this.FinalPurchaseform.invalid) {
       //this.PurchaseInsertform.get('StoreId')?.value,
-      this.PurchaseInsertform.get("storeId").setValue(this.accountService.currentUserValue?.storeId)
+      this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)
       this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
       this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
       this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
@@ -1057,7 +1057,7 @@ export class NewPurchaseorderComponent {
   onClear() { }
 
   //new 
-  vstoreId: any = 0;
+  vstoreId=this.accountService.currentUserValue.user.storeId;
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value

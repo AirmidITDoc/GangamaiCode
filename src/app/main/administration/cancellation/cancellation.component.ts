@@ -133,7 +133,6 @@ export class CancellationComponent implements OnInit {
   allopdColumns = [
     { heading: "-", key: "opD_IPD_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:150 },
     { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -216,7 +215,7 @@ export class CancellationComponent implements OnInit {
   }
 
   allipdColumns = [
-    { heading: "-", key: "opipdType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "-", key: "opdipdType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     // { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width:200 },      
     { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
@@ -340,7 +339,7 @@ export class CancellationComponent implements OnInit {
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplateIPAdvance
-    } //Action 1-view, 2-Edit,3-delete
+    }
   ]
 
   allFiltersOfAdvanceList = [
@@ -408,15 +407,16 @@ export class CancellationComponent implements OnInit {
 
   allColumnsOfIpRefund = [
     { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    
     { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplateIPRefundBill  // Assign ng-template to the column
-    } //Action 1-view, 2-Edit,3-delete
+      template: this.actionButtonTemplateIPRefundBill
+    }
   ]
   allFiltersOfIpRefund = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -477,17 +477,18 @@ export class CancellationComponent implements OnInit {
 
   allColumnsOfRefundAd = [
     { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "AdvUsed Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+  
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplateIPRefundAdv  // Assign ng-template to the column
-    }  //Action 1-view, 2-Edit,3-delete
+      template: this.actionButtonTemplateIPRefundAdv
+    }
   ]
 
   allFiltersOfRefundAd = [
@@ -546,24 +547,6 @@ export class CancellationComponent implements OnInit {
     this.onChangeRefundAd();
   }
 
-  onSave(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-    //     {
-    //         maxHeight: '95vh',
-    //         width: '90%',
-    //         data: row
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     if (result) {
-    //         that.grid.bindGridData();
-    //     }
-    // });
-  }
-
   OnUpdate(row) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
@@ -574,7 +557,11 @@ export class CancellationComponent implements OnInit {
         maxHeight: "35vh",
         maxWidth: '90vh',
         width: '100%',
-        data: row
+        // data: row
+        data: {
+          data: row,
+          Id: 4
+        }
       });
     dialogRef.afterClosed().subscribe(result => {
       this.refreshdatalist()
@@ -616,11 +603,11 @@ export class CancellationComponent implements OnInit {
         }
         console.log("Json:", SubmitDate)
         this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
-
+          this.grid.bindGridData();
         });
       }
     })
-    this.grid.bindGridData();
+
   }
 
   BillCancelIP(contact) {
@@ -642,12 +629,11 @@ export class CancellationComponent implements OnInit {
         }
         console.log("Json:", SubmitDate)
         this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
-
-          this.grid.bindGridData();
+           this.grid.bindGridData();
         });
       }
     })
-    
+
   }
 
   CancelAdvance(contact) {
@@ -673,24 +659,14 @@ export class CancellationComponent implements OnInit {
 
         console.log(SubmitDate)
         this._CancellationService.SaveCancelAdvance(SubmitDate).subscribe(response => {
-  this.grid1.bindGridData();
+           this.grid1.bindGridData();
         });
       }
     })
-    this.grid1.bindGridData();
+
   }
 
-  // getRecord(contact, m): void {
-  //   if (this._CancellationService.UserFormGroup.get('OP_IP_Type').value == '1') {
-  //     if (!contact.InterimOrFinal) {
-  //       this.viewgetBillReportPdf(contact.BillNo)
-  //     } else {
-  //       this.viewgetInterimBillReportPdf(contact.BillNo)
-  //     }
-  //   } else {
-  //     this.viewgetOPBillReportPdf(contact)
-  //   }
-  // }
+
   Billdateupdate(contact) {
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
@@ -705,70 +681,6 @@ export class CancellationComponent implements OnInit {
     this.grid1.bindGridData();
   }
 
-  // viewgetBillReportPdf(BillNo) {
-  //   setTimeout(() => {
-  //           this._IpBillBrowseListService.getIpFinalBillReceipt(
-  //       BillNo
-  //     ).subscribe(res => {
-  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
-  //         {
-  //           maxWidth: "85vw",
-  //           height: '750px',
-  //           width: '100%',
-  //           data: {
-  //             base64: res["base64"] as string,
-  //             title: "IP Bill  Viewer"
-  //           }
-  //         });
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         });
-  //     });
-
-  //   }, 100);
-  // }
-  // viewgetInterimBillReportPdf(BillNo) {
-  //   setTimeout(() => {
-  //     this._IpBillBrowseListService.getIpInterimBillReceipt(
-  //       BillNo
-  //     ).subscribe(res => {
-  //       const dialogRef = this._matDialog.open(PdfviewerComponent,
-  //         {
-  //           maxWidth: "85vw",
-  //           height: '750px',
-  //           width: '100%',
-  //           data: {
-  //             base64: res["base64"] as string,
-  //             title: "IP Interim Bill  Viewer"
-  //           }
-  //         });
-  //       dialogRef.afterClosed().subscribe(result => {
-  //       });
-  //     });
-
-  //   }, 100);
-  // }
-  viewgetOPBillReportPdf(contact) {
-    setTimeout(() => {
-      // this.SpinLoading =true; 
-      // this._BrowseOPDBillsService.getOpBillReceipt(
-      //   contact.BillNo
-      // ).subscribe(res => {
-      //   const matDialog = this._matDialog.open(PdfviewerComponent,
-      //     {
-      //       maxWidth: "85vw",
-      //       height: '750px',
-      //       width: '100%',
-      //       data: {
-      //         base64: res["base64"] as string,
-      //         title: "OP BILL Viewer"
-      //       }
-      //     });
-      //   matDialog.afterClosed().subscribe(result => {  
-      //   });
-      // });
-
-    }, 100);
-  }
 
 }
 export class CancellationList {

@@ -29,19 +29,19 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   dateTimeObj: any;
-f_name: any = ""
-regNo: any = "0"
-l_name: any = ""
-SalesNo: any = "0"
-fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  SalesNo: any = "0"
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-pf_name: any = ""
-pregNo: any = "0"
-pl_name: any = ""
-pSalesNo: any = "0"
-pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  pf_name: any = ""
+  pregNo: any = "0"
+  pl_name: any = ""
+  pSalesNo: any = "0"
+  pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   dsPaymentPharmacyList = new MatTableDataSource<PaymentPharmayList>();
 
@@ -57,7 +57,7 @@ ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   ) { }
 
   gridConfig: any;
-  
+
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplateSale') actionButtonTemplateSale!: TemplateRef<any>;
@@ -78,51 +78,52 @@ ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
-    this.gridConfigSales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale; 
-    this.gridConfigSales.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeSale; 
-    this.gridConfigIpPhy.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;  
-    this.gridConfigIpPhy.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeIp; 
-}
-
-
-
-onNameFieldChange(): void {
-  debugger
-  const selectedType = this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.value;
-
-  if (selectedType === '0' || selectedType === 0) {
-    this.onChangeopd();
-  } else if (selectedType === '1' || selectedType === 1) {
-    this.onChange();
+    this.gridConfigSales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale;
+    this.gridConfigSales.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeSale;
+    this.gridConfigIpPhy.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfigIpPhy.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeIp;
   }
-}
 
-allColumns=[
-  { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-  { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-  { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
-  { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  {
-    heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-    template: this.actionButtonTemplateSale  // Assign ng-template to the column
-}
-]
 
-allFilters=[
-  { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
-  { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-  { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
-]
+
+  onNameFieldChange(): void {
+    debugger
+    const selectedType = this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.value;
+
+    if (selectedType === '0' || selectedType === 0) {
+      this.onChangeopd();
+    } else if (selectedType === '1' || selectedType === 1) {
+      this.onChange();
+    }
+  }
+
+  allColumns = [
+    { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Sales Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    {
+      heading: "Action", key: "action", align: "right", width: 300, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateSale  // Assign ng-template to the column
+    }
+  ]
+
+  allFilters = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+  ]
 
   gridConfigSales: gridModel = {
     apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
@@ -131,7 +132,7 @@ allFilters=[
     sortOrder: 0,
     filters: this.allFilters
   }
-  
+
   onChangeopd() {
     this.fromDate = this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._PaymentmodechangeforpharmacyService.userFormGroup.get('enddate').value, "yyyy-MM-dd")
@@ -140,11 +141,11 @@ allFilters=[
     this.regNo = this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || "0"
     this.SalesNo = this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || "0"
     this.getfilteropd();
-}
+  }
 
-getfilteropd() {
-  debugger    
-  this.gridConfigSales = {
+  getfilteropd() {
+    debugger
+    this.gridConfigSales = {
       apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
       columnsList: this.allColumns,
       sortField: "PaymentId",
@@ -156,54 +157,54 @@ getfilteropd() {
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "SalesNo", fieldValue: this.SalesNo, opType: OperatorComparer.Equals }
       ]
+    }
+    this.grid.gridConfig = this.gridConfigSales;
+    this.grid.bindGridData();
+    console.log("opd:", this.gridConfigSales)
   }
-  this.grid.gridConfig = this.gridConfigSales;
-  this.grid.bindGridData();
-  console.log("opd:",this.gridConfigSales)
-}
 
-Clearfilteropd(event) {
-  debugger
-  console.log(event)
-  if (event == 'FirstName')
+  Clearfilteropd(event) {
+    debugger
+    console.log(event)
+    if (event == 'FirstName')
       this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').setValue("")
-  else
+    else
       if (event == 'LastName')
-          this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').setValue("")
-  if (event == 'RegNo')
+        this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').setValue("")
+    if (event == 'RegNo')
       this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').setValue("")
-  if (event == 'SalesNo')
+    if (event == 'SalesNo')
       this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').setValue("")
 
-  this.onNameFieldChange();
-}
+    this.onNameFieldChange();
+  }
 
-allColumns1=[
+  allColumns1 = [
 
-  { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
-  { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-  { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
-  { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-  {
-    heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-    template: this.actionButtonTemplateSale  // Assign ng-template to the column
-}
-]
-allFilters1=[
-  { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  { fieldName: "FromDate", fieldValue: this.pfromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
-  { fieldName: "ToDate", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
-  { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
-]
+    { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    {
+      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateSale  // Assign ng-template to the column
+    }
+  ]
+  allFilters1 = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.pfromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+    { fieldName: "ToDate", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+  ]
 
   gridConfigIpPhy: gridModel = {
     apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
@@ -221,11 +222,11 @@ allFilters1=[
     this.pregNo = this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').value || "0"
     this.pSalesNo = this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').value || "0"
     this.getfilter();
-}
+  }
 
-getfilter() {
-  debugger    
-  this.gridConfigIpPhy = {
+  getfilter() {
+    debugger
+    this.gridConfigIpPhy = {
       apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
       columnsList: this.allColumns1,
       sortField: "PaymentId",
@@ -237,64 +238,50 @@ getfilter() {
       { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
       { fieldName: "SalesNo", fieldValue: this.pSalesNo, opType: OperatorComparer.Equals }
       ]
+    }
+    this.grid.gridConfig = this.gridConfigIpPhy;
+    this.grid.bindGridData();
+    console.log("hhh:", this.gridConfigIpPhy)
   }
-  this.grid.gridConfig = this.gridConfigIpPhy;
-  this.grid.bindGridData();
-  console.log("hhh:",this.gridConfigIpPhy)
-}
 
-// Clearfilter(event) {
-//   debugger
-//   console.log(event)
-//   if (event == 'FirstName')
-//       this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').setValue("")
-//   else
-//       if (event == 'LastName')
-//           this._PaymentmodechangeforpharmacyService.userFormGroup.get('LastName').setValue("")
-//   if (event == 'RegNo')
-//       this._PaymentmodechangeforpharmacyService.userFormGroup.get('RegNo').setValue("")
-//   if (event == 'SalesNo')
-//       this._PaymentmodechangeforpharmacyService.userFormGroup.get('SalesNo').setValue("")
 
-//   this.onChange();
-// }
-
-onRadioChange(event: MatRadioChange) {
-  debugger
-  const selectedValue = event.value;
-  if (selectedValue === '0' || selectedValue === 0) {
-    this.onChangeopd();
-  } else if (selectedValue === '1' || selectedValue === 1) {
-    this.onChange();
+  onRadioChange(event: MatRadioChange) {
+    debugger
+    const selectedValue = event.value;
+    if (selectedValue === '0' || selectedValue === 0) {
+      this.onChangeopd();
+    } else if (selectedValue === '1' || selectedValue === 1) {
+      this.onChange();
+    }
   }
-}
 
 
-  OnUpdate(row){
-const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+  OnUpdate(row, Id) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
     let that = this;
-    const dialogRef = this._matDialog.open( BillDateUpdateComponent, 
-        {
-            maxHeight: "35vh",
-            maxWidth: '90vh',
-            width: '100%',
-            data: row
-        });
+    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+      {
+        maxHeight: "35vh",
+        maxWidth: '90vh',
+        width: '100%',
+        // data: row,
+        data: {
+          data: row,
+          Id: Id
+        }
+
+      });
     dialogRef.afterClosed().subscribe(result => {
-        this.grid.bindGridData();
-        });
+      this.grid.bindGridData();
+    });
   }
-  
-  
-  // toggleSidebar(name): void {
-  //   this._fuseSidebarService.getSidebar(name).toggleOpen();
-  // }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  
+
   onEdit(m) {
     console.log(m)
     let xx = {
@@ -327,8 +314,8 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
       IsInchIndVfy: m.IsInchIndVfy,
     };
     this.advanceDataStored.storage = new PaymentPharmayList(xx);
-   
-     const dialogRef = this._matDialog.open(EditPaymentComponent,
+
+    const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
         height: "97%",
         width: '85%',
@@ -342,7 +329,7 @@ const buttonElement = document.activeElement as HTMLElement; // Get the currentl
     });
   }
 
-  
+
   BillDate() {
     Swal.fire('Api Error !', 'Bill Date Update!')
   }
@@ -369,21 +356,21 @@ export class PaymentPharmayList {
   // PaymentId: any;
   TarrifName: any;
   NetAmount: any;
-  paymentId:any;
-  billNo:any;
+  paymentId: any;
+  billNo: any;
   CashAmt: any;
   ChequeAmt: any;
   CardAmt: any;
   NeftPay: any;
-  receiptNo:any;
-  advanceUsedAmount:any;
-advanceId:any;
-refundId:any;
-transactionType:any;
-remark:any
-addBy:any
-chequeDate:any
-cardDate:any
+  receiptNo: any;
+  advanceUsedAmount: any;
+  advanceId: any;
+  refundId: any;
+  transactionType: any;
+  remark: any
+  addBy: any
+  chequeDate: any
+  cardDate: any
   // PaidAmount:any;
 
   constructor(PaymentPharmayList) {
@@ -403,18 +390,18 @@ cardDate:any
       this.neftPayAmount = PaymentPharmayList.neftPayAmount || 0;
       this.NEFTNo = PaymentPharmayList.NEFTNo || 0;
       this.NEFTBankName = PaymentPharmayList.NEFTBankName || '';
-      this.paymentId=PaymentPharmayList.paymentId || 0;
-      this.billNo=PaymentPharmayList.billNo || 0;
-      this.receiptNo=PaymentPharmayList.receiptNo || 0;
-      this.chequeDate=PaymentPharmayList.chequeDate || 0;
-      this.cardDate=PaymentPharmayList.cardDate || 0;
+      this.paymentId = PaymentPharmayList.paymentId || 0;
+      this.billNo = PaymentPharmayList.billNo || 0;
+      this.receiptNo = PaymentPharmayList.receiptNo || 0;
+      this.chequeDate = PaymentPharmayList.chequeDate || 0;
+      this.cardDate = PaymentPharmayList.cardDate || 0;
 
-      this.advanceUsedAmount=PaymentPharmayList.advanceUsedAmount || 0;
-      this.advanceId=PaymentPharmayList.advanceId || 0;
-      this.refundId=PaymentPharmayList.refundId || 0;
-      this.transactionType=PaymentPharmayList.transactionType || 0;
-      this.remark=PaymentPharmayList.remark || 0;
-      this.addBy=PaymentPharmayList.addBy || 0;
+      this.advanceUsedAmount = PaymentPharmayList.advanceUsedAmount || 0;
+      this.advanceId = PaymentPharmayList.advanceId || 0;
+      this.refundId = PaymentPharmayList.refundId || 0;
+      this.transactionType = PaymentPharmayList.transactionType || 0;
+      this.remark = PaymentPharmayList.remark || 0;
+      this.addBy = PaymentPharmayList.addBy || 0;
       // this.PaymentId = PaymentPharmayList.PaymentId || 0;
       this.payTMAmount = PaymentPharmayList.payTMAmount || 0;
       this.PayTMTranNo = PaymentPharmayList.PayTMTranNo || 0;

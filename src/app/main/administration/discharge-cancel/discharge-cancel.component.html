@@ -44,33 +44,10 @@
                                         (selectionChange)="getSelectedObjDC($event)" TextField="formattedText"
                                         ValueField="regId">
                                     </airmid-autocomplete>
-                                </div>
-                                <div fxlayout="row" style="align-items: center;">
-                                    <div style="padding: 15px;">
-                                        <!-- <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
+
+                                    <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
                                         (change)="getDischargedList($event)">IsDischarged
-                                    </mat-checkbox> -->
-
-                                        <mat-slide-toggle name="AdmissionDateEdit"
-                                            (change)="getAdmissionDateEdit($event)" formControlName="AdmissionDateEdit">
-                                            AdmissionDate
-                                        </mat-slide-toggle>
-
-
-                                        <mat-slide-toggle name="IsDischarged" (change)="getDischargedList($event)"
-                                            formControlName="IsDischargedit">
-                                            IsDischarged
-                                        </mat-slide-toggle>
-
-                                        <!-- <mat-checkbox fxFlex="15%" formControlName="IsIPDnoEdit" style="margin-left: 100px;"
-                                        [(ngModel)]="vIpdnoCheckBox" (change)="getvIpdnoCheckBox($event)">IsIPDNoEdit
-                                    </mat-checkbox> -->
-
-                                        <mat-slide-toggle name="IsIPDNoEdit" (change)="getvIpdnoCheckBox($event)"
-                                            style="margin-left: 20px;" formControlName="IsIPDnoEdit">
-                                            IPDNoEdit
-                                        </mat-slide-toggle>
-                                    </div>
+                                    </mat-checkbox>
                                 </div>
 
                             </mat-card>
@@ -181,50 +158,64 @@
                         </mat-card>
 
                         <form [formGroup]="_DischargeCancelService.DischargeForm">
-                            <div fxLayout="row" fxLayoutGap="6px" *ngIf="vAdmissonDateCheckBox">
-                                <mat-card style="padding: 15px;" fxFlex>
+
+                            <mat-slide-toggle name="AdmissionDateEdit" (change)="getAdmissionDateEdit($event)"
+                                formControlName="AdmissionDateEdit">
+                                AdmissionDate
+                            </mat-slide-toggle>
+                            <div fxLayout="row" fxLayoutGap="6px">
+                                <mat-card style="padding: 15px;" fxFlex *ngIf="vAdmissonDateCheckBox">
                                     <app-common-date [screenFrom]="screenFromString"
                                         (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
                                     </app-common-date>
+
+
                                 </mat-card>
 
                             </div>
 
-                            <div fxLayout="row" fxLayoutGap="4px" *ngIf="vIpdnoCheckBox">
-                                <mat-card style="padding: 10px;" fxFlex>
+                            <mat-slide-toggle name="IsIPDNoEdit" (change)="getvIpdnoCheckBox($event)"
+                                formControlName="IsIPDnoEdit">
+                                IPDNoEdit
+                            </mat-slide-toggle>
+                            <!-- <mat-card style="padding: 15px;" fxFlex>
+                                   -->
+                            <div fxLayout="row" fxLayoutGap="6px" *ngIf="vIpdnoCheckBox">
 
-                                    <div fxLayout="row" fxLayoutGap="10px" fxFlexFill>
+                                <airmid-textbox label="Old IPDNo" formControlName="OldIpdNo" fxFlex="50"
+                                    [formGroup]="_DischargeCancelService.DischargeForm">
+                                </airmid-textbox>
 
-                                        <airmid-textbox label="Old IPDNo" formControlName="OldIpdNo" fxFlex="50"
-                                            [formGroup]="_DischargeCancelService.DischargeForm">
-                                        </airmid-textbox>
+                                <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="50"
+                                    [formGroup]="_DischargeCancelService.DischargeForm">
+                                </airmid-textbox>
 
-                                        <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="50"
-                                            [formGroup]="_DischargeCancelService.DischargeForm">
-                                        </airmid-textbox>
 
-                                    </div>
-
-                                </mat-card>
                             </div>
+
+                            <!-- </mat-card> -->
+
 
                         </form>
-
+ <!-- [disabled]="vRegNo=0" -->
                         <div fxLayoutAlign="space-between">
                             <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
-                                <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
-                                    style="color: white;" [disabled]="vRegNo>0">Admission Cancel</button>
+                              <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+                                    style="color: white;" >Admission Cancel</button>
                             </div>
 
                             <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
                                 style="margin: 0px 20px 0px 50px; ">
-                                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+                                
+
                                 <button *ngIf="vCheckBox && !vIpdnoCheckBox" class="btn btn-primary"
                                     style="color: white;" (click)="DischargeCancel()">Dicharge Cancel</button>
+                                <button *ngIf="vIpdnoCheckBox" class="btn btn-primary"
+                                    (click)="OnIpdNoUpdate()">IPDNOUpdate</button>
                                 <button *ngIf="vAdmissonDateCheckBox" class="btn btn-primary"
                                     (click)="OnAdmDateTimeUpdate()">Save</button>
-                                <button *ngIf="vIpdnoCheckBox" class="btn btn-primary"
-                                    (click)="OnIpdNoUpdate()">Save</button>
+                                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+
                             </div>
                         </div>
 

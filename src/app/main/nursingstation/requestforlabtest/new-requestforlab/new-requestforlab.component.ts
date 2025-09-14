@@ -60,8 +60,9 @@ export class NewRequestforlabComponent implements OnInit {
   labRequestInsert: FormGroup;
   labReqFormArray: FormGroup;
   vAdmissionID = 0;
+  isDoctor: boolean = false;
   date: Date;
-
+  autocompleteModedeptdoc: string = "ConDoctor";
   displayedServiceColumns: string[] = [
     'ServiceName',
     'Action'
@@ -90,7 +91,7 @@ export class NewRequestforlabComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _loggedService: AuthenticationService) {
     this.date = new Date();
-   
+
   }
 
   ngOnInit(): void {
@@ -101,64 +102,65 @@ export class NewRequestforlabComponent implements OnInit {
     this.labRequestInsert = this.labRequestInsertForm();
     this.labRequestInsert.markAllAsTouched();
 
-    this.labReqFormArray=this.createlabRequestFormArray();
+    this.labReqFormArray = this.createlabRequestFormArray();
     this.labReqFormArray.markAllAsTouched();
     this.labeRequestArray.push(this.createlabRequestFormArray());
   }
- 
+
   createMyForm(): FormGroup {
     return this._FormBuilder.group({
       IsPathRad: ['3'],
-      ServiceId:[''],
+      ServiceId: [''],
+      doctorId: [''],
       isOnFileTest: false,
-      RegID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      RegID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       radioIp: ['1']
     })
   }
 
   labRequestInsertForm(): FormGroup {
     return this._FormBuilder.group({
-      requestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      reqDate:[(new Date()).toISOString().split('T')[0]],
-      reqTime:[(new Date()).toISOString()],
-      opIpId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      opIpType:[1,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      isAddedBy:[this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.onlyNumberValidator()]],
-      isCancelled:false,
-      isCancelledBy:0,
-      isCancelledDate:['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],//[(new Date()).toISOString().split('T')[0]],
-      isCancelledTime:[(new Date()).toISOString()],
-      isType:0,
-      isOnFileTest:false,
-      tDlabRequests:this._FormBuilder.array([]),
+      requestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      reqDate: [(new Date()).toISOString().split('T')[0]],
+      reqTime: [(new Date()).toISOString()],
+      opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isAddedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelled: false,
+      isCancelledBy: 0,
+      isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],//[(new Date()).toISOString().split('T')[0]],
+      isCancelledTime: [(new Date()).toISOString()],
+      isType: 0,
+      isOnFileTest: false,
+      tDlabRequests: this._FormBuilder.array([]),
     })
   }
 
-    createlabRequestFormArray(element: any = {}): FormGroup {
-      return this._FormBuilder.group({
-        reqDetId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        requestId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        serviceId: [Number(element.ServiceId) ?? 0],
-        price: [element.Price ?? 0],
-        isStatus: false,
-        addedBillingId: 0,
-        addedByDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-        addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
-        charId: [0], //260570
-        isTestCompted: false,
-        isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
-      });
-    }
-  
-    get labeRequestArray(): FormArray {
-      return this.labRequestInsert.get('tDlabRequests') as FormArray;
-    }
-    
-      getServiceList() {
-let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
+  createlabRequestFormArray(element: any = {}): FormGroup {
+    return this._FormBuilder.group({
+      reqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      requestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId: [Number(element.ServiceId) ?? 0],
+      price: [element.Price ?? 0],
+      isStatus: false,
+      addedBillingId: 0,
+      addedByDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      addedByTime: [this.datePipe.transform(new Date(), 'shortTime')],
+      charId: [0], //260570
+      isTestCompted: false,
+      isOnFileTest: [this.myFormGroup.get('isOnFileTest').value || false],
+    });
+  }
+
+  get labeRequestArray(): FormArray {
+    return this.labRequestInsert.get('tDlabRequests') as FormArray;
+  }
+
+  getServiceList() {
+    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
     if (this.vRegNo) {
-      var param ={
+      var param = {
         "first": 0,
         "rows": 10,
         "sortField": "ServiceId",
@@ -185,11 +187,11 @@ let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
             "opType": "Equals"
           }
         ],
-        "Columns":[],
+        "Columns": [],
         "exportType": "JSON"
       }
       console.log(param)
-      
+
       this._RequestforlabtestService.getserviceList(param).subscribe(Menu => {
 
         this.dsLabRequest2.data = Menu.data as LabRequest[];
@@ -205,19 +207,36 @@ let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
         return;
       }
     }
+
+    // if (this.dsLabRequest2.data.creditedtoDoctor == true) {
+    //           this.myFormGroup.get('doctorId').reset();
+    //           this.myFormGroup.get('doctorId').setValidators([Validators.required]);
+    //           this.myFormGroup.get('doctorId').enable();
+    //           this.isDoctor = true;
+    //       } else {
+    //           this.myFormGroup.get('doctorId').reset();
+    //           this.myFormGroup.get('doctorId').clearValidators();
+    //           this.myFormGroup.get('doctorId').updateValueAndValidity();
+    //           this.myFormGroup.get('doctorId').disable();
+    //           this.isDoctor = false;
+    //       }
+
   }
+
+
+
   OnSave() {
     debugger
     console.log(this.labRequestInsert.value)
 
-    if (this.vRegNo==0) {
+    if (this.vRegNo == 0) {
       this.toastr.warning('Please select a Patient Name .', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
-       return;
+      return;
     }
 
-    if(!this.labRequestInsert.invalid){
+    if (!this.labRequestInsert.invalid) {
 
       this.labeRequestArray.clear();
       if (this.dstable1.data.length === 0) {
@@ -228,20 +247,20 @@ let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
         this.labeRequestArray.push(this.createlabRequestFormArray(item));
       });
 
-     this.labRequestInsert.get("isType").setValue(this.myFormGroup.get("IsPathRad").value)
+      this.labRequestInsert.get("isType").setValue(this.myFormGroup.get("IsPathRad").value)
       this.labRequestInsert.get("opIpId").setValue(this.vAdmissionID)
       this.labRequestInsert.get("isOnFileTest").setValue(this.myFormGroup.get('isOnFileTest').value)
-      
+
       console.log(this.labRequestInsert.value)
 
 
       this._RequestforlabtestService.LabRequestSave(this.labRequestInsert.value).subscribe(response => {
-              if (response) {
-                this.viewgetLabrequestReportPdf(response)
-                this._matDialog.closeAll();
-              }
-            });
-    }else {
+        if (response) {
+          this.viewgetLabrequestReportPdf(response)
+          this._matDialog.closeAll();
+        }
+      });
+    } else {
       let invalidFields: string[] = [];
 
       if (this.labRequestInsert.invalid) {
@@ -267,7 +286,7 @@ let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
       }
     }
   }
-  
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -298,13 +317,13 @@ let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
       this.vDOA = obj.admissionDate
-      this.vTariffId=obj.tariffId
-      this.vClassId=obj.classId
+      this.vTariffId = obj.tariffId
+      this.vClassId = obj.classId
     }
     this.getServiceList();
   }
 
-onChangeReg(event) {
+  onChangeReg(event) {
     if (event.value == 'registration') {
       this.registerObj = new RegInsert({});
       this.myFormGroup.get('RegID').disable();
@@ -319,6 +338,19 @@ onChangeReg(event) {
   }
 
   onSaveEntry(row) {
+  let doctorid = 0;
+  const formValue = this.myFormGroup.value
+     if (this.isDoctor) {
+            if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
+                this.toastr.warning('Please select Doctor', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+            if (formValue.doctorId)
+                doctorid = this.myFormGroup.get("doctorId")?.value ?? 0;
+        }
+
 
     this.isLoading = 'save';
     this.dstable1.data = [];

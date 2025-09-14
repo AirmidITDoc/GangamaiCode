@@ -18,13 +18,13 @@ export class PurchaseOrderService {
     VALID_GST_RATES: [2.5, 6, 9, 14],
     GST_ERROR_MESSAGE: 'Please enter GST percentage as 2.5%, 6%, 9% or 14%'
   };
- 
+
   POEmailFrom: FormGroup;
   IgstPercentage = 0
   CgstPercentage = 0
   SgstPercentage = 0
   normalizeValues(obj: ItemNameList | PurchaseFormModel): GSTCalculationResult {
-   
+
     const finalTotalQty = Number(obj.Qty || 0);
     const values = {
       totalAmount: Number(obj.TotalAmount || 0),
@@ -44,19 +44,19 @@ export class PurchaseOrderService {
 
 
   constructor(
-    public _httpClient: HttpClient, public _httpClient1: ApiCaller, 
+    public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private toastr: ToastrService,
-    private _formBuilder: UntypedFormBuilder, 
+    private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-     private accountService: AuthenticationService,
+    private accountService: AuthenticationService,
   ) { }
 
   PurchaseSearchFrom() {
     return this._formBuilder.group({
       StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId:  [0],
-      startdate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
-      enddate:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
+      SupplierId: [0],
+      startdate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       Status: [0],
     });
   }
@@ -111,7 +111,7 @@ export class PurchaseOrderService {
   }
 
   getPurchaseOrderFinalForm() {
-    return this._formBuilder.group({ 
+    return this._formBuilder.group({
       TransportCharges: [''],
       HandlingCharges: [''],
       Freight: [''],
@@ -145,10 +145,16 @@ export class PurchaseOrderService {
   }
 
   public InsertPurchaseSave(Param) {
- return this._httpClient1.PostData("Purchase/Insert", Param); 
-  }  
-    public InsertPurchaseUpdate(employee,Id ) { 
-  return this._httpClient1.PutData("Purchase/Edit/"+Id,employee) 
+    debugger
+    if (!Param.purchaseId)
+      return this._httpClient1.PostData("Purchase/Insert", Param);
+    else
+      return this._httpClient1.PutData("Purchase/Edit/" + Param.purchaseId, Param)
+  }
+
+
+  public InsertPurchaseUpdate(employee, Id) {
+    return this._httpClient1.PutData("Purchase/Edit/" + Id, employee)
   }
   public getVerifyPurchaseOrdert(Param) {
     return this._httpClient1.PostData("Purchase/Verify", Param)

@@ -27,13 +27,13 @@
                 <div fxLayout="column" class="h-100-p">
                     <mat-accordion>
                         <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
+                            <!-- <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center">
                                         <span>Purchase Order</span>
                                     </div>
                                 </mat-panel-title>
-                            </mat-expansion-panel-header>
+                            </mat-expansion-panel-header> -->
 
                             <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
                                 <form [formGroup]="userFormGroup" class="pt-4" style="overflow: auto">
@@ -111,7 +111,7 @@
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
                                             [formGroup]="userFormGroup" placeholder="MRP" type="number"
                                             [(ngModel)]="vMRP" [validations]="getValidationMessages().mrp"
-                                            (valueChange)="calculateTotalamt()"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()"  [min]="0"></airmid-textbox>
                                         <!-- (keyup)="OnchekPurchaserateValidation()" -->
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
@@ -640,41 +640,42 @@
                                         fxFlex.xs="100%">
                                         <form [formGroup]="FinalPurchaseform">
                                             <div fxLayout="row wrap" fxLayoutGap="5px">
-                                                <airmid-textbox fxFlex="12%" label="HandlingCharges"
+                                                <airmid-textbox fxFlex="13%" label="HandlingCharges"
                                                     formControlName="HandlingCharges" [min]="0"
                                                     [(ngModel)]="registerObj.handlingCharges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="12%" label="Transport Charges"
+                                                <airmid-textbox fxFlex="13%" label="Transport Charges"
                                                     formControlName="TransportCharges" [min]="0"
                                                     [(ngModel)]="registerObj.transportChanges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="12%" label="Freight" formControlName="Freight"
+                                                <airmid-textbox fxFlex="13%" label="Freight" formControlName="Freight"
                                                     [(ngModel)]="registerObj.freightAmount" [min]="0"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="12%" label="OctriAmount" [min]="0"
+                                                <airmid-textbox fxFlex="13%" label="OctriAmount" [min]="0"
                                                     formControlName="OctriAmount" [(ngModel)]="registerObj.octriAmount"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="12%" label="Guarantee/ Worrenty"
+                                                <airmid-textbox fxFlex="13%" label="Guarantee/ Worrenty"
                                                     formControlName="Worrenty" [(ngModel)]="registerObj.worrenty"
                                                     [formGroup]="FinalPurchaseform"></airmid-textbox>
 
                                                 <airmid-dropdown label="Payment Term" formControlName="PaymentTerm"
-                                                    fxFlex="12%" [formGroup]="FinalPurchaseform"
+                                                    fxFlex="13%" [formGroup]="FinalPurchaseform"
                                                     [mode]="autocompletepaymentterm"
                                                     (selectionChange)="selPaymentterm($event)">
                                                 </airmid-dropdown>
 
                                                 <airmid-dropdown label="-- Select PaymentMode --"
-                                                    formControlName="PaymentMode" fxFlex="12%"
+                                                    formControlName="PaymentMode" fxFlex="13%"
                                                     [formGroup]="FinalPurchaseform" [mode]="autocompletepaymentmode"
                                                     (selectionChange)="selPaymentmode($event)">
                                                 </airmid-dropdown>
-
-                                                <airmid-textbox fxFlex="12%" label="Remark"
+                                            </div>
+                                            <div fxLayout="row wrap" fxLayoutGap="5px">
+                                                <airmid-textbox fxFlex="55%" label="Remark"
                                                     [(ngModel)]="registerObj.remarks" formControlName="Remark"
                                                     [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 

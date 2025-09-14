@@ -25,6 +25,13 @@ import { PaymentmodechangesService } from './paymentmodechanges.service';
 export class PaymentmodechangesComponent implements OnInit {
 
   gridConfig: any;
+ f_name: any = ""
+  regNo: any = "0"
+  l_name: any = ""
+  PBillNo: any = "0"
+  ReceiptNo:any="0"
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -49,19 +56,14 @@ export class PaymentmodechangesComponent implements OnInit {
     this.gridConfigIPAdv.columnsList.find(col => col.key === 'label')!.template = this.ColorCodeIPAdv;
   }
   
-  f_name: any = ""
-  regNo: any = "0"
-  l_name: any = ""
-  PBillNo: any = "0"
-  ReceiptNo:any="0"
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
+ 
   allopdColumns = [
     { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+   
     { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
       { heading: "Bill Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
@@ -74,7 +76,7 @@ export class PaymentmodechangesComponent implements OnInit {
     { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplateOP  // Assign ng-template to the column
+      template: this.actionButtonTemplateOP  
     }
   ]
 
@@ -108,7 +110,7 @@ export class PaymentmodechangesComponent implements OnInit {
 }
 
 getfilteropd() {
-  // debugger    
+ 
   this.gridConfig = {
       apiUrl: "paymentpharmacy/OPDPaymentReceiptList",
       columnsList: this.allopdColumns,
@@ -129,7 +131,7 @@ getfilteropd() {
 }
 
 Clearfilteropd(event) {
-  // debugger
+
   console.log(event)
   if (event == 'FirstName')
       this._PaymentmodechangesService.UseFormGroup.get('FirstName').setValue("")
@@ -158,13 +160,14 @@ Clearfilteropd(event) {
 
 allipdColumns=[
   { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  { heading: "Pay Date", key: "payDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+  { heading: "Pay Date", key: "payDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150 ,type:6},
   { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-  { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+  { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-  { heading: "Bill Amt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
-  { heading: "Paid Amount", key: "paidamount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
+  { heading: "Bill Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
+  { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
@@ -182,7 +185,7 @@ allipdFilters=[
   { fieldName: "From_Dt", fieldValue: this.ifromDate, opType: OperatorComparer.Equals },
   { fieldName: "To_Dt", fieldValue: this.itoDate, opType: OperatorComparer.Equals },
   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
+  { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
   { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
 ]
 
@@ -206,7 +209,7 @@ allipdFilters=[
 }
 
 getfilteripd() {
-  // debugger    
+    
   this.gridConfigIP = {
       apiUrl: "paymentpharmacy/IPDPaymentReceiptList",
       columnsList: this.allipdColumns,
@@ -226,25 +229,7 @@ getfilteripd() {
   console.log("ipd:",this.gridConfigIP)
 }
 
-// Clearfilteripd(event) {
-//   debugger
-//   console.log(event)
-//   if (event == 'FirstName')
-//       this._PaymentmodechangesService.UseFormGroup.get('FirstName').setValue("")
-//   else
-//       if (event == 'LastName')
-//           this._PaymentmodechangesService.UseFormGroup.get('LastName').setValue("")
-//   if (event == 'RegNo')
-//       this._PaymentmodechangesService.UseFormGroup.get('RegNo').setValue("")
-//   if (event == 'PBillNo')
-//       this._PaymentmodechangesService.UseFormGroup.get('PBillNo').setValue("")
-//   if (event == 'ReceiptNo')
-//     this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').setValue("")
 
-//   this.onChangeipd();
-// }
-
-  // IP Advance
   af_name: any = ""
   aregNo: any = "0"
   al_name: any = ""
@@ -257,10 +242,10 @@ allAdColumns=[
   { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
   { heading: "Pay Date", key: "payDate", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
-  { heading: "Bill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+  { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
   { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-  { heading: "Bill Amt", key: "billAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
+  { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
   { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount},
@@ -270,8 +255,8 @@ allAdColumns=[
   { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
   {
     heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-    template: this.actionButtonTemplateIPAdv  // Assign ng-template to the column
-  } //Action 1-view, 2-Edit,3-delete
+    template: this.actionButtonTemplateIPAdv 
+  } 
 ]
 allAdFilters=[
   { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -302,7 +287,7 @@ allAdFilters=[
 }
 
 getfilterAd() {
-  // debugger    
+    
   this.gridConfigIP = {
       apiUrl: "paymentpharmacy/IPAdvPaymentReceiptList",
       columnsList: this.allAdColumns,
@@ -322,24 +307,6 @@ getfilterAd() {
   console.log("Ad:",this.gridConfigIPAdv)
 }
 
-// ClearfilterAd(event) {
-//   debugger
-//   console.log(event)
-//   if (event == 'FirstName')
-//       this._PaymentmodechangesService.UseFormGroup.get('FirstName').setValue("")
-//   else
-//       if (event == 'LastName')
-//           this._PaymentmodechangesService.UseFormGroup.get('LastName').setValue("")
-//   if (event == 'RegNo')
-//       this._PaymentmodechangesService.UseFormGroup.get('RegNo').setValue("")
-//   if (event == 'PBillNo')
-//       this._PaymentmodechangesService.UseFormGroup.get('PBillNo').setValue("")
-//   if (event == 'ReceiptNo')
-//     this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').setValue("")
-
-//   this.onChangeAd();
-// }
-
   sIsLoading: string = '';
   isLoading = true;
 
@@ -356,9 +323,7 @@ getfilterAd() {
   ) { }
 
   ngOnInit(): void {
-    // this.getsearchList(); 
-
-    this.gridConfig = this.gridConfigOP;
+      this.gridConfig = this.gridConfigOP;
 
     this._PaymentmodechangesService.UseFormGroup.get('Radio')?.valueChanges.subscribe((value) => {
       if (value === '0') {
@@ -372,7 +337,7 @@ getfilterAd() {
   }
 
   onNameFieldChange(): void {
-    // debugger
+  
     const selectedType = this._PaymentmodechangesService.UseFormGroup.get('Radio')?.value;
   
     if (selectedType === '0' || selectedType === 0) {
@@ -385,7 +350,7 @@ getfilterAd() {
   }
 
   onRadioChange(event: MatRadioChange) {
-    // debugger
+  
     const selectedValue = event.value;
     if (selectedValue === '0' || selectedValue === 0) {
       this.onChangeopd();
@@ -401,27 +366,9 @@ getfilterAd() {
   }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
   }
-  onSave(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    // const dialogRef = this._matDialog.open( NewcreateUserComponent, 
-    //     {
-    //         maxHeight: '95vh',
-    //         width: '90%',
-    //         data: row
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     if (result) {
-    //         that.grid.bindGridData();
-    //     }
-    // });
-  }
-
+  
   onEdit(row) {
     console.log(row)
     const dialogRef = this._matDialog.open(EditPaymentComponent,
@@ -437,12 +384,7 @@ getfilterAd() {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.grid.bindGridData();
-      // if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
-      // this.getOPReceiptList();
-      // else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
-      // this.getIPReceiptList();
-      // else 
-      // this.getIPAdvanceList(); 
+      
     });
   }
   PaymentDate(contact) {
@@ -451,19 +393,13 @@ getfilterAd() {
       {
         maxHeight: "35vh",
         maxWidth: '90vh',
-        // height: "35%",
-        width: '100%',
+       width: '100%',
         data: contact
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
       console.log('The dialog was closed - Insert Action', result);
-      //  if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '0')
-      //   this.getOPReceiptList();
-      // else if(this._PaymentmodechangesService.UseFormGroup.get('Radio').value == '1')
-      //   this.getIPReceiptList();
-      // else 
-      //   this.getIPAdvanceList();
+     
     });
   }
 

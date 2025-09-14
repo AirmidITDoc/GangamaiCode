@@ -17,6 +17,7 @@ export class DateUpdateComponent implements OnInit {
 
   dateTimeObj: any;
   PaymentId: any;
+  BillDate: any;
   screenFromString = 'Paymentform-form';
 
   constructor(
@@ -30,8 +31,10 @@ export class DateUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
+      debugger
       console.log(this.data)
       this.PaymentId = this.data.paymentId;
+      this.BillDate = this.data.billDate
       console.log(this.PaymentId)
     }
   }
@@ -56,20 +59,30 @@ export class DateUpdateComponent implements OnInit {
       debugger
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        var data = {
-          'paymentId': this.PaymentId,
-          'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'paymentTime': formattedDate + this.dateTimeObj.time
+        debugger
+        const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+        const d2 = new Date(this.BillDate);
+
+        if (d1 < d2) {
+          Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.BillDate, "yyyy-MM-dd"))
+          return;
+        } else {
+          var data = {
+            'paymentId': this.PaymentId,
+            'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            'paymentTime': formattedDate + this.dateTimeObj.time
+          }
+          console.log(data);
+          this._PaymentmodechangesService.getDateTimeChange(data).subscribe(response => {
+            this.toastr.success(response);
+            this._matDialog.closeAll();
+          }, (error) => {
+            this.toastr.error(error.message);
+          });
         }
-        console.log(data);
-        this._PaymentmodechangesService.getDateTimeChange(data).subscribe(response => {
-          this.toastr.success(response);
-        this._matDialog.closeAll();
-        }, (error) => {
-          this.toastr.error(error.message);
-        });
       }
-      });
+    });
+
   }
   onClose() {
     this._matDialog.closeAll();

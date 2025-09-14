@@ -1,9 +1,10 @@
 <div class="modal-wrapper grid-container">
- 
+
     <div class="modal-header accent">
         <mat-toolbar class="accent" style="height:50px; justify-content: space-between; width: 100%;">
             <div fxLayout="row" fxLayoutAlign="start center">
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
                     Request New Test
                 </span>
             </div>
@@ -12,14 +13,14 @@
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
-        </mat-toolbar>  
+        </mat-toolbar>
     </div>
 
 
     <div class="modal-body" fusePerfectScrollbar>
         <div fxLayout="column" class="gap-10 p-10">
 
-          <mat-card style="padding: 10px;">
+            <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">
                     <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center">
                         <mat-radio-group formControlName="radioIp">
@@ -27,16 +28,16 @@
                         </mat-radio-group>
 
                         <airmid-autocomplete lbl="RgId" [formGroup]="myFormGroup" formControlName="RegID"
-                            placeholderText="IP-RegNo/FirstName/LastName" fxFlex="50%" label="Search Reg No / Patient Name / Mobile No"
-                            ApiUrl="Admission/search-patient?Keyword="
-                            (selectionChange)="getSelectedObjIP($event)"
-                            ValueField="admissionID" TextField="formattedText">
+                            placeholderText="IP-RegNo/FirstName/LastName" fxFlex="50%"
+                            label="Search Reg No / Patient Name / Mobile No" ApiUrl="Admission/search-patient?Keyword="
+                            (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                            TextField="formattedText">
                         </airmid-autocomplete>
                     </div>
                 </form>
             </mat-card>
 
-         
+
             <mat-card style="padding: 10px;">
                 <div fxLayout="row wrap" fxLayoutGap="32px">
                     <div fxFlex="30%">
@@ -48,14 +49,16 @@
                     <div fxFlex="30%">
                         <div class="patient-col"><b>DOA | Time:</b> {{ vDOA | date:'dd/MM/yyyy' }}</div>
                         <div class="patient-col"><b>IPD No:</b> {{vIPDNo}}</div>
-                        <div class="patient-col"><b>Age | Sex:</b> {{vAge}}Y | {{vAgeMonth}}M | {{vAgeDay}}D | {{vGenderName}}</div>
+                        <div class="patient-col"><b>Age | Sex:</b> {{vAge}}Y | {{vAgeMonth}}M | {{vAgeDay}}D |
+                            {{vGenderName}}</div>
                         <div class="patient-col"><b>Ref-Doctor:</b> {{vRefDocName}}</div>
                     </div>
                     <div fxFlex="30%">
                         <div class="patient-col"><b>Ward | Bed:</b> {{vRoomName}} | {{vBedName}}</div>
                         <div class="patient-col"><b>Patient Type:</b> {{vPatientType}}</div>
                         <div class="patient-col"><b>Tariff Name:</b> {{vTariffName}}</div>
-                        <div class="patient-col"><b>Company Name:</b> <span style="color: orange;">{{vCompanyName}}</span></div>
+                        <div class="patient-col"><b>Company Name:</b> <span
+                                style="color: orange;">{{vCompanyName}}</span></div>
                     </div>
                 </div>
             </mat-card>
@@ -69,30 +72,44 @@
                                 <mat-radio-button value="2">Radiology</mat-radio-button>
                                 <mat-radio-button value="3">Other Services</mat-radio-button>
                             </mat-radio-group>
-                            <mat-checkbox formControlName="isOnFileTest" style="margin-right: 20px;">IsOnFile Test</mat-checkbox>
+                            <mat-checkbox formControlName="isOnFileTest" style="margin-right: 20px;">IsOnFile
+                                Test</mat-checkbox>
                         </div>
 
                         <div fxLayout="row" fxLayoutGap="16px">
                             <mat-form-field appearance="outline" fxFlex="40%">
-                                <input matInput type="text" formControlName="ServiceId" placeholder="Service Name" (keyup)="getServiceList()">
+                                <input matInput type="text" formControlName="ServiceId" placeholder="Service Name"
+                                    (keyup)="getServiceList()">
                                 <span matSuffix style="display: flex;">
-                                    <mat-icon (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
+                                    <mat-icon
+                                        (click)="myFormGroup.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
                                     <mat-icon (click)="getServiceList()">search</mat-icon>
                                 </span>
-                                <mat-error *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
+                                <mat-error
+                                    *ngIf="myFormGroup.get('ServiceId').invalid && myFormGroup.get('ServiceId').touched">
                                     Service Name is required
                                 </mat-error>
                             </mat-form-field>
+
+
+                            <div style="width: 260px" *ngIf="isDoctor">
+                                <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                    [formGroup]="myFormGroup" [validations]="getValidationMessages().DoctorId"
+                                    [mode]="autocompleteModedeptdoc"
+                                    (selectionChange)="getdocdetail($event)"></airmid-dropdown>
+                            </div>
+
                         </div>
                     </div>
                 </form>
 
-              
+
                 <div fxLayout="row wrap" fxLayoutGap="16px">
-               
+
                     <div fxFlex.gt-sm="40%">
                         <mat-card>
-                            <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
+                            <mat-table #table matSort [dataSource]="dsLabRequest2" class="h-280 fix-first-col"
+                                [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ServiceName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">{{contact.serviceName}}</mat-cell>
@@ -100,19 +117,22 @@
                                 <ng-container matColumnDef="Action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" class="w-80">
-                                        <button mat-icon-button color="warn" (click)="onSaveEntry(contact)"><mat-icon>add</mat-icon></button>
+                                        <button mat-icon-button color="warn"
+                                            (click)="onSaveEntry(contact)"><mat-icon>add</mat-icon></button>
                                     </mat-cell>
                                 </ng-container>
-                                <mat-header-row *matHeaderRowDef="displayedServiceColumns" class="accent" sticky></mat-header-row>
+                                <mat-header-row *matHeaderRowDef="displayedServiceColumns" class="accent"
+                                    sticky></mat-header-row>
                                 <mat-row *matRowDef="let row; columns: displayedServiceColumns"></mat-row>
                             </mat-table>
                         </mat-card>
                     </div>
 
-                   
+
                     <div fxFlex.gt-sm="58%">
                         <mat-card>
-                            <mat-table #table matSort [dataSource]="dstable1" class="h-280" [@animateStagger]="{value:'50'}">
+                            <mat-table #table matSort [dataSource]="dstable1" class="h-280"
+                                [@animateStagger]="{value:'50'}">
                                 <ng-container matColumnDef="ServiceName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Service Name</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">{{contact.ServiceName}}</mat-cell>
@@ -129,7 +149,8 @@
                                         </button>
                                     </mat-cell>
                                 </ng-container>
-                                <mat-header-row *matHeaderRowDef="displayedServiceselected" class="accent" sticky></mat-header-row>
+                                <mat-header-row *matHeaderRowDef="displayedServiceselected" class="accent"
+                                    sticky></mat-header-row>
                                 <mat-row *matRowDef="let row; columns: displayedServiceselected"></mat-row>
                             </mat-table>
                         </mat-card>
@@ -139,7 +160,7 @@
         </div>
     </div>
 
-  
+
     <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
