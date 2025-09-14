@@ -60,7 +60,8 @@ export class GrnReturnService {
     return this._formBuilder.group({ 
       SupplierId:[0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       CashType:['true'], 
-      Qty:['']
+      Qty:[''],
+      GSTType:['GST Return'],
     });
   }
   createGRNList() {

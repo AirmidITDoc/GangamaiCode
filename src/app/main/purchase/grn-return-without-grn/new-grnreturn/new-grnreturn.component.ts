@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -85,10 +85,24 @@ export class NewGRNReturnComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private commonService: PrintserviceService,
     public _formbuilder: UntypedFormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
+    console.log("GRN Return Without GRN:", this.data)
+    if (this.data?.grnReturnId) {
+      this.VsupplierId = this.data.supplierId
+      // this._GRNReturnService.ReturnFinalForm.get("Remark").setValue(this.data?.remark)
+      // this.vFinalVatAmount = this.data?.totalVatAmount
+      // this.vFinalNetAmount = this.data?.netAmount
+      this._GRNReturnService.ReturnFinalForm.patchValue({
+        Remark: this.data?.remark,
+        FinalVatAmount: this.data?.totalVatAmount,
+        FinalNetPayamt: this.data?.netAmount
+      });
+      console.log(this._GRNReturnService.ReturnFinalForm.value)
+    }
     this.vGSTTpe = 'GST Return';
     this._GRNReturnService.NewGRNReturnFrom.markAllAsTouched();
 
@@ -107,8 +121,8 @@ export class NewGRNReturnComponent implements OnInit {
         "grnid": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
-        "storeId":[Number(this._loggedService.currentUserValue.user.storeId),[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        "supplierId": [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "storeId": [Number(this._loggedService.currentUserValue.user.storeId), [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "supplierId": [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "totalAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
         "grnReturnAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
         "totalDiscAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -139,6 +153,15 @@ export class NewGRNReturnComponent implements OnInit {
     let parts = inputDate.split('-');
     let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
     let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
+    // let ExpDate = null;
+
+    // if (element.ExpDate) {
+    //   let parts = element.ExpDate.split('-');
+    //   if (parts.length === 3) {
+    //     ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
+    //   }
+    // }
+    // let totalQty = (parseFloat(element.Qty || 0) * parseFloat(element.ConversionFactor || 0));
 
     return this._formbuilder.group({
       grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -240,7 +263,8 @@ export class NewGRNReturnComponent implements OnInit {
         disableClose: true,
         data: {
           "ItemId": this.ItemId,
-          "StoreId": this.vstoreId
+          "StoreId": this.vstoreId,
+          formName: "GRNReturn Without GRN"
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -334,29 +358,61 @@ export class NewGRNReturnComponent implements OnInit {
     this.vNetAmount = 0;
   }
 
+  // CalculateTotalAmt() {
+  //   // debugger
+  //   if (this.vQty > 0 && this.vBalQty >= this.vQty) {
+  //     this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
+  //     this.vNetAmount = this.vTotalAmount;
+  //   } else {
+  //     this.vQty = '';
+  //     this.vTotalAmount = 0;
+  //     this.vGSTAmount = 0;
+  //     this.vNetAmount = 0;
+  //     this.toastr.warning('Please enter Qty lessthan BalQty', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //   }
+  //   let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1;
+  //   console.log(RadioValue);
+  //   if (RadioValue == 'GST Return') {
+  //     this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
+  //     this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+  //   } else {
+  //     this.vGSTAmount = 0;
+  //   }
+  // }
   CalculateTotalAmt() {
-    // debugger
-    if (this.vQty > 0 && this.vBalQty >= this.vQty) {
-      this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
+    const qty = Number(this.vQty) || 0;
+    const balQty = Number(this.vBalQty) || 0;
+    const landedRate = Number(this.vLandedRate) || 0;
+    const gstPercent = Number(this.vGST) || 0;
+
+    if (qty > 0 && balQty >= qty) {
+      this.vTotalAmount = Number((qty * landedRate).toFixed(2));
       this.vNetAmount = this.vTotalAmount;
     } else {
       this.vQty = '';
       this.vTotalAmount = 0;
       this.vGSTAmount = 0;
       this.vNetAmount = 0;
-      this.toastr.warning('Please enter Qty lessthan BalQty', 'Warning !', {
+      this.toastr.warning('Please enter Qty less than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
+      return; // stop here if invalid
     }
-    let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1;
-    console.log(RadioValue);
-    if (RadioValue == 'GST Return') {
-      this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
-      this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+
+    const RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 'Without GST';
+    console.log('Selected GSTType:', RadioValue);
+
+    if (RadioValue === 'GST Return') {
+      this.vGSTAmount = Number(((gstPercent * this.vTotalAmount) / 100).toFixed(2));
+      this.vNetAmount = Number((this.vTotalAmount + this.vGSTAmount).toFixed(2));
     } else {
       this.vGSTAmount = 0;
+      this.vNetAmount = this.vTotalAmount;
     }
   }
+
   vTotalFinalAmount: any;
   vFinalDisAmount: any;
   vFinalVatAmount: any;
@@ -384,13 +440,13 @@ export class NewGRNReturnComponent implements OnInit {
   Savebtn: boolean = false;
   OnSave() {
     debugger
-      this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
-      this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
-      this.GrnReturnForm.get('grnReturn.grnReturnAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
-      this.GrnReturnForm.get('grnReturn.totalVatAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value)
-      this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
-      this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
-      this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
+    this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
+    this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
+    this.GrnReturnForm.get('grnReturn.grnReturnAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
+    this.GrnReturnForm.get('grnReturn.totalVatAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value)
+    this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
+    this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
+    this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
     if (!this.GrnReturnForm.invalid) {
       if ((!this.dsItemList.data.length)) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -435,7 +491,7 @@ export class NewGRNReturnComponent implements OnInit {
           this.Savebtn = true;
         }
       });
-    }else {
+    } else {
       let invalidFields = [];
 
       if (this.GrnReturnForm.invalid) {

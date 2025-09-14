@@ -1,138 +1,280 @@
 <div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OT Reservation List
-                </span>
-            </div>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onNewotrequest()">New OTReservation
-            </button>
+    <div fxFlex.gt-sm="100%" fxFlex>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <mat-tab label="OT Reservation List">
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OT Reservation List
+                            </span>
+                        </div>
+                    </div>
+                    <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                        <button mat-raised-button (click)="onNewotrequest()">New OTReservation
+                        </button>
 
-        </div>
+                    </div>
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <div class="info-badge-top p-12 border-bottom">
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+
+                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <span class="green-600-fg"> IP </span>
+                            </div>
+
+                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <span class="orange-600-fg">OP
+                                </span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                <span>Request Accepted </span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill purple-600 s-16">circle</mat-icon>
+                                <span>Reservation PostPone</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #actionsTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP"
+                                class="pill green-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionsTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
+                                class="pill blue-600 s-16 ">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionsTemplate2 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.isNewRecord == 1 ; else noPostpone"
+                                matTooltip="Reservation PostPone" class="pill purple-600 s-16 ">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button matTooltip="Edit Reservation" (click)="OnEdit(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                                <mat-icon> print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="OT Reservation Date Change"
+                                (click)="tOTBookingDateChange(element)">
+                                <mat-icon>date_range</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                                <mat-icon> cancel</mat-icon>
+                            </button>
+
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+                            <form [formGroup]="myFilterform">
+
+                                <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                                    formStartControlName="start" formEndControlName="end"
+                                    [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                    [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID No</mat-label>
+                                    <input matInput placeholder="Search UHID No" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="FirstName"
+                                        (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="LastName"
+                                        (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="OT Reservation Calendar">
+                <div class="modal-page page-layout inner-scroll">
+                    <div class="modal-wrapper grid-container">
+
+                        <!-- Modal body -->
+                        <div class="modal-body" fusePerfectScrollbar>
+                            <div class="modal-body-container">
+                                <div fxLayout="column" class="gap-8 h-100-p">
+                                    <div class="modal-card-container calender-header input-error-hidden">
+                                        <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+                                            <div fxFlex="40%" fxFlex.xs="100%">
+                                                <div fxLayout="row" fxLayoutGap="8px">                                                    
+                                                    <airmid-dropdown label="OT Table" formControlName="ottableId"
+                                                        [formGroup]="myFilterform" [mode]="autocompleteModeOTTable"
+                                                        (selectionChange)="selectChangeTable($event)">
+                                                    </airmid-dropdown>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="60%" fxFlex.xs="100%">
+                                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8"
+                                                    *ngIf="TableId > 0">
+                                                    <button mat-raised-button (click)="bindData()">Refresh</button>
+                                                    <h3 #dateDisplay class="m-0">{{ viewDate | calendarDate : view +
+                                                        'ViewTitle' : 'en' }}</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-12 mb-2"
+                                            *ngIf="TableId > 0" [gdAlignRows.xs]="">
+                                            <div class="button-row-group">
+                                                <button mat-raised-button mwlCalendarPreviousView [view]="view"
+                                                    [(viewDate)]="viewDate"
+                                                    (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+                                                <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
+                                                    (viewDateChange)="closeOpenMonthViewDay()">Today</button>
+                                                <button mat-raised-button mwlCalendarNextView [view]="view"
+                                                    [(viewDate)]="viewDate"
+                                                    (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+                                            </div>
+                                            <div class="button-row-group">
+                                                <button mat-raised-button (click)="setView(CalendarView.Month)"
+                                                    [color]="view === CalendarView.Month ? 'primary' : undefined">Month</button>
+                                                <button mat-raised-button (click)="setView(CalendarView.Week)"
+                                                    [color]="view === CalendarView.Week ? 'primary' : undefined">Week</button>
+                                            </div>
+                                        </div>
+
+                                       <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px"
+                                            *ngIf="false">
+                                            
+                                            <div fxFlex.gt-sm="50%" fxFlex="100%" *ngIf="TableId > 0">
+                                                <div fxLayout="row wrap" fxLayoutGap="16px"
+                                                    fxLayoutAlign="start center">
+                                                    
+                                                    <div fxFlex="100%" fxFlex.gt-sm="auto">
+                                                        <button mat-raised-button mwlCalendarPreviousView [view]="view"
+                                                            [(viewDate)]="viewDate"
+                                                            (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+                                                        <button mat-raised-button mwlCalendarToday
+                                                            [(viewDate)]="viewDate"
+                                                            (viewDateChange)="closeOpenMonthViewDay()">Today</button>
+                                                        <button mat-raised-button mwlCalendarNextView [view]="view"
+                                                            [(viewDate)]="viewDate"
+                                                            (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+                                                    </div>
+
+                                                    <div fxFlex="100%" fxFlex.gt-sm="auto"
+                                                        style="display: flex; align-items: center; gap: 8px">
+                                                        <h3 style="margin: 0">{{ viewDate | calendarDate : view +
+                                                            'ViewTitle' : 'en' }}</h3>
+                                                        <button mat-raised-button (click)="bindData()">Refresh</button>
+                                                    </div>
+
+                                                    <div fxFlex="100%" fxFlex.gt-sm="auto">
+                                                        <div class="btn-group">
+                                                            <button mat-raised-button
+                                                                (click)="setView(CalendarView.Month)"
+                                                                [class.active]="view === CalendarView.Month">Month</button>
+                                                            <button mat-raised-button
+                                                                (click)="setView(CalendarView.Week)"
+                                                                [class.active]="view === CalendarView.Week">Week</button>
+                                                            <button mat-raised-button
+                                                                (click)="setView(CalendarView.Day)"
+                                                                [class.active]="view === CalendarView.Day">Day</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="modal-card-container overflow-auto">
+                                        <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="TableId > 0">
+                                            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month"
+                                                [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                                                [activeDayIsOpen]="activeDayIsOpen"
+                                                (dayClicked)="dayClicked($event.day)"
+                                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-month-view>
+                                            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week"
+                                                [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="6"
+                                                [dayStartHour]="8"
+                                                [hourSegmentTemplate]="weekViewHourSegmentTemplate"></mwl-calendar-week-view>
+                                            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day"
+                                                [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                                (eventTimesChanged)="eventTimesChanged($event)"
+                                                [hourSegments]="6"></mwl-calendar-day-view>
+                                        </div>
+                                        <ng-template #weekViewHourSegmentTemplate let-segment="segment"
+                                            let-locale="locale" let-segmentHeight="segmentHeight"
+                                            let-isTimeLabel="isTimeLabel">
+                                            <div #segmentElement class="cal-hour-segment"
+                                                [style.height.px]="segmentHeight"
+                                                [class.cal-hour-start]="segment.isStart"
+                                                [class.cal-after-hour-start]="!segment.isStart"
+                                                [ngClass]="segment.cssClass"
+                                                (mousedown)="startDragToCreate(segment, $event, segmentElement)"
+                                                [ngClass]="{ 'cal-disabled-segment': !isTimeLabel && segment.date < now }">
+                                                <div class="cal-time" *ngIf="isTimeLabel">
+                                                    {{ segment.date | date : 'hh:mm a' }}
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
     </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <div class="info-badge-top p-12 border-bottom">
-            <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
-
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> IP </span>
-                </div>
-
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="orange-600-fg">OP
-                    </span>
-                </div>
-                <!-- <div style="color: rgba(39, 12, 12, 0.123)" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Booking </span>
-                </div>
-                <div style="color: rgb(14, 60, 79);" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Unbooking </span>
-                </div> -->
-                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span>Request Accepted </span>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill purple-600 s-16">circle</mat-icon>
-                    <span>Reservation PostPone</span>
-                </div>
-            </div>
-        </div>
-        <ng-template #actionsTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
-
-                <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
-                    class="pill blue-600 s-16 ">circle</mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #actionsTemplate2 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isNewRecord == 1 ; else noPostpone" matTooltip="Reservation PostPone"
-                    class="pill purple-600 s-16 ">circle</mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button mat-icon-button matTooltip="Edit Reservation" (click)="OnEdit(element)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
-                    <mat-icon> print</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="OT Reservation Date Change" (click)="tOTBookingDateChange(element)">
-                    <mat-icon>date_range</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
-                    <mat-icon> cancel</mat-icon>
-                </button>
-
-            </div>
-        </ng-template>
-        <airmid-table [gridConfig]="gridConfig" class="content">
-            <ng-container filters>
-                <form [formGroup]="myFilterform">
-
-                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
-                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="RegNo" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="FirstName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
-                            formControlName="LastName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                </form>
-            </ng-container>
-        </airmid-table>
-    </div>
 
 
 </div>

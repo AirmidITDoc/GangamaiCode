@@ -29,7 +29,7 @@ export class SalePopupComponent implements OnInit {
   vEscflag: boolean = false;
   selectedRow: SalesList = null;
 
-  constructor(private dialogRef: MatDialogRef<SalePopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public salesService: SalesService) {}
+  constructor(private dialogRef: MatDialogRef<SalePopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any, public salesService: SalesService) { }
   ngOnInit(): void {
     this.getSalesData();
   }
@@ -77,23 +77,23 @@ export class SalePopupComponent implements OnInit {
 
   selectCurrentRow() {
     if (this.selectedRowIndex >= 0 && this.selectedRowIndex < this.dataSource.data.length) {
-      const selectedData = this.dataSource.data[this.selectedRowIndex]; 
-        if (selectedData.daysFlag == '1') {
-      Swal.fire({
-        icon: "warning",
-        title: "Selected Batch is already Expired",
-        showConfirmButton: false,
-        timer: 2000
-      });
-      return
-    }
+      const selectedData = this.dataSource.data[this.selectedRowIndex];
+      if (!this.data?.formName && selectedData.daysFlag == '1') {
+        Swal.fire({
+          icon: "warning",
+          title: "Selected Batch is already Expired",
+          showConfirmButton: false,
+          timer: 2000
+        });
+        return
+      }
       this.dialogRef.close({
         selectedData: selectedData,
         vEscflag: this.vEscflag,
       });
     }
   }
-  selectNewRow(row,index:number){ 
+  selectNewRow(row, index: number) {
     this.selectedRowIndex = index;
     this.selectCurrentRow();
   }
@@ -152,7 +152,7 @@ export class SalesList {
   ConversionFactor: string;
   position: number;
   DaysFlag: any;
-  daysFlag:any;
+  daysFlag: any;
   // Bal:number;
   // StoreId:any;
   // StoreName:any;
@@ -182,7 +182,7 @@ export class SalesList {
 function onKeydownHandler(
   event: Event,
   KeyboardEvent: {
-    new (type: string, eventInitDict?: KeyboardEventInit): KeyboardEvent;
+    new(type: string, eventInitDict?: KeyboardEventInit): KeyboardEvent;
     prototype: KeyboardEvent;
     readonly DOM_KEY_LOCATION_STANDARD: 0;
     readonly DOM_KEY_LOCATION_LEFT: 1;

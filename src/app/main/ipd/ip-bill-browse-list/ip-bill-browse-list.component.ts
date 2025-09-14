@@ -383,7 +383,7 @@ export class IPBillBrowseListComponent implements OnInit {
     //     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
     // }
     viewgetInterimBillReportPdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IpInterimBill");
+        this.commonService.Onprint("BillNo", billNo, "IPDInterimBill");
     }
     viewgetBillReportclasswisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillClassWise");
@@ -601,8 +601,9 @@ export class IPBillBrowseListComponent implements OnInit {
     }
 
     getFinalBillview(data) {
+        console.log(data);
         console.log("BillNo Click : ", data.billNo);
-        if (!data.InterimOrFinal)
+        if (!data.interimOrFinal)
             this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         else
             this.viewgetInterimBillReportPdf(data.billNo)

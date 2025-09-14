@@ -167,14 +167,13 @@
                         <input type="hidden" name="otreservationId" formControlName="otreservationId">
                         <div fxLayout="row wrap" fxLayoutGap="12px grid">
 
-
                             <div fxLayout="row" fxLayoutGap="16px" fxFlexFill>
 
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
                                         <mat-label>OP Date</mat-label>
                                         <input matInput [matDatepicker]="opDatePicker" formControlName="opdate"
-                                            placeholder="Select date">
+                                            placeholder="Select date"  (keydown.enter)="onEnterKey($event)">
                                         <mat-datepicker-toggle matSuffix [for]="opDatePicker"></mat-datepicker-toggle>
                                         <mat-datepicker #opDatePicker></mat-datepicker>
                                     </mat-form-field>
@@ -182,16 +181,24 @@
 
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
-                                        <mat-label>OP Start Time</mat-label>
-                                        <input matInput type="time" formControlName="opstartTime"
+                                        <mat-label>Duration (hours)</mat-label>
+                                        <input matInput type="number" formControlName="duration"  (keydown.enter)="onEnterKey($event)"
+                                            (change)="onChangeTime($event)" min="0" step="0.5">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="33%">
+                                    <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-label>Start Time</mat-label>
+                                        <input matInput type="time" formControlName="opstartTime"  (keydown.enter)="onEnterKey($event)"
                                             (change)="onChangeTimeStart($event)">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="33%">
                                     <mat-form-field appearance="fill" style="width: 100%;">
-                                        <mat-label>OP End Time</mat-label>
-                                        <input matInput type="time" formControlName="opendTime"
+                                        <mat-label>End Time</mat-label>
+                                        <input matInput type="time" formControlName="opendTime" readonly
                                             (change)="onChangeTimeEnd($event)">
                                     </mat-form-field>
                                 </div>
@@ -247,23 +254,6 @@
                             [formGroup]="reservationForm" [(ngModel)]="vInstruction">
                         </airmid-textbox>
 
-                        <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                          <mat-radio-group formControlName="nameFormat" fxLayout="row" fxLayoutGap="10px">
-                            <span>surgery Type:</span>
-                            <mat-radio-button value="Normal">Normal</mat-radio-button>
-                            <mat-radio-button value="Emergency">Emergency</mat-radio-button>
-                          </mat-radio-group>
-                        </div> -->
-                        <!-- <div class="modal-footer" style="margin-top: 10px;">
-                            <div class="footer-navigation-container">
-                                <div class="modal-footer-buttons">
-                                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                                        <span>Save</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
 

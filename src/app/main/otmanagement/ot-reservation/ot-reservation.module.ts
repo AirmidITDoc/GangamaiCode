@@ -40,6 +40,11 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { OtrequestlistComponent } from "./otrequestlist/otrequestlist.component";
 import { OtReservationService } from "./ot-reservation.service";
 import { OtPopupComponent } from './ot-popup/ot-popup.component';
+import { MatDatepickerInput } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { MatTimepickerModule } from 'mat-timepicker';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 
 const routes: Routes = [
@@ -50,9 +55,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent,NewReservationComponent ,OtrequestlistComponent, OtPopupComponent],
+    declarations: [OTReservationComponent, NewReservationComponent, OtrequestlistComponent, OtPopupComponent],
     imports: [
         RouterModule.forChild(routes),
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
         CommonModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -81,15 +90,17 @@ const routes: Routes = [
         MatDividerModule,
         MatExpansionModule,
         MatListModule,
-        MatSlideToggleModule, 
+        MatSlideToggleModule,
         MatSnackBarModule,
         MatStepperModule,
         MatTabsModule,
         MatTooltipModule,
         MatButtonToggleModule,
         MatSidenavModule,
-        
+        MatCardModule,
+        MatTimepickerModule,
+
     ],
-    providers: [DatePipe, OtReservationService]
+    providers: [DatePipe, OtReservationService, MatDatepickerInput]
 })
 export class OTReservationModule { }
