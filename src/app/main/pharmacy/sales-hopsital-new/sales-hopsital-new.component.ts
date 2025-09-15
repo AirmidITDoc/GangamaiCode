@@ -1041,7 +1041,7 @@ export class SalesHospitalNewComponent implements OnInit {
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
           console.log(response)
-         this.OnSalesprint(response.salesId,opIpType)
+         this.OnSalesprint(response,opIpType)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
@@ -1051,7 +1051,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
         console.log(this.PharmaSalesForm.value)
         this._salesService.InsertCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
-         this.OnSalesprint(response.salesId,opIpType)
+         this.OnSalesprint(response,opIpType)
           this.onClose()
         });
       } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
@@ -1082,7 +1082,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.PharmaSalesForm.value)
             this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe(response => {
-              this.OnSalesprint(response.salesId,opIpType)
+              this.OnSalesprint(response,opIpType)
               this.onClose()
             });
           }
@@ -2100,8 +2100,8 @@ vExpDate:any;
     debugger  
    if(event){ 
     this.ItemSubform.get('externalPatientName').setValue(event)
-     this.ItemSubform.get('doctorName').setValue(event) 
-   }
+    this.ItemSubform.get('doctorName').setValue(event) 
+   } 
    this.PatientName = event.patientName
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
             if (extAddressNameElement) {
@@ -2113,7 +2113,7 @@ vExpDate:any;
    if(event){ 
     this.ItemSubform.get('extMobileNo').setValue(event)
      this.ItemSubform.get('doctorName').setValue(event) 
-   }
+   } 
    this.PatientName = event.patientName
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
             if (extAddressNameElement) {
@@ -2121,11 +2121,7 @@ vExpDate:any;
             } 
   }
     getSelectedObjExtDocName(event){ 
-      debugger  
-  //  if(event){ 
-  //   this.ItemSubform.get('extMobileNo').setValue(event)
-  //    this.ItemSubform.get('doctorName').setValue(event) 
-  //  }
+      debugger   
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
             if (extAddressNameElement) {
                 extAddressNameElement.focus();

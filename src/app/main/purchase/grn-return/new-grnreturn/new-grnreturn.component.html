@@ -71,11 +71,12 @@
                                 </mat-radio-button>
                             </mat-radio-group>
 
-                            <!-- <mat-radio-group name="GSTType" formControlName="GSTType" value="GST Return"
-                                style="padding:15px;" [(ngModel)]="vGSTTpe">
+                            <mat-radio-group name="GSTType" formControlName="GSTType" value="GST Return"
+                                style="padding:15px;" [(ngModel)]="vGSTTpe" *ngIf="isGSTVisible" 
+                                (change)="onGSTTypeChange()">
                                 <mat-radio-button value="GST Return">GST Return</mat-radio-button>
                                 <mat-radio-button value="Without GST">Without GST</mat-radio-button>
-                            </mat-radio-group> -->
+                            </mat-radio-group>
 
                             <app-common-date [screenFrom]="screenFromString"
                                 (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
@@ -87,8 +88,8 @@
                         <div fxlayout="row">
                             <div style="width: 100%;" class="airmid-table-container">
 
-                                <mat-table #table matSort class="table2" [dataSource]="dsGrnItemList" 
-                                    class="airmid-table h-300" [@animateStagger]="{value:'50'}" style="overflow: auto;">
+                                <mat-table #table matSort [dataSource]="dsGrnItemList" class="airmid-table"
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto; height: 400px;">
 
                                     <ng-container matColumnDef="Action">
                                         <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
@@ -208,7 +209,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="VatPercentage">
+                                    <ng-container matColumnDef="GstPercentage">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                             GST</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
@@ -216,7 +217,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="VatAmount">
+                                    <ng-container matColumnDef="GstAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             GSTAmt</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
@@ -343,9 +344,9 @@
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="12%">
-                                <mat-label>Vat Amount</mat-label>
-                                <input matInput name="VatAmount" formControlName="FinalVatAmount"
-                                    placeholder="VatAmount" [(ngModel)]="vFinalVatAmount" readonly>
+                                <mat-label>Gst Amount</mat-label>
+                                <input matInput name="GstAmount" formControlName="FinalVatAmount"
+                                    placeholder="GstAmount" [(ngModel)]="vFinalVatAmount" readonly>
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="12%">

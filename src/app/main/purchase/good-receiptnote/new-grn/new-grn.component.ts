@@ -1,13 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
-import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+  import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +16,9 @@ import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorde
 import { NewGRNService } from './new-grn.service';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTType, ToastType } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component';
+import { values } from 'lodash';
 
 
 const moment = _rollupMoment || _moment;
@@ -116,6 +117,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     lastsupplierflag: boolean = false;
     autocompletestore: string = "Store";
     autocompleteModeGSTType: string = "GstCalcType";
+     autocompleteModeGSTTypesValues: string = "GSTTypes";   
     ItemName: any;
     Dis: any = 0;
     vpoBalQty: any;
@@ -186,19 +188,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.dsItemNameList.data = obj.Items as ItemNameList[];
             this.chargeslist = obj.Items as ItemNameList[];
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
-        }
-        this.getGSTTypesValues();
-    }
-    getGSTTypesValues() {
-        var vdata = {
-            "searchFields": [{ "fieldName": "ConstantType", "fieldValue": "GST_TYPES", "opType": "13" }],
-            "mode": "gsttypeslist"
-        }
-        this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
-            this.gstValues = response.map(item => Number(item.Value))
-            //this.gstValues = response
-        ))
-    }
+        } 
+    } 
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
@@ -217,34 +208,40 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
-    }
-    gstValues:any=[];
-    getchangegstper(rate: any, controlName: string): void {
-        debugger
-        const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
-        // Predefined valid GST percentages (as numbers)
-        //const gstValues = [2.5, 6, 9, 14];  
-        const parsedRate = Number(rate); 
-        const isValid = this.gstValues.includes(parsedRate);
+    } 
+    getchangegstper(rate: any): void {
+        debugger   
+        if (rate) { 
+            this.userFormGroup.patchValue({ 
+                SGST:Number(rate.text),  
+                IGST:0,
+                GST: Number((rate.text) * 2)
+            }) 
 
-        if (!isValid) {
-            this.newGRNService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-            this.userFormGroup.get(controlName).setValue('');
-            const NameElement = document.querySelector(`[name='controlName']`) as HTMLElement;
-            if (NameElement) {
-                NameElement.focus();
-            }
-            return;
+        const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
+        if (addbuttonElement) {
+            addbuttonElement.focus();
         }
+        }
+        // const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
+        // this.userFormGroup.patchValue({
+        //     GST: GSTPer
+        // });
 
-        // Safely calculate GST total
-        const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
-        this.userFormGroup.patchValue({
-            GST: GSTPer
-        });
         this.calculateTotalamt();
     }
-
+    getchangeIgstper(rate: any): void {
+        debugger    
+        if (rate) { 
+            this.userFormGroup.patchValue({ 
+                SGST:0, 
+                CGST:0,
+                GST: Number(rate.text)
+            }) 
+        }
+         this.calculateTotalamt();
+    }
+        
     //supplier details
     selectChangeSupplier(supplier: any): void {
         let SupplierId = 0
@@ -589,6 +586,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     GSTTypeID: any = 0;
     GSTTypeName: any = '';
     itemlist: any = [];
+
+    
+@ViewChild('HSNCodeInput') HSNCodeInput!: ElementRef;
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
         this.GSTTypeName = event.text
@@ -605,7 +605,20 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             item.GSTType = newGSTType;
             this.getCellCalculation(item);
         })
+
+setTimeout(() => {
+  if (this.HSNCodeInput?.nativeElement) {
+    this.HSNCodeInput.nativeElement.focus();
+  } else {
+    console.warn('HSNCodeInput not found in DOM');
+  }
+}, 500);
+    //   const HSNCodeElement = document.querySelector(`[name='HSNCode']`) as HTMLElement;
+    //     if (HSNCodeElement) {
+    //         HSNCodeElement.focus();
+    //     }
     }
+    
     getCGSTAmt() {
         this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
         return this.CGSTFinalAmount
@@ -644,11 +657,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
         const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+        const reoundingamt = Math.round(netAmount)
         const updatableFormValues: GRNFinalFormModel = {
             TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
             VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
-            NetPayamt: netAmount.toFixed(2),
-            RoundingAmt: Math.round(netAmount),
+            NetPayamt:  reoundingamt.toFixed(2),
+            RoundingAmt: (Math.round(netAmount) - netAmount).toFixed(2),
             DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2),
             DiscAmount2: itemList.reduce((sum, { DisAmount2 }) => sum += +(DisAmount2 || 0), 0),
             OtherCharge: itemList.reduce((sum, { OtherCharge }) => sum += +(OtherCharge || 0), 0),
@@ -674,7 +688,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 grntime: [""],
                 storeId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 supplierId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                invoiceNo: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                invoiceNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 deliveryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 gateEntryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 cashCreditType: [true],
@@ -698,7 +712,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 debitNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 creditNote: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 otherCharge: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                roundingAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                roundingAmt: [0],
                 paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 totCgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1088,6 +1102,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             StoreId: [
                 // { name: "required", Message: "StoreId is required" }
             ],
+            CGST: [
+                // { name: "required", Message: "StoreId is required" }
+            ], 
+            IGST: [
+                // { name: "required", Message: "StoreId is required" }
+            ],
         };
     }
     getDateTime(dateTimeObj) {
@@ -1106,7 +1126,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     // Add New Supplier
     OnAddSupplier() {
-        const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+        const dialogRef = this._matDialog.open(FixSupplierComponent, {
             maxWidth: "100%",
             height: '95%',
             width: '95%',
@@ -1182,6 +1202,25 @@ chkInvoiceNo(InvoiceNo){
         });
 
 }
+ 
+  getPrevBatchlist() {
+    debugger
+    const formValues = this.userFormGroup.getRawValue();
+        var vdata = {
+            "searchFields": [
+                { "fieldName": "StoreId", "fieldValue": String(formValues?.StoreId), "opType": "13" },
+                { "fieldName": "ItemId", "fieldValue": String(formValues?.ItemName.itemId), "opType": "13" },
+                { "fieldName": "BatchNo", "fieldValue": String(formValues?.BatchNo), "opType": "13" }
+            ],
+            "mode": "CheckExistingBatchAvailable"
+        }
+        // this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
+        //     //this.gstValues = response 
+        //     //console.log(this.gstValues)
+        //     //this.gstValues = response
+        // ))
+        
+    }
     //Purchase order to grn section
     FinalTotalQty1: any = 0;
     FinalLandedrate1: any = 0;
@@ -1283,7 +1322,7 @@ chkInvoiceNo(InvoiceNo){
                 this.dsItemNameList.data = this.chargeslist
             });
         });
-    }
+    } 
 }
 export class LastThreeItemList {
     ItemID: any;

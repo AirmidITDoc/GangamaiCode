@@ -281,20 +281,22 @@ export class EmergencyComponent implements OnInit {
     const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
     const showIPD = row.isAfter24Hrs == 1;
     Swal.fire({
-      title: showIPD
-        ? `Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
-        : `Convert ${patientName} to IPD or OPD?`,
-      text: showIPD
-        ? 'Only IPD conversion is available after 24 hours.'
-        : 'Please choose the type you want to convert this patient to:',
+      // title: showIPD
+      //   ? `Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
+      //   : `Convert ${patientName} to IPD or OPD?`,
+      // text: showIPD
+      //   ? 'Only IPD conversion is available after 24 hours.'
+      //   : 'Please choose the type you want to convert this patient to:',
+      title: `Convert ${patientName} to IPD?`, //*
       icon: 'question',
-      showDenyButton: !showIPD,
+      // showDenyButton: !showIPD,
+       showDenyButton: false, //*
       showCancelButton: true,
       confirmButtonColor: '#6c757d',
-      denyButtonColor: '#3085d6',
+      // denyButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Convert to IPD',
-      denyButtonText: 'Convert to OPD',
+      // denyButtonText: 'Convert to OPD',
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -310,19 +312,19 @@ export class EmergencyComponent implements OnInit {
           this.GetAppointdetail();
         });
       }
-      else if (result.isDenied && !showIPD) {
-        const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-          maxWidth: '95vw',
-          height: '95%',
-          width: '90%',
-          data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('OPD conversion dialog closed', result);
-          this.grid.bindGridData();
-          this.GetAppointdetail();
-        });
-      }
+      // else if (result.isDenied && !showIPD) {
+      //   const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+      //     maxWidth: '95vw',
+      //     height: '95%',
+      //     width: '90%',
+      //     data: row
+      //   });
+      //   dialogRef.afterClosed().subscribe(result => {
+      //     console.log('OPD conversion dialog closed', result);
+      //     this.grid.bindGridData();
+      //     this.GetAppointdetail();
+      //   });
+      // }
     });
   }
 

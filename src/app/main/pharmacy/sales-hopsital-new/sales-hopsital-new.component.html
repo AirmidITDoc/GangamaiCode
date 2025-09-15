@@ -263,9 +263,9 @@
 
                                <airmid-autocomplete label="Mobile No"
                                 [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10" minlength="10"
-                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="value" 
+                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
                                 ApiUrl="Sales/External-auto-complete?Keyword="  
-                                (selectionChange)="getSelectedObjextMobile($event)"  
+                                (selectionChange)="getSelectedObjextMobile($event)"   
                                ></airmid-autocomplete>  
                             </div> 
                        
@@ -273,8 +273,8 @@
                               <airmid-autocomplete label="Patient Name"  
                                 [formGroup]="ItemSubform" formControlName="externalPatientName"
                                 placeholderText="Patient Name" fxFlex
-                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="patientName" 
-                                (selectionChange)="getSelectedObjextPatient($event)" 
+                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
+                                (selectionChange)="getSelectedObjextPatient($event)"  
                                 ></airmid-autocomplete> 
                             </div>
 

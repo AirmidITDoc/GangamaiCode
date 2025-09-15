@@ -96,7 +96,8 @@
 
                     <airmid-dropdown label="Select GSTType" formControlName="GSTType" fxFlex="10%"
                       [formGroup]="userFormGroup" [validations]="getValidationMessages().GSTType"
-                      [mode]="autocompleteModeGSTType" (selectionChange)="onGSTTypeChange($event)">
+                      [mode]="autocompleteModeGSTType" (selectionChange)="onGSTTypeChange($event)"
+                     >
                     </airmid-dropdown>
 
                     <div fxLayout="row" fxFlex="15%" class="ml-8">
@@ -119,9 +120,9 @@
                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId" formControlName="PurchaseId" />
                     <input type="hidden" name="poBalQty" [(ngModel)]="vpoBalQty" formControlName="poBalQty" />
 
-                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode"></airmid-textbox>
-
-
+                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode"  type="text"
+                     name="HSNCode" #HSNCodeInput></airmid-textbox> 
+ 
                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="userFormGroup"
                       formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="14%"
                       TextField="formattedText" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
@@ -147,7 +148,7 @@
                       placeholder="Qty" (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>
 
                     <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
-                      placeholder="FreeQty" type="number" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      placeholder="FreeQty" type="number" [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
                       placeholder="MRP" type="number" [validations]="getValidationMessages().mrp"
@@ -168,17 +169,27 @@
                         (keyup)="calculateDiscper2Amt()"></airmid-textbox>
                     </div>
 
-                    <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup"
+                    <!-- <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup"
                       type="text" #CGST
-                      (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox> 
+                      (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox>  -->
+
+                       <airmid-dropdown label="CGST" formControlName="CGST" fxFlex="5%"
+                      [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
+                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
+                     > </airmid-dropdown>
 
                     <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [formGroup]="userFormGroup"
-                      type="text" #SGST
-                      (change)="getchangegstper(userFormGroup.get('SGST')?.value, 'SGST')"></airmid-textbox>
+                      type="text" #SGST [readonly]="true"
+                      ></airmid-textbox>
 
-                    <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [formGroup]="userFormGroup"
+                    <!-- <airmid-textbox fxFlex="4%" label="IGST" formControlName="IGST" [formGroup]="userFormGroup"
                       type="text" #IGST
-                      (change)="getchangegstper(userFormGroup.get('IGST')?.value, 'IGST')"></airmid-textbox>
+                      (change)="getchangegstper(userFormGroup.get('IGST')?.value, 'IGST')"></airmid-textbox> -->
+
+                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="5%"
+                      [formGroup]="userFormGroup" [validations]="getValidationMessages().IGST"
+                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangeIgstper($event)"
+                     > </airmid-dropdown>
 
                     <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox>
@@ -189,7 +200,7 @@
                       <!-- Temporary disabled false 
                         [disabled]="!userFormGroup.valid"-->
                       <button type="button" class="btn btn-primary btn-with-icon py-8" (click)="onAddGRNItem()"
-                        #addbutton id="btnAdd">
+                        #addbutton id="addbutton">
                         <mat-icon>add</mat-icon>
                       </button>
                     </div>
@@ -229,7 +240,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Packing</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.ConversionFactor" (input)="getCellCalculation(contact)"
+                    <input matInput [(ngModel)]="contact.ConversionFactor" (ngModelChange)="getCellCalculation(contact)"
                       type="number" autocomplete="off" [min]="1" OnlyNumber [disabled]="contact.isVerified"
                       [id]="'Packing_' + index" (keydown.arrowdown)="setFocus('Packing_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Packing_' + (index - 1))" />
@@ -278,7 +289,7 @@
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber [id]="'Qty_' + index"
-                      (input)="getCellCalculation(contact)" [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
+                      (ngModelChange)="getCellCalculation(contact)" [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -288,7 +299,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm [(ngModel)]="contact.FreeQty">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.FreeQty" type="number" OnlyNumber [id]="'FreeQty_' + index"
-                      (input)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
+                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
                       (keydown.arrowup)="setFocus('FreeQty_' + (index - 1))" [disabled]="contact.isVerified"
                       [min]="0" />
                   </mat-form-field>
@@ -307,7 +318,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MRP(Strip)</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.MRP" (input)="getCellCalculation(contact)" type="number"
+                    <input matInput [(ngModel)]="contact.MRP" (ngModelChange)="getCellCalculation(contact)" type="number"
                       OnlyNumber [id]="'MRP_' + index" autocomplete="off" [disabled]="contact.isVerified"
                       (keydown.arrowdown)="setFocus('MRP_' + (index + 1))"
                       (keydown.arrowup)="setFocus('MRP_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
@@ -323,7 +334,7 @@
                   <mat-form-field appearance="fill">
                     <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_' + index"
                       autocomplete="off" OnlyNumber [disabled]="contact.isVerified"
-                      (input)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
+                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Rate_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
                       [min]="0" />
                   </mat-form-field>
@@ -342,7 +353,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Disc" [id]="'DiscPer_' + index" [disabled]="contact.isVerified"
-                      (input)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
+                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer_' + (index - 1))" step="0.1" type="number" [min]="0"
                       [max]="100" OnlyNumber autocomplete="off" (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
@@ -361,7 +372,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Disc2" [id]="'DiscPer2_' + index"
-                      [disabled]="contact.isVerified" (input)="getCellCalculation(contact)" [min]="0" [max]="100"
+                      [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)" [min]="0" [max]="100"
                       step="0.1" type="number" OnlyNumber autocomplete="off"
                       (keydown.arrowdown)="setFocus('DiscPer2_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))"
@@ -404,7 +415,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.CGST" [id]="'CGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (input)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -424,7 +435,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.SGST" [id]="'SGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (input)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -444,7 +455,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.IGST" [id]="'IGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (input)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
                       autocomplete="off" (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -770,26 +781,27 @@
 
                         <airmid-textbox fxFlex="17%" label="Remark" formControlName="Remark"
                           [(ngModel)]="registerObj.remark" [formGroup]="_GRNList.GRNFinalForm"
-                          type="text"></airmid-textbox>
+                          type="text" ></airmid-textbox>
 
                         <airmid-textbox fxFlex="14%" label="Received By" formControlName="ReceivedBy"
                           [(ngModel)]="registerObj.receivedBy" [formGroup]="_GRNList.GRNFinalForm"
-                          type="text"></airmid-textbox>
+                          type="text" ></airmid-textbox>
 
                         <airmid-textbox fxFlex="12%" label="Debit Amt" formControlName="DebitAmount"
                           [(ngModel)]="registerObj.debitNote" [formGroup]="_GRNList.GRNFinalForm"
-                          type="number"></airmid-textbox>
+                          type="number" [min]="0"></airmid-textbox>
 
                         <airmid-textbox fxFlex="12%" label="Credit Amt" formControlName="CreditAmount"
                           [(ngModel)]="registerObj.creditNote" [formGroup]="_GRNList.GRNFinalForm"
-                          type="number"></airmid-textbox>
+                          type="number" [min]="0"></airmid-textbox>
 
                         <airmid-textbox fxFlex="12%" label="Other Charges" formControlName="OtherCharge"
                           [(ngModel)]="registerObj.otherCharge" [formGroup]="_GRNList.GRNFinalForm"
-                          type="number"></airmid-textbox>
+                          type="number" [min]="0"></airmid-textbox>
 
-                        <airmid-textbox fxFlex="12%" label="EwayBillNo" formControlName="Contact"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number"></airmid-textbox>
+                        <airmid-textbox fxFlex="12%" label="EwayBillNo" formControlName="EwayBillNo"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"
+                           ></airmid-textbox>
 
                         <airmid-datepicker fxFlex="17%" [formGroup]="_GRNList.GRNFinalForm"
                           formControlName="EwalBillDate" [label]="'EwayBill date'"></airmid-datepicker>
@@ -812,8 +824,8 @@
           <button class="btn btn-primary-outline" (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button> -->
-          <button class="btn btn-primary-outline">Add Item</button>
-          <button class="btn btn-primary-outline">Add Supplier</button>
+          <button class="btn btn-primary-outline"   (click)="OnAddItem()">Add Item</button>
+          <button class="btn btn-primary-outline"   (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="onSave()">Save</button>
         </div>

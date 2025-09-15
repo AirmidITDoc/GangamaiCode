@@ -58,12 +58,12 @@
                 <button mat-icon-button matTooltip="print" (click)="viewgetGRNReportPdf(element)">
                     <mat-icon>print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit" *ngIf="!element.isVerified">
+                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit"  >
                     <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Can't Edit Indent" *ngIf="element.isVerified">
+                <!-- <button mat-icon-button matTooltip="Can't Edit Indent" *ngIf="element.isVerified">
                     <mat-icon>signal_cellular_no_sim</mat-icon>
-                </button>
+                </button> -->
 
                 <button *ngIf="!element.isVerified" mat-icon-button (click)="onVerify(element)">
                     <mat-icon class="disabled-icon" matTooltip="verify Menu"  title="verify Menu">verified_user</mat-icon>
@@ -89,7 +89,7 @@
         </ng-template>
 
 
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" #grid>
             <ng-container filters>
                 <form [formGroup]="_GRNService.GRNSearchGroup" fxLayout="column">
                     <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
@@ -115,7 +115,7 @@
                     <div fxLayout="row" class="gap-4 ">
                         <span style="font-weight: bold;">Status :</span>
                         <mat-slide-toggle name="Status1" (change)="onChangeFirst()" formControlName="Status1">
-                            Verify / Pending
+                             Pending / Verify
                         </mat-slide-toggle>
                     </div>
                 </form>

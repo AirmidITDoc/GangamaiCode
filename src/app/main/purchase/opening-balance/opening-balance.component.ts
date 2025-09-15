@@ -51,7 +51,7 @@ export class OpeningBalanceComponent {
 
   allcolumns = [
 
-    { heading: "DateTime", key: "openingTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type:8},
+    { heading: "DateTime", key: "openingTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
     { heading: "TransectionNo", key: "transectionNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -163,7 +163,7 @@ export class OpeningBalanceComponent {
       {
         maxWidth: "100%",
         height: '85%',
-        width: '98%',
+        width: '95%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {

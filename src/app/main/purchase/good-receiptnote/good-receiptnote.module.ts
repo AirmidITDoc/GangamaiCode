@@ -43,6 +43,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NewGrnComponent } from './new-grn/new-grn.component';
+import { GoodReceiptnoteService } from './good-receiptnote.service';
 
 //import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -111,6 +112,7 @@ const routes: Routes = [
         //MatGridListModule
     ],
     providers: [
+        GoodReceiptnoteService,
         DatePipe,
     ]
 })
