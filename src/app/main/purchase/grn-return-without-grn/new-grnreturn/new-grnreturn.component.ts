@@ -440,6 +440,11 @@ export class NewGRNReturnComponent implements OnInit {
   Savebtn: boolean = false;
   OnSave() {
     debugger
+    if(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return'){
+      this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
+    }else
+      this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(false)
+
     this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
     this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
     this.GrnReturnForm.get('grnReturn.grnReturnAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value)
@@ -447,6 +452,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
     this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
     this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
+    
     if (!this.GrnReturnForm.invalid) {
       if ((!this.dsItemList.data.length)) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {

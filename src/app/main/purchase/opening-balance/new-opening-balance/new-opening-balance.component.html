@@ -48,20 +48,20 @@
                             </div> -->
                             <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                 <form [formGroup]="OPeningtemForm">
-                                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                                    <div fxFlexFill fxLayout="row wrap" fxLayoutGap="10px">
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="OPeningtemForm" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="20%"
+                                            placeholderText="Item Name (enter 2 char)" fxFlex="15%"
                                             [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + (StoreId || '2') + '&ItemName='"
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                                        <airmid-textbox fxFlex="5%" label="BatchNo" formControlName="BatchNo"
+                                        <airmid-textbox fxFlex="6%" label="BatchNo" formControlName="BatchNo"
                                             [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
                                             placeholder="BatchNo"></airmid-textbox>
 
-                                        <mat-form-field appearance="outline" fxFlex="5%">
+                                        <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>ExpDate</mat-label>
                                             <input matInput #inputField (keydown.enter)="calculateLastDay()"
                                                 (keypress)="keyPressAlphanumeric($event)" formControlName="ExpDate"
@@ -69,35 +69,52 @@
                                                 placeholder="MMYYYY" (input)="onExpDateInput($event)" required>
                                         </mat-form-field>
 
-                                        <airmid-textbox fxFlex="5%" label="Bal Qty" formControlName="BalanceQty"
+                                        <!-- <airmid-textbox fxFlex="5%" label="Bal Qty" formControlName="BalanceQty"
                                             [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="BalanceQty"></airmid-textbox>
+                                            placeholder="BalanceQty"></airmid-textbox> -->
 
-                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGST"
+                                        <!-- how many strips are in 1 pack. -->
+                                        <airmid-textbox fxFlex="5%" label="Pack" formControlName="pack" [min]="0"
+                                            [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
+                                            placeholder="Pack"
+                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
+
+                                        <!-- number of packs. (conversion factor)-->
+                                        <airmid-textbox fxFlex="5%" label="Qty" formControlName="BalanceQty"
+                                            [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
+                                            placeholder="Qty" (input)="calculateTotalQty()" [min]="0"
+                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="5%" label="Total Qty" formControlName="totalQty"
+                                            [formGroup]="OPeningtemForm" type="number" [readonly]="true"
+                                            placeholder="Total Qty"></airmid-textbox>
+
+                                        <airmid-textbox fxFlex="5%" label="CGST %" formControlName="CGST"
                                             [formGroup]="OPeningtemForm" type="text" #CGST
                                             (valueChange)="getchangegstper($event,CGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGST"
+                                        <airmid-textbox fxFlex="5%" label="SGST %" formControlName="SGST"
                                             [formGroup]="OPeningtemForm" type="text" #SGST
                                             (valueChange)="getchangegstper($event,SGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGST"
+                                        <airmid-textbox fxFlex="5%" label="IGST %" formControlName="IGST"
                                             [formGroup]="OPeningtemForm" type="text" #IGST
                                             (valueChange)="getchangegstper($event,IGST)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="GST %" formControlName="GST" [(ngModel)]="vGST"
-                                            [formGroup]="OPeningtemForm" type="text" [readonly]="true"></airmid-textbox>
+                                        <airmid-textbox fxFlex="5%" label="GST %" formControlName="GST"
+                                            [(ngModel)]="vGST" [formGroup]="OPeningtemForm" type="text"
+                                            [readonly]="true"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="MRP" formControlName="MRP" type="number"
+                                        <airmid-textbox fxFlex="6%" label="MRP" formControlName="MRP" type="number"
                                             [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0"
                                             (input)="onMRPInput($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="Rate PerUnit" formControlName="RatePerUnit"
+                                        <airmid-textbox fxFlex="6%" label="Rate PerUnit" formControlName="RatePerUnit"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
                                             (input)="onRatePerUnitInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="4%" label="LandedRate" formControlName="LandedRate"
+                                        <airmid-textbox fxFlex="6%" label="LandedRate" formControlName="LandedRate"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Landed Rate"
                                             (input)="onLandedRateInput($event)" [min]="0"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -115,9 +132,9 @@
 
                         </mat-expansion-panel>
                     </mat-accordion>
-                    <div class="airmid-table-container py-12" fxFlex>
-                        <mat-table class="table2" matSort [dataSource]="dsItemNameList" [@animateStagger]="{value:'50'}"
-                            style="overflow: auto; height: 350px;">
+                    <div class="airmid-table-container py-12 h-100-p" fxFlex>
+                        <mat-table class="table2 h-100-p" matSort [dataSource]="dsItemNameList"
+                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
 
                             <ng-container matColumnDef="buttons" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef style="color: white;" class="w-180"> Action
@@ -126,7 +143,6 @@
                                     <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
-
                                 </mat-cell>
                             </ng-container>
 
@@ -136,6 +152,14 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
                                     {{contact.ItemName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="pack">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    Packing </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.Pack}}
                                 </mat-cell>
                             </ng-container>
 
@@ -155,9 +179,17 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="BalQty">
+                             <ng-container matColumnDef="qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    BalQty </mat-header-cell>
+                                    Qty </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                    {{contact.TotalQty}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                    TotalQty </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                     {{contact.BalQty}}
                                 </mat-cell>
@@ -239,7 +271,6 @@
                             </mat-footer-row>
                         </mat-table>
                     </div>
-
 
                 </div>
             </div>
