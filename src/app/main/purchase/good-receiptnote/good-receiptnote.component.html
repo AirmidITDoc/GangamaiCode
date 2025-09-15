@@ -89,7 +89,7 @@
         </ng-template>
 
 
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" #grid>
             <ng-container filters>
                 <form [formGroup]="_GRNService.GRNSearchGroup" fxLayout="column">
                     <airmid-datepicker [formGroup]="_GRNService.GRNSearchGroup" [isRangePicker]="true"
@@ -115,7 +115,7 @@
                     <div fxLayout="row" class="gap-4 ">
                         <span style="font-weight: bold;">Status :</span>
                         <mat-slide-toggle name="Status1" (change)="onChangeFirst()" formControlName="Status1">
-                            Verify / Pending
+                             Pending / Verify
                         </mat-slide-toggle>
                     </div>
                 </form>

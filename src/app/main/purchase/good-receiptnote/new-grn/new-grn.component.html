@@ -119,7 +119,7 @@
                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId" formControlName="PurchaseId" />
                     <input type="hidden" name="poBalQty" [(ngModel)]="vpoBalQty" formControlName="poBalQty" />
 
-                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode"></airmid-textbox>
+                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode" #HSNCode></airmid-textbox>
 
 
                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="userFormGroup"
@@ -812,8 +812,8 @@
           <button class="btn btn-primary-outline" (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button> -->
-          <button class="btn btn-primary-outline">Add Item</button>
-          <button class="btn btn-primary-outline">Add Supplier</button>
+          <button class="btn btn-primary-outline"   (click)="OnAddItem()">Add Item</button>
+          <button class="btn btn-primary-outline"   (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="onSave()">Save</button>
         </div>

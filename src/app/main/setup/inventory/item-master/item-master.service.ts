@@ -4,7 +4,9 @@ import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 
 export class ItemMasterService {
 

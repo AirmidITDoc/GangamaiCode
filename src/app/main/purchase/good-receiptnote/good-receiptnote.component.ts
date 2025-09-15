@@ -67,7 +67,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         },
-        { heading: "Date", key: "grndate", sort: true, align: 'left', emptySign: 'NA', width: 130, },
+        { heading: "Date", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 160},
         { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -92,6 +92,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         //   { heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA',width:60,type: gridColumnTypes.template,
         //     template: this.actionButtonTemplateCheck},
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "UMO", key: "UnitofMeasurementName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "Package", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -107,7 +108,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
-        { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 9 }
+        { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160}
     ]
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
@@ -358,7 +359,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     onVerify(row) {
         let GRNVerifyObj = {};
         GRNVerifyObj['grnid'] = row.grnid;
-        GRNVerifyObj['isVerifiedUserId'] = this.accountService.currentUserValue.userId;
+        GRNVerifyObj['VerifiedBy'] = this.accountService.currentUserValue.userId;
 
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
         }); 

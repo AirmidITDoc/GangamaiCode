@@ -1,13 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
-import { SupplierFormMasterComponent } from 'app/main/setup/inventory/supplier-master/supplier-form-master/supplier-form-master.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+  import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +16,8 @@ import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorde
 import { NewGRNService } from './new-grn.service';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTType, ToastType } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component';
 
 
 const moment = _rollupMoment || _moment;
@@ -195,9 +195,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             "mode": "gsttypeslist"
         }
         this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
-            this.gstValues = response.map(item => Number(item.Value))
+            this.gstValues = response 
             //this.gstValues = response
         ))
+        
     }
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
@@ -223,7 +224,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         // Predefined valid GST percentages (as numbers)
-        //const gstValues = [2.5, 6, 9, 14];  
+        //const gstValues = [2.5, 6, 9, 14]; 
+         this.gstValues = this.gstValues?.map(item => Number(item.Value)) 
         const parsedRate = Number(rate); 
         const isValid = this.gstValues.includes(parsedRate);
 
@@ -235,8 +237,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 NameElement.focus();
             }
             return;
-        }
-
+        } 
+        //If IGST then set 0 to cgstand sgst
+        if(controlName == 'IGST'){this.userFormGroup.patchValue({CGST:0,SGST:0})}
         // Safely calculate GST total
         const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
         this.userFormGroup.patchValue({
@@ -589,6 +592,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     GSTTypeID: any = 0;
     GSTTypeName: any = '';
     itemlist: any = [];
+
+    
+  @ViewChild('HSNCode') HSNCode: ElementRef;
     onGSTTypeChange(event: { value: number, text: string }) {
         console.log(event)
         this.GSTTypeName = event.text
@@ -605,6 +611,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             item.GSTType = newGSTType;
             this.getCellCalculation(item);
         })
+
+     this.HSNCode.nativeElement.focus();
     }
     getCGSTAmt() {
         this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
@@ -674,7 +682,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 grntime: [""],
                 storeId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 supplierId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                invoiceNo: ["", [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                invoiceNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 deliveryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 gateEntryNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 cashCreditType: [true],
@@ -1106,7 +1114,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     // Add New Supplier
     OnAddSupplier() {
-        const dialogRef = this._matDialog.open(SupplierFormMasterComponent, {
+        const dialogRef = this._matDialog.open(FixSupplierComponent, {
             maxWidth: "100%",
             height: '95%',
             width: '95%',
