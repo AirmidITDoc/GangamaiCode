@@ -1,0 +1,220 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" fxLayout="column"
+  fxFill dynamicTableHeight style="width: 100%; overflow-x: hidden;">
+  <!-- Top header -->
+  <div class="top-header header accent" fxLayout="column" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center" style="padding:16px">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <div class="top-header-info">
+        <div class="top-header-title">
+          <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            Appointment List
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+      <mat-button-toggle-group [(ngModel)]="viewMode" aria-label="View mode">
+        <mat-button-toggle value="table" matTooltip="Table view">
+          <mat-icon>table_view</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="card" matTooltip="Card view">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+
+    </div>
+  </div>
+
+  <div fxFlex fxLayout="column" class="mat-padding" style="min-height:0; overflow:auto;">
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxFlex
+      style="margin-top: 16px;">
+
+      <!-- Row action template -->
+      <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+          <button mat-icon-button matTooltip="View Password" (click)="PasswordView(element)">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </ng-template>
+
+
+  <ng-template #actionsTemplateptype let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+
+                <mat-icon *ngIf="element.patientOldNew=='1'" matTooltip="PatientNew"
+                    class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientOldNew=='2'" matTooltip="PatientOld" class="pill orange-600 s-16">circle
+                </mat-icon>
+
+            </div>
+        </ng-template>
+        <ng-template #actionsTemplate1 let-element>
+            <div>
+
+                <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
+                    class="pill red-600 s-16">circle</mat-icon>
+                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' "
+                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                    circle
+                </mat-icon>
+            </div>
+        </ng-template>
+        <ng-template #actionsTemplate2 let-element>
+            <div>
+                <mat-icon *ngIf="element.phoneAppId !== 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
+                    settings_phone
+                </mat-icon>
+            </div>
+        </ng-template>
+        <ng-template #actionsTemplate3 let-element>
+            <div>
+                <mat-icon title="CrossConsulFlag" *ngIf="element.crossConsulFlag==1"
+                    class="active-icon green-600 s-16">cached
+                    icon</mat-icon>
+            </div>
+        </ng-template>
+         <ng-template #actionsTemplate4 let-element>
+            <div>
+                <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.isConvertRequestForIp==true">
+                redo</mat-icon>
+            </div>
+        </ng-template>
+
+     
+
+      <!-- TABLE VIEW -->
+      <airmid-table *ngIf="viewMode === 'table'" [gridConfig]="gridConfig" class="content"
+        (afterLoadData)="onAfterLoadData($event)">
+         <ng-container filters>
+                <form [formGroup]="myformSearch">
+  <div fxLayout="column" fxLayoutAlign="start none">
+
+
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetAppointdetail()"
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+
+                    <mat-form-field appearance="outline" fxFlex="10%">
+                        <mat-label>UHID NO</mat-label>
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="RegNo" (input)="onChangeFirst1($event)" (keypress)="keyPressAlphanumeric($event)"/>
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="FirstName" (input)="onChangeFirst1($event)" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                            formControlName="LastName" (input)="onChangeFirst1($event)" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <airmid-dropdown label="Department Name" formControlName="departmentId" [formGroup]="myformSearch"
+                        [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue" #ddlDoctor
+                        (selectionChange)="ListView($event)"
+                        (keyup)="ListView($event)">
+                    </airmid-dropdown>
+
+                     <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button value="1">Marked</mat-radio-button>
+                        <mat-radio-button value="0">NotMarked</mat-radio-button>
+                    </mat-radio-group>
+  </div>
+                </form>
+            </ng-container>
+      </airmid-table>
+
+      <!-- CARD VIEW -->
+      <div *ngIf="viewMode === 'card'" fxFlex fxLayout="column" style="min-height:0;">
+        <mat-card fxFlex style="overflow: auto;">
+          <airmid-card-view [data]="userList" [config]="cardConfig" [gridConfig]="gridConfig"
+            (afterLoadData)="onAfterLoadData($event)" [ShowFilter]="true" [ShowButtons]="true" [pageSize]="pageSize"
+            [resultsLength]="resultsLength" (action)="onCardAction($event)" (export)="onCardExport($event)"
+            (page)="onCardPage($event)">
+            <ng-container cardFilters>
+
+              <form [formGroup]="myformSearch" fxLayout="row wrap" fxLayoutGap="4px" fxLayoutAlign="start center"
+                style="width:100%; margin-top: 10px">
+                <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                  formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                  (dateChange)="GetAppointdetail()" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+
+                <mat-form-field appearance="outline" fxFlex="10%">
+                  <mat-label>UHID NO</mat-label>
+                  <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch"
+                    formControlName="RegNo" (input)="onChangeFirst1($event)"
+                    (keypress)="keyPressAlphanumeric($event)" />
+                  <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>First Name</mat-label>
+                  <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myformSearch"
+                    formControlName="FirstName" (input)="onChangeFirst1($event)" />
+                  <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                    formControlName="LastName" (input)="onChangeFirst1($event)" />
+                  <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                <airmid-dropdown label="Department Name" formControlName="departmentId" [formGroup]="myformSearch"
+                  [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                </airmid-dropdown>
+
+                <airmid-dropdown label="Doctor Name" formControlName="DoctorId" [formGroup]="myformSearch"
+                  [(ngModel)]="gridConfig.filters[3].fieldValue" #ddlDoctor (selectionChange)="ListView($event)"
+                  (keyup)="ListView($event)">
+                </airmid-dropdown>
+
+                <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
+                  <mat-radio-button value="2">All</mat-radio-button>
+                  <mat-radio-button value="1">Marked</mat-radio-button>
+                  <mat-radio-button value="0">NotMarked</mat-radio-button>
+                </mat-radio-group>
+
+              </form>
+            </ng-container>
+          </airmid-card-view>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

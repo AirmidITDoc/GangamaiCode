@@ -82,10 +82,17 @@ const appRoutes: Routes = [
         //     import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
                
        // },
-        {
+        // {
+        //     path: "companylist",
+        //     loadChildren: () =>
+        //     import("./company-list/company-list.module").then((m) => m.CompanyListModule),
+               
+        // },
+
+         {
             path: "companylist",
             loadChildren: () =>
-            import("./company-list/company-list.module").then((m) => m.CompanyListModule),
+            import("./Admission/admission/admission-cardview/admission-cardview.module").then((m) => m.AdmissionCardviewModule),
                
         },
 

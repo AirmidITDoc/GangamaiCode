@@ -30,7 +30,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { AppointmentListComponent } from "./appointment-list.component";
 import { AppointmentlistService } from "./appointmentlist.service";
@@ -49,6 +48,8 @@ import { PatientvitalInformationComponent } from './new-appointment/patientvital
 import { PreviousDeptListComponent } from './update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
 import { WebcamModule } from "ngx-webcam";
+import { MatChipsModule } from "@angular/material/chips";
+import { SharedModule } from "app/main/shared/shared.module";
 
 
 const routes: Routes = [
@@ -59,7 +60,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent, 
+    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent,
         PreviousDeptListComponent],
     imports: [
         RouterModule.forChild(routes),
@@ -104,8 +105,11 @@ const routes: Routes = [
         //NgxQRCodeModule,
         //NgxPrintModule,
         MatButtonToggleModule,
-        WebcamModule
-    ],
+        WebcamModule,
+        MatCardModule,
+        MatChipsModule,
+
+        ],
     providers: [AppointmentlistService, DatePipe]
 })
 export class AppointmentlistModule { }

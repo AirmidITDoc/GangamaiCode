@@ -24,7 +24,6 @@ export class DischargeCancelService {
       AdmissionDateEdit:0,
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
-      OldIpdNo:[''],
       NewIpdNo:['']
     });
    }

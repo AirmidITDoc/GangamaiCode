@@ -126,6 +126,8 @@ export class DischargeCancelComponent implements OnInit {
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.AdmissionId = obj.admissionID
+
+      this._DischargeCancelService.DischargeForm.get('NewIpdNo').setValue(this.vIPDNo)
       // this.OldIpdNo=obj.Ip
       // setTimeout(() => {
       //   this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
@@ -220,7 +222,8 @@ export class DischargeCancelComponent implements OnInit {
         var data = {
           'admissionID': this.AdmissionId,
           'admissionDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'admissionTime': formattedDate + this.dateTimeObj.time
+          'admissionTime': formattedDate + this.dateTimeObj.time,
+          'ipdno': this._DischargeCancelService.DischargeForm.get('NewIpdNo').value
         }
         console.log(data);
         this._DischargeCancelService.getDateTimeChange(data).subscribe(response => {
@@ -232,39 +235,39 @@ export class DischargeCancelComponent implements OnInit {
     });
   }
 
-  OnIpdNoUpdate() {
-    if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
-      this.toastr.success('Please select patient', 'Save !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-      return
-    }
+  // OnIpdNoUpdate() {
+  //   if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
+  //     this.toastr.success('Please select patient', 'Save !', {
+  //       toastClass: 'tostr-tost custom-toast-success',
+  //     });
+  //     return
+  //   }
 
-    Swal.fire({
-      title: 'Do you want to Update IPDNO ',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Update it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        var data = {
-          'admissionID': this.AdmissionId,
-          'admissionDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          // 'admissionTime':formattedDate+this.dateTimeObj.time
-        }
-        console.log(data);
-        this._DischargeCancelService.IpdNoupdate(data).subscribe(response => {
+  //   Swal.fire({
+  //     title: 'Do you want to Update IPDNO ',
+  //     text: "You won't be able to revert this!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, Update it!"
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       var data = {
+  //         'admissionID': this.AdmissionId,
+  //         'admissionDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+  //         // 'admissionTime':formattedDate+this.dateTimeObj.time
+  //       }
+  //       console.log(data);
+  //       this._DischargeCancelService.IpdNoupdate(data).subscribe(response => {
 
-          this.resetform()
+  //         this.resetform()
 
-        });
+  //       });
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
   resetform() {
     this._DischargeCancelService.DischargeForm.reset();

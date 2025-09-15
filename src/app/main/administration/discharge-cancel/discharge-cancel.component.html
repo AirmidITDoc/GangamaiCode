@@ -1,57 +1,52 @@
-<div class="simple page-layout inner-sidebar inner-scroll left-sidebar" dynamicTableHeight>
-    <mat-toolbar class="accent" style="width: 100%;height: 40px; justify-content: space-between;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                style="color: white;">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Administration Task
-            </span>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Administration Task
+                </span>
+            </div>
         </div>
-    </mat-toolbar>
-    <mat-card style="padding: 15px;">
-        <div class="content">
+    </div>
+    <div class="modal-body">
+        <div class="modal-body-container">
 
-            <div class="center p-16 pb-56" fxFlexAlign="start center">
-                <div class="content-card" style="border-radius: 4px;">
-                    <div fxFlexFill fxLayout="row" fxLayout="column" fxLayoutGap="10px">
-                        <form [formGroup]="_DischargeCancelService.DischargeForm">
+            <mat-card style="padding: 8px;">
+                <form [formGroup]="_DischargeCancelService.DischargeForm">
 
-                            <mat-card style="padding: 15px;" fxlayout="row">
-                                <div fxlayout="row">
-                                    <div class="radio-container" style="padding: 15px;">
-                                        <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
-                                            <mat-radio-button value="1">IP</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div>
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
 
-                                    <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
-                                        [formGroup]="_DischargeCancelService.DischargeForm" formControlName="RegID"
-                                        fxFlex="50%" label="Search Reg No / Patient Name / Mobile No(AD)"
-                                        ApiUrl="Admission/Dischargesearch-patient?Keyword="
-                                        (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
-                                        TextField="firstName">
-                                    </airmid-autocomplete>
+                        <div fxlayout="row">
+                            <div class="radio-container" style="padding: 15px;">
+                                <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
+                                    <mat-radio-button value="1">IP</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
 
-                                    <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
-                                        [formGroup]="_DischargeCancelService.DischargeForm"
-                                        label="Search Reg No / Patient Name / Mobile No(DC)" formControlName="RegID"
-                                        fxFlex="50%" placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
-                                        ApiUrl="Admission/search-patient?Keyword="
-                                        (selectionChange)="getSelectedObjDC($event)" TextField="formattedText"
-                                        ValueField="regId">
-                                    </airmid-autocomplete>
+                            <airmid-autocomplete lbl="RegID" *ngIf="vCheckBox"
+                                [formGroup]="_DischargeCancelService.DischargeForm" formControlName="RegID" fxFlex="50%"
+                                label="Search Reg No / Patient Name / Mobile No(AD)"
+                                ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
+                                TextField="firstName">
+                            </airmid-autocomplete>
 
-                                    <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
-                                        (change)="getDischargedList($event)">IsDischarged
-                                    </mat-checkbox>
-                                </div>
+                            <airmid-autocomplete lbl="RegID" *ngIf="!vCheckBox"
+                                [formGroup]="_DischargeCancelService.DischargeForm"
+                                label="Search Reg No / Patient Name / Mobile No(DC)" formControlName="RegID"
+                                fxFlex="50%" placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjDC($event)"
+                                TextField="formattedText" ValueField="regId">
+                            </airmid-autocomplete>
 
-                            </mat-card>
-                        </form>
+                            <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
+                                (change)="getDischargedList($event)">IsDischarged
+                            </mat-checkbox>
+                        </div>
+
 
                         <mat-card style="padding: 15px;">
                             <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -157,78 +152,39 @@
                             </div>
                         </mat-card>
 
-                        <form [formGroup]="_DischargeCancelService.DischargeForm">
-
-                            <mat-slide-toggle name="AdmissionDateEdit" (change)="getAdmissionDateEdit($event)"
-                                formControlName="AdmissionDateEdit">
-                                AdmissionDate
-                            </mat-slide-toggle>
-                            <div fxLayout="row" fxLayoutGap="6px">
-                                <mat-card style="padding: 15px;" fxFlex *ngIf="vAdmissonDateCheckBox">
-                                    <app-common-date [screenFrom]="screenFromString"
-                                        (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
-                                    </app-common-date>
-
-
-                                </mat-card>
-
-                            </div>
-
-                            <mat-slide-toggle name="IsIPDNoEdit" (change)="getvIpdnoCheckBox($event)"
-                                formControlName="IsIPDnoEdit">
-                                IPDNoEdit
-                            </mat-slide-toggle>
-                            <!-- <mat-card style="padding: 15px;" fxFlex>
-                                   -->
-                            <div fxLayout="row" fxLayoutGap="6px" *ngIf="vIpdnoCheckBox">
-
-                                <airmid-textbox label="Old IPDNo" formControlName="OldIpdNo" fxFlex="50"
-                                    [formGroup]="_DischargeCancelService.DischargeForm">
-                                </airmid-textbox>
-
-                                <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="50"
-                                    [formGroup]="_DischargeCancelService.DischargeForm">
-                                </airmid-textbox>
-
-
-                            </div>
-
-                            <!-- </mat-card> -->
-
-
-                        </form>
- <!-- [disabled]="vRegNo=0" -->
-                        <div fxLayoutAlign="space-between">
-                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
-                              <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
-                                    style="color: white;" >Admission Cancel</button>
-                            </div>
-
-                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                                style="margin: 0px 20px 0px 50px; ">
-                                
-
-                                <button *ngIf="vCheckBox && !vIpdnoCheckBox" class="btn btn-primary"
-                                    style="color: white;" (click)="DischargeCancel()">Dicharge Cancel</button>
-                                <button *ngIf="vIpdnoCheckBox" class="btn btn-primary"
-                                    (click)="OnIpdNoUpdate()">IPDNOUpdate</button>
-                                <button *ngIf="vAdmissonDateCheckBox" class="btn btn-primary"
-                                    (click)="OnAdmDateTimeUpdate()">Save</button>
-                                <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-
-                            </div>
-                        </div>
-
-
-                        <div fxLayout="row" fxLayoutAlign=center>
-                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">Note :- </span>&nbsp;
-                            <span style="color: rgb(161, 158, 158);margin-top: 30px;">User can update Admission Date &
-                                Time/Discharge Cancel</span>
-                        </div>
-
                     </div>
+                </form>
+            </mat-card>
+            <mat-card style="padding: 15px;" *ngIf="!vCheckBox && vRegNo">
+                <div fxLayout="row" fxLayoutGap="6px">
+                    <span style="font-size: large;color: rgb(2, 74, 88);margin-right: 20px;">Admission Date /Time : -{{vAdmissionTime}}-- IPD No of
+                        Selected Patient:-  {{vIPDNo}} </span>
+
                 </div>
-            </div>
+                <form [formGroup]="_DischargeCancelService.DischargeForm">
+                    <div fxLayout="row" fxLayoutGap="6px" style="margin-top: 10px;">
+                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                        </app-common-date>
+
+                        <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="25%"
+                            [formGroup]="_DischargeCancelService.DischargeForm" [value]="vIPDNo">
+                        </airmid-textbox>
+                    </div>
+
+                </form>
+
+            </mat-card>
+
         </div>
-    </mat-card>
+    </div>
+
+    <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px"
+        style="margin-top: 20px;">
+        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+            style="color: white;margin-top: 10px;">Admission Cancel</button>
+        <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;" (click)="DischargeCancel()">Discharge
+            Cancel</button>
+        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Update</button>
+        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+    </div>
 </div>

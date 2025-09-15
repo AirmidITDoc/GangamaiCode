@@ -52,9 +52,13 @@ const appRoutes: Routes = [
   path: "payment",
     loadChildren: () =>import("./companysettlement/companysettlement.module").then((m) => m.CompanysettlementModule),
 },
+// {
+//   path: "physiotherapistSchedule",
+//     loadChildren: () =>import("./physiotherapist-schedule/physiotherapist-schedule.module").then((m) => m.PhysiotherapistScheduleModule),
+// },
 {
   path: "physiotherapistSchedule",
-    loadChildren: () =>import("./physiotherapist-schedule/physiotherapist-schedule.module").then((m) => m.PhysiotherapistScheduleModule),
+    loadChildren: () =>import("./appointment-list/apointment-cardview/appointment-cardview.module").then((m) => m.AppointmentCardviewModule),
 },
 {
   path: "disccapproval",

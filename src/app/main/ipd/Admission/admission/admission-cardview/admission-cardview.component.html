@@ -1,0 +1,288 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" fxLayout="column"
+    fxFill dynamicTableHeight style="width: 100%; overflow-x: hidden;">
+    <!-- Top header -->
+    <div class="top-header header accent" fxLayout="column" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center" style="padding:16px">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="top-header-info">
+                <div class="top-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        Admission List
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+            <mat-button-toggle-group [(ngModel)]="viewMode" aria-label="View mode">
+                <mat-button-toggle value="table" matTooltip="Table view">
+                    <mat-icon>table_view</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="card" matTooltip="Card view">
+                    <mat-icon>view_module</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+
+
+        </div>
+    </div>
+
+    <div fxFlex fxLayout="column" class="mat-padding" style="min-height:0; overflow:auto;">
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fxFlex
+            style="margin-top: 16px;">
+
+            <!-- Row action template -->
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+                    <button mat-icon-button matTooltip="View Password" (click)="PasswordView(element)">
+                        <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+
+            <ng-template #actionsTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.patientTypeID =='1'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
+
+                    <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+            <ng-template #actionCompany let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
+                        <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+            <ng-template #actionsTemplate2 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+                  
+                    <span *ngIf="element.admissionType==0" class="ml-1 font-bold" matTooltip="Normal">N</span>
+
+                    <span *ngIf="element.admissionType==1" class="ml-1 font-bold"
+                        matTooltip="OP to IP Converted">O</span>
+                    <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.admissionType==1" [disabled]="element.disabled"
+                        class="disabled-icon">
+                        redo
+                    </mat-icon>
+
+                    <span *ngIf="element.admissionType==2" class="ml-1 font-bold"
+                        matTooltip="Emergency To IP Converted">E</span>
+                    <mat-icon matTooltip="EmgToIPConvert" *ngIf="element.admissionType==2" [disabled]="element.disabled"
+                        class="disabled-icon">
+                        redo
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+
+
+            <ng-template #actionsTemplate1 let-element>
+                <div>
+
+                    <button mat-icon-button *ngIf="element.isMLC==1; " matTooltip="IsMLC" (click)="NewMLc(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button *ngIf="element.isMLC==1;" matTooltip="Print MLC paper"
+                        (click)="getMLCdetailview(element)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                    <ng-template #noMLC>
+                <span>--</span>
+            </ng-template>
+                </div>
+            </ng-template>
+
+            <!-- TABLE VIEW -->
+            <airmid-table *ngIf="viewMode === 'table'" [gridConfig]="gridConfig" class="content"
+                (afterLoadData)="onAfterLoadData($event)">
+                <ng-container filters>
+                    <form [formGroup]="myFilterform">
+                        <div fxLayout="column" fxLayoutAlign="start none">
+
+
+                            <mat-form-field appearance="outline" fxFlex="15%">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                    <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                        (dateChange)="onChangeFirst()">
+                                    <input matEndDate formControlName="enddate" placeholder="End date"
+                                        (dateChange)="onChangeFirst()">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>UHID</mat-label>
+                                <input matInput placeholder="UHID" autocomplete="off" [formGroup]="myFilterform"
+                                    formControlName="RegNo" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>FirstName</mat-label>
+                                <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
+                                    formControlName="FirstName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>MiddleName</mat-label>
+                                <input matInput placeholder="MiddleName" autocomplete="off" [formGroup]="myFilterform"
+                                    formControlName="MiddleName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="Clearfilter('MiddleName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>LastName</mat-label>
+                                <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
+                                    formControlName="LastName" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>IPDNo</mat-label>
+                                <input matInput placeholder="IPDNo" autocomplete="off" [formGroup]="myFilterform"
+                                    formControlName="IPDNo" (input)="onChangeFirst()" />
+                                <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')"
+                                    (keypress)="keyPressAlphanumeric($event)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+
+
+                            <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId"
+                                [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                                [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
+                                (keyup)="ListView($event)">
+                            </airmid-dropdown>
+
+                            <div class="addmision-list">
+                                <button mat-raised-button class="btn btn-primary w-100-p"
+                                    (click)="getAdmittedPatientListview()" matTooltip="search">
+                                    Dr Wise Admission List
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </ng-container>
+            </airmid-table>
+
+            <!-- CARD VIEW -->
+            <div *ngIf="viewMode === 'card'" fxFlex fxLayout="column" style="min-height:0;">
+                <mat-card fxFlex style="overflow: auto;">
+                    <airmid-card-view [data]="userList" [config]="cardConfig" [gridConfig]="gridConfig"
+                        (afterLoadData)="onAfterLoadData($event)" [ShowFilter]="true" [ShowButtons]="true"
+                        [pageSize]="pageSize" [resultsLength]="resultsLength" (action)="onCardAction($event)"
+                        (export)="onCardExport($event)" (page)="onCardPage($event)">
+                        <ng-container cardFilters>
+                            <form [formGroup]="myFilterform">
+
+
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                            (dateChange)="onChangeFirst()">
+                                        <input matEndDate formControlName="enddate" placeholder="End date"
+                                            (dateChange)="onChangeFirst()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="UHID" autocomplete="off" [formGroup]="myFilterform"
+                                        formControlName="RegNo" (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>FirstName</mat-label>
+                                    <input matInput placeholder="FirstName" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="FirstName"
+                                        (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>MiddleName</mat-label>
+                                    <input matInput placeholder="MiddleName" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="MiddleName"
+                                        (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('MiddleName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>LastName</mat-label>
+                                    <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
+                                        formControlName="LastName" (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="10%">
+                                    <mat-label>IPDNo</mat-label>
+                                    <input matInput placeholder="IPDNo" autocomplete="off" [formGroup]="myFilterform"
+                                        formControlName="IPDNo" (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')"
+                                        (keypress)="keyPressAlphanumeric($event)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                                <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" fxFlex="15%"
+                                    [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue"
+                                    [mode]="autocompleteModedeptdoc" (selectionChange)="ListView($event)"
+                                    (keyup)="ListView($event)">
+                                </airmid-dropdown>
+
+                            </form>
+                        </ng-container>
+                    </airmid-card-view>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

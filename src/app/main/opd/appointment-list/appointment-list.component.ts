@@ -28,6 +28,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApointmentCardviewComponent } from './apointment-cardview/apointment-cardview.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -605,6 +606,19 @@ export class AppointmentListComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+
+    oncardView(obj) {
+        const dialogRef = this._matDialog.open(ApointmentCardviewComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+               });
+        dialogRef.afterClosed().subscribe(result => {
+          });
+    }
+
+
     selectChangedeptdoc(obj: any) {
         this.gridConfig.filters[3].fieldValue = obj.value
     }
