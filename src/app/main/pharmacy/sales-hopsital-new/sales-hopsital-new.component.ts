@@ -2100,7 +2100,10 @@ vExpDate:any;
     debugger  
    if(event){ 
     this.ItemSubform.get('externalPatientName').setValue(event)
-     this.ItemSubform.get('doctorName').setValue(event) 
+    this.ItemSubform.get('doctorName').setValue(event) 
+   }else{
+     this.ItemSubform.get('externalPatientName').setValue('')
+     this.ItemSubform.get('doctorName').setValue('') 
    }
    this.PatientName = event.patientName
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
@@ -2113,6 +2116,9 @@ vExpDate:any;
    if(event){ 
     this.ItemSubform.get('extMobileNo').setValue(event)
      this.ItemSubform.get('doctorName').setValue(event) 
+   }else{
+     this.ItemSubform.get('extMobileNo').setValue('')
+     this.ItemSubform.get('doctorName').setValue('') 
    }
    this.PatientName = event.patientName
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
@@ -2121,11 +2127,7 @@ vExpDate:any;
             } 
   }
     getSelectedObjExtDocName(event){ 
-      debugger  
-  //  if(event){ 
-  //   this.ItemSubform.get('extMobileNo').setValue(event)
-  //    this.ItemSubform.get('doctorName').setValue(event) 
-  //  }
+      debugger   
        const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
             if (extAddressNameElement) {
                 extAddressNameElement.focus();
